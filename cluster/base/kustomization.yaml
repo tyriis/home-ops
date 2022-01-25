@@ -5,7 +5,7 @@ resources:
   - flux-system
   - helm-repos
   - cluster-settings.yaml
-  - cluster-secrets.yaml
+  - cluster-secrets.sops.yaml
   - crds.yaml
   - core.yaml
   - apps.yaml
