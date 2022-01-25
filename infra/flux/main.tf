@@ -37,8 +37,8 @@ locals {
 }
 
 resource "tls_private_key" "main" {
-  algorithm   = "RSA"
-  ecdsa_curve = "4096"
+  algorithm   = "ECDSA"
+  ecdsa_curve = "P384"
 }
 
 data "kubectl_file_documents" "fluxcd_install" {
@@ -108,7 +108,7 @@ resource "kubernetes_secret" "main" {
 
   data = {
     identity       = tls_private_key.main.private_key_pem
-    "identity.pub" = tls_private_key.main.public_key_pem
+    "identity.pub" = tls_private_key.main.public_key_openssh
     known_hosts    = local.known_hosts
   }
 }
