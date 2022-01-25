@@ -9,4 +9,4 @@ resources:
   - kube-system/reloader
   - networking/traefik
   - home/hajimari
-  - system-upgrade/system-upgrade-controler
+  - system-upgrade/system-upgrade-controller
