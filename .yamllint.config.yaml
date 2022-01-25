@@ -1,0 +1,32 @@
+---
+# see https://yamllint.readthedocs.io/en/stable/index.html for more options
+ignore: |
+  gotk-components.yaml
+extends: default
+rules:
+  truthy:
+    allowed-values: ["true", "false", "on"]
+
+  line-length:
+    max: 120
+    level: warning
+
+  braces:
+    min-spaces-inside: 0
+    max-spaces-inside: 1
+
+  brackets:
+    min-spaces-inside: 0
+    max-spaces-inside: 0
+
+  indentation:
+    spaces: 2
+    indent-sequences: consistent
+    check-multi-line-strings: false
+
+  document-start:
+    present: true
+    level: warning
+
+  comments:
+    min-spaces-from-content: 1

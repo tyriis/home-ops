@@ -1,0 +1,23 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - charts.gitlab.io.yaml
+  - charts.jetstack.io.yaml
+  - charts.longhorn.io.yaml
+  - emberstack.github.io.yaml
+  - grafana.github.io.yaml
+  - hajimari.io.yaml
+  - helm.traefik.io.yaml
+  - helm.releases.hashicorp.com.yaml
+  - itzg.github.io.yaml
+  - k8s-at-home.com.yaml
+  - kubernetes-sigs.github.io_metrics-server.yaml
+  - kubernetes-sigs.github.io_node-feature-discovery.yaml
+  - metallb.github.io.yaml
+  - nfs-subdir-external-provisioner.yaml
+  - openfaas.github.io.yaml
+  - prometheus-community.github.io.yaml
+  - repos.emqx.io.yaml
+  - ricoberger.github.io.yaml
+  - stakater.github.io.yaml

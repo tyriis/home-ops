@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pimoroni-fanshim
+  namespace: hardware
+data:
+  OFF_THRESHOLD: "40" # "55"
+  ON_THRESHOLD: "45" # "65"
+  LOW_TEMP: "55"
+  HIGH_TEMP: "65"
+  DELAY: "2"
+  PREEMPT: "TRUE"
+  VERBOSE: "FALSE"
+  NOBUTTON: "FALSE"
+  NOLED: "FALSE"
+  BRIGHTNESS: "255"
+  EXTENDED_COLOURS: "TRUE"
+  LOG_LEVEL: "INFO"
+  PROMETHEUS_METRIC_PORT: "9100"

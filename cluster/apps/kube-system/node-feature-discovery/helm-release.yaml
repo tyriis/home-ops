@@ -1,0 +1,59 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: node-feature-discovery
+  namespace: kube-system
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://kubernetes-sigs.github.io/node-feature-discovery/charts
+      chart: node-feature-discovery
+      version: 0.9.0
+      sourceRef:
+        kind: HelmRepository
+        name: node-feature-discovery-charts
+        namespace: flux-system
+  values:
+    image:
+      repository: raspbernetes/node-feature-discovery
+      tag: v0.9.0
+    worker:
+      # nodeSelector:
+      #   node-role.kubernetes.io/worker: "true"
+      config: |-
+        core:
+          sleepInterval: 60s
+          sources:
+          - custom
+          - pci
+          - usb
+        sources:
+          usb:
+            deviceClassWhitelist: []
+            # lsusb -v | grep bInterfaceClass
+            # - "08"
+            # - "ff"
+            deviceLabelFields:
+            - "class"
+            - "vendor"
+            - "device"
+          custom:
+          - name: "intel-gpu"
+            matchOn:
+            - pciId:
+                class: ["0300"]
+                vendor: ["8086"]
+          - name: "cc2652rb-zigbee-stick"
+            matchOn:
+            - usbId:
+                class: ["ff"]
+                vendor: ["10c4"]
+                device: ["ea60"]
+          - name: "asm1153-sata-bridge"
+            matchOn:
+            - usbId:
+                class: ["08"]
+                vendor: ["174c"]
+                device: ["1153"]
