@@ -37,8 +37,8 @@ locals {
 }
 
 resource "tls_private_key" "main" {
-  algorithm   = "ECDSA"
-  ecdsa_curve = "P384"
+  algorithm   = "RSA"
+  ecdsa_curve = "4096"
 }
 
 data "kubectl_file_documents" "fluxcd_install" {
