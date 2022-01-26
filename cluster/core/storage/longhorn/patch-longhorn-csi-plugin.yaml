@@ -3,8 +3,8 @@ kind: DaemonSet
 metadata:
   name: longhorn-csi-plugin
   namespace: storage
-  spec:
-    template:
-      spec:
-        nodeSelector:
-          kubernetes.io/arch: amd64
+spec:
+  template:
+    spec:
+      nodeSelector:
+        kubernetes.io/arch: amd64
