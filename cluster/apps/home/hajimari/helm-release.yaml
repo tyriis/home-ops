@@ -44,7 +44,6 @@ spec:
           icon: github
           group: Infrastructure
       groups:
-        - name: Infrastructure
         - name: Communicate
           links:
             - name: Discord
