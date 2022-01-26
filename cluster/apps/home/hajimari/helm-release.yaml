@@ -39,7 +39,12 @@ spec:
           url: https://${SECRET_NFS_IP}
           icon: nas
           group: Infrastructure
+        - name: GitOps
+          url: https://github.com/tyriis/flux.k3s.cluster
+          icon: github
+          group: Infrastructure
       groups:
+        - name: Infrastructure
         - name: Communicate
           links:
             - name: Discord
