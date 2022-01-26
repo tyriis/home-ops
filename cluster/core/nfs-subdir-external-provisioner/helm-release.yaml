@@ -19,7 +19,7 @@ spec:
   targetNamespace: storage
   values:
     # https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner/blob/master/charts/nfs-subdir-external-provisioner/values.yaml
-    replicaCount: 2
+    replicaCount: 3
     strategyType: Recreate
 
     nfs:
@@ -65,3 +65,6 @@ spec:
                 values:
                 - nfs-subdir-external-provisioner
             topologyKey: kubernetes.io/hostname
+
+    nodeSelector:
+      node-role.kubernetes.io/control-plane: "true"
