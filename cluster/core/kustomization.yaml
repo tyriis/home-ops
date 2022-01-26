@@ -7,5 +7,4 @@ resources:
   - kube-system
   - metallb-system
   - notifications
-  - nfs-subdir-external-provisioner
-  - storageclasses
+  - storage

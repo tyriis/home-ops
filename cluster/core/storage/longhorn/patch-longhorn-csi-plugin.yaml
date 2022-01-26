@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: longhorn-csi-plugin
+  namespace: storage
+  spec:
+    template:
+      spec:
+        nodeSelector:
+          kubernetes.io/arch: arm64

@@ -1,0 +1,35 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: longhorn
+  namespace: storage
+spec:
+  chart:
+    spec:
+      # renovate: registryUrl=https://charts.longhorn.io
+      chart: longhorn
+      sourceRef:
+        kind: HelmRepository
+        name: longhorn-charts
+        namespace: flux-system
+      version: 1.2.2
+  interval: 15m
+  releaseName: longhorn
+  targetNamespace: storage
+  values:
+    defaultSettings:
+      systemManagedComponentsNodeSelector: "kubernetes.io/arch=amd64"
+
+    # https://artifacthub.io/packages/helm/longhorn/longhorn?modal=values
+    persistence:
+      reclaimPolicy: Retain
+    longhornManager:
+      nodeSelector:
+        kubernetes.io/arch: amd64
+    longhornDriver:
+      nodeSelector:
+        kubernetes.io/arch: amd64
+    longhornUI:
+      nodeSelector:
+        kubernetes.io/arch: amd64
