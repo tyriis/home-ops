@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: scanservjs
+  namespace: hardware
+data:
+  AIRSCAN_DEVICES: '"HP" = "http://${SECRET_SCANNER_IP}/eSCL"'

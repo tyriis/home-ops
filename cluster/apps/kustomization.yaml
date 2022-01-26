@@ -3,7 +3,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - hardware/pimoroni-fanshim
-  - hardware/zigbee2mqtt
+  # - hardware/zigbee2mqtt
+  - hardware/scanservjs
   - kube-system/metrics-server
   - kube-system/node-feature-discovery
   - kube-system/reflector
