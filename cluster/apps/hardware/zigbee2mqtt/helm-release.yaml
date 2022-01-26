@@ -20,9 +20,6 @@ spec:
       repository: ghcr.io/koenkk/zigbee2mqtt
       tag: 1.22.2
 
-    usb:
-      enabled: false
-
     # securityContext:
     #   privileged: true
 
@@ -33,6 +30,9 @@ spec:
         storageClassName: local-path
         size: 100Mi
         retain: true
+
+      usb:
+        enabled: false
 
     env:
       ZIGBEE2MQTT_DATA: /data
