@@ -30,9 +30,12 @@ spec:
           - hardware
       name: "sunshine"
       customApps:
-        - name: Some External Cluster Service
-          url: http://192.168.1.100:5000
-          icon: test-tube
+        - name: OPNsense
+          url: https://opnsense
+          icon: router-network
+        - name: NAS
+          url: https://${SECRET_NFS_IP}
+          icon: nas
       groups:
         - name: Communicate
           links:
@@ -104,8 +107,8 @@ spec:
         ingressClassName: "traefik"
         annotations:
           cert-manager.io/cluster-issuer: "letsencrypt-production"
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "weather-sunset"
+          # hajimari.io/enable: "false"
+          # hajimari.io/icon: "weather-sunset"
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         hosts:
           - host: "hajimari.${SECRET_DOMAIN}"
