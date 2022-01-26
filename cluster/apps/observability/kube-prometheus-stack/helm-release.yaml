@@ -147,7 +147,7 @@ spec:
               storageClassName: local-path
               resources:
                 requests:
-                  storage:10Gi
+                  storage: 10Gi
 
       config:
         global:
