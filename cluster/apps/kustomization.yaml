@@ -9,6 +9,7 @@ resources:
   - kube-system/node-feature-discovery
   - kube-system/reflector
   - kube-system/reloader
+  - observability/kube-prometheus-stack
   - networking/traefik
   - home/hajimari
   - home/node-red

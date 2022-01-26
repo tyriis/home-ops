@@ -1,0 +1,294 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: kube-prometheus-stack
+  namespace: observability
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
+      chart: kube-prometheus-stack
+      version: 30.1.0
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community-charts
+        namespace: flux-system
+  timeout: 10m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    fullnameOverride: prometheus
+
+    prometheus:
+      prometheusSpec:
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: node-role.kubernetes.io/control-plane
+                      operator: NotIn
+                      values:
+                        - "true"
+                    - key: kubernetes.io/arch
+                      operator: In
+                      values:
+                        - amd64
+        resources:
+          requests:
+            memory: 2048Mi
+            cpu: 500m
+          limits:
+            memory: 4096Mi
+            cpu: 4000m
+
+        ruleSelector: {}
+        ruleNamespaceSelector: {}
+        ruleSelectorNilUsesHelmValues: false
+        serviceMonitorSelector: {}
+        serviceMonitorNamespaceSelector: {}
+        serviceMonitorSelectorNilUsesHelmValues: false
+        podMonitorSelector: {}
+        podMonitorNamespaceSelector: {}
+        podMonitorSelectorNilUsesHelmValues: false
+        retention: 14d
+        enableAdminAPI: true
+        walCompression: true
+
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: local-path
+              resources:
+                requests:
+                  storage: 25Gi
+
+        additionalScrapeConfigs:
+          - job_name: node-exporter
+            honor_timestamps: true
+            static_configs:
+              - targets:
+                  - ${SECRET_NFS_IP}:9100
+                  - cubietruck.home:9100
+                  - opnsense.home:9100
+          - job_name: esphome-switch-irpanel-1
+            static_configs:
+              - targets:
+                  - esphome-switch-irpanel-1.home
+                labels:
+                  device: switch-irpanel-1
+          - job_name: esphome-switch-irpanel-2
+            static_configs:
+              - targets:
+                  - esphome-switch-irpanel-2.home
+                labels:
+                  device: switch-irpanel-2
+          - job_name: esphome-switch-bedroom
+            static_configs:
+              - targets:
+                  - esphome-switch-bedroom.home
+                labels:
+                  device: switch-bedroom
+          - job_name: esphome-switch-domiroom
+            static_configs:
+              - targets:
+                  - esphome-switch-domiroom.home
+                labels:
+                  device: switch-domiroom
+          - job_name: esphome-switch-basement
+            static_configs:
+              - targets:
+                  - esphome-switch-basement.home
+                labels:
+                  device: switch-basement
+          - job_name: esphome-switch-alexroom
+            static_configs:
+              - targets:
+                  - esphome-switch-alexroom.home
+                labels:
+                  device: switch-alexroom
+          - job_name: esphome-switch-office
+            static_configs:
+              - targets:
+                  - esphome-switch-office.home
+                labels:
+                  device: switch-office
+          - job_name: esphome-switch-livingroom
+            static_configs:
+              - targets:
+                  - esphome-switch-livingroom.home
+                labels:
+                  device: switch-livingroom
+
+          # - job_name: ohm-exporter
+          #   scrape_interval: 15s
+          #   static_configs:
+          #   - targets:
+          #     - red.home:4445
+          #     - carbon.home:4445
+
+          # - job_name: windows-exporter
+          #   scrape_interval: 15s
+          #   static_configs:
+          #   - targets:
+          #     - red.home:9182
+
+    alertmanager:
+      alertmanagerSpec:
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: local-path
+              resources:
+                requests:
+                  storage:10Gi
+
+      config:
+        global:
+          resolve_timeout: 5m
+          slack_api_url: "${SECRET_DISCORD_WEBHOOK}"
+        route:
+          group_by: ["alertname", "job"]
+          group_wait: 30s
+          group_interval: 5m
+          repeat_interval: 6h
+          routes:
+            - receiver: "null"
+              match:
+                alertname: Watchdog
+            - receiver: discord
+              # match_re:
+              #   severity: critical
+              # continue: true
+        inhibit_rules:
+          - source_match:
+              severity: critical
+            target_match:
+              severity: warning
+            equal: ["alertname", "namespace"]
+
+        receivers:
+          - name: "null"
+          - name: "discord"
+            slack_configs:
+              - channel: "#flux-system"
+                icon_url: https://avatars3.githubusercontent.com/u/3380462
+                username: "Prometheus"
+                send_resolved: true
+                title: |-
+                  [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ if ne .CommonAnnotations.summary ""}}{{ .CommonAnnotations.summary }}{{ else }}{{ .CommonLabels.alertname }}{{ end }}
+                text: >-
+                  {{ range .Alerts -}}
+                    **Alert:** {{ .Annotations.title }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
+                  **Description:** {{ if ne .Annotations.description ""}}{{ .Annotations.description }}{{else}}N/A{{ end }}
+                  **Details:**
+                    {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+                    {{ end }}
+                  {{ end }}
+
+    nodeExporter:
+      enabled: true
+
+    prometheus-node-exporter:
+      fullnameOverride: node-exporter
+      prometheus:
+        monitor:
+          enabled: true
+          # lens ide config
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels:
+                - __meta_kubernetes_pod_node_name
+              targetLabel: kubernetes_node
+
+    kube-state-metrics:
+      fullnameOverride: kube-state-metrics
+      selfMonitor:
+        enabled: true
+      prometheus:
+        monitor:
+          enabled: true
+
+    grafana:
+      enabled: false
+      forceDeployDashboards: true
+
+    kubelet:
+      enabled: true
+      serviceMonitor:
+        # lens ide config
+        metricRelabelings:
+          - action: replace
+            sourceLabels:
+              - node
+            targetLabel: instance
+
+    kubeApiServer:
+      enabled: true
+      # serviceMonitor:
+      #   interval: 60s
+      #   metricRelabelings:
+      #   - action: keep
+      #     regex: 'kube_(daemonset|deployment|pod|namespace|node|statefulset|replicaset).+'
+      #     sourceLabels:
+      #     - __name__
+      #   - action: drop
+      #     regex: '.+apiextensions\.k8s\.io.+'
+      #     sourceLabels:
+      #     - group
+
+    kubeControllerManager:
+      enabled: true
+      endpoints:
+        - 192.168.1.71
+        - 192.168.1.72
+        - 192.168.1.73
+      # service:
+      #   enabled: true
+      #   port: 10257
+      #   targetPort: 10257
+      # serviceMonitor:
+      #   enabled: true
+      #   https: true
+      #   insecureSkipVerify: true
+
+    kubeScheduler:
+      enabled: true
+      endpoints:
+        - 192.168.1.71
+        - 192.168.1.72
+        - 192.168.1.73
+
+    kubeProxy:
+      enabled: true
+      endpoints:
+        - 192.168.1.71
+        - 192.168.1.72
+        - 192.168.1.73
+
+    kubeEtcd:
+      enabled: true
+      endpoints:
+        - 192.168.1.71
+        - 192.168.1.72
+        - 192.168.1.73
+      service:
+        enabled: true
+        port: 2381
+        targetPort: 2381
+
+    coreDns:
+      enabled: true
+
+  # valuesFrom:
+  #   - kind: Secret
+  #     name: "kube-prometheus-stack-values"
+  #     optional: false

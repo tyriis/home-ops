@@ -1,0 +1,27 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: pimoroni-fanshim
+  namespace: hardware
+  labels:
+    app.kubernetes.io/part-of: pimoroni-fanshim
+    app.kubernetes.io/name: pimoroni-fanshim
+spec:
+  namespaceSelector:
+    matchNames:
+      - hardware
+  selector:
+    matchExpressions:
+      - key: app.kubernetes.io/name
+        operator: In
+        values:
+          - pimoroni-fanshim
+      - key: app.kubernetes.io/instance
+        operator: In
+        values:
+          - pimoroni-fanshim
+  podMetricsEndpoints:
+    - port: http-prom
+      interval: 15s
+      scrapeTimeout: 5s
