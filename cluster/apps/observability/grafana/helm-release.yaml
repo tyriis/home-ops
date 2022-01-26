@@ -128,7 +128,7 @@ spec:
         - "grafana.${SECRET_DOMAIN}"
       path: /
       tls:
-        - secretName: grafana-tls
+        - secretName: grafana-cert
           hosts:
             - "grafana.${SECRET_DOMAIN}"
 
