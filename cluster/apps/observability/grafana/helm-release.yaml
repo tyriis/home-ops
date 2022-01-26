@@ -1,0 +1,140 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: grafana
+  namespace: observability
+spec:
+  interval: 5m
+  dependsOn:
+    # - name: loki
+    #   namespace: observability
+    - name: kube-prometheus-stack
+      namespace: observability
+  chart:
+    spec:
+      # renovate: registryUrl=https://grafana.github.io/helm-charts
+      chart: grafana
+      version: 6.20.7
+      sourceRef:
+        kind: HelmRepository
+        name: grafana-charts
+        namespace: flux-system
+  values:
+    image:
+      repository: ghcr.io/k8s-at-home/grafana
+    replicas: 1
+    nodeSelector:
+      kubernetes.io/arch: amd64
+    env:
+      TZ: ${SETTING_TZ}
+      GF_EXPLORE_ENABLED: true
+      GF_PANELS_DISABLE_SANITIZE_HTML: true
+      GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
+
+    adminPassword: "${SECRET_GRAFANA_PASSWORD}"
+    grafana.ini:
+      server:
+        root_url: "https://grafana.${SECRET_DOMAIN}"
+      users:
+        auto_assign_org_role: "Admin"
+      auth.google:
+        enabled: true
+        client_id: "${SECRET_GRAFANA_OAUTH_CLIENT_ID}"
+        client_secret: "${SECRET_GRAFANA_OAUTH_CLIENT_SECRET}"
+        scopes: https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email
+        auth_url: https://accounts.google.com/o/oauth2/auth
+        token_url: https://accounts.google.com/o/oauth2/token
+        allowed_domains: "${SECRET_DOMAIN}"
+        allow_sign_up: true
+
+    dashboardProviders:
+      dashboardproviders.yaml:
+        apiVersion: 1
+        providers:
+          - name: default
+            orgId: 1
+            folder: ''
+            type: file
+            disableDeletion: false
+            # allowUiUpdates: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/default
+          - name: flux
+            orgId: 1
+            folder: Flux
+            type: file
+            disableDeletion: false
+            editable: true
+            # allowUiUpdates: true
+            options:
+              path: /var/lib/grafana/dashboards/flux
+    datasources:
+      datasources.yaml:
+        apiVersion: 1
+        # list of datasources that should be deleted from the database
+        deleteDatasources:
+          - name: Loki
+            orgId: 1
+          - name: Prometheus
+            orgId: 1
+        datasources:
+          - name: Prometheus
+            type: prometheus
+            access: proxy
+            url: http://prometheus-prometheus:9090/
+            isDefault: true
+          - name: Loki
+            type: loki
+            access: proxy
+            url: http://loki:3100
+
+    dashboards:
+      # default:
+      flux:
+        flux-cluster:
+          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/cluster.json
+          datasource: Prometheus
+        flux-control-plane:
+          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/control-plane.json
+          datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/11074
+        "Node Exporter for Prometheus Dashboard":
+          gnetId: 11074
+          revision: 9
+          datasource: Prometheus
+
+    sidecar:
+      dashboards:
+        enabled: true
+        searchNamespace: ALL
+      datasources:
+        enabled: true
+        searchNamespace: ALL
+
+    serviceMonitor:
+      enabled: true
+
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      annotations:
+        cert-manager.io/cluster-issuer: "letsencrypt-production"
+        hajimari.io/enable: "true"
+        hajimari.io/icon: chart-areaspline
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+      hosts:
+        - "grafana.${SECRET_DOMAIN}"
+      path: /
+      tls:
+        - secretName: grafana-tls
+          hosts:
+            - "grafana.${SECRET_DOMAIN}"
+
+    serviceAccount:
+      create: true
+      autoMount: true
+
+    persistence:
+      enabled: false
