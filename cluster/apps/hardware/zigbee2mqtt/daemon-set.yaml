@@ -1,0 +1,102 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: zigbee2mqtt
+  namespace: hardware
+  labels:
+    app.kubernetes.io/instance: zigbee2mqtt
+    app.kubernetes.io/name: zigbee2mqtt
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: zigbee2mqtt
+      app.kubernetes.io/name: zigbee2mqtt
+
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: zigbee2mqtt
+        app.kubernetes.io/name: zigbee2mqtt
+
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - k3s-worker06
+
+      containers:
+      - name: zigbee2mqtt
+        image: koenkk/zigbee2mqtt:1.22.2
+        imagePullPolicy: IfNotPresent
+
+        livenessProbe:
+          failureThreshold: 3
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 8080
+          timeoutSeconds: 1
+
+        readinessProbe:
+          failureThreshold: 3
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 8080
+          timeoutSeconds: 1
+
+        startupProbe:
+          failureThreshold: 30
+          periodSeconds: 5
+          successThreshold: 1
+          tcpSocket:
+            port: 8080
+          timeoutSeconds: 1
+
+        env:
+        - name: TZ
+          value: ${SETTING_TZ}
+        - name: ZIGBEE2MQTT_DATA
+          value: /data
+
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+
+        securityContext:
+          privileged: true
+
+        volumeMounts:
+        - mountPath: /data
+          name: data
+
+        # - mountPath: /app/configuration.yaml
+        #   name: zigbee2mqtt-settings
+        #  subPath: configuration.yaml
+
+        # - mountPath: /dev/serial/by-id/usb-Silicon_Labs_slae.sh_cc2652rb_stick_-_slaesh_s_iot_stuff_00_12_4B_00_21_4F_24_18-if00-port0
+        #   name: usb
+        #   readOnly: false
+
+      restartPolicy: Always
+
+      volumes:
+      - name: data
+        hostPath:
+          path: /data
+
+      # - configMap:
+      #     defaultMode: 420
+      #     name: zigbee2mqtt-settings
+      #   name: zigbee2mqtt-settings
+      # - name: usb
+      #   hostPath:
+      #     path: /dev/serial/by-id/usb-Silicon_Labs_slae.sh_cc2652rb_stick_-_slaesh_s_iot_stuff_00_12_4B_00_21_4F_24_18-if00-port0
+      #    type: ''
