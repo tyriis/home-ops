@@ -10,6 +10,7 @@ resources:
   - kube-system/reflector
   - kube-system/reloader
   - observability/loki
+  - observability/promtail
   - observability/kube-prometheus-stack
   - observability/grafana
   - networking/traefik
