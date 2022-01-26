@@ -6,4 +6,7 @@ resources:
   - cert-manager
   - kube-system
   - metallb-system
+  - notifications
+  - nfs-subdir-external-provisioner
+  - storageclasses
   - system-upgrade

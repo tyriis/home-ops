@@ -1,0 +1,29 @@
+# yamllint disable
+apiVersion: v1
+kind: Secret
+metadata:
+    name: flux-notifications-webhook-url
+    namespace: flux-system
+data:
+    address: ENC[AES256_GCM,data:gSlPmU/RRLvjiK3hcmtepeL9rX07x4kRSs2RB4rqQFXWVxBaUqKqLq01HnaNR6Nra92xkMwqGeDH86zn6ugoyTN5cnrNhir9F9eq7tKNShekVxrsMuuHwrVl11kFujNolR+E8utbkEkT2avxYGskDI0fyjNfnO4Se9gjybiNiOW8KQ7oux7YnzpGRN1m6RVS6WZumMJ8qAKDn5aJAp2ojQ==,iv:tvHa5kFGmjUU47T5b99lLcARCZKWrPZKM+KDT1iCgGw=,tag:eTwYoazWzFP/SLuiDmbuFg==,type:str]
+type: Opaque
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age16zqeqx5y6ay3flwz0d06rn83yjv9ckys3j8tpkysf9v6295fhc6sf4r0uj
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAzYjdZeVptaDlPZW9idmtP
+            UkRGdmxyb0REM2s4dnZVSERQNFFSRHlqVkcwClJlZHVhQUVnUm16QVloazMyUUFx
+            Q24vakF5RUEvMTExZ0lPa1RXblFEV3cKLS0tIFNMcGx3NzRQT0U4MTZER0FQUzh3
+            SThDODl4ZFFMMUlxM3BneWlrNDdjdUUKm16agevW+HLV4al0q2m5W/SyS84E5SXh
+            QfWlkG1byRaLRQ+tMeTuCN0tk2A2asmSPygQ1IKo4AO9kMirDEjQ6w==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2022-01-26T09:50:11Z"
+    mac: ENC[AES256_GCM,data:JzHkaA77kCMi3PNrhGiPan7UkLZNVQEjSQJAnvEi+8RAn1DMiHuLW/3zNitRF42RUa8GePiO0XGUlwbVa4++pM5cUhB+K4W+ALI8EOV1rsl6wNtMDFLCDJDTlK7dAcS3WOXUyrc3+DObYl3Jx0c7cH4FGE5hbQP5WeB5StDPhLU=,iv:MViqXVwwJIkONb/hsZorsU6gncXzUXmFaR3hQQdRkE4=,tag:Qz196rIrMV5PgOmERhJZeA==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.7.1
