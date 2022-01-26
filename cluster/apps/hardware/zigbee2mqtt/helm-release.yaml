@@ -16,6 +16,10 @@ spec:
         name: k8s-at-home-charts
         namespace: flux-system
   values:
+
+    securityContext:
+      privileged: true
+
     persistence:
       data:
         enabled: true
