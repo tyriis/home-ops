@@ -24,33 +24,6 @@ spec:
         size: 100Mi
         retain: true
 
-    # usb:
-    #   enabled: true
-    #   type: hostPath
-    #   hostPath: /dev/serial/by-id/usb-Silicon_Labs_slae.sh_cc2652rb_stick_-_slaesh_s_iot_stuff_00_12_4B_00_21_4F_24_18-if00-port0
-
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-              - pi-node04
-
-    securityContext:
-      privileged: true
-
-    additionalVolumeMounts:
-    - name: usb
-      mountPath: /dev/serial/by-id/usb-Silicon_Labs_slae.sh_cc2652rb_stick_-_slaesh_s_iot_stuff_00_12_4B_00_21_4F_24_18-if00-port0
-
-    additionalVolumes:
-    - name: usb
-      hostPath:
-        path: /dev/serial/by-id/usb-Silicon_Labs_slae.sh_cc2652rb_stick_-_slaesh_s_iot_stuff_00_12_4B_00_21_4F_24_18-if00-port0
-
     env:
       ZIGBEE2MQTT_DATA: /data
       TZ: ${SETTING_TZ}
@@ -60,9 +33,9 @@ spec:
       permit_join: false
       mqtt:
         base_topic: zigbee2mqtt-bridge03
-        server: 'mqtt://mqtt.home'
+        server: mqtt://mqtt.home
       serial:
-        port: /dev/serial/by-id/usb-Silicon_Labs_slae.sh_cc2652rb_stick_-_slaesh_s_iot_stuff_00_12_4B_00_21_4F_24_18-if00-port0
+        port: ${SECRET_ZIGBEE2MQTT_BRIDGE3}
       frontend:
         port: 8080
         host: 0.0.0.0
@@ -73,7 +46,7 @@ spec:
         homeassistant_discovery_topic: homeassistant
         homeassistant_status_topic: homeassistant/status
         last_seen: ISO_8601
-        log_level: debug
+        log_level: info
       devices:
         '0x00158d00034447f4':
           friendly_name: innr sp 120 table
@@ -191,8 +164,6 @@ spec:
           friendly_name: tradfri ambience spot 03
         '0x086bd7fffe202c0c':
           friendly_name: tradfri ambience spot 04
-        '0x086bd7fffe57fa75':
-          friendly_name: tradfri ambience spot 06
         '0x000d6ffffe9f920c':
           friendly_name: tradfri ambience spot 07
         '0x086bd7fffe59b1bf':
@@ -235,56 +206,58 @@ spec:
           legacy: false
         '0x0017880108d33a5c':
           friendly_name: '0x0017880108d33a5c'
-        '0x00158d00029bd2b7':
-          friendly_name: '0x00158d00029bd2b7'
+        '0x001788010bcb32de':
+          friendly_name: '0x001788010bcb32de'
+        '0x086bd7fffe57fa75':
+          friendly_name: '0x086bd7fffe57fa75'
       groups:
         '1':
           friendly_name: kitchen
           devices:
-          - 0x0017880102eb0e70/11
-          - 0x001788010372766d/11
-          - 0x00178801037270ae/11
-          - 0x0017880103ae084f/11
-          - 0x00178801037270ad/11
-          - 0x0017880103ae0849/11
+            - 0x0017880102eb0e70/11
+            - 0x001788010372766d/11
+            - 0x00178801037270ae/11
+            - 0x0017880103ae084f/11
+            - 0x00178801037270ad/11
+            - 0x0017880103ae0849/11
         '2':
           friendly_name: table
           devices:
-          - 0x0017880103725f2c/11
-          - 0x0017880103726ec5/11
-          - 0x0017880102f07591/11
-          - 0x0017880108d34712/11
-          - 0x0017880103ae0a62/11
-          - 0x0017880103ae08aa/11
-          - 0x0017880108d33a5c/11
+            - 0x0017880103725f2c/11
+            - 0x0017880103726ec5/11
+            - 0x0017880102f07591/11
+            - 0x0017880108d34712/11
+            - 0x0017880103ae0a62/11
+            - 0x0017880103ae08aa/11
+            - 0x0017880108d33a5c/11
+            - 0x001788010bcb32de/11
         '3':
           friendly_name: livingroom
           devices:
-          - 0x0017880102f0721c/11
-          - 0x0017880103ae09fe/11
-          - 0x0017880102f07456/11
-          - 0x0017880102f074a7/11
-          - 0x0017880102f07157/11
-          - 0x0017880103ae0063/11
+            - 0x0017880102f0721c/11
+            - 0x0017880103ae09fe/11
+            - 0x0017880102f07456/11
+            - 0x0017880102f074a7/11
+            - 0x0017880102f07157/11
+            - 0x0017880103ae0063/11
         '4':
           friendly_name: bedroom
           devices:
-          - 0x0017880102eeef6f/11
+            - 0x0017880102eeef6f/11
         '5':
           friendly_name: office
           devices:
-          - 0x086bd7fffe203316/1
-          - 0x086bd7fffe1d87b2/1
-          - 0x086bd7fffe24a14a/1
-          - 0x086bd7fffe202c0c/1
-          - 0x086bd7fffe2104bd/1
-          - 0x086bd7fffe57fa75/1
-          - 0x000d6ffffe9f920c/1
-          - 0x086bd7fffe253f87/1
-          - 0x086bd7fffe59b1bf/1
-          - 0x086bd7fffe1b23df/1
-          - 0x086bd7fffe5a55c8/1
-          - 0x086bd7fffe1b1c08/1
-          - 0x086bd7fffe5db708/1
-          - 0x086bd7fffe1ea396/1
-          - 0x086bd7fffe603624/1
+            - 0x086bd7fffe203316/1
+            - 0x086bd7fffe1d87b2/1
+            - 0x086bd7fffe24a14a/1
+            - 0x086bd7fffe202c0c/1
+            - 0x086bd7fffe2104bd/1
+            - 0x000d6ffffe9f920c/1
+            - 0x086bd7fffe253f87/1
+            - 0x086bd7fffe59b1bf/1
+            - 0x086bd7fffe1b23df/1
+            - 0x086bd7fffe5a55c8/1
+            - 0x086bd7fffe1b1c08/1
+            - 0x086bd7fffe5db708/1
+            - 0x086bd7fffe1ea396/1
+            - 0x086bd7fffe603624/1
