@@ -19,13 +19,16 @@ spec:
     image:
       repository: ghcr.io/toboshii/hajimari
       tag: v0.2.0
+    env:
+      TZ: ${SETTING_TZ}
     hajimari:
       defaultEnable: false
       namespaceSelector:
         matchNames:
-          - default
           - networking
-      name: "you"
+          - home
+          - hardware
+      name: "sunshine"
       customApps:
         - name: Some External Cluster Service
           url: http://192.168.1.100:5000
