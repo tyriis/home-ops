@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: home-assistant-data
+  labels:
+    app.kubernetes.io/name: home-assistant
+spec:
+  capacity:
+    storage: 10Gi
+  nfs:
+    server: ${SECRET_NFS_IP}
+    path: /volume1/home-assistant.k8s.home
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: manual
