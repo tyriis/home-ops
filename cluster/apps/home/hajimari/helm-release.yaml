@@ -33,9 +33,11 @@ spec:
         - name: OPNsense
           url: https://opnsense
           icon: router-network
+          group: Infrastructure
         - name: NAS
           url: https://${SECRET_NFS_IP}
           icon: nas
+          group: Infrastructure
       groups:
         - name: Communicate
           links:
