@@ -7,4 +7,4 @@ metadata:
     template:
       spec:
         nodeSelector:
-          kubernetes.io/arch: arm64
+          kubernetes.io/arch: amd64
