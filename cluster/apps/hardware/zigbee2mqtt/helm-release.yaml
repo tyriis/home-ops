@@ -16,9 +16,15 @@ spec:
         name: k8s-at-home-charts
         namespace: flux-system
   values:
+    image:
+      repository: ghcr.io/koenkk/zigbee2mqtt
+      tag: 1.22.2
 
-    securityContext:
-      privileged: true
+    usb:
+      enabled: false
+
+    # securityContext:
+    #   privileged: true
 
     persistence:
       data:
