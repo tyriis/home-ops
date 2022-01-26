@@ -57,7 +57,7 @@ spec:
         podMonitorSelector: {}
         podMonitorNamespaceSelector: {}
         podMonitorSelectorNilUsesHelmValues: false
-        retention: 14d
+        retention: 2d
         enableAdminAPI: true
         walCompression: true
 
@@ -147,7 +147,7 @@ spec:
               storageClassName: local-path
               resources:
                 requests:
-                  storage: 10Gi
+                  storage: 1Gi
 
       config:
         global:
