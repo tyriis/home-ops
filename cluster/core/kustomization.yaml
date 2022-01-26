@@ -9,4 +9,3 @@ resources:
   - notifications
   - nfs-subdir-external-provisioner
   - storageclasses
-  - system-upgrade
