@@ -37,3 +37,5 @@ spec:
           ingestion_burst_size_mb: 16
     serviceMonitor:
       enabled: true
+    nodeSelector:
+      kubernetes.io/arch: amd64
