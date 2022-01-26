@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/auth-type: basic
+    ingress.kubernetes.io/auth-secret: htpasswd
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    ttraefik.ingress.kubernetes.io/router.entrypoints: websecure
+  labels:
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/name: loki
+  name: loki
+  namespace: observability
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: "loki.${SECRET_DOMAIN}"
+      http:
+        paths:
+          - backend:
+              service:
+                name: loki
+                port:
+                  number: 3100
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - "loki.${SECRET_DOMAIN}"
+      secretName: loki-cert

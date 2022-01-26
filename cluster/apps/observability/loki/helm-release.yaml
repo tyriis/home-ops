@@ -1,0 +1,39 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: loki
+  namespace: observability
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://grafana.github.io/helm-charts
+      chart: loki
+      version: 2.9.1
+      sourceRef:
+        kind: HelmRepository
+        name: grafana-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    # https://grafana.com/docs/loki/latest/configuration/
+    image:
+      repository: ghcr.io/k8s-at-home/loki
+    ingress:
+      enabled: false
+
+    persistence:
+      enabled: true
+      storageClassName: longhorn
+      size: 10Gi
+
+      config:
+        limits_config:
+          enforce_metric_name: false
+          reject_old_samples: false
+          reject_old_samples_max_age: 3000d
+          ingestion_rate_mb: 16
+          ingestion_burst_size_mb: 16
+    serviceMonitor:
+      enabled: true
