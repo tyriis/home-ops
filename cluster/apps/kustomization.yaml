@@ -18,3 +18,5 @@ resources:
   - home/node-red
   - home/home-assistant
   - system-upgrade/system-upgrade-controller
+  - gaming/minecraft-bedrock
+  - gaming/minecraft-java
