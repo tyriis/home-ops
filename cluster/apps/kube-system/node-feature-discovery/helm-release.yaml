@@ -57,7 +57,33 @@ spec:
                     class: ["08"]
                     vendor: ["174c"]
                     device: ["1153"]
-            - name: "feature.by.nodename"
-              value: customValue
+            # feature.node.kubernetes.io/custom-feature.by.nodename=customValue
+            - name: "cpu.intel.i7"
+              value: "true"
               matchOn:
-                - nodename: ["k3s-worker01", "my-.*-node"]
+                - nodename: ["k3s-worker01", "k3s-worker02"]
+
+            - name: "cpu.intel.i5"
+              value: "true"
+              matchOn:
+                - nodename: ["k3s-worker05"]
+
+            - name: "cpu.intel.celeron"
+              value: "true"
+              matchOn:
+                - nodename: ["k3s-worker03", "k3s-worker04"]
+
+            - name: "memory.gb.4"
+              value: "true"
+              matchOn:
+                - nodename: ["k3s-master01", "k3s-master02", "k3s-master03", "k3s-worker03", "k3s-worker05"]
+
+            - name: "memory.gb.6"
+              value: "true"
+              matchOn:
+                - nodename: ["k3s-worker04"]
+
+            - name: "memory.gb.8"
+              value: "true"
+              matchOn:
+                - nodename: ["k3s-worker01", "k3s-worker02"]
