@@ -16,10 +16,6 @@ spec:
         name: infracloudio-charts
         namespace: flux-system
   values:
-    image:
-      repository: infracloudio/botkube
-      tag: v0.12.1
-      pullPolicy: Always
     communications:
       discord:
         enabled: true
@@ -30,7 +26,7 @@ spec:
 
     config:
       settings:
-        clustername: k3s.home
+        clustername: ${SETTING_CLUSTERNAME}
       resources:
         - name: v1/pods
           namespaces:
