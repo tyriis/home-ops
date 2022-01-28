@@ -5,7 +5,7 @@ resources:
   - helm-release.yaml
   - prometheus-rules/node-exporter.yaml
   - pod-monitors
-namespace: monitoring
+namespace: observability
 configurations:
   - kustomize-config.yaml
 configMapGenerator:
