@@ -1,0 +1,127 @@
+prometheus:
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-production
+      hajimari.io/enable: "true"
+      hajimari.io/icon: chart-line-stacked
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    hosts:
+      - prometheus.${SECRET_DOMAIN}
+    tls:
+      - secretName: prometheus-cert
+        hosts:
+          - prometheus.${SECRET_DOMAIN}
+  prometheusSpec:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: node-role.kubernetes.io/control-plane
+                  operator: NotIn
+                  values:
+                    - "true"
+                - key: kubernetes.io/arch
+                  operator: In
+                  values:
+                    - amd64
+    resources:
+      requests:
+        memory: 2048Mi
+        cpu: 500m
+      limits:
+        memory: 4096Mi
+        cpu: 4000m
+
+    ruleSelector: {}
+    ruleNamespaceSelector: {}
+    ruleSelectorNilUsesHelmValues: false
+    serviceMonitorSelector: {}
+    serviceMonitorNamespaceSelector: {}
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelector: {}
+    podMonitorNamespaceSelector: {}
+    podMonitorSelectorNilUsesHelmValues: false
+    retention: 2d
+    enableAdminAPI: true
+    walCompression: true
+
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: local-path
+          resources:
+            requests:
+              storage: 25Gi
+
+    additionalScrapeConfigs:
+      - job_name: node-exporter
+        honor_timestamps: true
+        static_configs:
+          - targets:
+              - ${SECRET_NFS_IP}:9100
+              - cubietruck.home:9100
+              - opnsense.home:9100
+      - job_name: esphome-switch-irpanel-1
+        static_configs:
+          - targets:
+              - esphome-switch-irpanel-1.home
+            labels:
+              device: switch-irpanel-1
+      - job_name: esphome-switch-irpanel-2
+        static_configs:
+          - targets:
+              - esphome-switch-irpanel-2.home
+            labels:
+              device: switch-irpanel-2
+      - job_name: esphome-switch-bedroom
+        static_configs:
+          - targets:
+              - esphome-switch-bedroom.home
+            labels:
+              device: switch-bedroom
+      - job_name: esphome-switch-domiroom
+        static_configs:
+          - targets:
+              - esphome-switch-domiroom.home
+            labels:
+              device: switch-domiroom
+      - job_name: esphome-switch-basement
+        static_configs:
+          - targets:
+              - esphome-switch-basement.home
+            labels:
+              device: switch-basement
+      - job_name: esphome-switch-alexroom
+        static_configs:
+          - targets:
+              - esphome-switch-alexroom.home
+            labels:
+              device: switch-alexroom
+      - job_name: esphome-switch-office
+        static_configs:
+          - targets:
+              - esphome-switch-office.home
+            labels:
+              device: switch-office
+      - job_name: esphome-switch-livingroom
+        static_configs:
+          - targets:
+              - esphome-switch-livingroom.home
+            labels:
+              device: switch-livingroom
+
+      # - job_name: ohm-exporter
+      #   scrape_interval: 15s
+      #   static_configs:
+      #   - targets:
+      #     - red.home:4445
+      #     - carbon.home:4445
+
+      # - job_name: windows-exporter
+      #   scrape_interval: 15s
+      #   static_configs:
+      #   - targets:
+      #     - red.home:9182

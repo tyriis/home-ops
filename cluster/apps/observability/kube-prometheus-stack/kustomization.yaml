@@ -5,3 +5,13 @@ resources:
   - helm-release.yaml
   - prometheus-rules/node-exporter.yaml
   - pod-monitors
+namespace: monitoring
+configurations:
+  - kustomize-config.yaml
+configMapGenerator:
+  - name: alertmanager-values
+    files:
+      - values.yaml=alertmanager-values.yaml
+  - name: prometheus-values
+    files:
+      - values.yaml=prometheus-values.yaml
