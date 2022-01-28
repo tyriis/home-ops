@@ -118,6 +118,7 @@ resource "github_repository" "main" {
   name                 = var.repository_name
   visibility           = var.repository_visibility
   vulnerability_alerts = true
+  has_issues           = true
   # auto_init  = true
 }
 
