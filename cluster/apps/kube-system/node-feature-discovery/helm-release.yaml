@@ -16,9 +16,6 @@ spec:
         name: node-feature-discovery-charts
         namespace: flux-system
   values:
-    image:
-      repository: raspbernetes/node-feature-discovery
-      tag: v0.9.0
     worker:
       # nodeSelector:
       #   node-role.kubernetes.io/worker: "true"
