@@ -48,19 +48,14 @@ spec:
                 - pciId:
                     class: ["0300"]
                     vendor: ["8086"]
+
             - name: "cc2652rb-zigbee-stick"
               matchOn:
                 - usbId:
                     class: ["ff"]
                     vendor: ["10c4"]
                     device: ["ea60"]
-            - name: "asm1153-sata-bridge"
-              matchOn:
-                - usbId:
-                    class: ["08"]
-                    vendor: ["174c"]
-                    device: ["1153"]
-            # feature.node.kubernetes.io/custom-feature.by.nodename=customValue
+
             - name: "cpu.intel.i7"
               value: "true"
               matchOn:
