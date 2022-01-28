@@ -26,12 +26,12 @@ spec:
             - custom
             - pci
             - usb
-            - cpu
-            - storage
-            - system
+            # - cpu
+            # - storage
+            # - system
             - kernel
-            - memory
-            - network
+            # - memory
+            # - network
         sources:
           usb:
             deviceClassWhitelist: []
