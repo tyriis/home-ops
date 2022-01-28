@@ -1,0 +1,60 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: alertmanager-discord
+  namespace: observability
+  labels:
+    app.kubernetes.io/name: alertmanager-discord
+    app.kubernetes.io/instance: alertmanager-discord
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: alertmanager-discord
+      app.kubernetes.io/instance: alertmanager-discord
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: alertmanager-discord
+        app.kubernetes.io/instance: alertmanager-discord
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - k3s-server01
+                      - k3s-server02
+                      - k3s-server03
+      tolerations:
+      # this toleration is to have the daemonset runnable on master nodes
+      # remove it if your masters can't run pods
+        - key: node-role.kubernetes.io/master
+          operator: Exists
+          effect: NoSchedule
+      containers:
+        - name: alertmanager-discord
+          image: rogerrum/alertmanager-discord:1.0.3
+          ports:
+            - containerPort: 9094
+              name: webhook
+              protocol: TCP
+          env:
+            - name: DISCORD_WEBHOOK
+              value: "${SECRET_DISCORD_WEBHOOK}"
+            - name: DISCORD_USERNAME
+              value: ${SETTING_CLUSTERNAME}
+            - name: DISCORD_AVATAR_URL
+              value: https://avatars3.githubusercontent.com/u/3380462
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 100m
+              memory: 32Mi
+            requests:
+              cpu: 10m
+              memory: 8Mi
+      terminationGracePeriodSeconds: 30

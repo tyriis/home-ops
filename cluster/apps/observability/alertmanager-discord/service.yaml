@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alertmanager-discord
+  namespace: observability
+spec:
+  type: ClusterIP
+  ports:
+  - name: webhook-listener
+    port: 9094
+    protocol: TCP
+    targetPort: webhook
+  selector:
+    app.kubernetes.io/name: alertmanager-discord

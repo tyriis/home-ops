@@ -1,3 +1,4 @@
+---
 prometheus:
   ingress:
     enabled: true
@@ -113,14 +114,12 @@ prometheus:
               - esphome-switch-livingroom.home
             labels:
               device: switch-livingroom
-
       # - job_name: ohm-exporter
       #   scrape_interval: 15s
       #   static_configs:
       #   - targets:
       #     - red.home:4445
       #     - carbon.home:4445
-
       # - job_name: windows-exporter
       #   scrape_interval: 15s
       #   static_configs:
