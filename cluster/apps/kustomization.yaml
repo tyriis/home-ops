@@ -19,4 +19,4 @@ resources:
   - home/home-assistant
   - system-upgrade/system-upgrade-controller
   - gaming/minecraft-bedrock
-  - gaming/minecraft-java
+  # - gaming/minecraft-java
