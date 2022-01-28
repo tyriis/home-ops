@@ -5,6 +5,7 @@ prometheus:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-production
       hajimari.io/enable: "true"
+      hajimari.io/appName: prometheus
       hajimari.io/icon: chart-line-stacked
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
     hosts:

@@ -49,14 +49,15 @@ alertmanager:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-production
       hajimari.io/enable: "true"
+      hajimari.io/appName: alertmanager
       hajimari.io/icon: clipboard-alert
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
     hosts:
-      - "alert-manager.${SECRET_DOMAIN}"
+      - "alertmanager.${SECRET_DOMAIN}"
     tls:
       - secretName: alert-manager-cert
         hosts:
-          - "alert-manager.${SECRET_DOMAIN}"
+          - "alertmanager.${SECRET_DOMAIN}"
   alertmanagerSpec:
     externalUrl: "https://alert-manager.${SECRET_DOMAIN}/"
     storage:
