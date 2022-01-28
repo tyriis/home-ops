@@ -13,6 +13,7 @@ resources:
   - observability/promtail
   - observability/kube-prometheus-stack
   - observability/grafana
+  - observability/botkube
   - networking/traefik
   - home/hajimari
   - home/node-red
