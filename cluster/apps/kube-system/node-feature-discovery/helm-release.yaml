@@ -29,6 +29,9 @@ spec:
             - cpu
             - storage
             - system
+            - kernel
+            - memory
+            - network
         sources:
           usb:
             deviceClassWhitelist: []
