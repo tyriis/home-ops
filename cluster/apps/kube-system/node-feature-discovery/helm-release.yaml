@@ -17,8 +17,8 @@ spec:
         namespace: flux-system
   values:
     worker:
-      # nodeSelector:
-      #   node-role.kubernetes.io/worker: "true"
+      annotations:
+        configmap.reloader.stakater.com/reload: node-feature-discovery-worker-conf
       config: |-
         core:
           sleepInterval: 60s
