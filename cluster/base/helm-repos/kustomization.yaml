@@ -10,6 +10,7 @@ resources:
   - hajimari.io.yaml
   - helm.traefik.io.yaml
   - helm.releases.hashicorp.com.yaml
+  - infracloudio.github.io
   - itzg.github.io.yaml
   - k8s-at-home.com.yaml
   - kubernetes-sigs.github.io_metrics-server.yaml
