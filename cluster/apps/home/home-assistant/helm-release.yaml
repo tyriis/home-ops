@@ -88,3 +88,13 @@ spec:
         enabled: true
         storageClass: longhorn
         size: 10Gi
+
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: feature.node.kubernetes.io/custom-cpu.intel.i7
+                      operator: In
+                      values:
+                        - "true"
