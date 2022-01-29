@@ -20,6 +20,8 @@ spec:
     # https://artifacthub.io/packages/helm/longhorn/longhorn?modal=values
     persistence:
       defaultClassReplicaCount: 2
+      reclaimPolicy: Retain
+      defaultClass: false
     defaultSettings:
       defaultReplicaCount: 2
       createDefaultDiskLabeledNodes: true
