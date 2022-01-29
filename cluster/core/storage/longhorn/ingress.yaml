@@ -22,7 +22,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: longhorn-ui
+                name: longhorn-frontend
                 port:
                   name: http
 
