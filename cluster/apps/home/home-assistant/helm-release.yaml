@@ -5,9 +5,9 @@ metadata:
   name: home-assistant
   namespace: home
 spec:
-  # dependsOn:
-  #   - name: longhorn
-  #     namespace: storage
+  dependsOn:
+    - name: longhorn
+      namespace: longhorn-system
   interval: 5m
   chart:
     spec:
@@ -80,12 +80,12 @@ spec:
         cpu: 4000m
 
     postgresql:
-      enabled: false
+      enabled: true
       postgresqlUsername: ${SECRET_HASS_DB_USERNAME}
       postgresqlPassword: ${SECRET_HASS_DB_PASSWORD}
       postgresqlDatabase: ${SECRET_HASS_DB_NAME}
       persistence:
-        enabled: false
+        enabled: true
         storageClass: longhorn
         size: 10Gi
 
