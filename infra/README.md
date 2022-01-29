@@ -4,6 +4,11 @@
 ### Todos:
 - [] Add Ansible files
 - [] Test ansible files against fresh installed setup
+- [] Assure LVM is expanded to max size
+```bash
+git clone https://git.scs.carleton.ca/git/extend-lvm.git && cd extend-lvm && sudo bash extend-lvm.sh /dev/sda
+# need reboot afterwards
+```
 
 ## Terraform
 

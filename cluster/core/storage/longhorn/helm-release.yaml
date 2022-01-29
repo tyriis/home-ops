@@ -18,8 +18,8 @@ spec:
   releaseName: longhorn
   targetNamespace: storage
   values:
-    defaultSettings:
-      systemManagedComponentsNodeSelector: "kubernetes.io/arch=amd64"
+    # defaultSettings:
+    #   systemManagedComponentsNodeSelector: kubernetes.io/arch=amd64
 
     # https://artifacthub.io/packages/helm/longhorn/longhorn?modal=values
     persistence:
