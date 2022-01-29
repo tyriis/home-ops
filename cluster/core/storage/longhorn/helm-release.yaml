@@ -18,7 +18,9 @@ spec:
   releaseName: longhorn
   targetNamespace: storage
   values:
-    # defaultSettings:
+    defaultSettings:
+      createDefaultDiskLabeledNodes: true
+
     #   systemManagedComponentsNodeSelector: kubernetes.io/arch=amd64
 
     # https://artifacthub.io/packages/helm/longhorn/longhorn?modal=values
