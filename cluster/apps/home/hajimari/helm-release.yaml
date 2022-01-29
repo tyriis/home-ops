@@ -29,6 +29,7 @@ spec:
           - home
           - hardware
           - observability
+          - storage
       name: "sunshine"
       customApps:
         - name: OPNsense

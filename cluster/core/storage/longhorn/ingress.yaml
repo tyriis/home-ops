@@ -1,0 +1,32 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: longhorn
+  namespace: storage
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
+    hajimari.io/enable: "true"
+    hajimari.io/icon: harddisk
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+  labels:
+    app.kubernetes.io/name: longhorn
+    app.kubernetes.io/instance: longhorn
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: "longhorn.${SECRET_DOMAIN}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: longhorn-ui
+                port:
+                  name: http
+
+  tls:
+    - secretName: longhorn-cert
+      hosts:
+        - "longhorn.${SECRET_DOMAIN}"
