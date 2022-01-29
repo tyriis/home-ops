@@ -6,6 +6,7 @@ resources:
   - gaming.yaml
   - hardware.yaml
   - home.yaml
+  - longhron-system.yaml
   - metallb-system.yaml
   - networking.yaml
   - observability.yaml
