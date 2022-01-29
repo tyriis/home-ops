@@ -52,7 +52,8 @@ spec:
       maxThreads: 0 # Maximum number of threads the server tries to use. If set to 0 or removed then it uses as many as possible.
       cheats: true
       serverName: "Cliffs and Caves"
-      # serviceType: LoadBalancer
+      serviceType: LoadBalancer
+      loadBalancerIP: ${SETTING_METALLB_MINECRAFT_BEDROCK_ADDR}
 
     nodeSelector:
       kubernetes.io/arch: amd64
