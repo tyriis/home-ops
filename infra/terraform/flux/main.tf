@@ -42,15 +42,15 @@ resource "tls_private_key" "main" {
 }
 
 data "kubectl_file_documents" "fluxcd_install" {
-  content = file("cluster/base/flux-system/gotk-components.yaml")
+  content = file("../../cluster/base/flux-system/gotk-components.yaml")
 }
 
 data "kubectl_file_documents" "fluxcd_sync" {
-  content = file("cluster/base/flux-system/gotk-sync.yaml")
+  content = file("../../cluster/base/flux-system/gotk-sync.yaml")
 }
 
 data "kubectl_file_documents" "fluxcd_kustomization" {
-  content = file("cluster/base/flux-system/kustomization.yaml")
+  content = file("../../cluster/base/flux-system/kustomization.yaml")
 }
 
 data "flux_sync" "main" {
@@ -173,7 +173,7 @@ resource "kubernetes_secret" "sops_age" {
   }
 
   data = {
-    "age.agekey" = data.vault_generic_secret.sops_age.data["age.agekey"]
+    "age.agekey" = var.sops_age_key
   }
 
   type = "Opaque"

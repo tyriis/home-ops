@@ -12,5 +12,10 @@ provider "kubernetes" {
 
 provider "github" {
   owner = var.github_owner
-  token = var.github_token
+  token = data.vault_generic_secret.github_secrets.data["token"]
+}
+
+provider "cloudflare" {
+  email   = data.sops_file.cloudflare_secrets.data["cloudflare_email"]
+  api_key = data.sops_file.cloudflare_secrets.data["cloudflare_apikey"]
 }

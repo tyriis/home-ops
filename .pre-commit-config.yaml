@@ -69,3 +69,21 @@ repos:
   - id: trailing-whitespace
     args:
     - --markdown-linebreak-ext=md
+
+- repo: https://github.com/terraform-docs/terraform-docs
+  rev: v0.16.0
+  hooks:
+  - id: terraform-docs-go
+    args: ["markdown", "table", "--output-file", "infra/terraform/README.md", "."]
+
+- repo: https://github.com/gruntwork-io/pre-commit
+  rev: v0.1.17
+  hooks:
+  - id: tflint
+    args:
+    - "--module"
+
+- repo: https://github.com/antonbabenko/pre-commit-terraform
+  rev: v1.62.3
+  hooks:
+  - id: terraform_fmt

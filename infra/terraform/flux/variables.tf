@@ -3,12 +3,6 @@ variable "github_owner" {
   description = "github owner"
 }
 
-variable "github_token" {
-  type        = string
-  description = "github token"
-  sensitive   = true
-}
-
 variable "repository_name" {
   type        = string
   description = "github repository name"
@@ -29,7 +23,8 @@ variable "target_path" {
   description = "flux sync target path"
 }
 
-variable "k8s_context" {
+variable "sops_age_key" {
   type        = string
-  description = "The kuberntes config contex name"
+  description = "The sops age key used for global encryption."
+  sensitive   = true
 }
