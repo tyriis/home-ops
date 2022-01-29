@@ -9,11 +9,11 @@ spec:
     spec:
       # renovate: registryUrl=https://charts.longhorn.io
       chart: longhorn
+      version: 1.2.2
       sourceRef:
         kind: HelmRepository
         name: longhorn-charts
         namespace: flux-system
-      version: 1.2.2
   interval: 15m
   releaseName: longhorn
   targetNamespace: storage
