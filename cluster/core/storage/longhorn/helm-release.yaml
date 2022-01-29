@@ -18,20 +18,9 @@ spec:
   releaseName: longhorn
   targetNamespace: storage
   values:
-    defaultSettings:
-      createDefaultDiskLabeledNodes: true
-
-    #   systemManagedComponentsNodeSelector: kubernetes.io/arch=amd64
-
     # https://artifacthub.io/packages/helm/longhorn/longhorn?modal=values
     persistence:
-      reclaimPolicy: Retain
-    longhornManager:
-      nodeSelector:
-        kubernetes.io/arch: amd64
-    longhornDriver:
-      nodeSelector:
-        kubernetes.io/arch: amd64
-    longhornUI:
-      nodeSelector:
-        kubernetes.io/arch: amd64
+      defaultClassReplicaCount: 2
+    defaultSettings:
+      defaultReplicaCount: 2
+      createDefaultDiskLabeledNodes: true
