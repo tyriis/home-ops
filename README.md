@@ -1,6 +1,6 @@
 # flux.k3s.cluster | k3s based gitops cluster managed by flux2
 
-## :face_with_spiral_eyes:&nbsp; Troubleshooting
+## :detective:&nbsp; Troubleshooting
 
 ### Stuck HelmRelease
 [discussion](https://github.com/fluxcd/flux2/issues/1878)
