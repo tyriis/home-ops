@@ -30,6 +30,7 @@ spec:
           - hardware
           - observability
           - longhorn-system
+          - secops
       name: "sunshine"
       customApps:
         - name: OPNsense
