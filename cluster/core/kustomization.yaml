@@ -6,5 +6,4 @@ resources:
   - cert-manager
   - kube-system
   - metallb-system
-  - notifications
   - storage
