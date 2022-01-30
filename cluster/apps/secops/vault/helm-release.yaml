@@ -121,4 +121,4 @@ spec:
     ui:
       enabled: true
     nodeSelector:
-      kubernetes.io/arch: amd64
+      kubernetes.io/arch: arm64
