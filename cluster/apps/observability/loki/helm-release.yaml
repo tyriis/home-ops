@@ -25,7 +25,7 @@ spec:
 
     persistence:
       enabled: true
-      storageClassName: local-path
+      storageClassName: longhorn
       size: 10Gi
 
       config:
