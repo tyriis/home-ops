@@ -53,10 +53,10 @@ prometheus:
     storageSpec:
       volumeClaimTemplate:
         spec:
-          storageClassName: local-path
+          storageClassName: longhorn
           resources:
             requests:
-              storage: 25Gi
+              storage: 20Gi
 
     additionalScrapeConfigs:
       - job_name: node-exporter
