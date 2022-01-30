@@ -29,7 +29,7 @@ spec:
 
     storageClass:
       create: true
-      # provisionerName: k3s.home/nfs-subdir-external-provisioner
+      # provisionerName: ${SECRET_DOMAIN}/nfs-subdir-external-provisioner
       defaultClass: false
       name: nas-nfs
       allowVolumeExpansion: true
