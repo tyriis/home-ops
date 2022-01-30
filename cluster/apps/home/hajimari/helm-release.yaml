@@ -29,7 +29,7 @@ spec:
           - home
           - hardware
           - observability
-          - storage
+          - longhorn-system
       name: "sunshine"
       customApps:
         - name: OPNsense
