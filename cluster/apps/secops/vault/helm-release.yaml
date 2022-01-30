@@ -1,0 +1,118 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: vault
+  namespace: secops
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://helm.releases.hashicorp.com
+      chart: vault
+      version: 0.18.0
+      sourceRef:
+        kind: HelmRepository
+        name: hashicorp-charts
+        namespace: flux-system
+  values:
+    updateStrategyType: "RollingUpdate"
+    metrics:
+      enabled: true
+    server:
+      ingress:
+        enabled: true
+        ingressClassName: traefik
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          hajimari.io/enable: "true"
+          hajimari.io/icon: shield-key
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        hosts:
+          - host: "vault.${SECRET_DOMAIN}"
+            paths:
+              - /
+              # - /vault
+        tls:
+          - secretName: vault-cert
+            hosts:
+              - "vault.${SECRET_DOMAIN}"
+      dataStorage:
+        enabled: true
+        # storageClass: "rook-ceph-block"
+      extraEnvironmentVars:
+        VAULT_TOKEN: "${SECRET_VAULT_TOKEN}"
+      resources:
+        requests:
+          memory: 128Mi
+          cpu: 100m
+        limits:
+          memory: 256Mi
+          cpu: 1000m
+      standalone:
+        enabled: false
+      ha:
+        enabled: true
+        replicas: 3
+        raft:
+          enabled: true
+          setNodeId: true
+          config: |
+            disable_mlock = true
+            ui = true
+
+            seal "transit" {
+              address = "${SECRET_VAULT_URL}"
+              token = "${SECRET_VAULT_TOKEN}"
+              disable_renewal = "false"
+              key_name = "autounseal"
+              mount_path = "transit/"
+              tls_skip_verify = "true"
+            }
+
+            storage "raft" {
+              path = "/vault/data"
+
+              retry_join {
+                leader_api_addr = "https://vault-0.vault-internal:8200"
+                # leader_ca_cert_file = "/vault/userconfig/tls-ca/ca.crt"
+                # leader_client_cert_file = "/vault/userconfig/tls-server/server.crt"
+                # leader_client_key_file = "/vault/userconfig/tls-server/server.key"
+                tls_disable = 1
+              }
+
+              retry_join {
+                leader_api_addr = "https://vault-1.vault-internal:8200"
+                # leader_ca_cert_file = "/vault/userconfig/tls-ca/ca.crt"
+                # leader_client_cert_file = "/vault/userconfig/tls-server/server.crt"
+                # leader_client_key_file = "/vault/userconfig/tls-server/server.key"
+                tls_disable = 1
+              }
+
+              retry_join {
+                leader_api_addr = "https://vault-2.vault-internal:8200"
+                # leader_ca_cert_file = "/vault/userconfig/tls-ca/ca.crt"
+                # leader_client_cert_file = "/vault/userconfig/tls-server/server.crt"
+                # leader_client_key_file = "/vault/userconfig/tls-server/server.key"
+                tls_disable = 1
+              }
+
+              autopilot {
+                cleanup_dead_servers = "true"
+                last_contact_threshold = "200ms"
+                last_contact_failure_threshold = "10m"
+                max_trailing_logs = 250
+                min_quorum = 5
+                server_stabilization_time = "15s"
+              }
+            }
+
+            listener "tcp" {
+              tls_disable = 1
+              address = "[::]:8200"
+              cluster_address = "[::]:8201"
+            }
+
+            service_registration "kubernetes" {}
+    ui:
+      enabled: true

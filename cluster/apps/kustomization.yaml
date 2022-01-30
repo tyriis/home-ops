@@ -22,5 +22,6 @@ resources:
   - home/node-red
   - home/home-assistant
   - system-upgrade/system-upgrade-controller
+  - secops/vault
   - gaming/minecraft-bedrock
   # - gaming/minecraft-java
