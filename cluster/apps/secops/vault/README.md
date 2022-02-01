@@ -21,3 +21,36 @@ vault write auth/kubernetes/config \
     disable_iss_validation=false
 
 TODO: create terraform pipeline for vault-secrets-operator
+
+
+## reconfigure oidc google auth
+https://github.com/hashicorp/vault-guides/tree/master/identity/oidc-auth
+
+set your variables
+```bash
+export VAULT_ADDR=https://vault.mydomain.com
+export GOOGLE_API_CLIENT_ID=1234-abc.apps.googleusercontent.com
+export GOOGLE_API_CLIENT_SECRET=ABCDE-AbCdeFGdef-abcdEFg
+```
+
+configure oidc:
+
+```bash
+vault write auth/oidc/config \
+    oidc_discovery_url="https://accounts.google.com" \
+    oidc_client_id="$GOOGLE_API_CLIENT_ID" \
+    oidc_client_secret="$GOOGLE_API_CLIENT_SECRET" \
+    default_role="gmail"
+```
+
+configure role gmail to allow access to `manager` role (need to be configured independent)
+revoke session after 7 days (168h) (assure no `"` arround GOOGLE_API_CLIENT_ID)
+
+```bash
+vault write auth/oidc/role/gmail \
+    user_claim="sub" \
+    bound_audiences=$GOOGLE_API_CLIENT_ID \
+    allowed_redirect_uris="$VAULT_ADDR/ui/vault/auth/oidc/oidc/callback" \
+    policies=manager \
+    ttl=168h
+```
