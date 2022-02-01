@@ -55,6 +55,9 @@ spec:
           cpu: 1000m
       standalone:
         enabled: false
+      nodeSelector:
+        kubernetes.io/arch: arm64
+        kubernetes.io/master: "true"
       ha:
         enabled: true
         replicas: 3
@@ -120,5 +123,3 @@ spec:
             service_registration "kubernetes" {}
     ui:
       enabled: true
-    nodeSelector:
-      kubernetes.io/arch: arm64
