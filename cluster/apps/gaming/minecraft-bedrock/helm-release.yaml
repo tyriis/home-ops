@@ -16,6 +16,7 @@ spec:
   # maxHistory: 10  # default
   chart:
     spec:
+      # renovate: registryUrl=https://itzg.github.io/minecraft-server-charts/
       chart: minecraft-bedrock
       version: 1.2.0
       sourceRef:

@@ -8,6 +8,7 @@ spec:
   interval: 5m
   chart:
     spec:
+      # renovate: registryUrl=https://grafana.github.io/helm-charts
       chart: loki
       version: 2.9.1
       sourceRef:
