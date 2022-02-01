@@ -15,6 +15,10 @@ spec:
         name: authentik-charts
         namespace: flux-system
   values:
+
+    env:
+      TZ: ${SETTING_TZ}
+
     image:
       repository: ghcr.io/goauthentik/server
       tag: 2022.1.3
@@ -23,6 +27,7 @@ spec:
       enabled: false
     authentik:
       secret_key: ${SECRET_AUTHENTIK_KEY}
+      log_level: debug
 
       postgresql:
         host: '{{ .Release.Name }}-postgresql'
@@ -31,7 +36,7 @@ spec:
         password: ${SECRET_AUTHENTIK_POSTGRES_PASSWORD}
       redis:
         host: '{{ .Release.Name }}-redis-master'
-        password: ${SECRET_AUTHENTIK_REDIS_PASSWORD}
+        # password: ${SECRET_AUTHENTIK_REDIS_PASSWORD}
 
     postgresql:
       enabled: true
@@ -46,8 +51,8 @@ spec:
     redis:
       enabled: true
       auth:
-        enabled: true
-        password: ${SECRET_AUTHENTIK_REDIS_PASSWORD}
+        enabled: false
+        # password: ${SECRET_AUTHENTIK_REDIS_PASSWORD}
 
     ingress:
       enabled: true
