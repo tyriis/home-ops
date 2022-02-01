@@ -8,7 +8,6 @@ spec:
   interval: 5m
   chart:
     spec:
-      # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
       chart: kube-prometheus-stack
       version: 30.2.0
       sourceRef:
@@ -117,8 +116,3 @@ spec:
 
     coreDns:
       enabled: true
-
-  # valuesFrom:
-  #   - kind: Secret
-  #     name: "kube-prometheus-stack-values"
-  #     optional: false
