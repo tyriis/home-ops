@@ -60,20 +60,14 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
               - matchExpressions:
-                  - key: kubernetes.io/hostname
-                    operator: In
-                    values:
-                      - k3s-server01
-                      - k3s-server02
-                      - k3s-server03
+                  - {key: "kubernetes.io/hostname", operator: "In", values: ["k3s-server01", "k3s-server02", "k3s-server03"]}
         podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - podAffinityTerm:
-                labelSelector:
-                  app.kubernetes.io/instance: vault
-                  app.kubernetes.io/name: vault
-                  component: server
-                topologyKey: kubernetes.io/hostname
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - {key: "app.kubernetes.io/instance", operator: "In", values: ["vault"]}
+                  - {key: "app.kubernetes.io/name", operator: "In", values: ["vault"]}
+                  - {key: "component", operator: "In", values: ["server"]}
       ha:
         enabled: true
         replicas: 3
