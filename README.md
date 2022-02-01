@@ -20,3 +20,8 @@ example:
 ✔ HelmRelease reconciliation completed
 ✔ applied revision 10.9.1
 ```
+
+### Requirements
+- sops
+- age
+
