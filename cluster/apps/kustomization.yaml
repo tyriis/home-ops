@@ -10,6 +10,7 @@ resources:
   - kube-system/node-feature-discovery
   - kube-system/reflector
   - kube-system/reloader
+  - kube-system/kured
   - longhorn-system/longhorn
   - observability/loki
   - observability/promtail

@@ -22,3 +22,4 @@ resources:
   - repos.emqx.io.yaml
   - ricoberger.github.io.yaml
   - stakater.github.io.yaml
+  - weaveworks.github.io_kured.yaml
