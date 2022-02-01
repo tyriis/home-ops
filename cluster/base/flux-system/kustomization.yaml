@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - gotk-sync.yaml
   - gotk-components.yaml
+  - helm-charts
