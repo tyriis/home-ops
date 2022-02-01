@@ -54,3 +54,10 @@ vault write auth/oidc/role/gmail \
     policies=manager \
     ttl=168h
 ```
+
+set oidc as default backend
+https://support.hashicorp.com/hc/en-us/articles/360001922527-Configuring-a-Default-UI-Auth-Method
+
+```bash
+vault write sys/auth/oidc/tune listing_visibility="unauth"
+```
