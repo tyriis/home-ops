@@ -15,6 +15,9 @@ spec:
         name: hajimari-charts
         namespace: flux-system
   values:
+    controller:
+      replicas: 3
+    # https://hajimari.io/charts/hajimari/
     image:
       repository: ghcr.io/toboshii/hajimari
       tag: v0.2.0
@@ -127,10 +130,6 @@ spec:
           - hosts:
               - "hajimari.${SECRET_DOMAIN}"
             secretName: "hajimari-tls"
-    persistence:
-      data:
-        enabled: true
-        existingClaim: hajimari-config
     podAnnotations:
       configmap.reloader.stakater.com/reload: "hajimari-settings"
     resources:
@@ -139,3 +138,18 @@ spec:
         memory: 128Mi
       limits:
         memory: 256Mi
+
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - {key: "kubernetes.io/hostname", operator: "In", values: ["k3s-server01", "k3s-server02", "k3s-server03"]}
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - topologyKey: kubernetes.io/hostname
+            labelSelector:
+              matchExpressions:
+                - {key: "app.kubernetes.io/instance", operator: "In", values: ["vault"]}
+                - {key: "app.kubernetes.io/name", operator: "In", values: ["vault"]}
+                - {key: "component", operator: "In", values: ["server"]}
