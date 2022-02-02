@@ -10,7 +10,7 @@ spec:
   capacity:
     storage: 10Gi
   nfs:
-    server: ${SECRET_NFS_IP}
+    server: nas.${SECRET_DOMAIN}
     path: /volume1/minecraft-java
   accessModes:
     - ReadWriteOnce

@@ -22,8 +22,8 @@ spec:
     strategyType: Recreate
 
     nfs:
-      server: "${SECRET_NFS_IP}"
-      path: "${SECRET_NFS_PATH}"
+      server: nas.${SECRET_DOMAIN}
+      path: ${SECRET_NFS_PATH}
       # mountOptions:
 
     storageClass:

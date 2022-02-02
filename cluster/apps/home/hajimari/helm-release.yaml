@@ -40,7 +40,7 @@ spec:
           icon: router-network
           group: Infrastructure
         - name: NAS
-          url: https://${SECRET_NFS_IP}
+          url: https://nas.${SECRET_DOMAIN}
           icon: nas
           group: Infrastructure
         - name: GitOps
