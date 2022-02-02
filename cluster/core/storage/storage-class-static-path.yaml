@@ -1,0 +1,9 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: static-path
+provisioner: ${SECRET_DOMAIN}/manual
+reclaimPolicy: Retain
+allowVolumeExpansion: true
+volumeBindingMode: Immediate

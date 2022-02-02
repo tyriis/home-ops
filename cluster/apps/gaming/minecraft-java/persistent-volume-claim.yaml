@@ -14,4 +14,4 @@ spec:
     requests:
       storage: 10Gi
   volumeName: minecraft-java-data
-  storageClassName: manual
+  storageClassName: static-nfs

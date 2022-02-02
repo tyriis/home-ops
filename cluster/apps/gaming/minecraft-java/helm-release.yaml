@@ -20,7 +20,7 @@ spec:
       ENABLE_AUTOPAUSE: TRUE
 
     persistence:
-      storageClass: manual
+      storageClass: static-nfs
       dataDir:
         existingClaim: minecraft-java-data
         enabled: true
