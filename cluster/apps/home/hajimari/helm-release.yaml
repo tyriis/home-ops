@@ -33,7 +33,7 @@ spec:
       name: "sunshine"
       customApps:
         - name: OPNsense
-          url: https://opnsense
+          url: https://opnsense.${SECRET_DOMAIN}
           icon: router-network
           group: Infrastructure
         - name: NAS
