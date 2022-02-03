@@ -28,6 +28,8 @@ spec:
     authentik:
       secret_key: ${SECRET_AUTHENTIK_KEY}
       log_level: debug
+      avatars: gravatar
+      disable_update_check: true
 
       postgresql:
         host: '{{ .Release.Name }}-postgresql'

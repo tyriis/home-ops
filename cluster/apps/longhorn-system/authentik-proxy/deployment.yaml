@@ -1,0 +1,52 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/instance: longhorn
+    app.kubernetes.io/managed-by: goauthentik.io
+    app.kubernetes.io/name: authentik-proxy
+    app.kubernetes.io/version: 2022.1.4
+  name: authentik-outpost
+  namespace: longhorn-system
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: longhorn
+      app.kubernetes.io/managed-by: goauthentik.io
+      app.kubernetes.io/name: authentik-proxy
+      app.kubernetes.io/version: 2022.1.4
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: longhorn
+        app.kubernetes.io/managed-by: goauthentik.io
+        app.kubernetes.io/name: authentik-proxy
+        app.kubernetes.io/version: 2022.1.4
+    spec:
+      containers:
+        - env:
+            - name: AUTHENTIK_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: authentik_host
+                  name: authentik-outpost-api
+            - name: AUTHENTIK_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: token
+                  name: authentik-outpost-api
+            - name: AUTHENTIK_INSECURE
+              valueFrom:
+                secretKeyRef:
+                  key: authentik_host_insecure
+                  name: authentik-outpost-api
+          image: ghcr.io/goauthentik/proxy:2022.1.4
+          name: proxy
+          ports:
+            - containerPort: 9000
+              name: http
+              protocol: TCP
+            - containerPort: 9443
+              name: https
+              protocol: TCP

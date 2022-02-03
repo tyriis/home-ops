@@ -12,6 +12,7 @@ resources:
   - kube-system/reloader
   - kube-system/kured
   - longhorn-system/longhorn
+  - longhorn-system/authentik-proxy
   - observability/loki
   - observability/promtail
   - observability/kube-prometheus-stack
