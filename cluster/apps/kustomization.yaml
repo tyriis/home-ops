@@ -23,7 +23,7 @@ resources:
   - home/node-red
   - home/home-assistant
   - system-upgrade/system-upgrade-controller
-  - secops/authentik
+  - authentik-system/authentik
   - secops/vault
   - gaming/minecraft-bedrock
   # - gaming/minecraft-java
