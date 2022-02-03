@@ -50,8 +50,9 @@ spec:
       postgresqlUsername: authentik
       postgresqlDatabase: authentik
       postgresqlPassword: ${SECRET_AUTHENTIK_POSTGRES_PASSWORD}
-      nodeSelector:
-        kubernetes.io/arch: amd64
+      primary:
+        nodeSelector:
+          kubernetes.io/arch: amd64
 
     redis:
       enabled: true
