@@ -59,8 +59,9 @@ spec:
       auth:
         enabled: false
         # password: ${SECRET_AUTHENTIK_REDIS_PASSWORD}
-      nodeSelector:
-        kubernetes.io/arch: amd64
+      master:
+        nodeSelector:
+          kubernetes.io/arch: amd64
 
     ingress:
       enabled: true
