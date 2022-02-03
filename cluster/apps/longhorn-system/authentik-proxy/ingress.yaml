@@ -9,6 +9,8 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-buffers-number: "4"
     traefik.ingress.kubernetes.io/affinity: "true"
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    hajimari.io/enable: "true"
+    hajimari.io/icon: harddisk
   labels:
     app.kubernetes.io/instance: longhorn
     app.kubernetes.io/managed-by: goauthentik.io
