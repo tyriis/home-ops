@@ -45,16 +45,19 @@ spec:
       persistence:
         enabled: true
 
-
       postgresqlUsername: authentik
       postgresqlDatabase: authentik
       postgresqlPassword: ${SECRET_AUTHENTIK_POSTGRES_PASSWORD}
+      nodeSelector:
+        kubernetes.io/arch: amd64
 
     redis:
       enabled: true
       auth:
         enabled: false
         # password: ${SECRET_AUTHENTIK_REDIS_PASSWORD}
+      nodeSelector:
+        kubernetes.io/arch: amd64
 
     ingress:
       enabled: true
