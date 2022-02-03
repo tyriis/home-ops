@@ -29,6 +29,7 @@ spec:
                 port:
                   name: http
             path: /
+            pathType: Prefix
   tls:
     - hosts:
         - longhorn.${SECRET_DOMAIN}
