@@ -18,6 +18,8 @@ spec:
 
     env:
       TZ: ${SETTING_TZ}
+      AK_ADMIN_PASS: ${SECRET_AUTHENTIK_ADMIN_PASS}
+      AK_ADMIN_TOKEN: ${SECRET_AUTHENTIK_ADMIN_TOKEN}
 
     image:
       repository: ghcr.io/goauthentik/server
