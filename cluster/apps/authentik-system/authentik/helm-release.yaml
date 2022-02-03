@@ -75,3 +75,6 @@ spec:
         - secretName: authentik-cert
           hosts:
             - authentik.${SECRET_DOMAIN}
+
+    nodeSelector:
+      kubernetes.io/arch: amd64
