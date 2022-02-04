@@ -31,8 +31,8 @@ spec:
           - home
           - hardware
           - observability
-          - longhorn-system
           - secops
+          - authentik-system
       name: "sunshine"
       customApps:
         - name: OPNsense
