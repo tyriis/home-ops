@@ -1,0 +1,74 @@
+---
+version: "3"
+
+tasks:
+
+  all:
+    - task: init
+    - task: apply
+
+  flux:
+    - task: init
+    - task: apply:flux
+
+  cloudflare:
+    - task: init
+    - task: apply:cloudflare
+
+  authentik:
+    - task: init
+    - task: apply:authentik
+
+  init:
+    desc: Terraform initialize IaC
+    dir: infra/terraform
+    cmds:
+      - "terraform init"
+
+  plan:flux:
+    desc: Terraform plan module.flux
+    dir: infra/terraform
+    cmds:
+      - "terraform plan -target=module.flux"
+
+  apply:flux:
+    desc: Terraform apply module.flux
+    dir: infra/terraform
+    cmds:
+      - "terraform apply -target=module.flux"
+
+  plan:cloudflare:
+    desc: Terraform plan module.cloudflare
+    dir: infra/terraform
+    cmds:
+      - "terraform plan -target=module.cloudflare"
+
+  apply:cloudflare:
+    desc: Terraform apply module.cloudflare
+    dir: infra/terraform
+    cmds:
+      - "terraform apply -target=module.cloudflare"
+
+  plan:authentik:
+    desc: Terraform plan module.authentik
+    dir: infra/terraform
+    cmds:
+      - "terraform plan -target=module.authentik"
+
+  apply:authentik:
+    desc: Terraform apply module.authentik
+    dir: infra/terraform
+    cmds:
+      - "terraform apply -target=module.authentik"
+
+  plan:
+    desc: Terraform plan IaC
+    dir: infra/terraform
+    cmds:
+      - "terraform plan"
+
+  apply:
+    desc: Terraform apply IaC
+    dir: infra/terraform
+    cmds:
+      - "terraform apply"

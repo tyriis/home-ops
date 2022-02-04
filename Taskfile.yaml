@@ -10,3 +10,4 @@ vars:
 includes:
   pre-commit: .taskfiles/pre-commit.yaml
   lint: .taskfiles/lint.yaml
+  terraform: .taskfiles/terraform.yaml
