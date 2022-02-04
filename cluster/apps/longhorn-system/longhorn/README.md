@@ -1,6 +1,4 @@
-node.longhorn.io/create-default-disk=true
-
-## Longhorn default-disk
+# Longhorn default-disk
 
 will be added to worker01, worker02, and worker04 because of min vcpu
 
@@ -32,4 +30,4 @@ kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/v1.2.3/exa
 
 - [] move node labeling to a kubernetes job or to bootstrap terraform
 - [] assure iscsi is installed, enabled and started on all devices
-- [] assure https://longhorn.io/kb/troubleshooting-volume-with-multipath/ is applied (also fixes: apparently in use by the system; will not make a filesystem here!)
+- [] assure <https://longhorn.io/kb/troubleshooting-volume-with-multipath/> is applied (also fixes: apparently in use by the system; will not make a filesystem here!)

@@ -1,5 +1,7 @@
 # scanservjs
 
+## security
+
 ### configure authentik outpost
 
 scanservjs has no build in user auth. In order to be able to authenticate the access to the scanner web frontend we will setup an authentik outpost as auth proxy ingress.
