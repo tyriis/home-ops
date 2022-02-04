@@ -6,6 +6,7 @@ tasks:
     - task: markdown
     - task: yaml
     - task: prettier
+    - task: terraform
 
   markdown:
     desc: Lint Markdown
@@ -22,6 +23,10 @@ tasks:
   prettier:
     desc: Lint with prettier
     cmds:
-      # - prettier --ignore-path '.github/lint/.prettierignore' --config '.github/lint/.prettierrc.yaml' --check .
       - prettier  --ignore-path '.config/.prettierignore' --config '.config/.prettierrc.yaml' --check .
     ignore_errors: true
+
+  terraform:
+    desc: Lint terraform files
+    cmds:
+      - terraform fmt -check -diff -recursive infra/terraform

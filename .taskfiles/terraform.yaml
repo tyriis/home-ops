@@ -2,7 +2,6 @@
 version: "3"
 
 tasks:
-
   all:
     - task: init
     - task: apply
