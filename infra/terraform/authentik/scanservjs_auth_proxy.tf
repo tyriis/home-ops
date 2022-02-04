@@ -12,7 +12,7 @@ resource "authentik_application" "scanservjs" {
   slug              = "scanservjs"
   protocol_provider = authentik_provider_proxy.scanservjs.id
   meta_description  = "scanservjs application"
-  meta_icon         = "fa://fa-scanner-image"
+  meta_icon         = "https://www.iconhot.com/icon/png/token/256/scanner-7.png"
   meta_publisher    = var.cloudflare_domain
   meta_launch_url   = "https://scanservjs.${var.cloudflare_domain}"
 }
