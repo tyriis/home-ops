@@ -15,7 +15,6 @@ spec:
         name: authentik-charts
         namespace: flux-system
   values:
-
     env:
       TZ: ${SETTING_TZ}
       AK_ADMIN_PASS: ${SECRET_AUTHENTIK_ADMIN_PASS}
@@ -34,12 +33,12 @@ spec:
       disable_update_check: true
 
       postgresql:
-        host: '{{ .Release.Name }}-postgresql'
+        host: "{{ .Release.Name }}-postgresql"
         name: authentik
         user: authentik
         password: ${SECRET_AUTHENTIK_POSTGRES_PASSWORD}
       redis:
-        host: '{{ .Release.Name }}-redis-master'
+        host: "{{ .Release.Name }}-redis-master"
         # password: ${SECRET_AUTHENTIK_REDIS_PASSWORD}
 
     postgresql:

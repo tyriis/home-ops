@@ -17,7 +17,7 @@ spec:
   values:
     extraEnv:
       TZ: Europe/Vienna
-      ENABLE_AUTOPAUSE: TRUE
+      ENABLE_AUTOPAUSE: "TRUE"
 
     persistence:
       storageClass: static-nfs

@@ -42,7 +42,7 @@ spec:
         - name: dbus
           hostPath:
             path: /var/run/dbus
-            type: ''
+            type: ""
 
       nodeSelector:
         kubernetes.io/arch: amd64

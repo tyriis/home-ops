@@ -3,9 +3,11 @@
 ## :detective:&nbsp; Troubleshooting
 
 ### Stuck HelmRelease
+
 [discussion](https://github.com/fluxcd/flux2/issues/1878)
 
 example:
+
 ```bash
 ➜ flux suspend hr -n networking traefik
 ► suspending helmreleases traefik in networking namespace
@@ -22,6 +24,6 @@ example:
 ```
 
 ### Requirements
+
 - sops
 - age
-

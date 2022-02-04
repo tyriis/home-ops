@@ -27,9 +27,9 @@ alertmanager:
 
     receivers:
       - name: "null"
-      - name: 'discord_webhook'
+      - name: "discord_webhook"
         webhook_configs:
-          - url: 'http://alertmanager-discord.observability.svc.cluster.local:9094'
+          - url: "http://alertmanager-discord.observability.svc.cluster.local:9094"
       - name: "discord"
         slack_configs:
           - channel: "#flux-system"

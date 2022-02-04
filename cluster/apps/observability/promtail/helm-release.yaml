@@ -7,8 +7,8 @@ metadata:
 spec:
   interval: 5m
   dependsOn:
-  - name: loki
-    namespace: observability
+    - name: loki
+      namespace: observability
   chart:
     spec:
       chart: promtail
@@ -19,8 +19,8 @@ spec:
         namespace: flux-system
   values:
     extraArgs:
-    - -client.external-labels=hostname=$(HOSTNAME),cluster=${SETTING_CLUSTERNAME}
-    - -config.expand-env
+      - -client.external-labels=hostname=$(HOSTNAME),cluster=${SETTING_CLUSTERNAME}
+      - -config.expand-env
 
     config:
       lokiAddress: http://loki:3100/loki/api/v1/push
@@ -49,21 +49,21 @@ spec:
                   # hostname: ${HOSTNAME}
                   # cluster: ${SETTING_CLUSTERNAME}
     extraVolumes:
-    - name: journal
-      hostPath:
-        path: /var/log/journal
-    - name: dmesg
-      hostPath:
-        path: /var/log/kern.log
+      - name: journal
+        hostPath:
+          path: /var/log/journal
+      - name: dmesg
+        hostPath:
+          path: /var/log/kern.log
     extraVolumeMounts:
-    - name: journal
-      mountPath: /var/log/journal
-      readOnly: true
-    - name: dmesg
-      mountPath: /var/log/kern.log
-      readOnly: true
+      - name: journal
+        mountPath: /var/log/journal
+        readOnly: true
+      - name: dmesg
+        mountPath: /var/log/kern.log
+        readOnly: true
     serviceMonitor:
       enabled: true
     tolerations:
-    - effect: NoSchedule
-      operator: Exists
+      - effect: NoSchedule
+        operator: Exists

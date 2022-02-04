@@ -73,7 +73,14 @@ spec:
             - name: "memory.gb.4"
               value: "true"
               matchOn:
-                - nodename: ["k3s-master01", "k3s-master02", "k3s-master03", "k3s-worker03", "k3s-worker05"]
+                - nodename:
+                    [
+                      "k3s-master01",
+                      "k3s-master02",
+                      "k3s-master03",
+                      "k3s-worker03",
+                      "k3s-worker05",
+                    ]
 
             - name: "memory.gb.6"
               value: "true"

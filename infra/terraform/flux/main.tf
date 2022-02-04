@@ -114,7 +114,7 @@ resource "kubernetes_secret" "main" {
 }
 
 # GitHub
-#tfsec:ignore:GIT001[visibility=public]
+#tfsec:ignore:github-repositories-private
 resource "github_repository" "main" {
   name                   = var.repository_name
   visibility             = var.repository_visibility

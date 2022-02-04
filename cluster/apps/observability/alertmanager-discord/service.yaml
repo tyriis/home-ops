@@ -7,9 +7,9 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - name: webhook-listener
-    port: 9094
-    protocol: TCP
-    targetPort: webhook
+    - name: webhook-listener
+      port: 9094
+      protocol: TCP
+      targetPort: webhook
   selector:
     app.kubernetes.io/name: alertmanager-discord

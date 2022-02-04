@@ -1,6 +1,7 @@
 # Terraform infrastructure as code for flux.k3s.cluster
 
 #### Table of Contents
+
 1. [Usage](#usage)
 2. [Prerequisites](#prerequisites)
 3. [Requirements](#requirements)
@@ -15,13 +16,16 @@ terraform apply
 ```
 
 ### Limitations
-- [ ] currently authentik    default-authentication-identification must be changed to achieve, maybe we can just create a dedicated one and add it without much effort
+
+- [ ] currently authentik default-authentication-identification must be changed to achieve, maybe we can just create a dedicated one and add it without much effort
 - [ ] `kubernetes_ingress_secret_name` and `object_naming_template` can not be written within terraform looks like a bug
 
 ## Prerequisites
+
 - [Terraform](https://www.terraform.io/) (tested with 1.0.1)
 
 optional: (dev-prerequisites)
+
 - [pre-commit](https://pre-commit.com/)
 - [yamllint](https://github.com/adrienverge/yamllint)
 - [terraform-docs](https://github.com/terraform-docs/terraform-docs)

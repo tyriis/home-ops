@@ -30,8 +30,8 @@ spec:
                       - k3s-server02
                       - k3s-server03
       tolerations:
-      # this toleration is to have the daemonset runnable on master nodes
-      # remove it if your masters can't run pods
+        # this toleration is to have the daemonset runnable on master nodes
+        # remove it if your masters can't run pods
         - key: node-role.kubernetes.io/master
           operator: Exists
           effect: NoSchedule

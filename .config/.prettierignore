@@ -1,0 +1,3 @@
+*.sops.*
+gotk-components.yaml
+**/terraform/.terraform/**

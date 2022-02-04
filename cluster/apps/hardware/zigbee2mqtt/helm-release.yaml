@@ -57,170 +57,170 @@ spec:
         last_seen: ISO_8601
         log_level: info
       devices:
-        '0x00158d00034447f4':
+        "0x00158d00034447f4":
           friendly_name: innr sp 120 table
-        '0x00158d000327eb99':
+        "0x00158d000327eb99":
           friendly_name: innr sp 120 fridge
-        '0x00158d000388e5a6':
+        "0x00158d000388e5a6":
           friendly_name: innr sp 120 alexroom
-        '0x00158d0003884384':
+        "0x00158d0003884384":
           friendly_name: innr sp 120 domiroom
-        '0x00158d0003498b39':
+        "0x00158d0003498b39":
           friendly_name: aqara climate livingroom
-        '0x00158d000322b7ac':
+        "0x00158d000322b7ac":
           friendly_name: aqara climate kitchen
-        '0x00158d00036b23da':
+        "0x00158d00036b23da":
           friendly_name: aqara climate laundryroom
-        '0x00158d00032304f7':
+        "0x00158d00032304f7":
           friendly_name: aqara climate entrance
-        '0x00158d0003230710':
+        "0x00158d0003230710":
           friendly_name: aqara climate office
-        '0x00158d00027a108c':
+        "0x00158d00027a108c":
           friendly_name: mijia motion office
-        '0x00158d000224d388':
+        "0x00158d000224d388":
           friendly_name: mijia motion basement stairs down
-        '0x00158d00024df783':
+        "0x00158d00024df783":
           friendly_name: mijia motion livingroom
-        '0x00158d000227d396':
+        "0x00158d000227d396":
           friendly_name: mijia motion table
-        '0x00158d000255bed3':
+        "0x00158d000255bed3":
           friendly_name: mijia motion kitchen
-        '0x00158d00024df857':
+        "0x00158d00024df857":
           friendly_name: mijia motion entrance
-        '0x00158d000321daaa':
+        "0x00158d000321daaa":
           friendly_name: aqara contact door livingroom
-        '0x00158d00032169a4':
+        "0x00158d00032169a4":
           friendly_name: aqara contact door entrance
-        '0x00158d00024df807':
+        "0x00158d00024df807":
           friendly_name: mijia motion stairs
-        '0x00158d0003498ae2':
+        "0x00158d0003498ae2":
           friendly_name: aqara climate alexroom
-        '0x00158d000322f529':
+        "0x00158d000322f529":
           friendly_name: aqara climate domiroom
-        '0x00158d00024df8f5':
+        "0x00158d00024df8f5":
           friendly_name: mijia motion upstairs 1
-        '0x00158d000346b646':
+        "0x00158d000346b646":
           friendly_name: aqara climate bathroom
-        '0x00158d000227d397':
+        "0x00158d000227d397":
           friendly_name: mijia motion upstairs 2
-        '0x00158d0003498b47':
+        "0x00158d0003498b47":
           friendly_name: aqara climate fridge
-        '0x00158d00032196e5':
+        "0x00158d00032196e5":
           friendly_name: aqara contact door garden
-        '0x00158d0003498c5a':
+        "0x00158d0003498c5a":
           friendly_name: aqara climate garden
-        '0x00158d00024df77e':
+        "0x00158d00024df77e":
           friendly_name: mijia motion laundryroom
-        '0x00158d00024df748':
+        "0x00158d00024df748":
           friendly_name: mijia motion stairs downstairs
-        '0x00158d0002563fa4':
+        "0x00158d0002563fa4":
           friendly_name: mijia motion garden
-        '0x00158d0003498a85':
+        "0x00158d0003498a85":
           friendly_name: aqara climate basement
-        '0x00158d0003230461':
+        "0x00158d0003230461":
           friendly_name: aqara climate bedroom
-        '0x000d6ffffe414be1':
+        "0x000d6ffffe414be1":
           friendly_name: tradfri remote livingroom
-        '0x0017880102b416b4':
+        "0x0017880102b416b4":
           friendly_name: hue ambience bulb 02
-        '0x0017880102eb0e70':
+        "0x0017880102eb0e70":
           friendly_name: hue ambience spot 01
-        '0x001788010372766d':
+        "0x001788010372766d":
           friendly_name: hue ambience spot 02
-        '0x0017880102eeef6f':
+        "0x0017880102eeef6f":
           friendly_name: hue ambience bulb 01
-        '0x00178801037270ae':
+        "0x00178801037270ae":
           friendly_name: hue ambience spot 03
-        '0x0017880103ae084f':
+        "0x0017880103ae084f":
           friendly_name: hue ambience spot 04
-        '0x00178801037270ad':
+        "0x00178801037270ad":
           friendly_name: hue ambience spot 05
-        '0x0017880103ae0849':
+        "0x0017880103ae0849":
           friendly_name: hue ambience spot 06
-        '0x0017880103725f2c':
+        "0x0017880103725f2c":
           friendly_name: hue ambience spot 07
-        '0x0017880103726ec5':
+        "0x0017880103726ec5":
           friendly_name: hue ambience spot 08
-        '0x0017880108d34712':
+        "0x0017880108d34712":
           friendly_name: hue ambience spot 10
-        '0x0017880102f07591':
+        "0x0017880102f07591":
           friendly_name: hue ambience spot 09
-        '0x0017880103ae0a62':
+        "0x0017880103ae0a62":
           friendly_name: hue ambience spot 11
-        '0x0017880103ae08aa':
+        "0x0017880103ae08aa":
           friendly_name: hue ambience spot 12
-        '0x0017880102f0721c':
+        "0x0017880102f0721c":
           friendly_name: hue ambience spot 13
-        '0x0017880103ae0063':
+        "0x0017880103ae0063":
           friendly_name: hue ambience spot 18
-        '0x0017880102f074a7':
+        "0x0017880102f074a7":
           friendly_name: hue ambience spot 16
-        '0x0017880103ae09fe':
+        "0x0017880103ae09fe":
           friendly_name: hue ambience spot 14
-        '0x0017880102f07157':
+        "0x0017880102f07157":
           friendly_name: hue ambience spot 17
-        '0x0017880102f07456':
+        "0x0017880102f07456":
           friendly_name: hue ambience spot 15
-        '0x086bd7fffe2104bd':
+        "0x086bd7fffe2104bd":
           friendly_name: tradfri ambience spot 05
-        '0x086bd7fffe253f87':
+        "0x086bd7fffe253f87":
           friendly_name: tradfri ambience spot 08
-        '0x086bd7fffe203316':
+        "0x086bd7fffe203316":
           friendly_name: tradfri ambience spot 01
-        '0x086bd7fffe1d87b2':
+        "0x086bd7fffe1d87b2":
           friendly_name: tradfri ambience spot 02
-        '0x086bd7fffe24a14a':
+        "0x086bd7fffe24a14a":
           friendly_name: tradfri ambience spot 03
-        '0x086bd7fffe202c0c':
+        "0x086bd7fffe202c0c":
           friendly_name: tradfri ambience spot 04
-        '0x000d6ffffe9f920c':
+        "0x000d6ffffe9f920c":
           friendly_name: tradfri ambience spot 07
-        '0x086bd7fffe59b1bf':
+        "0x086bd7fffe59b1bf":
           friendly_name: tradfri ambience spot 09
-        '0x086bd7fffe1b23df':
+        "0x086bd7fffe1b23df":
           friendly_name: tradfri ambience spot 10
-        '0x086bd7fffe5a55c8':
+        "0x086bd7fffe5a55c8":
           friendly_name: tradfri ambience spot 11
-        '0x086bd7fffe1b1c08':
+        "0x086bd7fffe1b1c08":
           friendly_name: tradfri ambience spot 12
-        '0x086bd7fffe5db708':
+        "0x086bd7fffe5db708":
           friendly_name: tradfri ambience spot 13
-        '0x086bd7fffe1ea396':
+        "0x086bd7fffe1ea396":
           friendly_name: tradfri ambience spot 14
-        '0x086bd7fffe603624':
+        "0x086bd7fffe603624":
           friendly_name: tradfri ambience spot 15
-        '0x00124b0022fcff4c':
+        "0x00124b0022fcff4c":
           friendly_name: sonoff contact window office
-        '0x00124b0022ff5b76':
+        "0x00124b0022ff5b76":
           friendly_name: sonoff contact window basement
-        '0x00158d000321a524':
+        "0x00158d000321a524":
           friendly_name: aqara contact window bedroom
-        '0x00124b00226968aa':
+        "0x00124b00226968aa":
           friendly_name: sonoff contact window livingroom
-        '0x00158d00044ab44d':
+        "0x00158d00044ab44d":
           friendly_name: aqara contact door domiroom
-        '0x00158d00053ea1c0':
+        "0x00158d00053ea1c0":
           friendly_name: aqara contact window bathroom
-        '0x00158d0006ba211f':
+        "0x00158d0006ba211f":
           friendly_name: aqara switch bedroom 1
           legacy: false
-        '0x00158d0006ba482b':
+        "0x00158d0006ba482b":
           friendly_name: aqara switch domiroom
           legacy: false
-        '0x00158d0006ba4738':
+        "0x00158d0006ba4738":
           friendly_name: aqara switch alexroom
           legacy: false
-        '0x00158d0006ba2961':
+        "0x00158d0006ba2961":
           friendly_name: aqara switch bedroom 2
           legacy: false
-        '0x0017880108d33a5c':
-          friendly_name: '0x0017880108d33a5c'
-        '0x001788010bcb32de':
-          friendly_name: '0x001788010bcb32de'
-        '0x086bd7fffe57fa75':
-          friendly_name: '0x086bd7fffe57fa75'
+        "0x0017880108d33a5c":
+          friendly_name: "0x0017880108d33a5c"
+        "0x001788010bcb32de":
+          friendly_name: "0x001788010bcb32de"
+        "0x086bd7fffe57fa75":
+          friendly_name: "0x086bd7fffe57fa75"
       groups:
-        '1':
+        "1":
           friendly_name: kitchen
           devices:
             - 0x0017880102eb0e70/11
@@ -229,7 +229,7 @@ spec:
             - 0x0017880103ae084f/11
             - 0x00178801037270ad/11
             - 0x0017880103ae0849/11
-        '2':
+        "2":
           friendly_name: table
           devices:
             - 0x0017880103725f2c/11
@@ -240,7 +240,7 @@ spec:
             - 0x0017880103ae08aa/11
             - 0x0017880108d33a5c/11
             - 0x001788010bcb32de/11
-        '3':
+        "3":
           friendly_name: livingroom
           devices:
             - 0x0017880102f0721c/11
@@ -249,11 +249,11 @@ spec:
             - 0x0017880102f074a7/11
             - 0x0017880102f07157/11
             - 0x0017880103ae0063/11
-        '4':
+        "4":
           friendly_name: bedroom
           devices:
             - 0x0017880102eeef6f/11
-        '5':
+        "5":
           friendly_name: office
           devices:
             - 0x086bd7fffe203316/1

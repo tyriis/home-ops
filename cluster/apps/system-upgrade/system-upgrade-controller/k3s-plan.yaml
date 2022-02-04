@@ -13,11 +13,16 @@ spec:
   channel: https://update.k3s.io/v1-release/channels/v1.23
   nodeSelector:
     matchExpressions:
-      - {key: plan.upgrade.cattle.io/k3s, operator: Exists}
-      - {key: plan.upgrade.cattle.io/k3s, operator: NotIn, values: ["disabled", "false"]}
-      - {key: node-role.kubernetes.io/control-plane, operator: Exists}
+      - key: plan.upgrade.cattle.io/k3s
+        operator: Exists
+      - key: plan.upgrade.cattle.io/k3s
+        operator: NotIn
+        values: ["disabled", "false"]
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
   tolerations:
-    - {key: "node-role.kubernetes.io/master", operator: "Exists"}
+    - key: node-role.kubernetes.io/master
+      operator: Exists
   serviceAccountName: system-upgrade
   cordon: true
   upgrade:
@@ -36,9 +41,13 @@ spec:
   channel: https://update.k3s.io/v1-release/channels/v1.23
   nodeSelector:
     matchExpressions:
-      - {key: plan.upgrade.cattle.io/k3s, operator: Exists}
-      - {key: plan.upgrade.cattle.io/k3s, operator: NotIn, values: ["disabled", "false"]}
-      - {key: node-role.kubernetes.io/control-plane, operator: DoesNotExist}
+      - key: plan.upgrade.cattle.io/k3s
+        operator: Exists
+      - key: plan.upgrade.cattle.io/k3s,
+        operator: NotIn,
+        values: ["disabled", "false"]
+      - key: node-role.kubernetes.io/control-plane
+        operator: DoesNotExist
   serviceAccountName: system-upgrade
   prepare:
     # Defaults to the same "resolved" tag that is used for the `upgrade` container, NOT `latest`

@@ -10,20 +10,20 @@ spec:
   eventSeverity: info
   eventSources:
     - kind: GitRepository
-      name: '*'
+      name: "*"
     - kind: Kustomization
-      name: '*'
+      name: "*"
     - kind: HelmRelease
-      name: '*'
+      name: "*"
     - kind: HelmRepository
-      name: '*'
+      name: "*"
     - kind: Bucket
-      name: '*'
+      name: "*"
     - kind: HelmChart
-      name: '*'
+      name: "*"
     - kind: ImageRepository
-      name: '*'
+      name: "*"
     - kind: ImagePolicy
-      name: '*'
+      name: "*"
     - kind: ImageUpdateAutomation
-      name: '*'
+      name: "*"
