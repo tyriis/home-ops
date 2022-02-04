@@ -1,20 +1,20 @@
 ---
 prometheus:
-  ingress:
-    enabled: true
-    ingressClassName: traefik
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-production
-      hajimari.io/enable: "true"
-      hajimari.io/appName: prometheus
-      hajimari.io/icon: chart-line-stacked
-      traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    hosts:
-      - prometheus.${SECRET_DOMAIN}
-    tls:
-      - secretName: prometheus-cert
-        hosts:
-          - prometheus.${SECRET_DOMAIN}
+  # ingress:
+  #   enabled: true
+  #   ingressClassName: traefik
+  #   annotations:
+  #     cert-manager.io/cluster-issuer: letsencrypt-production
+  #     hajimari.io/enable: "true"
+  #     hajimari.io/appName: prometheus
+  #     hajimari.io/icon: chart-line-stacked
+  #     traefik.ingress.kubernetes.io/router.entrypoints: websecure
+  #   hosts:
+  #     - prometheus.${SECRET_DOMAIN}
+  #   tls:
+  #     - secretName: prometheus-cert
+  #       hosts:
+  #         - prometheus.${SECRET_DOMAIN}
   prometheusSpec:
     affinity:
       nodeAffinity:
