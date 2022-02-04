@@ -1,7 +1,7 @@
 // configure auth proxy
 resource "authentik_provider_proxy" "prometheus" {
   name               = "prometheus"
-  internal_host      = "http:// prometheus-prometheus.observability.svc.cluster.local:9090"
+  internal_host      = "http://prometheus-prometheus.observability.svc.cluster.local:9090"
   external_host      = "https://prometheus.${var.cloudflare_domain}"
   authorization_flow = data.authentik_flow.default_provider_authorization_explicit_consent.id
 }
