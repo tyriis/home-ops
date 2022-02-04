@@ -1,0 +1,12 @@
+---
+version: "3"
+
+vars:
+  PROJECT_DIR:
+    sh: "git rev-parse --show-toplevel"
+  FLUX_DIR: "{{.PROJECT_DIR}}/cluster"
+  TERRAFORM_DIR: "{{.PROJECT_DIR}}/infra/terraform"
+
+includes:
+  pre-commit: .taskfiles/pre-commit.yaml
+  lint: .taskfiles/lint.yaml
