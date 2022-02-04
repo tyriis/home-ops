@@ -114,12 +114,16 @@ resource "kubernetes_secret" "main" {
 }
 
 # GitHub
+#tfsec:ignore:GIT001[visibility=public]
 resource "github_repository" "main" {
-  name                 = var.repository_name
-  visibility           = var.repository_visibility
-  vulnerability_alerts = true
-  has_issues           = true
-  # auto_init  = true
+  name                   = var.repository_name
+  visibility             = var.repository_visibility
+  vulnerability_alerts   = true
+  has_issues             = true
+  delete_branch_on_merge = true
+  has_projects           = true
+  has_wiki               = true
+  // auto_init              = true
 }
 
 resource "github_branch_default" "main" {
