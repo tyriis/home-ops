@@ -4,6 +4,10 @@ terraform {
       source  = "goauthentik/authentik"
       version = "2022.1.1"
     }
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = ">= 1.13.1"
+    }
   }
 }
 
@@ -15,7 +19,15 @@ data "authentik_flow" "default_source_enrollment" {
   slug = "default-source-enrollment"
 }
 
-// terraform import module.authentik.authentik_source_oauth.google google
+data "authentik_flow" "default_provider_authorization_implicit_consent" {
+  slug = "default-provider-authorization-implicit-consent"
+}
+
+data "authentik_flow" "default_provider_authorization_explicit_consent" {
+  slug = "default-provider-authorization-explicit-consent"
+}
+
+// configure goggle oauth
 resource "authentik_source_oauth" "google" {
   name                = "Google"
   slug                = "google"
@@ -27,117 +39,52 @@ resource "authentik_source_oauth" "google" {
   consumer_secret = var.consumer_secret
 }
 
-data "authentik_flow" "default_provider_authorization_implicit_consent" {
-  slug = "default-provider-authorization-implicit-consent"
-}
-
-data "authentik_flow" "default_provider_authorization_explicit_consent" {
-  slug = "default-provider-authorization-explicit-consent"
-}
-
-// // terraform import module.authentik.authentik_provider_proxy.test 1
-// resource "authentik_provider_proxy" "test" {
-//   name               = "test"
-//   internal_host      = "http://longhorn-frontend.longhorn-system.svc.cluster.local"
-//   external_host      = "https://test.${var.cloudflare_domain}"
-//   authorization_flow = data.authentik_flow.default_provider_authorization_implicit_consent.id
-// }
-
-// terraform import module.authentik.authentik_provider_proxy.longhorn 2
-resource "authentik_provider_proxy" "longhorn" {
-  name               = "longhorn"
-  internal_host      = "http://longhorn-frontend.longhorn-system.svc.cluster.local"
-  external_host      = "https://longhorn.${var.cloudflare_domain}"
-  authorization_flow = data.authentik_flow.default_provider_authorization_explicit_consent.id
-}
-
-// terraform import module.authentik.authentik_service_connection_kubernetes.local 7430e1a3-78a0-40da-8252-857b43d94178
+// configure service connection
 resource "authentik_service_connection_kubernetes" "local" {
   name  = "Local Kubernetes Cluster"
   local = true
 }
 
-// // due to the sensitive information inside the config changes are not in diff durring terraform plan/apply
-// // should be solved maybe with a template
-// // terraform import module.authentik.authentik_outpost.test d661b30f-03c6-4915-8cd0-50a2e668d655
-// resource "authentik_outpost" "test" {
-//   name               = "test"
-//   service_connection = authentik_service_connection_kubernetes.local.id
-//   protocol_providers = [
-//     authentik_provider_proxy.test.id
-//   ]
-//   type = "proxy"
-//   config = jsonencode(
-//     {
-//       authentik_host          = "https://authentik.${var.cloudflare_domain}/"
-//       authentik_host_browser  = ""
-//       authentik_host_insecure = false
-//       container_image      = null
-//       docker_labels                  = null
-//       docker_map_ports               = true
-//       docker_network                 = null
-//       kubernetes_disabled_components = []
-//       kubernetes_image_pull_secrets  = []
-//       kubernetes_ingress_annotations = {
-//         "cert-manager.io/cluster-issuer"                   = "letsencrypt-production"
-//         "traefik.ingress.kubernetes.io/router.entrypoints" = "websecure"
-//         "hajimari.io/icon"                                 = "harddisk"
-//         "hajimari.io/enable"                               = "true"
-//         "hajimari.io/appName"                              = "test"
-//       }
-//       kubernetes_ingress_secret_name = "authentik-outpost-tls"
-//       kubernetes_namespace           = "secops"
-//       kubernetes_replicas            = 1
-//       kubernetes_service_type        = "ClusterIP"
-//       log_level                      = "debug"
-//       object_naming_template         = "authentik-outpost-%(name)s"
-//     }
-//   )
+// this does not work, need to assign google for auth workflow manually currently
+
+// resource "authentik_stage_identification" "google_authentication" {
+//   name           = "google-authentication-identification"
+//   user_fields    = []
+//   sources        = [authentik_source_oauth.google.uuid]
 // }
 
+// resource "authentik_stage_authenticator_validate" "google_authentication" {
+//   name                  = "google-authentication-mfa-validation"
+//   device_classes        = ["static", "totp", "webauthn", "duo", "sms"]
+//   not_configured_action = "skip"
+// }
 
-// terraform import module.authentik.authentik_outpost.longhorn bf8b43b1-7910-4ae2-857c-0fb381ff5ea0
-resource "authentik_outpost" "longhorn" {
-  name               = "longhorn"
-  service_connection = authentik_service_connection_kubernetes.local.id
-  protocol_providers = [
-    authentik_provider_proxy.longhorn.id
-  ]
-  type = "proxy"
-  config = jsonencode(
-    {
-      authentik_host                 = "https://authentik.${var.cloudflare_domain}/"
-      authentik_host_browser         = ""
-      authentik_host_insecure        = false
-      container_image                = null
-      docker_labels                  = null
-      docker_map_ports               = true
-      docker_network                 = null
-      kubernetes_disabled_components = []
-      kubernetes_image_pull_secrets  = []
-      kubernetes_ingress_annotations = {
-        "cert-manager.io/cluster-issuer"                   = "letsencrypt-production"
-        "traefik.ingress.kubernetes.io/router.entrypoints" = "websecure"
-        "hajimari.io/icon"                                 = "harddisk"
-        "hajimari.io/enable"                               = "true"
-        "hajimari.io/appName"                              = "longhorn"
-      }
-      kubernetes_ingress_secret_name = "outpost-longhorn-cert"
-      kubernetes_namespace           = "authentik-system"
-      kubernetes_replicas            = 1
-      kubernetes_service_type        = "ClusterIP"
-      log_level                      = "debug"
-      object_naming_template         = "outpost-%(name)s"
-    }
-  )
-}
+// resource "authentik_stage_user_login" "google_authentication" {
+//   name = "google-authentication-login"
+//   session_duration = "seconds=0"
+// }
 
-resource "authentik_application" "longhorn" {
-  name              = "longhorn"
-  slug              = "longhorn"
-  protocol_provider = authentik_provider_proxy.longhorn.id
-  meta_description  = "longhorn storage ui"
-  meta_icon         = "fa://fa-hdd"
-  meta_publisher    = var.cloudflare_domain
-  meta_launch_url   = "https://longhorn.${var.cloudflare_domain}"
-}
+// resource "authentik_flow" "google_authentication" {
+//   name        = "Welcome to authentik!"
+//   title       = "Welcome to authentik!"
+//   slug        = "google-authentication-flow"
+//   designation = "authentication"
+// }
+
+// resource "authentik_flow_stage_binding" "google_authentication_identification" {
+//   target = authentik_flow.google_authentication.uuid
+//   stage  = authentik_stage_identification.google_authentication.id
+//   order  = 10
+// }
+
+// resource "authentik_flow_stage_binding" "google_authentication_mfa_validation" {
+//   target = authentik_flow.google_authentication.uuid
+//   stage  = authentik_stage_authenticator_validate.google_authentication.id
+//   order  = 30
+// }
+
+// resource "authentik_flow_stage_binding" "google_authentication_login" {
+//   target = authentik_flow.google_authentication.uuid
+//   stage  = authentik_stage_user_login.google_authentication.id
+//   order  = 100
+// }
