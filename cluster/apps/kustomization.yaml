@@ -22,6 +22,7 @@ resources:
   - home/hajimari
   - home/node-red
   - home/home-assistant
+  - home/esphome
   - system-upgrade/system-upgrade-controller
   - authentik-system/authentik
   - secops/vault

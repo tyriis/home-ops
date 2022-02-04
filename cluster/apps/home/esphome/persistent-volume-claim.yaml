@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: esphome-data
+  namespace: home
+  labels:
+    app.kubernetes.io/name: esphome
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: esphome-data
+  storageClassName: static-nfs
