@@ -147,17 +147,3 @@ spec:
                 - key: kubernetes.io/hostname
                   operator: In
                   values: ["k3s-server01", "k3s-server02", "k3s-server03"]
-      podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          - topologyKey: kubernetes.io/hostname
-            labelSelector:
-              matchExpressions:
-                - key: app.kubernetes.io/instance
-                  operator: In
-                  values: ["vault"]
-                - key: app.kubernetes.io/name
-                  operator: In
-                  values: ["vault"]
-                - key: component
-                  operator: In
-                  values: ["server"]
