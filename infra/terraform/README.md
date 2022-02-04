@@ -1,6 +1,7 @@
+
 # Terraform infrastructure as code for flux.k3s.cluster
 
-#### Table of Contents
+## Table of Contents
 
 1. [Usage](#usage)
 2. [Prerequisites](#prerequisites)

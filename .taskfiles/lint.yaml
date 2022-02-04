@@ -10,18 +10,18 @@ tasks:
   markdown:
     desc: Lint Markdown
     cmds:
-      - markdownlint -c '.markdownlint.yaml' *.md **/*.md
+      - markdownlint -c '.config/.markdownlint.yaml' *.md **/*.md
     ignore_errors: true
 
   yaml:
     desc: Lint YAML
     cmds:
-      - yamllint -c '.yamllint.config.yaml' .
+      - yamllint -c '.config/.yamllint.config.yaml' .
     ignore_errors: true
 
   prettier:
     desc: Lint with prettier
     cmds:
       # - prettier --ignore-path '.github/lint/.prettierignore' --config '.github/lint/.prettierrc.yaml' --check .
-      - prettier  --ignore-path '.prettierignore' --config '.prettierrc.yaml' --check .
+      - prettier  --ignore-path '.config/.prettierignore' --config '.config/.prettierrc.yaml' --check .
     ignore_errors: true
