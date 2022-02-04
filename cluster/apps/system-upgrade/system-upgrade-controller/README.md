@@ -9,3 +9,7 @@ kubectl get nodes | grep Ready | for i in $(awk '{print $1}'); do
 done
 EOF
 ```
+
+## Todo
+
+- [ ] label nodes durring bootstrap

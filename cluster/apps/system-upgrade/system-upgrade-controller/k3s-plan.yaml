@@ -43,8 +43,8 @@ spec:
     matchExpressions:
       - key: plan.upgrade.cattle.io/k3s
         operator: Exists
-      - key: plan.upgrade.cattle.io/k3s,
-        operator: NotIn,
+      - key: plan.upgrade.cattle.io/k3s
+        operator: NotIn
         values: ["disabled", "false"]
       - key: node-role.kubernetes.io/control-plane
         operator: DoesNotExist
