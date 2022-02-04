@@ -4,6 +4,7 @@ version: "3"
 tasks:
   all:
     - task: init
+    - task: refresh
     - task: apply
 
   flux:
@@ -71,3 +72,9 @@ tasks:
     dir: infra/terraform
     cmds:
       - "terraform apply"
+
+  refresh:
+    desc: Terraform refresh IaC
+    dir: infra/terraform
+    cmds:
+      - "terraform apply -refresh-only"

@@ -1,3 +1,4 @@
 *.sops.*
 gotk-components.yaml
-**/terraform/.terraform/**
+**/.terraform/**
+terraform.tfstate*

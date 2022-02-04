@@ -1,4 +1,6 @@
-# flux.k3s.cluster | k3s based gitops cluster managed by flux2
+# flux.k3s.cluster
+
+k3s based gitops cluster managed by flux2
 
 ## :detective:&nbsp; Troubleshooting
 
