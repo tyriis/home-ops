@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD033 -->
+
 # Terraform infrastructure as code for flux.k3s.cluster
 
 ## Table of Contents
