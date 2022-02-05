@@ -31,7 +31,7 @@ spec:
             - containerPort: 8888
           volumeMounts:
             - name: options
-              mountPath: /opt/hisense/options.json
+              mountPath: /data/options.json
               subPath: options.json
 
       volumes:
