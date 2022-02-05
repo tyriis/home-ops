@@ -40,7 +40,7 @@
       <a href="#about-the-project">About The Project</a>
       <ul>
         <li><a href="#goals">Goals</a></li>
-        <li><a href="#tools-tools-and-technologies">🛠️ Tools and Technologies</a></li>
+        <li><a href="#toolbox-tools-and-technologies">🧰 Tools and Technologies</a></li>
         <li><a href="#book-overview"> 📖 Overview</a></li>
       </ul>
       </ul>
@@ -75,7 +75,7 @@
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-### :tools:&nbsp; Tools and Technologies
+### :toolbox:&nbsp; Tools and Technologies
 
 Here is the list of tools and technologies I am using in this project.
 
@@ -126,7 +126,7 @@ TBD
 - [ ] Add Changelog
 - [ ] Add GitHub Pages
 
-See the [open issues](https://github.com/tyriis/flux.k3s.home/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/tyriis/flux.k3s.cluster/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
