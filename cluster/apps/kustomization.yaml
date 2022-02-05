@@ -24,6 +24,7 @@ resources:
   - home/home-assistant
   - home/esphome
   - system-upgrade/system-upgrade-controller
+  - system-upgrade/label-nodes
   - authentik-system/authentik
   - secops/vault
   - gaming/minecraft-bedrock
