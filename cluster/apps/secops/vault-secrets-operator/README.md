@@ -7,6 +7,7 @@
 ### portforward your vault installation
 
 - do the forward
+- assure your token is set VAULT_TOKEN
 
 ```bash
 export VAULT_ADDR=http://localhost:8200
@@ -30,3 +31,7 @@ vault write auth/kubernetes/role/vault-secrets-operator \
   policies=vault-secrets-operator \
   ttl=24h
 ```
+
+## ToDo
+
+- [ ] automate init process with a Job.
