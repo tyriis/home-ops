@@ -31,4 +31,5 @@ resources:
   - secops/vault
   - secops/vault-secrets-operator
   - gaming/minecraft-bedrock
+  - networking/unifi
   # - gaming/minecraft-java
