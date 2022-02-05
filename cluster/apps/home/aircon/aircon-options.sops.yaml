@@ -1,0 +1,31 @@
+# yamllint disable
+apiVersion: v1
+kind: Secret
+metadata:
+    name: aircon-options
+    namespace: home
+    labels:
+        app.kubernetes.io/instance: aircon
+        app.kubernetes.io/name: aircon
+data:
+    options.json: ENC[AES256_GCM,data:1QG85QRvgo//Z77i2dIms1akzmoaNZ3/4MQhhgxcvCUGkTCLncSAe56tkhIngkRzwSEPEUiIMdGp8W+i/HYiQnTFpgfYgTnRHvJw4AfFzjNe4ZmvSPSEJ2kMbxO7KPzd6lgYm25VApRlvA1jVpk+E4nfm1VfeluntCNJ54Nk8ssXZJzJ0+4Bs8Qs4TIfNr50QdbN7/UPmdOD8aOw9OlzW9cWqS4PgxI1fNmgmVBrenLNHd1LIbhmUInkKaW9aOjzdWZ1b69iss2Say8v3OX6TvN8owhXgk+aeThnywSvhlJSK7Mwfsd/aO6ucHxXl1VvzOka+816FbSGQtXE+QmHGVRisnOf4eswXQMtpFgj/FVXzIk+RK5rBvEW2z9r9Bdg0e4XNyTDuBmXOnM1PxpOifPL7zcO4VAFJWA6l9GKli4R2Q0vDgh8AL50SuGiCExtjRvm3f5KIN2Qij+P,iv:dyqNaOLGlgpVDFBRvSDt9zXrtvsTczuCGmTsjGEcthk=,tag:RR9ry2yPXrhXfAkFPyCbGg==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age16zqeqx5y6ay3flwz0d06rn83yjv9ckys3j8tpkysf9v6295fhc6sf4r0uj
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAzYjdZeVptaDlPZW9idmtP
+            UkRGdmxyb0REM2s4dnZVSERQNFFSRHlqVkcwClJlZHVhQUVnUm16QVloazMyUUFx
+            Q24vakF5RUEvMTExZ0lPa1RXblFEV3cKLS0tIFNMcGx3NzRQT0U4MTZER0FQUzh3
+            SThDODl4ZFFMMUlxM3BneWlrNDdjdUUKm16agevW+HLV4al0q2m5W/SyS84E5SXh
+            QfWlkG1byRaLRQ+tMeTuCN0tk2A2asmSPygQ1IKo4AO9kMirDEjQ6w==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2022-02-05T21:57:21Z"
+    mac: ENC[AES256_GCM,data:txc8mGvQ55AOwFYrdwMv/sG74KSxV0hTU+zJmknlQDxRVALefnXLiGV6Sw6bFwEFDTMhgia4dg/GAu7I6NGURDyLXIy3yQF+/RcT7jAdJJybVA7q6NDc5u5wp62ZyZaYFs9vff8isOg990m1+CnTG13tVz7KbWXgl/3WMcunlZQ=,iv:3N16nQnRaKEmnOOtGSUZ8TyTcze3igjyrZ/mBb02ITE=,tag:1NX9Am5sZcjc7FJ2cZN1+w==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.7.1

@@ -1,0 +1,40 @@
+---
+# for further informations check https://github.com/deiger/AirCon
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aircon
+  namespace: home
+  labels:
+    app.kubernetes.io/instance: aircon
+    app.kubernetes.io/name: aircon
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: aircon
+      app.kubernetes.io/name: aircon
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: aircon
+        app.kubernetes.io/name: aircon
+    spec:
+      hostNetwork: true
+      containers:
+        - name: aircon
+          image: deiger/aircon:0.3.10
+          env:
+            - name: TZ
+              value: ${SETTING_TZ}
+          ports:
+            - containerPort: 8888
+          volumeMounts:
+            - name: options
+              mountPath: /opt/hisense/options.json
+              subPath: options.json
+
+      volumes:
+        - name: options
+          secret:
+            secretName: aircon-options

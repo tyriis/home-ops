@@ -24,6 +24,7 @@ resources:
   - home/node-red
   - home/home-assistant
   - home/esphome
+  - home/aircon
   - system-upgrade/system-upgrade-controller
   - system-upgrade/label-nodes
   - authentik-system/authentik
