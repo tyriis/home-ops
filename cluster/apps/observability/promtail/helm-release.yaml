@@ -18,6 +18,9 @@ spec:
         name: grafana-charts
         namespace: flux-system
   values:
+    podSecurityPolicy:
+      fsGroup: 0
+
     extraArgs:
       - -client.external-labels=hostname=$(HOSTNAME),cluster=${SETTING_CLUSTERNAME}
       - -config.expand-env
