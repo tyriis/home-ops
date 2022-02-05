@@ -91,6 +91,16 @@ Here is the list of tools and technologies I am using in this project.
 
 ![terminal nodes overview][nodes-overview-url]
 
+#### Hardware
+
+| Device         | Count | OS                               | Disk Size | RAM | Purpose                   |
+| -------------- | ----- | -------------------------------- | --------- | --- | ------------------------- |
+| Raspberry Pi 4 | 3     | Raspbian GNU/Linux 11 (bullseye) | 120GB SSD | 4GB | control-plane,etcd,master |
+| i7-4702MQ      | 2     | Ubuntu 20.04.3 LTS               | 240GB SSD | 8GB | worker                    |
+| Celeron 847    | 1     | Ubuntu 20.04.3 LTS               | 120GB SSD | 4GB | worker                    |
+| Celeron J3455  | 1     | Ubuntu 20.04.3 LTS               | 120GB SSD | 6GB | worker                    |
+| i5-3210M       | 1     | Ubuntu 20.04.3 LTS               | 120GB SSD | 4GB | worker                    |
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
