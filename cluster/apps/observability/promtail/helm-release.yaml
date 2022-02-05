@@ -52,18 +52,24 @@ spec:
                   # hostname: ${HOSTNAME}
                   # cluster: ${SETTING_CLUSTERNAME}
     extraVolumes:
-      - name: journal
+      # - name: journal
+      #   hostPath:
+      #     path: /var/log/journal
+      # - name: dmesg
+      #   hostPath:
+      #     path: /var/log/kern.log
+      - name: logs
         hostPath:
-          path: /var/log/journal
-      - name: dmesg
-        hostPath:
-          path: /var/log/kern.log
+          path: /var/log
     extraVolumeMounts:
-      - name: journal
-        mountPath: /var/log/journal
-        readOnly: true
-      - name: dmesg
-        mountPath: /var/log/kern.log
+      # - name: journal
+      #   mountPath: /var/log/journal
+      #   readOnly: true
+      # - name: dmesg
+      #   mountPath: /var/log/kern.log
+      #   readOnly: true
+      - name: logs
+        mountPath: /var/log
         readOnly: true
     serviceMonitor:
       enabled: true
