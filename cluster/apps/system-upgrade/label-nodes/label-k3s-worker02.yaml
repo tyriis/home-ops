@@ -17,4 +17,5 @@ spec:
             - "-ec"
             - |
               kubectl label node k3s-worker02 plan.upgrade.cattle.io/k3s=true --overwrite=true
+              kubectl label node k3s-worker02 node-role.kubernetes.io/worker=true --overwrite=true
       restartPolicy: OnFailure
