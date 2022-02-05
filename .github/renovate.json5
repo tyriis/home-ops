@@ -2,7 +2,7 @@
   enabled: true,
   semanticCommits: "enabled",
   dependencyDashboard: true,
-  dependencyDashboardTitle: "Renovate Dashboard",
+  dependencyDashboardTitle: "🤖 Renovate Dashboard",
   suppressNotifications: ["prIgnoreNotification"],
   rebaseWhen: "conflicted",
   "helm-values": {
