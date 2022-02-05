@@ -34,15 +34,15 @@
 <br />
 <!-- TABLE OF CONTENTS -->
 <details>
-  <summary style="font-size:1.2em;">Table of Contents</summary>
+  <summary style="font-size:1.2em;">📑 Table of Contents</summary>
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
         <li><a href="#goals">Goals</a></li>
-        <li><a href="#tools-tools-and-technologies">:toolbox:&nbsp;Tools and Technologies</a></li>
+        <li><a href="#tools-tools-and-technologies">🛠️ Tools and Technologies</a></li>
+        <li><a href="#book-overview"> 📖 Overview</a></li>
       </ul>
-      <li><a href="#map-overview">🗺️ Overview</a></li>
       </ul>
     </li>
     <li>
@@ -87,7 +87,9 @@ Here is the list of tools and technologies I am using in this project.
 - [RenovateBot](https://www.whitesourcesoftware.com/free-developer-tools/renovate/)
 - [GitHub](https://github.com)
 
-### :map:&nbsp; Overview
+### :book:&nbsp; Overview
+
+![terminal nodes overview][nodes-overview-url]
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -176,3 +178,4 @@ example:
 [renovate-url]: https://github.com/renovatebot/renovate
 [flux-url]: https://fluxcd.io/
 [k8s-at-home-url]: https://k8s-at-home.com/
+[nodes-overview-url]: https://imgur.com/VmJ6yE8.png
