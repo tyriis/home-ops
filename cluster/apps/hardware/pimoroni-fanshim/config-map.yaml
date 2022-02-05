@@ -4,6 +4,9 @@ kind: ConfigMap
 metadata:
   name: pimoroni-fanshim
   namespace: hardware
+  labels:
+    app.kubernetes.io/instance: pimoroni-fanshim
+    app.kubernetes.io/name: pimoroni-fanshim
 data:
   OFF_THRESHOLD: "40" # "55"
   ON_THRESHOLD: "45" # "65"
