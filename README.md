@@ -65,6 +65,8 @@
 
 👋 Hello and welcome to my project. This is a private project heavily inspired by the great [k8s-at-home][k8s-at-home-url] community. I want to share my work and findings but also my frustrations with you.
 
+This project is the result of the merge of my previous iterations [flux.k3s.home][flux-k3s-home-url] and [flux.pi-k3s.home][flux-pi-k3s-home-url].
+
 ### Goals
 
 - Automate my home and home infrastructure.
@@ -189,3 +191,5 @@ example:
 [flux-url]: https://fluxcd.io/
 [k8s-at-home-url]: https://k8s-at-home.com/
 [nodes-overview-url]: https://imgur.com/VmJ6yE8.png
+[flux-k3s-home-url]: https://github.com/tyriis/flux.k3s.home
+[flux-pi-k3s-home-url]: https://github.com/tyriis/flux.pi-k3s.home
