@@ -38,7 +38,7 @@ spec:
     clusterName: ${SETTING_CLUSTERNAME}
     ingress:
       create: true
-      class: traefic
+      class: traefik
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-production
         # hajimari.io/enable: "false"
