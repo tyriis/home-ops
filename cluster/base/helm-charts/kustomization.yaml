@@ -5,6 +5,7 @@ resources:
   - charts.gitlab.io.yaml
   - charts.goauthentik.io.yaml
   - charts.jetstack.io.yaml
+  - charts.kasten.io.yaml
   - charts.longhorn.io.yaml
   - emberstack.github.io.yaml
   - grafana.github.io.yaml
