@@ -29,9 +29,9 @@ spec:
       accept: true
       company: "N/A"
       email: ${SECRET_K10_EMAIL}
-    global:
-      persistence:
-        storageClass: longhorn
+    # global:
+    #   persistence:
+    #     storageClass: longhorn
     auth:
       tokenAuth:
         enabled: true
