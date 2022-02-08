@@ -35,6 +35,14 @@
       ],
       datasourceTemplate: "helm",
     },
+    {
+      fileMatch: ["cluster/crds/cert-manager/.+\\.yaml$"],
+      matchStrings: [
+        "(?<registryUrl>https://github.com/jetstack/(?<depName>cert-manager))/releases/download/v(?<currentValue>\\d+.\\d+.\\d+)",
+      ],
+      datasourceTemplate: "helm",
+    },
+
     // regexManager to read and process Traefik CRD's
     {
       fileMatch: ["cluster/crds/traefik/.+\\.yaml$"],
