@@ -16,6 +16,11 @@ spec:
         namespace: flux-system
   values:
     worker:
+      tolerations:
+        - key: dedicated
+          operator: Equal
+          value: control-plane
+          effect: NoSchedule
       annotations:
         configmap.reloader.stakater.com/reload: node-feature-discovery-worker-conf
       config:
