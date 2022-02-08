@@ -14,7 +14,7 @@ resources:
   - longhorn-system/longhorn
   - observability/loki
   - observability/promtail
-  # - observability/kube-prometheus-stack
+  - observability/kube-prometheus-stack
   - observability/grafana
   - observability/botkube
   - observability/alertmanager-discord

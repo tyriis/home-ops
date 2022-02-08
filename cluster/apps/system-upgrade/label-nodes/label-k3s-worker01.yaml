@@ -18,4 +18,5 @@ spec:
             - |
               kubectl label node k3s-worker01 plan.upgrade.cattle.io/k3s=true --overwrite=true
               kubectl label node k3s-worker01 node-role.kubernetes.io/worker=true --overwrite=true
+              kubectl label node k3s-worker01 node.longhorn.io/create-default-disk=true --overwrite=true
       restartPolicy: OnFailure
