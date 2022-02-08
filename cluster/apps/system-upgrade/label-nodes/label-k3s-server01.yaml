@@ -17,5 +17,5 @@ spec:
             - "-ec"
             - |
               kubectl label node k3s-server01 plan.upgrade.cattle.io/k3s=true --overwrite=true
-              kubectl taint node k3s-server01 dedicated=unschedulable:NoSchedule
+              kubectl taint node k3s-server01 dedicated=control-plane:NoSchedule
       restartPolicy: OnFailure
