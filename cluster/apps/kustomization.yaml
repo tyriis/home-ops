@@ -26,7 +26,6 @@ resources:
   - home/esphome
   - home/aircon
   # - system-upgrade/system-upgrade-controller
-  - system-upgrade/label-nodes
   - authentik-system/authentik
   # - secops/vault
   # - secops/vault-secrets-operator
