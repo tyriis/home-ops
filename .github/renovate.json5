@@ -40,9 +40,10 @@
       matchStrings: [
         "https://github.com/jetstack/cert-manager/releases/download/(?<currentValue>v\\d+.\\d+.\\d+)/cert-manager.crds.yaml",
       ],
-      datasourceTemplate: "github-releases",
+      datasourceTemplate: "github-tags",
       depNameTemplate: "jetstack/cert-manager",
-      registryUrlTemplate: "https://api.github.com",
+      versioningTemplate: "regex:/^(?<prefix>v)?(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$/",
+      // registryUrlTemplate: "https://api.github.com",
     },
     // regexManager to read and process Traefik CRD's
     {
