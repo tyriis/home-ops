@@ -2,7 +2,5 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - namespaces
-  - kube-system
-  - cert-manager
-  - metallb-system
+  - rbac.yaml
+  - job.yaml

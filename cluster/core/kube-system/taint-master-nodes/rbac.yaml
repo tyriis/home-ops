@@ -1,0 +1,28 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: taint-master-nodes
+rules:
+  - apiGroups: [""]
+    resources: ["nodes"]
+    verbs: ["list", "get", "patch"]
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: taint-master-nodes
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: taint-master-nodes
+roleRef:
+  kind: ClusterRole
+  name: taint-master-nodes
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+  - kind: ServiceAccount
+    name: taint-master-nodes
+    namespace: kube-system
