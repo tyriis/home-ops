@@ -28,21 +28,20 @@
       "datasourceTemplate": "helm"
     },*/
     // regexManager to read and process cert-manager CRD's
+    // {
+    //   fileMatch: ["cluster/crds/cert-manager/.+\\.yaml$"],
+    //   matchStrings: [
+    //     "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n.*\\/(?<currentValue>.*?)\\/",
+    //   ],
+    //   datasourceTemplate: "helm",
+    // },
     {
       fileMatch: ["cluster/crds/cert-manager/.+\\.yaml$"],
       matchStrings: [
-        "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n.*\\/(?<currentValue>.*?)\\/",
+        "(?<registryUrl>github.com/jetstack/(?<depName>cert-manager))/releases/download/v(?<currentValue>\\d+.\\d+.\\d+)",
       ],
       datasourceTemplate: "helm",
     },
-    {
-      fileMatch: ["cluster/crds/cert-manager/.+\\.yaml$"],
-      matchStrings: [
-        "(?<registryUrl>https://github.com/jetstack/(?<depName>cert-manager))/releases/download/v(?<currentValue>\\d+.\\d+.\\d+)",
-      ],
-      datasourceTemplate: "helm",
-    },
-
     // regexManager to read and process Traefik CRD's
     {
       fileMatch: ["cluster/crds/traefik/.+\\.yaml$"],
