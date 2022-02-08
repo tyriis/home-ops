@@ -41,6 +41,7 @@
         "(?<registryUrl>https://github.com/jetstack/cert-manager)/releases/download/(?<currentValue>v\\d+.\\d+.\\d+)/cert-manager.crds.yaml",
       ],
       datasourceTemplate: "github-releases",
+      depNameTemplate: "jetstack/cert-manager",
     },
     // regexManager to read and process Traefik CRD's
     {
