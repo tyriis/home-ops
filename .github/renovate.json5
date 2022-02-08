@@ -38,7 +38,7 @@
     {
       fileMatch: ["cluster/crds/cert-manager/.+\\.yaml$"],
       matchStrings: [
-        "(?<registryUrl>https://github.com/jetstack/(?<depName>cert-manager))/releases/download/v(?<currentValue>\\d+.\\d+.\\d+)",
+        "(?<registryUrl>https://github.com/jetstack/(?<depName>cert-manager))/releases/download/(?<currentValue>v\\d+.\\d+.\\d+)",
       ],
       datasourceTemplate: "github-release",
     },
