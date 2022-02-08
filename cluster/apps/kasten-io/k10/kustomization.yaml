@@ -4,3 +4,6 @@ kind: Kustomization
 resources:
   - helm-release.yaml
   - ingress.yaml
+  - storage-class.yaml
+  - persistent-volume.yaml
+  - persistent-volume-claim.yaml

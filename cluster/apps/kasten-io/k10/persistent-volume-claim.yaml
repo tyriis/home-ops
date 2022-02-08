@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: k10-backup
+  namespace: kasten-io
+  labels:
+    app.kubernetes.io/name: k10
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: k10-backup-nfs
+  resources:
+    requests:
+      storage: 50Gi
