@@ -40,7 +40,7 @@
       matchStrings: [
         "(?<registryUrl>https://github.com/jetstack/(?<depName>cert-manager))/releases/download/v(?<currentValue>\\d+.\\d+.\\d+)",
       ],
-      datasourceTemplate: "helm",
+      datasourceTemplate: "github-release",
     },
     // regexManager to read and process Traefik CRD's
     {
