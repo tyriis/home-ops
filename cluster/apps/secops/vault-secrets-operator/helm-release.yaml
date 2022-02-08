@@ -15,10 +15,10 @@ spec:
         kind: HelmRepository
         name: ricoberger-charts
         namespace: flux-system
-  install:
-    crds: Create
-  upgrade:
-    crds: CreateReplace
+  # install:
+  #   crds: Create
+  # upgrade:
+  #   crds: CreateReplace
   values:
     replicaCount: 1
     deploymentStrategy:

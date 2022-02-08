@@ -6,3 +6,4 @@ resources:
   - traefik
   - kube-prometheus-stack
   - system-upgrade-controller
+  - vault-secrets-operator

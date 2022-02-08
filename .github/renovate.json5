@@ -5,7 +5,7 @@
   dependencyDashboardTitle: "🤖 Renovate Dashboard",
   suppressNotifications: ["prIgnoreNotification"],
   rebaseWhen: "conflicted",
-  "helm-values": {
+  helm-values: {
     fileMatch: ["cluster/.+/helm-release\\.ya?ml$"],
   },
   kubernetes: {
@@ -43,24 +43,32 @@
       ],
       datasourceTemplate: "github-tags",
     },
-    // regexManager to read and process Traefik CRD's
     {
+      description: "regexManager to read and process Traefik CRD's",
       fileMatch: ["cluster/crds/traefik/.+\\.yaml$"],
       matchStrings: [
         "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n *tag: v(?<currentValue>.*)\n",
       ],
       datasourceTemplate: "helm",
     },
-    // regexManager to read and process system-upgrade-controller CRD's
     {
-      fileMatch: ["cluster/crds/system-upgrade-controller/.+\\.yaml$"],
+      description: "regexManager to read and process VaultSecrets CRD's",
+      fileMatch: ["cluster/crds/vault-secret-operator/.+\\.yaml$"],
       matchStrings: [
-        "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n *tag: v(?<currentValue>.*)\n",
+        "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n *tag: (?<currentValue>.*)\n",
       ],
       datasourceTemplate: "helm",
     },
-    // regexManager to read and process kube-prometheus-stack CRDs
+    // {
+    //   description: "regexManager to read and process system-upgrade-controller CRD's",
+    //   fileMatch: ["cluster/crds/system-upgrade-controller/.+\\.yaml$"],
+    //   matchStrings: [
+    //     "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n *tag: v(?<currentValue>.*)\n",
+    //   ],
+    //   datasourceTemplate: "helm",
+    // },
     {
+      description: "regexManager to read and process kube-prometheus-stack CRDs",
       fileMatch: ["cluster/crds/kube-prometheus-stack/.+\\.yaml$"],
       matchStrings: [
         "registryUrl=(?<registryUrl>.*?)\n *tag: (?<depName>[a-zA-Z-]+)-(?<currentValue>.*)\n",
