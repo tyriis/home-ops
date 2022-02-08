@@ -25,7 +25,7 @@ resources:
   - home/home-assistant
   - home/esphome
   - home/aircon
-  # - system-upgrade/system-upgrade-controller
+  - system-upgrade/system-upgrade-controller
   - authentik-system/authentik
   # - secops/vault
   # - secops/vault-secrets-operator

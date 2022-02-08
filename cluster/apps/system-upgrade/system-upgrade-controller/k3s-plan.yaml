@@ -23,10 +23,6 @@ spec:
   tolerations:
     - key: node-role.kubernetes.io/master
       operator: Exists
-    - key: dedicated
-      operator: Equal
-      value: control-plane
-      effect: NoSchedule
   serviceAccountName: system-upgrade
   cordon: true
   upgrade:
