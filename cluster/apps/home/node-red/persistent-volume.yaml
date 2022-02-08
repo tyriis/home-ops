@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/name: node-red
 spec:
   capacity:
-    storage: 10Gi
+    storage: 5Gi
   nfs:
     server: nas.${SECRET_DOMAIN}
     path: /volume1/node-red.k8s.home
