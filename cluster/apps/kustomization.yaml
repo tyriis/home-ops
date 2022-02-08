@@ -29,6 +29,7 @@ resources:
   - authentik-system/authentik
   # - secops/vault
   # - secops/vault-secrets-operator
+  - secops/vault-secrets-operator/vault-secret-test.yaml
   # - gaming/minecraft-bedrock
   - networking/unifi
   # - kasten-io/k10
