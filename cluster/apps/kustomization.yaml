@@ -21,7 +21,7 @@ resources:
   - observability/speedtest-exporter
   - networking/traefik
   - home/hajimari
-  - home/node-red
+  # - home/node-red
   - home/home-assistant
   - home/esphome
   - home/aircon
