@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: label-k3s-server02
+  name: label-nodes
   namespace: system-upgrade
 spec:
   backoffLimit: 0
@@ -13,9 +13,8 @@ spec:
         - name: kubectl
           image: ghcr.io/k8s-at-home/kubectl:v1.23.3
           command:
-            - "/bin/bash"
+            - "/bin/sh"
             - "-ec"
             - |
-              kubectl label node k3s-server02 plan.upgrade.cattle.io/k3s=true --overwrite=true
-              kubectl taint node k3s-server02 dedicated=control-plane:NoSchedule
+              kubectl get nodes | grep k3s | for node in $(awk '{print $1}'); do kubectl label node $node plan.upgrade.cattle.io/k3s=true --overwrite=true; done
       restartPolicy: OnFailure

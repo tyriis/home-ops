@@ -16,19 +16,6 @@ prometheus:
   #       hosts:
   #         - prometheus.${SECRET_DOMAIN}
   prometheusSpec:
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: node-role.kubernetes.io/control-plane
-                  operator: NotIn
-                  values:
-                    - "true"
-                - key: kubernetes.io/arch
-                  operator: In
-                  values:
-                    - amd64
     resources:
       requests:
         memory: 2048Mi

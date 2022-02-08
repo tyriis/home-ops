@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: taint-master-nodes
+  name: taint-nodes
   namespace: kube-system
 spec:
   # re-apply all 5 minutes
