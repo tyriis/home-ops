@@ -5,7 +5,7 @@
   dependencyDashboardTitle: "🤖 Renovate Dashboard",
   suppressNotifications: ["prIgnoreNotification"],
   rebaseWhen: "conflicted",
-  helm-values: {
+  "helm-values": {
     fileMatch: ["cluster/.+/helm-release\\.ya?ml$"],
   },
   kubernetes: {
