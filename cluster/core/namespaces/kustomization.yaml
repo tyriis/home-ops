@@ -13,4 +13,3 @@ resources:
   - networking.yaml
   - observability.yaml
   - secops.yaml
-  - storage.yaml
