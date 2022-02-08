@@ -1,6 +1,6 @@
 ---
 apiVersion: apps/v1
-kind: DaemonSet
+kind: Deployment
 metadata:
   name: alertmanager-discord
   namespace: observability
@@ -8,6 +8,7 @@ metadata:
     app.kubernetes.io/name: alertmanager-discord
     app.kubernetes.io/instance: alertmanager-discord
 spec:
+  replica: 3
   selector:
     matchLabels:
       app.kubernetes.io/name: alertmanager-discord
@@ -18,23 +19,6 @@ spec:
         app.kubernetes.io/name: alertmanager-discord
         app.kubernetes.io/instance: alertmanager-discord
     spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/hostname
-                    operator: In
-                    values:
-                      - k3s-server01
-                      - k3s-server02
-                      - k3s-server03
-      tolerations:
-        # this toleration is to have the daemonset runnable on master nodes
-        # remove it if your masters can't run pods
-        - key: node-role.kubernetes.io/master
-          operator: Exists
-          effect: NoSchedule
       containers:
         - name: alertmanager-discord
           image: rogerrum/alertmanager-discord:1.0.3
@@ -57,4 +41,5 @@ spec:
             requests:
               cpu: 10m
               memory: 8Mi
+
       terminationGracePeriodSeconds: 30
