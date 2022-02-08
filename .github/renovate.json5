@@ -38,10 +38,11 @@
     {
       fileMatch: ["cluster/crds/cert-manager/.+\\.yaml$"],
       matchStrings: [
-        "(?<registryUrl>https://github.com/jetstack/cert-manager)/releases/download/(?<currentValue>v\\d+.\\d+.\\d+)/cert-manager.crds.yaml",
+        "https://github.com/jetstack/cert-manager/releases/download/(?<currentValue>v\\d+.\\d+.\\d+)/cert-manager.crds.yaml",
       ],
       datasourceTemplate: "github-releases",
       depNameTemplate: "jetstack/cert-manager",
+      registryUrlTemplate: "https://api.github.com",
     },
     // regexManager to read and process Traefik CRD's
     {
