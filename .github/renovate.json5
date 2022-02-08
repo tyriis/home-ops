@@ -39,7 +39,7 @@
       description: "update cluster crds released on github",
       fileMatch: ["cluster/crds/.+\\.yaml$"],
       matchStrings: [
-        "https://github.com/(?<depName>[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){1,38}/[a-z\\d-](?:[a-z\\d]|-(?=[a-z\\d])){1,100})/releases/download/(?<currentValue>v\\d+.\\d+.\\d+).+",
+        "https://github.com/(?<depName>[a-z\\d-]{1,38}/[a-z\\d-_]{1,100})/releases/download/(?<currentValue>v\\d+.\\d+.\\d+).+",
       ],
       datasourceTemplate: "github-tags",
     },
