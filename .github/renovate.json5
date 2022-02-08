@@ -17,16 +17,16 @@
   },
   regexManagers: [
     // regexManager to read and process HelmRelease files
-    /*{
-      "fileMatch": [
-        "cluster/.+\\.yaml$"
-      ],
-      "matchStrings": [
-        // helm releases
-        "registryUrl=(?<registryUrl>.*?)\n *chart: (?<depName>.*?)\n *version: (?<currentValue>.*)\n"
-      ],
-      "datasourceTemplate": "helm"
-    },*/
+    // {
+    //   "fileMatch": [
+    //     "cluster/.+\\.yaml$"
+    //   ],
+    //   "matchStrings": [
+    //     // helm releases
+    //     "registryUrl=(?<registryUrl>.*?)\n *chart: (?<depName>.*?)\n *version: (?<currentValue>.*)\n"
+    //   ],
+    //   "datasourceTemplate": "helm"
+    // },
     // regexManager to read and process cert-manager CRD's
     // {
     //   fileMatch: ["cluster/crds/cert-manager/.+\\.yaml$"],
@@ -52,8 +52,8 @@
       datasourceTemplate: "helm",
     },
     {
-      description: "regexManager to read and process VaultSecrets CRD's",
-      fileMatch: ["cluster/crds/vault-secret-operator/.+\\.yaml$"],
+      description: "regexManager to read and process vault-secrets-operator CRD's",
+      fileMatch: ["cluster/crds/vault-secrets-operator/.+\\.yaml$"],
       matchStrings: [
         "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n *tag: (?<currentValue>.*)\n",
       ],
