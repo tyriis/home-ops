@@ -7,9 +7,9 @@ metadata:
 spec:
   # re-apply all 5 minutes
   schedule: "*/5 * * * *"
+  concurrencyPolicy: Forbid
   jobTemplate:
     spec:
-      concurrencyPolicy: Forbid
       backoffLimit: 0
       template:
         spec:
