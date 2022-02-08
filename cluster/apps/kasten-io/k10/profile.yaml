@@ -1,0 +1,19 @@
+kind: Profile
+apiVersion: config.kio.kasten.io/v1alpha1
+metadata:
+  name: cluster-backup
+  namespace: kasten-io
+spec:
+  locationSpec:
+    type: FileStore
+    fileStore:
+      claimName: k10-backup
+      path: k10/68d8c8f1-58d0-4415-be90-2d1f38d9a093/migration
+    credential:
+      secretType: ""
+      secret:
+        apiVersion: ""
+        kind: ""
+        name: ""
+        namespace: ""
+  type: Location
