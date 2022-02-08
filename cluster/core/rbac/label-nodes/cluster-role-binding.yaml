@@ -10,7 +10,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: label-nodes
-    namespace: lonhorn-system
+    namespace: longhorn-system
   - kind: ServiceAccount
     name: label-nodes
     namespace: system-upgrade
