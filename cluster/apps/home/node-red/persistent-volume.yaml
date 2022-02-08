@@ -10,7 +10,7 @@ spec:
     storage: 10Gi
   nfs:
     server: nas.${SECRET_DOMAIN}
-    path: /volume1/esphome.k8s.home
+    path: /volume1/node-red.k8s.home
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
