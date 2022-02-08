@@ -28,8 +28,8 @@ resources:
   - system-upgrade/system-upgrade-controller
   - system-upgrade/label-nodes
   - authentik-system/authentik
-  - secops/vault
-  - secops/vault-secrets-operator
+  # - secops/vault
+  # - secops/vault-secrets-operator
   # - gaming/minecraft-bedrock
   - networking/unifi
   # - kasten-io/k10
