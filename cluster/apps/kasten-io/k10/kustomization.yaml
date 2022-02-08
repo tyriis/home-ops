@@ -7,3 +7,4 @@ resources:
   - storage-class.yaml
   - persistent-volume.yaml
   - persistent-volume-claim.yaml
+  - profile.yaml
