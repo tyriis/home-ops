@@ -36,14 +36,12 @@
     //   datasourceTemplate: "helm",
     // },
     {
-      fileMatch: ["cluster/crds/cert-manager/.+\\.yaml$"],
+      description: "update cluster crds released on github",
+      fileMatch: ["cluster/crds/.+\\.yaml$"],
       matchStrings: [
-        "https://github.com/jetstack/cert-manager/releases/download/(?<currentValue>v\\d+.\\d+.\\d+)/cert-manager.crds.yaml",
+        "https://github.com/(?<depName>[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){1,38}/[a-z\\d-](?:[a-z\\d]|-(?=[a-z\\d])){1,100})/releases/download/(?<currentValue>v\\d+.\\d+.\\d+).+",
       ],
       datasourceTemplate: "github-tags",
-      depNameTemplate: "jetstack/cert-manager",
-      // versioningTemplate: "regex:/^(?<prefix>v)?(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$/",
-      // registryUrlTemplate: "https://api.github.com",
     },
     // regexManager to read and process Traefik CRD's
     {
