@@ -138,18 +138,3 @@ spec:
         memory: 128Mi
       limits:
         memory: 256Mi
-
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: kubernetes.io/hostname
-                  operator: In
-                  values: ["k3s-server01", "k3s-server02", "k3s-server03"]
-    tolerations:
-      # this toleration is to have the deployment runnable on master nodes
-      # remove it if your masters can't run pods
-      - key: node-role.kubernetes.io/master
-        operator: Exists
-        effect: NoSchedule
