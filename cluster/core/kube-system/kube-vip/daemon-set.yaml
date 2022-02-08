@@ -58,7 +58,3 @@ spec:
         - key: node-role.kubernetes.io/master
           operator: Exists
           effect: NoSchedule
-        - key: dedicated
-          operator: Equal
-          value: control-plane
-          effect: NoSchedule
