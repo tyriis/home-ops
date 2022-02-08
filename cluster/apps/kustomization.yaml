@@ -31,5 +31,5 @@ resources:
   # - secops/vault-secrets-operator
   # - gaming/minecraft-bedrock
   - networking/unifi
-  # - kasten-io/k10
+  - kasten-io/k10
   # - gaming/minecraft-java
