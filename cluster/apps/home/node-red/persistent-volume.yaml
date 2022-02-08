@@ -2,16 +2,16 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: scanservjs-scans
+  name: node-red-data
   labels:
-    app.kubernetes.io/name: scanservjs
+    app.kubernetes.io/name: node-red
 spec:
   capacity:
     storage: 10Gi
   nfs:
     server: nas.${SECRET_DOMAIN}
-    path: /volume1/scans
+    path: /volume1/esphome.k8s.home
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: scans
+  storageClassName: node-red

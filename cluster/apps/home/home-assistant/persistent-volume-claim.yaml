@@ -13,4 +13,4 @@ spec:
     requests:
       storage: 10Gi
   volumeName: home-assistant-data
-  storageClassName: static-nfs
+  storageClassName: home-assistant

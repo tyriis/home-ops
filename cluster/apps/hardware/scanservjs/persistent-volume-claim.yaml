@@ -13,4 +13,4 @@ spec:
     requests:
       storage: 10Gi
   volumeName: scanservjs-scans
-  storageClassName: static-nfs
+  storageClassName: scans

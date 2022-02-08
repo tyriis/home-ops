@@ -30,7 +30,7 @@ resources:
   - authentik-system/authentik
   - secops/vault
   - secops/vault-secrets-operator
-  - gaming/minecraft-bedrock
+  # - gaming/minecraft-bedrock
   - networking/unifi
   # - kasten-io/k10
   # - gaming/minecraft-java

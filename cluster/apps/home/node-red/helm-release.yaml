@@ -5,9 +5,6 @@ metadata:
   name: node-red
   namespace: home
 spec:
-  dependsOn:
-    - name: nfs-subdir-external-provisioner
-      namespace: storage
   interval: 5m
   chart:
     spec:
@@ -51,7 +48,7 @@ spec:
       data:
         enabled: true
         mountPath: /data
-        storageClass: nas-nfs
+        storageClass: node-red
         accessMode: ReadWriteOnce
         size: 5Gi
 

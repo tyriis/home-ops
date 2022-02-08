@@ -2,15 +2,15 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: esphome-data
+  name: node-red-data
   namespace: home
   labels:
-    app.kubernetes.io/name: esphome
+    app.kubernetes.io/name: node-red
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
-  volumeName: esphome-data
-  storageClassName: esphome
+      storage: 5Gi
+  volumeName: node-red-data
+  storageClassName: node-red
