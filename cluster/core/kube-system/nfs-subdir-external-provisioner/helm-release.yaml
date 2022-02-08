@@ -63,6 +63,3 @@ spec:
                     values:
                       - nfs-subdir-external-provisioner
               topologyKey: kubernetes.io/hostname
-
-    nodeSelector:
-      node-role.kubernetes.io/control-plane: "true"
