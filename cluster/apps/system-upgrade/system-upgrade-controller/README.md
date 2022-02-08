@@ -3,7 +3,7 @@
 ## :detective:&nbsp; Troubleshooting
 
 Assure that nodes are labeled with `plan.upgrade.cattle.io/k3s=true` otherwise upgrade will not trigger.
-Nodes should be auto labeled by [label-nodes](https://github.com/tyriis/flux.k3s.cluster/cluster/apps/system-upgrade/label-nodes/)
+Nodes should be auto labeled by [label-nodes](https://github.com/tyriis/flux.k3s.cluster/cluster/core/system-upgrade/label-nodes/)
 
 With the snippet you can label all your nodes manual
 
