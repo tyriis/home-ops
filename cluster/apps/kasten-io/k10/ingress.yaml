@@ -3,6 +3,8 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
+    hajimari.io/enable: "false"
+    hajimari.io/icon: cloud-upload
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
   labels:
     app.kubernetes.io/instance: k10
