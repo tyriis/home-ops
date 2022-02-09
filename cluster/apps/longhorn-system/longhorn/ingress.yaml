@@ -1,3 +1,4 @@
+# Not in use as we use authentik to protect the longhorn ui
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
