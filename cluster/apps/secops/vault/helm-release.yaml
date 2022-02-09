@@ -38,44 +38,29 @@ spec:
               - vault.${SECRET_DOMAIN}
       dataStorage:
         enabled: true
-        storageClass: longhorn
+        storageClass: nas-nfs
       auditStorage:
         enabled: true
-        storageClass: longhorn
+        storageClass: nas-nfs
       extraEnvironmentVars:
         VAULT_TOKEN: ${SECRET_VAULT_TOKEN}
         TZ: ${SETTING_TZ}
       resources:
         requests:
-          memory: 128Mi
+          memory: 64Mi
           cpu: 100m
         limits:
-          memory: 256Mi
-          cpu: 1000m
+          memory: 128Mi
+          cpu: 250m
       standalone:
         enabled: false
-      # affinity:
-      #   nodeAffinity:
-      #     requiredDuringSchedulingIgnoredDuringExecution:
-      #       nodeSelectorTerms:
-      #         - matchExpressions:
-      #             - key: kubernetes.io/hostname
-      #               operator: In
-      #               values: ["k3s-server01", "k3s-server02", "k3s-server03"]
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - topologyKey: kubernetes.io/hostname
-              labelSelector:
-                matchExpressions:
-                  - key: app.kubernetes.io/instance
-                    operator: In
-                    values: ["vault"]
-                  - key: app.kubernetes.io/name
-                    operator: In
-                    values: ["vault"]
-                  - key: component
-                    operator: In
-                    values: ["server"]
+      tolerations:
+        # this toleration is to have the statefullset runnable on master nodes
+        - key: node-role.kubernetes.io/master
+          operator: Exists
+          effect: NoSchedule
+      nodeSelector:
+        kubernetes.io/arch: arm64
 
       ha:
         enabled: true

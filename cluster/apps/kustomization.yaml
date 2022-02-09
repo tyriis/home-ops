@@ -27,7 +27,7 @@ resources:
   - home/aircon
   - system-upgrade/system-upgrade-controller
   - authentik-system/authentik
-  # - secops/vault
+  - secops/vault
   # - secops/vault-secrets-operator
   # - gaming/minecraft-bedrock
   - networking/unifi
