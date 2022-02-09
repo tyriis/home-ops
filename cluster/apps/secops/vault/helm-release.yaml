@@ -38,10 +38,10 @@ spec:
               - vault.${SECRET_DOMAIN}
       dataStorage:
         enabled: true
-        storageClass: nas-nfs
+        storageClass: local-path
       auditStorage:
         enabled: true
-        storageClass: nas-nfs
+        storageClass: local-path
       extraEnvironmentVars:
         VAULT_TOKEN: ${SECRET_VAULT_TOKEN}
         TZ: ${SETTING_TZ}
