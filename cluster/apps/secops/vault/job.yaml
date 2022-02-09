@@ -1,0 +1,27 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: unseal-vault
+  namespace: secops
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      serviceAccountName: unseal-vault
+      containers:
+        - name: kubectl
+          image: ghcr.io/k8s-at-home/kubectl:v1.23.3
+          command:
+            - "/bin/sh"
+            - "-ec"
+            - |
+              # install vault
+              apt update && apt install unzip
+              curl -fsSL -o vault.zip "https://releases.hashicorp.com/vault/1.9.3/vault_1.9.3_linux_amd64.zip"
+              unzip vault.zip
+              rm vault.zip
+              mv vault /usr/local/bin/vault
+              chmod +x /usr/local/bin/vault
+
+      restartPolicy: OnFailure
