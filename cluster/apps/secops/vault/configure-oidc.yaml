@@ -1,12 +1,10 @@
 # This file is not managed by Flux!
-# You need to set the environment for
+# To make this work, you need to set the environment for
 #
 # - VAULT_TOKEN=a.12345bcdefghijklm
 # - VAULT_ADDR=https://vault.mydomain.com
 # - GOOGLE_API_CLIENT_ID=1234-abc.apps.googleusercontent.com
 # - GOOGLE_API_CLIENT_SECRET=ABCDE-AbCdeFGdef-abcdEFg
-#
-# to make this work
 #
 # ```console
 # kubectl apply -f cluster/apps/secops/vault/configure-oidc.yaml
