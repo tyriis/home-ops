@@ -33,15 +33,15 @@ spec:
               - /
               # - /vault
         tls:
-          - secretName: vault-cert
+          - secretName: vault-tls
             hosts:
               - vault.${SECRET_DOMAIN}
       dataStorage:
         enabled: true
-        storageClass: local-path
+        storageClass: longhorn
       auditStorage:
         enabled: true
-        storageClass: local-path
+        storageClass: longhorn
       extraEnvironmentVars:
         VAULT_TOKEN: ${SECRET_VAULT_TOKEN}
         TZ: ${SETTING_TZ}
@@ -54,14 +54,14 @@ spec:
           cpu: 1000m
       standalone:
         enabled: false
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/hostname
-                    operator: In
-                    values: ["k3s-server01", "k3s-server02", "k3s-server03"]
+      # affinity:
+      #   nodeAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #       nodeSelectorTerms:
+      #         - matchExpressions:
+      #             - key: kubernetes.io/hostname
+      #               operator: In
+      #               values: ["k3s-server01", "k3s-server02", "k3s-server03"]
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             - topologyKey: kubernetes.io/hostname
