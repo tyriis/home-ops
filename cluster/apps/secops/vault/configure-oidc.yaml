@@ -1,0 +1,69 @@
+# This file is not managed by Flux!
+# You need to set the environment for
+#
+# - VAULT_TOKEN=a.12345bcdefghijklm
+# - VAULT_ADDR=https://vault.mydomain.com
+# - GOOGLE_API_CLIENT_ID=1234-abc.apps.googleusercontent.com
+# - GOOGLE_API_CLIENT_SECRET=ABCDE-AbCdeFGdef-abcdEFg
+#
+# to make this work
+#
+# ```console
+# kubectl apply -f cluster/apps/secops/vault/configure-oidc.yaml
+# ```
+#
+# and after job is done you can safely remove the helper ressources
+#
+# ```console
+# kubectl delete -f cluster/apps/secops/vault/configure-oidc.yaml
+# ```
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: vault-configure-oidc
+  namespace: secops
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      containers:
+        - name: kubectl
+          image: ghcr.io/k8s-at-home/kubectl:v1.23.3
+          command:
+            - "/bin/sh"
+            - "-ec"
+            - |
+              # install vault
+              apt update && apt install unzip
+              curl -fsSL -o vault.zip "https://releases.hashicorp.com/vault/1.9.3/vault_1.9.3_linux_amd64.zip"
+              unzip vault.zip
+              rm vault.zip
+              mv vault /usr/local/bin/vault
+              chmod +x /usr/local/bin/vault
+              # export VAULT_TOKEN=a.12345bcdefghijklm
+              # export VAULT_ADDR=https://vault.mydomain.com
+              # export GOOGLE_API_CLIENT_ID=1234-abc.apps.googleusercontent.com
+              # export GOOGLE_API_CLIENT_SECRET=ABCDE-AbCdeFGdef-abcdEFg
+              # enable oidc authentication
+              vault auth enable oidc
+
+              # enable oidc authentication
+              vault write auth/oidc/config \
+                oidc_discovery_url="https://accounts.google.com" \
+                oidc_client_id="$GOOGLE_API_CLIENT_ID" \
+                oidc_client_secret="$GOOGLE_API_CLIENT_SECRET" \
+                default_role="gmail"
+
+              # enable gmail users to be manager
+              vault write auth/oidc/role/gmail \
+                user_claim="sub" \
+                bound_audiences=$GOOGLE_API_CLIENT_ID \
+                allowed_redirect_uris="$VAULT_ADDR/ui/vault/auth/oidc/oidc/callback" \
+                policies=manager \
+                ttl=168h
+
+              # enable oidc as 1st option in ui
+              vault write sys/auth/oidc/tune listing_visibility="unauth"
+
+      restartPolicy: OnFailure

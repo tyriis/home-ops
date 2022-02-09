@@ -14,7 +14,7 @@ Troubleshooting: if for some reason the `SECRET_VAULT_TOKEN` is not recognized y
 <https://github.com/external-secrets/kubernetes-external-secrets/issues/721>
 vault write auth/kubernetes/config \
  token_reviewer_jwt="$SA_JWT_TOKEN" \
-    kubernetes_host="$K8S_HOST" \
+ kubernetes_host="$K8S_HOST" \
  kubernetes_ca_cert="$SA_CA_CRT" \
  issuer="https://kubernetes.default.svc.cluster.local" \
  disable_iss_validation=false
@@ -27,7 +27,7 @@ TODO: create terraform pipeline for vault-secrets-operator
 
 set your variables
 
-```bash
+```console
 export VAULT_ADDR=https://vault.mydomain.com
 export GOOGLE_API_CLIENT_ID=1234-abc.apps.googleusercontent.com
 export GOOGLE_API_CLIENT_SECRET=ABCDE-AbCdeFGdef-abcdEFg
@@ -35,7 +35,11 @@ export GOOGLE_API_CLIENT_SECRET=ABCDE-AbCdeFGdef-abcdEFg
 
 configure oidc:
 
-```bash
+```console
+vault auth enable oidc
+```
+
+```console
 vault write auth/oidc/config \
     oidc_discovery_url="https://accounts.google.com" \
     oidc_client_id="$GOOGLE_API_CLIENT_ID" \
@@ -46,7 +50,7 @@ vault write auth/oidc/config \
 configure role gmail to allow access to `manager` role (need to be configured independent)
 revoke session after 7 days (168h) (assure no `"` arround GOOGLE_API_CLIENT_ID)
 
-```bash
+```console
 vault write auth/oidc/role/gmail \
     user_claim="sub" \
     bound_audiences=$GOOGLE_API_CLIENT_ID \
@@ -58,6 +62,6 @@ vault write auth/oidc/role/gmail \
 set oidc as default backend
 <https://support.hashicorp.com/hc/en-us/articles/360001922527-Configuring-a-Default-UI-Auth-Method>
 
-```bash
+```console
 vault write sys/auth/oidc/tune listing_visibility="unauth"
 ```
