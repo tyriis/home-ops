@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
   - flux-system/notifications
   - hardware/pimoroni-fanshim
-  # - hardware/zigbee2mqtt
   - hardware/scanservjs
   - kube-system/metrics-server
   - kube-system/node-feature-discovery
@@ -21,6 +20,7 @@ resources:
   - observability/speedtest-exporter
   - networking/traefik
   - home/hajimari
+  - home/zigbee2mqtt
   - home/node-red
   - home/home-assistant
   - home/esphome
