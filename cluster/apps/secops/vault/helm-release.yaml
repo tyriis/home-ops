@@ -92,21 +92,21 @@ spec:
                 tls_disable = 1
               }
 
-              retry_join {
-                leader_api_addr = "https://vault-1.vault-internal:8200"
-                # leader_ca_cert_file = "/vault/userconfig/tls-ca/ca.crt"
-                # leader_client_cert_file = "/vault/userconfig/tls-server/server.crt"
-                # leader_client_key_file = "/vault/userconfig/tls-server/server.key"
-                tls_disable = 1
-              }
+              # retry_join {
+              #   leader_api_addr = "https://vault-1.vault-internal:8200"
+              #   # leader_ca_cert_file = "/vault/userconfig/tls-ca/ca.crt"
+              #   # leader_client_cert_file = "/vault/userconfig/tls-server/server.crt"
+              #   # leader_client_key_file = "/vault/userconfig/tls-server/server.key"
+              #   tls_disable = 1
+              # }
 
-              retry_join {
-                leader_api_addr = "https://vault-2.vault-internal:8200"
-                # leader_ca_cert_file = "/vault/userconfig/tls-ca/ca.crt"
-                # leader_client_cert_file = "/vault/userconfig/tls-server/server.crt"
-                # leader_client_key_file = "/vault/userconfig/tls-server/server.key"
-                tls_disable = 1
-              }
+              # retry_join {
+              #   leader_api_addr = "https://vault-2.vault-internal:8200"
+              #   # leader_ca_cert_file = "/vault/userconfig/tls-ca/ca.crt"
+              #   # leader_client_cert_file = "/vault/userconfig/tls-server/server.crt"
+              #   # leader_client_key_file = "/vault/userconfig/tls-server/server.key"
+              #   tls_disable = 1
+              # }
 
               autopilot {
                 cleanup_dead_servers = "true"
