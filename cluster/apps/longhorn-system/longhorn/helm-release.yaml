@@ -24,4 +24,4 @@ spec:
     defaultSettings:
       defaultReplicaCount: 2
       createDefaultDiskLabeledNodes: true
-    backupTarget: nfs://nas.${SECRET_DOMAIN}/volume1/backup.k8s.home
+      backupTarget: nfs://nas.${SECRET_DOMAIN}/volume1/backup.k8s.home
