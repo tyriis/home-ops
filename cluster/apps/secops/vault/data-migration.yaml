@@ -1,0 +1,111 @@
+# This file is not managed by Flux it only stay here to show how a data migration/copy form nfs to longhorn can be made
+# based on https://github.com/longhorn/longhorn-manager/blob/master/examples/data_migration.yaml
+#
+# ```console
+# kubectl apply -f cluster/apps/secops/vault/data-migration.yaml
+# ```
+#
+# and after job is done you can safely remove the helper ressources
+#
+# ```console
+# kubectl delete -f cluster/apps/secops/vault/data-migration.yaml
+# ```
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: vault-backup
+provisioner: nas.home/vault-backup-nfs
+reclaimPolicy: Retain
+allowVolumeExpansion: true
+volumeBindingMode: Immediate
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: vault-data-backup
+  labels:
+    app.kubernetes.io/name: vault
+spec:
+  capacity:
+    storage: 10Gi
+  nfs:
+    server: nas.home
+    path: /volume1/backup.k8s.home/vault
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: vault-backup
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: vault-data-backup
+  namespace: secops
+  labels:
+    app.kubernetes.io/name: vault
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  volumeName: vault-data-backup
+  storageClassName: vault-backup
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: secops  # namespace where the pvc's exist
+  name: volume-migration
+  labels:
+    app.kubernetes.io/name: vault
+    app.kubernetes.io/instance: volume-migration
+spec:
+  completions: 1
+  parallelism: 1
+  backoffLimit: 3
+  template:
+    metadata:
+      name: volume-migration
+      labels:
+        app.kubernetes.io/name: vault
+        app.kubernetes.io/instance: volume-migration
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: volume-migration
+          image: ubuntu:xenial
+          tty: true
+          command:
+            - "/bin/sh"
+            - "-ec"
+            - |
+              cp -r -v /mnt/source/data-vault-0 /mnt/data-0
+              cp -r -v /mnt/source/data-vault-1 /mnt/data-1
+              cp -r -v /mnt/source/data-vault-2 /mnt/data-2
+              chown -R 100:1000 /mnt/data-0
+              chown -R 100:1000 /mnt/data-1
+              chown -R 100:1000 /mnt/data-2
+          volumeMounts:
+            - name: source-volume
+              mountPath: /mnt/source
+            - name: data-0
+              mountPath: /mnt/data-0
+            - name: data-1
+              mountPath: /mnt/data-1
+            - name: data-2
+              mountPath: /mnt/data-2
+      volumes:
+        - name: source-volume
+          persistentVolumeClaim:
+            claimName: vault-data-backup
+        - name: data-0
+          persistentVolumeClaim:
+            claimName: data-vault-0
+        - name: data-1
+          persistentVolumeClaim:
+            claimName: data-vault-1
+        - name: data-2
+          persistentVolumeClaim:
+            claimName: data-vault-2
