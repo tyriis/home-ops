@@ -51,7 +51,7 @@ spec:
           cpu: 100m
         limits:
           memory: 128Mi
-          cpu: 250m
+          cpu: 500m
       standalone:
         enabled: false
       tolerations:
