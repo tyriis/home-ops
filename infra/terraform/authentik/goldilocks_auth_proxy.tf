@@ -1,7 +1,7 @@
 // configure auth proxy
 resource "authentik_provider_proxy" "goldilocks" {
   name               = "goldilocks"
-  internal_host      = "http://goldilocks-dashboard.observability.svc.cluster.local:9093"
+  internal_host      = "http://goldilocks-dashboard.observability.svc.cluster.local"
   external_host      = "https://goldilocks.${var.cloudflare_domain}"
   authorization_flow = data.authentik_flow.default_provider_authorization_implicit_consent.id
 }
@@ -61,7 +61,7 @@ resource "authentik_outpost" "goldilocks" {
 resource "kubectl_manifest" "ingress_goldilocks" {
   yaml_body = templatefile("${path.module}/ingress.yaml.tmpl", {
     name              = "goldilocks",
-    authentik_version = "2022.1.1",
+    authentik_version = "2022.1.5",
     outpost_uuid      = authentik_outpost.goldilocks.id,
     hajimari_name     = "goldilocks",
     hajimari_enabled  = "true",
