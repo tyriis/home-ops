@@ -12,7 +12,7 @@ resource "authentik_application" "goldilocks" {
   slug              = "goldilocks"
   protocol_provider = authentik_provider_proxy.goldilocks.id
   meta_description  = "goldilocks web ui"
-  meta_icon         = "fa://fa-helmet-safety"
+  meta_icon         = "fa://fa-flask"
   meta_publisher    = var.cloudflare_domain
   meta_launch_url   = "https://goldilocks.${var.cloudflare_domain}"
 }

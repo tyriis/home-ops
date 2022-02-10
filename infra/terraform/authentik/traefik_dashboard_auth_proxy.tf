@@ -3,7 +3,7 @@ resource "authentik_provider_proxy" "traefik" {
   name               = "traefik"
   internal_host      = "http://traefik.networking.svc.cluster.local:9000"
   external_host      = "https://traefik.${var.cloudflare_domain}"
-  authorization_flow = data.authentik_flow.default_provider_authorization_explicit_consent.id
+  authorization_flow = data.authentik_flow.default_provider_authorization_implicit_consent.id
 }
 
 // configure application

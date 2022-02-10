@@ -3,7 +3,7 @@ resource "authentik_provider_proxy" "esphome" {
   name               = "esphome"
   internal_host      = "http://esphome.home.svc.cluster.local:6052"
   external_host      = "https://esphome.${var.cloudflare_domain}"
-  authorization_flow = data.authentik_flow.default_provider_authorization_explicit_consent.id
+  authorization_flow = data.authentik_flow.default_provider_authorization_implicit_consent.id
 }
 
 // configure application

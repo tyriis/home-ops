@@ -3,7 +3,7 @@ resource "authentik_provider_proxy" "longhorn" {
   name               = "longhorn"
   internal_host      = "http://longhorn-frontend.longhorn-system.svc.cluster.local"
   external_host      = "https://longhorn.${var.cloudflare_domain}"
-  authorization_flow = data.authentik_flow.default_provider_authorization_explicit_consent.id
+  authorization_flow = data.authentik_flow.default_provider_authorization_implicit_consent.id
 }
 
 // configure application

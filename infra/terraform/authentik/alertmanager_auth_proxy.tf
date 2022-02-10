@@ -3,7 +3,7 @@ resource "authentik_provider_proxy" "alertmanager" {
   name               = "alertmanager"
   internal_host      = "http://prometheus-alertmanager.observability.svc.cluster.local:9093"
   external_host      = "https://alertmanager.${var.cloudflare_domain}"
-  authorization_flow = data.authentik_flow.default_provider_authorization_explicit_consent.id
+  authorization_flow = data.authentik_flow.default_provider_authorization_implicit_consent.id
 }
 
 // configure application
