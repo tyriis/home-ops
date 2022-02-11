@@ -45,6 +45,16 @@ spec:
               sourceLabels:
                 - __meta_kubernetes_pod_node_name
               targetLabel: kubernetes_node
+            # should be removed when https://github.com/lensapp/lens/issues/4851 is fixed
+            - source_labels: [__meta_kubernetes_namespace]
+              action: replace
+              target_label: kubernetes_namespace
+            - source_labels: [__meta_kubernetes_service_name]
+              action: replace
+              target_label: kubernetes_name
+            - source_labels: [__meta_kubernetes_pod_node_name]
+              action: replace
+              target_label: kubernetes_node
 
     kube-state-metrics:
       fullnameOverride: kube-state-metrics
@@ -62,6 +72,7 @@ spec:
       enabled: true
       serviceMonitor:
         # lens ide config
+        # see https://github.com/lensapp/lens/blob/33c405bdcf86ff755069ce50a21efbf10985810e/troubleshooting/custom-prometheus.md
         metricRelabelings:
           - action: replace
             sourceLabels:
