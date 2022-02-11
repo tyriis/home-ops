@@ -7,4 +7,4 @@ resources:
   - kube-prometheus-stack
   - system-upgrade-controller
   - vault-secrets-operator
-  - snapshot-controller
+  # - snapshot-controller
