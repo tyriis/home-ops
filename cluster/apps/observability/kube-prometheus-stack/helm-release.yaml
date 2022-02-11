@@ -70,11 +70,12 @@ spec:
       serviceMonitor:
         # lens ide config
         # see https://github.com/lensapp/lens/blob/33c405bdcf86ff755069ce50a21efbf10985810e/troubleshooting/custom-prometheus.md
-        metricRelabelings:
-          - action: replace
-            sourceLabels:
-              - node
-            targetLabel: instance
+        # disabled cause of https://github.com/prometheus-community/helm-charts/issues/1801
+        # metricRelabelings:
+        #   - action: replace
+        #     sourceLabels:
+        #       - node
+        #     targetLabel: instance
 
     kubeApiServer:
       enabled: true
