@@ -26,7 +26,7 @@ resources:
   - home/esphome
   - home/aircon
   - system-upgrade/system-upgrade-controller
-  - authentik-system/authentik
+  # - authentik-system/authentik
   - secops/vault
   # - secops/vault-secrets-operator
   # - gaming/minecraft-bedrock
