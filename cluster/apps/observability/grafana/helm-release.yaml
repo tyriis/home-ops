@@ -14,7 +14,7 @@ spec:
   chart:
     spec:
       chart: grafana
-      version: 6.21.4
+      version: 6.21.5
       sourceRef:
         kind: HelmRepository
         name: grafana-charts
@@ -113,7 +113,7 @@ spec:
         searchNamespace: ALL
 
     serviceMonitor:
-      enabled: false # https://github.com/grafana/helm-charts/issues/1032
+      enabled: true
 
     ingress:
       enabled: true
