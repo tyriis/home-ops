@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - cert-manager
   - traefik
-  - kube-prometheus-stack
+  - kube-prometheus-stac
   - system-upgrade-controller
   - vault-secrets-operator
+  - snapshot-controller

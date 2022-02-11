@@ -17,6 +17,7 @@ resources:
   - k8s-at-home.com.yaml
   - kubernetes-sigs.github.io_metrics-server.yaml
   - kubernetes-sigs.github.io_node-feature-discovery.yaml
+  - piraeus.io.yaml
   - metallb.github.io.yaml
   - nfs-subdir-external-provisioner.yaml
   - openfaas.github.io.yaml
