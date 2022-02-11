@@ -42,15 +42,18 @@ spec:
             - action: replace
               regex: (.*)
               replacement: $1
-              sourceLabels:
-                - __meta_kubernetes_pod_node_name
+              sourceLabels: [__meta_kubernetes_pod_node_name]
               targetLabel: kubernetes_node
             # should be removed when https://github.com/lensapp/lens/issues/4851 is fixed
             - sourceLabels: [__meta_kubernetes_namespace]
               action: replace
+              regex: (.*)
+              replacement: $1
               targetLabel: kubernetes_namespace
             - sourceLabels: [__meta_kubernetes_service_name]
               action: replace
+              regex: (.*)
+              replacement: $1
               targetLabel: kubernetes_name
 
     kube-state-metrics:
