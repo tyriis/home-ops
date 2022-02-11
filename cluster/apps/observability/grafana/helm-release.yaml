@@ -113,7 +113,7 @@ spec:
         searchNamespace: ALL
 
     serviceMonitor:
-      enabled: false # https://github.com/grafana/helm-charts/issues/1032
+      enabled: true
 
     ingress:
       enabled: true
