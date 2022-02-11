@@ -41,27 +41,30 @@ spec:
         host: "{{ .Release.Name }}-redis-master"
         # password: ${SECRET_AUTHENTIK_REDIS_PASSWORD}
 
+    # https://artifacthub.io/packages/helm/bitnami/postgresql/10.9.5
     postgresql:
       enabled: true
       persistence:
         enabled: true
-
-
+        existingClaim: authentik-postgresql-data
+        storageClass: longhorn
+        size: 1Gi
       postgresqlUsername: authentik
       postgresqlDatabase: authentik
       postgresqlPassword: ${SECRET_AUTHENTIK_POSTGRES_PASSWORD}
-      primary:
-        nodeSelector:
-          kubernetes.io/arch: amd64
 
+    # https://artifacthub.io/packages/helm/bitnami/redis
     redis:
       enabled: true
       auth:
         enabled: false
         # password: ${SECRET_AUTHENTIK_REDIS_PASSWORD}
       master:
-        nodeSelector:
-          kubernetes.io/arch: amd64
+        persistence:
+          enabled: true
+          existingClaim: authentik-redis-data
+          storageClass: longhorn
+          size: 1Gi
 
     ingress:
       enabled: true
@@ -79,6 +82,3 @@ spec:
         - secretName: authentik-cert
           hosts:
             - authentik.${SECRET_DOMAIN}
-
-    nodeSelector:
-      kubernetes.io/arch: amd64
