@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - config-map.yaml
   - daemon-set.yaml
+  - pod-monitor.yaml

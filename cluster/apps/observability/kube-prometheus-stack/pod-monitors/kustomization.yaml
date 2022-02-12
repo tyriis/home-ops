@@ -8,4 +8,3 @@ resources:
   - flux-system/kustomize-controller.yaml
   - flux-system/notification-controller.yaml
   - flux-system/source-controller.yaml
-  - hardware/pimoroni-fanshim.yaml
