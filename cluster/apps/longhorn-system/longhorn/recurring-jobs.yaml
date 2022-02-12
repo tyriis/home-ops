@@ -1,0 +1,163 @@
+## source: https://gist.github.com/tyzbit/89880bdc57c01362fda7f6863b2945b8
+## The purpose of snapshots and backups are to be able to restore data to the last known good state
+## either due to full data loss or corruption/unwanted data change
+## Data properties:
+## -  Can change slowly or quickly.
+##      If the data changes quickly, we must snapshot/backup more frequently. We must also retain more.
+##      If the data changes slowly, we can snapshot less frequently
+## -  Is low priority or high priority.
+##      Low priority means we don't need offsite backups
+##      Medium priority means we need an offsite backup
+##      High priority means we need multiple historical offsite backups
+## -  Is of low criticality or high criticality
+##      Low criticality means the latest snapshot can be a backup, which takes longer to restore
+##      High criticality means the latest snapshot should be a snapshot
+##
+## Concurrency can be the same reasonable setting for all backups
+## When a backup is taken, it also takes a snapshot
+##
+## With these considerations, the following groups will exist
+## SlowLowPriorityLowCriticality             | Snapshot every day, retain 2          | Backup never
+## SlowLowPriorityHighCriticality            | Snapshot every day, retain 2          | Backup never
+## SlowMediumPriorityLowCriticality          |                                       | Backup every day, retain 1
+## SlowMediumPriorityHighCriticality         | Snapshot every 6 hour, retain 4       | Backup every day, retain 1
+## SlowHighPriorityLowCriticality            |                                       | Backup every day, retain 7
+## SlowHighPriorityHighCriticality           | Snapshot every 6 hour, retain 4       | Backup every day, retain 7
+## FastLowPriorityLowCriticality             | Snapshot every hour, retain 6         | Backup never
+## FastLowPriorityHighCriticality            | Snapshot every hour, retain 6         | Backup never
+## FastMediumPriorityLowCriticality          |                                       | Backup every 2 hours, retain 1
+## FastMediumPriorityHighCriticality         | Snapshot every hour, retain 6         | Backup every 2 hours, retain 1
+## FastHighPriorityLowCriticality            |                                       | Backup every hour, retain 6
+## FastHighPriorityHighCriticality           | Snapshot every 10 minutes, retain 6   | Backup every hour, retain 6
+##
+## Finally, we need to translate this to unique RecurringJobs.
+## Recurring jobs are either snapshot or backup
+---
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: snapshot-daily-retain-2
+  namespace: longhorn-system
+spec:
+  cron: "0 5 * * *"
+  task: snapshot
+  groups:
+  - SlowLowPriorityLowCriticality
+  - SlowLowPriorityHighCriticality
+  retain: 2
+  concurrency: 5
+  labels:
+    jobname: snapshot-daily-retain-2
+---
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: backup-daily-retain-1
+  namespace: longhorn-system
+spec:
+  cron: "45 6 * * *"
+  task: backup
+  groups:
+  - SlowMediumPriorityLowCriticality
+  - SlowMediumPriorityHighCriticality
+  retain: 1
+  concurrency: 5
+  labels:
+    jobname: backup-daily-retain-1
+---
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: snapshot-every-6-hours-retain-4
+  namespace: longhorn-system
+spec:
+  cron: "50 0/6 * * *"
+  task: snapshot
+  groups:
+  - SlowMediumPriorityHighCriticality
+  - SlowHighPriorityHighCriticality
+  retain: 4
+  concurrency: 5
+  labels:
+    jobname: snapshot-every-6-hours-retain-4
+---
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: backup-daily-retain-7
+  namespace: longhorn-system
+spec:
+  cron: "40 4 * * *"
+  task: backup
+  groups:
+  - SlowHighPriorityLowCriticality
+  - SlowHighPriorityHighCriticality
+  retain: 7
+  concurrency: 5
+  labels:
+    jobname: backup-daily-retain-7
+---
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: snapshot-hourly-retain-6
+  namespace: longhorn-system
+spec:
+  cron: "20 * * * *"
+  task: snapshot
+  groups:
+  - FastLowPriorityLowCriticality
+  - FastLowPriorityHighCriticality
+  - FastMediumPriorityHighCriticality
+  retain: 6
+  concurrency: 5
+  labels:
+    jobname: snapshot-hourly-retain-6
+---
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: backup-every-2-hours-retain-1
+  namespace: longhorn-system
+spec:
+  cron: "15 1/2 * * *"
+  task: backup
+  groups:
+  - FastMediumPriorityLowCriticality
+  - FastMediumPriorityHighCriticality
+  retain: 1
+  concurrency: 5
+  labels:
+    jobname: backup-every-2-hours-retain-1
+---
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: backup-hourly-retain-6
+  namespace: longhorn-system
+spec:
+  cron: "10 * * * *"
+  task: backup
+  groups:
+  - FastHighPriorityLowCriticality
+  - FastHighPriorityHighCriticality
+  retain: 6
+  concurrency: 5
+  labels:
+    jobname: backup-hourly-retain-6
+---
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: snapshot-every-10-minutes-retain-6
+  namespace: longhorn-system
+spec:
+  cron: "0/10 * * * *"
+  task: snapshot
+  groups:
+  - FastHighPriorityHighCriticality
+  retain: 6
+  concurrency: 5
+  labels:
+    jobname: snapshot-every-10-minutes-retain-6
+---
