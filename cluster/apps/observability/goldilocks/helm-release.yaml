@@ -22,8 +22,9 @@ spec:
       ingress:
         enabled: false
     resources:
-      cpu: 15m
-      memory: 32Mi
-    requests:
-      cpu: 54m
-      memory: 32Mi
+      request:
+        cpu: 15m
+        memory: 32Mi
+      limit:
+        cpu: 54m
+        memory: 32Mi
