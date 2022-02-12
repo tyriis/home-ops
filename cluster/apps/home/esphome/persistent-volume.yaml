@@ -7,11 +7,8 @@ metadata:
     app.kubernetes.io/name: esphome
 spec:
   capacity:
-    storage: 1Gi
-  nfs:
-    server: nas.${SECRET_DOMAIN}
-    path: /volume1/esphome.k8s.home
+    storage: 512Mi
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: esphome
+  storageClassName: longhorn
