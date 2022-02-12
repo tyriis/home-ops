@@ -6,11 +6,11 @@ metadata:
   namespace: observability
 spec:
   interval: 5m
-  dependsOn:
-    # - name: loki
-    #   namespace: observability
-    - name: kube-prometheus-stack
-      namespace: observability
+  # dependsOn:
+  #   # - name: loki
+  #   #   namespace: observability
+  #   - name: kube-prometheus-stack
+  #     namespace: observability
   chart:
     spec:
       chart: grafana
