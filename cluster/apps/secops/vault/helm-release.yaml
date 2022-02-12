@@ -19,6 +19,8 @@ spec:
     metrics:
       enabled: true
     server:
+      extraLabels:
+        configmap.reloader.stakater.com/reload: vault-config
       ingress:
         enabled: true
         ingressClassName: traefik
