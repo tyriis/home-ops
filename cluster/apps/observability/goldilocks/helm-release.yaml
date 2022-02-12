@@ -21,3 +21,9 @@ spec:
     dashboard:
       ingress:
         enabled: false
+    resources:
+      cpu: 15m
+      memory: 32Mi
+    requests:
+      cpu: 54m
+      memory: 32Mi
