@@ -1,0 +1,13 @@
+# this manifest require crds to be initialized, assure longhorn crds get initialized before (f.e. in crds/core)
+apiVersion: longhorn.io/v1beta1
+kind: Backup
+metadata:
+  labels:
+    backup-volume: pvc-4a7fa0d1-3749-4f37-a5bf-0b280a1b1f81  # this is only known after 1st initialization
+  name: unifi-config
+  namespace: longhorn-system
+spec:
+  labels:
+    application: unifi
+    cluster: ${SETTING_CLUSTERNAME}
+    namespace: networking
