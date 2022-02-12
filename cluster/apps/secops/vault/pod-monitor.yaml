@@ -1,0 +1,29 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: vault
+  namespace: secops
+  labels:
+    app.kubernetes.io/instance: vault
+    app.kubernetes.io/managed-by: fluxcd
+    app.kubernetes.io/name: vault
+spec:
+  namespaceSelector:
+    matchNames: ["secops"]
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: vault
+      app.kubernetes.io/name: vault
+      vault-active: "true"
+  podMetricsEndpoints:
+    - path: /v1/sys/metrics
+      params:
+        format: ["prometheus"]
+      port: http
+      relabelings:
+        - action: keep
+          sourceLabels:
+            - __meta_kubernetes_namespace
+            - __meta_kubernetes_pod_container_port_number
+          regex: secops;8200
