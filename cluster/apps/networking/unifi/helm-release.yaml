@@ -17,6 +17,14 @@ spec:
   values:
     env:
       TZ: ${SETTING_TZ}
+
+    persistence:
+      data:
+        enabled: true
+        size: 1Gi
+        storageClass: longhorn
+        accessMode: ReadWriteOnce
+
     ingress:
       main:
         enabled: true
@@ -78,15 +86,6 @@ spec:
       limits:
         memory: 1250Mi
 
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: feature.node.kubernetes.io/custom-cpu.intel.i7
-                  operator: In
-                  values: ["true"]
-
     mongodb:
       enabled: true
       architecture: standalone
@@ -96,12 +95,3 @@ spec:
         enabled: true
         storageClass: longhorn
         size: 10Gi
-
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: feature.node.kubernetes.io/custom-cpu.intel.i7
-                    operator: In
-                    values: ["true"]
