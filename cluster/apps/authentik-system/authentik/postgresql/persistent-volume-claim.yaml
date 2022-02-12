@@ -7,7 +7,6 @@ metadata:
   labels:
     app.kubernetes.io/instance: authentik
     app.kubernetes.io/name: postgresql
-    kasten.io/backup-volume: enabled
 spec:
   accessModes:
     - ReadWriteOnce

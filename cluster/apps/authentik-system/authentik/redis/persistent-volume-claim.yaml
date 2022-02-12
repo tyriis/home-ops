@@ -8,7 +8,6 @@ metadata:
     app.kubernetes.io/component: master
     app.kubernetes.io/instance: authentik
     app.kubernetes.io/name: redis
-    kasten.io/backup-volume: enabled
 spec:
   accessModes:
     - ReadWriteOnce
