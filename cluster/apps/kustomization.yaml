@@ -2,14 +2,14 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - flux-system/notifications
-  - hardware/pimoroni-fanshim
-  - hardware/scanservjs
+  - flux-system/gotk
   - kube-system/metrics-server
   - kube-system/node-feature-discovery
   - kube-system/reflector
   - kube-system/reloader
   - kube-system/kured
+  - hardware/pimoroni-fanshim
+  - hardware/scanservjs
   - longhorn-system/longhorn
   - observability/loki
   - observability/promtail

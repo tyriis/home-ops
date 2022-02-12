@@ -2,19 +2,15 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: image-reflector-controller
+  name: notification-controller
   namespace: flux-system
   labels:
     app.kubernetes.io/part-of: flux
 spec:
   namespaceSelector:
-    matchNames:
-      - flux-system
+    matchNames: ["flux-system"]
   selector:
-    matchExpressions:
-      - key: app
-        operator: In
-        values:
-          - image-reflector-controller
+    matchLabels:
+      app: notification-controller
   podMetricsEndpoints:
     - port: http-prom

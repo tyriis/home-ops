@@ -2,19 +2,15 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: image-automation-controller
+  name: source-controller
   namespace: flux-system
   labels:
     app.kubernetes.io/part-of: flux
 spec:
   namespaceSelector:
-    matchNames:
-      - flux-system
+    matchNames: ["flux-system"]
   selector:
-    matchExpressions:
-      - key: app
-        operator: In
-        values:
-          - image-automation-controller
+    matchLabels:
+      app: source-controller
   podMetricsEndpoints:
     - port: http-prom
