@@ -39,7 +39,7 @@ spec:
       difficulty: easy
       gameMode: survival
       levelSeed: ""
-      ops: "${SECRET_MINECRAFT_OPS}" # need to be with `"` as it contains number(s)
+      ops: "2535405985178539"
       levelName: "cliffs_caves_adventure"
       maxThreads: 0 # Maximum number of threads the server tries to use. If set to 0 or removed then it uses as many as possible.
       cheats: true
