@@ -43,6 +43,10 @@ spec:
           url: https://nas.${SECRET_DOMAIN}
           icon: nas
           group: Infrastructure
+        - name: minio
+          url: ${SECRET_MINIO_URL}
+          icon: bird
+          group: Infrastructure
         - name: GitOps
           url: https://github.com/tyriis/flux.k3s.cluster
           icon: github
