@@ -21,7 +21,7 @@ prometheus:
         memory: 4096Mi
         cpu: 500m
       limits:
-        memory: 4096Mi
+        # memory: 4096Mi
         cpu: 4000m
 
     ruleSelector: {}
