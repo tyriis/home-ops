@@ -22,6 +22,7 @@ spec:
       tag: 2022.1.4
     env:
       TZ: ${SETTING_TZ}
+      ESPHOME_DASHBOARD_USE_PING: "true"
 
     persistence:
       config:
@@ -33,19 +34,19 @@ spec:
 
     ingress:
       main:
-        enabled: false
-        # ingressClassName: traefik
-        # annotations:
-        #   cert-manager.io/cluster-issuer: letsencrypt-production
-        #   hajimari.io/enable: "true"
-        #   hajimari.io/icon: home-automation
-        #   traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        # hosts:
-        #   - host: esphome.${SECRET_DOMAIN}
-        #     paths:
-        #       - path: /
-        #         pathType: Prefix
-        # tls:
-        #   - hosts:
-        #       - esphome.${SECRET_DOMAIN}
-        #     secretName: esphome-tls
+        enabled: true
+        ingressClassName: traefik
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          # hajimari.io/enable: "true"
+          # hajimari.io/icon: home-automation
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        hosts:
+          - host: esphome2.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - esphome2.${SECRET_DOMAIN}
+            secretName: esphome2-tls
