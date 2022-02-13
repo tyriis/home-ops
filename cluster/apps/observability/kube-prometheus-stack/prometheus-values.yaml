@@ -24,6 +24,7 @@ prometheus:
         # memory: 4096Mi
         cpu: 4000m
 
+    externalUrl: https://prometheus.${SECRET_DOMAIN}/
     ruleSelector: {}
     ruleNamespaceSelector: {}
     ruleSelectorNilUsesHelmValues: false
