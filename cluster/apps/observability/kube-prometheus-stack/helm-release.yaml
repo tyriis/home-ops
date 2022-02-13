@@ -83,7 +83,7 @@ spec:
       enabled: true
 
     kubeControllerManager:
-      enabled: true
+      enabled: false # no way with 8gb of RAM
       endpoints:
         - 192.168.1.71
         - 192.168.1.72
@@ -98,7 +98,7 @@ spec:
         insecureSkipVerify: true
 
     kubeScheduler:
-      enabled: true
+      enabled: false # no way with 8gb of RAM
       endpoints:
         - 192.168.1.71
         - 192.168.1.72
@@ -113,14 +113,14 @@ spec:
         insecureSkipVerify: true
 
     kubeProxy:
-      enabled: true
+      enabled: false # no way with 8gb of RAM
       endpoints:
         - 192.168.1.71
         - 192.168.1.72
         - 192.168.1.73
 
     kubeEtcd:
-      enabled: true
+      enabled: false # no way with 8gb of RAM
       endpoints:
         - 192.168.1.71
         - 192.168.1.72
