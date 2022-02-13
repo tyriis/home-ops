@@ -81,17 +81,6 @@ spec:
 
     kubeApiServer:
       enabled: true
-      # serviceMonitor:
-      #   interval: 60s
-      #   metricRelabelings:
-      #   - action: keep
-      #     regex: 'kube_(daemonset|deployment|pod|namespace|node|statefulset|replicaset).+'
-      #     sourceLabels:
-      #     - __name__
-      #   - action: drop
-      #     regex: '.+apiextensions\.k8s\.io.+'
-      #     sourceLabels:
-      #     - group
 
     kubeControllerManager:
       enabled: true

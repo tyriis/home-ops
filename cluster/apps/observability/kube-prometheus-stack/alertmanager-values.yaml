@@ -63,7 +63,7 @@ alertmanager:
   #       hosts:
   #         - "alertmanager.${SECRET_DOMAIN}"
   alertmanagerSpec:
-    externalUrl: "https://alert-manager.${SECRET_DOMAIN}/"
+    externalUrl: "https://alertmanager.${SECRET_DOMAIN}/"
     storage:
       volumeClaimTemplate:
         spec:
