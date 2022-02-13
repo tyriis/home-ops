@@ -22,8 +22,9 @@ spec:
     persistence:
       data:
         enabled: true
+        type: pvc
         accessMode: ReadWriteOnce
-        storageClassName: longhorn
+        storageClass: longhorn
         size: 200Mi
         retain: true
 
