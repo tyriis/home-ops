@@ -20,7 +20,7 @@ resources:
   - observability/speedtest-exporter
   - networking/traefik
   - home/hajimari
-  # - home/zigbee2mqtt
+  - home/zigbee2mqtt
   - home/node-red
   - home/home-assistant
   - home/esphome
