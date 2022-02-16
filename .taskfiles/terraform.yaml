@@ -78,3 +78,9 @@ tasks:
     dir: infra/terraform
     cmds:
       - "terraform apply -refresh-only"
+
+  upgrade:
+    desc: Terraform upgrade IaC
+    dir: infra/terraform
+    cmds:
+      - "terraform init -upgrade"
