@@ -28,9 +28,7 @@ spec:
       config:
         enabled: true
         type: pvc
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: longhorn
+        existingClaim: esphome-config
 
     ingress:
       main:
