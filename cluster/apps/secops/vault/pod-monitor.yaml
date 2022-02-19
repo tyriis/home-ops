@@ -6,7 +6,7 @@ metadata:
   namespace: secops
   labels:
     app.kubernetes.io/instance: vault
-    app.kubernetes.io/managed-by: fluxcd
+    app.kubernetes.io/managed-by: fluxcd.io
     app.kubernetes.io/name: vault
 spec:
   namespaceSelector:

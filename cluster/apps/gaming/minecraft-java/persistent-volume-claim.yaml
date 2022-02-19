@@ -5,8 +5,8 @@ metadata:
   name: minecraft-java-data
   namespace: gaming
   labels:
-    app.kubernetes.io/managed-by: fluxcd
     app.kubernetes.io/name: minecraft-java
+    app.kubernetes.io/managed-by: fluxcd.io
 spec:
   accessModes:
     - ReadWriteOnce

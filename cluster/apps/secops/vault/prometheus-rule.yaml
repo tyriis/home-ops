@@ -5,7 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/name: vault
     app.kubernetes.io/instance: vault
-    app.kubernetes.io/managed-by: fluxcd
+    app.kubernetes.io/managed-by: fluxcd.io
   name: vault-rules
   namespace: secops
 spec:

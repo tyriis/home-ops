@@ -7,6 +7,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: minecraft-bedrock
     app.kubernetes.io/name: minecraft-bedrock
+    app.kubernetes.io/managed-by: fluxcd.io
 spec:
   accessModes:
     - ReadWriteOnce

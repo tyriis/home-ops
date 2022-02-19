@@ -4,4 +4,5 @@ kind: Namespace
 metadata:
   name: networking
   labels:
+    app.kubernetes.io/managed-by: fluxcd.io
     goldilocks.fairwinds.com/enabled: "true"
