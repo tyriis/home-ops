@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: unifi-data
+  namespace: networking
+  labels:
+    app.kubernetes.io/instance: unifi
+    app.kubernetes.io/name: unifi
+    app.kubernetes.io/managed-by: fluxcd.io
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: longhorn

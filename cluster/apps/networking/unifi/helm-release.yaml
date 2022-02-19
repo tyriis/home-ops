@@ -21,9 +21,8 @@ spec:
     persistence:
       data:
         enabled: true
-        size: 1Gi
-        storageClass: longhorn
-        accessMode: ReadWriteOnce
+        type: pvc
+        existingClaim: unifi-data
 
     ingress:
       main:
