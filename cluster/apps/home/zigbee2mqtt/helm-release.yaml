@@ -23,10 +23,7 @@ spec:
       data:
         enabled: true
         type: pvc
-        accessMode: ReadWriteOnce
-        storageClass: longhorn
-        size: 200Mi
-        retain: true
+        existingClaim: zigbee2mqtt-data
 
     env:
       ZIGBEE2MQTT_DATA: /data
