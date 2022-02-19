@@ -29,22 +29,3 @@ spec:
         enabled: true
         type: pvc
         existingClaim: esphome-config
-
-    ingress:
-      main:
-        enabled: true
-        ingressClassName: traefik
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          # hajimari.io/enable: "true"
-          # hajimari.io/icon: home-automation
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        hosts:
-          - host: esphome2.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                pathType: Prefix
-        tls:
-          - hosts:
-              - esphome2.${SECRET_DOMAIN}
-            secretName: esphome2-tls
