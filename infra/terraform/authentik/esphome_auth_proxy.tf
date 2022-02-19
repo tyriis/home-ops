@@ -43,29 +43,12 @@ resource "authentik_outpost" "esphome" {
         "hajimari.io/enable"                               = "true"
         "hajimari.io/appName"                              = "esphome"
       }
-      // kubernetes_ingress_secret_name = "ak-outpost-esphome-tls"
-      kubernetes_namespace    = "authentik-system"
-      kubernetes_replicas     = 1
-      kubernetes_service_type = "ClusterIP"
-      log_level               = "debug"
-      object_naming_template  = "ak-outpost-%(name)s"
-      // workaround until this is fixed: https://github.com/goauthentik/terraform-provider-authentik/issues/101
-      kubernetes_ingress_secret_name = "authentik-outpost-tls"
-      kubernetes_disabled_components = ["ingress"]
+      kubernetes_ingress_secret_name = "ak-outpost-esphome-tls"
+      kubernetes_namespace           = "authentik-system"
+      kubernetes_replicas            = 1
+      kubernetes_service_type        = "ClusterIP"
+      log_level                      = "debug"
+      object_naming_template         = "ak-outpost-%(name)s"
     }
   )
-}
-
-// workaround until this is fixed: https://github.com/goauthentik/terraform-provider-authentik/issues/101
-// apply ingress definiton
-resource "kubectl_manifest" "ingress_esphome" {
-  yaml_body = templatefile("${path.module}/ingress.yaml.tmpl", {
-    name              = "esphome",
-    authentik_version = "2022.1.1",
-    outpost_uuid      = authentik_outpost.esphome.id,
-    hajimari_name     = "esphome",
-    hajimari_enabled  = "true",
-    hajimari_icon     = "home-automation",
-    domain            = var.cloudflare_domain,
-  })
 }

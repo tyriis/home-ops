@@ -39,33 +39,16 @@ resource "authentik_outpost" "traefik" {
       kubernetes_ingress_annotations = {
         "cert-manager.io/cluster-issuer"                   = "letsencrypt-production"
         "traefik.ingress.kubernetes.io/router.entrypoints" = "websecure"
-        "hajimari.io/icon"                                 = "traefik"
+        "hajimari.io/icon"                                 = "wan"
         "hajimari.io/enable"                               = "true"
         "hajimari.io/appName"                              = "traefik"
       }
-      // kubernetes_ingress_secret_name = "ak-outpost-traefik-tls"
-      kubernetes_namespace    = "authentik-system"
-      kubernetes_replicas     = 1
-      kubernetes_service_type = "ClusterIP"
-      log_level               = "debug"
-      object_naming_template  = "ak-outpost-%(name)s"
-      // workaround until this is fixed: https://github.com/goauthentik/terraform-provider-authentik/issues/101
-      kubernetes_ingress_secret_name = "authentik-outpost-tls"
-      kubernetes_disabled_components = ["ingress"]
+      kubernetes_ingress_secret_name = "ak-outpost-traefik-tls"
+      kubernetes_namespace           = "authentik-system"
+      kubernetes_replicas            = 1
+      kubernetes_service_type        = "ClusterIP"
+      log_level                      = "debug"
+      object_naming_template         = "ak-outpost-%(name)s"
     }
   )
-}
-
-// workaround until this is fixed: https://github.com/goauthentik/terraform-provider-authentik/issues/101
-// apply ingress definiton
-resource "kubectl_manifest" "ingress_traefik" {
-  yaml_body = templatefile("${path.module}/ingress.yaml.tmpl", {
-    name              = "traefik",
-    authentik_version = "2022.1.1",
-    outpost_uuid      = authentik_outpost.traefik.id,
-    hajimari_name     = "traefik",
-    hajimari_enabled  = "true",
-    hajimari_icon     = "wan",
-    domain            = var.cloudflare_domain,
-  })
 }

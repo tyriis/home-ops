@@ -43,29 +43,12 @@ resource "authentik_outpost" "prometheus" {
         "hajimari.io/enable"                               = "true"
         "hajimari.io/appName"                              = "prometheus"
       }
-      // kubernetes_ingress_secret_name = "ak-outpost-prometheus-tls"
-      kubernetes_namespace    = "authentik-system"
-      kubernetes_replicas     = 1
-      kubernetes_service_type = "ClusterIP"
-      log_level               = "debug"
-      object_naming_template  = "ak-outpost-%(name)s"
-      // workaround until this is fixed: https://github.com/goauthentik/terraform-provider-authentik/issues/101
-      kubernetes_ingress_secret_name = "authentik-outpost-tls"
-      kubernetes_disabled_components = ["ingress"]
+      kubernetes_ingress_secret_name = "ak-outpost-prometheus-tls"
+      kubernetes_namespace           = "authentik-system"
+      kubernetes_replicas            = 1
+      kubernetes_service_type        = "ClusterIP"
+      log_level                      = "debug"
+      object_naming_template         = "ak-outpost-%(name)s"
     }
   )
-}
-
-// workaround until this is fixed: https://github.com/goauthentik/terraform-provider-authentik/issues/101
-// apply ingress definiton
-resource "kubectl_manifest" "ingress_prometheus" {
-  yaml_body = templatefile("${path.module}/ingress.yaml.tmpl", {
-    name              = "prometheus",
-    authentik_version = "2022.1.1",
-    outpost_uuid      = authentik_outpost.prometheus.id,
-    hajimari_name     = "prometheus",
-    hajimari_enabled  = "true",
-    hajimari_icon     = "chart-line-stacked",
-    domain            = var.cloudflare_domain,
-  })
 }
