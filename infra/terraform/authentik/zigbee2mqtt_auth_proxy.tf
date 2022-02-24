@@ -1,9 +1,11 @@
 // configure auth proxy
+#tfsec:ignore:general-secrets-no-plaintext-exposure
 resource "authentik_provider_proxy" "zigbee2mqtt" {
   name               = "zigbee2mqtt"
   internal_host      = "http://zigbee2mqtt.home.svc.cluster.local:8080"
   external_host      = "https://zigbee2mqtt.${var.cloudflare_domain}"
   authorization_flow = data.authentik_flow.default_provider_authorization_implicit_consent.id
+  token_validity     = "days=30"
 }
 
 // configure application

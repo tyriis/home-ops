@@ -1,9 +1,11 @@
 // configure auth proxy
+#tfsec:ignore:general-secrets-no-plaintext-exposure
 resource "authentik_provider_proxy" "alertmanager" {
   name               = "alertmanager"
   internal_host      = "http://prometheus-alertmanager.observability.svc.cluster.local:9093"
   external_host      = "https://alertmanager.${var.cloudflare_domain}"
   authorization_flow = data.authentik_flow.default_provider_authorization_implicit_consent.id
+  token_validity     = "days=30"
 }
 
 // configure application
