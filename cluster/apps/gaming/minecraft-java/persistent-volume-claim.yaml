@@ -5,6 +5,7 @@ metadata:
   name: minecraft-java-data
   namespace: gaming
   labels:
+    app.kubernetes.io/instance: minecraft-java
     app.kubernetes.io/name: minecraft-java
     app.kubernetes.io/managed-by: fluxcd.io
 spec:
@@ -13,5 +14,4 @@ spec:
   resources:
     requests:
       storage: 10Gi
-  volumeName: minecraft-java-data
   storageClassName: longhorn
