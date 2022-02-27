@@ -20,16 +20,14 @@ spec:
       ENABLE_AUTOPAUSE: "TRUE"
 
     persistence:
-      storageClass: static-nfs
       dataDir:
         existingClaim: minecraft-java-data
         enabled: true
-        Size: 10Gi
 
     resources:
       requests:
         memory: 1024Mi
-        cpu: 250m
+        cpu: 1000m
       limits:
         memory: 5120Mi
 
@@ -56,7 +54,7 @@ spec:
       cheats: true
       serverName: "minecraft at home"
       serviceType: LoadBalancer
-      loadBalancerIP: 192.168.1.62
+      loadBalancerIP: ${SETTING_METALLB_MINECRAFT_JAVA_ADDR}
 
       # extraPorts:
       #   - name: geyser
@@ -72,5 +70,4 @@ spec:
 
     nodeSelector:
       kubernetes.io/arch: amd64
-      feature.node.kubernetes.io/custom-cpu.intel.i7: "true"
       feature.node.kubernetes.io/custom-memory.gb.8: "true"
