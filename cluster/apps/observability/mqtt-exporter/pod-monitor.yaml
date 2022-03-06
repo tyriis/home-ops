@@ -1,0 +1,22 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: mqtt-exporter
+  namespace: observability
+  labels:
+    app.kubernetes.io/part-of: mqtt-exporter
+    app.kubernetes.io/name: mqtt-exporter
+    app.kubernetes.io/managed-by: fluxcd.io
+spec:
+  namespaceSelector:
+    matchNames:
+      - observability
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mqtt-exporter
+      app.kubernetes.io/instance: mqtt-exporter
+  podMetricsEndpoints:
+    - port: http
+      interval: 15s
+      scrapeTimeout: 5s

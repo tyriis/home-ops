@@ -1,0 +1,34 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mqtt-exporter
+  namespace: observability
+  labels:
+    app.kubernetes.io/name: mqtt-exporter
+    app.kubernetes.io/instance: mqtt-exporter
+    app.kubernetes.io/managed-by: fluxcd.io
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: scanservjs
+      app.kubernetes.io/instance: scanservjs
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mqtt-exporter
+        app.kubernetes.io/instance: mqtt-exporter
+        app.kubernetes.io/managed-by: fluxcd.io
+    spec:
+      containers:
+        - name: mqtt-exporter
+          image: kpetrem/mqtt-exporter:latest
+          imagePullPolicy: Always  # use always cause of latest :/
+          ports:
+            - containerPort: 9000
+              name: http
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: mqtt-exporter
