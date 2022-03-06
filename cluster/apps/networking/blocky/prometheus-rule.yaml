@@ -3,7 +3,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   name: blocky.rules
-  namespace: network
+  namespace: networking
 spec:
   groups:
     - name: blocky.rules
