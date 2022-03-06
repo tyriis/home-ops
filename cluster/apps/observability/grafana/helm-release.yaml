@@ -23,8 +23,6 @@ spec:
     image:
       repository: ghcr.io/k8s-at-home/grafana
     replicas: 1
-    nodeSelector:
-      kubernetes.io/arch: amd64
     env:
       TZ: ${SETTING_TZ}
       GF_EXPLORE_ENABLED: "true"
