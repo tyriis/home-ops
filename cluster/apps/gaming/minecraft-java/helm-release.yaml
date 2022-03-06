@@ -55,6 +55,7 @@ spec:
       serverName: "minecraft at home"
       serviceType: LoadBalancer
       loadBalancerIP: ${SETTING_METALLB_MINECRAFT_JAVA_ADDR}
+      spawnProtection: 0
 
       # extraPorts:
       #   - name: geyser
