@@ -12,8 +12,8 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: scanservjs
-      app.kubernetes.io/instance: scanservjs
+      app.kubernetes.io/name: mqtt-exporter
+      app.kubernetes.io/instance: mqtt-exporter
   template:
     metadata:
       labels:
