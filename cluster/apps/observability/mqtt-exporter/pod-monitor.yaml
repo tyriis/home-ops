@@ -20,3 +20,9 @@ spec:
     - port: http
       interval: 15s
       scrapeTimeout: 5s
+      metricRelabelings:
+        - action: replace
+          sourceLabels: [sensor]
+          regex: zigbee2mqtt_(.*)
+          replacement: $1
+          targetLabel: sensor
