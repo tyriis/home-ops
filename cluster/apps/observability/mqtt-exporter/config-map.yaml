@@ -11,6 +11,7 @@ metadata:
 data:
   # LOG_LEVEL: INFO
   MQTT_ADDRESS: "${SECRET_MQTT_SERVER}"
+  MQTT_TOPIC: zigbee2mqtt-bridge03/#
   # MQTT_PORT: "1883"
   # MQTT_KEEPALIVE: "60"
   # MQTT_USERNAME: ""
