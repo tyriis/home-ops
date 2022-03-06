@@ -27,9 +27,10 @@ spec:
       kubernetes.io/arch: amd64
     env:
       TZ: ${SETTING_TZ}
-      GF_EXPLORE_ENABLED: true
-      GF_PANELS_DISABLE_SANITIZE_HTML: true
-      GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
+      GF_EXPLORE_ENABLED: "true"
+      GF_PANELS_DISABLE_SANITIZE_HTML: "true"
+      GF_DATE_FORMATS_USE_BROWSER_LOCALE: "true"
+      VAR_BLOCKY_URL: http://blocky.networking.svc.cluster.local:4000
 
     adminPassword: "${SECRET_GRAFANA_PASSWORD}"
     grafana.ini:
