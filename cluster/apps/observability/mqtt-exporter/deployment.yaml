@@ -20,6 +20,8 @@ spec:
         app.kubernetes.io/name: mqtt-exporter
         app.kubernetes.io/instance: mqtt-exporter
         app.kubernetes.io/managed-by: fluxcd.io
+      annotations:
+        configmap.reloader.stakater.com/reload: mqtt-exporter
     spec:
       containers:
         - name: mqtt-exporter
