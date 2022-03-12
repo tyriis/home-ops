@@ -2,7 +2,7 @@ terraform {
   required_providers {
     authentik = {
       source  = "goauthentik/authentik"
-      version = "2022.2.1"
+      version = "2022.3.1"
     }
     kubectl = {
       source  = "gavinbunney/kubectl"
