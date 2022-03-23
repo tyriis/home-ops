@@ -95,13 +95,13 @@ Here is the list of tools and technologies I am using in this project.
 
 #### Hardware
 
-| Device         | Count | OS                               | Disk Size | RAM | Purpose                   |
-| -------------- | ----- | -------------------------------- | --------- | --- | ------------------------- |
-| Raspberry Pi 4 | 3     | Raspbian GNU/Linux 11 (bullseye) | 120GB SSD | 4GB | control-plane,etcd,master |
-| i7-4702MQ      | 2     | Ubuntu 20.04.3 LTS               | 240GB SSD | 8GB | worker                    |
-| Celeron 847    | 1     | Ubuntu 20.04.3 LTS               | 120GB SSD | 4GB | worker                    |
-| Celeron J3455  | 1     | Ubuntu 20.04.3 LTS               | 120GB SSD | 6GB | worker                    |
-| i5-3210M       | 1     | Ubuntu 20.04.3 LTS               | 120GB SSD | 8GB | worker                    |
+| Device         | Count | OS                               | Disk Size            | RAM | Purpose                   |
+| -------------- | ----- | -------------------------------- | -------------------- | --- | ------------------------- |
+| Raspberry Pi 4 | 3     | Raspbian GNU/Linux 11 (bullseye) | 120GB SSD            | 4GB | control-plane,etcd,master |
+| i7-4702MQ      | 2     | Ubuntu 20.04.3 LTS               | 240GB SSD            | 8GB | worker                    |
+| Celeron 847    | 1     | Ubuntu 20.04.3 LTS               | 120GB SSD            | 4GB | worker                    |
+| Celeron J3455  | 1     | Ubuntu 20.04.3 LTS               | 120GB SSD, 120GB SSD | 6GB | worker                    |
+| i5-3210M       | 1     | Ubuntu 20.04.3 LTS               | 240GB SSD            | 8GB | worker                    |
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -175,7 +175,7 @@ example:
 [terraform-url]: https://github.com/hashicorp/terraform/releases
 [terraform-shield]: https://img.shields.io/badge/terraform-1.x-844fba?style=for-the-badge&logo=terraform
 [k3s-url]: https://k3s.io/
-[k3s-shield]: https://img.shields.io/badge/k3s-v1.23.3-ffc61c?style=for-the-badge&logo=kubernetes&logoColor=white
+[k3s-shield]: https://img.shields.io/badge/k3s-v1.23.4-ffc61c?style=for-the-badge&logo=kubernetes&logoColor=white
 [pre-commit-url]: https://github.com/pre-commit/pre-commit
 [pre-commit-shield]: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white&style=for-the-badge
 [renovate-dashboard-url]: https://app.renovatebot.com/dashboard#github/tyriis/flux.k3s.cluster
