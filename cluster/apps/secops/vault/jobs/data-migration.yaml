@@ -75,7 +75,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: volume-migration
-          image: ubuntu:xenial
+          image: ubuntu:focal
           tty: true
           command:
             - "/bin/sh"
