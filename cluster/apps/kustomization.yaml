@@ -31,7 +31,7 @@ resources:
   - networking/blocky
   # - secops/vault # disabled, see #154
   # - secops/vault-secrets-operator
-  # - gaming/minecraft-bedrock
+  - gaming/minecraft-bedrock
   - networking/unifi
   # - kasten-io/k10
   # - gaming/minecraft-java
