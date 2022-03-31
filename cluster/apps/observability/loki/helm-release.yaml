@@ -25,7 +25,7 @@ spec:
     persistence:
       enabled: true
       storageClassName: longhorn
-      size: 10Gi
+      size: 15Gi
 
       config:
         limits_config:
