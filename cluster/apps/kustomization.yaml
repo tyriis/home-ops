@@ -21,6 +21,7 @@ resources:
   - networking/traefik
   - home/hajimari
   - home/zigbee2mqtt
+  - home/zigbee2mqtt-bridge2
   - home/node-red
   - home/home-assistant
   - home/esphome
