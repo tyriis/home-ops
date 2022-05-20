@@ -17,9 +17,9 @@ spec:
         namespace: flux-system
   values:
     image:
-    repository: itzg/minecraft-bedrock-server
-    tag: latest
-    pullPolicy: Always
+      repository: itzg/minecraft-bedrock-server
+      tag: latest
+      pullPolicy: Always
 
     extraEnv:
       TZ: ${SETTING_TZ}
