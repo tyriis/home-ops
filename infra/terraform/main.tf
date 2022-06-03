@@ -40,7 +40,7 @@ terraform {
     }
     authentik = {
       source  = "goauthentik/authentik"
-      version = "2022.4.1"
+      version = "2022.6.2"
     }
   }
 }
