@@ -4,7 +4,7 @@ name: on Pull Requests - Diff Helm Release
 on: # yamllint disable-line rule:truthy
   pull_request:
     branches:
-      - test
+      - main
     paths:
       - "**.yaml"
 
@@ -34,7 +34,7 @@ jobs:
           echo ::set-output name=files::${filtered}
   helm-release-diff:
     name: Template Helm Releases
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     if: ${{ needs.changes.outputs.files != '' }}
     needs:
       - changes
