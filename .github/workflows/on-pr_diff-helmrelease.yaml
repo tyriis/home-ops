@@ -6,7 +6,7 @@ on: # yamllint disable-line rule:truthy
     branches:
       - main
     paths:
-      - "**.yaml"
+      - "cluster/**.yaml"
 
 env:
   conf_live_branch: main
