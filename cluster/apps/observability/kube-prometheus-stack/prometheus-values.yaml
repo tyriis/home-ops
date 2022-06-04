@@ -108,6 +108,12 @@ prometheus:
               - esphome-sensor-stairs.home
             labels:
               device: sensor-stairs
+      - job_name: esphome-sensor-kitchen
+        static_configs:
+          - targets:
+              - esphome-sensor-kitchen.home
+            labels:
+              device: sensor-kitchen
       # - job_name: ohm-exporter
       #   scrape_interval: 15s
       #   static_configs:
