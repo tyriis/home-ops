@@ -120,6 +120,18 @@ prometheus:
               - esphome-sensor-office.home
             labels:
               device: sensor-office
+      - job_name: esphome-sensor-basement
+        static_configs:
+          - targets:
+              - esphome-sensor-basement.home
+            labels:
+              device: sensor-basement
+      - job_name: esphome-sensor-heating
+        static_configs:
+          - targets:
+              - esphome-sensor-heating.home
+            labels:
+              device: sensor-heating
       # - job_name: ohm-exporter
       #   scrape_interval: 15s
       #   static_configs:
