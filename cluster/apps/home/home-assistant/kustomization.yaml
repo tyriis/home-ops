@@ -8,4 +8,4 @@ resources:
   - persistent-volume-claim.yaml
   - helm-release.yaml
   - stackgres-instance-profile.yaml
-  # - stackgres-cluster.yaml
+  - stackgres-cluster.yaml
