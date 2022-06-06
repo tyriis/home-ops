@@ -3,5 +3,5 @@ kind: SGInstanceProfile
 metadata:
   name: size-xxl
 spec:
-  cpu: 8
+  cpu: 8000m
   memory: 32Gi
