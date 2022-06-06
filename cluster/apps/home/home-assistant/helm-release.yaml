@@ -81,6 +81,7 @@ spec:
     postgresql:
       enabled: true
       auth:
+        postgresPassword: ${SECRET_HASS_DB_PASSWORD}
         username: ${SECRET_HASS_DB_USERNAME}
         password: ${SECRET_HASS_DB_PASSWORD}
         database: ${SECRET_HASS_DB_NAME}
