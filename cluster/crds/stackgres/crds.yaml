@@ -2,7 +2,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
-  name: kube-prometheus-stack-source
+  name: stackgres-source
   namespace: flux-system
 spec:
   interval: 30m
