@@ -27,3 +27,4 @@ resources:
   - stakater.github.io.yaml
   - weaveworks.github.io_kured.yaml
   - charts.fairwinds.com.yaml
+  - stackgres.io.yaml
