@@ -15,8 +15,9 @@ spec:
   prometheusAutobind: true
   initialData:
     scripts:
+    - name: create-user
+      script: |
+        create user ${SECRET_HASS_DB_USERNAME} password '${SECRET_HASS_DB_PASSWORD}';
     - name: create-database
       script: |
-        set AUTOCOMMIT on
-        create user ${SECRET_HASS_DB_USERNAME} password '${SECRET_HASS_DB_PASSWORD}';
         create database ${SECRET_HASS_DB_NAME} owner ${SECRET_HASS_DB_USERNAME};
