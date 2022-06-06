@@ -11,7 +11,7 @@ spec:
     persistentVolume:
       size: 10Gi
       storageClass: longhorn
-  sgInstanceProfile: size-s
+  sgInstanceProfile: size-l
   prometheusAutobind: true
   initialData:
     scripts:
