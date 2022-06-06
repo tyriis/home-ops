@@ -13,3 +13,9 @@ spec:
       storageClass: longhorn
   # sgInstanceProfile: 'size-xs'
   prometheusAutobind: true
+  initialData:
+    scripts:
+    - name: create-database
+      script: |
+        create user ${SECRET_HASS_DB_USERNAME} password '${SECRET_HASS_DB_PASWORD}';
+        create database ${SECRET_HASS_DB_NAME} owner ${SECRET_HASS_DB_USERNAME};
