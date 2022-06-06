@@ -1,0 +1,14 @@
+apiVersion: stackgres.io/v1beta1
+kind: SGCluster
+metadata:
+  name: home-assistant
+  namespace: home
+spec:
+  instances: 1
+  postgresVersion: 'latest'
+  pods:
+    persistentVolume:
+      size: 10Gi
+      storageClass: longhorn
+  sgInstanceProfile: 'size-xs'
+  prometheusAutobind: true
