@@ -1,0 +1,7 @@
+apiVersion: stackgres.io/v1
+kind: SGInstanceProfile
+metadata:
+  name: size-xl
+spec:
+  cpu: 6
+  memory: 16Gi
