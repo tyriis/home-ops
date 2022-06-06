@@ -79,7 +79,7 @@ spec:
         cpu: 4000m
 
     postgresql:
-      enabled: true
+      enabled: false
       auth:
         postgresPassword: ${SECRET_HASS_DB_PASSWORD}
         username: ${SECRET_HASS_DB_USERNAME}
