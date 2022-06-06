@@ -2,7 +2,7 @@ apiVersion: stackgres.io/v1
 kind: SGInstanceProfile
 metadata:
   name: size-l
-  namespace: stackgres
+  namespace: database
 spec:
   cpu: 4000m
   memory: 8Gi
