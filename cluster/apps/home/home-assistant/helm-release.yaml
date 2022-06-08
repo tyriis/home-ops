@@ -12,7 +12,7 @@ spec:
   chart:
     spec:
       chart: home-assistant
-      version: 13.1.2
+      version: 13.2.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -20,7 +20,7 @@ spec:
   values:
     image:
       repository: ghcr.io/home-assistant/home-assistant
-      tag: 2022.4.7
+      tag: 2022.6.4
     env:
       TZ: ${CONFIG_TZ}
     hostNetwork: true
@@ -79,10 +79,12 @@ spec:
         cpu: 4000m
 
     postgresql:
-      enabled: true
-      postgresqlUsername: ${SECRET_HASS_DB_USERNAME}
-      postgresqlPassword: ${SECRET_HASS_DB_PASSWORD}
-      postgresqlDatabase: ${SECRET_HASS_DB_NAME}
+      enabled: false
+      auth:
+        postgresPassword: ${SECRET_HASS_DB_PASSWORD}
+        username: ${SECRET_HASS_DB_USERNAME}
+        password: ${SECRET_HASS_DB_PASSWORD}
+        database: ${SECRET_HASS_DB_NAME}
       persistence:
         enabled: true
         storageClass: longhorn

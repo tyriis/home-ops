@@ -23,6 +23,7 @@ resources:
   - home/zigbee2mqtt
   - home/zigbee2mqtt-bridge2
   - home/node-red
+  - database/stackgres
   - home/home-assistant
   - home/esphome
   - home/aircon
@@ -34,6 +35,5 @@ resources:
   # - secops/vault-secrets-operator
   - gaming/minecraft-bedrock
   - networking/unifi
-  # - kasten-io/k10
   # - gaming/minecraft-java
   # - observability/goldilocks # disabled, see #128

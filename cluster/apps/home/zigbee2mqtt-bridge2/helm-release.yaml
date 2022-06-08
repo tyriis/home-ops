@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: zigbee2mqtt
-      version: 9.3.1
+      version: 9.3.2
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -17,7 +17,7 @@ spec:
   values:
     image:
       repository: ghcr.io/koenkk/zigbee2mqtt
-      tag: 1.25.1
+      tag: 1.25.2
 
     persistence:
       data:
