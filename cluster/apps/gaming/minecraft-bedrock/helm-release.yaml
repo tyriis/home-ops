@@ -16,8 +16,10 @@ spec:
         name: minecraft-server-charts
         namespace: flux-system
   values:
-    image: itzg/minecraft-bedrock-server
-    imageTag: latest
+    image:
+      repository: itzg/minecraft-bedrock-server
+      tag: latest
+      pullPolicy: always
 
     extraEnv:
       TZ: ${SETTING_TZ}
