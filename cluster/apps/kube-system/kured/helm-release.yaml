@@ -15,8 +15,6 @@ spec:
         name: kured-charts
         namespace: flux-system
   values:
-    image:
-      repository: raspbernetes/kured
     updateStrategy: RollingUpdate
     configuration:
       timeZone: ${SETTING_TZ}
