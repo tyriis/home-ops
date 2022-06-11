@@ -1,0 +1,64 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: vaultwarden
+  namespace: secops
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: vaultwarden
+      version: 0.20.1
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+  values:
+    ingress:
+      main:
+        enabled: false
+        hosts:
+          - host: chart-example.local
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  port: http
+              - path: /notifications/hub/negotiate
+                pathType: Prefix
+                service:
+                  port: http
+              - path: /notifications/hub
+                pathType: Prefix
+                service:
+                  port: websocket
+
+    # -- Configure persistence settings for the chart under this key.
+    # @default -- See values.yaml
+    persistence:
+      config:
+        enabled: false
+
+    # https://github.com/bitnami/charts/tree/master/bitnami/mariadb/#installing-the-chart
+    mariadb:
+      enabled: false
+      # primary:
+      #   persistence:
+      #     enabled: true
+      # auth:
+      #   username: "username"
+      #   password: "password"
+      #   database: database
+
+    # https://github.com/bitnami/charts/tree/master/bitnami/postgresql/#installing-the-chart
+    postgresql:
+      enabled: false
+      # postgresqlUsername: ""
+      # postgresqlPassword: ""
+      # postgresqlDatabase: ""
+      # persistence:
+      #   enabled: true
+      #   storageClass:
+      #   accessModes:
+      #     - ReadWriteOnce

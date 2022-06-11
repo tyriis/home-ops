@@ -175,7 +175,7 @@ example:
 [terraform-url]: https://github.com/hashicorp/terraform/releases
 [terraform-shield]: https://img.shields.io/badge/terraform-1.x-844fba?style=for-the-badge&logo=terraform
 [k3s-url]: https://k3s.io/
-[k3s-shield]: https://img.shields.io/badge/k3s-v1.23.4-ffc61c?style=for-the-badge&logo=kubernetes&logoColor=white
+[k3s-shield]: https://img.shields.io/badge/k3s-v1.23.6-ffc61c?style=for-the-badge&logo=kubernetes&logoColor=white
 [pre-commit-url]: https://github.com/pre-commit/pre-commit
 [pre-commit-shield]: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white&style=for-the-badge
 [renovate-dashboard-url]: https://app.renovatebot.com/dashboard#github/tyriis/flux.k3s.cluster

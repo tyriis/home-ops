@@ -10,7 +10,7 @@ metadata:
     k3s-upgrade: server
 spec:
   concurrency: 1 # Batch size (roughly maps to maximum number of unschedulable nodes)
-  channel: https://update.k3s.io/v1-release/channels/v1.23
+  version: v1.23.6-k3s1
   nodeSelector:
     matchExpressions:
       - key: plan.upgrade.cattle.io/k3s
@@ -42,7 +42,7 @@ metadata:
     k3s-upgrade: agent
 spec:
   concurrency: 1 # Batch size (roughly maps to maximum number of unschedulable nodes)
-  channel: https://update.k3s.io/v1-release/channels/v1.23
+  version: v1.23.6-k3s1
   nodeSelector:
     matchExpressions:
       - key: plan.upgrade.cattle.io/k3s
