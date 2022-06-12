@@ -40,9 +40,9 @@ spec:
       version: "1.19.1.01"
       difficulty: easy
       gameMode: survival
-      levelSeed: ""
+      levelSeed: "-5459743611627998839"
       ops: "2535405985178539"
-      levelName: "2022-03-27_survival"
+      levelName: "2022-06-12_survival"
       maxThreads: 0 # Maximum number of threads the server tries to use. If set to 0 or removed then it uses as many as possible.
       cheats: true
       serverName: "home"
