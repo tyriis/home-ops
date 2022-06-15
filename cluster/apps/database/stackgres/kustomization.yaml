@@ -5,3 +5,4 @@ resources:
   - helm-release.yaml
   - instance-profiles
   - prometheus-rule.yaml
+  - ingress.yaml
