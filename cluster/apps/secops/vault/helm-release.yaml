@@ -55,7 +55,6 @@ spec:
           memory: 128Mi
           cpu: 500m
       standalone:
-        enabled: true
         config: |
           ui = true
           storage "file" {
@@ -82,9 +81,7 @@ spec:
             disable_hostname = true
           }
           service_registration "kubernetes" {}
-    ha:
-      enabled: false
     ui:
       enabled: true
-    csi:
-      enabled: true
+    # csi:
+    #   enabled: true
