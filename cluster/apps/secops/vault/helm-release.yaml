@@ -40,10 +40,10 @@ spec:
               - vault.${SECRET_DOMAIN}
       dataStorage:
         enabled: true
-        storageClass: local-path
+        storageClass: longhorn
       auditStorage:
         enabled: true
-        storageClass: local-path
+        storageClass: longhorn
       extraEnvironmentVars:
         VAULT_TOKEN: ${SECRET_VAULT_TOKEN}
         TZ: ${SETTING_TZ}
@@ -55,87 +55,34 @@ spec:
           memory: 128Mi
           cpu: 500m
       standalone:
-        enabled: false
-      tolerations:
-        # this toleration is to have the statefullset runnable on master nodes
-        - key: node-role.kubernetes.io/master
-          operator: Exists
-          effect: NoSchedule
-      nodeSelector:
-        kubernetes.io/arch: arm64
-
-      ha:
         enabled: true
-        replicas: 1
-        raft:
-          enabled: true
-          setNodeId: true
-          config: |
-            disable_mlock = true
-            ui = true
-
-            seal "transit" {
-              address = "${SECRET_VAULT_URL}"
-              token = "${SECRET_VAULT_TOKEN}"
-              disable_renewal = "false"
-              key_name = "autounseal"
-              mount_path = "transit/"
-              tls_skip_verify = "true"
-            }
-
-            storage "raft" {
-              path = "/vault/data"
-
-              retry_join {
-                leader_api_addr = "http://vault-0.vault-internal:8200"
-                # leader_ca_cert_file = "/vault/userconfig/tls-ca/ca.crt"
-                # leader_client_cert_file = "/vault/userconfig/tls-server/server.crt"
-                # leader_client_key_file = "/vault/userconfig/tls-server/server.key"
-                # tls_disable = 1
-              }
-
-              # retry_join {
-              #   leader_api_addr = "http://vault-1.vault-internal:8200"
-              #   # leader_ca_cert_file = "/vault/userconfig/tls-ca/ca.crt"
-              #   # leader_client_cert_file = "/vault/userconfig/tls-server/server.crt"
-              #   # leader_client_key_file = "/vault/userconfig/tls-server/server.key"
-              #   # tls_disable = 1
-              # }
-
-              # retry_join {
-              #   leader_api_addr = "http://vault-2.vault-internal:8200"
-              #   # leader_ca_cert_file = "/vault/userconfig/tls-ca/ca.crt"
-              #   # leader_client_cert_file = "/vault/userconfig/tls-server/server.crt"
-              #   # leader_client_key_file = "/vault/userconfig/tls-server/server.key"
-              #   # tls_disable = 1
-              # }
-
-              autopilot {
-                cleanup_dead_servers = "true"
-                last_contact_threshold = "200ms"
-                last_contact_failure_threshold = "10m"
-                max_trailing_logs = 250
-                min_quorum = 5
-                server_stabilization_time = "15s"
-              }
-            }
-
-            listener "tcp" {
-              tls_disable = 1
-              address = "[::]:8200"
-              cluster_address = "[::]:8201"
-              telemetry {
-                unauthenticated_metrics_access = "true"
-              }
-            }
-
+        config: |
+          ui = true
+          storage "file" {
+            path = "/vault/data"
+          }
+          seal "transit" {
+            address = "${SECRET_VAULT_URL}"
+            token = "${SECRET_VAULT_TOKEN}"
+            disable_renewal = "false"
+            key_name = "autounseal"
+            mount_path = "transit/"
+            tls_skip_verify = "true"
+          }
+          listener "tcp" {
+            tls_disable = 1
+            address = "[::]:8200"
+            cluster_address = "[::]:8201"
             telemetry {
-              prometheus_retention_time = "24h",
-              disable_hostname = true
+              unauthenticated_metrics_access = "true"
             }
-
-            service_registration "kubernetes" {}
+          }
+          telemetry {
+            prometheus_retention_time = "24h",
+            disable_hostname = true
+          }
+          service_registration "kubernetes" {}
     ui:
       enabled: true
-    # csi:
-    #   enabled: true
+    csi:
+      enabled: true

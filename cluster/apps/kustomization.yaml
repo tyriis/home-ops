@@ -31,7 +31,7 @@ resources:
   - authentik-system/authentik
   - observability/mqtt-exporter
   - networking/blocky
-  # - secops/vault # disabled, see #154
+  - secops/vault
   # - secops/vault-secrets-operator
   - gaming/minecraft-bedrock
   - networking/unifi
