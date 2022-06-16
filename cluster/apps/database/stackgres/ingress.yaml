@@ -28,6 +28,6 @@ spec:
                   name: https
 
   tls:
-    - secretName: stackgres-cert
+    - secretName: stackgres-tls
       hosts:
         - "stackgres.${SECRET_DOMAIN}"
