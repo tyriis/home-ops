@@ -82,6 +82,8 @@ spec:
             disable_hostname = true
           }
           service_registration "kubernetes" {}
+    ha:
+      enabled: false
     ui:
       enabled: true
     csi:
