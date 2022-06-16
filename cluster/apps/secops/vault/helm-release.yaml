@@ -15,11 +15,10 @@ spec:
         name: hashicorp-charts
         namespace: flux-system
   values:
-    updateStrategyType: RollingUpdate
     metrics:
       enabled: true
     service:
-      enabled: false
+      enabled: true
     server:
       extraLabels:
         configmap.reloader.stakater.com/reload: vault-config
@@ -82,7 +81,7 @@ spec:
             prometheus_retention_time = "24h",
             disable_hostname = true
           }
-          service_registration "kubernetes" {}
+          # service_registration "kubernetes" {}
     ui:
       enabled: true
     # csi:
