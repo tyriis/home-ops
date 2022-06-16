@@ -18,6 +18,8 @@ spec:
     updateStrategyType: RollingUpdate
     metrics:
       enabled: true
+    service:
+      enabled: false
     server:
       extraLabels:
         configmap.reloader.stakater.com/reload: vault-config
