@@ -84,5 +84,5 @@ spec:
           # service_registration "kubernetes" {}
     ui:
       enabled: true
-    # csi:
-    #   enabled: true
+    csi:
+      enabled: true
