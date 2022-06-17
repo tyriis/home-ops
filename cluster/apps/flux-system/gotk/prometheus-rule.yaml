@@ -18,11 +18,11 @@ spec:
           labels:
             severity: warning
           annotations:
-            summary: '{{ $labels.kind }} {{ $labels.exported_namespace }}/{{ $labels.name }} reconciliation has been failing for more than ten minutes.'
+            summary: "{{ $labels.kind }} {{ $labels.exported_namespace }}/{{ $labels.name }} reconciliation has been failing for more than ten minutes."
         - alert: ReconcilatonSuspended
           expr: max(gotk_suspend_status) by (exported_namespace, kind, name) >= 1
           for: 15m
           labels:
             severity: warning
           annotations:
-            summary: '{{ $labels.kind }} {{ $labels.exported_namespace }}/{{ $labels.name }} reconciliation has been suspended for more than fifteen minutes.'
+            summary: "{{ $labels.kind }} {{ $labels.exported_namespace }}/{{ $labels.name }} reconciliation has been suspended for more than fifteen minutes."

@@ -16,4 +16,4 @@ spec:
   interval: 5m
   releaseName: snapshot-controller
   # values:
-    # https://artifacthub.io/packages/helm/piraeus-charts/snapshot-controller
+  # https://artifacthub.io/packages/helm/piraeus-charts/snapshot-controller

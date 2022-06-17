@@ -42,8 +42,8 @@ spec:
   cron: "0 5 * * *"
   task: snapshot
   groups:
-  - SlowLowPriorityLowCriticality
-  - SlowLowPriorityHighCriticality
+    - SlowLowPriorityLowCriticality
+    - SlowLowPriorityHighCriticality
   retain: 2
   concurrency: 5
   labels:
@@ -58,8 +58,8 @@ spec:
   cron: "45 6 * * *"
   task: backup
   groups:
-  - SlowMediumPriorityLowCriticality
-  - SlowMediumPriorityHighCriticality
+    - SlowMediumPriorityLowCriticality
+    - SlowMediumPriorityHighCriticality
   retain: 1
   concurrency: 5
   labels:
@@ -74,8 +74,8 @@ spec:
   cron: "50 0/6 * * *"
   task: snapshot
   groups:
-  - SlowMediumPriorityHighCriticality
-  - SlowHighPriorityHighCriticality
+    - SlowMediumPriorityHighCriticality
+    - SlowHighPriorityHighCriticality
   retain: 4
   concurrency: 5
   labels:
@@ -90,8 +90,8 @@ spec:
   cron: "40 4 * * *"
   task: backup
   groups:
-  - SlowHighPriorityLowCriticality
-  - SlowHighPriorityHighCriticality
+    - SlowHighPriorityLowCriticality
+    - SlowHighPriorityHighCriticality
   retain: 7
   concurrency: 5
   labels:
@@ -106,9 +106,9 @@ spec:
   cron: "20 * * * *"
   task: snapshot
   groups:
-  - FastLowPriorityLowCriticality
-  - FastLowPriorityHighCriticality
-  - FastMediumPriorityHighCriticality
+    - FastLowPriorityLowCriticality
+    - FastLowPriorityHighCriticality
+    - FastMediumPriorityHighCriticality
   retain: 6
   concurrency: 5
   labels:
@@ -123,8 +123,8 @@ spec:
   cron: "15 1/2 * * *"
   task: backup
   groups:
-  - FastMediumPriorityLowCriticality
-  - FastMediumPriorityHighCriticality
+    - FastMediumPriorityLowCriticality
+    - FastMediumPriorityHighCriticality
   retain: 1
   concurrency: 5
   labels:
@@ -139,8 +139,8 @@ spec:
   cron: "10 * * * *"
   task: backup
   groups:
-  - FastHighPriorityLowCriticality
-  - FastHighPriorityHighCriticality
+    - FastHighPriorityLowCriticality
+    - FastHighPriorityHighCriticality
   retain: 6
   concurrency: 5
   labels:
@@ -155,7 +155,7 @@ spec:
   cron: "0/10 * * * *"
   task: snapshot
   groups:
-  - FastHighPriorityHighCriticality
+    - FastHighPriorityHighCriticality
   retain: 6
   concurrency: 5
   labels:

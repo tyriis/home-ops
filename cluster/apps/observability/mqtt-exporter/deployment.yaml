@@ -26,7 +26,7 @@ spec:
       containers:
         - name: mqtt-exporter
           image: kpetrem/mqtt-exporter:latest
-          imagePullPolicy: Always  # use always cause of latest :/
+          imagePullPolicy: Always # use always cause of latest :/
           ports:
             - containerPort: 9000
               name: http

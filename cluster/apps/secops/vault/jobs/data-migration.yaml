@@ -56,7 +56,7 @@ spec:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  namespace: secops  # namespace where the pvc's exist
+  namespace: secops # namespace where the pvc's exist
   name: volume-migration
   labels:
     app.kubernetes.io/name: vault
