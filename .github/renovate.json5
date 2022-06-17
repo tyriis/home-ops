@@ -103,32 +103,36 @@
     {
       matchDatasources: ["docker"],
       matchUpdateTypes: ["major"],
-      labels: ["renovate/image", "dep/major"],
+      labels: ["renovate/image", "major"],
     },
     {
       matchDatasources: ["docker"],
       matchUpdateTypes: ["minor"],
-      labels: ["renovate/image", "dep/minor"],
+      labels: ["renovate/image", "minor"],
+      automerge: true,
     },
     {
       matchDatasources: ["docker"],
       matchUpdateTypes: ["patch"],
-      labels: ["renovate/image", "dep/patch"],
+      labels: ["renovate/image", "patch"],
+      automerge: true,
     },
     {
       matchDatasources: ["helm"],
       matchUpdateTypes: ["major"],
-      labels: ["renovate/helm", "dep/major"],
+      labels: ["helm", "major"],
     },
     {
       matchDatasources: ["helm"],
       matchUpdateTypes: ["minor"],
-      labels: ["renovate/helm", "dep/minor"],
+      labels: ["helm", "minor"],
+      automerge: true,
     },
     {
       matchDatasources: ["helm"],
       matchUpdateTypes: ["patch"],
-      labels: ["renovate/helm", "dep/patch"],
+      labels: ["helm", "patch"],
+      automerge: true,
     },
   ],
 }
