@@ -9,7 +9,7 @@ spec:
   url: https://github.com/ongres/stackgres.git
   ref:
     # renovate: registryUrl=https://stackgres.io/downloads/stackgres-k8s/stackgres/helm/ chart=stackgres-operator
-    tag: 1.2.1
+    tag: 1.2.0
   ignore: |
     # exclude all
     /*
