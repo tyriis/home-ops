@@ -33,6 +33,7 @@ spec:
           - observability
           - secops
           - authentik-system
+          - database
       name: sunshine
       customApps:
         - name: OPNsense
