@@ -1,4 +1,5 @@
 ---
+# no longer in use as versioning was not alligned with helm chart
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:

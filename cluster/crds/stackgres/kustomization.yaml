@@ -2,4 +2,12 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - crds.yaml
+  - https://raw.githubusercontent.com/ongres/stackgres/1.2.0/stackgres-k8s/src/common/src/main/resources/crds/SGBackup.yaml
+  - https://raw.githubusercontent.com/ongres/stackgres/1.2.0/stackgres-k8s/src/common/src/main/resources/crds/SGBackupConfig.yaml
+  - https://raw.githubusercontent.com/ongres/stackgres/1.2.0/stackgres-k8s/src/common/src/main/resources/crds/SGCluster.yaml
+  - https://raw.githubusercontent.com/ongres/stackgres/1.2.0/stackgres-k8s/src/common/src/main/resources/crds/SGDbOps.yaml
+  - https://raw.githubusercontent.com/ongres/stackgres/1.2.0/stackgres-k8s/src/common/src/main/resources/crds/SGDistributedLogs.yaml
+  - https://raw.githubusercontent.com/ongres/stackgres/1.2.0/stackgres-k8s/src/common/src/main/resources/crds/SGInstanceProfile.yaml
+  - https://raw.githubusercontent.com/ongres/stackgres/1.2.0/stackgres-k8s/src/common/src/main/resources/crds/SGObjectStorage.yaml
+  - https://raw.githubusercontent.com/ongres/stackgres/1.2.0/stackgres-k8s/src/common/src/main/resources/crds/SGPoolingConfig.yaml
+  - https://raw.githubusercontent.com/ongres/stackgres/1.2.0/stackgres-k8s/src/common/src/main/resources/crds/SGPostgresConfig.yaml
