@@ -123,6 +123,7 @@ resource "github_repository" "main" {
   delete_branch_on_merge = true
   has_projects           = true
   has_wiki               = true
+  topics                 = ["flux", "gitops", "k8s-at-home", "kubernetes", "terraform"]
   // auto_init              = true
 }
 
