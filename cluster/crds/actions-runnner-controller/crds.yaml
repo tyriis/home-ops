@@ -1,26 +1,25 @@
 ---
-# no longer in use as versioning was not alligned with helm chart
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
-  name: stackgres-source
+  name: actions-runner-controller-source
   namespace: flux-system
 spec:
   interval: 30m
-  url: https://github.com/ongres/stackgres.git
+  url: https://github.com/actions-runner-controller/actions-runner-controller.git
   ref:
-    # renovate: registryUrl=https://stackgres.io/downloads/stackgres-k8s/stackgres/helm/ chart=stackgres-operator
-    tag: 1.2.1
+    # renovate: registryUrl=https://actions-runner-controller.github.io/actions-runner-controller
+    tag: actions-runner-controller-0.19.1
   ignore: |
     # exclude all
     /*
     # include deploy crds dir
-    !/stackgres-k8s/src/common/src/main/resources/crds/
+    !/charts/actions-runner-controller/crds
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: stackgres-crds
+  name: actions-runner-controller-crds
   namespace: flux-system
 spec:
   interval: 15m
@@ -28,4 +27,4 @@ spec:
   wait: true
   sourceRef:
     kind: GitRepository
-    name: stackgres-source
+    name: actions-runner-controller-source

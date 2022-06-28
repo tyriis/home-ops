@@ -61,15 +61,6 @@
       datasourceTemplate: "helm",
       depTypeTemplate: "helm",
     },
-    {
-      description: "regexManager to read and process StackGres CRD's",
-      fileMatch: ["cluster/crds/stackgres/.+\\.yaml$"],
-      matchStrings: [
-        "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n *tag: (?<currentValue>.*)\n",
-      ],
-      datasourceTemplate: "helm",
-      depTypeTemplate: "helm",
-    },
     // {
     //   description: "regexManager to read and process system-upgrade-controller CRD's",
     //   fileMatch: ["cluster/crds/system-upgrade-controller/.+\\.yaml$"],
@@ -81,6 +72,15 @@
     {
       description: "regexManager to read and process kube-prometheus-stack CRDs",
       fileMatch: ["cluster/crds/kube-prometheus-stack/.+\\.yaml$"],
+      matchStrings: [
+        "registryUrl=(?<registryUrl>.*?)\n *tag: (?<depName>[a-zA-Z-]+)-(?<currentValue>.*)\n",
+      ],
+      datasourceTemplate: "helm",
+      depTypeTemplate: "helm",
+    },
+        {
+      description: "regexManager to read and process actions-runner-controller CRDs",
+      fileMatch: ["cluster/crds/actions-runner-controller/.+\\.yaml$"],
       matchStrings: [
         "registryUrl=(?<registryUrl>.*?)\n *tag: (?<depName>[a-zA-Z-]+)-(?<currentValue>.*)\n",
       ],
