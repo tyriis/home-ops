@@ -32,6 +32,9 @@ spec:
       repository: summerwind/actions-runner-controller
       tag: v0.24.1
 
+    podAnnotations:
+      secret.reloader.stakater.com/reload: actions-runner-controller-auth
+
     authSecret:
       create: false
       name: actions-runner-controller-auth
