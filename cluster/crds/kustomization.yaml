@@ -9,4 +9,3 @@ resources:
   - vault-secrets-operator
   - snapshot-controller
   - stackgres
-  - actions-runner-controller

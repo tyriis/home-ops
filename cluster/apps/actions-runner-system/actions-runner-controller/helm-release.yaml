@@ -14,6 +14,16 @@ spec:
         kind: HelmRepository
         name: actions-runner-controller-charts
         namespace: flux-system
+  install:
+    crds: CreateReplace
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    crds: CreateReplace
+    remediation:
+      retries: 5
+
   values:
     env:
       TZ: ${SETTING_TZ}
@@ -21,3 +31,19 @@ spec:
     image:
       repository: summerwind/actions-runner-controller
       tag: v0.24.1
+
+    authSecret:
+      create: false
+      name: actions-runner-controller-auth
+
+    resources:
+      requests:
+        memory: 64Mi
+      limits:
+        memory: 128Mi
+
+    metrics:
+      serviceMonitor: true
+
+    githubWebhookServer:
+      enabled: false
