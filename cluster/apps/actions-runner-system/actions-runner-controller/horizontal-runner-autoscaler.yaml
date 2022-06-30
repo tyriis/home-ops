@@ -1,0 +1,15 @@
+---
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: HorizontalRunnerAutoscaler
+metadata:
+  name: ${SECRET_GH_ORGANIZATION}-runner
+spec:
+  scaleDownDelaySecondsAfterScaleOut: 300
+  minReplicas: 1
+  maxReplicas: 5
+  scaleTargetRef:
+    name: ${SECRET_GH_ORGANIZATION}-runner
+    # Uncomment the below in case the target is not RunnerDeployment but RunnerSet
+    #kind: RunnerSet
+  metrics:
+  - type: TotalNumberOfQueuedAndInProgressWorkflowRuns

@@ -5,3 +5,4 @@ resources:
   - secret.sops.yaml
   - helm-release.yaml
   - runner-deployment.yaml
+  - horizontal-runner-autoscaler.yaml
