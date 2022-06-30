@@ -13,4 +13,8 @@ spec:
     # Uncomment the below in case the target is not RunnerDeployment but RunnerSet
     #kind: RunnerSet
   metrics:
-  - type: TotalNumberOfQueuedAndInProgressWorkflowRuns
+    - type: PercentageRunnersBusy
+      scaleUpThreshold: '0.75'    # The percentage of busy runners at which the number of desired runners are re-evaluated to scale up
+      scaleDownThreshold: '0.3'   # The percentage of busy runners at which the number of desired runners are re-evaluated to scale down
+      scaleUpAdjustment: 2        # The scale up runner count added to desired count
+      scaleDownAdjustment: 1      # The scale down runner count subtracted from the desired count
