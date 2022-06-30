@@ -6,8 +6,11 @@ metadata:
   name: ${SECRET_GH_ORGANIZATION}-runner
   namespace: actions-runner-system
 spec:
-  organization: ${SECRET_GH_ORGANIZATION}
-  labels:
-    - ${SETTING_CLUSTERNAME}
-    - home-infra
-  env: []
+  replicas: 2
+  template:
+    spec:
+      organization: ${SECRET_GH_ORGANIZATION}
+      labels:
+        - ${SETTING_CLUSTERNAME}
+        - home-infra
+      env: []
