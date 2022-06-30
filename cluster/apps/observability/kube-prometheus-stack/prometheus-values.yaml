@@ -177,6 +177,20 @@ prometheus:
               - esphome-switch-bedroom.home
             labels:
               device: switch-bedroom
+      # homeassistant
+      - job_name: homeassistant
+        scrape_interval: 60s
+        metrics_path: /api/prometheus
+
+        # Long-Lived Access Token
+        authorization:
+          credentials: ${SECRET_HASS_API_TOKEN}
+
+        scheme: https
+        static_configs:
+          - targets:
+              - hass.${SECRET_DOMAIN}
+
       # - job_name: ohm-exporter
       #   scrape_interval: 15s
       #   static_configs:
