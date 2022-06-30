@@ -36,5 +36,6 @@ resources:
   - gaming/minecraft-bedrock
   - networking/unifi
   - actions-runner-system/actions-runner-controller
+  - actions-runner-system/organization
   # - gaming/minecraft-java
   # - observability/goldilocks # disabled, see #128
