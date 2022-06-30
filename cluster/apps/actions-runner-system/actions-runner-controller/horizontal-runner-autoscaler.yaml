@@ -3,7 +3,7 @@ apiVersion: actions.summerwind.dev/v1alpha1
 kind: HorizontalRunnerAutoscaler
 metadata:
   name: ${SECRET_GH_ORGANIZATION}-runner
-  namespace: actions-runnner-system
+  namespace: actions-runner-system
 spec:
   scaleDownDelaySecondsAfterScaleOut: 300
   minReplicas: 1
