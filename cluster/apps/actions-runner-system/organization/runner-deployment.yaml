@@ -6,7 +6,7 @@ metadata:
   name: ${SECRET_GH_ORGANIZATION}-runner
   namespace: actions-runner-system
 spec:
-  replicas: 2
+  # replicas: 1
   template:
     spec:
       organization: ${SECRET_GH_ORGANIZATION}
