@@ -6,7 +6,7 @@ metadata:
 spec:
   baseBackups:
     retention: 5
-    cronSchedule: 21 15 * * *
+    cronSchedule: 0 5 * * *
     compression: lz4
     performance:
       maxDiskBandwitdh: 26214400 #25 MB per seceod
