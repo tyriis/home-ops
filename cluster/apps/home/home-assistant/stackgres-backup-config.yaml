@@ -6,16 +6,16 @@ metadata:
 spec:
   baseBackups:
     retention: 5
-    cronSchedule: 20 20 * * *
+    cronSchedule: 20 40 * * *
     compression: lz4
     performance:
       maxDiskBandwitdh: 26214400 #25 MB per seceod
       maxNetworkBandwitdh: 52428800 #50 MB per second
-      uploadDiskConcurrency: 2
+      uploadDiskConcurrency: 1
   storage:
     type: s3Compatible
     s3Compatible:
-      bucket: backup/stackgres
+      bucket: stackgres-backups
       region: home
       enablePathStyleAddressing: true
       endpoint: ${SECRET_MINIO_URL}
