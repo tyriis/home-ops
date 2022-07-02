@@ -2,9 +2,12 @@
 apiVersion: stackgres.io/v1
 kind: SGDbOps
 metadata:
-  name: minorVersionUpgrade
+  name: minor-version-upgrade
   namespace: home
 spec:
   sgCluster: home-assistant-db
   op: minorVersionUpgrade
   maxRetries: 1
+  minorVersionUpgrade:
+    method: ReducedImpact
+    postgresVersion: "14.4"
