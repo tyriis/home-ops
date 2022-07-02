@@ -14,8 +14,9 @@ spec:
   sgInstanceProfile: size-l
   prometheusAutobind: true
   configurations:
-    sgBackupConfig: backup-config
-    sgPostgresConfig: postgres-config
+    sgBackupConfig: home-assistant-db
+    sgPostgresConfig: home-assistant-db
+    sgPoolingConfig: home-assistant-db
   initialData:
     scripts:
       - name: create-user

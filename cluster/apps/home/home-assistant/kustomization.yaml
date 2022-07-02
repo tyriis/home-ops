@@ -11,5 +11,6 @@ resources:
   - stackgres-instance-profile.yaml
   - stackgres-postgres-config.yaml
   - stackgres-backup-config.yaml
+  - stackgres-pooling-config.yaml
   # - stackgres-cluster.yaml
   # - stackgres-ops.yaml

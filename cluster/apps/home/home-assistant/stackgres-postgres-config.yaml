@@ -2,7 +2,7 @@
 apiVersion: stackgres.io/v1
 kind: SGPostgresConfig
 metadata:
-  name: postgres-config
+  name: home-assistant-db
   namespace: home
 spec:
   postgresVersion: "14"
