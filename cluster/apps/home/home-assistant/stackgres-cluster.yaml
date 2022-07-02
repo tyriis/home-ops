@@ -15,6 +15,7 @@ spec:
   prometheusAutobind: true
   configurations:
     sgBackupConfig: backup-config
+    sgPostgresConfig: postgres-config
   initialData:
     scripts:
       - name: create-user
