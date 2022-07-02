@@ -7,8 +7,8 @@ resources:
   - persistent-volume.yaml
   - persistent-volume-claim.yaml
   - helm-release.yaml
-  - stackgres-instance-profile.yaml
-  - stackgres-cluster.yaml
   - minio-credentials.sops.yaml
+  - stackgres-instance-profile.yaml
   - stackgres-backup-config.yaml
+  - stackgres-cluster.yaml
   - stackgres-ops.yaml

@@ -13,6 +13,7 @@ spec:
       storageClass: longhorn
   sgInstanceProfile: size-l
   prometheusAutobind: true
+  sgBackupConfig: backup-config
   initialData:
     scripts:
       - name: create-user
