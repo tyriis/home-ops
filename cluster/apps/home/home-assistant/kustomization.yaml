@@ -11,3 +11,4 @@ resources:
   - stackgres-cluster.yaml
   - minio-credentials.sops.yaml
   - stackgres-backup-config.yaml
+  - stackgres-ops.yaml
