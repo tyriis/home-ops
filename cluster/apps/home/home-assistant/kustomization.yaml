@@ -9,3 +9,5 @@ resources:
   - helm-release.yaml
   - stackgres-instance-profile.yaml
   - stackgres-cluster.yaml
+  - minio-credentials.sops.yaml
+  - stackgres-backup-config.yaml
