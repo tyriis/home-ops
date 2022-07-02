@@ -9,5 +9,5 @@ spec:
   op: minorVersionUpgrade
   maxRetries: 1
   minorVersionUpgrade:
-    method: ReducedImpact
+    method: InPlace
     postgresVersion: "14.4"
