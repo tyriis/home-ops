@@ -2,7 +2,7 @@
 apiVersion: stackgres.io/v1
 kind: SGDbOps
 metadata:
-  name: minor-version-upgrade-14-4
+  name: minor-upgrade-14-4
   namespace: home
 spec:
   sgCluster: home-assistant-db
