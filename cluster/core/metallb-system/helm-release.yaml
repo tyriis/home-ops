@@ -21,11 +21,11 @@ spec:
     remediation:
       retries: 3
   values:
-    prometheus:
-      podMonitor:
-        enabled: true
-      prometheusRule:
-        enabled: true
+    # prometheus:
+    #   podMonitor:
+    #     enabled: true
+    #   prometheusRule:
+    #     enabled: true
     controller:
       logLevel: error
     crds:
