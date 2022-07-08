@@ -3,6 +3,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - flux-system/gotk
+  - metallb-system/crds
   - kube-system/metrics-server
   - kube-system/node-feature-discovery
   - kube-system/reflector
