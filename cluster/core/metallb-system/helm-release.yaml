@@ -14,10 +14,19 @@ spec:
         kind: HelmRepository
         name: metallb-charts
         namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
   values:
-    configInline:
-      address-pools:
-        - name: default
-          protocol: layer2
-          addresses:
-            - "${SETTING_METALLB_LB_RANGE}"
+    prometheus:
+      podMonitor:
+        enabled: true
+      prometheusRule:
+        enabled: true
+    controller:
+      logLevel: error
+    crds:
+      enabled: true
