@@ -5,3 +5,4 @@ resources:
   - persistent-volume-claim.yaml
   - helm-release.yaml
   - pod-monitor.yaml
+  - prometheus-rule.yaml
