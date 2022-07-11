@@ -17,3 +17,5 @@ spec:
       app.kubernetes.io/instance: zigbee2mqtt
   podMetricsEndpoints:
     - port: http-prom
+      interval: 5m
+      scrapeTimeout: 15s
