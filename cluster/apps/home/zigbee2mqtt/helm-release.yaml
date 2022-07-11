@@ -21,7 +21,11 @@ spec:
 
     additionalContainers:
       - name: zigbee2mqtt-exporter
-        image: tyriis/zigbee2mqtt-exporter:0.10.0
+        image: tyriis/zigbee2mqtt-exporter:0.1.0
+        ports:
+          - containerPort: 3000
+            name: prometheus
+            protocol: TCP
 
     persistence:
       data:
