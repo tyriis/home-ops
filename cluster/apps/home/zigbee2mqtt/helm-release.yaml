@@ -19,6 +19,10 @@ spec:
       repository: ghcr.io/koenkk/zigbee2mqtt
       tag: 1.26.0
 
+    additionalContainers:
+      - name: zigbee2mqtt-exporter
+        image: tyriis/zigbee2mqtt-exporter:0.10.0
+
     persistence:
       data:
         enabled: true
