@@ -24,7 +24,7 @@ spec:
         image: tyriis/zigbee2mqtt-exporter:0.1.0
         ports:
           - containerPort: 3000
-            name: prometheus
+            name: http-prom
             protocol: TCP
 
     persistence:
