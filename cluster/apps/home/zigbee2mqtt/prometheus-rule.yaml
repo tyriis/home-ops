@@ -13,7 +13,7 @@ spec:
     - name: zigbee2mqtt.rules
       rules:
         - alert: DeviceNotSeen
-          expr: zigbee2mqtt_last_seen{device!~"hue.*"} > (60*60*24)
+          expr: zigbee2mqtt_last_seen{device!~"hue.*|tradfri ambience spot.*"} > (60 * 60 * 24)
           for: 10m
           labels:
             severity: warning
