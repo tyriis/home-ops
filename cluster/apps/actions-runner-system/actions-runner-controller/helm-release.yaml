@@ -30,7 +30,7 @@ spec:
 
     image:
       repository: summerwind/actions-runner-controller
-      tag: v0.25.1
+      tag: v0.25.2
 
     podAnnotations:
       secret.reloader.stakater.com/reload: actions-runner-controller-auth
