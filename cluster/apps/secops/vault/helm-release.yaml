@@ -66,17 +66,17 @@ spec:
           storage "file" {
             path = "/vault/data"
           }
-          seal "transit" {
-            disabled = "false"
-            address = "${SECRET_VAULT_URL}"
-            token = "${SECRET_VAULT_TOKEN}"
-            disable_renewal = "false"
-            key_name = "autounseal"
-            mount_path = "transit/"
-            tls_skip_verify = "true"
-          }
+          #seal "transit" {
+          #  disabled = "false"
+          #  address = "${SECRET_VAULT_URL}"
+          #  token = "${SECRET_VAULT_TOKEN}"
+          #  disable_renewal = "false"
+          #  key_name = "autounseal"
+          #  mount_path = "transit/"
+          #  tls_skip_verify = "true"
+          #}
           seal "gcpckms" {
-            disabled = "true"
+            disabled    = "false"
             project     = "${SECRET_GCP_PROJECT}"
             region      = "europe-west3"
             key_ring    = "vault-unseal"
