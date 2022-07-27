@@ -67,7 +67,7 @@ spec:
             path = "/vault/data"
           }
           seal "transit" {
-            disabled = "true"
+            disabled = "false"
             address = "${SECRET_VAULT_URL}"
             token = "${SECRET_VAULT_TOKEN}"
             disable_renewal = "false"
