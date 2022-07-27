@@ -76,6 +76,7 @@ spec:
             tls_skip_verify = "true"
           }
           seal "gcpckms" {
+            disabled = "true"
             project     = "${SECRET_GCP_PROJECT}"
             region      = "europe-west3"
             key_ring    = "vault-unseal"
