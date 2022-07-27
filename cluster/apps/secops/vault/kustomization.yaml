@@ -2,6 +2,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  - kms-vault-unseal.sops.yaml
   - helm-release.yaml
   - pod-monitor.yaml
   - prometheus-rule.yaml

@@ -48,6 +48,11 @@ spec:
       extraEnvironmentVars:
         VAULT_TOKEN: ${SECRET_VAULT_TOKEN}
         TZ: ${SETTING_TZ}
+        GOOGLE_APPLICATION_CREDENTIALS: /vault/userconfig/kms-vault-unseal/serviceaccount.json
+      extraVolumes:
+        - type: secret
+          name: kms-vault-unseal
+          path: /vault/userconfig
       resources:
         requests:
           memory: 64Mi
@@ -62,12 +67,19 @@ spec:
             path = "/vault/data"
           }
           seal "transit" {
+            disabled = "true"
             address = "${SECRET_VAULT_URL}"
             token = "${SECRET_VAULT_TOKEN}"
             disable_renewal = "false"
             key_name = "autounseal"
             mount_path = "transit/"
             tls_skip_verify = "true"
+          }
+          seal "gcpckms" {
+            project     = "${SECRET_GCP_PROJECT}"
+            region      = "europe-west3"
+            key_ring    = "vault-unseal"
+            crypto_key  = "vault-unseal-key"
           }
           listener "tcp" {
             tls_disable = 1
