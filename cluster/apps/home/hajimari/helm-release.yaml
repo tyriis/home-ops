@@ -33,6 +33,7 @@ spec:
           - observability
           - secops
           - authentik-system
+          - database
       name: sunshine
       customApps:
         - name: OPNsense
@@ -46,6 +47,10 @@ spec:
         - name: minio
           url: ${SECRET_MINIO_URL}
           icon: bird
+          group: Infrastructure
+        - name: AdGuard
+          url: https://opnsense.${SECRET_DOMAIN}:3443
+          icon: shield-check
           group: Infrastructure
         - name: GitOps
           url: https://github.com/tyriis/flux.k3s.cluster

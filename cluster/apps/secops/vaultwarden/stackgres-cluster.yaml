@@ -1,0 +1,27 @@
+apiVersion: stackgres.io/v1
+kind: SGCluster
+metadata:
+  name: vaultwarden-db
+  namespace: secops
+spec:
+  instances: 1
+  postgres:
+    version: "14.4"
+  pods:
+    persistentVolume:
+      size: 5Gi
+      storageClass: longhorn
+  sgInstanceProfile: vaultwarden-db
+  prometheusAutobind: true
+  configurations:
+    sgBackupConfig: vaultwarden-db
+    sgPostgresConfig: vaultwarden-db
+    sgPoolingConfig: vaultwarden-db
+  initialData:
+    scripts:
+      - name: create-user
+        script: |
+          create user ${SECRET_VAULTWARDEN_DB_USERNAME} password '${SECRET_VAULTWARDEN_DB_PASSWORD}';
+      - name: create-database
+        script: |
+          create database ${SECRET_VAULTWARDEN_DB_NAME} owner ${SECRET_VAULTWARDEN_DB_USERNAME};

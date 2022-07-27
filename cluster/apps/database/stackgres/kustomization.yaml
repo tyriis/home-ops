@@ -6,3 +6,5 @@ resources:
   - instance-profiles
   - prometheus-rule.yaml
   - ingress.yaml
+  - minio-credentials.sops.yaml
+  - stackgres-backup-config.yaml

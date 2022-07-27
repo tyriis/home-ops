@@ -3,6 +3,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - flux-system/gotk
+  - metallb-system/crds
   - kube-system/metrics-server
   - kube-system/node-feature-discovery
   - kube-system/reflector
@@ -35,5 +36,7 @@ resources:
   # - secops/vault-secrets-operator
   - gaming/minecraft-bedrock
   - networking/unifi
+  - actions-runner-system/actions-runner-controller
+  - actions-runner-system/organization
   # - gaming/minecraft-java
   # - observability/goldilocks # disabled, see #128

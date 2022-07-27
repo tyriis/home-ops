@@ -28,7 +28,7 @@ terraform {
     }
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "3.17.0"
+      version = "3.19.0"
     }
     http = {
       source  = "hashicorp/http"
@@ -40,7 +40,7 @@ terraform {
     }
     authentik = {
       source  = "goauthentik/authentik"
-      version = "2022.6.3"
+      version = "2022.7.1"
     }
   }
 }

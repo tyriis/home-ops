@@ -9,12 +9,13 @@ spec:
   chart:
     spec:
       chart: kube-prometheus-stack
-      version: 36.0.3
+      version: 36.6.2
       sourceRef:
         kind: HelmRepository
         name: prometheus-community-charts
         namespace: flux-system
-  timeout: 10m
+      interval: 5m
+  timeout: 15m
   install:
     remediation:
       retries: 3

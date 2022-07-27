@@ -1,0 +1,20 @@
+---
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: HorizontalRunnerAutoscaler
+metadata:
+  name: ${SECRET_GH_ORGANIZATION}-runner
+  namespace: actions-runner-system
+spec:
+  scaleDownDelaySecondsAfterScaleOut: 300
+  minReplicas: 1
+  maxReplicas: 5
+  scaleTargetRef:
+    name: ${SECRET_GH_ORGANIZATION}-runner
+    # Uncomment the below in case the target is not RunnerDeployment but RunnerSet
+    #kind: RunnerSet
+  metrics:
+    - type: PercentageRunnersBusy
+      scaleUpThreshold: '0.75'    # The percentage of busy runners at which the number of desired runners are re-evaluated to scale up
+      scaleDownThreshold: '0.3'   # The percentage of busy runners at which the number of desired runners are re-evaluated to scale down
+      scaleUpAdjustment: 2        # The scale up runner count added to desired count
+      scaleDownAdjustment: 1      # The scale down runner count subtracted from the desired count

@@ -1,0 +1,13 @@
+---
+apiVersion: stackgres.io/v1
+kind: SGDbOps
+metadata:
+  name: minor-upgrade-14-4
+  namespace: home
+spec:
+  sgCluster: home-assistant-db
+  op: minorVersionUpgrade
+  maxRetries: 1
+  minorVersionUpgrade:
+    method: InPlace
+    postgresVersion: "14.4"

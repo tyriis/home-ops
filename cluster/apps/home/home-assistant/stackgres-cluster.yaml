@@ -6,13 +6,17 @@ metadata:
 spec:
   instances: 1
   postgres:
-    version: "14.2"
+    version: "14.4"
   pods:
     persistentVolume:
       size: 10Gi
       storageClass: longhorn
   sgInstanceProfile: size-l
   prometheusAutobind: true
+  configurations:
+    sgBackupConfig: home-assistant-db
+    sgPostgresConfig: home-assistant-db
+    sgPoolingConfig: home-assistant-db
   initialData:
     scripts:
       - name: create-user

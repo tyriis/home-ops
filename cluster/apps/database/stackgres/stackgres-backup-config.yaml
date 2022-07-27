@@ -1,0 +1,29 @@
+apiVersion: stackgres.io/v1
+kind: SGBackupConfig
+metadata:
+  name: backup-config
+  namespace: database
+spec:
+  baseBackups:
+    retention: 5
+    cronSchedule: 0 5 * * *
+    compression: lz4
+    performance:
+      maxDiskBandwitdh: 26214400 #25 MB per seceod
+      maxNetworkBandwitdh: 52428800 #50 MB per second
+      uploadDiskConcurrency: 2
+  storage:
+    type: s3Compatible
+    s3Compatible:
+      bucket: backup/stackgres
+      region: home
+      enablePathStyleAddressing: true
+      endpoint: ${SECRET_MINIO_URL}
+      awsCredentials:
+        secretKeySelectors:
+          accessKeyId:
+            key: accesskey
+            name: minio-credentials
+          secretAccessKey:
+            key: secretkey
+            name: minio-credentials

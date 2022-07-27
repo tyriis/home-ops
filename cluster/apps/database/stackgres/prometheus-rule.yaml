@@ -83,7 +83,7 @@ spec:
             summary: Postgresql too many connections (instance {{ $labels.instance }} in cluster {{$labels.cluster_name}})
             description: "PostgreSQL instance has too many connections\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
         - alert: PostgresNotEnoughConnections
-          expr: sum by (datname) (pg_stat_activity_count{datname!~"template.*|postgres"}) < 5
+          expr: sum by (datname) (pg_stat_activity_count{datname!~"template.*|postgres|hass"}) < 5
           for: 5m
           labels:
             severity: warning

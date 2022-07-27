@@ -1,0 +1,21 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    app.kubernetes.io/name: zigbee2mqtt
+    app.kubernetes.io/instance: zigbee2mqtt
+    app.kubernetes.io/managed-by: fluxcd.io
+  name: zigbee2mqtt-rules
+  namespace: home
+spec:
+  groups:
+    - name: zigbee2mqtt.rules
+      rules:
+        - alert: DeviceNotSeen
+          expr: zigbee2mqtt_last_seen{device!~"hue.*|tradfri ambience spot.*"} > (60 * 60 * 24)
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Zigbee Device {{ $labels.device }} on {{ $labels.job }} has not been seen since 24h."
