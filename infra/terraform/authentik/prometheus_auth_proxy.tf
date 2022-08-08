@@ -17,6 +17,7 @@ resource "authentik_application" "prometheus" {
   meta_icon         = "fa://fa-clipboard-check"
   meta_publisher    = var.cloudflare_domain
   meta_launch_url   = "https://prometheus.${var.cloudflare_domain}"
+  open_in_new_tab   = false
 }
 
 // configure outpost

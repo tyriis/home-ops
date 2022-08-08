@@ -17,6 +17,7 @@ resource "authentik_application" "zigbee2mqtt" {
   meta_icon         = "https://www.zigbee2mqtt.io/logo.png"
   meta_publisher    = var.cloudflare_domain
   meta_launch_url   = "https://zigbee2mqtt.${var.cloudflare_domain}"
+  open_in_new_tab   = false
 }
 
 // configure outpost
