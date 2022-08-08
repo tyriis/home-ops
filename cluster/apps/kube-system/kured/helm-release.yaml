@@ -23,6 +23,8 @@ spec:
       notifyUrl: ${SECRET_DISCORD_WEBHOOK}
     metrics:
       create: true
+      labels:
+        release: kube-prometheus-stack
     tolerations:
       # this toleration is to have kured runnable on tainted master nodes
       # remove it if your masters can't run pods
