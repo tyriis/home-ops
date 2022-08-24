@@ -15,6 +15,12 @@ spec:
         name: grafana-charts
         namespace: flux-system
       interval: 5m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
   values:
     # https://grafana.com/docs/loki/latest/configuration/
     image:
@@ -36,5 +42,3 @@ spec:
           ingestion_burst_size_mb: 16
     serviceMonitor:
       enabled: true
-    nodeSelector:
-      kubernetes.io/arch: amd64
