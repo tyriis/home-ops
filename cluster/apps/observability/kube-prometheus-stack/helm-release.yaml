@@ -22,6 +22,8 @@ spec:
   upgrade:
     remediation:
       retries: 3
+      remediateLastFailure: true
+    cleanupOnFail: true
   valuesFrom:
     - kind: ConfigMap
       name: alertmanager-values
