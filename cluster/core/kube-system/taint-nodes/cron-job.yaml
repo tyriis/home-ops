@@ -16,7 +16,7 @@ spec:
           serviceAccountName: taint-nodes
           containers:
             - name: kubectl
-              image: ghcr.io/k8s-at-home/kubectl:v1.24.4
+              image: ghcr.io/k8s-at-home/kubectl:v1.25.0
               command:
                 - "/bin/sh"
                 - "-ec"
