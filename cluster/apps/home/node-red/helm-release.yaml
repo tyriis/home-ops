@@ -60,6 +60,9 @@ spec:
             mountPath: /usr/src/node-red/.gitconfig
             readOnly: true
 
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: node-red-gitconfig
+
     resources:
       requests:
         memory: 350Mi
