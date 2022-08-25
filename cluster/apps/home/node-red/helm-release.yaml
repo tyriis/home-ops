@@ -49,9 +49,16 @@ spec:
         enabled: true
         type: pvc
         existingClaim: node-red-data
-
-    nodeSelector:
-      kubernetes.io/arch: amd64
+      gitconfig:
+        enabled: true
+        type: custom
+        volumeSpec:
+          configMap:
+            name: node-red-gitconfig
+        subPath:
+          - path: .gitconfig
+            mountPath: /usr/src/node-red/.gitconfig
+            readOnly: true
 
     resources:
       requests:
