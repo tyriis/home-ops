@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: node-red
-      version: 10.2.0
+      version: 10.3.2
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -17,7 +17,7 @@ spec:
   values:
     image:
       repository: ghcr.io/k8s-at-home/node-red
-      tag: v2.2.2
+      tag: v3.0.2
 
     env:
       TZ: ${CONFIG_TZ}
@@ -49,9 +49,19 @@ spec:
         enabled: true
         type: pvc
         existingClaim: node-red-data
+      gitconfig:
+        enabled: true
+        type: custom
+        volumeSpec:
+          configMap:
+            name: node-red-gitconfig
+        subPath:
+          - path: .gitconfig
+            mountPath: /usr/src/node-red/.gitconfig
+            readOnly: true
 
-    nodeSelector:
-      kubernetes.io/arch: amd64
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: node-red-gitconfig
 
     resources:
       requests:

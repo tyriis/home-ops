@@ -17,6 +17,7 @@ resource "authentik_application" "alertmanager" {
   meta_icon         = "fa://fa-bell"
   meta_publisher    = var.cloudflare_domain
   meta_launch_url   = "https://alertmanager.${var.cloudflare_domain}"
+  open_in_new_tab   = false
 }
 
 // configure outpost

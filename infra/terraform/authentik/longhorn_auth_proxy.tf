@@ -17,6 +17,7 @@ resource "authentik_application" "longhorn" {
   meta_icon         = "fa://fa-hdd"
   meta_publisher    = var.cloudflare_domain
   meta_launch_url   = "https://longhorn.${var.cloudflare_domain}"
+  open_in_new_tab   = false
 }
 
 // configure outpost

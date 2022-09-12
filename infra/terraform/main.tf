@@ -20,7 +20,7 @@ terraform {
     }
     tls = {
       source  = "hashicorp/tls"
-      version = "3.4.0"
+      version = "4.0.2"
     }
     vault = {
       source  = "hashicorp/vault"
@@ -28,11 +28,11 @@ terraform {
     }
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "3.19.0"
+      version = "3.23.0"
     }
     http = {
       source  = "hashicorp/http"
-      version = "2.2.0"
+      version = "3.1.0"
     }
     sops = {
       source  = "carlpett/sops"
@@ -40,7 +40,7 @@ terraform {
     }
     authentik = {
       source  = "goauthentik/authentik"
-      version = "2022.7.1"
+      version = "2022.8.1"
     }
   }
 }

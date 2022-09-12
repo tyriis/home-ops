@@ -17,6 +17,7 @@ resource "authentik_application" "goldilocks" {
   meta_icon         = "fa://fa-flask"
   meta_publisher    = var.cloudflare_domain
   meta_launch_url   = "https://goldilocks.${var.cloudflare_domain}"
+  open_in_new_tab   = false
 }
 
 // configure outpost

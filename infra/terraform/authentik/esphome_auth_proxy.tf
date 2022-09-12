@@ -17,6 +17,7 @@ resource "authentik_application" "esphome" {
   meta_icon         = "https://esphome.io/_static/logo-text.svg"
   meta_publisher    = var.cloudflare_domain
   meta_launch_url   = "https://esphome.${var.cloudflare_domain}"
+  open_in_new_tab   = false
 }
 
 // configure outpost
