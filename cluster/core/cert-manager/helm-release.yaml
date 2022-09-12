@@ -14,6 +14,12 @@ spec:
         kind: HelmRepository
         name: jetstack-charts
         namespace: flux-system
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
     installCRDs: false
     webhook:
