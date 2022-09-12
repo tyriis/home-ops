@@ -9,11 +9,25 @@ spec:
   chart:
     spec:
       chart: kured
-      version: 2.17.0
+      version: 3.0.1
       sourceRef:
         kind: HelmRepository
         name: kured-charts
         namespace: flux-system
+  test:
+    enable: false # Enable helm test
+  install:
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  rollback:
+    timeout: 10m
+    recreate: true
+    cleanupOnFail: true
   values:
     updateStrategy: RollingUpdate
     configuration:
@@ -23,6 +37,8 @@ spec:
       notifyUrl: ${SECRET_DISCORD_WEBHOOK}
     metrics:
       create: true
+      labels:
+        release: kube-prometheus-stack
     tolerations:
       # this toleration is to have kured runnable on tainted master nodes
       # remove it if your masters can't run pods

@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: kube-prometheus-stack
-      version: 36.6.2
+      version: 39.12.1
       sourceRef:
         kind: HelmRepository
         name: prometheus-community-charts
@@ -22,6 +22,8 @@ spec:
   upgrade:
     remediation:
       retries: 3
+      remediateLastFailure: true
+    cleanupOnFail: true
   valuesFrom:
     - kind: ConfigMap
       name: alertmanager-values

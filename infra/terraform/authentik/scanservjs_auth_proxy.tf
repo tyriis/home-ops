@@ -17,6 +17,7 @@ resource "authentik_application" "scanservjs" {
   meta_icon         = "https://www.iconhot.com/icon/png/token/256/scanner-7.png"
   meta_publisher    = var.cloudflare_domain
   meta_launch_url   = "https://scanservjs.${var.cloudflare_domain}"
+  open_in_new_tab   = false
 }
 
 // configure outpost

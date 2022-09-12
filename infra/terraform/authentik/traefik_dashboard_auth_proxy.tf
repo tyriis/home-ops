@@ -17,6 +17,7 @@ resource "authentik_application" "traefik" {
   meta_icon         = "fa://fa-globe"
   meta_publisher    = var.cloudflare_domain
   meta_launch_url   = "https://traefik.${var.cloudflare_domain}"
+  open_in_new_tab   = false
 }
 
 // configure outpost
