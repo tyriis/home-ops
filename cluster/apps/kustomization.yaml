@@ -36,7 +36,6 @@ resources:
   # - secops/vault-secrets-operator
   - gaming/minecraft-bedrock
   - networking/unifi
-  - actions-runner-system/actions-runner-controller
-  - actions-runner-system/organization
+  - github/actions-runner-controller
   # - gaming/minecraft-java
   # - observability/goldilocks # disabled, see #128
