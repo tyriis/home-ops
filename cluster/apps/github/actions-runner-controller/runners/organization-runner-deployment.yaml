@@ -12,6 +12,7 @@ spec:
       labels:
         - ${SETTING_CLUSTERNAME}
         - home-infra
+      dockerMTU: 1400
       env: []
 
 ---
