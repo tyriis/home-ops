@@ -4,4 +4,4 @@ kind: Kustomization
 namespace: github
 resources:
   - base
-  # - runners
+  - runners
