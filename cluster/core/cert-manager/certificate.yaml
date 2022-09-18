@@ -10,7 +10,7 @@ spec:
     organizations:
       - tyriis
   issuerRef:
-    name: ${SECRET_DOMAIN}-prod
+    name: letsencrypt-production
     kind: ClusterIssuer
   dnsNames:
     - "${SECRET_DOMAIN}"
