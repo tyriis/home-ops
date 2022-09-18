@@ -2,7 +2,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - home/minio-credentials.sops.yaml
-  - home/home-assistant-db
-  - secops/minio-credentials.sops.yaml
-  - secops/vaultwarden-db
+  - helm-release.yaml
+  # - home/minio-credentials.sops.yaml
+  # - home/home-assistant-db
+  # - secops/minio-credentials.sops.yaml
+  # - secops/vaultwarden-db

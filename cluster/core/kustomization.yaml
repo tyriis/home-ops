@@ -9,4 +9,4 @@ resources:
   - cert-manager
   - metallb-system
   - longhorn-system
-  # - stackgres
+  - stackgres
