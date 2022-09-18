@@ -24,7 +24,7 @@ resources:
   - home/zigbee2mqtt
   - home/zigbee2mqtt-bridge2
   - home/node-red
-  # - database/stackgres
+  - database/stackgres
   - home/home-assistant
   - home/esphome
   - home/aircon
