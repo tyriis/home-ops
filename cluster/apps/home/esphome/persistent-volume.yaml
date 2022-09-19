@@ -15,11 +15,6 @@ spec:
   csi:
     driver: driver.longhorn.io
     fsType: ext4
-    volumeAttributes:
-      dataLocality: disabled
-      fromBackup: pvc-ff93bba4-ecbd-4460-97b2-ffde9c506a63
-      fsType: ext4
-      numberOfReplicas: "2"
-      staleReplicaTimeout: "30"
+    volumeHandle: pvc-esphome-config
   persistentVolumeReclaimPolicy: Retain
   storageClassName: longhorn
