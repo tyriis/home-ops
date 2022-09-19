@@ -11,7 +11,7 @@ resources:
   - kube-system/kured
   - hardware/pimoroni-fanshim
   - hardware/scanservjs
-#   - longhorn-system/longhorn
+  - longhorn-system/longhorn
 #   - observability/loki
 #   - observability/promtail
 #   - observability/kube-prometheus-stack
