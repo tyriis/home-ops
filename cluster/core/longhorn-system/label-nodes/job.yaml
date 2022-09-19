@@ -16,5 +16,5 @@ spec:
             - "/bin/sh"
             - "-ec"
             - |
-              for node in $(echo "k3s-worker01 k3s-worker02 k3s-worker04"); do  kubectl label node $node node.longhorn.io/create-default-disk=true --overwrite=true; done
+              for node in $(echo "k3s-worker01 k3s-worker02 k3s-worker04 k3s-worker05"); do  kubectl label node $node node.longhorn.io/create-default-disk=true --overwrite=true; done
       restartPolicy: OnFailure
