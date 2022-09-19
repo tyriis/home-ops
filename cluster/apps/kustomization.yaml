@@ -11,30 +11,30 @@ resources:
   - kube-system/kured
   - hardware/pimoroni-fanshim
   - hardware/scanservjs
-  - longhorn-system/longhorn
-  - observability/loki
-  - observability/promtail
-  - observability/kube-prometheus-stack
-  - observability/grafana
+#   - longhorn-system/longhorn
+#   - observability/loki
+#   - observability/promtail
+#   - observability/kube-prometheus-stack
+#   - observability/grafana
   - observability/botkube
   - observability/alertmanager-discord
   - observability/speedtest-exporter
   - networking/traefik
   - home/hajimari
-  - home/zigbee2mqtt
-  - home/zigbee2mqtt-bridge2
+#   - home/zigbee2mqtt
+#   - home/zigbee2mqtt-bridge2
   - home/node-red
-  - database/stackgres
+  # - database/stackgres
   - home/home-assistant
-  - home/esphome
+  # - home/esphome
   - home/aircon
   - system-upgrade/system-upgrade-controller
-  - authentik-system/authentik
+  # - authentik-system/authentik
   # - observability/mqtt-exporter
   # - networking/blocky
-  - secops/vault
+  # - secops/vault
   # - secops/vault-secrets-operator
-  - gaming/minecraft-bedrock
+  # - gaming/minecraft-bedrock
   # - networking/unifi
   - github/actions-runner-controller
   # - gaming/minecraft-java
