@@ -22,7 +22,7 @@ resources:
   - networking/traefik
   - home/hajimari
   - home/zigbee2mqtt-bridge1
-#   - home/zigbee2mqtt-bridge2
+  - home/zigbee2mqtt-bridge2
   - home/node-red
   - database/stackgres
   - home/home-assistant
