@@ -80,12 +80,12 @@ spec:
 
     postgresql:
       enabled: false
-      auth:
-        postgresPassword: ${SECRET_HASS_DB_PASSWORD}
-        username: ${SECRET_HASS_DB_USERNAME}
-        password: ${SECRET_HASS_DB_PASSWORD}
-        database: ${SECRET_HASS_DB_NAME}
-      persistence:
-        enabled: true
-        storageClass: longhorn
-        size: 10Gi
+      #auth:
+      #  postgresPassword: ${SECRET_HASS_DB_PASSWORD}
+      #  username: ${SECRET_HASS_DB_USERNAME}
+      #  password: ${SECRET_HASS_DB_PASSWORD}
+      #  database: ${SECRET_HASS_DB_NAME}
+      #persistence:
+      #  enabled: true
+      #  storageClass: longhorn
+      #  size: 10Gi
