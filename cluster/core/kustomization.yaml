@@ -8,5 +8,5 @@ resources:
   - system-upgrade
   - cert-manager
   - metallb-system
-  - longhorn-system
-  - stackgres
+  # - longhorn-system
+  # - stackgres
