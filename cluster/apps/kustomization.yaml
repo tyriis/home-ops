@@ -29,7 +29,7 @@ resources:
   - home/esphome
   - home/aircon
   - system-upgrade/system-upgrade-controller
-  # - authentik-system/authentik
+  - authentik-system/authentik
   # - observability/mqtt-exporter
   # - networking/blocky
   # - secops/vault
