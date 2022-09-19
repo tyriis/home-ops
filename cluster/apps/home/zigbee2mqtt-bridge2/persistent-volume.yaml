@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: zigbee2mqtt-bridge2-data
+  labels:
+    app.kubernetes.io/instance: zigbee2mqtt-bridge2
+    app.kubernetes.io/name: zigbee2mqtt
+    app.kubernetes.io/managed-by: fluxcd.io
+spec:
+  capacity:
+    storage: 200Mi
+  accessModes:
+    - ReadWriteOnce
+  csi:
+    driver: driver.longhorn.io
+    fsType: ext4
+    volumeHandle: pvc-zigbee2mqtt-bridge2-data
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: longhorn
