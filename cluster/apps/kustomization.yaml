@@ -12,7 +12,7 @@ resources:
   - hardware/pimoroni-fanshim
   - hardware/scanservjs
   - longhorn-system/longhorn
-#   - observability/loki
+  - observability/loki
 #   - observability/promtail
   - observability/kube-prometheus-stack
   - observability/grafana
