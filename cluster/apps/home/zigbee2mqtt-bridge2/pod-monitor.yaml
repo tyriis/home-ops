@@ -6,7 +6,7 @@ metadata:
   namespace: home
   labels:
     app.kubernetes.io/part-of: zigbee2mqtt-bridge2
-    app.kubernetes.io/name: zigbee2mqtt-bridge2
+    app.kubernetes.io/name: zigbee2mqtt
     app.kubernetes.io/managed-by: fluxcd.io
 spec:
   namespaceSelector:

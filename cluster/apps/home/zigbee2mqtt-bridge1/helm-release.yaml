@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: zigbee2mqtt
+  name: zigbee2mqtt-bridge1
   namespace: home
 spec:
   interval: 5m
@@ -31,7 +31,7 @@ spec:
       data:
         enabled: true
         type: pvc
-        existingClaim: zigbee2mqtt-data
+        existingClaim: zigbee2mqtt-bridge1-data
 
     env:
       ZIGBEE2MQTT_DATA: /data

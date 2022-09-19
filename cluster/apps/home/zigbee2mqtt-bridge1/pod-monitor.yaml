@@ -2,7 +2,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: zigbee2mqtt
+  name: zigbee2mqtt-bridge1
   namespace: home
   labels:
     app.kubernetes.io/part-of: zigbee2mqtt
