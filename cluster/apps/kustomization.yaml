@@ -26,7 +26,7 @@ resources:
   - home/node-red
   # - database/stackgres
   - home/home-assistant
-  # - home/esphome
+  - home/esphome
   - home/aircon
   - system-upgrade/system-upgrade-controller
   # - authentik-system/authentik
