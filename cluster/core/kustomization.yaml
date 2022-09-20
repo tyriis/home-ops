@@ -9,4 +9,5 @@ resources:
   - cert-manager
   - metallb-system
   - longhorn-system
+  - observability
   - stackgres
