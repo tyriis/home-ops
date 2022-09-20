@@ -26,6 +26,6 @@ resources:
   - repos.emqx.io.yaml
   - ricoberger.github.io.yaml
   - stakater.github.io.yaml
-  - weaveworks.github.io_kured.yaml
+  - kured-charts.yaml
   - charts.fairwinds.com.yaml
   - stackgres.io.yaml
