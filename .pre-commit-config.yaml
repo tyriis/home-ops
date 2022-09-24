@@ -7,7 +7,7 @@ default_stages:
 
 repos:
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.26.3
+    rev: v1.28.0
     hooks:
       - id: yamllint
         args:
@@ -15,7 +15,7 @@ repos:
           - .config/.yamllint.config.yaml
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.2.0
+    rev: v1.3.1
     hooks:
       - id: remove-crlf
       - id: remove-tabs
@@ -38,7 +38,7 @@ repos:
           - "--module"
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.72.1
+    rev: v1.75.0
     hooks:
       # - id: terraform_docs
       - id: terraform_tfsec
@@ -76,20 +76,8 @@ repos:
       - id: terraform-docs-system
         args: ["-c", ".config/.terraform-docs.yaml", "./infra/terraform"]
 
-  - repo: https://github.com/gruntwork-io/pre-commit
-    rev: v0.1.17
-    hooks:
-      - id: tflint
-        args:
-          - "--module"
-
-  - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.72.1
-    hooks:
-      - id: terraform_fmt
-
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.31.1
+    rev: v0.32.2
     hooks:
       - id: markdownlint-fix
         args:
