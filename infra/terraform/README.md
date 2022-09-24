@@ -39,15 +39,15 @@ optional: (dev-prerequisites)
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_authentik"></a> [authentik](#requirement\_authentik) | 2022.7.2 |
-| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | 3.20.0 |
+| <a name="requirement_authentik"></a> [authentik](#requirement\_authentik) | 2022.8.1 |
+| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | 3.24.0 |
 | <a name="requirement_flux"></a> [flux](#requirement\_flux) | >= 0.9.0 |
 | <a name="requirement_github"></a> [github](#requirement\_github) | >= 4.18.0 |
-| <a name="requirement_http"></a> [http](#requirement\_http) | 3.0.1 |
+| <a name="requirement_http"></a> [http](#requirement\_http) | 3.1.0 |
 | <a name="requirement_kubectl"></a> [kubectl](#requirement\_kubectl) | >= 1.13.1 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.6.1 |
 | <a name="requirement_sops"></a> [sops](#requirement\_sops) | 0.7.1 |
-| <a name="requirement_tls"></a> [tls](#requirement\_tls) | 3.4.0 |
+| <a name="requirement_tls"></a> [tls](#requirement\_tls) | 4.0.3 |
 | <a name="requirement_vault"></a> [vault](#requirement\_vault) | >= 3.2.1 |
 
 ## Providers
@@ -55,7 +55,7 @@ optional: (dev-prerequisites)
 | Name | Version |
 |------|---------|
 | <a name="provider_sops"></a> [sops](#provider\_sops) | 0.7.1 |
-| <a name="provider_vault"></a> [vault](#provider\_vault) | 3.8.1 |
+| <a name="provider_vault"></a> [vault](#provider\_vault) | 3.8.2 |
 
 ## Modules
 
