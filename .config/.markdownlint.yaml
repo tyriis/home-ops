@@ -22,5 +22,5 @@ MD013:
   # Stern length checking
   stern: false
 
-# MD013/no-inline-html - Inline HTML disabled because of tf-docs
+# MD033/no-inline-html - Inline HTML disabled because of tf-docs
 MD033: false
