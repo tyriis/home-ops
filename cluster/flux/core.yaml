@@ -7,7 +7,9 @@ metadata:
 spec:
   interval: 10m0s
   dependsOn:
+    - name: charts
     - name: crds
+    - name: config
   path: ./cluster/core
   prune: false
   sourceRef:
