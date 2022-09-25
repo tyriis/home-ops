@@ -6,6 +6,6 @@ metadata:
 spec:
   template:
     spec:
-    containers:
+      containers:
       - image: ghcr.io/alex1989hu/kubelet-serving-cert-approver:0.6.1
         imagePullPolicy: IfNotPresent
