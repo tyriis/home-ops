@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - namespaces
   - rbac
+  - kubelet-serving-cert-approver
   - cert-manager
   # - kube-system
   # - longhorn-system
