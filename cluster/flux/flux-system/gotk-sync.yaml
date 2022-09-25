@@ -8,7 +8,7 @@ metadata:
 spec:
   interval: 1m0s
   ref:
-    branch: main
+    branch: feature/talos-setup
   secretRef:
     name: flux-system
   url: ssh://git@github.com/tyriis/flux.k3s.cluster.git

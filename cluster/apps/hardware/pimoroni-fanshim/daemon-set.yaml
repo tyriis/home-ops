@@ -27,19 +27,26 @@ spec:
                   - key: kubernetes.io/hostname
                     operator: In
                     values:
-                      - k3s-server01
-                      - k3s-server02
-                      - k3s-server03
+                      - talos01
+                      - talos02
+                      - talos03
       tolerations:
         # this toleration is to have the daemonset runnable on master nodes
         # remove it if your masters can't run pods
-        - key: node-role.kubernetes.io/master
+        - key: node-role.kubernetes.io/control-plane
           operator: Exists
           effect: NoSchedule
       containers:
         - name: pimoroni-fanshim
           securityContext:
             privileged: true
+            # allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
           image: tyriis/fanshim-python:0.6
           ports:
             - containerPort: 9100
