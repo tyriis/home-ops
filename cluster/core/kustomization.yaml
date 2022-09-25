@@ -5,10 +5,9 @@ resources:
   - namespaces
   - rbac
   - kubelet-serving-cert-approver
-  # - metrics-server
   - cert-manager
   # - kube-system
-  # - longhorn-system
+  - longhorn-system
   - metallb-system
   # - observability
   # - stackgres
