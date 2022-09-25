@@ -9,7 +9,7 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 subjects:
   - kind: ServiceAccount
-    name: label-nodes
+    name: create-default-disk-node-label
     namespace: longhorn-system
   - kind: ServiceAccount
     name: label-nodes

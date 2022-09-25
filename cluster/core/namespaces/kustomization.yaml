@@ -4,14 +4,13 @@ kind: Kustomization
 resources:
   - authentik-system.yaml
   - cert-manager.yaml
-  - github.yaml
-  - database.yaml
   - gaming.yaml
+  - github.yaml
   - hardware.yaml
   - home.yaml
-  # - kasten-io.yaml
   - longhorn-system.yaml
   - metallb-system.yaml
   - networking.yaml
   - observability.yaml
   - secops.yaml
+  - stackgres-system.yaml
