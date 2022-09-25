@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   # - flux-system/gotk
   # - cert-manager
-  # - metallb-system/crds
+  - metallb-system
   - kube-system
   - networking
   - flux-system
