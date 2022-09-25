@@ -25,8 +25,25 @@ nodes:
           - 192.168.1.51/24
         mtu: 1500
         routes:
-          - network: 0.0.0.0/0
-            gateway: 192.168.1.1
+          - gateway: 192.168.1.1
+            network: 0.0.0.0/0
+
+
+  - hostname: talos06
+    ipAddress: 192.168.1.56
+    installDisk: /dev/sda
+    controlPlane: false
+    nameservers:
+      - 1.1.1.1
+      - 8.8.8.8
+    networkInterfaces:
+      - interface: eth0
+        addresses:
+          - 192.168.1.56/24
+        mtu: 1500
+        routes:
+          - gateway: 192.168.1.1
+            network: 0.0.0.0/0
 
     # disable will be managed by flux and updated by renovate
     # configPatches:
