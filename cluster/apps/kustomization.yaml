@@ -6,6 +6,7 @@ resources:
   # - cert-manager/cert-manager
   # - metallb-system/crds
   - kube-system
+  - networking
   # - kube-system/node-feature-discovery
   # - kube-system/reflector
   # - kube-system/reloader
