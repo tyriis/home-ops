@@ -32,7 +32,7 @@ resources:
   # - home/esphome
   # - home/aircon
   # - system-upgrade/system-upgrade-controller
-  # - authentik-system/authentik
+  # - authentik-system
   # - secops/vault
   # - gaming/minecraft-bedrock
   # - github/actions-runner-controller
