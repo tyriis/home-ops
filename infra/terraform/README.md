@@ -7,7 +7,7 @@
 1. [Usage](#usage)
 2. [Prerequisites](#prerequisites)
 3. [Requirements](#requirements)
-4. [Providers](#Providers)
+4. [Providers](#providers)
 5. [Inputs](#inputs)
 6. [Outputs](#outputs)
 
@@ -80,10 +80,10 @@ optional: (dev-prerequisites)
 |------|-------------|------|---------|:--------:|
 | <a name="input_branch"></a> [branch](#input\_branch) | branch name | `string` | `"main"` | no |
 | <a name="input_github_owner"></a> [github\_owner](#input\_github\_owner) | github owner | `string` | `"tyriis"` | no |
-| <a name="input_k8s_context"></a> [k8s\_context](#input\_k8s\_context) | flux sync target path | `string` | `"flux.k3s.cluster"` | no |
+| <a name="input_k8s_context"></a> [k8s\_context](#input\_k8s\_context) | flux sync target path | `string` | `"admin@talos-flux"` | no |
 | <a name="input_repository_name"></a> [repository\_name](#input\_repository\_name) | github repository name | `string` | `"flux.k3s.cluster"` | no |
 | <a name="input_repository_visibility"></a> [repository\_visibility](#input\_repository\_visibility) | How visible is the github repo | `string` | `"public"` | no |
-| <a name="input_target_path"></a> [target\_path](#input\_target\_path) | flux sync target path | `string` | `"cluster/base/flux-system"` | no |
+| <a name="input_target_path"></a> [target\_path](#input\_target\_path) | flux sync target path | `string` | `"cluster/flux/flux-system"` | no |
 
 ## Outputs
 

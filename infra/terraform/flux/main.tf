@@ -22,10 +22,6 @@ terraform {
       source  = "hashicorp/tls"
       version = "4.0.3"
     }
-    vault = {
-      source  = "hashicorp/vault"
-      version = ">= 3.2.1"
-    }
   }
 }
 # SSH
@@ -42,15 +38,15 @@ resource "tls_private_key" "main" {
 }
 
 data "kubectl_file_documents" "fluxcd_install" {
-  content = file("../../cluster/base/flux-system/gotk-components.yaml")
+  content = file("../../cluster/flux/flux-system/gotk-components.yaml")
 }
 
 data "kubectl_file_documents" "fluxcd_sync" {
-  content = file("../../cluster/base/flux-system/gotk-sync.yaml")
+  content = file("../../cluster/flux/flux-system/gotk-sync.yaml")
 }
 
 data "kubectl_file_documents" "fluxcd_kustomization" {
-  content = file("../../cluster/base/flux-system/kustomization.yaml")
+  content = file("../../cluster/flux/flux-system/kustomization.yaml")
 }
 
 data "flux_sync" "main" {
@@ -164,10 +160,6 @@ resource "github_repository_file" "kustomize" {
   content             = data.kubectl_file_documents.fluxcd_kustomization.content
   branch              = var.branch
   overwrite_on_create = true
-}
-
-data "vault_generic_secret" "sops_age" {
-  path = "kv/${var.repository_name}/flux-system/sops/age"
 }
 
 resource "kubernetes_secret" "sops_age" {

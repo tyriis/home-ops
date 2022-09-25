@@ -24,12 +24,12 @@ variable "branch" {
 
 variable "target_path" {
   type        = string
-  default     = "cluster/base/flux-system"
+  default     = "cluster/flux/flux-system"
   description = "flux sync target path"
 }
 
 variable "k8s_context" {
   type        = string
-  default     = "flux.k3s.cluster"
+  default     = "admin@talos-flux"
   description = "flux sync target path"
 }
