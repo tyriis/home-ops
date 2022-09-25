@@ -3,7 +3,6 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: create-default-disk-talos06
-  namespace: longhorn-system
 spec:
   backoffLimit: 0
   template:

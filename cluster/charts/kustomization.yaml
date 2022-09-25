@@ -14,7 +14,6 @@ resources:
 - infracloudio-charts.yaml
 - jetstack-charts.yaml
 - k8s-at-home-charts.yaml
-- kasten-charts.yaml
 - kured-charts.yaml
 - longhorn-charts.yaml
 - metallb-charts.yaml
@@ -25,7 +24,6 @@ resources:
 - openfaas-charts.yaml
 - piraeus-charts.yaml
 - prometheus-community-charts.yaml
-- ricoberger-charts.yaml
 - stackgres-charts.yaml
 - stakater-charts.yaml
 - traefik-charts.yaml
