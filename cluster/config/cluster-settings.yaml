@@ -5,7 +5,7 @@ metadata:
   name: cluster-settings
   namespace: flux-system
 data:
-  SETTING_CLUSTERNAME: flux.k3s.cluster
+  SETTING_CLUSTERNAME: talos-flux
   SETTING_TZ: Europe/Vienna
   SETTING_GATEWAY: 192.168.1.1
   SETTING_METALLB_LB_RANGE: 192.168.1.200-192.168.1.210
