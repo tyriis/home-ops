@@ -2,36 +2,36 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - flux-system/gotk
-  - cert-manager/cert-manager
-  - metallb-system/crds
-  - kube-system/metrics-server
-  - kube-system/node-feature-discovery
-  - kube-system/reflector
-  - kube-system/reloader
-  - kube-system/kured
-  - hardware/pimoroni-fanshim
-  - hardware/scanservjs
-  - longhorn-system/longhorn
-  - observability/loki
-#   - observability/promtail
-  - observability/kube-prometheus-stack
-  - observability/grafana
-  - observability/botkube
-  - observability/alertmanager-discord
-  - observability/speedtest-exporter
-  - networking/traefik
-  - home/hajimari
-  - home/zigbee2mqtt-bridge1
-  - home/zigbee2mqtt-bridge2
-  - home/node-red
-  - database/stackgres
-  - home/home-assistant
-  - home/esphome
-  - home/aircon
-  - system-upgrade/system-upgrade-controller
-  - authentik-system/authentik
+  # - flux-system/gotk
+  # - cert-manager/cert-manager
+  # - metallb-system/crds
+  - kube-system
+  # - kube-system/node-feature-discovery
+  # - kube-system/reflector
+  # - kube-system/reloader
+  # - kube-system/kured
+  # - hardware/pimoroni-fanshim
+  # - hardware/scanservjs
+  # - longhorn-system/longhorn
+  # - observability/loki
+  # - observability/promtail
+  # - observability/kube-prometheus-stack
+  # - observability/grafana
+  # - observability/botkube
+  # - observability/alertmanager-discord
+  # - observability/speedtest-exporter
+  # - networking/traefik
+  # - home/hajimari
+  # - home/zigbee2mqtt-bridge1
+  # - home/zigbee2mqtt-bridge2
+  # - home/node-red
+  # - database/stackgres
+  # - home/home-assistant
+  # - home/esphome
+  # - home/aircon
+  # - system-upgrade/system-upgrade-controller
+  # - authentik-system/authentik
   # - secops/vault
   # - gaming/minecraft-bedrock
-  - github/actions-runner-controller
+  # - github/actions-runner-controller
   # - observability/goldilocks # disabled, see #128
