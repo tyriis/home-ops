@@ -5,8 +5,8 @@ resources:
   - cert-manager
   - traefik
   - kube-prometheus-stack
-  - system-upgrade-controller
-  - vault-secrets-operator
-  - snapshot-controller
+  # - system-upgrade-controller
+  # - vault-secrets-operator
+  # - snapshot-controller
   - stackgres
   - actions-runner-controller
