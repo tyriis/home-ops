@@ -3,7 +3,6 @@ apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
   name: source-controller
-  namespace: flux-system
   labels:
     app.kubernetes.io/part-of: flux
 spec:

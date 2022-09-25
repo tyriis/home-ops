@@ -7,7 +7,6 @@ metadata:
     app.kubernetes.io/instance: flux
     app.kubernetes.io/managed-by: fluxcd.io
   name: flux-rules
-  namespace: flux-system
 spec:
   groups:
     - name: flux.rules
