@@ -1,0 +1,50 @@
+---
+version: "3"
+
+tasks:
+  setup:
+    - task: config
+    - task: kubeconfig
+
+  init:
+    desc: Initialize talos configuration
+    dir: infra/talos
+    cmds:
+      # https://github.com/budimanjojo/talhelper
+      - "talhelper gensecret > talsecret.sops.yaml"
+      - "sops -e -i talsecret.sops.yaml"
+
+  config:
+    desc: Let talhelper generate the configuration files
+    dir: infra/talos
+    cmds:
+      - "talhelper genconfig"
+
+  install:talos01:
+    desc: Install talos01
+    dir: infra/talos
+    cmds:
+      - |
+        talosctl apply-config --insecure \
+          --nodes 192.168.1.51 \
+          --file clusterconfig/talos-flux-talos01.yaml
+
+  bootstrap:
+    desc: Bootstrap talos etcd on 1st node
+    dir: infra/talos
+    cmds:
+      - |
+        talosctl bootstrap \
+          --talosconfig=clusterconfig/talosconfig \
+          --nodes 192.168.1.51
+
+  kubeconfig:
+    desc: write kube config
+    dir: infra/talos
+    cmds:
+      - |
+        talosctl kubeconfig \
+          --talosconfig=clusterconfig/talosconfig \
+          --nodes 192.168.1.50 \
+          --endpoints 192.168.1.50 \
+          --force

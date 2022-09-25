@@ -1,0 +1,79 @@
+---
+clusterName: talos-flux
+talosVersion: v1.2.3
+kubernetesVersion: v1.25.1
+endpoint: https://192.168.1.50:6443
+allowSchedulingOnMasters: false
+clusterPodNets:
+  - 10.244.0.0/16
+clusterSvcNets:
+  - 10.96.0.0/12
+
+nodes:
+  - hostname: talos01
+    ipAddress: 192.168.1.51
+    installDisk: /dev/sda
+    controlPlane: true
+    nameservers:
+      - 1.1.1.1
+      - 8.8.8.8
+    networkInterfaces:
+      - interface: eth0
+        vip:
+          ip: 192.168.1.50
+        addresses:
+          - 192.168.1.51/24
+        mtu: 1500
+        routes:
+          - network: 0.0.0.0/0
+            gateway: 192.168.1.1
+
+    # disable will be managed by flux and updated by renovate
+    # configPatches:
+    #   # deploy metrics server
+    #   # https://www.talos.dev/v1.0/kubernetes-guides/configuration/deploy-metrics-server/
+    #   - op: add
+    #     path: /cluster/extraManifests
+    #     value:
+    #       - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml
+    #       - https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+    # configPatches:
+    #   - op: add
+    #     path: /cluster/apiServer/certSANs
+    #     value:
+    #       - 192.168.1.10
+    #       - kmaster1
+    #       - home-cluster.cluster.local
+  # - hostname: kworker1
+  #   ipAddress: 192.168.200.13
+  #   controlPlane: false
+  #   installDisk: /dev/sdb
+  #   inlinePatch:
+  #     machine:
+  #       network:
+  #         interfaces:
+  #           - addresses:
+  #               - 192.168.200.11/24
+  #             interface: eth1
+  #             routes:
+  #               - gateway: 192.168.200.1
+  #                 network: 0.0.0.0/0
+
+controlPlane:
+  configPatches:
+    - op: add
+      path: /machine/kubelet/extraArgs
+      value:
+        feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
+        rotate-server-certificates: true
+    - op: add
+      path: /machine/install/extraKernelArgs
+      value:
+        - talos.logging.kernel=udp://10.45.0.2:6050/
+worker:
+  configPatches:
+    - op: add
+      path: /machine/kubelet/extraArgs
+      value:
+        feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
+        rotate-server-certificates: true
