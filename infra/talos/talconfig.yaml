@@ -94,3 +94,7 @@ worker:
       value:
         feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
         rotate-server-certificates: true
+    - op: add
+      path: /machine/install/extensions
+      value:
+        - image: ghcr.io/siderolabs/iscsi-tools:v0.1.0

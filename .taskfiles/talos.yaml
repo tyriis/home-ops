@@ -38,6 +38,15 @@ tasks:
           --nodes 192.168.1.56 \
           --file clusterconfig/talos-flux-talos06.yaml
 
+  update:talos06:
+    desc: Update talos06
+    dir: infra/talos
+    cmds:
+      - |
+        talosctl apply-config \
+          --nodes 192.168.1.56 \
+          --file clusterconfig/talos-flux-talos06.yaml
+
   bootstrap:
     desc: Bootstrap talos etcd on 1st node
     dir: infra/talos
