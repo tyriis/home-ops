@@ -8,7 +8,6 @@ resources:
   - github.yaml
   - hardware.yaml
   - home.yaml
-  - longhorn-system.yaml
   - metallb-system.yaml
   - networking.yaml
   - observability.yaml
