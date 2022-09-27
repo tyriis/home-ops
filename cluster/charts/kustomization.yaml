@@ -15,7 +15,6 @@ resources:
 - jetstack-charts.yaml
 - k8s-at-home-charts.yaml
 - kured-charts.yaml
-- longhorn-charts.yaml
 - metallb-charts.yaml
 - metrics-server-charts.yaml
 - minecraft-server-charts.yaml
