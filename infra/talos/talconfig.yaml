@@ -1,7 +1,7 @@
 ---
 clusterName: talos-flux
 talosVersion: v1.2.3
-kubernetesVersion: v1.24.4
+kubernetesVersion: v1.24.6
 endpoint: https://192.168.1.50:6443
 allowSchedulingOnMasters: false
 clusterPodNets:
@@ -10,6 +10,8 @@ clusterSvcNets:
   - 10.96.0.0/12
 
 nodes:
+
+  # ARM V8 Cortex A72 / 4GB / 120 GB SSD
   - hostname: talos01
     ipAddress: 192.168.1.51
     installDisk: /dev/sda
@@ -28,10 +30,43 @@ nodes:
           - gateway: 192.168.1.1
             network: 0.0.0.0/0
 
+  - hostname: talos04
+    ipAddress: 192.168.1.54
+    installDisk: /dev/sda
+    controlPlane: false
+    nameservers:
+      - 1.1.1.1
+      - 8.8.8.8
+    networkInterfaces:
+      - interface: eth0
+        addresses:
+          - 192.168.1.54/24
+        mtu: 1500
+        routes:
+          - gateway: 192.168.1.1
+            network: 0.0.0.0/0
 
+  # i7-5650U / 8GB / 240GB SSD / 500GB nvme
+  - hostname: talos05
+    ipAddress: 192.168.1.55
+    installDisk: /dev/sda
+    controlPlane: false
+    nameservers:
+      - 1.1.1.1
+      - 8.8.8.8
+    networkInterfaces:
+      - interface: eth0
+        addresses:
+          - 192.168.1.55/24
+        mtu: 1500
+        routes:
+          - gateway: 192.168.1.1
+            network: 0.0.0.0/0
+
+  #  i7-5650U / 8GB / ???GB SSD / 500GB nvme
   - hostname: talos06
     ipAddress: 192.168.1.56
-    installDisk: /dev/sda
+    installDisk: /dev/sdb
     controlPlane: false
     nameservers:
       - 1.1.1.1
@@ -45,36 +80,39 @@ nodes:
           - gateway: 192.168.1.1
             network: 0.0.0.0/0
 
-    # disable will be managed by flux and updated by renovate
-    # configPatches:
-    #   # deploy metrics server
-    #   # https://www.talos.dev/v1.0/kubernetes-guides/configuration/deploy-metrics-server/
-    #   - op: add
-    #     path: /cluster/extraManifests
-    #     value:
-    #       - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml
-    #       - https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-    # configPatches:
-    #   - op: add
-    #     path: /cluster/apiServer/certSANs
-    #     value:
-    #       - 192.168.1.10
-    #       - kmaster1
-    #       - home-cluster.cluster.local
-  # - hostname: kworker1
-  #   ipAddress: 192.168.200.13
-  #   controlPlane: false
-  #   installDisk: /dev/sdb
-  #   inlinePatch:
-  #     machine:
-  #       network:
-  #         interfaces:
-  #           - addresses:
-  #               - 192.168.200.11/24
-  #             interface: eth1
-  #             routes:
-  #               - gateway: 192.168.200.1
-  #                 network: 0.0.0.0/0
+  # i7-4710HQ / 16GB / 128GB SSD
+  - hostname: talos07
+    ipAddress: 192.168.1.57
+    installDisk: /dev/sda
+    controlPlane: false
+    nameservers:
+      - 1.1.1.1
+      - 8.8.8.8
+    networkInterfaces:
+      - interface: eth0
+        addresses:
+          - 192.168.1.57/24
+        mtu: 1500
+        routes:
+          - gateway: 192.168.1.1
+            network: 0.0.0.0/0
+
+  # disable will be managed by flux and updated by renovate
+  # configPatches:
+  #   # deploy metrics server
+  #   # https://www.talos.dev/v1.0/kubernetes-guides/configuration/deploy-metrics-server/
+  #   - op: add
+  #     path: /cluster/extraManifests
+  #     value:
+  #       - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml
+  #       - https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+  # configPatches:
+  #   - op: add
+  #     path: /cluster/apiServer/certSANs
+  #     value:
+  #       - 192.168.1.10
+  #       - kmaster1
+  #       - home-cluster.cluster.local
 
 controlPlane:
   configPatches:

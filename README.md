@@ -54,7 +54,7 @@
     </li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#detective-troubleshooting">:detective:&nbsp; Troubleshooting</a></li>
+    <li><a href="#🕵️-troubleshooting">🕵️ Troubleshooting</a></li>
   </ol>
 </details>
 <br />
@@ -144,7 +144,7 @@ See the [open issues](https://github.com/tyriis/flux.k3s.cluster/issues) for a f
 
 <!-- TROUBLESHOOTING -->
 
-## :detective:&nbsp; Troubleshooting
+## 🕵️ Troubleshooting
 
 ### Stuck HelmRelease
 
