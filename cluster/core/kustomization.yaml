@@ -8,5 +8,6 @@ resources:
   - cert-manager
   # - kube-system
   - metallb-system
+  - rook-ceph
   # - observability
   # - stackgres

@@ -6,5 +6,6 @@ resources:
   - traefik
   - kube-prometheus-stack
   # - snapshot-controller
+  - rook-ceph
   - stackgres
   - actions-runner-controller

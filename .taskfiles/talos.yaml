@@ -65,6 +65,51 @@ tasks:
           --nodes 192.168.1.57 \
           --file clusterconfig/talos-flux-talos07.yaml
 
+  update:talos01:
+    desc: Update talos01
+    dir: infra/talos
+    cmds:
+      - |
+        talosctl apply-config \
+          --nodes 192.168.1.51 \
+          --file clusterconfig/talos-flux-talos01.yaml
+
+  update:talos02:
+    desc: Update talos02
+    dir: infra/talos
+    cmds:
+      - |
+        talosctl apply-config \
+          --nodes 192.168.1.52 \
+          --file clusterconfig/talos-flux-talos02.yaml
+
+  update:talos03:
+    desc: Update talos03
+    dir: infra/talos
+    cmds:
+      - |
+        talosctl apply-config \
+          --nodes 192.168.1.53 \
+          --file clusterconfig/talos-flux-talos03.yaml
+
+  update:talos04:
+    desc: Update talos04
+    dir: infra/talos
+    cmds:
+      - |
+        talosctl apply-config \
+          --nodes 192.168.1.54 \
+          --file clusterconfig/talos-flux-talos04.yaml
+
+  update:talos05:
+    desc: Update talos05
+    dir: infra/talos
+    cmds:
+      - |
+        talosctl apply-config \
+          --nodes 192.168.1.55 \
+          --file clusterconfig/talos-flux-talos05.yaml
+
   update:talos06:
     desc: Update talos06
     dir: infra/talos
@@ -73,6 +118,15 @@ tasks:
         talosctl apply-config \
           --nodes 192.168.1.56 \
           --file clusterconfig/talos-flux-talos06.yaml
+
+  update:talos07:
+    desc: Update talos07
+    dir: infra/talos
+    cmds:
+      - |
+        talosctl apply-config \
+          --nodes 192.168.1.57 \
+          --file clusterconfig/talos-flux-talos07.yaml
 
   bootstrap:
     desc: Bootstrap talos etcd on 1st node
