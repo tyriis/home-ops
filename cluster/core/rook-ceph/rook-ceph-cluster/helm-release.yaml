@@ -31,12 +31,19 @@ spec:
     ingress:
       dashboard:
         ingressClassName: "traefik"
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/tls-acme: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "harddisk"
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
         host:
-          name: &host "rook.${SECRET_DOMAIN}"
-          path: "/"
+          name: &host rook.${SECRET_DOMAIN}
+          path: /
         tls:
           - hosts:
               - *host
+            secretName: rook-tls
     configOverride: |
       [global]
       bdev_enable_discard = true
