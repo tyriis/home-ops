@@ -7,6 +7,7 @@ resources:
   - kube-system
   - networking
   - flux-system
+  - home
   # - kube-system/node-feature-discovery
   # - kube-system/reflector
   # - kube-system/reloader

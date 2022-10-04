@@ -13,8 +13,8 @@ spec:
   accessModes:
     - ReadWriteOnce
   csi:
-    driver: driver.longhorn.io
+    driver: rook-ceph.rbd.csi.ceph.com
     fsType: ext4
     volumeHandle: pvc-esphome-config
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: longhorn
+  storageClassName: rook-ceph
