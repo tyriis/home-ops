@@ -1,4 +1,21 @@
 ---
+# disable ssl: ceph config set mgr mgr/dashboard/ssl false
+# wipe drive:
+#           securityContext:
+#             allowPrivilegeEscalation: true
+#             privileged: true
+#
+#           volumeMounts:
+#             - name: dev
+#               mountPath: /dev/nvme0n1
+#
+#           volumes:
+#             - name: dev
+#               hostPath:
+#                 path: /dev/nvme0n1
+#
+#        run: sgdisk --zap-all /dev/nvme0n1
+#
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -83,9 +100,11 @@ spec:
           imagePullPolicy: IfNotPresent
           tty: true
           securityContext:
-            runAsNonRoot: true
-            runAsUser: 2016
-            runAsGroup: 2016
+            allowPrivilegeEscalation: true
+            privileged: true
+            # runAsNonRoot: true
+            # runAsUser: 2016
+            # runAsGroup: 2016
           env:
             - name: ROOK_CEPH_USERNAME
               valueFrom:
@@ -102,6 +121,8 @@ spec:
               name: ceph-config
             - name: mon-endpoint-volume
               mountPath: /etc/rook
+            - name: dev
+              mountPath: /dev/nvme0n1
       volumes:
         - name: mon-endpoint-volume
           configMap:
@@ -111,8 +132,14 @@ spec:
                 path: mon-endpoints
         - name: ceph-config
           emptyDir: {}
+        - name: dev
+          hostPath:
+            path: /dev/nvme0n1
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"
           effect: "NoExecute"
           tolerationSeconds: 5
+      nodeSelector:
+        kubernetes.io/arch: amd64
+        kubernetes.io/hostname: talos04
