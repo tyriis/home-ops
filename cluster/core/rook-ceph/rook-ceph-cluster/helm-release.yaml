@@ -78,13 +78,13 @@ spec:
         nodes:
           - name: talos04
             devices:
-              - name: nvme0n1
+              - name: /dev/disk/by-id/nvme-PM981_NVMe_Samsung_512GB__S3ZHNA0M538723
           - name: talos05
             devices:
-              - name: sdb
+              - name: /dev/disk/by-id/ata-APPLE_SSD_SM0512G_S1W3NYAGA00087
           - name: talos06
             devices:
-              - name: sdb
+              - name: /dev/disk/by-id/ata-APPLE_SSD_SM0512G_S2ZCNY0HA19226
       resources: null
         # mgr:
         #   limits:
