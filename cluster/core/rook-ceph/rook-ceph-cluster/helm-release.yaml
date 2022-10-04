@@ -68,7 +68,7 @@ spec:
       dashboard:
         enabled: true
         urlPrefix: /
-        port: 8443
+        port: 8080
         ssl: false
       storage:
         useAllNodes: false
