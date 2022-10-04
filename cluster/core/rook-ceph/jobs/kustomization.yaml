@@ -5,3 +5,4 @@ namespace: rook-ceph
 resources:
   - ceph-config-set-mgr-dashboard-ssl-false.yaml
   - ceph-mgr-module-enable-rook.yaml
+  - ceph-orch-set-backend-rook.yaml
