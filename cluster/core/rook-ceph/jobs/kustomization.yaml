@@ -1,7 +1,6 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: rook-ceph
 resources:
-  - rook-ceph-operator
-  - rook-ceph-cluster
-  - jobs
+  - disable-ssl-in-dashboard.yaml
