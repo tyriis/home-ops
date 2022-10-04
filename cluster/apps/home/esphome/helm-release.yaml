@@ -30,6 +30,8 @@ spec:
         existingClaim: esphome-config
       secrets:
         enabled: true
+        type: custom
+        readOnly: true
         volumeSpec:
           secret:
             name: esphome-secrets
