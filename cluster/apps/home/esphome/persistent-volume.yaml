@@ -16,5 +16,5 @@ spec:
     driver: rook-ceph.rbd.csi.ceph.com
     fsType: ext4
     volumeHandle: pvc-esphome-config
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: rook-ceph
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: ceph-block
