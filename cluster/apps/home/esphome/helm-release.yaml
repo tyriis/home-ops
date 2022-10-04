@@ -34,10 +34,10 @@ spec:
         readOnly: true
         volumeSpec:
           secret:
-            name: esphome-secrets
+            secretName: esphome-secrets
         subPath:
           - path: secrets.yaml
             mountPath: /config/secrets.yaml
 
-      podAnnotations:
-        secret.reloader.stakater.com/reload: esphome-secrets
+    podAnnotations:
+      secret.reloader.stakater.com/reload: esphome-secrets
