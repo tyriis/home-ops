@@ -28,3 +28,14 @@ spec:
         enabled: true
         type: pvc
         existingClaim: esphome-config
+      secrets:
+        enabled: true
+        volumeSpec:
+          secret:
+            name: esphome-secrets
+        subPath:
+          - path: secrets.yaml
+            mountPath: /config/secrets.yaml
+
+      podAnnotations:
+        secret.reloader.stakater.com/reload: esphome-secrets
