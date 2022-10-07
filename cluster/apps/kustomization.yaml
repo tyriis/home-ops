@@ -6,6 +6,7 @@ resources:
   - metallb-system
   - kube-system
   - networking
+  - rook-ceph
   - flux-system
   - home
   - kasten-io
