@@ -3,7 +3,6 @@ apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
   name: pimoroni-fanshim
-  namespace: hardware
   labels:
     app.kubernetes.io/part-of: pimoroni-fanshim
     app.kubernetes.io/name: pimoroni-fanshim
