@@ -8,6 +8,7 @@ resources:
   - github.yaml
   - hardware.yaml
   - home.yaml
+  - kasten-io.yaml
   - metallb-system.yaml
   - networking.yaml
   - observability.yaml
