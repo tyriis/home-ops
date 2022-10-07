@@ -8,6 +8,7 @@ resources:
   - networking
   - rook-ceph
   - flux-system
+  - hardware
   - home
   - kasten-io
   - storage
