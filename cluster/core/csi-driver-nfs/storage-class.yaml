@@ -5,7 +5,7 @@ metadata:
   name: nfs-csi
 provisioner: nfs.csi.k8s.io
 parameters:
-  server: nas.${SECRET_PRIVATE_DOMAIN}
+  server: nas.${SECRET_DOMAIN}
   share: /volume1/talos-nfs-test
 reclaimPolicy: Retain
 volumeBindingMode: Immediate
