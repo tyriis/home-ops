@@ -40,7 +40,7 @@ spec:
           securityContext:
             privileged: true
             # allowPrivilegeEscalation: false
-            runAsNonRoot: true
+            # runAsNonRoot: true
             capabilities:
               drop:
                 - ALL
