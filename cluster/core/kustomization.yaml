@@ -4,9 +4,10 @@ kind: Kustomization
 resources:
   - namespaces
   - rbac
-  - kubelet-serving-cert-approver
   - cert-manager
+  - csi-driver-nfs
   # - kube-system
+  - kubelet-serving-cert-approver
   - metallb-system
   - rook-ceph
   - snapshot-controller
