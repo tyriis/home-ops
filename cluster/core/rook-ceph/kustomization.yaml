@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - rook-ceph-operator
   - rook-ceph-cluster
-  - jobs
+  # - jobs
