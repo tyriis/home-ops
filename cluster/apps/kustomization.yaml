@@ -9,6 +9,7 @@ resources:
   - flux-system
   - home
   - kasten-io
+  - storage
   # - kube-system/node-feature-discovery
   # - kube-system/reflector
   # - kube-system/reloader
