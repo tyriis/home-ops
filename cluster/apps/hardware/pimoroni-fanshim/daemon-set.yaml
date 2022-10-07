@@ -39,6 +39,7 @@ spec:
         - name: pimoroni-fanshim
           securityContext:
             privileged: true
+            runAsUser: 0
             # allowPrivilegeEscalation: false
             # runAsNonRoot: true
             capabilities:
