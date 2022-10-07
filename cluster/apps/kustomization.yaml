@@ -8,6 +8,7 @@ resources:
   - networking
   - flux-system
   - home
+  - kasten-io
   # - kube-system/node-feature-discovery
   # - kube-system/reflector
   # - kube-system/reloader

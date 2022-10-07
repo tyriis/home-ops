@@ -14,6 +14,7 @@ resources:
 - infracloudio-charts.yaml
 - jetstack-charts.yaml
 - k8s-at-home-charts.yaml
+- kasten-charts.yaml
 - kured-charts.yaml
 - metallb-charts.yaml
 - metrics-server-charts.yaml
