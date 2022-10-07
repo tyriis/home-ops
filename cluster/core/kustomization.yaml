@@ -9,5 +9,6 @@ resources:
   # - kube-system
   - metallb-system
   - rook-ceph
+  - snapshot-controller
   # - observability
   # - stackgres
