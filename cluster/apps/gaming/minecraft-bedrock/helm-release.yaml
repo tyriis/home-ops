@@ -23,8 +23,7 @@ spec:
       storageClass: ceph-block
       dataDir:
         enabled: true
-        existingClaim: minecraft-bedrock-minecraft-bedrock-datadir
-
+        existingClaim: minecraft-bedrock-data
     resources:
       requests:
         memory: 1024Mi

@@ -1,0 +1,19 @@
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: minecraft-bedrock-data
+spec:
+  sourcePVC: minecraft-bedrock-data
+  trigger:
+    schedule: "*/30 * * * *"
+  restic:
+    pruneIntervalDays: 15
+    repository: volsync-minecraft-bedrock-data
+    retain:
+      hourly: 1
+      daily: 1
+      weekly: 1
+      monthly: 1
+      yearly: 1
+    copyMethod: Clone
