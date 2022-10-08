@@ -44,6 +44,8 @@ spec:
               mountPath: /sys/class/gpio
             - name: gpiomem
               mountPath: /dev/gpiomem
+            - name: proc
+              mountPath: /proc
           securityContext:
             # privileged: true
             runAsUser: 0
@@ -80,4 +82,7 @@ spec:
         - name: gpiomem
           hostPath:
             path: /dev/gpiomem
+        - name: proc
+          hostPath:
+            path: /proc
       terminationGracePeriodSeconds: 30
