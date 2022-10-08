@@ -40,6 +40,8 @@ spec:
           volumeMounts:
             - name: mem
               mountPath: /dev/mem
+            - name: gpio
+              mountPath: /sys/class/gpio
           securityContext:
             # privileged: true
             runAsUser: 0
@@ -70,4 +72,7 @@ spec:
         - name: mem
           hostPath:
             path: /dev/mem
+        - name: gpio
+          hostPath:
+            path: /sys/class/gpio
       terminationGracePeriodSeconds: 30
