@@ -19,8 +19,8 @@ spec:
     # https://artifacthub.io/packages/helm/kasten/k10?modal=values
     eula:
       accept: true
-    #   company: ${SECRET_K10_COMPANY}
-    #   email: ${SECRET_K10_EMAIL}
+      company: ${SECRET_K10_COMPANY}
+      email: ${SECRET_K10_EMAIL}
     global:
       persistence:
         storageClass: ceph-block
