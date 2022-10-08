@@ -41,10 +41,10 @@ spec:
             - name: mem
               mountPath: /dev/mem
           securityContext:
-            privileged: true
+            # privileged: true
             runAsUser: 0
-            allowPrivilegeEscalation: true
-            runAsNonRoot: false
+            allowPrivilegeEscalation: false
+            # runAsNonRoot: false
             capabilities:
               add:
                 - ALL
