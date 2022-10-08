@@ -10,6 +10,7 @@ resources:
   - home
   - kasten-io
   - storage
+  - gaming
   # - kube-system/node-feature-discovery
   # - kube-system/reflector
   # - kube-system/reloader
@@ -35,6 +36,5 @@ resources:
   # - system-upgrade/system-upgrade-controller
   # - authentik-system
   # - secops/vault
-  # - gaming/minecraft-bedrock
   # - github/actions-runner-controller
   # - observability/goldilocks # disabled, see #128
