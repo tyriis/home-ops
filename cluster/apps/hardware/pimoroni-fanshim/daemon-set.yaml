@@ -37,6 +37,9 @@ spec:
           effect: NoSchedule
       containers:
         - name: pimoroni-fanshim
+          volumeMounts:
+            - name: mem
+              mountPath: /dev/mem
           securityContext:
             privileged: true
             runAsUser: 0
@@ -63,4 +66,8 @@ spec:
             requests:
               cpu: 10m
               memory: 16Mi
+      volumes:
+        - name: mem
+          hostPath:
+            path: /dev/mem
       terminationGracePeriodSeconds: 30
