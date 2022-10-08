@@ -24,6 +24,8 @@ spec:
       persistence:
         storageClass: ceph-block
     auth:
+      tokenAuth:
+        enabled: true
       k10AdminUsers:
         - ${SECRET_K10_EMAIL}
       # oidcAuth:
