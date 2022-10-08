@@ -40,10 +40,10 @@ spec:
           securityContext:
             privileged: true
             runAsUser: 0
-            # allowPrivilegeEscalation: false
+            allowPrivilegeEscalation: true
             # runAsNonRoot: true
             capabilities:
-              drop:
+              add:
                 - ALL
             seccompProfile:
               type: RuntimeDefault
