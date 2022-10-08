@@ -5,7 +5,7 @@ resources:
   - cert-manager
   - traefik
   - kube-prometheus-stack
-  # - snapshot-controller
+  - snapshot-controller
   - rook-ceph
   - stackgres
   - actions-runner-controller

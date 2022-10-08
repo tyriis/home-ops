@@ -1,0 +1,12 @@
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: esphome-config
+spec:
+  trigger:
+    manual: restore
+  restic:
+    destinationPVC: esphome-config
+    repository: volsync-esphome-config
+    copyMethod: Direct

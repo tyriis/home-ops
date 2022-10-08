@@ -9,13 +9,14 @@ spec:
   chart:
     spec:
       chart: k10
-      version: 5.0.9
+      version: 5.0.10
       sourceRef:
         kind: HelmRepository
         name: kasten-charts
         namespace: flux-system
       interval: 5m
   values:
+    # https://artifacthub.io/packages/helm/kasten/k10?modal=values
     eula:
       accept: true
       company: ${SECRET_K10_COMPANY}
@@ -24,26 +25,26 @@ spec:
       persistence:
         storageClass: ceph-block
     auth:
-      k10AdminUsers:
-        - ${SECRET_K10_EMAIL}
+      tokenAuth:
+        enabled: true
+      # k10AdminUsers:
+      #   - ${SECRET_K10_EMAIL}
       # oidcAuth:
       #   enabled: true
       #   secretName: kasten-secret
     clusterName: ${SETTING_CLUSTERNAME}
     ingress:
-      create: false
-      # class: nginx
-      # host: "k10.${SECRET_DOMAIN}"
-      # annotations:
-      #   kubernetes.io/tls-acme: "true"
-      #   cert-manager.io/cluster-issuer: letsencrypt-production
-      #   external-dns/is-public: "true"
-      #   external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
-      # urlPath: k10
-      # hosts:
-      #   - "k10.${SECRET_DOMAIN}"
-      # tls:
-      #   enabled: true
-      #   secretName: "tls.k10"
+      create: true
+      class: traefik
+      host: k10.${SECRET_DOMAIN}
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-production
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      urlPath: k10
+      hosts:
+        - k10.${SECRET_DOMAIN}
+      tls:
+        enabled: true
+        secretName: k10-cert
     grafana:
       enabled: false
