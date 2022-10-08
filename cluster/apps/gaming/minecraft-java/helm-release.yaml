@@ -70,4 +70,5 @@ spec:
 
     nodeSelector:
       kubernetes.io/arch: amd64
-      feature.node.kubernetes.io/custom-memory.gb.8: "true"
+      feature.node.kubernetes.io/custom-cpu.intel.i7: "true"
+      feature.node.kubernetes.io/custom-memory.gb.16: "true"
