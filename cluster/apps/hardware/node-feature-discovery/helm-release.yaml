@@ -3,7 +3,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: node-feature-discovery
-  namespace: kube-system
 spec:
   interval: 5m
   chart:
@@ -58,35 +57,30 @@ spec:
             - name: "cpu.intel.i7"
               value: "true"
               matchOn:
-                - nodename: ["k3s-worker01", "k3s-worker02"]
-
-            - name: "cpu.intel.i5"
-              value: "true"
-              matchOn:
-                - nodename: ["k3s-worker05"]
-
-            - name: "cpu.intel.celeron"
-              value: "true"
-              matchOn:
-                - nodename: ["k3s-worker03", "k3s-worker04"]
+                - nodename:
+                    - talos04
+                    - talos05
+                    - talos06
+                    - talos07
 
             - name: "memory.gb.4"
               value: "true"
               matchOn:
                 - nodename:
-                    [
-                      "k3s-master01",
-                      "k3s-master02",
-                      "k3s-master03",
-                      "k3s-worker03",
-                    ]
-
-            - name: "memory.gb.6"
-              value: "true"
-              matchOn:
-                - nodename: ["k3s-worker04"]
+                    - talos01
+                    - talos02
+                    - talos03
 
             - name: "memory.gb.8"
               value: "true"
               matchOn:
-                - nodename: ["k3s-worker01", "k3s-worker02", "k3s-worker05"]
+                - nodename:
+                    - talos05
+                    - talos06
+
+            - name: "memory.gb.16"
+              value: "true"
+              matchOn:
+                - nodename:
+                    - talos04
+                    - talos07
