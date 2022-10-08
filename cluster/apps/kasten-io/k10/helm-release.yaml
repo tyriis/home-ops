@@ -31,19 +31,17 @@ spec:
       #   secretName: kasten-secret
     clusterName: ${SETTING_CLUSTERNAME}
     ingress:
-      create: false
-      # class: nginx
-      # host: "k10.${SECRET_DOMAIN}"
-      # annotations:
-      #   kubernetes.io/tls-acme: "true"
-      #   cert-manager.io/cluster-issuer: letsencrypt-production
-      #   external-dns/is-public: "true"
-      #   external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
-      # urlPath: k10
-      # hosts:
-      #   - "k10.${SECRET_DOMAIN}"
-      # tls:
-      #   enabled: true
-      #   secretName: "tls.k10"
+      create: true
+      class: traefik
+      host: "k10.${SECRET_DOMAIN}"
+      annotations:
+        cert-manager.io/cluster-issuer: "letsencrypt-production"
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+      urlPath: k10
+      hosts:
+        - "k10.${SECRET_DOMAIN}"
+      tls:
+        enabled: true
+        secretName: k10-cert
     grafana:
       enabled: false
