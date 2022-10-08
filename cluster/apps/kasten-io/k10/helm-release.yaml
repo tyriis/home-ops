@@ -16,18 +16,19 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
+    # https://artifacthub.io/packages/helm/kasten/k10?modal=values
     eula:
       accept: true
-      company: ${SECRET_K10_COMPANY}
-      email: ${SECRET_K10_EMAIL}
+    #   company: ${SECRET_K10_COMPANY}
+    #   email: ${SECRET_K10_EMAIL}
     global:
       persistence:
         storageClass: ceph-block
     auth:
       tokenAuth:
         enabled: true
-      k10AdminUsers:
-        - ${SECRET_K10_EMAIL}
+      # k10AdminUsers:
+      #   - ${SECRET_K10_EMAIL}
       # oidcAuth:
       #   enabled: true
       #   secretName: kasten-secret
@@ -35,13 +36,13 @@ spec:
     ingress:
       create: true
       class: traefik
-      host: "k10.${SECRET_DOMAIN}"
+      host: k10.${SECRET_DOMAIN}
       annotations:
-        cert-manager.io/cluster-issuer: "letsencrypt-production"
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        cert-manager.io/cluster-issuer: letsencrypt-production
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
       urlPath: k10
       hosts:
-        - "k10.${SECRET_DOMAIN}"
+        - k10.${SECRET_DOMAIN}
       tls:
         enabled: true
         secretName: k10-cert
