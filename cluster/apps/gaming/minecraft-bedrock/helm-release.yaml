@@ -3,7 +3,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: minecraft-bedrock
-  namespace: gaming
 spec:
   interval: 5m
   releaseName: minecraft-bedrock
@@ -16,16 +15,12 @@ spec:
         name: minecraft-server-charts
         namespace: flux-system
   values:
-    image:
-      repository: itzg/minecraft-bedrock-server
-      tag: latest
-      pullPolicy: Always
-
+    # https://artifacthub.io/packages/helm/minecraft-server-charts/minecraft-bedrock?modal=values
     extraEnv:
       TZ: ${SETTING_TZ}
 
     persistence:
-      storageClass: longhorn
+      storageClass: ceph-block
       dataDir:
         enabled: true
         existingClaim: minecraft-bedrock-minecraft-bedrock-datadir
@@ -37,12 +32,12 @@ spec:
 
     minecraftServer:
       eula: "TRUE"
-      version: "1.19.1.01"
-      difficulty: easy
+      version: "1.19.31.01"
+      difficulty: normal
       gameMode: survival
-      levelSeed: "-5459743611627998839"
+      levelSeed: "-1381486679527427600"
       ops: "2535405985178539"
-      levelName: "2022-06-12_survival"
+      levelName: "2022-10-08_survival"
       maxThreads: 0 # Maximum number of threads the server tries to use. If set to 0 or removed then it uses as many as possible.
       cheats: true
       serverName: "home"
