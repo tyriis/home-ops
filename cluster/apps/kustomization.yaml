@@ -11,7 +11,7 @@ resources:
   - flux-system
   - hardware
   - home
-  - kasten-io
+  # - kasten-io
   - storage
   - gaming
   # - kube-system/node-feature-discovery
