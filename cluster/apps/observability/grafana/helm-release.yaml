@@ -4,12 +4,8 @@ kind: HelmRelease
 metadata:
   name: grafana
 spec:
-  interval: 5m
-  # dependsOn:
-  #   # - name: loki
-  #   #   namespace: observability
-  #   - name: kube-prometheus-stack
-  #     namespace: observability
+  interval: 30m
+  timeout: 20m
   chart:
     spec:
       chart: grafana
@@ -19,9 +15,8 @@ spec:
         name: grafana-charts
         namespace: flux-system
   values:
-    image:
-      repository: ghcr.io/k8s-at-home/grafana
     replicas: 1
+
     env:
       TZ: ${SETTING_TZ}
       GF_EXPLORE_ENABLED: "true"
@@ -91,10 +86,10 @@ spec:
       # default:
       flux:
         flux-cluster:
-          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/cluster.json
+          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/cluster.json
           datasource: Prometheus
         flux-control-plane:
-          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/control-plane.json
+          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/control-plane.json
           datasource: Prometheus
       default:
         # Ref: https://grafana.com/grafana/dashboards/11074
