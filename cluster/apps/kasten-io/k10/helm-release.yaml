@@ -26,7 +26,7 @@ spec:
         storageClass: ceph-block
     auth:
       tokenAuth:
-        enabled: true
+        enabled: false
       # k10AdminUsers:
       #   - ${SECRET_K10_EMAIL}
       # oidcAuth:
@@ -34,7 +34,7 @@ spec:
       #   secretName: kasten-secret
     clusterName: ${SETTING_CLUSTERNAME}
     ingress:
-      create: true
+      create: false
       class: traefik
       host: k10.${SECRET_DOMAIN}
       annotations:
