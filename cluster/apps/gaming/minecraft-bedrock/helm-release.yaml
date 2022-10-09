@@ -36,7 +36,7 @@ spec:
       gameMode: survival
       levelSeed: "-1381486679527427600"
       ops: "2535405985178539"
-      levelName: "2022-10-08_survival"
+      levelName: "2022-10-09_survival"
       maxThreads: 0 # Maximum number of threads the server tries to use. If set to 0 or removed then it uses as many as possible.
       cheats: true
       serverName: "home"
