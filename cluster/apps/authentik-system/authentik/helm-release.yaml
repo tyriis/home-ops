@@ -4,6 +4,11 @@ kind: HelmRelease
 metadata:
   name: authentik
 spec:
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: cert-manager
+      namespace: cert-manager
   interval: 5m
   chart:
     spec:
@@ -46,7 +51,7 @@ spec:
       persistence:
         enabled: true
         existingClaim: authentik-postgresql-data
-        storageClass: longhorn
+        storageClass: ceph-block
         size: 1Gi
       postgresqlUsername: authentik
       postgresqlDatabase: authentik
@@ -62,7 +67,7 @@ spec:
         persistence:
           enabled: true
           existingClaim: authentik-redis-data
-          storageClass: longhorn
+          storageClass: ceph-block
           size: 1Gi
 
     ingress:
