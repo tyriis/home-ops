@@ -1,0 +1,221 @@
+---
+prometheus:
+  thanosService:
+    enabled: true
+  thanosServiceMonitor:
+    enabled: true
+  # ingress:
+  #   enabled: true
+  #   ingressClassName: traefik
+  #   annotations:
+  #     cert-manager.io/cluster-issuer: letsencrypt-production
+  #     hajimari.io/enable: "true"
+  #     hajimari.io/appName: prometheus
+  #     hajimari.io/icon: chart-line-stacked
+  #     traefik.ingress.kubernetes.io/router.entrypoints: websecure
+  #   hosts:
+  #     - prometheus.${SECRET_DOMAIN}
+  #   tls:
+  #     - secretName: prometheus-cert
+  #       hosts:
+  #         - prometheus.${SECRET_DOMAIN}
+  prometheusSpec:
+    replicas: 3
+    replicaExternalLabelName: __replica__
+    ruleSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+    probeSelectorNilUsesHelmValues: false
+    retentionSize: "8GB"
+    retention: 14d
+    enableAdminAPI: true
+    walCompression: true
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: ceph-block
+          resources:
+            requests:
+              storage: 10Gi
+    resources:
+      requests:
+        memory: 4Gi
+        cpu: 1000m
+      # limits:
+      #   memory: 4Gi
+      #   cpu: 4000m
+
+    thanos:
+      image: quay.io/thanos/thanos:v0.28.0
+      version: v0.28.0
+      objectStorageConfig:
+        name: &secret thanos-objstore-secret
+        key: objstore.yml
+
+    podAnnotations:
+      secret.reloader.stakater.com/reload: *secret
+
+    externalUrl: https://prometheus.${SECRET_DOMAIN}/
+    ruleSelector: {}
+    ruleNamespaceSelector: {}
+    serviceMonitorSelector: {}
+    serviceMonitorNamespaceSelector: {}
+    podMonitorSelector: {}
+    podMonitorNamespaceSelector: {}
+
+    additionalScrapeConfigs:
+      - job_name: node-exporter
+        honor_timestamps: true
+        static_configs:
+          - targets:
+              - nas.${SECRET_DOMAIN}:9100
+              - cubietruck.home:9100
+              - opnsense.home:9100
+      # ESPHome lights
+      - job_name: esphome-light-alexroom
+        static_configs:
+          - targets:
+              - esphome-light-alexroom.home
+            labels:
+              device: light-alexroom
+      - job_name: esphome-light-stairs
+        static_configs:
+          - targets:
+              - esphome-light-stairs.home
+            labels:
+              device: light-stairs
+      # ESPHome sensors
+      - job_name: esphome-sensor-alexroom
+        static_configs:
+          - targets:
+              - esphome-sensor-alexroom.home
+            labels:
+              device: sensor-alexroom
+      - job_name: esphome-sensor-basement
+        static_configs:
+          - targets:
+              - esphome-sensor-basement.home
+            labels:
+              device: sensor-basement
+      - job_name: esphome-sensor-bathroom
+        static_configs:
+          - targets:
+              - esphome-sensor-bathroom.home
+            labels:
+              device: sensor-bathroom
+      - job_name: esphome-sensor-bedroom
+        static_configs:
+          - targets:
+              - esphome-sensor-bedroom.home
+            labels:
+              device: sensor-bedroom
+      - job_name: esphome-sensor-domiroom
+        static_configs:
+          - targets:
+              - esphome-sensor-domiroom.home
+            labels:
+              device: sensor-domiroom
+      - job_name: esphome-sensor-heating
+        static_configs:
+          - targets:
+              - esphome-sensor-heating.home
+            labels:
+              device: sensor-heating
+      - job_name: esphome-sensor-kitchen
+        static_configs:
+          - targets:
+              - esphome-sensor-kitchen.home
+            labels:
+              device: sensor-kitchen
+      - job_name: esphome-sensor-livingroom
+        static_configs:
+          - targets:
+              - esphome-sensor-livingroom.home
+            labels:
+              device: sensor-livingroom
+      - job_name: esphome-sensor-office
+        static_configs:
+          - targets:
+              - esphome-sensor-office.home
+            labels:
+              device: sensor-office
+      - job_name: esphome-sensor-stairs
+        static_configs:
+          - targets:
+              - esphome-sensor-stairs.home
+            labels:
+              device: sensor-stairs
+      # ESPHome switches
+      - job_name: esphome-switch-alexroom
+        static_configs:
+          - targets:
+              - esphome-switch-alexroom.home
+            labels:
+              device: switch-alexroom
+      - job_name: esphome-switch-basement
+        static_configs:
+          - targets:
+              - esphome-switch-basement.home
+            labels:
+              device: switch-basement
+      - job_name: esphome-switch-domiroom
+        static_configs:
+          - targets:
+              - esphome-switch-domiroom.home
+            labels:
+              device: switch-domiroom
+      - job_name: esphome-switch-irpanel-1
+        static_configs:
+          - targets:
+              - esphome-switch-irpanel-1.home
+            labels:
+              device: switch-irpanel-1
+      - job_name: esphome-switch-irpanel-2
+        static_configs:
+          - targets:
+              - esphome-switch-irpanel-2.home
+            labels:
+              device: switch-irpanel-2
+      - job_name: esphome-switch-livingroom
+        static_configs:
+          - targets:
+              - esphome-switch-livingroom.home
+            labels:
+              device: switch-livingroom
+      - job_name: esphome-switch-office
+        static_configs:
+          - targets:
+              - esphome-switch-office.home
+            labels:
+              device: switch-office
+      - job_name: esphome-switch-bedroom
+        static_configs:
+          - targets:
+              - esphome-switch-bedroom.home
+            labels:
+              device: switch-bedroom
+      # homeassistant
+      - job_name: homeassistant
+        scrape_interval: 60s
+        metrics_path: /api/prometheus
+
+        # Long-Lived Access Token
+        authorization:
+          credentials: ${SECRET_HASS_API_TOKEN}
+
+        scheme: https
+        static_configs:
+          - targets:
+              - hass.${SECRET_DOMAIN}
+
+      # - job_name: ohm-exporter
+      #   scrape_interval: 15s
+      #   static_configs:
+      #   - targets:
+      #     - red.home:4445
+      #     - carbon.home:4445
+      # - job_name: windows-exporter
+      #   scrape_interval: 15s
+      #   static_configs:
+      #   - targets:
+      #     - red.home:9182

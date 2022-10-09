@@ -1,0 +1,142 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: kube-prometheus-stack
+  namespace: observability
+spec:
+  interval: 1h
+  maxHistory: 5
+  timeout: 20m
+  chart:
+    spec:
+      chart: kube-prometheus-stack
+      version: 40.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community-charts
+        namespace: flux-system
+  install:
+    createNamespace: false
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+      remediateLastFailure: true
+    cleanupOnFail: true
+  valuesFrom:
+    - kind: ConfigMap
+      name: alertmanager-values
+    - kind: ConfigMap
+      name: prometheus-values
+  values:
+    fullnameOverride: prometheus
+
+    nodeExporter:
+      enabled: true
+
+    prometheus-node-exporter:
+      fullnameOverride: node-exporter
+      extraArgs:
+        - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var)($|/)
+        - --collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs|tmpfs)$
+      prometheus:
+        monitor:
+          enabled: true
+          # lens ide config
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels: [__meta_kubernetes_pod_node_name]
+              targetLabel: kubernetes_node
+            # should be removed when https://github.com/lensapp/lens/issues/4851 is fixed
+            - sourceLabels: [__meta_kubernetes_namespace]
+              action: replace
+              regex: (.*)
+              replacement: $1
+              targetLabel: kubernetes_namespace
+            - sourceLabels: [__meta_kubernetes_service_name]
+              action: replace
+              regex: (.*)
+              replacement: $1
+              targetLabel: kubernetes_name
+
+      tolerations:
+        - effect: "NoExecute"
+          operator: "Exists"
+        - effect: "NoSchedule"
+          operator: "Exists"
+
+    kube-state-metrics:
+      fullnameOverride: kube-state-metrics
+      selfMonitor:
+        enabled: true
+      prometheus:
+        monitor:
+          enabled: true
+
+    grafana:
+      enabled: false
+      forceDeployDashboards: true
+
+    kubelet:
+      enabled: true
+      serviceMonitor:
+        # lens ide config
+        # see https://github.com/lensapp/lens/blob/33c405bdcf86ff755069ce50a21efbf10985810e/troubleshooting/custom-prometheus.md
+        metricRelabelings:
+          - action: replace
+            sourceLabels:
+              - node
+            targetLabel: instance
+
+    kubeApiServer:
+      enabled: true
+
+    kubeControllerManager:
+      enabled: false # no way with 8gb of RAM
+      endpoints:
+        - 192.168.1.71
+        - 192.168.1.72
+        - 192.168.1.73
+      service:
+        enabled: true
+        port: 10257
+        targetPort: 10257
+      serviceMonitor:
+        enabled: true
+        https: true
+        insecureSkipVerify: true
+
+    kubeScheduler:
+      enabled: false # no way with 8gb of RAM
+      endpoints:
+        - 192.168.1.71
+        - 192.168.1.72
+        - 192.168.1.73
+      service:
+        enabled: true
+        port: 10259
+        targetPort: 10259
+      serviceMonitor:
+        enabled: true
+        https: true
+        insecureSkipVerify: true
+
+    kubeProxy:
+      enabled: false # no way with 8gb of RAM
+      endpoints:
+        - 192.168.1.71
+        - 192.168.1.72
+        - 192.168.1.73
+
+    kubeEtcd:
+      enabled: true
+
+    coreDns:
+      enabled: true
+
+    kubeStateMetrics:
+      enabled: true
