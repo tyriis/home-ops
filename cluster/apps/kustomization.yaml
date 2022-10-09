@@ -38,5 +38,5 @@ resources:
   # - system-upgrade/system-upgrade-controller
   # - authentik-system
   # - secops/vault
-  # - github/actions-runner-controller
+  - github
   # - observability/goldilocks # disabled, see #128
