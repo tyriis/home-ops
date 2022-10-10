@@ -2,9 +2,9 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
-  name: infracloudio-charts
+  name: botkube-charts
   namespace: flux-system
 spec:
   interval: 15m
-  url: https://infracloudio.github.io/charts
+  url: https://charts.botkube.io/
   timeout: 3m

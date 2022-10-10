@@ -11,14 +11,15 @@ spec:
       version: v0.12.4
       sourceRef:
         kind: HelmRepository
-        name: infracloudio-charts
+        name: botkube-charts
         namespace: flux-system
 
-  # https://artifacthub.io/packages/helm/ebrianne/botkube?modal=values
+  # https://artifacthub.io/packages/helm/infracloudio/botkube?modal=values
   values:
-    communications:
-      # need this workaround otherwise botkube id and channel are not rendered properly, no idea why
-      existingSecretName: botkube-communication
+    existingCommunicationsSecretName: botkube-communication
+
+    settings:
+      clustername: ${SETTING_CLUSTERNAME}
 
     deployment:
       annotations:
@@ -28,20 +29,10 @@ spec:
     serviceMonitor:
       enabled: true
 
-    config:
-      settings:
-        clustername: ${SETTING_CLUSTERNAME}
-      resources:
-        - name: v1/pods
-          namespaces:
-            include:
-              - all
-            ignore:
-              - kube-system
-          events:
-            - create
-            - delete
-        - name: v1/services
+    sources:
+      'crds':
+        displayName: "CRDS"
+        kubernetes:
           namespaces:
             include:
               - all
@@ -49,169 +40,10 @@ spec:
             - create
             - delete
             - error
-        - name: apps/v1/deployments
-          namespaces:
-            include:
-              - all
-          events:
-            - create
-            - update
-            - delete
-            - error
-          updateSetting:
-            includeDiff: true
-            fields:
-              - spec.template.spec.containers[*].image
-        - name: apps/v1/statefulsets
-          namespaces:
-            include:
-              - all
-          events:
-            - create
-            - update
-            - delete
-            - error
-          updateSetting:
-            includeDiff: true
-            fields:
-              - spec.template.spec.containers[*].image
-        - name: networking.k8s.io/v1/ingresses
-          namespaces:
-            include:
-              - all
-          events:
-            - create
-            - delete
-            - error
-        - name: v1/nodes
-          namespaces:
-            include:
-              - all
-          events:
-            - create
-            - delete
-            - error
-        - name: v1/namespaces
-          namespaces:
-            include:
-              - all
-          events:
-            - create
-            - delete
-            - error
-        - name: v1/persistentvolumes
-          namespaces:
-            include:
-              - all
-          events:
-            - create
-            - delete
-            - error
-        - name: v1/persistentvolumeclaims
-          namespaces:
-            include:
-              - all
-          events:
-            - create
-            - delete
-            - error
-        - name: v1/secrets
-          namespaces:
-            include:
-              - all
-          events:
-            - create
-            - delete
-            - error
-        - name: v1/configmaps
-          namespaces:
-            include:
-              - all
-          events:
-            - delete
-            - error
-        - name: apps/v1/daemonsets
-          namespaces:
-            include:
-              - all
-          events:
-            - create
-            - delete
-            - error
-            - update
-          updateSetting:
-            includeDiff: true
-            fields:
-              - spec.template.spec.containers[*].image
-        - name: batch/v1/jobs
-          namespaces:
-            include:
-              - all
-            ignore:
-              - kube-system
-          events:
-            - create
-            - update
-            - delete
-            - error
-          updateSetting:
-            includeDiff: true
-            fields:
-              - spec.template.spec.containers[*].image
-              - status.conditions[*].type
-        - name: rbac.authorization.k8s.io/v1/roles
-          namespaces:
-            include:
-              - all
-          events:
-            - create
-            - delete
-            - error
-        - name: rbac.authorization.k8s.io/v1/rolebindings
-          namespaces:
-            include:
-              - all
-          events:
-            - create
-            - delete
-            - error
-        - name: rbac.authorization.k8s.io/v1/clusterroles
-          namespaces:
-            include:
-              - all
-          events:
-            - create
-            - delete
-            - error
-        - name: rbac.authorization.k8s.io/v1/clusterrolebindings
-          namespaces:
-            include:
-              - all
-          events:
-            - create
-            - delete
-            - error
-        - name: helm.toolkit.fluxcd.io/v2beta1/helmreleases
-          namespaces:
-            include:
-              - all
-          events:
-            - create
-            - delete
-            - error
-        - name: kustomize.toolkit.fluxcd.io/v1beta2/kustomizations
-          namespaces:
-            include:
-              - all
-          events:
-            - create
-            - delete
-            - error
-        - name: monitoring.coreos.com/v1/podmonitors
-          namespaces:
-            include:
-              - all
-          events:
-            - create
-            - delete
-            - error
+          resources:
+            - name: helm.toolkit.fluxcd.io/v2beta1/helmreleases
+            - name: source.toolkit.fluxcd.io/v1beta2/helmcharts
+            - name: kustomize.toolkit.fluxcd.io/v1beta2/kustomizations
+            - name: notification.toolkit.fluxcd.io/v1beta1/alerts
+            - name: monitoring.coreos.com/v1/podmonitors
+            - name: monitoring.coreos.com/v1/servicemonitors

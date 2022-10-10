@@ -5,6 +5,7 @@ resources:
 - actions-runner-controller-charts.yaml
 - authentik-charts.yaml
 - backube-charts.yaml
+- botkube-charts.yaml
 - csi-driver-nfs-charts.yaml
 - democratic-csi-charts.yaml
 - emberstack-charts.yaml
@@ -14,7 +15,6 @@ resources:
 - grafana-charts.yaml
 - hajimari-charts.yaml
 - hashicorp-charts.yaml
-- infracloudio-charts.yaml
 - jetstack-charts.yaml
 - k8s-at-home-charts.yaml
 - kasten-charts.yaml
