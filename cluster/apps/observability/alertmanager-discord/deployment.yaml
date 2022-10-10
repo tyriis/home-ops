@@ -3,7 +3,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: alertmanager-discord
-  namespace: observability
   labels:
     app.kubernetes.io/name: alertmanager-discord
     app.kubernetes.io/instance: alertmanager-discord
@@ -34,12 +33,12 @@ spec:
             - name: DISCORD_AVATAR_URL
               value: https://avatars3.githubusercontent.com/u/3380462
           imagePullPolicy: IfNotPresent
-          resources:
-            limits:
-              cpu: 100m
-              memory: 32Mi
-            requests:
-              cpu: 10m
-              memory: 8Mi
+          # resources:
+          #   limits:
+          #     cpu: 100m
+          #     memory: 32Mi
+          #   requests:
+          #     cpu: 10m
+          #     memory: 8Mi
 
       terminationGracePeriodSeconds: 30

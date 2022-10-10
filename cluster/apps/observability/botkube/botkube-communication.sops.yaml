@@ -3,7 +3,6 @@ apiVersion: v1
 kind: Secret
 metadata:
     name: botkube-communication
-    namespace: observability
 data:
     comm_config.yaml: ENC[AES256_GCM,data:/98t3N/1cVxf3EO9kyReNiSDFX7UMC6pVZ7FBk0dZYVxXiB4znXTf6yo0DFljscdWCfd2d+KCbIM7FwmZwbTBr3AwVSzNWML1eLvUjNUqy6sa31BBDLlOW6i2Wn8a9l8TEiVrV9omH8gf8dMkz+/+6ZbaurIydORaRdjmGv6D+Q9HZgkBCpHN4AF9TsviTXppE4+uB1GbEyyQwNRrg3T0bmr2oBAO4hfFzj5yxX6jL5v49pnhHueWTx7ws+Z1fAPR87fam5WuKWUpSIePp2KwzeSdbvFhnnSQqj0C+V7esVSczY2BLKDIxOGDYm3xa46ypsfq93wzH/PRHa7JpF5fqwv4KHbnPJTdfheTW/PRiQdW8YxMaZJ+4Zwgsh1rjttz6NrTZYaJtqIO7ZhuS2HXFsvuWrM54SCDREa7qdAtLiwxXHpeGBnXE1YGDPQF1FfM5lMd/P7qLHpNZVg2h2aXd96zHGkuBkZ8+M7nPTdSRos015PqFW5U+xZXT3HhnEdbBm0R6EqkKkcnUmhUcnb9ytBHh1IIoMOFtot27iFl5PybKvRS+YVhBZQd0hla4DqlytUkuMMDekn7ZHvTXvO7+p+BNS5A2B+rBbGjh8wdv5Uk52jUWaPfJI56YmuMVUgBix6wcfYOdzf7zIsx5eu2ONrxT/Zg7kTyNCu0gd7zoL2zmklw0w1UNKQ/L/dNzME2J/EPeSHMGly2WWNKj1BdO61d7/ddXouui8uXfEvkIUebIXTw5TMzoB+8qqx/l66Qwpng8sSVYIzehawmCQIjuAgSR3w096Du3pnUKv/h25JisbZUAroFhzBVqrM7iBkSFVviPbdKt+J7iZ/SdQHL0+pDwaJF2J+xQHNTxo8+mVub30OLarwc69xYnCzyF/jm3h07FZgC3N4Yb9esbqlxHq+KrYZVQKaM3hYBUcPwfCFc8uiMbmPE5n+4oj7VAyEHmGaYAxttdhj1WskB7X9gUiYey2TreGHzmp3HPQouZ+1oia4FmCgnLdI9etB12i2QHkwVXekb3fzxRCaJOOjwqluqWo51L3gDiNQ5LPUBxgFQh7vMBADdJHK9HgjNcjcCe4HOT+t3yd1e5tFJ05seXPqHFo1Xz9huaLL8+qMcfjDYl1xQzM1V9F6YXKEAPT+13T/+sQvMVpNb5VrsV5N7gMAP28c3MHi2QvsK+EjVvZioTnK6yZ2/2uB1w+9nePqVweT43AGP/t3s2S1SmYi/6iGRfJIfH8+rYSNxezAiyRXSP7eOgnsDY7aNTFL460lyvx+3njUPnK6Vf3AR9D7Fh5LkmiyCm7driAss6XByAvGkzFHYWkcYCS+Ly33r3Xo/6RLLwMB/JWDRtSbcuWVAY91GrA3M/H/+Qe4EzGy3Zf18m9n6bCzgNo2xWb6tLtaIdx/ZKAWbNkTLu/bHQrN0pNqELQ/4JP6mqLEekBMJJOid33zWh78cywAZTawjoX8uXTpzHt0pbcIToEtLiPw2njDb0ES6OxleAipuk6dTF1GkZA7qmg1Ei7tK/O12uIQzuqtWKTZq+D+rn14b822xE92Dir+xUVfgB6fyabfVmz2Tmy3yY7iFNvssQcNIHpUnZmEMAm6sSOGhLwMKfNfLArXlikHfesbJVSnrby+zgF/tCJTeD0mVHP6A3/67qFnILAFpo1SjJ35oOJCojoWRlY1bzyESlwkD0VABdUjyeNSgSWP52CgyFD3RIi5SIRbnYtnScdtz0+bm50HQSjDUexw+AgPObYhT5cs0FTO4fAGYEhlyEjkbTmfHNtcPhpgpnIjOJqAzKMg9QnzyOOhR17KO8luXvGrjgkcOjEOQG57jZvFTfb1yLHPfLAPhpC8zb+R+mj3gxUXB1HdQbxXzBYZyGBD3Ymisb3DbA==,iv:CooO9CVv6jitT73EclWjtIetAyt3eB7WYPvhTpwTEm8=,tag:zk84hJHRWo6InSXucuN2lw==,type:str]
 sops:
@@ -21,8 +20,8 @@ sops:
             SThDODl4ZFFMMUlxM3BneWlrNDdjdUUKm16agevW+HLV4al0q2m5W/SyS84E5SXh
             QfWlkG1byRaLRQ+tMeTuCN0tk2A2asmSPygQ1IKo4AO9kMirDEjQ6w==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2022-02-05T18:37:18Z"
-    mac: ENC[AES256_GCM,data:SXcXivgYfybsDRqpZVCjhmB3fwHGrbP8GKRpO0//ZDJmFn02hbAmZSmOZ18vayoXtA0iiVFIYPppDHXZOwWPSINmm3Q02vzKrGBjdVsR7Rkav3g0X69iqA3LvYCXTebPi1Z6Gv/SdALb6nn+uLASQEEssmcMnrogAnRMSvSDIxA=,iv:wN5Mavp+26rX2uCkVKVmUTLf6ViA/RysZY1yguzguJ0=,tag:uxje4H70ZUt4xywzl4uUUg==,type:str]
+    lastmodified: "2022-10-10T20:53:04Z"
+    mac: ENC[AES256_GCM,data:Tg7MbNXLnh7jCfvXscmK18HVhtgViFl6ZaAYP2m+QtwOJbdUrE7eODyNxgWiG0O6j3xpD33vZ12R78hL/p5jvalcw5XsSRsSJ3X9qg/sdgjAF93YIdgOdoW91VgvLRdPzZWx/cFxAzqFNTQKLFRyJgR9LYFlTI2KGTjFxxIShAY=,iv:qF5hy1Uxv9WC78gnzrz8ZQK8LKkdNFTWYIY1Ba2I4Is=,tag:wYmgc2KiLvw66SP1uD+iew==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
-    version: 3.7.1
+    version: 3.7.3
