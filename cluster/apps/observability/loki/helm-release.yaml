@@ -3,7 +3,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: loki
-  namespace: observability
 spec:
   interval: 5m
   chart:
@@ -25,22 +24,24 @@ spec:
     cleanupOnFail: true
   values:
     # https://grafana.com/docs/loki/latest/configuration/
-    image:
-      repository: ghcr.io/k8s-at-home/loki
-    ingress:
-      enabled: false
-
-    persistence:
-      enabled: true
-      storageClassName: longhorn
-      size: 15Gi
-
-      config:
+    # https://artifacthub.io/packages/helm/grafana/loki?modal=values
+    loki:
+      structuredConfig:
+        auth_enabled: false
         limits_config:
-          enforce_metric_name: false
+          retention_period: 2d
           reject_old_samples: false
           reject_old_samples_max_age: 3000d
-          ingestion_rate_mb: 16
-          ingestion_burst_size_mb: 16
-    serviceMonitor:
-      enabled: true
+    write:
+      persistence:
+        size: 15Gi
+        storageClass: ceph-block
+    read:
+      persistence:
+        size: 15Gi
+        storageClass: ceph-block
+    monitoring:
+      selfMonitoring:
+        enabled: false
+        grafanaAgent:
+          installOperator: false
