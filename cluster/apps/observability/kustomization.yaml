@@ -5,4 +5,5 @@ namespace: observability
 resources:
   - grafana
   - kube-prometheus-stack
+  - loki
   # - promtail
