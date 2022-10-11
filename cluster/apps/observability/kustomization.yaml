@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: observability
 resources:
   - alertmanager-discord
-  # - botkube
+  - botkube
   - grafana
   - kube-prometheus-stack
   # - loki
