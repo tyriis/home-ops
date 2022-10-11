@@ -19,7 +19,12 @@ spec:
     existingCommunicationsSecretName: botkube-communication
 
     settings:
-      clustername: ${SETTING_CLUSTERNAME}
+      clusterName: ${SETTING_CLUSTERNAME}
+
+    executors:
+      'kubectl-read-only':
+        kubectl:
+          enabled: true
 
     deployment:
       annotations:
