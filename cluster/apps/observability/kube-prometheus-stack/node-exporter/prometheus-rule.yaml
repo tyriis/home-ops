@@ -6,7 +6,6 @@ metadata:
     prometheus: k8s
     role: alert-rules
   name: node-exporter-rules
-  namespace: observability
 spec:
   groups:
     - name: node-exporter.rules

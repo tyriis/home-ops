@@ -5,6 +5,7 @@ namespace: observability
 resources:
   - alertmanager-discord
   - botkube
+  # - goldilocks
   - grafana
   - kube-prometheus-stack
   - loki
