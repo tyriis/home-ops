@@ -5,8 +5,6 @@ metadata:
   name: promtail
 spec:
   interval: 30m
-  dependsOn:
-    - name: loki
   chart:
     spec:
       chart: promtail
