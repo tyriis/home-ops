@@ -1,4 +1,7 @@
 {
+  extends: [
+    "github>bjw-s/home-ops//.github/renovate/disabledDatasources.json5",
+  ],
   enabled: true,
   semanticCommits: "enabled",
   dependencyDashboard: true,
