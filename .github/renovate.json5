@@ -13,7 +13,7 @@
   },
   kubernetes: {
     fileMatch: ["cluster/.+\\.ya?ml$"],
-    ignorePaths: ["cluster/base/"],
+    ignorePaths: ["cluster/flux/"],
   },
   flux: {
     fileMatch: ["cluster/.+\\.ya?ml$"],
