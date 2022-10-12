@@ -7,7 +7,6 @@ spec:
   interval: 30m
   dependsOn:
     - name: loki
-      namespace: observability
   chart:
     spec:
       chart: promtail
@@ -23,7 +22,8 @@ spec:
 
     config:
       clients:
-        - url: http://loki:3100/loki/api/v1/push
+        # - url: http://loki:3100/loki/api/v1/push
+        - url: "https://$SECRET_GRAFANA_CLOUD_INSTANCE_ID:$SECRET_GRAFANA_CLOUD_API_KEY@logs-endpoint.grafana.net/api/prom/push"
     serviceMonitor:
       enabled: true
     tolerations:
