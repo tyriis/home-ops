@@ -25,6 +25,8 @@ spec:
   values:
     # https://grafana.com/docs/loki/latest/configuration/
     # https://artifacthub.io/packages/helm/grafana/loki?modal=values
+    global:
+      dnsService: coredns
     loki:
       structuredConfig:
         auth_enabled: false
