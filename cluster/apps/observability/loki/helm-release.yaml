@@ -114,7 +114,7 @@ spec:
                     {{- include "loki.gatewaySelectorLabels" . | nindent 12 }}
                 topologyKey: kubernetes.io/hostname
       ingress:
-        enabled: true
+        enabled: false
         ingressClassName: "nginx"
         hosts:
           - host: &host "loki.${EXTERNAL_DOMAIN}"
