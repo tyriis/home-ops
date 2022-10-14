@@ -25,7 +25,7 @@ nodes:
           ip: 192.168.1.50
         addresses:
           - 192.168.1.51/24
-        mtu: 1500
+        mtu: 0
         routes:
           - gateway: 192.168.1.1
             network: 0.0.0.0/0
@@ -41,7 +41,7 @@ nodes:
       - interface: eth0
         addresses:
           - 192.168.1.54/24
-        mtu: 1500
+        mtu: 0
         routes:
           - gateway: 192.168.1.1
             network: 0.0.0.0/0
@@ -58,7 +58,7 @@ nodes:
       - interface: eth0
         addresses:
           - 192.168.1.55/24
-        mtu: 1500
+        mtu: 0
         routes:
           - gateway: 192.168.1.1
             network: 0.0.0.0/0
@@ -75,7 +75,7 @@ nodes:
       - interface: eth0
         addresses:
           - 192.168.1.56/24
-        mtu: 1500
+        mtu: 0
         routes:
           - gateway: 192.168.1.1
             network: 0.0.0.0/0
@@ -92,7 +92,7 @@ nodes:
       - interface: eth0
         addresses:
           - 192.168.1.57/24
-        mtu: 1500
+        mtu: 0
         routes:
           - gateway: 192.168.1.1
             network: 0.0.0.0/0
