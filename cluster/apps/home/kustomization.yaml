@@ -4,3 +4,4 @@ kind: Kustomization
 namespace: home
 resources:
   - esphome
+  - hajimari
