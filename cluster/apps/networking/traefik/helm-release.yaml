@@ -20,18 +20,19 @@ spec:
     # image:
     #   name: ghcr.io/k8s-at-home/traefik
     deployment:
-      kind: Deployment
-      replicas: 1
+      enabled: true
+      replicas: 3
     service:
       enabled: true
       type: LoadBalancer
+      annotations:
+        metallb.universe.tf/loadBalancerIPs: ${SETTING_METALLB_TRAEFIK_ADDR}
       spec:
-        loadBalancerIP: "${SETTING_METALLB_TRAEFIK_ADDR}"
         externalTrafficPolicy: Local
     logs:
       general:
         format: json
-        level: DEBUG
+        level: INFO
       access:
         enabled: true
         format: json
@@ -62,6 +63,11 @@ spec:
         tls:
           enabled: true
           options: "default"
+          domains:
+            - main: "${SECRET_DOMAIN}"
+              sans:
+                - "*.${SECRET_DOMAIN}"
+          stores: traefik-system-default@kubernetescrd
       metrics:
         port: 8082
         expose: true
@@ -75,7 +81,7 @@ spec:
       enabled: false
     experimental:
       plugins:
-        enabled: false
+        enabled: true
     resources:
       requests:
         memory: 100Mi
