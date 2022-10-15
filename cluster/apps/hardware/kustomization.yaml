@@ -5,3 +5,4 @@ namespace: hardware
 resources:
   # - pimoroni-fanshim
   - node-feature-discovery
+  - scanservjs
