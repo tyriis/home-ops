@@ -56,7 +56,7 @@ spec:
           icon: github
           group: Infrastructure
       globalBookmarks:
-        - name: Communicate
+        - group: Communicate
           links:
             - name: Discord
               url: "https://discord.com"
@@ -64,56 +64,56 @@ spec:
               url: "https://gmail.com"
             - name: Slack
               url: "https://slack.com/signin"
-        - name: Cloud
-          links:
+        - group: Cloud
+          bookmarks:
             - name: Box
               url: "https://box.com"
             - name: Dropbox
               url: "https://dropbox.com"
             - name: Drive
               url: "https://drive.google.com"
-        - name: Design
-          links:
+        - group: Design
+          bookmarks:
             - name: Awwwards
               url: "https://awwwards.com"
             - name: Dribbble
               url: "https://dribbble.com"
             - name: Muz.li
               url: "https://medium.muz.li/"
-        - name: Dev
-          links:
+        - group: Dev
+          bookmarks:
             - name: Codepen
               url: "https://codepen.io/"
             - name: Devdocs
               url: "https://devdocs.io"
             - name: Devhints
               url: "https://devhints.io"
-        - name: Lifestyle
-          links:
+        - group: Lifestyle
+          bookmarks:
             - name: Design Milk
               url: "https://design-milk.com/category/interior-design/"
             - name: Dwell
               url: "https://www.dwell.com/"
             - name: Freshome
               url: "https://www.mymove.com/freshome/"
-        - name: Media
-          links:
+        - group: Media
+          bookmarks:
             - name: Spotify
               url: "http://browse.spotify.com"
             - name: Trakt
               url: "http://trakt.tv"
             - name: YouTube
               url: "https://youtube.com/feed/subscriptions"
-        - name: Reading
-          links:
+        - group: Reading
+          bookmarks:
             - name: Instapaper
               url: "https://www.instapaper.com/u"
             - name: Medium
               url: "http://medium.com"
             - name: Reddit
               url: "http://reddit.com"
-        - name: Tech
-          links:
+        - group: Tech
+          bookmarks:
             - name: Hacker News
               url: "https://news.ycombinator.com/"
             - name: The Verge
