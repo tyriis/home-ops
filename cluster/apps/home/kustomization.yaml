@@ -5,3 +5,4 @@ namespace: home
 resources:
   - esphome
   - hajimari
+  - home-assistant

@@ -3,12 +3,8 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: home-assistant
-  namespace: home
 spec:
-  dependsOn:
-    - name: longhorn
-      namespace: longhorn-system
-  interval: 5m
+  interval: 30m
   chart:
     spec:
       chart: home-assistant
@@ -23,13 +19,13 @@ spec:
       tag: 2022.10.4
     env:
       TZ: ${CONFIG_TZ}
-    hostNetwork: true
-    dnsPolicy: ClusterFirstWithHostNet
+
     service:
       main:
         type: ClusterIP
         port: 8123
         portName: api
+
     ingress:
       main:
         enabled: true
@@ -40,14 +36,14 @@ spec:
           hajimari.io/icon: home-assistant
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
         hosts:
-          - host: hass.${SECRET_DOMAIN}
+          - host: &host hass.${SECRET_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - hosts:
-              - hass.${SECRET_DOMAIN}
-            secretName: hass-tls
+              - *host
+            secretName: hass-cert
     probes:
       liveness:
         enabled: false
@@ -80,12 +76,3 @@ spec:
 
     postgresql:
       enabled: false
-      #auth:
-      #  postgresPassword: ${SECRET_HASS_DB_PASSWORD}
-      #  username: ${SECRET_HASS_DB_USERNAME}
-      #  password: ${SECRET_HASS_DB_PASSWORD}
-      #  database: ${SECRET_HASS_DB_NAME}
-      #persistence:
-      #  enabled: true
-      #  storageClass: longhorn
-      #  size: 10Gi
