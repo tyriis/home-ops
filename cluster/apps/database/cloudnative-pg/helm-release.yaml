@@ -1,0 +1,37 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: cloudnative-pg
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: cloudnative-pg-charts
+      version: 0.15.1
+      sourceRef:
+        kind: HelmRepository
+        name: cloudnative-pg
+        namespace: flux-system
+  install:
+    createNamespace: false
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  # I have no idea what this is doing or why it is required.
+  # Just copied from: https://github.com/Truxnell/home-cluster/blob/main/k8s/manifests/user/databases/cloudnative-pg/helmrelease.yaml
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              group: apiextensions.k8s.io
+              version: v1
+              kind: CustomResourceDefinition
+            patch: |-
+              $patch: delete
+              apiVersion: apiextensions.k8s.io/v1
+              kind: CustomResourceDefinition
+              metadata:
+                name: not-used
