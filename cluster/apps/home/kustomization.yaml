@@ -6,3 +6,4 @@ resources:
   - esphome
   - hajimari
   - home-assistant
+  - node-red
