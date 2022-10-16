@@ -13,4 +13,4 @@ includes:
   terraform: .taskfiles/terraform.yaml
   talos: .taskfiles/talos.yaml
   rook-ceph: .taskfiles/rook-ceph.yaml
-  debug: .taskfiles/debug-tasks.yml
+  debug: .taskfiles/debug-tasks.yaml
