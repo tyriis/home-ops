@@ -6,6 +6,7 @@ resources:
 - authentik-charts.yaml
 - backube-charts.yaml
 - botkube-charts.yaml
+- cloudnative-pg-charts.yaml
 - csi-driver-nfs-charts.yaml
 - democratic-csi-charts.yaml
 - emberstack-charts.yaml
