@@ -8,5 +8,4 @@ resources:
   - kube-prometheus-stack
   - rook-ceph
   - snapshot-controller
-  # - stackgres
   - traefik

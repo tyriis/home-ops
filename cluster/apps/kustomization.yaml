@@ -10,13 +10,10 @@ resources:
   - github
   - hardware
   - home
-  # - kasten-io
   - kube-system
   - metallb-system
   - networking
   - observability
   - rook-ceph
+  # - secops
   - storage
-  # - database/stackgres
-  # - secops/vault
-  # - observability/goldilocks # disabled, see #128

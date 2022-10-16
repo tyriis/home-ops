@@ -1,9 +1,0 @@
----
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - size-xs.yaml
-  - size-s.yaml
-  - size-l.yaml
-  - size-xl.yaml
-  - size-xxl.yaml

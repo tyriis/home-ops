@@ -4,4 +4,3 @@ kind: Kustomization
 namespace: gaming
 resources:
   - minecraft-bedrock
-  # - minecraft-java
