@@ -8,26 +8,26 @@ resources:
 - botkube-charts.yaml
 - cloudnative-pg-charts.yaml
 - csi-driver-nfs-charts.yaml
-- democratic-csi-charts.yaml
-- emberstack-charts.yaml
-- emqx-charts.yaml
-- fairwinds-charts.yaml
-- gitlab-charts.yaml
+# - democratic-csi-charts.yaml
+# - emberstack-charts.yaml
+# - emqx-charts.yaml
+# - fairwinds-charts.yaml
+# - gitlab-charts.yaml
 - grafana-charts.yaml
 - hajimari-charts.yaml
 - hashicorp-charts.yaml
 - jetstack-charts.yaml
 - k8s-at-home-charts.yaml
-- kasten-charts.yaml
+# - kasten-charts.yaml
 - metallb-charts.yaml
 - metrics-server-charts.yaml
 - minecraft-server-charts.yaml
 - nfs-subdir-external-provisioner-charts.yaml
 - node-feature-discovery-charts.yaml
-- openfaas-charts.yaml
+# - openfaas-charts.yaml
 - piraeus-charts.yaml
 - rook-ceph-charts.yaml
 - prometheus-community-charts.yaml
-- stackgres-charts.yaml
+# - stackgres-charts.yaml
 - stakater-charts.yaml
 - traefik-charts.yaml
