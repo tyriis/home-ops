@@ -20,6 +20,10 @@ spec:
     env:
       TZ: ${CONFIG_TZ}
 
+    envFrom:
+      - secretRef:
+          name: home-assistant-secrets
+
     service:
       main:
         type: ClusterIP
@@ -64,7 +68,7 @@ spec:
         readOnly: true
         defaultMode: 0600
     podAnnotations:
-      secret.reloader.stakater.com/reload: home-assistant-ssh
+      secret.reloader.stakater.com/reload: "home-assistant-ssh,home-assistant-secrets"
 
     resources:
       requests:
