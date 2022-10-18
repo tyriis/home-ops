@@ -4,10 +4,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: aircon
-  namespace: home
-  labels:
-    app.kubernetes.io/instance: aircon
-    app.kubernetes.io/name: aircon
 spec:
   replicas: 1
   selector:

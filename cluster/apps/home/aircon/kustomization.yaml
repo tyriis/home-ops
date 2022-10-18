@@ -4,3 +4,7 @@ kind: Kustomization
 resources:
   - aircon-options.sops.yaml
   - deployment.yaml
+commonLabels:
+  app.kubernetes.io/instance: aircon
+  app.kubernetes.io/name: aircon
+  app.kubernetes.io/managed-by: fluxcd.io
