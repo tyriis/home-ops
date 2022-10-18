@@ -4,5 +4,4 @@ kind: Kustomization
 namespace: kube-system
 resources:
   - metrics-server
-  - reflector
   - reloader
