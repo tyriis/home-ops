@@ -16,7 +16,7 @@ spec:
         app.kubernetes.io/instance: aircon
         app.kubernetes.io/name: aircon
     spec:
-      hostNetwork: true
+      # hostNetwork: true
       containers:
         - name: aircon
           image: deiger/aircon:0.3.10
