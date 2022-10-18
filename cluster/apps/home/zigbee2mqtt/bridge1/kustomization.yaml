@@ -5,7 +5,6 @@ resources:
   - persistent-volume-claim.yaml
   - helm-release.yaml
   - pod-monitor.yaml
-  - prometheus-rule.yaml
 commonLabels:
   app.kubernetes.io/name: zigbee2mqtt
   app.kubernetes.io/instance: zigbee2mqtt-bridge1
