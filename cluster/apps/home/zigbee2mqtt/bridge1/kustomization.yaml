@@ -2,12 +2,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - config-map.yaml
-  - storage-class.yaml
-  - persistent-volume.yaml
   - persistent-volume-claim.yaml
   - helm-release.yaml
+  - pod-monitor.yaml
+  - prometheus-rule.yaml
 commonLabels:
-  app.kubernetes.io/name: node-red
-  app.kubernetes.io/instance: node-red
+  app.kubernetes.io/name: zigbee2mqtt
+  app.kubernetes.io/instance: zigbee2mqtt-bridge1
   app.kubernetes.io/managed-by: fluxcd.io

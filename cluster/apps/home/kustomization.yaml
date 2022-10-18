@@ -7,3 +7,4 @@ resources:
   - hajimari
   - home-assistant
   - node-red
+  - zigbee2mqtt
