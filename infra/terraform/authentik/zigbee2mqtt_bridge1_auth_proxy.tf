@@ -1,31 +1,31 @@
 // configure auth proxy
 #tfsec:ignore:general-secrets-no-plaintext-exposure
-resource "authentik_provider_proxy" "zigbee2mqtt" {
-  name               = "zigbee2mqtt"
-  internal_host      = "http://zigbee2mqtt.home.svc.cluster.local:8080"
-  external_host      = "https://zigbee2mqtt.${var.cloudflare_domain}"
+resource "authentik_provider_proxy" "zigbee2mqtt_bridge1" {
+  name               = "zigbee2mqtt-bridge1"
+  internal_host      = "http://zigbee2mqtt-bridge1.home.svc.cluster.local:8080"
+  external_host      = "https://zigbee2mqtt-bridge1.${var.cloudflare_domain}"
   authorization_flow = data.authentik_flow.default_provider_authorization_implicit_consent.id
   token_validity     = "days=30"
 }
 
 // configure application
-resource "authentik_application" "zigbee2mqtt" {
-  name              = "zigbee2mqtt"
-  slug              = "zigbee2mqtt"
-  protocol_provider = authentik_provider_proxy.zigbee2mqtt.id
+resource "authentik_application" "zigbee2mqtt_bridge1" {
+  name              = "zigbee2mqtt-bridge1"
+  slug              = "zigbee2mqtt-bridge1"
+  protocol_provider = authentik_provider_proxy.zigbee2mqtt_bridge1.id
   meta_description  = "zigbee2mqtt web ui"
   meta_icon         = "https://www.zigbee2mqtt.io/logo.png"
   meta_publisher    = var.cloudflare_domain
-  meta_launch_url   = "https://zigbee2mqtt.${var.cloudflare_domain}"
+  meta_launch_url   = "https://zigbee2mqtt-bridge1.${var.cloudflare_domain}"
   open_in_new_tab   = false
 }
 
 // configure outpost
-resource "authentik_outpost" "zigbee2mqtt" {
-  name               = "zigbee2mqtt"
+resource "authentik_outpost" "zigbee2mqtt_bridge1" {
+  name               = "zigbee2mqtt-bridge1"
   service_connection = authentik_service_connection_kubernetes.local.id
   protocol_providers = [
-    authentik_provider_proxy.zigbee2mqtt.id
+    authentik_provider_proxy.zigbee2mqtt_bridge1.id
   ]
   type = "proxy"
   config = jsonencode(
@@ -44,9 +44,9 @@ resource "authentik_outpost" "zigbee2mqtt" {
         "traefik.ingress.kubernetes.io/router.entrypoints" = "websecure"
         "hajimari.io/icon"                                 = "access-point"
         "hajimari.io/enable"                               = "true"
-        "hajimari.io/appName"                              = "zigbee2mqtt"
+        "hajimari.io/appName"                              = "zigbee2mqtt-bridge1"
       }
-      kubernetes_ingress_secret_name = "ak-outpost-zigbee2mqtt-tls"
+      kubernetes_ingress_secret_name = "ak-outpost-zigbee2mqtt-bridge1-tls"
       kubernetes_namespace           = "authentik-system"
       kubernetes_replicas            = 1
       kubernetes_service_type        = "ClusterIP"
