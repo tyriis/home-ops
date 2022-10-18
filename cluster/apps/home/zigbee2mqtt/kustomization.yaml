@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - prometheus-rule.yaml
   - bridge1
+  - bridge2
