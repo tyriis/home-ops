@@ -38,20 +38,20 @@ spec:
       TZ: ${SETTING_TZ}
 
     # dummy values
-    # config:
-    #   homeassistant: true
-    #   device_options:
-    #     retain: true
-    #   permit_join: false
-    #   mqtt:
-    #     base_topic: zigbee2mqtt
-    #     server: "mqtt://mqtt.home"
-    #   serial:
-    #     port: "tcp://192.168.1.90:6638"
-    #   advanced:
-    #     log_output:
-    #       - console
-    #     network_key: GENERATE
-    #     pan_id: GENERATE
-    #   frontend:
-    #     port: 8080
+    config:
+      homeassistant: true
+      device_options:
+        retain: true
+      permit_join: false
+      mqtt:
+        base_topic: zigbee2mqtt
+        server: "mqtt://mqtt.home"
+      serial:
+        port: "tcp://192.168.1.90:6638"
+      advanced:
+        log_output:
+          - console
+        network_key: GENERATE
+        pan_id: GENERATE
+      frontend:
+        port: 8080
