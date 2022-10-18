@@ -24,7 +24,7 @@ spec:
             - name: TZ
               value: ${SETTING_TZ}
           ports:
-            - containerPort: 8888
+            - containerPort: 8000
           volumeMounts:
             - name: options
               mountPath: /data/options.json

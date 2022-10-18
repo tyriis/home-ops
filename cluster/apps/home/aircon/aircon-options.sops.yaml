@@ -4,7 +4,7 @@ kind: Secret
 metadata:
     name: aircon-options
 data:
-    options.json: ENC[AES256_GCM,data:1QG85QRvgo//Z77i2dIms1akzmoaNZ3/4MQhhgxcvCUGkTCLncSAe56tkhIngkRzwSEPEUiIMdGp8W+i/HYiQnTFpgfYgTnRHvJw4AfFzjNe4ZmvSPSEJ2kMbxO7KPzd6lgYm25VApRlvA1jVpk+E4nfm1VfeluntCNJ54Nk8ssXZJzJ0+4Bs8Qs4TIfNr50QdbN7/UPmdOD8aOw9OlzW9cWqS4PgxI1fNmgmVBrenLNHd1LIbhmUInkKaW9aOjzdWZ1b69iss2Say8v3OX6TvN8owhXgk+aeThnywSvhlJSK7Mwfsd/aO6ucHxXl1VvzOka+816FbSGQtXE+QmHGVRisnOf4eswXQMtpFgj/FVXzIk+RK5rBvEW2z9r9Bdg0e4XNyTDuBmXOnM1PxpOifPL7zcO4VAFJWA6l9GKli4R2Q0vDgh8AL50SuGiCExtjRvm3f5KIN2Qij+P,iv:dyqNaOLGlgpVDFBRvSDt9zXrtvsTczuCGmTsjGEcthk=,tag:RR9ry2yPXrhXfAkFPyCbGg==,type:str]
+    options.json: ENC[AES256_GCM,data:g+6CngsHjZvwNS+dddoGYlf+8kDU7CfLqvtNSWgsgCY7puy91GQLNRxYPEvHmncovAxRntJ2qI1Flxa+kQTbkFG0u0fcuGPccWvkdesqaqrY7NpfaxIB8F4cI/BhDXRom8gGchDRSA5/9o78Hjx2UqfwPu9O8Qo4AGByBtjbcrsgbXbtCqdtbLfDvSJnJbWXbIqN243L7EvNBch1MI11S02xNuwypwCP9MThh5pEjZ+nK7vvp1GyWX6uc+mlqyFluokQOOTDdcaATEqdKAP01vy6/jagOwl8RXVAZBu6Uzh0KQF2b86+UKHDR0qqIVGaZbbFkNok0ri1u1mr3T7ORUGDqJ6tAnwYh7+KuEUOazM07FlGPbitIGJZFQVD8Far8/3zW5ISGhejih0Rh+OHHpe3xzEpyLoMAx7Bjh6i/bgUtXbk6dm8FCH8fTC+/PpmvycQ0L3q1Z4=,iv:2+lH7Y4rChQLSXpKD/rJGTpDRSQIqy6e29HG3cy0kSw=,tag:9vs+pqyRsR9eWG5k6De4DQ==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -20,8 +20,8 @@ sops:
             SThDODl4ZFFMMUlxM3BneWlrNDdjdUUKm16agevW+HLV4al0q2m5W/SyS84E5SXh
             QfWlkG1byRaLRQ+tMeTuCN0tk2A2asmSPygQ1IKo4AO9kMirDEjQ6w==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2022-10-18T21:46:16Z"
-    mac: ENC[AES256_GCM,data:gX4X0eTVPjmLOWZf0/bzhWqYeIbyIO2ZfjCYvkZU8RmeV9uHnzUxQi+qRo6UWUDqjRPENiM9SsOsHA4COtttgnMKu+EOM6VGtb4zT2AjEGHUhSeKSREqMcrGPTRwfExsWwj93D/2WgLL/1ubgOw+QTa/BLSy6hc1QQgTnccxiiE=,iv:OYAYd5wVBuC76Dh/P9EXb6TJ6DesOwtzRJ2e7M9SU3s=,tag:By+YJHf189IlaTKv9pgJHA==,type:str]
+    lastmodified: "2022-10-18T21:58:12Z"
+    mac: ENC[AES256_GCM,data:hSNFsjHxNXADeUG3FwNOK0D/uQj4/B39HyEB57r7GoCWQzuQqunyTWXzUAqWCs/5XEDthvYYZkxg+/+Aq09AM6UTQRJ6UlWFTuoPTtU5pfZv2qqjeKcpfxWq+v6JQPjKZqqz3J4w1WV59g9kb/Ah08yUULtgKPDTEw5QOGoZ1XM=,iv:6bKkcmXAQwvQ0mK+HId5RU9xwoC7tadW9Rv1qR04gFw=,tag:F86STEBIoO4ciDbmQq5mJQ==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.7.3
