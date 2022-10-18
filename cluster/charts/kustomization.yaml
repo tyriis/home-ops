@@ -5,6 +5,7 @@ resources:
 - actions-runner-controller-charts.yaml
 - authentik-charts.yaml
 - backube-charts.yaml
+- bjw-s-charts.yaml
 - botkube-charts.yaml
 - cloudnative-pg-charts.yaml
 - csi-driver-nfs-charts.yaml

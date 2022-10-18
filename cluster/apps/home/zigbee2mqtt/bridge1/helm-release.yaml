@@ -2,23 +2,48 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: zigbee2mqtt-bridge1
-  namespace: home
+  name: &app zigbee2mqtt-bridge1
 spec:
   interval: 15m
   chart:
     spec:
-      chart: zigbee2mqtt
-      version: 9.4.2
+      chart: app-template
+      version: 0.2.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
+      interval: 15m
+  install:
+    createNamespace: false
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
+    global:
+      nameOverride: *app
     image:
       repository: ghcr.io/koenkk/zigbee2mqtt
       tag: 1.28.0
-
+    env:
+      ZIGBEE2MQTT_DATA: /config
+      TZ: ${SETTING_TZ}
+    service:
+      main:
+        ports:
+          http:
+            port: 8080
+    persistence:
+      config:
+        enabled: true
+        existingClaim: zigbee2mqtt-bridge1-data
+        mountPath: /config
+    resources:
+      requests:
+        cpu: 50m
+        memory: 100Mi
     additionalContainers:
       - name: zigbee2mqtt-exporter
         image: tyriis/zigbee2mqtt-exporter:0.1.0
@@ -26,32 +51,3 @@ spec:
           - containerPort: 3000
             name: http-prom
             protocol: TCP
-
-    persistence:
-      data:
-        enabled: true
-        type: pvc
-        existingClaim: zigbee2mqtt-bridge1-data
-
-    env:
-      ZIGBEE2MQTT_DATA: /data
-      TZ: ${SETTING_TZ}
-
-    # dummy values
-    config:
-      homeassistant: true
-      device_options:
-        retain: true
-      permit_join: false
-      mqtt:
-        base_topic: zigbee2mqtt
-        server: "mqtt://mqtt.home"
-      serial:
-        port: "tcp://192.168.1.90:6638"
-      advanced:
-        log_output:
-          - console
-        network_key: GENERATE
-        pan_id: GENERATE
-      frontend:
-        port: 8080
