@@ -81,7 +81,8 @@ spec:
               - name: /dev/disk/by-id/nvme-PM981_NVMe_Samsung_512GB__S3ZHNA0M538723
           - name: talos05
             devices:
-              - name: /dev/disk/by-id/nvme-PM961_NVMe_SAMSUNG_512GB__S33YNB0J730869
+              # - name: /dev/disk/by-id/nvme-PM961_NVMe_SAMSUNG_512GB__S33YNB0J730869
+              - name: /dev/nvme0n1
           - name: talos06
             devices:
               - name: /dev/disk/by-id/ata-APPLE_SSD_SM0512G_S2ZCNY0HA19226
