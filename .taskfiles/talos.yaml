@@ -29,6 +29,15 @@ tasks:
           --nodes 192.168.1.51 \
           --file clusterconfig/talos-flux-talos01.yaml
 
+  install:talos02:
+    desc: Install talos02
+    dir: infra/talos
+    cmds:
+      - |
+        talosctl apply-config --insecure \
+          --nodes 192.168.1.52 \
+          --file clusterconfig/talos-flux-talos02.yaml
+
   install:talos04:
     desc: Install talos04
     dir: infra/talos
