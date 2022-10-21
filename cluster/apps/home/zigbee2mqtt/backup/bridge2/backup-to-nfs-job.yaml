@@ -1,0 +1,33 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: backup-zigbee2mqtt-data-bridge2-to-nfs
+spec:
+  template:
+    spec:
+      containers:
+        - name: rsync
+          image: ogivuk/rsync
+          args:
+            - -azP
+            - /data/src/
+            - /data/dest/
+          env:
+            - name: TZ
+              value: Europe/Vienna
+          volumeMounts:
+            - mountPath: /data/src
+              name: src
+              readOnly: true
+            - mountPath: /data/dest
+              name: dest
+      volumes:
+        - name: src
+          persistentVolumeClaim:
+            claimName: zigbee2mqtt-bridge2-data
+        - name: dest
+          persistentVolumeClaim:
+            claimName: zigbee2mqtt-bridge2-nfs-data
+      restartPolicy: Never
+  backoffLimit: 1
