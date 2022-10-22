@@ -40,7 +40,7 @@ nodes:
 # i7-5650U 8GB / 240 GB SSD / 500GB SSD
   - hostname: talos04
     ipAddress: 192.168.1.54
-    installDisk: /dev/sdb
+    installDisk: /dev/disk/by-id/ata-Samsung_SSD_840_EVO_250GB_S1DBNSAF395622W
     controlPlane: false
     networkInterfaces:
       - interface: eth0
