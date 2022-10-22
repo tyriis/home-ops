@@ -7,4 +7,4 @@ resources:
   - config.yaml
   - crds.yaml
   - core.yaml
-  # - apps.yaml
+  - apps.yaml
