@@ -24,10 +24,10 @@ spec:
       dataDir:
         enabled: true
         existingClaim: minecraft-bedrock-data
-    resources:
-      requests:
-        memory: 1024Mi
-        cpu: 2000m
+    # resources:
+    #   requests:
+    #     memory: 1024Mi
+    #     cpu: 2000m
 
     minecraftServer:
       eula: "TRUE"
@@ -45,5 +45,3 @@ spec:
 
     nodeSelector:
       kubernetes.io/arch: amd64
-      feature.node.kubernetes.io/custom-cpu.intel.i7: "true"
-      feature.node.kubernetes.io/custom-memory.gb.16: "true"
