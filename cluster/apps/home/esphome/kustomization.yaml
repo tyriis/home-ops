@@ -8,7 +8,7 @@ resources:
   - helm-release.yaml
   - volsync-secrets.sops.yaml
   # - volsync-replication-destination.yaml
-  - volsync-replication-source.yaml
+  # - volsync-replication-source.yaml
 commonLabels:
   app.kubernetes.io/name: esphome
   app.kubernetes.io/instance: esphome
