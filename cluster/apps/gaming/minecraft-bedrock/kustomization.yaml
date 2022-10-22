@@ -5,5 +5,5 @@ resources:
   - persistent-volume-claim.yaml
   - volsync-secrets.sops.yaml
   - helm-release.yaml
-  - volsync-replication-source.yaml
+  # - volsync-replication-source.yaml
   # - volsync-replication-destination.yaml

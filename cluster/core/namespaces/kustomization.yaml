@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - authentik-system.yaml
   - cert-manager.yaml
+  - database.yaml
   - gaming.yaml
   - github.yaml
   - hardware.yaml
