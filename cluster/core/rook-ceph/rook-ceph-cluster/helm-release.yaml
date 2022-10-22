@@ -56,8 +56,8 @@ spec:
       network:
         provider: host
       mon:
-        count: 2
-        allowMultiplePerNode: true
+        count: 3
+        allowMultiplePerNode: false
       mgr:
         count: 1
         modules:
