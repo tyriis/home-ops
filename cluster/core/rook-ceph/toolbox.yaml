@@ -123,6 +123,8 @@ spec:
               mountPath: /etc/rook
             - name: dev
               mountPath: /dev/disk
+            - name: class
+              mountPath: /sys/class
       volumes:
         - name: mon-endpoint-volume
           configMap:
@@ -135,6 +137,9 @@ spec:
         - name: dev
           hostPath:
             path: /dev/disk
+        - name: class
+          hostPath:
+            path: /sys/class
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"
@@ -142,4 +147,4 @@ spec:
           tolerationSeconds: 5
       nodeSelector:
         kubernetes.io/arch: amd64
-        kubernetes.io/hostname: talos02
+        kubernetes.io/hostname: talos04
