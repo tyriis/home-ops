@@ -142,4 +142,4 @@ spec:
           tolerationSeconds: 5
       nodeSelector:
         kubernetes.io/arch: amd64
-        kubernetes.io/hostname: talos04
+        kubernetes.io/hostname: talos02
