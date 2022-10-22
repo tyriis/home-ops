@@ -84,7 +84,7 @@ spec:
               - name: /dev/nvme0n1
           - name: talos04
             devices:
-              - name: /dev/sda
+              - name: /dev/disk/by-id/ata-APPLE_SSD_SM0512G_S2ZCNY0HA19226
       resources: null
         # mgr:
         #   limits:
