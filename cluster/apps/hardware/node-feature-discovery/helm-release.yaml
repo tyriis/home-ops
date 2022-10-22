@@ -58,29 +58,21 @@ spec:
               value: "true"
               matchOn:
                 - nodename:
+                    - talos01
+                    - talos02
+                    - talos03
                     - talos04
-                    - talos05
-                    - talos06
-                    - talos07
 
-            - name: "memory.gb.4"
+            - name: "memory.gb.8"
+              value: "true"
+              matchOn:
+                - nodename:
+                    - talos04
+
+            - name: "memory.gb.16"
               value: "true"
               matchOn:
                 - nodename:
                     - talos01
                     - talos02
                     - talos03
-
-            - name: "memory.gb.8"
-              value: "true"
-              matchOn:
-                - nodename:
-                    - talos05
-                    - talos06
-
-            - name: "memory.gb.16"
-              value: "true"
-              matchOn:
-                - nodename:
-                    - talos04
-                    - talos07
