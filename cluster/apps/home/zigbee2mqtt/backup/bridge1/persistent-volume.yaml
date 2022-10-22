@@ -13,7 +13,4 @@ spec:
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  claimRef:
-    namespace: home
-    name: zigbee2mqtt-bridge1-nfs-data
   storageClassName: zigbee2mqtt-nfs
