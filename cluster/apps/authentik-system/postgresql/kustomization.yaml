@@ -4,5 +4,5 @@ kind: Kustomization
 resources:
   - persistent-volume-claim.yaml
   - volsync-secrets.sops.yaml
-  - volsync-replication-source.yaml
+  # - volsync-replication-source.yaml
   # - volsync-replication-destination.yaml
