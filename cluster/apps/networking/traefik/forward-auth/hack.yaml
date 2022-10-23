@@ -77,8 +77,9 @@ spec:
         - name: traefik-forward-auth
           port: 4181
       middlewares:
-        - name: traefik-sso@kubernetescrd
+        - name: sso@kubernetescrd
   tls:
-    certResolver: cloudflare
+    certResolver: default
+    # certResolver: cloudflare
     domains:
       - main: "*.${SECRET_DOMAIN}"
