@@ -59,27 +59,58 @@ spec:
       - "X-Forwarded-User"
     trustForwardHeader: true
 
+# ---
+# apiVersion: traefik.containo.us/v1alpha1
+# kind: IngressRoute
+# metadata:
+#   name: traefik-forward-auth
+#   labels:
+#     app.kubernetes.io/name: traefik-forward-auth
+#     app.kubernetes.io/instance: traefik-forward-auth
+# spec:
+#   entryPoints:
+#     - websecure
+#   routes:
+#     - match: Host(`auth.${SECRET_DOMAIN}`)
+#       kind: Rule
+#       services:
+#         - name: traefik-forward-auth
+#           port: 4181
+#       middlewares:
+#         - name: networking-sso@kubernetescrd
+#   tls:
+#     certResolver: default
+#     # certResolver: cloudflare
+#     domains:
+#       - main: "*.${SECRET_DOMAIN}"
+
 ---
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: traefik-forward-auth
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    kubernetes.io/tls-acme: "true"
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
   labels:
-    app.kubernetes.io/name: traefik-forward-auth
     app.kubernetes.io/instance: traefik-forward-auth
+    app.kubernetes.io/name: traefik-forward-auth
+  name: traefik-forward-auth
+  namespace: networking
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`auth.${SECRET_DOMAIN}`)
-      kind: Rule
-      services:
-        - name: traefik-forward-auth
-          port: 4181
-      middlewares:
-        - name: networking-sso@kubernetescrd
+  ingressClassName: traefik
+  rules:
+    - host: auth.${SECRET_DOMAIN}
+      http:
+        paths:
+          - backend:
+              service:
+                name: traefik-forward-auth
+                port:
+                  number: 4181
+            path: /
+            pathType: Prefix
   tls:
-    certResolver: default
-    # certResolver: cloudflare
-    domains:
-      - main: "*.${SECRET_DOMAIN}"
+    - hosts:
+        - auth.${SECRET_DOMAIN}
+      secretName: traefik-forward-auth-tls
