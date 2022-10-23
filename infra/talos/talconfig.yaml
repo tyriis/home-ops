@@ -10,6 +10,10 @@ nodes:
     ipAddress: 192.168.1.51
     installDisk: /dev/sda
     controlPlane: true
+    disableSearchDomain: true
+    nameservers:
+      - 1.1.1.1
+      - 8.8.8.8
     networkInterfaces:
       - interface: eth0
         mtu: 0
@@ -17,11 +21,16 @@ nodes:
         vip:
           ip: 192.168.1.50
 
+
   # i7-8565U / 16GB / 240GB SSD / 512GB NVME
   - hostname: talos02
     ipAddress: 192.168.1.52
     installDisk: /dev/sda
     controlPlane: false
+    disableSearchDomain: true
+    nameservers:
+      - 1.1.1.1
+      - 8.8.8.8
     networkInterfaces:
       - interface: eth0
         mtu: 0
@@ -32,6 +41,10 @@ nodes:
     ipAddress: 192.168.1.53
     installDisk: /dev/sda
     controlPlane: false
+    disableSearchDomain: true
+    nameservers:
+      - 1.1.1.1
+      - 8.8.8.8
     networkInterfaces:
       - interface: eth0
         mtu: 0
@@ -42,6 +55,10 @@ nodes:
     ipAddress: 192.168.1.54
     installDisk: /dev/disk/by-id/ata-Samsung_SSD_840_EVO_250GB_S1DBNSAF395622W
     controlPlane: false
+    disableSearchDomain: true
+    nameservers:
+      - 1.1.1.1
+      - 8.8.8.8
     networkInterfaces:
       - interface: eth0
         mtu: 0
