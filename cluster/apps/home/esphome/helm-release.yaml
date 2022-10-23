@@ -38,6 +38,17 @@ spec:
         subPath:
           - path: secrets.yaml
             mountPath: /config/secrets.yaml
+      esphome-config:
+        enabled: true
+        type: custom
+        volumeSpec:
+          configMap:
+            name: esphome-config
+        subPath:
+          - path: .
+            mountPath: /config
+
 
     podAnnotations:
       secret.reloader.stakater.com/reload: esphome-secrets
+      configmap.reloader.stakater.com/reload: esphome-config
