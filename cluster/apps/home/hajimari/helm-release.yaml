@@ -130,7 +130,7 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/tls-acme: "true"
-          traefik.ingress.kubernetes.io/router.middlewares: sso@kubernetescrd
+          traefik.ingress.kubernetes.io/router.middlewares: networking-sso@kubernetescrd
           # hajimari.io/enable: "false"
           # hajimari.io/icon: "weather-sunset"
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
