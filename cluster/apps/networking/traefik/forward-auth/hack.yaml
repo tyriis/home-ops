@@ -1,0 +1,84 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traefik-forward-auth
+  labels:
+    app.kubernetes.io/name: traefik-forward-auth
+    app.kubernetes.io/instance: traefik-forward-auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: traefik-forward-auth
+      app.kubernetes.io/instance: traefik-forward-auth
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: traefik-forward-auth
+        app.kubernetes.io/instance: traefik-forward-auth
+    spec:
+      containers:
+        - name: traefik-forward-auth
+          image: thomseddon/traefik-forward-auth:2.1.0
+          envFrom:
+            - secretRef:
+                name: traefik-sso
+          ports:
+            - containerPort: 4181
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: traefik-forward-auth
+  labels:
+    app.kubernetes.io/name: traefik-forward-auth
+    app.kubernetes.io/instance: traefik-forward-auth
+spec:
+  selector:
+    app.kubernetes.io/name: traefik-forward-auth
+    app.kubernetes.io/instance: traefik-forward-auth
+  ports:
+    - protocol: TCP
+      port: 4181
+      targetPort: 4181
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: sso
+  labels:
+    app.kubernetes.io/name: traefik-forward-auth
+    app.kubernetes.io/instance: traefik-forward-auth
+spec:
+  forwardAuth:
+    address: http://traefik-forward-auth:4181
+    authResponseHeaders:
+      - "X-Forwarded-User"
+    trustForwardHeader: true
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-forward-auth
+  labels:
+    app.kubernetes.io/name: traefik-forward-auth
+    app.kubernetes.io/instance: traefik-forward-auth
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`auth.${SECRET_DOMAIN}`)
+      kind: Rule
+      services:
+        - name: traefik-forward-auth
+          port: 4181
+      middlewares:
+        - name: traefik-sso@kubernetescrd
+  tls:
+    certResolver: cloudflare
+    domains:
+      - main: "*.${SECRET_DOMAIN}"
