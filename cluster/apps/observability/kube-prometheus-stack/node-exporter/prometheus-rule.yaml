@@ -178,3 +178,39 @@ spec:
           annotations:
             summary: "Host Network Transmit Errors (instance {{ $labels.instance }})"
             description: "{{ $labels.instance }} interface {{ $labels.device }} has encountered {{ printf \"%.0f\" $value }} transmit errors in the last five minutes.\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+        # Disk I/O - Unusual read rate from https://devconnected.com/monitoring-disk-i-o-on-linux-with-the-node-exporter/
+        - alert: UnusualDiskReadRate
+          expr: sum by (instance) (irate(node_disk_read_bytes_total[2m])) / 1024 / 1024 > 50
+          for: 30m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Unusual disk read rate (instance {{ $labels.instance }})"
+            description: "Disk is probably reading too much data (> 50 MB/s)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+        # Disk I/O - Unusual write rate from https://devconnected.com/monitoring-disk-i-o-on-linux-with-the-node-exporter/
+        - alert: UnusualDiskWriteRate
+          expr: sum by (instance) (irate(node_disk_written_bytes_total[2m])) / 1024 / 1024 > 50
+          for: 30m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Unusual disk write rate (instance {{ $labels.instance }})"
+            description: "Disk is probably writing too much data (> 50 MB/s)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+        # Disk I/O - Out Of Disk Space from https://devconnected.com/monitoring-disk-i-o-on-linux-with-the-node-exporter/
+        - alert: OutOfDiskSpace
+          expr: node_filesystem_free_bytes{mountpoint ="/rootfs"} / node_filesystem_size_bytes{mountpoint ="/rootfs"} * 100 < 10
+          for: 30m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Out of disk space (instance {{ $labels.instance }})"
+            description: "Disk is almost full (< 10% left)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+        # Disk I/O - Unusual disk read latency from https://devconnected.com/monitoring-disk-i-o-on-linux-with-the-node-exporter/
+        - alert: UnusualDiskReadLatency
+          expr: rate(node_disk_read_time_seconds_total[1m]) / rate(node_disk_reads_completed_total[1m]) > 100
+          for: 30m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Unusual disk read latency (instance {{ $labels.instance }})"
+            description: "Disk latency is growing (read operations > 100ms)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
