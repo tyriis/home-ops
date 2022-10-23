@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: traefik-forward-auth
-          image: thomseddon/traefik-forward-auth:2.1.0
+          image: thomseddon/traefik-forward-auth:v2.2.0
           envFrom:
             - secretRef:
                 name: traefik-sso
