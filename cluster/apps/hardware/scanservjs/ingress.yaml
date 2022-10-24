@@ -33,4 +33,4 @@ spec:
   tls:
     - secretName: scanservjs-cert
       hosts:
-        - "scan.${SECRET_DOMAIN}"
+        - "scanservjs.${SECRET_DOMAIN}"
