@@ -19,7 +19,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: "scan.${SECRET_DOMAIN}"
+    - host: "scanservjs.${SECRET_DOMAIN}"
       http:
         paths:
           - path: /
