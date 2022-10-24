@@ -12,7 +12,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.tls: "true"
     hajimari.io/appName: scanner
     hajimari.io/enable: "true"
-    hajimari.io/icon: scan
+    hajimari.io/icon: scanner
   labels:
     app.kubernetes.io/name: scanservjs
     app.kubernetes.io/instance: scanservjs
