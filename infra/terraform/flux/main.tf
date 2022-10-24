@@ -4,19 +4,19 @@ terraform {
   required_providers {
     github = {
       source  = "integrations/github"
-      version = ">= 4.18.0"
+      version = "5.5.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = ">= 2.6.1"
+      version = "2.14.0"
     }
     kubectl = {
       source  = "gavinbunney/kubectl"
-      version = ">= 1.13.1"
+      version = "1.14.0"
     }
     flux = {
       source  = "fluxcd/flux"
-      version = ">= 0.9.0"
+      version = "0.20.0"
     }
     tls = {
       source  = "hashicorp/tls"
@@ -82,7 +82,12 @@ locals {
 }
 
 resource "kubectl_manifest" "install" {
-  for_each   = { for v in local.install : lower(join("/", compact([v.data.apiVersion, v.data.kind, lookup(v.data.metadata, "namespace", ""), v.data.metadata.name]))) => v.content }
+  for_each = { for v in local.install : lower(join("/", compact([
+    v.data.apiVersion,
+    v.data.kind,
+    lookup(v.data.metadata, "namespace", ""),
+    v.data.metadata.name
+  ]))) => v.content }
   depends_on = [kubernetes_namespace.flux_system]
   yaml_body  = each.value
 }

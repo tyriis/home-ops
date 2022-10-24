@@ -40,7 +40,7 @@ optional: (dev-prerequisites)
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
 | <a name="requirement_authentik"></a> [authentik](#requirement\_authentik) | 2022.8.1 |
-| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | 3.25.0 |
+| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | 3.26.0 |
 | <a name="requirement_flux"></a> [flux](#requirement\_flux) | >= 0.9.0 |
 | <a name="requirement_github"></a> [github](#requirement\_github) | >= 4.18.0 |
 | <a name="requirement_http"></a> [http](#requirement\_http) | 3.1.0 |
