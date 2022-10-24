@@ -38,9 +38,13 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/tls-acme: "true"
+          traefik.ingress.kubernetes.io/router.middlewares: networking-sso@kubernetescrd
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/affinity: "true"
+          traefik.ingress.kubernetes.io/router.tls: "true"
+          hajimari.io/appName: rook-ceph
           hajimari.io/enable: "true"
           hajimari.io/icon: "harddisk"
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
         host:
           name: &host rook.${SECRET_DOMAIN}
           path: /
