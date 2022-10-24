@@ -50,21 +50,25 @@ alertmanager:
                 {{ end }}
               {{ end }}
 
-  # ingress:
-  #   enabled: true
-  #   ingressClassName: traefik
-  #   annotations:
-  #     cert-manager.io/cluster-issuer: letsencrypt-production
-  #     hajimari.io/enable: "true"
-  #     hajimari.io/appName: alertmanager
-  #     hajimari.io/icon: clipboard-alert
-  #     traefik.ingress.kubernetes.io/router.entrypoints: websecure
-  #   hosts:
-  #     - "alertmanager.${SECRET_DOMAIN}"
-  #   tls:
-  #     - secretName: alert-manager-cert
-  #       hosts:
-  #         - "alertmanager.${SECRET_DOMAIN}"
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-production
+      kubernetes.io/tls-acme: "true"
+      traefik.ingress.kubernetes.io/router.middlewares: networking-sso@kubernetescrd
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/affinity: "true"
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      hajimari.io/appName: alertmanager
+      hajimari.io/enable: "true"
+      hajimari.io/icon: clipboard-alert
+    hosts:
+      - "alertmanager.${SECRET_DOMAIN}"
+    tls:
+      - secretName: alertmanager-cert
+        hosts:
+          - "alertmanager.${SECRET_DOMAIN}"
   alertmanagerSpec:
     externalUrl: "https://alertmanager.${SECRET_DOMAIN}/"
     storage:

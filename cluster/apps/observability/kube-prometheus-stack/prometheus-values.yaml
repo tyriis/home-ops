@@ -4,21 +4,25 @@ prometheus:
     enabled: true
   thanosServiceMonitor:
     enabled: true
-  # ingress:
-  #   enabled: true
-  #   ingressClassName: traefik
-  #   annotations:
-  #     cert-manager.io/cluster-issuer: letsencrypt-production
-  #     hajimari.io/enable: "true"
-  #     hajimari.io/appName: prometheus
-  #     hajimari.io/icon: chart-line-stacked
-  #     traefik.ingress.kubernetes.io/router.entrypoints: websecure
-  #   hosts:
-  #     - prometheus.${SECRET_DOMAIN}
-  #   tls:
-  #     - secretName: prometheus-cert
-  #       hosts:
-  #         - prometheus.${SECRET_DOMAIN}
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-production
+      kubernetes.io/tls-acme: "true"
+      traefik.ingress.kubernetes.io/router.middlewares: networking-sso@kubernetescrd
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/affinity: "true"
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      hajimari.io/appName: prometheus
+      hajimari.io/enable: "true"
+      hajimari.io/icon: chart-line-stacked
+    hosts:
+      - prometheus.${SECRET_DOMAIN}
+    tls:
+      - secretName: prometheus-cert
+        hosts:
+          - prometheus.${SECRET_DOMAIN}
   prometheusSpec:
     replicas: 3
     replicaExternalLabelName: __replica__
