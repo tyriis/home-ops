@@ -38,10 +38,6 @@ terraform {
       source  = "carlpett/sops"
       version = "0.7.1"
     }
-    authentik = {
-      source  = "goauthentik/authentik"
-      version = "2022.8.1"
-    }
   }
 }
 
@@ -57,10 +53,6 @@ data "sops_file" "cloudflare_secrets" {
   source_file = "cloudflare-secrets.sops.yaml"
 }
 
-data "sops_file" "authentik_secrets" {
-  source_file = "authentik-secrets.sops.yaml"
-}
-
 module "flux" {
   source                = "./flux"
   github_owner          = var.github_owner
@@ -73,12 +65,5 @@ module "flux" {
 
 module "cloudflare" {
   source            = "./cloudflare"
-  cloudflare_domain = data.sops_file.cloudflare_secrets.data["cloudflare_domain"]
-}
-
-module "authentik" {
-  source            = "./authentik"
-  consumer_key      = data.sops_file.authentik_secrets.data["consumer_key"]
-  consumer_secret   = data.sops_file.authentik_secrets.data["consumer_secret"]
   cloudflare_domain = data.sops_file.cloudflare_secrets.data["cloudflare_domain"]
 }

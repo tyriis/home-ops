@@ -19,9 +19,6 @@ terraform apply
 
 ### Limitations
 
-- [ ] currently authentik default-authentication-identification must be changed to achieve, maybe we can just create a dedicated one and add it without much effort
-- [ ] `kubernetes_ingress_secret_name` and `object_naming_template` can not be written within terraform looks like a bug
-
 ## Prerequisites
 
 - [Terraform](https://www.terraform.io/) (tested with 1.0.1)
@@ -39,7 +36,6 @@ optional: (dev-prerequisites)
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_authentik"></a> [authentik](#requirement\_authentik) | 2022.8.1 |
 | <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | 3.26.0 |
 | <a name="requirement_flux"></a> [flux](#requirement\_flux) | >= 0.9.0 |
 | <a name="requirement_github"></a> [github](#requirement\_github) | >= 4.18.0 |
@@ -61,7 +57,6 @@ optional: (dev-prerequisites)
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_authentik"></a> [authentik](#module\_authentik) | ./authentik | n/a |
 | <a name="module_cloudflare"></a> [cloudflare](#module\_cloudflare) | ./cloudflare | n/a |
 | <a name="module_flux"></a> [flux](#module\_flux) | ./flux | n/a |
 
@@ -69,7 +64,6 @@ optional: (dev-prerequisites)
 
 | Name | Type |
 |------|------|
-| [sops_file.authentik_secrets](https://registry.terraform.io/providers/carlpett/sops/0.7.1/docs/data-sources/file) | data source |
 | [sops_file.cloudflare_secrets](https://registry.terraform.io/providers/carlpett/sops/0.7.1/docs/data-sources/file) | data source |
 | [vault_generic_secret.github_secrets](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/data-sources/generic_secret) | data source |
 | [vault_generic_secret.sops_secrets](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/data-sources/generic_secret) | data source |

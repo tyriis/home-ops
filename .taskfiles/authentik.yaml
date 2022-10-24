@@ -1,9 +1,0 @@
----
-version: "3"
-
-tasks:
-
-  recovery:
-    desc: Get authentik recovery link
-    cmds:
-      - "kubectl exec -it deployment/authentik-worker -c authentik -n authentik-system -- ak create_recovery_key 10 akadmin"

@@ -34,8 +34,8 @@ spec:
           - hardware
           - observability
           - secops
-          - authentik-system
           - database
+          - rook-ceph
       name: sunshine
       customApps:
         - name: OPNsense

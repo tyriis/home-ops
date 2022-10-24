@@ -15,10 +15,6 @@ tasks:
     - task: init
     - task: apply:cloudflare
 
-  authentik:
-    - task: init
-    - task: apply:authentik
-
   init:
     desc: Terraform initialize IaC
     dir: infra/terraform
@@ -48,18 +44,6 @@ tasks:
     dir: infra/terraform
     cmds:
       - "terraform apply -target=module.cloudflare"
-
-  plan:authentik:
-    desc: Terraform plan module.authentik
-    dir: infra/terraform
-    cmds:
-      - "terraform plan -target=module.authentik"
-
-  apply:authentik:
-    desc: Terraform apply module.authentik
-    dir: infra/terraform
-    cmds:
-      - "terraform apply -target=module.authentik"
 
   plan:
     desc: Terraform plan IaC

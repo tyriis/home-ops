@@ -19,9 +19,3 @@ provider "cloudflare" {
   email   = data.sops_file.cloudflare_secrets.data["cloudflare_email"]
   api_key = data.sops_file.cloudflare_secrets.data["cloudflare_apikey"]
 }
-
-provider "authentik" {
-  url      = "https://authentik.${data.sops_file.cloudflare_secrets.data["cloudflare_domain"]}"
-  token    = data.sops_file.authentik_secrets.data["token"]
-  insecure = false
-}
