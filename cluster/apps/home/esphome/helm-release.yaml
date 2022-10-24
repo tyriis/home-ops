@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: esphome
+  name: &app esphome
 spec:
   interval: 5m
   chart:
@@ -48,7 +48,30 @@ spec:
           - path: .
             mountPath: /config
 
-
     podAnnotations:
       secret.reloader.stakater.com/reload: esphome-secrets
       configmap.reloader.stakater.com/reload: esphome-config
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: traefik
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/tls-acme: "true"
+          traefik.ingress.kubernetes.io/router.middlewares: networking-sso@kubernetescrd
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/affinity: "true"
+          traefik.ingress.kubernetes.io/router.tls: "true"
+          hajimari.io/appName: *app
+          hajimari.io/enable: "true"
+          hajimari.io/icon: home-automation
+        hosts:
+          - host: &domain esphome.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *domain
+            secretName: esphome-tls
