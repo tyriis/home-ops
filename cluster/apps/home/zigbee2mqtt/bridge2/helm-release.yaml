@@ -35,6 +35,28 @@ spec:
         ports:
           http:
             port: 8080
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "traefik"
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/tls-acme: "true"
+          traefik.ingress.kubernetes.io/router.middlewares: networking-sso@kubernetescrd
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/affinity: "true"
+          traefik.ingress.kubernetes.io/router.tls: "true"
+          hajimari.io/appName: *app
+          hajimari.io/enable: "true"
+          hajimari.io/icon: access-point
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
     persistence:
       config:
         enabled: true
