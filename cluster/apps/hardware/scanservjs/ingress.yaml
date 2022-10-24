@@ -4,11 +4,15 @@ kind: Ingress
 metadata:
   name: scanservjs
   annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-production"
-    hajimari.io/enable: "true"
-    hajimari.io/icon: scanner
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    kubernetes.io/tls-acme: "true"
+    traefik.ingress.kubernetes.io/router.middlewares: networking-sso@kubernetescrd
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/affinity: "true"
+    traefik.ingress.kubernetes.io/router.tls: "true"
     hajimari.io/appName: scanner
-    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    hajimari.io/enable: "true"
+    hajimari.io/icon: scan
   labels:
     app.kubernetes.io/name: scanservjs
     app.kubernetes.io/instance: scanservjs
