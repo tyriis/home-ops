@@ -38,26 +38,23 @@ spec:
           - rook-ceph
       name: sunshine
       customApps:
-        - name: OPNsense
-          url: https://opnsense.${SECRET_DOMAIN}
-          icon: router-network
-          group: Infrastructure
-        - name: NAS
-          url: https://nas.${SECRET_DOMAIN}
-          icon: nas
-          group: Infrastructure
-        - name: minio
-          url: ${SECRET_MINIO_URL}
-          icon: bird
-          group: Infrastructure
-        - name: AdGuard
-          url: https://opnsense.${SECRET_DOMAIN}:3443
-          icon: shield-check
-          group: Infrastructure
-        - name: GitOps
-          url: https://github.com/tyriis/flux.k3s.cluster
-          icon: github
-          group: Infrastructure
+        - group: Infrastructure
+          apps:
+            - name: OPNsense
+              url: https://opnsense.${SECRET_DOMAIN}
+              icon: router-network
+            - name: NAS
+              url: https://nas.${SECRET_DOMAIN}
+              icon: nas
+            - name: minio
+              url: ${SECRET_MINIO_URL}
+              icon: bird
+            - name: AdGuard
+              url: https://opnsense.${SECRET_DOMAIN}:3443
+              icon: shield-check
+            - name: GitOps
+              url: https://github.com/tyriis/flux.k3s.cluster
+              icon: github
       globalBookmarks:
         - group: Communicate
           bookmarks:
