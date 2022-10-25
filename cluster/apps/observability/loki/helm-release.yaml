@@ -173,6 +173,8 @@ spec:
         enabled: false
         grafanaAgent:
           installOperator: false
+    test:
+      enabled: false
 
   valuesFrom:
     - kind: Secret
