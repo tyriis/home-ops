@@ -64,6 +64,20 @@ nodes:
         mtu: 0
         dhcp: true
 
+  # i7-8565U / 16GB / 240GB SSD / 512GB NVME
+  - hostname: talos05
+    ipAddress: 192.168.1.55
+    installDisk: /dev/sda
+    controlPlane: false
+    disableSearchDomain: true
+    nameservers:
+      - 1.1.1.1
+      - 8.8.8.8
+    networkInterfaces:
+      - interface: eth0
+        mtu: 0
+        dhcp: true
+
 controlPlane:
   inlinePatch:
     machine:
