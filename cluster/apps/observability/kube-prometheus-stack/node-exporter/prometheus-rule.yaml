@@ -214,3 +214,12 @@ spec:
           annotations:
             summary: "Unusual disk read latency (instance {{ $labels.instance }})"
             description: "Disk latency is growing (read operations > 100ms)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+        # Disk I/O - Time is high
+        - alert: HighDiskIOTime
+          expr: rate(node_disk_io_time_seconds_total{job="node-exporter", device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+)"}[1m]) > 0.2
+          for: 10m
+          labels:
+            severity: critical
+          annotations:
+            summary: "High Disk I/O Time (instance {{ $labels.instance }}, device {{ $labels.device }} )"
+            description: "Disk I/O Time has a critical level, node operation at risk\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
