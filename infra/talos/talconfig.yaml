@@ -16,7 +16,7 @@ nodes:
       - 8.8.8.8
     networkInterfaces:
       - interface: eth0
-        mtu: 0
+        mtu: 1450
         dhcp: true
         vip:
           ip: 192.168.1.50
@@ -33,7 +33,7 @@ nodes:
       - 8.8.8.8
     networkInterfaces:
       - interface: eth0
-        mtu: 0
+        mtu: 1450
         dhcp: true
 
   # i7-8565U / 16GB / 128GB SSD / 512GB NVME
@@ -47,7 +47,7 @@ nodes:
       - 8.8.8.8
     networkInterfaces:
       - interface: eth0
-        mtu: 0
+        mtu: 1450
         dhcp: true
 
 #  i5-7260U 8GB / 240 GB SSD / 512 GB NVME
@@ -61,7 +61,7 @@ nodes:
       - 8.8.8.8
     networkInterfaces:
       - interface: eth0
-        mtu: 0
+        mtu: 1450
         dhcp: true
 
   # Celeron J3455 / 6GB / 120 GB SSD (7. gen)
@@ -75,7 +75,7 @@ nodes:
       - 8.8.8.8
     networkInterfaces:
       - interface: eth0
-        mtu: 0
+        mtu: 1450
         dhcp: true
         vip:
           ip: 192.168.1.50
