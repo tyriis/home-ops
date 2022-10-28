@@ -16,6 +16,12 @@
 #
 #        run: sgdisk --zap-all /dev/nvme0n1
 #
+# if you want to replace an already existing osd with a new drive or device you need to run
+# follow this guide: https://rathpc.github.io/rook.github.io/docs/rook/v1.4/ceph-osd-mgmt.html#remove-an-osd
+# (ERROR: entity osd.x exists but key does not match)
+#     run: ceph auth del osd.x
+#
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
