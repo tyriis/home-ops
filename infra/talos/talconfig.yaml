@@ -36,7 +36,7 @@ nodes:
         mtu: 0
         dhcp: true
 
-  # i7-8565U / 16GB / 240GB SSD / 512GB NVME
+  # i7-8565U / 16GB / 128GB SSD / 512GB NVME
   - hostname: talos03
     ipAddress: 192.168.1.53
     installDisk: /dev/sda
@@ -50,23 +50,9 @@ nodes:
         mtu: 0
         dhcp: true
 
-# i7-5650U 8GB / 240 GB SSD / 500GB SSD
+#  i5-7260U 8GB / 240 GB SSD / 512 GB NVME
   - hostname: talos04
     ipAddress: 192.168.1.54
-    installDisk: /dev/disk/by-id/ata-Samsung_SSD_840_EVO_250GB_S1DBNSAF395622W
-    controlPlane: false
-    disableSearchDomain: true
-    nameservers:
-      - 1.1.1.1
-      - 8.8.8.8
-    networkInterfaces:
-      - interface: eth0
-        mtu: 0
-        dhcp: true
-
-  # i7-8565U / 16GB / 240GB SSD / 512GB NVME
-  - hostname: talos05
-    ipAddress: 192.168.1.55
     installDisk: /dev/sda
     controlPlane: false
     disableSearchDomain: true
@@ -77,6 +63,22 @@ nodes:
       - interface: eth0
         mtu: 0
         dhcp: true
+
+  # Celeron J3455 / 6GB / 120 GB SSD (7. gen)
+  - hostname: talos05
+    ipAddress: 192.168.1.55
+    installDisk: /dev/sda
+    controlPlane: true
+    disableSearchDomain: true
+    nameservers:
+      - 1.1.1.1
+      - 8.8.8.8
+    networkInterfaces:
+      - interface: eth0
+        mtu: 0
+        dhcp: true
+        vip:
+          ip: 192.168.1.50
 
 controlPlane:
   inlinePatch:
