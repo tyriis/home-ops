@@ -88,7 +88,7 @@ spec:
               - name: /dev/nvme0n1
           - name: talos04
             devices:
-              - name: /dev/disk/by-id/nvme-WDC_WDS500G2B0C-00PXH0_20047F800646
+              - name: /dev/nvme0n1
       resources: null
         # mgr:
         #   limits:
