@@ -169,14 +169,19 @@ spec:
         size: 15Gi
         storageClass: ceph-block
 
+    #   selfMonitoring:
+    #     enabled: false
+    #     grafanaAgent:
+    #       installOperator: false
+    #     lokiCanary:
+    #       enabled: false
+    # test:
+    #   enabled: false
+    monitoring:
       selfMonitoring:
         enabled: false
         grafanaAgent:
           installOperator: false
-        lokiCanary:
-          enabled: false
-    test:
-      enabled: false
 
   valuesFrom:
     - kind: Secret
