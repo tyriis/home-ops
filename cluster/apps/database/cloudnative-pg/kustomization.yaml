@@ -4,5 +4,7 @@ kind: Kustomization
 resources:
   - dashboard
   - postgres-superuser-secret.sops.yaml
+  - postgres-minio-secret.sops.yaml
   - helm-release.yaml
   - cluster.yaml
+  - scheduled-backup.yaml
