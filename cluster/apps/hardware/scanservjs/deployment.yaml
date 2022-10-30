@@ -34,8 +34,11 @@ spec:
             - name: dbus
               mountPath: /var/run/dbus
               readOnly: false
+      initContainers:
+        - name: dbus
+          image: busybox:1.35
           command: ["/bin/sh"]
-          args: ["-c", "service dbus start && /run.sh"]
+          args: ["-c", "service dbus start"]
       volumes:
         - name: scans
           persistentVolumeClaim:
