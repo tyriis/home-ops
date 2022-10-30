@@ -175,12 +175,14 @@ spec:
     #       installOperator: false
     #     lokiCanary:
     #       enabled: false
-    # test:
-    #   enabled: false
+    test:
+      enabled: false
     monitoring:
       serviceMonitor:
         enabled: false
       selfMonitoring:
+        lokiCanary:
+          enabled: false
         enabled: false
         grafanaAgent:
           installOperator: false
