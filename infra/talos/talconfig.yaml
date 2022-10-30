@@ -5,7 +5,7 @@ kubernetesVersion: v1.24.3
 endpoint: https://192.168.1.50:6443
 allowSchedulingOnMasters: false
 nodes:
-  # i7-4710HQ / 16GB / 128GB SSD
+  # i7-4650U / 8GB / 500GB SSD (4.gen)
   - hostname: talos01
     ipAddress: 192.168.1.51
     installDisk: /dev/sda
@@ -14,15 +14,15 @@ nodes:
     nameservers:
       - 1.1.1.1
       - 8.8.8.8
+      - 192.168.1.1
     networkInterfaces:
       - interface: eth0
-        mtu: 1450
+        mtu: 0
         dhcp: true
         vip:
           ip: 192.168.1.50
 
-
-  # i7-8565U / 16GB / 240GB SSD / 512GB NVME
+  # i7-8565U / 16GB / 240GB SSD / 512GB NVME (8. gen)
   - hostname: talos02
     ipAddress: 192.168.1.52
     installDisk: /dev/sda
@@ -31,12 +31,13 @@ nodes:
     nameservers:
       - 1.1.1.1
       - 8.8.8.8
+      - 192.168.1.1
     networkInterfaces:
       - interface: eth0
-        mtu: 1450
+        mtu: 0
         dhcp: true
 
-  # i7-8565U / 16GB / 128GB SSD / 512GB NVME
+  # i7-8565U / 16GB / 128GB SSD / 512GB NVME (8. gen)
   - hostname: talos03
     ipAddress: 192.168.1.53
     installDisk: /dev/sda
@@ -45,12 +46,13 @@ nodes:
     nameservers:
       - 1.1.1.1
       - 8.8.8.8
+      - 192.168.1.1
     networkInterfaces:
       - interface: eth0
-        mtu: 1450
+        mtu: 0
         dhcp: true
 
-#  i5-7260U 8GB / 240 GB SSD / 512 GB NVME
+#  i5-7260U 8GB / 240 GB SSD / 512 GB NVME (7. gen)
   - hostname: talos04
     ipAddress: 192.168.1.54
     installDisk: /dev/sda
@@ -59,26 +61,11 @@ nodes:
     nameservers:
       - 1.1.1.1
       - 8.8.8.8
+      - 192.168.1.1
     networkInterfaces:
       - interface: eth0
-        mtu: 1450
+        mtu: 0
         dhcp: true
-
-  # Celeron J3455 / 6GB / 120 GB SSD (7. gen)
-  - hostname: talos05
-    ipAddress: 192.168.1.55
-    installDisk: /dev/sda
-    controlPlane: true
-    disableSearchDomain: true
-    nameservers:
-      - 1.1.1.1
-      - 8.8.8.8
-    networkInterfaces:
-      - interface: eth0
-        mtu: 1450
-        dhcp: true
-        vip:
-          ip: 192.168.1.50
 
 controlPlane:
   inlinePatch:
