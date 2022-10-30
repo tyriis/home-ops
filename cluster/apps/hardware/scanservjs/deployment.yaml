@@ -35,7 +35,7 @@ spec:
               mountPath: /var/run/dbus
               readOnly: false
           command: ["/bin/sh"]
-          args: ["-c", "service dbus start"]
+          args: ["-c", "service dbus start && /run.sh"]
       volumes:
         - name: scans
           persistentVolumeClaim:
