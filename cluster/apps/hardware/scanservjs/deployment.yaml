@@ -40,9 +40,9 @@ spec:
           volumeMounts:
             - name: scans
               mountPath: /app/data/output
-            # - name: dbus
-            #   mountPath: /var/run/dbus
-            #   readOnly: false
+            - name: dbus
+              mountPath: /var/run/dbus
+              readOnly: false
       volumes:
         - name: scans
           persistentVolumeClaim:
