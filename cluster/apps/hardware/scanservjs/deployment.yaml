@@ -18,6 +18,15 @@ spec:
         app.kubernetes.io/name: scanservjs
         app.kubernetes.io/instance: scanservjs
     spec:
+      initContainers:
+        - name: dbus-start
+          image: sbs20/scanservjs:release-v2.21.0
+          volumeMounts:
+            - name: dbus
+              mountPath: /var/run/dbus
+              readOnly: false
+          command: ["/bin/sh"]
+          args: ["-c", "service dbus start"]
       containers:
         - name: scanservjs
           image: sbs20/scanservjs:release-v2.21.0
@@ -31,14 +40,9 @@ spec:
           volumeMounts:
             - name: scans
               mountPath: /app/data/output
-            - name: dbus
-              mountPath: /var/run/dbus
-              readOnly: false
-      initContainers:
-        - name: dbus
-          image: busybox:1.35
-          command: ["/bin/sh"]
-          args: ["-c", "service dbus start"]
+            # - name: dbus
+            #   mountPath: /var/run/dbus
+            #   readOnly: false
       volumes:
         - name: scans
           persistentVolumeClaim:
