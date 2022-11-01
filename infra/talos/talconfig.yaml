@@ -3,9 +3,9 @@ clusterName: talos-flux
 talosVersion: v1.2.3
 kubernetesVersion: v1.24.3
 endpoint: https://192.168.1.50:6443
-allowSchedulingOnMasters: false
+allowSchedulingOnMasters: true
 nodes:
-  # i7-4650U / 8GB / 500GB SSD (4.gen)
+  # i7-10710U / 32GB / 240GB SSD / 500GB NVME (10.gen)
   - hostname: talos01
     ipAddress: 192.168.1.51
     installDisk: /dev/sda
@@ -22,7 +22,7 @@ nodes:
         vip:
           ip: 192.168.1.50
 
-  # i7-8565U / 16GB / 240GB SSD / 512GB NVME (8. gen)
+  # i7-8565U / 16GB / 240GB SSD / 500GB NVME (8. gen)
   - hostname: talos02
     ipAddress: 192.168.1.52
     installDisk: /dev/sda

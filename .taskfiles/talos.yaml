@@ -170,3 +170,9 @@ tasks:
     desc: start the theila dashboard
     cmds:
       - theila --address 127.0.0.1 --port 8080
+
+  # https://www.talos.dev/v1.2/advanced/disaster-recovery/
+  backup:etcd:
+    desc: backup etcd from ip 192.168.1.51
+    cmds:
+      - talosctl -n 192.168.1.51 etcd snapshot db.snapshot

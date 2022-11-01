@@ -80,6 +80,9 @@ spec:
         config:
           osdsPerDevice: "1"
         nodes:
+          - name: talos01
+            devices:
+              - name: /dev/nvme0n1
           - name: talos02
             devices:
               - name: /dev/nvme0n1
