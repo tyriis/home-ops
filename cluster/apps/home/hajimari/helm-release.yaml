@@ -51,7 +51,7 @@ spec:
             - name: minio
               url: ${SECRET_MINIO_URL}
               icon: bird
-            - vault: vault
+            - name: vault
               url: https://nas.${SECRET_DOMAIN}:8200
               icon: shield-key
             # - name: AdGuard
