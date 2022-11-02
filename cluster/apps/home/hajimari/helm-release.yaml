@@ -50,7 +50,7 @@ spec:
               icon: nas
             - name: minio
               url: ${SECRET_MINIO_URL}
-              icon: bird
+              icon: server
             - name: vault
               url: https://nas.${SECRET_DOMAIN}:8200
               icon: shield-key
