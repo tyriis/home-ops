@@ -37,6 +37,8 @@ spec:
           - database
           - rook-ceph
       name: sunshine
+      lightTheme: chalk
+      darkTheme: horizon
       customApps:
         - group: Infrastructure
           apps:
@@ -49,9 +51,12 @@ spec:
             - name: minio
               url: ${SECRET_MINIO_URL}
               icon: bird
-            - name: AdGuard
-              url: https://opnsense.${SECRET_DOMAIN}:3443
-              icon: shield-check
+            - vault: vault
+              url: https://nas.${SECRET_DOMAIN}:8200
+              icon: shield-key
+            # - name: AdGuard
+            #   url: https://opnsense.${SECRET_DOMAIN}:3443
+            #   icon: shield-check
             - name: GitOps
               url: https://github.com/tyriis/flux.k3s.cluster
               icon: github
