@@ -8,7 +8,7 @@ spec:
     matchNames: ["home"]
   selector:
     matchLabels:
-      app.kubernetes.io/name: zigbee2mqtt
+      app.kubernetes.io/name: zigbee2mqtt-bridge2
       app.kubernetes.io/instance: zigbee2mqtt-bridge2
   podMetricsEndpoints:
     - port: http-prom
