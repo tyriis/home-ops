@@ -1,11 +1,11 @@
 ---
 clusterName: talos-flux
-talosVersion: v1.2.3
-kubernetesVersion: v1.24.3
+talosVersion: v1.2.6
+kubernetesVersion: v1.24.7
 endpoint: https://192.168.1.50:6443
 allowSchedulingOnMasters: true
 nodes:
-  # i7-10710U / 32GB / 240GB SSD / 500GB NVME (10.gen)
+  # i7-8650U / 32GB / 120GB SSD / 500GB NVME (8.gen)
   - hostname: talos01
     ipAddress: 192.168.1.51
     installDisk: /dev/sda
@@ -22,11 +22,11 @@ nodes:
         vip:
           ip: 192.168.1.50
 
-  # i7-8565U / 16GB / 240GB SSD / 500GB NVME (8. gen)
+  # i7-8650U / 32GB / 500GB SSD / 256GB NVME (8.gen)
   - hostname: talos02
     ipAddress: 192.168.1.52
     installDisk: /dev/sda
-    controlPlane: false
+    controlPlane: true
     disableSearchDomain: true
     nameservers:
       - 1.1.1.1
@@ -36,12 +36,14 @@ nodes:
       - interface: eth0
         mtu: 0
         dhcp: true
+        vip:
+          ip: 192.168.1.50
 
-  # i7-8565U / 16GB / 128GB SSD / 512GB NVME (8. gen)
+  # i7-8650U / 32GB / 120GB SSD / 500GB NVME (8.gen)
   - hostname: talos03
     ipAddress: 192.168.1.53
     installDisk: /dev/sda
-    controlPlane: false
+    controlPlane: true
     disableSearchDomain: true
     nameservers:
       - 1.1.1.1
@@ -51,8 +53,10 @@ nodes:
       - interface: eth0
         mtu: 0
         dhcp: true
+        vip:
+          ip: 192.168.1.50
 
-#  i5-7260U 8GB / 240 GB SSD / 512 GB NVME (7. gen)
+#  i7-10710U / 32GB / 250 GB SSD / 500 GB NVME (10. gen)
   - hostname: talos04
     ipAddress: 192.168.1.54
     installDisk: /dev/sda

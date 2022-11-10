@@ -45,9 +45,9 @@ data "kubectl_file_documents" "fluxcd_sync" {
   content = file("../../cluster/flux/flux-system/gotk-sync.yaml")
 }
 
-data "kubectl_file_documents" "fluxcd_kustomization" {
-  content = file("../../cluster/flux/flux-system/kustomization.yaml")
-}
+# data "kubectl_file_documents" "fluxcd_kustomization" {
+#   content = file("../../cluster/flux/flux-system/kustomization.yaml")
+# }
 
 data "flux_sync" "main" {
   target_path = var.target_path
@@ -128,10 +128,10 @@ resource "github_repository" "main" {
   // auto_init              = true
 }
 
-resource "github_branch_default" "main" {
-  repository = github_repository.main.name
-  branch     = var.branch
-}
+# resource "github_branch_default" "main" {
+#   repository = github_repository.main.name
+#   branch     = var.branch
+# }
 
 resource "github_repository_deploy_key" "main" {
   title      = "k3s.home"
@@ -140,32 +140,32 @@ resource "github_repository_deploy_key" "main" {
   read_only  = true
 }
 
-resource "github_repository_file" "install" {
-  repository          = github_repository.main.name
-  file                = "${var.target_path}/gotk-components.yaml"
-  content             = data.kubectl_file_documents.fluxcd_install.content
-  branch              = var.branch
-  overwrite_on_create = true
-}
+# resource "github_repository_file" "install" {
+#   repository          = github_repository.main.name
+#   file                = "${var.target_path}/gotk-components.yaml"
+#   content             = data.kubectl_file_documents.fluxcd_install.content
+#   branch              = var.branch
+#   overwrite_on_create = true
+# }
 
-resource "github_repository_file" "sync" {
-  depends_on = [
-    kubernetes_secret.sops_age
-  ]
-  repository          = github_repository.main.name
-  file                = "${var.target_path}/gotk-sync.yaml"
-  content             = data.kubectl_file_documents.fluxcd_sync.content
-  branch              = var.branch
-  overwrite_on_create = true
-}
+# resource "github_repository_file" "sync" {
+#   depends_on = [
+#     kubernetes_secret.sops_age
+#   ]
+#   repository          = github_repository.main.name
+#   file                = "${var.target_path}/gotk-sync.yaml"
+#   content             = data.kubectl_file_documents.fluxcd_sync.content
+#   branch              = var.branch
+#   overwrite_on_create = true
+# }
 
-resource "github_repository_file" "kustomize" {
-  repository          = github_repository.main.name
-  file                = "${var.target_path}/kustomization.yaml"
-  content             = data.kubectl_file_documents.fluxcd_kustomization.content
-  branch              = var.branch
-  overwrite_on_create = true
-}
+# resource "github_repository_file" "kustomize" {
+#   repository          = github_repository.main.name
+#   file                = "${var.target_path}/kustomization.yaml"
+#   content             = data.kubectl_file_documents.fluxcd_kustomization.content
+#   branch              = var.branch
+#   overwrite_on_create = true
+# }
 
 resource "kubernetes_secret" "sops_age" {
   metadata {
