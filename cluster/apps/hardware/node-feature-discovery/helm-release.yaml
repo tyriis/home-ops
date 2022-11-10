@@ -53,31 +53,3 @@ spec:
                     class: ["ff"]
                     vendor: ["10c4"]
                     device: ["ea60"]
-
-            - name: "cpu.intel.i5"
-              value: "true"
-              matchOn:
-                - nodename:
-                    - talos04
-
-            - name: "cpu.intel.i7"
-              value: "true"
-              matchOn:
-                - nodename:
-                    - talos01
-                    - talos02
-                    - talos03
-
-            - name: "memory.gb.8"
-              value: "true"
-              matchOn:
-                - nodename:
-                    - talos01
-                    - talos04
-
-            - name: "memory.gb.16"
-              value: "true"
-              matchOn:
-                - nodename:
-                    - talos02
-                    - talos03
