@@ -21,6 +21,9 @@
 # (ERROR: entity osd.x exists but key does not match)
 #     run: ceph auth del osd.x
 #
+# ceph clear osd flags
+#     run: ceph osd rm-noin 3
+#
 
 apiVersion: apps/v1
 kind: Deployment
@@ -153,4 +156,4 @@ spec:
           tolerationSeconds: 5
       nodeSelector:
         kubernetes.io/arch: amd64
-        kubernetes.io/hostname: talos04
+        kubernetes.io/hostname: talos03
