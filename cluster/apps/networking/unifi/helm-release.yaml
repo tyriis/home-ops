@@ -70,6 +70,17 @@ spec:
             port: 10001
             protocol: UDP
 
+      hotspot:
+        ports:
+          portal-http:
+            enabled: false
+            port: 8880
+            protocol: HTTP
+          portal-https:
+            enabled: false
+            port: 8843
+            protocol: HTTPS
+
     ingress:
       main:
         enabled: true
@@ -88,6 +99,24 @@ spec:
           - hosts:
               - *host
             secretName: unifi-tls
+
+      hotspot:
+        enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          # hajimari.io/enable: "true"
+          # hajimari.io/icon: "wifi-cog"
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        ingressClassName: "traefik"
+        hosts:
+          - host: &host "hotspot.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+            secretName: hotspot-tls
 
     persistence:
       data:
