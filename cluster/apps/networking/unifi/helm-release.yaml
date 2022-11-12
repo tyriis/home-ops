@@ -82,6 +82,7 @@ spec:
         tls:
           - hosts:
               - *host
+        secretName: unifi-tls
 
     persistence:
       data:
