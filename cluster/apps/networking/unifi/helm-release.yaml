@@ -70,17 +70,6 @@ spec:
             port: 10001
             protocol: UDP
 
-      hotspot:
-        ports:
-          portal-http:
-            enabled: false
-            port: 8880
-            protocol: HTTP
-          portal-https:
-            enabled: false
-            port: 8843
-            protocol: HTTPS
-
     ingress:
       main:
         enabled: true
@@ -113,6 +102,8 @@ spec:
             paths:
               - path: /
                 pathType: Prefix
+                service:
+                  port: portal-https
         tls:
           - hosts:
               - *host
