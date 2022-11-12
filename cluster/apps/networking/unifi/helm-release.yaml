@@ -90,8 +90,7 @@ spec:
                 pathType: Prefix
                 service:
                   name: unifi
-                  port:
-                    name: 8843
+                  port: 8843
         tls:
           - hosts:
               - *host
