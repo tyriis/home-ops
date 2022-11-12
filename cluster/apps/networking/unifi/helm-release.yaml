@@ -46,11 +46,11 @@ spec:
             port: 8443
             protocol: HTTPS
           portal-http:
-            enabled: false
+            enabled: true
             port: 8880
             protocol: HTTP
           portal-https:
-            enabled: false
+            enabled: true
             port: 8843
             protocol: HTTPS
           speedtest:
@@ -89,7 +89,9 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  port: portal-https
+                  name: unifi
+                  port:
+                    name: portal-https
         tls:
           - hosts:
               - *host
