@@ -28,23 +28,23 @@ spec:
       UNIFI_STDOUT: "true"
       JVM_INIT_HEAP_SIZE:
       JVM_MAX_HEAP_SIZE: 1024M
-      CERTNAME: tls.crt
-      CERT_PRIVATE_NAME: tls.key
-      CERT_IS_CHAIN: "true"
+      # CERTNAME: tls.crt
+      # CERT_PRIVATE_NAME: tls.key
+      # CERT_IS_CHAIN: "true"
 
     service:
       main:
-        # type: LoadBalancer
-        # loadBalancerIP: ${SETTING_METALLB_UNIFI_ADDR}
+        type: LoadBalancer
+        loadBalancerIP: ${SETTING_METALLB_UNIFI_ADDR}
         externalTrafficPolicy: Local
         ports:
-          http:
-            port: 8443
-            protocol: HTTPS
           controller:
             enabled: true
             port: 8080
             protocol: TCP
+          http:
+            port: 8443
+            protocol: HTTPS
           portal-http:
             enabled: false
             port: 8880
@@ -83,6 +83,7 @@ spec:
           - host: &host "unifi.${SECRET_DOMAIN}"
             paths:
               - path: /
+                pathType: Prefix
         tls:
           - hosts:
               - *host
@@ -94,11 +95,11 @@ spec:
         existingClaim: unifi-data
         mountPath: /unifi
 
-      certs:
-        enabled: true
-        type: secret
-        name: unifi-tls
-        mountPath: /unifi/cert
+      # certs:
+      #   enabled: true
+      #   type: secret
+      #   name: unifi-tls
+      #   mountPath: /unifi/cert
 
     resources:
       requests:

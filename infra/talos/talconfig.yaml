@@ -32,6 +32,7 @@ nodes:
       - 1.1.1.1
       - 8.8.8.8
       - 192.168.1.1
+      - 192.168.0.254
     networkInterfaces:
       - interface: eth0
         mtu: 0
