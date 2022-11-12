@@ -21,12 +21,16 @@ spec:
       tag: v7.2.95
 
     env:
+      TZ: ${SETTING_TZ}
       RUNAS_UID0: "false"
       UNIFI_UID: "999"
       UNIFI_GID: "999"
       UNIFI_STDOUT: "true"
       JVM_INIT_HEAP_SIZE:
       JVM_MAX_HEAP_SIZE: 1024M
+      CERTNAME: tls.crt
+      CERT_PRIVATE_NAME: tls.key
+      CERT_IS_CHAIN: "true"
 
     service:
       main:
@@ -70,10 +74,10 @@ spec:
       main:
         enabled: true
         annotations:
-          # cert-manager.io/cluster-issuer: letsencrypt-production
+          cert-manager.io/cluster-issuer: letsencrypt-production
           hajimari.io/enable: "true"
           hajimari.io/icon: "wifi-cog"
-          # traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
         ingressClassName: "traefik"
         hosts:
           - host: &host "unifi.${SECRET_DOMAIN}"
@@ -82,13 +86,19 @@ spec:
         tls:
           - hosts:
               - *host
-            # secretName: unifi-tls
+            secretName: unifi-tls
 
     persistence:
       data:
         enabled: true
         existingClaim: unifi-data
         mountPath: /unifi
+
+      certs:
+        enabled: true
+        type: secret
+        name: unifi-tls
+        mountPath: /unifi/cert
 
     resources:
       requests:
