@@ -91,7 +91,7 @@ spec:
                 service:
                   name: unifi
                   port:
-                    name: portal-https
+                    name: 8843
         tls:
           - hosts:
               - *host
