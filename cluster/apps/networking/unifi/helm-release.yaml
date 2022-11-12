@@ -70,10 +70,10 @@ spec:
       main:
         enabled: true
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
+          # cert-manager.io/cluster-issuer: letsencrypt-production
           hajimari.io/enable: "true"
           hajimari.io/icon: "wifi-cog"
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          # traefik.ingress.kubernetes.io/router.entrypoints: websecure
         ingressClassName: "traefik"
         hosts:
           - host: &host "unifi.${SECRET_DOMAIN}"
@@ -82,7 +82,7 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: unifi-tls
+            # secretName: unifi-tls
 
     persistence:
       data:
