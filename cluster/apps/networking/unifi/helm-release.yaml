@@ -34,8 +34,8 @@ spec:
 
     service:
       main:
-        type: LoadBalancer
-        loadBalancerIP: ${SETTING_METALLB_UNIFI_ADDR}
+        # type: LoadBalancer
+        # loadBalancerIP: ${SETTING_METALLB_UNIFI_ADDR}
         externalTrafficPolicy: Local
         ports:
           http:
