@@ -31,6 +31,7 @@ spec:
       # CERTNAME: tls.crt
       # CERT_PRIVATE_NAME: tls.key
       # CERT_IS_CHAIN: "true"
+      PORTAL_HTTPS_PORT: 443
 
     service:
       main:
@@ -51,7 +52,7 @@ spec:
             protocol: HTTP
           portal-https:
             enabled: true
-            port: 8843
+            port: 443
             protocol: HTTPS
           speedtest:
             enabled: true
