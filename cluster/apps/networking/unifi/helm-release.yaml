@@ -31,7 +31,7 @@ spec:
       # CERTNAME: tls.crt
       # CERT_PRIVATE_NAME: tls.key
       # CERT_IS_CHAIN: "true"
-      PORTAL_HTTPS_PORT: 443
+      PORTAL_HTTPS_PORT: "443"
 
     service:
       main:
