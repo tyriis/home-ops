@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   - secrets.sops.yaml
   - helm-release.yaml
-  - pod-monitor.yaml
+  - service-monitor.yaml
   - dashboard
 commonLabels:
   app.kubernetes.io/name: adguard-exporter
