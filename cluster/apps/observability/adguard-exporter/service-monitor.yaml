@@ -6,8 +6,9 @@ metadata:
 spec:
   endpoints:
     - interval: 15s
+      path: /metrics
       scrapeTimeout: 15s
-      port: http-metrics
+      port: http
   namespaceSelector:
     matchNames:
       - observability
