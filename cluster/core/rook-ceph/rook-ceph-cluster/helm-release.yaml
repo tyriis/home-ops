@@ -85,7 +85,7 @@ spec:
               - name: /dev/nvme0n1
           - name: talos02
             devices:
-              - name: /dev/sdb
+              - name: /dev/nvme0n1
           - name: talos03
             devices:
               - name: /dev/nvme0n1
