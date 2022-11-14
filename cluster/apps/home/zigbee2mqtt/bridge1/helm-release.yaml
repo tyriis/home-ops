@@ -33,7 +33,7 @@ spec:
     service:
       main:
         ports:
-          http:
+          http-metrics:
             port: 8080
     ingress:
       main:

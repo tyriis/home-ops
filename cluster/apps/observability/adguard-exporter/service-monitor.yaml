@@ -1,16 +1,17 @@
 ---
 apiVersion: monitoring.coreos.com/v1
-kind: PodMonitor
+kind: ServiceMonitor
 metadata:
   name: adguard-exporter
 spec:
+  endpoints:
+    - interval: 15s
+      scrapeTimeout: 15s
+      port: http-metrics
   namespaceSelector:
-    matchNames: ["observability"]
+    matchNames:
+      - observability
   selector:
     matchLabels:
       app.kubernetes.io/name: adguard-exporter
       app.kubernetes.io/instance: adguard-exporter
-  podMetricsEndpoints:
-    - port: http
-      interval: 15s
-      scrapeTimeout: 15s
