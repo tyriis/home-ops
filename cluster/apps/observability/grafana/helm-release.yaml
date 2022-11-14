@@ -84,13 +84,13 @@ spec:
 
     dashboards:
       # default:
-      flux:
-        flux-cluster:
-          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/cluster.json
-          datasource: Prometheus
-        flux-control-plane:
-          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/control-plane.json
-          datasource: Prometheus
+      # flux:
+      #   flux-cluster:
+      #     url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/cluster.json
+      #     datasource: Prometheus
+      #   flux-control-plane:
+      #     url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/control-plane.json
+      #     datasource: Prometheus
       default:
         # Ref: https://grafana.com/grafana/dashboards/11074
         "Node Exporter for Prometheus Dashboard":
@@ -110,7 +110,13 @@ spec:
       datasources:
         enabled: true
         searchNamespace: ALL
-
+    plugins:
+      # - natel-discrete-panel
+      # - pr0ps-trackmap-panel
+      - grafana-piechart-panel
+      # - vonage-status-panel
+      - grafana-worldmap-panel
+      - grafana-clock-panel
     serviceMonitor:
       enabled: true
 
