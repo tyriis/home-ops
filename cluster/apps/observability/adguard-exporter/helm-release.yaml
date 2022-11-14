@@ -27,6 +27,12 @@ spec:
       - secretRef:
           name: adguard-exporter-env
 
+    service:
+      main:
+        ports:
+          http:
+            port: 9617
+
     # resources:
     #   requests:
     #     cpu: 23m

@@ -11,6 +11,6 @@ spec:
       app.kubernetes.io/name: adguard-exporter
       app.kubernetes.io/instance: adguard-exporter
   podMetricsEndpoints:
-    - port: "9617"
+    - port: http
       interval: 15s
       scrapeTimeout: 15s
