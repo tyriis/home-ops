@@ -81,6 +81,14 @@ spec:
             type: loki
             access: proxy
             url: http://loki-gateway
+    additionalDataSources:
+      - name: GitHub Repo Insights
+        type: grafana-github-datasource
+        jsonData:
+        owner: "tyriis"
+        repository: "flux.k3s.cluster"
+        secureJsonData:
+        accessToken: "${SECRET_GH_PAT}"
 
     dashboards:
       # default:
