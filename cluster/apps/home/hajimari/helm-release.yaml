@@ -54,9 +54,9 @@ spec:
             - name: vault
               url: https://nas.${SECRET_DOMAIN}:8200
               icon: shield-key
-            # - name: AdGuard
-            #   url: https://opnsense.${SECRET_DOMAIN}:3443
-            #   icon: shield-check
+            - name: AdGuard
+              url: https://opnsense.${SECRET_DOMAIN}:3443
+              icon: shield-check
             - name: GitOps
               url: https://github.com/tyriis/flux.k3s.cluster
               icon: github
