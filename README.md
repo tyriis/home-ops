@@ -95,13 +95,12 @@ Here is the list of tools and technologies I am using in this project.
 
 #### Hardware
 
-| Device         | Count | OS                               | Disk Size            | RAM | Purpose                   |
-| -------------- | ----- | -------------------------------- | -------------------- | --- | ------------------------- |
-| Raspberry Pi 4 | 3     | Raspbian GNU/Linux 11 (bullseye) | 120GB SSD            | 4GB | control-plane,etcd,master |
-| i7-4702MQ      | 2     | Ubuntu 20.04.3 LTS               | 240GB SSD            | 8GB | worker                    |
-| Celeron 847    | 1     | Ubuntu 20.04.3 LTS               | 120GB SSD            | 4GB | worker                    |
-| Celeron J3455  | 1     | Ubuntu 20.04.3 LTS               | 120GB SSD, 120GB SSD | 6GB | worker                    |
-| i5-3210M       | 1     | Ubuntu 20.04.3 LTS               | 240GB SSD            | 8GB | worker                    |
+| Device           | CPU      | OS     | OS Disk    | Data Disk              | RAM  | Purpose               |
+| ---------------- | -------- | ------ | ---------- | ---------------------- | ---- | --------------------- |
+| Intel NUC7i7DNHE | i7-8650U | talos  | 120 GB SSD | 500GB NVMe (rook-ceph) | 32GB | control-plane, worker |
+| Intel NUC7i7DNHE | i7-8650U | talos  | 500 GB SSD | 500GB NVMe (rook-ceph) | 32GB | control-plane, worker |
+| Intel NUC7i7DNHE | i7-8650U | talos  | 120 GB SSD | 500GB NVMe (rook-ceph) | 32GB | control-plane, worker |
+| Intel NUC10I7FNH | i7-8650U | talos  | 250 GB SSD | 512GB NVMe (rook-ceph) | 32GB | worker                |
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
