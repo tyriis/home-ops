@@ -12,6 +12,7 @@ resources:
   - metallb-system.yaml
   - networking.yaml
   - observability.yaml
+  - office.yaml
   - rook-ceph.yaml
   - secops.yaml
   - stackgres-system.yaml
