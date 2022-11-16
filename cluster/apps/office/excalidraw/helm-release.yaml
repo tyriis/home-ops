@@ -54,7 +54,7 @@ spec:
         tls:
           - hosts:
               - *host
-            secret: excalidraw-tls
+            secretName: excalidraw-tls
     topologySpreadConstraints:
       - maxSkew: 1
         topologyKey: kubernetes.io/hostname
