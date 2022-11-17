@@ -48,7 +48,7 @@ spec:
           traefik.ingress.kubernetes.io/router.tls: "true"
           hajimari.io/appName: *app
           hajimari.io/enable: "true"
-          hajimari.io/icon: access-point
+          hajimari.io/icon: mdi:zigbee
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
