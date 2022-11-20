@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: alertmanager-discord
-          image: rogerrum/alertmanager-discord:1.0.3
+          image: rogerrum/alertmanager-discord:1.0.4
           ports:
             - containerPort: 9094
               name: webhook
