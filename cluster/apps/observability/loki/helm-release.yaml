@@ -102,10 +102,6 @@ spec:
         analytics:
           reporting_enabled: false
 
-    serviceAccount:
-      annotations:
-        abc: abc
-
     gateway:
       enabled: true
       replicas: 3
