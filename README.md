@@ -91,16 +91,14 @@ Here is the list of tools and technologies I am using in this project.
 
 ### :book:&nbsp; Overview
 
-![terminal nodes overview][nodes-overview-url]
-
 #### Hardware
 
-| Device           | CPU      | OS     | OS Disk    | Data Disk              | RAM  | Purpose               |
-| ---------------- | -------- | ------ | ---------- | ---------------------- | ---- | --------------------- |
-| Intel NUC7i7DNHE | i7-8650U | talos  | 120 GB SSD | 500GB NVMe (rook-ceph) | 32GB | control-plane, worker |
-| Intel NUC7i7DNHE | i7-8650U | talos  | 500 GB SSD | 500GB NVMe (rook-ceph) | 32GB | control-plane, worker |
-| Intel NUC7i7DNHE | i7-8650U | talos  | 120 GB SSD | 500GB NVMe (rook-ceph) | 32GB | control-plane, worker |
-| Intel NUC10I7FNH | i7-8650U | talos  | 250 GB SSD | 512GB NVMe (rook-ceph) | 32GB | worker                |
+| Device           | CPU       | OS     | OS Disk    | Data Disk              | RAM  | Purpose               |
+| ---------------- | --------- | ------ | ---------- | ---------------------- | ---- | --------------------- |
+| Intel NUC7i7DNHE | i7-8650U  | talos  | 120 GB SSD | 500GB NVMe (rook-ceph) | 32GB | control-plane, worker |
+| Intel NUC7i7DNHE | i7-8650U  | talos  | 500 GB SSD | 500GB NVMe (rook-ceph) | 32GB | control-plane, worker |
+| Intel NUC7i7DNHE | i7-8650U  | talos  | 120 GB SSD | 500GB NVMe (rook-ceph) | 32GB | control-plane, worker |
+| Intel NUC10I7FNH | i7-10710U | talos  | 250 GB SSD |           -            | 32GB | worker                |
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -189,7 +187,6 @@ example:
 [renovate-url]: https://github.com/renovatebot/renovate
 [flux-url]: https://fluxcd.io/
 [k8s-at-home-url]: https://k8s-at-home.com/
-[nodes-overview-url]: https://imgur.com/VmJ6yE8.png
 [flux-home-cluster-url]: https://github.com/tyriis/flux.home-cluster
 [flux-k3s-home-url]: https://github.com/tyriis/flux.k3s.home
 [flux-pi-k3s-home-url]: https://github.com/tyriis/flux.pi-k3s.home
