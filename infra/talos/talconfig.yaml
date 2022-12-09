@@ -1,7 +1,7 @@
 ---
 clusterName: talos-flux
-talosVersion: v1.2.6
-kubernetesVersion: v1.24.7
+talosVersion: v1.2.7
+kubernetesVersion: v1.24.9
 endpoint: https://192.168.1.50:6443
 allowSchedulingOnMasters: true
 nodes:
@@ -82,6 +82,14 @@ controlPlane:
               enable_unprivileged_icmp = true
           op: create
           path: /var/cri/conf.d/allow-unpriv-ports.toml
+      sysctls:
+        fs.inotify.max_user_instances: "8192"
+        fs.inotify.max_user_watches: "1048576"
+      time:
+        disabled: false
+        servers:
+          - 192.168.1.1
+          - time.cloudflare.com
   configPatches:
     # deploy metrics server
     # https://www.talos.dev/v1.0/kubernetes-guides/configuration/deploy-metrics-server/
@@ -130,6 +138,11 @@ worker:
       sysctls:
         fs.inotify.max_user_instances: "8192"
         fs.inotify.max_user_watches: "1048576"
+      time:
+        disabled: false
+        servers:
+          - 192.168.1.1
+          - time.cloudflare.com
   configPatches:
     - op: add
       path: /machine/kubelet/extraArgs
