@@ -71,6 +71,8 @@ spec:
             orgId: 1
           - name: Prometheus
             orgId: 1
+          - name: GitHub
+            orgId: 1
         datasources:
           - name: Prometheus
             type: prometheus
