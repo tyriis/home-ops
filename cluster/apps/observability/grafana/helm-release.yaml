@@ -81,7 +81,7 @@ spec:
             type: loki
             access: proxy
             url: http://loki-gateway
-          - name: GitHub Repo Insights
+          - name: GitHub
             type: grafana-github-datasource
             jsonData:
               owner: "tyriis"
