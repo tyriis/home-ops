@@ -124,6 +124,7 @@ spec:
       # - vonage-status-panel
       - grafana-worldmap-panel
       - grafana-clock-panel
+      - grafana-github-datasource
     serviceMonitor:
       enabled: true
 
