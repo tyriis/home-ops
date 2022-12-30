@@ -174,12 +174,12 @@ prometheus:
       #         - esphome-switch-irpanel-1.home
       #       labels:
       #         device: switch-irpanel-1
-      - job_name: esphome-switch-irpanel-2
-        static_configs:
-          - targets:
-              - esphome-switch-irpanel-2.home
-            labels:
-              device: switch-irpanel-2
+      # - job_name: esphome-switch-irpanel-2
+      #   static_configs:
+      #     - targets:
+      #         - esphome-switch-irpanel-2.home
+      #       labels:
+      #         device: switch-irpanel-2
       - job_name: esphome-switch-livingroom
         static_configs:
           - targets:
