@@ -137,12 +137,12 @@ prometheus:
               - esphome-sensor-livingroom.home
             labels:
               device: sensor-livingroom
-      - job_name: esphome-sensor-office
-        static_configs:
-          - targets:
-              - esphome-sensor-office.home
-            labels:
-              device: sensor-office
+      # - job_name: esphome-sensor-office
+      #   static_configs:
+      #     - targets:
+      #         - esphome-sensor-office.home
+      #       labels:
+      #         device: sensor-office
       - job_name: esphome-sensor-stairs
         static_configs:
           - targets:
@@ -168,12 +168,12 @@ prometheus:
               - esphome-switch-domiroom.home
             labels:
               device: switch-domiroom
-      - job_name: esphome-switch-irpanel-1
-        static_configs:
-          - targets:
-              - esphome-switch-irpanel-1.home
-            labels:
-              device: switch-irpanel-1
+      # - job_name: esphome-switch-irpanel-1
+      #   static_configs:
+      #     - targets:
+      #         - esphome-switch-irpanel-1.home
+      #       labels:
+      #         device: switch-irpanel-1
       - job_name: esphome-switch-irpanel-2
         static_configs:
           - targets:
