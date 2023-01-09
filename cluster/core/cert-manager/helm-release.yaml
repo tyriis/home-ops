@@ -26,7 +26,6 @@ spec:
     extraArgs:
       - --dns01-recursive-nameservers=1.1.1.1:53
       - --dns01-recursive-nameservers-only
-      - --certificatesresolvers.letsencrypt.acme.dnschallenge.resolvers=1.1.1.1
     replicaCount: 1
     podDnsPolicy: "None"
     podDnsConfig:
