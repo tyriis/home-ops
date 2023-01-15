@@ -5,10 +5,6 @@ resources:
   - storage-class.yaml
   - persistent-volume.yaml
   - persistent-volume-claim.yaml
-  # - configmap.yaml
-  # - deployment.yaml
-  # - service.yaml
-  # - ingress.yaml
   - helm-release.yaml
 commonLabels:
   app.kubernetes.io/name: scanservjs
