@@ -2,34 +2,42 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: home-assistant
+  name: &app home-assistant
 spec:
   interval: 30m
   chart:
     spec:
-      chart: home-assistant
-      version: 13.4.2
+      chart: app-template
+      version: 1.2.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
+  maxHistory: 15
+  install:
+    createNamespace: false
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     image:
       repository: homeassistant/home-assistant
       tag: 2023.1.4
     env:
       TZ: ${CONFIG_TZ}
-
     envFrom:
       - secretRef:
           name: home-assistant-secrets
-
     service:
       main:
         type: ClusterIP
         port: 8123
         portName: api
-
     ingress:
       main:
         enabled: true
@@ -69,14 +77,9 @@ spec:
         defaultMode: 0600
     podAnnotations:
       secret.reloader.stakater.com/reload: "home-assistant-ssh,home-assistant-secrets"
-
     resources:
       requests:
         cpu: 100m
-        memory: 600Mi
+        memory: 300Mi
       limits:
         memory: 2048Mi
-        cpu: 4000m
-
-    postgresql:
-      enabled: false
