@@ -1,0 +1,76 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app scanservjs
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.2.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    createNamespace: false
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    image:
+      repository: sbs20/scanservjs
+      tag: release-v2.21.0
+    strategy:
+      type: Recreate
+    global:
+      nameOverride: *app
+    env:
+      TZ: ${SETTING_TZ}
+      AIRSCAN_DEVICES: '"HP" = "http://${SECRET_SCANNER_IP}/eSCL"'
+    service:
+      main:
+        ports:
+          http:
+            port: 8080
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: traefik
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/tls-acme: "true"
+          traefik.ingress.kubernetes.io/router.middlewares: networking-sso@kubernetescrd
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/affinity: "true"
+          traefik.ingress.kubernetes.io/router.tls: "true"
+          hajimari.io/appName: scanner
+          hajimari.io/enable: "true"
+          hajimari.io/icon: scanner
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+            secretName: "{{ .Release.Name }}-tls"
+    persistence:
+      scans:
+        enabled: true
+        existingClaim: scanservjs-scans
+        mountPath: /app/data/output
+      dbus:
+        enabled: true
+        type: hostPath
+        hostPath: /var/run/dbus
+    resources:
+      requests:
+        cpu: 100m
+        memory: 75Mi
+      limits:
+        memory: 150Mi
