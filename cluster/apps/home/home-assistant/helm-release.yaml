@@ -36,8 +36,9 @@ spec:
     service:
       main:
         type: ClusterIP
-        port: 8123
-        portName: api
+        ports:
+          http:
+            port: 8123
     ingress:
       main:
         enabled: true
