@@ -31,6 +31,8 @@ spec:
     env:
       TZ: ${SETTING_TZ}
       AIRSCAN_DEVICES: '"HP" = "http://${SECRET_SCANNER_IP}/eSCL"'
+    command: /bin/sh
+    args: [-c, service dbus start && /run.sh]
     service:
       main:
         ports:
