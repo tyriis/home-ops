@@ -55,6 +55,7 @@ spec:
       esphome-config:
         enabled: true
         type: custom
+        readOnly: true
         volumeSpec:
           configMap:
             name: esphome-config
@@ -63,6 +64,40 @@ spec:
             mountPath: /config/light-alexroom.yaml
           - path: light-stairs.yaml
             mountPath: /config/light-stairs.yaml
+          - path: sensor-alexroom.yaml
+            mountPath: /config/sensor-alexroom.yaml
+          - path: sensor-basement.yaml
+            mountPath: /config/sensor-basement.yaml
+          - path: sensor-bathroom.yaml
+            mountPath: /config/sensor-bathroom.yaml
+          - path: sensor-bedroom.yaml
+            mountPath: /config/sensor-bedroom.yaml
+          - path: sensor-domiroom.yaml
+            mountPath: /config/sensor-domiroom.yaml
+          - path: sensor-heating.yaml
+            mountPath: /config/sensor-heating.yaml
+          - path: sensor-kitchen.yaml
+            mountPath: /config/sensor-kitchen.yaml
+          - path: sensor-livingroom.yaml
+            mountPath: /config/sensor-livingroom.yaml
+          - path: sensor-office.yaml
+            mountPath: /config/sensor-office.yaml
+          - path: sensor-stairs.yaml
+            mountPath: /config/sensor-stairs.yaml
+          - path: switch-alexroom.yaml
+            mountPath: /config/switch-alexroom.yaml
+          - path: switch-basement.yaml
+            mountPath: /config/switch-basement.yaml
+          - path: switch-bedroom.yaml
+            mountPath: /config/switch-bedroom.yaml
+          - path: switch-domiroom.yaml
+            mountPath: /config/switch-domiroom.yaml
+          - path: switch-heating.yaml
+            mountPath: /config/switch-heating.yaml
+          - path: switch-livingroom.yaml
+            mountPath: /config/switch-livingroom.yaml
+          - path: switch-office.yaml
+            mountPath: /config/switch-office.yaml
 
     podAnnotations:
       secret.reloader.stakater.com/reload: esphome-secrets
