@@ -7,22 +7,36 @@ spec:
   interval: 5m
   chart:
     spec:
-      chart: esphome
-      version: 8.4.2
+      chart: app-template
+      version: 1.2.1
+      interval: 15m
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
+  maxHistory: 15
+  install:
+    createNamespace: false
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
-    controller:
-      replicas: 1
     image:
-      repository: esphome/esphome
+      repository: ghcr.io/esphome/esphome
       tag: 2022.12.3
     env:
       TZ: ${SETTING_TZ}
       ESPHOME_DASHBOARD_USE_PING: "true"
-
+    service:
+      main:
+        ports:
+          http:
+            port: 6052
     persistence:
       config:
         enabled: true
@@ -65,13 +79,13 @@ spec:
           traefik.ingress.kubernetes.io/router.tls: "true"
           hajimari.io/appName: *app
           hajimari.io/enable: "true"
-          hajimari.io/icon: home-automation
+          hajimari.io/icon: simple-icons:esphome
         hosts:
-          - host: &domain esphome.${SECRET_DOMAIN}
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - hosts:
-              - *domain
-            secretName: esphome-tls
+              - *host
+            secretName: "{{ .Release.Name }}-tls"
