@@ -55,12 +55,13 @@ spec:
       esphome-config:
         enabled: true
         type: custom
+        readOnly: true
         volumeSpec:
           configMap:
             name: esphome-config
         subPath:
-          - path: .
-            mountPath: /config
+          - path: light-alexroom.yaml
+            mountPath: /config/light-alexroom.yaml
 
     podAnnotations:
       secret.reloader.stakater.com/reload: esphome-secrets
