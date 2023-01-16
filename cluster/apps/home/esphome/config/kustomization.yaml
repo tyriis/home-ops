@@ -21,8 +21,6 @@ configMapGenerator:
       - switch-bedroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-bedroom.yaml
       - switch-domiroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-domiroom.yaml
       - switch-heating.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-heating.yaml
-      - switch-irpanel-1.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-irpanel-1.yaml
-      - switch-irpanel-2.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-irpanel-2.yaml
       - switch-livingroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-livingroom.yaml
       - switch-office.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-office.yaml
 generatorOptions:
