@@ -2,23 +2,31 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: vaultwarden
+  name: &app vaultwarden
   namespace: secops
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      chart: vaultwarden
-      version: 5.3.2
+      chart: app-template
+      version: 1.2.0
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
+      interval: 15m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
   values:
-  # Values YAML: https://github.com/k8s-at-home/charts/blob/master/charts/stable/vaultwarden/values.yaml
+    global:
+      nameOverride: *app
     image:
-      repository: ghcr.io/k8s-at-home/vaultwarden
-      tag: v1.25.2
+      repository: vaultwarden/server
+      tag: 1.26.0-alpine
     env:
       DATA_FOLDER: "config"
       TZ: ${SETTING_TZ}
@@ -71,9 +79,47 @@ spec:
       config:
         enabled: true
         existingClaim: vaultwarden-config
+        mountPath: /data
+
+    service:
+      main:
+        ports:
+          http:
+            port: 80
+          websocket:
+            enabled: true
+            port: 3012
+            protocol: TCP
+    initContainers:
+      wait-database:
+        image: busybox:1.35.0
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+        args:
+          - -c
+          - >-
+            until nc -w 1 -v $MYSQL_HOST:3306 || nc -w 1 -v $POSTGRES_HOST:5432;
+            do echo "Waiting for database";
+            done
+        env:
+          - name: POSTGRES_HOST
+            value: pgo-cluster-primary
+        envFrom:
+          - secretRef:
+              name: vaultwarden-secret
     resources:
       requests:
         cpu: 15m
-        memory: 64M
+        memory: 145Mi
       limits:
-        memory: 64M
+        memory: 155Mi
+    envFrom:
+      - secretRef:
+          name: vaultwarden-secret
+    # env:
+    #   DATABASE_URL:
+    #     valueFrom:
+    #       secretKeyRef:
+    #         name: pgo-cluster-pguser-vaultwarden
+    #         key: uri
