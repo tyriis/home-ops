@@ -25,6 +25,7 @@ spec:
     - name: rook-ceph-operator
       namespace: rook-ceph
   values:
+    # https://artifacthub.io/packages/helm/rook/rook-ceph-cluster?modal=values
     operatorNamespace: rook-ceph
     toolbox:
       enabled: false
