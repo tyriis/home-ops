@@ -57,7 +57,7 @@ nodes:
         vip:
           ip: 192.168.1.50
 
-#  i7-10710U / 32GB / 250 GB SSD / 500 GB NVME (10. gen)
+  #  i7-10710U / 32GB / 250 GB SSD / 500 GB NVME (10. gen)
   - hostname: talos04
     ipAddress: 192.168.1.54
     installDisk: /dev/sda
