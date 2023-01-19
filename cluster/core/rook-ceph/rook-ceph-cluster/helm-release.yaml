@@ -94,50 +94,44 @@ spec:
               - name: /dev/nvme0n1
       resources:
         mgr:
-          # limits:
-          #   memory: 1Gi
+          limits:
+            memory: 1Gi
           requests:
             cpu: 100m
             memory: 500Mi
         mon:
-          # limits:
-          #   memory: 2Gi
+          limits:
+            memory: 2Gi
           requests:
             cpu: 100m
             memory: 500Mi
         osd:
-          # limits:
-          #   memory: 4Gi
+          limits:
+            memory: 4Gi
           requests:
             cpu: 100m
             memory: 1500Mi
-        prepareosd:
-          # limits:
-          #   memory: 400Mi
-          requests:
-            cpu: 100m
-            memory: 100Mi
         mgr-sidecar:
-          # limits:
-          #   memory: 100Mi
+          limits:
+            memory: 100Mi
           requests:
             cpu: 100m
             memory: 40Mi
         crashcollector:
-          # limits:
-          #   memory: 60Mi
+          limits:
+            memory: 60Mi
           requests:
             cpu: 100m
             memory: 10Mi
         logcollector:
-          # limits:
-          #   memory: 1Gi
+          limits:
+            memory: 1Gi
           requests:
             cpu: 100m
             memory: 100Mi
         cleanup:
-          # limits:
-          #   memory: 1Gi
+          limits:
+            memory: 1Gi
           requests:
             cpu: 500m
             memory: 100Mi
