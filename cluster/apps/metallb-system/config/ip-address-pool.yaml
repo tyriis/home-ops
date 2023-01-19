@@ -6,4 +6,4 @@ metadata:
   name: default
 spec:
   addresses:
-  - "${SETTING_METALLB_LB_RANGE}"
+    - "${SETTING_METALLB_LB_RANGE}"
