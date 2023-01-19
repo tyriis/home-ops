@@ -4,12 +4,12 @@ This cluster is using [autounseal-gcpkms][hashicorp-tutorial-unseal-gcpkms] to u
 
 ## Prerequisites in GCP
 
-* active keyring and key in KMS
-* Service account with IAM Role *Cloud KMS CryptoKey Encrypter/Decrypter*
+- active keyring and key in KMS
+- Service account with IAM Role _Cloud KMS CryptoKey Encrypter/Decrypter_
 
 ## Initialize Vault
 
-``` sh
+```sh
 vault status          # running, should be recovery seal type: gcpckms, sealed: true)
 vault operator init   # initialises with 5 key shares and a key treshold of 3. distribute carefully.
 vault status          # should be recovery seal type: shamir, sealed: false
