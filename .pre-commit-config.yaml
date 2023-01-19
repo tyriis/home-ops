@@ -73,8 +73,13 @@ repos:
   - repo: https://github.com/terraform-docs/terraform-docs
     rev: v0.16.0
     hooks:
-      - id: terraform-docs-system
-        args: ["-c", ".config/.terraform-docs.yaml", "./infra/terraform"]
+      - id: terraform-docs-go
+        args:
+          - --config
+          - .config/.terraform-docs.yaml
+          - --output-file
+          - README.md
+          - ./infra/terraform
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.32.2
@@ -83,3 +88,13 @@ repos:
         args:
           - --config
           - .config/.markdownlint.yaml
+
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.0.0-alpha.4
+    hooks:
+      - id: prettier
+        args:
+          - --ignore-path
+          - .config/.prettierignore
+          - --config
+          - .config/.prettierrc.yaml
