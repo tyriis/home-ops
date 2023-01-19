@@ -3,7 +3,6 @@
 version: "3"
 
 tasks:
-
   network:
     desc: Create a netshoot container for debugging
     cmds:

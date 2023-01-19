@@ -2,7 +2,6 @@
 version: "3"
 
 tasks:
-
   get-password:
     desc: Get rook-ceph password
     cmds:
