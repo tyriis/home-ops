@@ -42,12 +42,12 @@ prometheus:
             requests:
               storage: 10Gi
     resources:
-      requests:
-        memory: 4Gi
-        cpu: 1000m
       # limits:
       #   memory: 4Gi
       #   cpu: 4000m
+      requests:
+        memory: 4Gi
+        cpu: 1000m
 
     thanos:
       image: quay.io/thanos/thanos:v0.28.0
@@ -168,18 +168,6 @@ prometheus:
               - esphome-switch-domiroom.home
             labels:
               device: switch-domiroom
-      # - job_name: esphome-switch-irpanel-1
-      #   static_configs:
-      #     - targets:
-      #         - esphome-switch-irpanel-1.home
-      #       labels:
-      #         device: switch-irpanel-1
-      # - job_name: esphome-switch-irpanel-2
-      #   static_configs:
-      #     - targets:
-      #         - esphome-switch-irpanel-2.home
-      #       labels:
-      #         device: switch-irpanel-2
       - job_name: esphome-switch-livingroom
         static_configs:
           - targets:

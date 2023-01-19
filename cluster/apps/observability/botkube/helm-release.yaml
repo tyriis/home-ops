@@ -22,7 +22,7 @@ spec:
       clusterName: ${SETTING_CLUSTERNAME}
 
     executors:
-      'kubectl-read-only':
+      kubectl-read-only:
         kubectl:
           enabled: true
 
@@ -35,8 +35,8 @@ spec:
       enabled: true
 
     sources:
-      'crds':
-        displayName: "CRDS"
+      crds:
+        displayName: CRDS
         kubernetes:
           namespaces:
             include:

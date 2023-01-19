@@ -15,15 +15,15 @@ Note that the s3 URL does not have http(s) appended - this is implied by setting
 apiVersion: v1
 kind: Secret
 metadata:
-    name: thanos-objstore-secret
-    namespace: system-monitoring
+  name: thanos-objstore-secret
+  namespace: system-monitoring
 stringData:
-    objstore.yml: |-
-      type: s3
-      config:
-        bucket: <bucket>
-        endpoint: <s3 url - no http/https>
-        access_key: <s3 key>
-        secret_key: <s3 secret>
-        insecure: true
+  objstore.yml: |-
+    type: s3
+    config:
+      bucket: <bucket>
+      endpoint: <s3 url - no http/https>
+      access_key: <s3 key>
+      secret_key: <s3 secret>
+      insecure: true
 ```
