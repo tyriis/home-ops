@@ -8,13 +8,13 @@ ENABLE_LINTERS:
   - YAML_PRETTIER
   - MARKDOWN_MARKDOWNLINT
   # - MARKDOWN_MARKDOWN_LINK_CHECK
-  - MARKDOWN_MARKDOWN_TABLE_FORMATTER
+  # - MARKDOWN_MARKDOWN_TABLE_FORMATTER
 EXCLUDED_DIRECTORIES:
   - .terraform
-FILTER_REGEX_EXCLUDE: (\.envrc|\.terraform/.*|\.git/*)
+FILTER_REGEX_EXCLUDE: (\.envrc|\.terraform/.*|\.git/*|.*\.sops\..*|gotk-components\.yaml)
 MARKDOWN_MARKDOWNLINT_CONFIG_FILE: .config/.markdownlint.yaml
 YAML_YAMLLINT_CONFIG_FILE: .config/.yamllint.config.yaml
-YAML_PRETTIER_FILTER_REGEX_EXCLUDE: "(**/*.sops.*|gotk-components.yaml)"
+# YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (**/*\.sops\.*|gotk\-components\.yaml)
 YAML_PRETTIER_CONFIG_FILE: .config/.prettierrc.yaml
 JSON_PRETTIER_CONFIG_FILE: .config/.prettierrc.yaml
 # LOG_FILE: "none"
