@@ -4,16 +4,16 @@ kind: HelmRelease
 metadata:
   name: loki
 spec:
-  interval: 5m
+  interval: 30m
   chart:
     spec:
       chart: loki
-      version: 3.10.0
+      version: 4.4.0
       sourceRef:
         kind: HelmRepository
         name: grafana-charts
         namespace: flux-system
-      interval: 5m
+      interval: 30m
   install:
     remediation:
       retries: 3
@@ -42,8 +42,10 @@ spec:
           reject_old_samples_max_age: 168h
           max_cache_freshness_per_query: 10m
           split_queries_by_interval: 15m
-          ingestion_rate_mb: 8
-          ingestion_burst_size_mb: 16
+          ingestion_rate_mb: 16
+          ingestion_burst_size_mb: 32
+          shard_streams:
+            enabled: true
 
         schema_config:
           configs:
@@ -101,7 +103,8 @@ spec:
                 store: memberlist
         analytics:
           reporting_enabled: false
-
+      podAnnotations:
+        secret.reloader.stakater.com/reload: loki-s3
     gateway:
       enabled: true
       replicas: 3
@@ -115,16 +118,9 @@ spec:
                     {{- include "loki.gatewaySelectorLabels" . | nindent 12 }}
                 topologyKey: kubernetes.io/hostname
       ingress:
+        # use dedicated ingress definition
         enabled: false
-        ingressClassName: "nginx"
-        hosts:
-          - host: &host "loki.${EXTERNAL_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
-        tls:
-          - hosts:
-              - *host
+
     write:
       replicas: 3
       affinity: |
