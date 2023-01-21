@@ -166,6 +166,36 @@ spec:
         size: 15Gi
         storageClass: ceph-block
 
+    backend:
+      replicas: 3
+      affinity: |
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    {{- include "loki.backendSelectorLabels" . | nindent 12 }}
+                topologyKey: kubernetes.io/hostname
+      extraVolumeMounts:
+        - name: loki-rules
+          mountPath: /rules/fake
+        - name: loki-rules-tmp
+          mountPath: /tmp/scratch
+        - name: loki-tmp
+          mountPath: /tmp/loki-tmp
+      extraVolumes:
+        - name: loki-rules
+          configMap:
+            name: loki-alerting-rules
+        - name: loki-rules-tmp
+          emptyDir: {}
+        - name: loki-tmp
+          emptyDir: {}
+      persistence:
+        size: 15Gi
+        storageClass: ceph-block
+
     #   selfMonitoring:
     #     enabled: false
     #     grafanaAgent:
