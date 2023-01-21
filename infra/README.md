@@ -18,7 +18,7 @@ git clone https://git.scs.carleton.ca/git/extend-lvm.git \
 
 ### Flux2 bootstrap and sops secret
 
-Definitions under terraform/flux are managing the github repo initialization and configure flux2 on the given cluster to enable reconcilation against this git repository.
+Definitions under terraform/flux are managing the github repo initialization and configure flux2 on the given cluster to enable reconciliation against this git repository.
 
 ### Cloudflare
 

@@ -13,9 +13,13 @@ ENABLE_LINTERS:
   # - KUBERNETES_KUBECONFORM
   - TERRAFORM_TFLINT
   - TERRAFORM_TERRAFORM_FMT
+  # - REPOSITORY_CHECKOV
+  - REPOSITORY_GITLEAKS
+  - SPELL_MISSPELL
+  - SPELL_PROSELINT
 EXCLUDED_DIRECTORIES:
   - .terraform
-FILTER_REGEX_EXCLUDE: (\.envrc|\.terraform/.*|\.git/*)
+FILTER_REGEX_EXCLUDE: (\.envrc|\.terraform/.*|\.git/*|infra/talos/clusterconfig/*)
 MARKDOWN_MARKDOWNLINT_CONFIG_FILE: .markdownlint.yaml
 YAML_YAMLLINT_CONFIG_FILE: .yamllint.yaml
 YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (.*\.sops\..*|gotk-components\.yaml)
@@ -28,3 +32,5 @@ LOG_FILE: "none"
 POST_COMMANDS:
   - command: rm -rf ./megalinter-reports
     cwd: root
+# REPOSITORY_CHECKOV_ARGUMENTS: |-
+#   --skip-path ./infra/talos/clusterconfig

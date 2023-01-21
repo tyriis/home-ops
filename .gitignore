@@ -48,3 +48,7 @@ terraform.rc
 
 # megalinter
 megalinter-reports/
+
+# talos configs
+infra/talos/clusterconfig/*.yaml
+infra/talos/clusterconfig/talosconfig
