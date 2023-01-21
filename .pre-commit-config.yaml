@@ -38,13 +38,6 @@ repos:
         args:
           - --args=--config=__GIT_WORKING_DIR__/.tflint.hcl
 
-  - repo: https://github.com/gruntwork-io/pre-commit
-    rev: v0.1.17
-    hooks:
-      - id: tflint
-        args:
-          - "--module"
-
   - repo: https://github.com/antonbabenko/pre-commit-terraform
     rev: v1.75.0
     hooks:
