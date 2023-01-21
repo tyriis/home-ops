@@ -93,12 +93,12 @@ Here is the list of tools and technologies I am using in this project.
 
 #### Hardware
 
-| Device           | CPU       | OS     | OS Disk    | Data Disk              | RAM  | Purpose               |
-| ---------------- | --------- | ------ | ---------- | ---------------------- | ---- | --------------------- |
-| Intel NUC7i7DNHE | i7-8650U  | talos  | 120 GB SSD | 500GB NVMe (rook-ceph) | 32GB | control-plane, worker |
-| Intel NUC7i7DNHE | i7-8650U  | talos  | 500 GB SSD | 500GB NVMe (rook-ceph) | 32GB | control-plane, worker |
-| Intel NUC7i7DNHE | i7-8650U  | talos  | 120 GB SSD | 500GB NVMe (rook-ceph) | 32GB | control-plane, worker |
-| Intel NUC10I7FNH | i7-10710U | talos  | 250 GB SSD |           -            | 32GB | worker                |
+| Device           | CPU       | OS    | OS Disk    | Data Disk              | RAM  | Purpose               |
+| ---------------- | --------- | ----- | ---------- | ---------------------- | ---- | --------------------- |
+| Intel NUC7i7DNHE | i7-8650U  | talos | 120 GB SSD | 500GB NVMe (rook-ceph) | 32GB | control-plane, worker |
+| Intel NUC7i7DNHE | i7-8650U  | talos | 500 GB SSD | 500GB NVMe (rook-ceph) | 32GB | control-plane, worker |
+| Intel NUC7i7DNHE | i7-8650U  | talos | 120 GB SSD | 500GB NVMe (rook-ceph) | 32GB | control-plane, worker |
+| Intel NUC10I7FNH | i7-10710U | talos | 250 GB SSD | -                      | 32GB | worker                |
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

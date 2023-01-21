@@ -81,7 +81,7 @@
       datasourceTemplate: "helm",
       depTypeTemplate: "helm",
     },
-        {
+    {
       description: "regexManager to read and process actions-runner-controller CRDs",
       fileMatch: ["cluster/crds/actions-runner-controller/.+\\.yaml$"],
       matchStrings: [

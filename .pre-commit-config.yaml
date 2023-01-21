@@ -12,7 +12,7 @@ repos:
       - id: yamllint
         args:
           - -c
-          - .config/.yamllint.config.yaml
+          - .yamllint.yaml
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
     rev: v1.3.1
@@ -20,22 +20,25 @@ repos:
       - id: remove-crlf
       - id: remove-tabs
 
-  - repo: https://github.com/sirosen/fix-smartquotes
-    rev: 0.2.0
+  - repo: https://github.com/sirosen/texthooks
+    rev: 0.4.0
     hooks:
       - id: fix-smartquotes
+      - id: fix-ligatures
+      - id: forbid-bidi-controls
 
   - repo: https://github.com/k8s-at-home/sops-pre-commit
     rev: v2.1.1
     hooks:
       - id: forbid-secrets
 
-  - repo: https://github.com/gruntwork-io/pre-commit
-    rev: v0.1.17
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.76.0
     hooks:
-      - id: tflint
+      - id: terraform_fmt
+      - id: terraform_tflint
         args:
-          - "--module"
+          - --args=--config=__GIT_WORKING_DIR__/.tflint.hcl
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
     rev: v1.75.0
@@ -44,6 +47,9 @@ repos:
       - id: terraform_tfsec
         files: ^infra/
       - id: terraform_fmt
+      - id: terraform_tflint
+        args:
+          - --args=--config=__GIT_WORKING_DIR__/.tflint.hcl
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.3.0
@@ -73,8 +79,13 @@ repos:
   - repo: https://github.com/terraform-docs/terraform-docs
     rev: v0.16.0
     hooks:
-      - id: terraform-docs-system
-        args: ["-c", ".config/.terraform-docs.yaml", "./infra/terraform"]
+      - id: terraform-docs-go
+        args:
+          - --config
+          - .terraform-docs.yaml
+          - --output-file
+          - README.md
+          - ./infra/terraform
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.32.2
@@ -82,4 +93,27 @@ repos:
       - id: markdownlint-fix
         args:
           - --config
-          - .config/.markdownlint.yaml
+          - .markdownlint.yaml
+
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.0.0-alpha.4
+    hooks:
+      - id: prettier
+        args:
+          - --ignore-path
+          - .prettierignore
+          - --config
+          - .prettierrc.yaml
+
+  - repo: https://github.com/zricethezav/gitleaks
+    rev: v8.12.0
+    hooks:
+      - id: gitleaks
+
+  # this does not work currently cause of linting helmcharts like csi-driver-nfs is not working
+  # error handling is not proper aswel
+  # - repo: https://github.com/tarioch/flux-check-hook
+  #   rev: v0.2.0
+  #   hooks:
+  #     - id: check-flux-helm-values
+  #       exclude: (cluster/apps/home/home-assistant/patches/db-init.yaml)

@@ -30,19 +30,20 @@ optional: (dev-prerequisites)
 - [terraform-docs](https://github.com/terraform-docs/terraform-docs)
 - [tflint](https://github.com/terraform-linters/tflint)
 
+<!-- prettier-ignore-start -->
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | 3.27.0 |
+| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | 3.32.0 |
 | <a name="requirement_flux"></a> [flux](#requirement\_flux) | >= 0.9.0 |
 | <a name="requirement_github"></a> [github](#requirement\_github) | >= 4.18.0 |
-| <a name="requirement_http"></a> [http](#requirement\_http) | 3.2.0 |
+| <a name="requirement_http"></a> [http](#requirement\_http) | 3.2.1 |
 | <a name="requirement_kubectl"></a> [kubectl](#requirement\_kubectl) | >= 1.13.1 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.6.1 |
-| <a name="requirement_sops"></a> [sops](#requirement\_sops) | 0.7.1 |
+| <a name="requirement_sops"></a> [sops](#requirement\_sops) | 0.7.2 |
 | <a name="requirement_tls"></a> [tls](#requirement\_tls) | 4.0.4 |
 | <a name="requirement_vault"></a> [vault](#requirement\_vault) | >= 3.2.1 |
 
@@ -64,7 +65,7 @@ optional: (dev-prerequisites)
 
 | Name | Type |
 |------|------|
-| [sops_file.cloudflare_secrets](https://registry.terraform.io/providers/carlpett/sops/0.7.1/docs/data-sources/file) | data source |
+| [sops_file.cloudflare_secrets](https://registry.terraform.io/providers/carlpett/sops/0.7.2/docs/data-sources/file) | data source |
 | [vault_generic_secret.github_secrets](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/data-sources/generic_secret) | data source |
 | [vault_generic_secret.sops_secrets](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/data-sources/generic_secret) | data source |
 
@@ -83,3 +84,4 @@ optional: (dev-prerequisites)
 
 No outputs.
 <!-- END_TF_DOCS -->
+<!-- prettier-ignore-end -->

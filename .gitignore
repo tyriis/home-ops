@@ -45,3 +45,10 @@ override.tf.json
 .terraformrc
 terraform.rc
 **/**/.terraform.lock.hcl
+
+# megalinter
+megalinter-reports/
+
+# talos configs
+infra/talos/clusterconfig/*.yaml
+infra/talos/clusterconfig/talosconfig

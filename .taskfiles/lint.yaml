@@ -11,25 +11,25 @@ tasks:
   markdown:
     desc: Lint Markdown
     cmds:
-      - "markdownlint -c .config/.markdownlint.yaml *.md **/*.md"
+      - "markdownlint -c .markdownlint.yaml *.md **/*.md"
     ignore_errors: true
 
   yaml:
     desc: Lint YAML
     cmds:
-      - "yamllint -c .config/.yamllint.config.yaml ."
+      - "yamllint -c .yamllint.yaml ."
     ignore_errors: true
 
   prettier:
     desc: Lint with prettier
     cmds:
-      - "prettier --ignore-path .config/.prettierignore --config .config/.prettierrc.yaml --check ."
+      - "prettier --ignore-path .prettierignore --config .prettierrc.yaml --check ."
     ignore_errors: true
 
   prettier:fix:
     desc: Lint with prettier autofix
     cmds:
-      - "prettier --ignore-path .config/.prettierignore --config .config/.prettierrc.yaml --write ."
+      - "prettier --ignore-path .prettierignore --config .prettierrc.yaml --write ."
     ignore_errors: true
 
   terraform:

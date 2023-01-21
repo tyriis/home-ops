@@ -6,4 +6,4 @@ metadata:
   name: l2advertisement1
 spec:
   ipAddressPools:
-  - default
+    - default
