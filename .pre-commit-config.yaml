@@ -102,3 +102,8 @@ repos:
           - .prettierignore
           - --config
           - .prettierrc.yaml
+
+  - repo: https://github.com/zricethezav/gitleaks
+    rev: v8.12.0
+    hooks:
+      - id: gitleaks
