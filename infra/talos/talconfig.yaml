@@ -1,7 +1,7 @@
 ---
 clusterName: talos-flux
-talosVersion: v1.2.7
-kubernetesVersion: v1.24.9
+talosVersion: v1.2.8
+kubernetesVersion: v1.25.6
 endpoint: https://192.168.1.50:6443
 allowSchedulingOnMasters: true
 nodes:
