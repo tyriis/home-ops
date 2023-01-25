@@ -11,7 +11,7 @@ resources:
   - csi-driver-nfs-charts.yaml
   # - democratic-csi-charts.yaml
   # - emberstack-charts.yaml
-  # - emqx-charts.yaml
+  - emqx-charts.yaml
   # - fairwinds-charts.yaml
   # - gitlab-charts.yaml
   - grafana-charts.yaml
