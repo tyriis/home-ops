@@ -37,7 +37,7 @@ optional: (dev-prerequisites)
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | 3.32.0 |
+| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | 3.33.1 |
 | <a name="requirement_flux"></a> [flux](#requirement\_flux) | >= 0.9.0 |
 | <a name="requirement_github"></a> [github](#requirement\_github) | >= 4.18.0 |
 | <a name="requirement_http"></a> [http](#requirement\_http) | 3.2.1 |
@@ -51,8 +51,8 @@ optional: (dev-prerequisites)
 
 | Name | Version |
 |------|---------|
-| <a name="provider_sops"></a> [sops](#provider\_sops) | 0.7.1 |
-| <a name="provider_vault"></a> [vault](#provider\_vault) | 3.10.0 |
+| <a name="provider_sops"></a> [sops](#provider\_sops) | 0.7.2 |
+| <a name="provider_vault"></a> [vault](#provider\_vault) | 3.12.0 |
 
 ## Modules
 
