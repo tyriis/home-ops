@@ -14,6 +14,14 @@ spec:
         kind: HelmRepository
         name: grafana-charts
         namespace: flux-system
+  install:
+    createNamespace: false
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+
   values:
     replicas: 1
 
@@ -129,6 +137,8 @@ spec:
       - grafana-github-datasource
     serviceMonitor:
       enabled: true
+    rbac:
+      pspEnabled: false
 
     ingress:
       enabled: true
