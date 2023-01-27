@@ -23,7 +23,7 @@ spec:
   values:
     image:
       repository: sbs20/scanservjs
-      tag: release-v2.21.0
+      tag: release-v2.24.0
     strategy:
       type: Recreate
     global:
@@ -75,4 +75,4 @@ spec:
         cpu: 100m
         memory: 75Mi
       limits:
-        memory: 150Mi
+        memory: 500Mi
