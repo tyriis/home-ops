@@ -23,7 +23,7 @@ spec:
   values:
     image:
       repository: sbs20/scanservjs
-      tag: release-v2.24.0
+      tag: v2.23.0
     strategy:
       type: Recreate
     global:
