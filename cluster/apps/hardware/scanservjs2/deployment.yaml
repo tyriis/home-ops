@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: scanservjs2
-          image: sbs20/scanservjs:release-v2.21.0
+          image: sbs20/scanservjs:release-v2.24.0
           ports:
             - containerPort: 8080
               name: http
