@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: scanservjs-scans2
+spec:
+  capacity:
+    storage: 10Gi
+  nfs:
+    server: nas.${SECRET_DOMAIN}
+    path: /volume1/scans
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: scans-nfs2

@@ -7,3 +7,4 @@ resources:
   # - pimoroni-fanshim
   - node-feature-discovery
   - scanservjs
+  - scanservjs2
