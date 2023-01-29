@@ -6,4 +6,4 @@ resources:
   - persistent-volume-claim.yaml
   # backup and restore are applied manually on-demand
   # - backup-to-nfs-job.yaml
-  # - restore-from-nfs-job.yaml
+  - restore-from-nfs-job.yaml
