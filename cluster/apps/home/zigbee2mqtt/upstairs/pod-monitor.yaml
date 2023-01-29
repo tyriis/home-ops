@@ -1,0 +1,16 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: zigbee2mqtt-upstairs
+spec:
+  namespaceSelector:
+    matchNames: ["home"]
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: zigbee2mqtt-upstairs
+      app.kubernetes.io/instance: zigbee2mqtt-upstairs
+  podMetricsEndpoints:
+    - port: http-prom
+      interval: 5m
+      scrapeTimeout: 15s

@@ -5,4 +5,5 @@ resources:
   - prometheus-rule.yaml
   - bridge1
   - bridge2
+  - upstairs
   - backup
