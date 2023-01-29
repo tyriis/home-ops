@@ -5,6 +5,7 @@ resources:
   - storage-class.yaml
   - bridge1
   - bridge2
+  - upstairs
 commonLabels:
   app.kubernetes.io/name: zigbee2mqtt
   app.kubernetes.io/instance: zigbee2mqtt-nfs-backup
