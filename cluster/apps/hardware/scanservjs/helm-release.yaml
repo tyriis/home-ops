@@ -74,5 +74,6 @@ spec:
       requests:
         cpu: 100m
         memory: 100Mi
-      limits:
-        memory: 250Mi
+      # removed because of oom kill when scanning more pages
+      # limits:
+      #   memory: 250Mi
