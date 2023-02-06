@@ -3,17 +3,18 @@
 apiVersion: actions.summerwind.dev/v1alpha1
 kind: RunnerDeployment
 metadata:
-  name: tyriis-runner
+  name: tyriis-home-ops
 spec:
   # replicas: 1
   template:
     spec:
-      organization: tyriis
+      repository: tyriis/flux.k3s.cluster
       githubAPICredentialsFrom:
         secretRef:
           name: tyriis-runner
       labels:
-        - tyriis
+        - ${SETTING_CLUSTERNAME}
+        - home-infra
       dockerMTU: 1400
       env: []
 
@@ -22,10 +23,10 @@ spec:
 apiVersion: actions.summerwind.dev/v1alpha1
 kind: HorizontalRunnerAutoscaler
 metadata:
-  name: tyriis-runner
+  name: tyriis-home-ops
 spec:
   scaleTargetRef:
-    name: tyriis-runner
+    name: tyriis-home-ops
   githubAPICredentialsFrom:
     secretRef:
       name: tyriis-runner
