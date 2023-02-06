@@ -110,8 +110,6 @@ repos:
     hooks:
       - id: gitleaks
 
-  # this does not work currently cause of linting helmcharts like csi-driver-nfs is not working
-  # error handling is not proper aswel
   - repo: https://github.com/tarioch/flux-check-hook
     rev: v0.3.0
     hooks:
