@@ -24,6 +24,7 @@ spec:
       retries: 5
 
   values:
+    # https://artifacthub.io/packages/helm/actions-runner-controller/actions-runner-controller?modal=values
     env:
       TZ: ${SETTING_TZ}
 
@@ -31,12 +32,8 @@ spec:
       repository: summerwind/actions-runner-controller
       tag: v0.27.0
 
-    podAnnotations:
-      secret.reloader.stakater.com/reload: actions-runner-controller-auth
-
     authSecret:
-      create: false
-      name: actions-runner-controller-auth
+      enabled: false
 
     resources:
       requests:

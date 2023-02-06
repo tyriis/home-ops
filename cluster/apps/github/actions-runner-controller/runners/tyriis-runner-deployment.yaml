@@ -3,18 +3,17 @@
 apiVersion: actions.summerwind.dev/v1alpha1
 kind: RunnerDeployment
 metadata:
-  name: ${SECRET_GH_ORGANIZATION}-runner
+  name: tyriis-runner
 spec:
   # replicas: 1
   template:
     spec:
-      organization: ${SECRET_GH_ORGANIZATION}
+      organization: tyriis
       githubAPICredentialsFrom:
         secretRef:
-          name: ${SECRET_GH_ORGANIZATION}-runner
+          name: tyriis-runner
       labels:
-        - ${SETTING_CLUSTERNAME}
-        - home-infra
+        - tyriis
       dockerMTU: 1400
       env: []
 
@@ -23,13 +22,13 @@ spec:
 apiVersion: actions.summerwind.dev/v1alpha1
 kind: HorizontalRunnerAutoscaler
 metadata:
-  name: ${SECRET_GH_ORGANIZATION}-runner
+  name: tyriis-runner
 spec:
   scaleTargetRef:
-    name: ${SECRET_GH_ORGANIZATION}-runner
+    name: tyriis-runner
   githubAPICredentialsFrom:
     secretRef:
-      name: ${SECRET_GH_ORGANIZATION}-runner
+      name: tyriis-runner
     # Uncomment the below in case the target is not RunnerDeployment but RunnerSet
     # kind: RunnerSet
   scaleDownDelaySecondsAfterScaleOut: 300
