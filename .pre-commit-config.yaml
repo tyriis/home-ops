@@ -112,8 +112,8 @@ repos:
 
   # this does not work currently cause of linting helmcharts like csi-driver-nfs is not working
   # error handling is not proper aswel
-  # - repo: https://github.com/tarioch/flux-check-hook
-  #   rev: v0.2.0
-  #   hooks:
-  #     - id: check-flux-helm-values
-  #       exclude: (cluster/apps/home/home-assistant/patches/db-init.yaml)
+  - repo: https://github.com/tarioch/flux-check-hook
+    rev: v0.3.0
+    hooks:
+      - id: check-flux-helm-values
+        exclude: (cluster/apps/home/home-assistant/patches/db-init.yaml)

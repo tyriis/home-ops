@@ -67,8 +67,8 @@ spec:
       requests:
         cpu: 50m
         memory: 100Mi
-    additionalContainers:
-      - name: zigbee2mqtt-exporter
+    sidecars:
+      zigbee2mqtt-exporter:
         image: tyriis/zigbee2mqtt-exporter:0.1.0
         ports:
           - containerPort: 3000
