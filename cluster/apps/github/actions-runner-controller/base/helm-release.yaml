@@ -33,7 +33,11 @@ spec:
       tag: v0.27.0
 
     authSecret:
-      enabled: false
+      create: false
+      name: &secret actions-runner-controller-auth
+
+    podAnnotations:
+      secret.reloader.stakater.com/reload: *secret
 
     resources:
       requests:
