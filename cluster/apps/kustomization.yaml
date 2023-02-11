@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - cert-manager
   - database
+  - default
   - flux-system
   - gaming
   - github
