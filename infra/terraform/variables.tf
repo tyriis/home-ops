@@ -6,7 +6,7 @@ variable "github_owner" {
 
 variable "repository_name" {
   type        = string
-  default     = "flux.k3s.cluster"
+  default     = "home-ops"
   description = "github repository name"
 }
 

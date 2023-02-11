@@ -58,7 +58,7 @@ spec:
               url: https://opnsense.${SECRET_DOMAIN}:3443
               icon: shield-check
             - name: GitOps
-              url: https://github.com/tyriis/flux.k3s.cluster
+              url: https://github.com/tyriis/home-ops
               icon: github
       globalBookmarks:
         - group: Communicate

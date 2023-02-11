@@ -95,7 +95,7 @@ spec:
             type: grafana-github-datasource
             jsonData:
               owner: "tyriis"
-              repository: "flux.k3s.cluster"
+              repository: "home-ops"
             secureJsonData:
               accessToken: "${SECRET_GH_PAT}"
 

@@ -1,6 +1,6 @@
 <!-- markdownlint-disable MD033 -->
 
-# Terraform infrastructure as code for flux.k3s.cluster
+# Terraform infrastructure as code for home-ops
 
 ## Table of Contents
 
@@ -37,7 +37,7 @@ optional: (dev-prerequisites)
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | 3.33.1 |
+| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | 3.34.0 |
 | <a name="requirement_flux"></a> [flux](#requirement\_flux) | >= 0.9.0 |
 | <a name="requirement_github"></a> [github](#requirement\_github) | >= 4.18.0 |
 | <a name="requirement_http"></a> [http](#requirement\_http) | 3.2.1 |
@@ -76,7 +76,7 @@ optional: (dev-prerequisites)
 | <a name="input_branch"></a> [branch](#input\_branch) | branch name | `string` | `"main"` | no |
 | <a name="input_github_owner"></a> [github\_owner](#input\_github\_owner) | github owner | `string` | `"tyriis"` | no |
 | <a name="input_k8s_context"></a> [k8s\_context](#input\_k8s\_context) | flux sync target path | `string` | `"admin@talos-flux"` | no |
-| <a name="input_repository_name"></a> [repository\_name](#input\_repository\_name) | github repository name | `string` | `"flux.k3s.cluster"` | no |
+| <a name="input_repository_name"></a> [repository\_name](#input\_repository\_name) | github repository name | `string` | `"home-ops"` | no |
 | <a name="input_repository_visibility"></a> [repository\_visibility](#input\_repository\_visibility) | How visible is the github repo | `string` | `"public"` | no |
 | <a name="input_target_path"></a> [target\_path](#input\_target\_path) | flux sync target path | `string` | `"cluster/flux/flux-system"` | no |
 
