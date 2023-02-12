@@ -70,6 +70,7 @@ metadata:
     kubernetes.io/tls-acme: "true"
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.middlewares: networking-sso@kubernetescrd
+    external-dns.alpha.kubernetes.io/target: "${SECRET_CLOUDFLARE_TUNNEL_DOMAIN}"
   labels:
     app.kubernetes.io/instance: traefik-forward-auth
     app.kubernetes.io/name: traefik-forward-auth
