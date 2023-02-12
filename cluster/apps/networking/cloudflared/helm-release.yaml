@@ -46,7 +46,7 @@ spec:
         type: custom
         volumeSpec:
           secret:
-            secretName: cloudflare-tunnel
+            secretName: &secret cloudflare-tunnel
         subPath:
           - path: cred.json
             mountPath: /etc/cloudflared/cred.json
@@ -60,3 +60,5 @@ spec:
         cpu: 10m
       limits:
         memory: 128Mi
+    podAnnotations:
+      secret.reloader.stakater.com/reload: *secret
