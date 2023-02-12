@@ -9,6 +9,10 @@ commonLabels:
   app.kubernetes.io/instance: cloudflared
   app.kubernetes.io/managed-by: fluxcd.io
 configMapGenerator:
-  - name: cloudflared-config
+  - name: cloudflare-tunnel
     files:
       - config.yaml=config.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: enabled
