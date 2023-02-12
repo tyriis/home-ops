@@ -33,4 +33,4 @@ resources:
   # - stackgres-charts.yaml
   - stakater-charts.yaml
   - traefik-charts.yaml
-  - weaveworks-charts.yaml
+  - weave-gitops-charts.yaml
