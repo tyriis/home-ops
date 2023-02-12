@@ -148,6 +148,7 @@ spec:
         hajimari.io/enable: "true"
         hajimari.io/icon: chart-areaspline
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        external-dns.alpha.kubernetes.io/target: "${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"
       hosts:
         - "grafana.${SECRET_DOMAIN}"
       path: /

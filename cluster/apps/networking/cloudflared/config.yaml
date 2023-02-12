@@ -1,0 +1,33 @@
+---
+tunnel: ${SECRET_CLOUDFLARE_TUNNEL_ID}
+credentials-file: /etc/cloudflared/cred.json
+originRequest: # Top-level configuration
+  connectTimeout: 30s
+warp-routing:
+  enabled: false
+
+ingress:
+  # The localhost:8000 service inherits all root-level configuration.
+  # In other words, it will use a connectTimeout of 30 seconds.
+  - hostname: grafana.${SECRET_DOMAIN}
+    service: https://grafana.${SECRET_DOMAIN}
+    originRequest:
+      httpHostHeader: grafana.${SECRET_DOMAIN}
+  - hostname: auth.${SECRET_DOMAIN}
+    service: https://auth.${SECRET_DOMAIN}
+    originRequest:
+      httpHostHeader: auth.${SECRET_DOMAIN}
+  - hostname: echo-server.${SECRET_DOMAIN}
+    service: https://echo-server.${SECRET_DOMAIN}
+    originRequest:
+      httpHostHeader: echo-server.${SECRET_DOMAIN}
+  # - hostname: example2.com
+  #   service: localhost:8001
+  # The localhost:8002 service overrides some root-level config.
+  # - service: localhost:8002
+  #   originRequest:
+  #     connectTimeout: 10s
+  #     disableChunkedEncoding: true
+  # Some built-in services such as `http_status` do not use any configuration.
+  # The service below will simply respond with HTTP 404.
+  - service: http_status:404
