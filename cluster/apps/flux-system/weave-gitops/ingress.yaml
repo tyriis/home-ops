@@ -1,0 +1,34 @@
+---
+# ingress in chart seems broken, maybe check back later
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: weave-gitops
+  namespace: flux-system
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    kubernetes.io/tls-acme: "true"
+    traefik.ingress.kubernetes.io/router.middlewares: networking-sso@kubernetescrd
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/affinity: "true"
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    hajimari.io/appName: weave-gitops
+    hajimari.io/enable: "true"
+    hajimari.io/icon: simple-icons:git
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: &host "weave-gitops.${SECRET_DOMAIN}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: weave-gitops
+                port:
+                  number: 9001
+  tls:
+    - secretName: "weave-gitops-tls"
+      hosts:
+        - *host
