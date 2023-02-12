@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 1.3.0, <= 1.3.7"
+  required_version = ">= 1.3.0, <= 1.3.8"
   required_providers {
     cloudflare = {
       source  = "cloudflare/cloudflare"
@@ -88,11 +88,11 @@ resource "cloudflare_record" "ipv4" {
 //   ttl     = 1
 // }
 
-resource "cloudflare_record" "hajimari" {
-  name    = "hajimari"
-  zone_id = lookup(data.cloudflare_zones.domain.zones[0], "id")
-  value   = "ipv4.${var.cloudflare_domain}"
-  proxied = true
-  type    = "CNAME"
-  ttl     = 1
-}
+# resource "cloudflare_record" "hajimari" {
+#   name    = "hajimari"
+#   zone_id = lookup(data.cloudflare_zones.domain.zones[0], "id")
+#   value   = "ipv4.${var.cloudflare_domain}"
+#   proxied = true
+#   type    = "CNAME"
+#   ttl     = 1
+# }
