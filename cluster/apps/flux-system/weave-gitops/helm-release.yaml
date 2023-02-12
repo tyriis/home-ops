@@ -5,27 +5,60 @@ metadata:
   name: weave-gitops
   namespace: flux-system
 spec:
-  interval: 50m
+  interval: 15m
   chart:
     spec:
       chart: weave-gitops
+      version: 4.0.10
       sourceRef:
         kind: HelmRepository
-        name: weaveworks-charts
-      interval: 60m
-  # https://github.com/weaveworks/weave-gitops/blob/main/charts/gitops-server/values.yaml
+        name: weave-gitops-charts
+        namespace: flux-system
+      interval: 15m
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
-    #    image:
-    #      repository: ghcr.io/weaveworks/wego-app
-    #      pullPolicy: IfNotPresent
-    #      tag: "v0.9.0-rc.1"
-    resources:
-      requests:
-        cpu: 100m
-        memory: 64Mi
-      limits:
-        cpu: 1
-        memory: 512Mi
+    image:
+      repository: ghcr.io/weaveworks/wego-app
+      pullPolicy: IfNotPresent
+      tag: v0.16.0
+    adminUser:
+      create: true
+      username: admin
+      # Change password by generating a new hash on https://bcrypt.online
+      # bcrypt hash for password "flux"
+      # passwordHash: "$2a$10$P/tHQ1DNFXdvX0zRGA8LPeSOyb0JXq9rP3fZ4W8HGTpLV7qHDlWhe"
+    ingress:
+      enabled: true
+      className: traefik
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-production
+        kubernetes.io/tls-acme: "true"
+        traefik.ingress.kubernetes.io/router.middlewares: networking-sso@kubernetescrd
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/affinity: "true"
+        traefik.ingress.kubernetes.io/router.tls: "true"
+        hajimari.io/appName: "{{ .Release.Name }}"
+        hajimari.io/enable: "true"
+        hajimari.io/icon: simple-icons:git
+      hosts:
+        - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+          paths:
+            - path: /
+              pathType: Prefix
+    networkPolicy:
+      create: false
+    metrics:
+      enabled: true
     securityContext:
       capabilities:
         drop:
@@ -33,11 +66,17 @@ spec:
       readOnlyRootFilesystem: true
       runAsNonRoot: true
       runAsUser: 1000
-    adminUser:
-      create: true
-      username: admin
-      # Change password by generating a new hash on https://bcrypt.online
-      # bcrypt hash for password "flux"
-      passwordHash: "$2a$10$P/tHQ1DNFXdvX0zRGA8LPeSOyb0JXq9rP3fZ4W8HGTpLV7qHDlWhe"
-    ingress:
-      enabled: false
+    # rbac:
+    #   create: true
+    #   impersonationResourceNames: ["admin"]
+    #   additionalRules:
+    #     - apiGroups: ["infra.contrib.fluxcd.io"]
+    #       resources: ["terraforms"]
+    #       verbs: ["get", "list", "patch"]
+    # annotations:
+    #   secret.reloader.stakater.com/reload: weave-gitops-secret
+  # valuesFrom:
+  #   - kind: Secret
+  #     name: weave-gitops-secret
+  #     valuesKey: adminPasswordHash
+  #     targetPath: adminUser.passwordHash
