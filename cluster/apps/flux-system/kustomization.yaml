@@ -5,4 +5,4 @@ namespace: flux-system
 resources:
   - gotk
   - dashboard
-  - flux-ui
+  - weave-gitops
