@@ -6,3 +6,4 @@ resources:
   - traefik
   - unifi
   - external-dns
+  - cloudflared
