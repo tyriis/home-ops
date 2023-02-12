@@ -6,3 +6,4 @@ resources:
   - gotk
   - dashboard
   - weave-gitops
+  - webhook-receiver
