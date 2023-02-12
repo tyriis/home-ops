@@ -18,7 +18,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+    - host: &host "weave-gitops.${SECRET_DOMAIN}"
       http:
         paths:
           - path: /
@@ -29,6 +29,6 @@ spec:
                 port:
                   number: 9001
   tls:
-    - secretName: "{{ .Release.Name }}-tls"
+    - secretName: "weave-gitops-tls"
       hosts:
         - *host
