@@ -5,4 +5,4 @@ namespace: networking
 resources:
   - traefik
   - unifi
-  - external-dns/ks.yaml
+  - external-dns
