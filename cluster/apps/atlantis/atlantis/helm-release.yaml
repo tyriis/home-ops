@@ -113,6 +113,7 @@ spec:
 
     environment:
       ATLANTIS_DEFAULT_TF_VERSION: v1.3.8
+      ATLANTIS_WRITE_GIT_CREDS: "true"
       # ATLANTIS_GH_APP_KEY_FILE: /config/github.pem
 
     loadEnvFromSecrets:
