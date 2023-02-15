@@ -30,12 +30,6 @@ spec:
     orgAllowlist: github.com/tyriis/*
     # logLevel: "debug"
 
-    githubApp:
-      id: 0
-      slug: ""
-      key: ""
-      secret: ""
-
     # If managing secrets outside the chart for the webhook, use this variable to reference the secret name
     # vcsSecretName: 'mysecret'
 
@@ -119,6 +113,10 @@ spec:
 
     environment:
       ATLANTIS_DEFAULT_TF_VERSION: v1.3.8
+      # ATLANTIS_GH_APP_KEY_FILE: /config/github.pem
+
+    loadEnvFromSecrets:
+      - &secret atlantis-env-secrets
 
     containerSecurityContext:
       allowPrivilegeEscalation: false
@@ -130,20 +128,6 @@ spec:
       #   by setting a value for metrics.prometheus.endpoint
       enabled: true
 
-  valuesFrom:
-    - kind: Secret
-      name: atlantis-secrets
-      valuesKey: GH_APP_ID
-      targetPath: githubApp.id
-    - kind: Secret
-      name: atlantis-secrets
-      valuesKey: GH_APP_SLUG
-      targetPath: githubApp.slug
-    - kind: Secret
-      name: atlantis-secrets
-      valuesKey: GH_APP_KEY
-      targetPath: githubApp.key
-    - kind: Secret
-      name: atlantis-secrets
-      valuesKey: GH_APP_SECRET
-      targetPath: githubApp.secret
+    podTemplate:
+      annotations:
+        secret.reloader.stakater.com/reload: *secret
