@@ -26,6 +26,6 @@ spec:
                 port:
                   number: 80
   tls:
-    - secretName: " atlantis-webhook-tls"
+    - secretName: atlantis-webhook-tls
       hosts:
         - *host
