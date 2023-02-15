@@ -29,6 +29,7 @@ resources:
   # - openfaas-charts.yaml
   - piraeus-charts.yaml
   - rook-ceph-charts.yaml
+  - runatlantis-charts.yaml
   - prometheus-community-charts.yaml
   # - stackgres-charts.yaml
   - stakater-charts.yaml
