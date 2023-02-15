@@ -25,6 +25,10 @@ ingress:
     service: https://flux-webhook.${SECRET_DOMAIN}
     originRequest:
       httpHostHeader: flux-webhook.${SECRET_DOMAIN}
+  - hostname: atlantis-webhook.${SECRET_DOMAIN}
+    service: https://atlantis-webhook.${SECRET_DOMAIN}
+    originRequest:
+      httpHostHeader: atlantis-webhook.${SECRET_DOMAIN}
   # - hostname: example2.com
   #   service: localhost:8001
   # The localhost:8002 service overrides some root-level config.

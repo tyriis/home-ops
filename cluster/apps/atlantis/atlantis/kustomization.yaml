@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./secret.sops.yaml
   - ./helm-release.yaml
+  - ./ingress.yaml
 commonLabels:
   app.kubernetes.io/name: atlantis
   app.kubernetes.io/instance: atlantis
