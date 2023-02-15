@@ -90,11 +90,11 @@ spec:
         hajimari.io/enable: "true"
       pathType: Prefix
       hosts:
-        - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+        - host: &host atlantis.${SECRET_DOMAIN}
           paths:
             - /
       tls:
-        - secretName: "{{ .Release.Name }}-tls"
+        - secretName: atlantis-tls
           hosts:
             - *host
 
