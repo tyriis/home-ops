@@ -18,7 +18,7 @@ spec:
     - host: &host "atlantis-webhook.${SECRET_DOMAIN}"
       http:
         paths:
-          - path: /
+          - path: /events
             pathType: Prefix
             backend:
               service:
