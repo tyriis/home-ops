@@ -36,7 +36,7 @@ optional: (dev-prerequisites)
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0, <= 1.3.8 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | <= 1.3.9 |
 | <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | 3.34.0 |
 | <a name="requirement_flux"></a> [flux](#requirement\_flux) | >= 0.9.0 |
 | <a name="requirement_github"></a> [github](#requirement\_github) | >= 4.18.0 |

@@ -90,12 +90,27 @@ resource "kubectl_manifest" "install" {
   ]))) => v.content }
   depends_on = [kubernetes_namespace.flux_system]
   yaml_body  = each.value
+  lifecycle {
+    ignore_changes = [
+      yaml_body
+    ]
+  }
 }
 
 resource "kubectl_manifest" "sync" {
-  for_each   = { for v in local.sync : lower(join("/", compact([v.data.apiVersion, v.data.kind, lookup(v.data.metadata, "namespace", ""), v.data.metadata.name]))) => v.content }
+  for_each = { for v in local.sync : lower(join("/", compact([
+    v.data.apiVersion,
+    v.data.kind,
+    lookup(v.data.metadata, "namespace", ""),
+    v.data.metadata.name
+  ]))) => v.content }
   depends_on = [kubernetes_namespace.flux_system]
   yaml_body  = each.value
+  lifecycle {
+    ignore_changes = [
+      yaml_body
+    ]
+  }
 }
 
 resource "kubernetes_secret" "main" {
