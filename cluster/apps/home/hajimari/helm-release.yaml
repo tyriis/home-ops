@@ -36,6 +36,8 @@ spec:
           - secops
           - database
           - rook-ceph
+          - atlantis
+          - office
       name: sunshine
       lightTheme: chalk
       darkTheme: horizon
