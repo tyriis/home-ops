@@ -2,20 +2,35 @@
 
 This cluster is using [autounseal-gcpkms][hashicorp-tutorial-unseal-gcpkms] to unseal the vault.
 
-## Prerequisites in GCP
+## Setup auto-unseal
+
+### Prerequisites in GCP
 
 - active keyring and key in KMS
-- Service account with IAM Role _Cloud KMS CryptoKey Encrypter/Decrypter_
+- Service account role `roles/cloudkms.cryptoKeyEncrypterDecrypter`, preferably on crypto key level
 
-## Initialize Vault
+### Setup auto-unseal on fresh Vault
+
+add seal definition to config.hcl.
 
 ```sh
 vault status          # running, should be recovery seal type: gcpckms, sealed: true)
-vault operator init   # initialises with 5 key shares and a key treshold of 3. distribute carefully.
+vault operator init   # initialises with 5 key shares and a key treshold of 3
 vault status          # should be recovery seal type: shamir, sealed: false
 ```
 
-Now restart vault. Vault should be automatically unsealed.
+### Migrate existing vault to auto-unseal with gcpckms
+
+- prepare unseal keys
+- stop vault
+- add seal definition to config.hcl
+- start vault
+- unseal using the command `vault operator unseal -migrate`
+- enter all remaining unseal keys
+
+```sh
+vault status # should be recovery seal type: shamir, sealed: false
+```
 
 ## Configure Vault
 

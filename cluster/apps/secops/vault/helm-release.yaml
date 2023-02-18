@@ -79,8 +79,8 @@ spec:
             disabled    = "false"
             project     = "${SECRET_GCP_PROJECT}"
             region      = "europe-west3"
-            key_ring    = "vault-unseal"
-            crypto_key  = "vault-unseal-key"
+            key_ring    = "home-infra"
+            crypto_key  = "vault-unseal"
           }
           listener "tcp" {
             tls_disable = 1
