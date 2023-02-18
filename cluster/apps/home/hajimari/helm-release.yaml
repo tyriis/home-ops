@@ -73,11 +73,11 @@ spec:
               url: "https://slack.com/signin"
         - group: Kubernetes
           bookmarks:
-            - name: k8s at home search/
+            - name: k8s-at-home search
               url: https://nanne.dev/k8s-at-home-search/
-            - name: Helm app-template
+            - name: app-template
               url: https://bjw-s.github.io/helm-charts/docs/
-            - name: talos documentation
+            - name: talos
               url: https://www.talos.dev/v1.3/
         # - group: Cloud
         #   bookmarks:
