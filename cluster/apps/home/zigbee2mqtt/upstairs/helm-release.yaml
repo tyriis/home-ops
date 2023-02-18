@@ -69,7 +69,7 @@ spec:
         memory: 200Mi
     sidecars:
       zigbee2mqtt-exporter:
-        image: ghcr.io/tyriis/zigbee2mqtt-exporter:v0.2.5
+        image: ghcr.io/tyriis/zigbee2mqtt-exporter:v0.2.6
         ports:
           - containerPort: 3000
             name: http-prom
