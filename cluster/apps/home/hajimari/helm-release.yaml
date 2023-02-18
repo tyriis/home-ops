@@ -71,14 +71,22 @@ spec:
               url: "https://gmail.com"
             - name: Slack
               url: "https://slack.com/signin"
-        - group: Cloud
+        - group: Kubernetes
           bookmarks:
-            - name: Box
-              url: "https://box.com"
-            - name: Dropbox
-              url: "https://dropbox.com"
-            - name: Drive
-              url: "https://drive.google.com"
+            - name: k8s at home search/
+              url: https://nanne.dev/k8s-at-home-search/
+            - name: Helm app-template
+              url: https://bjw-s.github.io/helm-charts/docs/
+            - name: talos documentation
+              url: https://www.talos.dev/v1.3/
+        # - group: Cloud
+        #   bookmarks:
+        #     - name: Box
+        #       url: "https://box.com"
+        #     - name: Dropbox
+        #       url: "https://dropbox.com"
+        #     - name: Drive
+        #       url: "https://drive.google.com"
         - group: Design
           bookmarks:
             - name: Awwwards
