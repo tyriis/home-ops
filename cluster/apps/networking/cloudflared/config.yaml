@@ -29,6 +29,10 @@ ingress:
     service: https://atlantis-webhook.${SECRET_DOMAIN}
     originRequest:
       httpHostHeader: atlantis-webhook.${SECRET_DOMAIN}
+  - hostname: atlantis-tyriis-webhook.${SECRET_DOMAIN}
+    service: https://atlantis-tyriis-webhook.${SECRET_DOMAIN}
+    originRequest:
+      httpHostHeader: atlantis-tyriis-webhook.${SECRET_DOMAIN}
   # - hostname: example2.com
   #   service: localhost:8001
   # The localhost:8002 service overrides some root-level config.
