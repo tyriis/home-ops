@@ -7,7 +7,7 @@ This cluster is using [autounseal-gcpkms][hashicorp-tutorial-unseal-gcpkms] to u
 ### Prerequisites in GCP
 
 - active keyring and key in KMS
-- Service account role `roles/cloudkms.cryptoKeyEncrypterDecrypter`, preferably on crypto key level
+- Service account role `roles/cloudkms.cryptoKeyEncrypterDecrypter` and `roles/cloudkms.viewer`, preferably on crypto key level
 
 ### Setup auto-unseal on fresh Vault
 
