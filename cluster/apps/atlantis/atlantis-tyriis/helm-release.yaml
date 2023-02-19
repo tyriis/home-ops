@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: atlantis
+  name: atlantis-tyriis
 spec:
   interval: 15m
   chart:
@@ -25,9 +25,9 @@ spec:
     keepHistory: false
   # https://artifacthub.io/packages/helm/atlantis/atlantis?modal=values
   values:
-    atlantisUrl: https://atlantis.${SECRET_DOMAIN}
+    atlantisUrl: https://atlantis-tyriis.${SECRET_DOMAIN}
 
-    orgAllowlist: github.com/${GITHUB_SECRET_ORGANIZATION}/*
+    orgAllowlist: github.com/tyriis/*
     # logLevel: "debug"
 
     # If managing secrets outside the chart for the webhook, use this variable to reference the secret name
@@ -90,11 +90,11 @@ spec:
         hajimari.io/enable: "true"
       pathType: Prefix
       hosts:
-        - host: &host atlantis.${SECRET_DOMAIN}
+        - host: &host atlantis-tyriis.${SECRET_DOMAIN}
           paths:
             - /
       tls:
-        - secretName: atlantis-tls
+        - secretName: atlantis-tyriis-tls
           hosts:
             - *host
 
@@ -117,7 +117,7 @@ spec:
       # ATLANTIS_GH_APP_KEY_FILE: /config/github.pem
 
     loadEnvFromSecrets:
-      - &secret atlantis-env-secrets
+      - &secret atlantis-tyriis-env-secrets
 
     containerSecurityContext:
       allowPrivilegeEscalation: false
