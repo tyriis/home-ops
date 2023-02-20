@@ -30,7 +30,7 @@ metadata:
     substitution.flux.home.arpa/enabled: "true"
 spec:
   dependsOn:
-    - name: apps-kyverno-sync
+    - name: apps-kyverno-app-sync
   path: "./kubernetes/apps/kyverno/kyverno/policies/"
   prune: true
   sourceRef:
