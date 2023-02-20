@@ -1,8 +1,7 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-metadata:
-  namespace: kyverno
+namespace: kyverno
 resources:
   - ./helm-release.yaml
   - ./cluster-role-binding.yaml
