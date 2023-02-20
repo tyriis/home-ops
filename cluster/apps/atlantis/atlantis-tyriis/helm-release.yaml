@@ -132,3 +132,7 @@ spec:
     podTemplate:
       annotations:
         secret.reloader.stakater.com/reload: *secret
+
+    readinessProbe:
+      periodSeconds: 5
+      initialDelaySeconds: 10
