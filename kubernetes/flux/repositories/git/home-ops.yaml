@@ -1,0 +1,20 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: GitRepository
+metadata:
+  name: home-ops
+  namespace: flux-system
+spec:
+  # as we use webhooks, this does not need to be aggressive
+  interval: 2h
+  url: ssh://git@github.com/tyriis/home-ops.git
+  ref:
+    branch: feature/new-structure
+  secretRef:
+    # created with terraform
+    name: github-deploy-key
+  ignore: |
+    # exclude all
+    /*
+    # include kubernetes directory only
+    !/kubernetes
