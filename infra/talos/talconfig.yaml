@@ -5,7 +5,7 @@ kubernetesVersion: v1.25.6
 endpoint: https://192.168.1.50:6443
 allowSchedulingOnMasters: true
 nodes:
-  # i7-8650U / 32GB / 120GB SSD / 500GB NVME (8.gen)
+  # i7-8650U / 32GB / SAMSUNG EVO 870 500GB SSD / WD BLUE SN570 500GB NVME (8.gen)
   - hostname: talos01
     ipAddress: 192.168.1.51
     installDisk: /dev/sda
@@ -22,7 +22,7 @@ nodes:
         vip:
           ip: 192.168.1.50
 
-  # i7-8650U / 32GB / 500GB SSD / 256GB NVME (8.gen)
+  # i7-8650U / 32GB / SAMSUNG EVO 870 500GB SSD / WD BLUE SN570 500GB NVME (8.gen)
   - hostname: talos02
     ipAddress: 192.168.1.52
     installDisk: /dev/sda
@@ -32,7 +32,6 @@ nodes:
       - 1.1.1.1
       - 8.8.8.8
       - 192.168.1.1
-      - 192.168.0.254
     networkInterfaces:
       - interface: eth0
         mtu: 0

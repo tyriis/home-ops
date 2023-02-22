@@ -1,85 +1,85 @@
-# terraform {
-#   required_version = "<= 1.3.9"
+terraform {
+  required_version = "<= 1.3.9"
 
-#   required_providers {
-#     github = {
-#       source  = "integrations/github"
-#       version = "5.18.0"
-#     }
-#     kubernetes = {
-#       source  = "hashicorp/kubernetes"
-#       version = "2.18.0"
-#     }
-#     kubectl = {
-#       source  = "gavinbunney/kubectl"
-#       version = "1.14.0"
-#     }
-#     flux = {
-#       source  = "fluxcd/flux"
-#       version = "0.23.0"
-#     }
-#     tls = {
-#       source  = "hashicorp/tls"
-#       version = "4.0.4"
-#     }
-#   }
-# }
+  required_providers {
+    github = {
+      source  = "integrations/github"
+      version = "5.18.0"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "2.18.0"
+    }
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = "1.14.0"
+    }
+    flux = {
+      source  = "fluxcd/flux"
+      version = "0.23.0"
+    }
+    tls = {
+      source  = "hashicorp/tls"
+      version = "4.0.4"
+    }
+  }
+}
 # SSH
-# locals {
-#   known_hosts = "github.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg="
-#   kubernetes_labels = {
-#     "app.kubernetes.io/managed-by" = "terraform"
-#   }
-# }
+locals {
+  known_hosts = "github.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg="
+  kubernetes_labels = {
+    "app.kubernetes.io/managed-by" = "terraform"
+  }
+}
 
-resource "tls_private_key" "main" {
+resource "tls_private_key" "home_ops" {
   algorithm   = "ECDSA"
   ecdsa_curve = "P384"
 }
 
-data "kubectl_file_documents" "fluxcd_install" {
-  content = file("../../cluster/flux/flux-system/gotk-components.yaml")
-}
+# data "kubectl_file_documents" "fluxcd_install" {
+#   content = file("../../cluster/flux/flux-system/gotk-components.yaml")
+# }
 
-data "kubectl_file_documents" "fluxcd_sync" {
-  content = file("../../cluster/flux/flux-system/gotk-sync.yaml")
-}
+# data "kubectl_file_documents" "fluxcd_sync" {
+#   content = file("../../cluster/flux/flux-system/gotk-sync.yaml")
+# }
 
 # data "kubectl_file_documents" "fluxcd_kustomization" {
 #   content = file("../../cluster/flux/flux-system/kustomization.yaml")
 # }
 
-data "flux_sync" "main" {
-  target_path = var.target_path
-  url         = "ssh://git@github.com/${var.github_owner}/${var.repository_name}.git"
-  branch      = var.branch
-}
-
-# Kubernetes
-# resource "kubernetes_namespace" "flux_system" {
-#   metadata {
-#     name = "flux-system"
-#   }
-
-#   lifecycle {
-#     ignore_changes = [
-#       metadata[0].labels,
-#     ]
-#   }
+# data "flux_sync" "main" {
+#   target_path = var.target_path
+#   url         = "ssh://git@github.com/${var.github_owner}/${var.repository_name}.git"
+#   branch      = var.branch
 # }
 
-locals {
-  install = [for v in data.kubectl_file_documents.fluxcd_install.documents : {
-    data : yamldecode(v)
-    content : v
-    }
-  ]
-  sync = [for v in data.kubectl_file_documents.fluxcd_sync.documents : {
-    data : yamldecode(v)
-    content : v
-    }
-  ]
+# Kubernetes
+resource "kubernetes_namespace" "flux_system" {
+  metadata {
+    name = "flux-system"
+  }
+
+  lifecycle {
+    ignore_changes = [
+      metadata[0].labels,
+    ]
+  }
 }
+
+# locals {
+#   install = [for v in data.kubectl_file_documents.fluxcd_install.documents : {
+#     data : yamldecode(v)
+#     content : v
+#     }
+#   ]
+#   sync = [for v in data.kubectl_file_documents.fluxcd_sync.documents : {
+#     data : yamldecode(v)
+#     content : v
+#     }
+#   ]
+# }
 
 # resource "kubectl_manifest" "install" {
 #   for_each = { for v in local.install : lower(join("/", compact([
@@ -113,24 +113,24 @@ locals {
 #   }
 # }
 
-resource "kubernetes_secret" "main" {
+resource "kubernetes_secret" "github_deploy_key" {
   # depends_on = [kubectl_manifest.install]
 
   metadata {
-    name      = data.flux_sync.main.secret
-    namespace = data.flux_sync.main.namespace
+    name      = "github-deploy-key"
+    namespace = "flux-system"
     labels    = local.kubernetes_labels
   }
 
   data = {
-    identity       = tls_private_key.main.private_key_pem
-    "identity.pub" = tls_private_key.main.public_key_openssh
+    identity       = tls_private_key.home_ops.private_key_pem
+    "identity.pub" = tls_private_key.home_ops.public_key_openssh
     known_hosts    = local.known_hosts
   }
 }
 
-# GitHub
-#tfsec:ignore:github-repositories-private
+# # GitHub
+# #tfsec:ignore:github-repositories-private
 # resource "github_repository" "main" {
 #   name                   = var.repository_name
 #   visibility             = var.repository_visibility
@@ -148,10 +148,10 @@ resource "kubernetes_secret" "main" {
 #   branch     = var.branch
 # }
 
-resource "github_repository_deploy_key" "main" {
-  title      = "k3s.home"
-  repository = "flux.k3s.cluster"
-  key        = tls_private_key.main.public_key_openssh
+resource "github_repository_deploy_key" "talos_flux" {
+  title      = "talos-flux"
+  repository = "home-ops"
+  key        = tls_private_key.home_ops.public_key_openssh
   read_only  = true
 }
 
@@ -182,16 +182,16 @@ resource "github_repository_deploy_key" "main" {
 #   overwrite_on_create = true
 # }
 
-# resource "kubernetes_secret" "sops_age" {
-#   metadata {
-#     name      = "sops-age"
-#     namespace = data.flux_sync.main.namespace
-#     labels    = local.kubernetes_labels
-#   }
+resource "kubernetes_secret" "sops_age" {
+  metadata {
+    name      = "sops-age"
+    namespace = data.flux_sync.main.namespace
+    labels    = local.kubernetes_labels
+  }
 
-#   data = {
-#     "age.agekey" = var.sops_age_key
-#   }
+  data = {
+    "age.agekey" = var.sops_age_key
+  }
 
-#   type = "Opaque"
-# }
+  type = "Opaque"
+}

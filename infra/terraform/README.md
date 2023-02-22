@@ -52,7 +52,7 @@ optional: (dev-prerequisites)
 | Name | Version |
 |------|---------|
 | <a name="provider_sops"></a> [sops](#provider\_sops) | 0.7.2 |
-| <a name="provider_vault"></a> [vault](#provider\_vault) | >= 3.2.1 |
+| <a name="provider_vault"></a> [vault](#provider\_vault) | 3.13.0 |
 
 ## Modules
 
