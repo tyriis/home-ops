@@ -21,12 +21,14 @@ spec:
     remediation:
       retries: 3
   values:
+    values:
     controller:
-      replicas: 3
+      replicas: 2
       strategy: RollingUpdate
     image:
+      # https://github.com/excalidraw/excalidraw/pull/6143
       repository: ghcr.io/onedr0p/excalidraw
-      tag: 0.13.0
+      tag: latest@sha256:76a559eb310b08cb8f60193abc843263294685f8d554a67b1407d2fc39f7197d
     service:
       main:
         ports:
