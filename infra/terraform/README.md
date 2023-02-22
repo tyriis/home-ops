@@ -32,12 +32,12 @@ optional: (dev-prerequisites)
 
 <!-- prettier-ignore-start -->
 <!-- BEGIN_TF_DOCS -->
-## Requirements
+### Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | <= 1.3.9 |
-| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | 3.34.0 |
+| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | 4.0.0 |
 | <a name="requirement_flux"></a> [flux](#requirement\_flux) | >= 0.9.0 |
 | <a name="requirement_github"></a> [github](#requirement\_github) | >= 4.18.0 |
 | <a name="requirement_http"></a> [http](#requirement\_http) | 3.2.1 |
@@ -47,21 +47,21 @@ optional: (dev-prerequisites)
 | <a name="requirement_tls"></a> [tls](#requirement\_tls) | 4.0.4 |
 | <a name="requirement_vault"></a> [vault](#requirement\_vault) | >= 3.2.1 |
 
-## Providers
+### Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_sops"></a> [sops](#provider\_sops) | 0.7.2 |
 | <a name="provider_vault"></a> [vault](#provider\_vault) | 3.13.0 |
 
-## Modules
+### Modules
 
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_cloudflare"></a> [cloudflare](#module\_cloudflare) | ./cloudflare | n/a |
 | <a name="module_flux"></a> [flux](#module\_flux) | ./flux | n/a |
 
-## Resources
+### Resources
 
 | Name | Type |
 |------|------|
@@ -69,7 +69,7 @@ optional: (dev-prerequisites)
 | [vault_generic_secret.github_secrets](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/data-sources/generic_secret) | data source |
 | [vault_generic_secret.sops_secrets](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/data-sources/generic_secret) | data source |
 
-## Inputs
+### Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
@@ -80,7 +80,7 @@ optional: (dev-prerequisites)
 | <a name="input_repository_visibility"></a> [repository\_visibility](#input\_repository\_visibility) | How visible is the github repo | `string` | `"public"` | no |
 | <a name="input_target_path"></a> [target\_path](#input\_target\_path) | flux sync target path | `string` | `"cluster/flux/flux-system"` | no |
 
-## Outputs
+### Outputs
 
 No outputs.
 <!-- END_TF_DOCS -->

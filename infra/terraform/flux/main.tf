@@ -16,7 +16,7 @@
 #     }
 #     flux = {
 #       source  = "fluxcd/flux"
-#       version = "0.23.0"
+#       version = "0.24.0"
 #     }
 #     tls = {
 #       source  = "hashicorp/tls"

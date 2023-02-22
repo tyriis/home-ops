@@ -30,7 +30,7 @@ settings:
   color: true
   default: true
   escape: true
-  indent: 2
+  indent: 3
   required: true
   sensitive: true
   type: true
