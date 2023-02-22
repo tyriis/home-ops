@@ -37,13 +37,13 @@ resource "tls_private_key" "main" {
   ecdsa_curve = "P384"
 }
 
-data "kubectl_file_documents" "fluxcd_install" {
-  content = file("../../cluster/flux/flux-system/gotk-components.yaml")
-}
+# data "kubectl_file_documents" "fluxcd_install" {
+#   content = file("../../cluster/flux/flux-system/gotk-components.yaml")
+# }
 
-data "kubectl_file_documents" "fluxcd_sync" {
-  content = file("../../cluster/flux/flux-system/gotk-sync.yaml")
-}
+# data "kubectl_file_documents" "fluxcd_sync" {
+#   content = file("../../cluster/flux/flux-system/gotk-sync.yaml")
+# }
 
 # data "kubectl_file_documents" "fluxcd_kustomization" {
 #   content = file("../../cluster/flux/flux-system/kustomization.yaml")
@@ -68,18 +68,18 @@ data "flux_sync" "main" {
 #   }
 # }
 
-locals {
-  install = [for v in data.kubectl_file_documents.fluxcd_install.documents : {
-    data : yamldecode(v)
-    content : v
-    }
-  ]
-  sync = [for v in data.kubectl_file_documents.fluxcd_sync.documents : {
-    data : yamldecode(v)
-    content : v
-    }
-  ]
-}
+# locals {
+#   install = [for v in data.kubectl_file_documents.fluxcd_install.documents : {
+#     data : yamldecode(v)
+#     content : v
+#     }
+#   ]
+#   sync = [for v in data.kubectl_file_documents.fluxcd_sync.documents : {
+#     data : yamldecode(v)
+#     content : v
+#     }
+#   ]
+# }
 
 # resource "kubectl_manifest" "install" {
 #   for_each = { for v in local.install : lower(join("/", compact([
