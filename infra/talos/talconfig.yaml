@@ -5,7 +5,7 @@ kubernetesVersion: v1.25.6
 endpoint: https://192.168.1.50:6443
 allowSchedulingOnMasters: true
 nodes:
-  # i7-8650U / 32GB / SAMSUNG EVO 870 500GB SSD / WD BLUE SN570 500GB NVME (8.gen)
+  # i7-8650U / 32GB / SAMSUNG EVO 870 500GB SSD / WD BLUE SN550 500GB NVME
   - hostname: talos01
     ipAddress: 192.168.1.51
     installDisk: /dev/sda
@@ -22,7 +22,7 @@ nodes:
         vip:
           ip: 192.168.1.50
 
-  # i7-8650U / 32GB / SAMSUNG EVO 870 500GB SSD / WD BLUE SN570 500GB NVME (8.gen)
+  # i7-8650U / 32GB / SAMSUNG EVO 870 500GB SSD / WD BLUE SN570 500GB NVME
   - hostname: talos02
     ipAddress: 192.168.1.52
     installDisk: /dev/sda
@@ -39,7 +39,7 @@ nodes:
         vip:
           ip: 192.168.1.50
 
-  # i7-8650U / 32GB / 120GB SSD / 500GB NVME (8.gen)
+  # i7-8650U / 32GB / SAMSUNG EVO 870 500GB SSD / WD BLUE SN550 500GB NVME
   - hostname: talos03
     ipAddress: 192.168.1.53
     installDisk: /dev/sda
@@ -56,7 +56,7 @@ nodes:
         vip:
           ip: 192.168.1.50
 
-  #  i7-10710U / 32GB / 250 GB SSD / 500 GB NVME (10. gen)
+  #  i7-10710U / 32GB / SAMSUNG EVO 860 500GB SSD
   - hostname: talos04
     ipAddress: 192.168.1.54
     installDisk: /dev/sda
