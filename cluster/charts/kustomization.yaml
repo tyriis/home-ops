@@ -28,7 +28,7 @@ resources:
   - node-feature-discovery-charts.yaml
   # - openfaas-charts.yaml
   - piraeus-charts.yaml
-  - rook-ceph-charts.yaml
+  # - rook-ceph-charts.yaml
   - runatlantis-charts.yaml
   - prometheus-community-charts.yaml
   # - stackgres-charts.yaml
