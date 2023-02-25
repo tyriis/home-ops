@@ -9,7 +9,7 @@ spec:
   interval: 2h
   url: ssh://git@github.com/tyriis/home-ops.git
   ref:
-    branch: feature/new-structure
+    branch: main
   secretRef:
     # created with terraform
     name: github-deploy-key
