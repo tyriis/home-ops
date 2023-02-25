@@ -5,6 +5,8 @@ metadata:
   name: apps-sync
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: cluster-sync
   interval: 10m
   path: ./kubernetes/apps
   prune: true
