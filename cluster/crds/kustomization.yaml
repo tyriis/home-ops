@@ -6,6 +6,6 @@ resources:
   - cert-manager
   - cloudnative-pg
   - kube-prometheus-stack
-  - rook-ceph
+  # - rook-ceph
   - snapshot-controller
   - traefik
