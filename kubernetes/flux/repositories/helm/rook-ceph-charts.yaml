@@ -2,9 +2,9 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
-  name: metrics-server-charts
+  name: rook-ceph-charts
   namespace: flux-system
 spec:
-  interval: 15m
-  url: https://kubernetes-sigs.github.io/metrics-server
+  interval: 30m
+  url: https://charts.rook.io/release
   timeout: 3m
