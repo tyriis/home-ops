@@ -4,6 +4,8 @@ kind: ConfigMap
 metadata:
   name: cluster-settings
   namespace: flux-system
+  labels:
+    kustomize.toolkit.fluxcd.io/prune: disabled
 data:
   SETTING_CLUSTERNAME: talos-flux
   SETTING_TZ: Europe/Vienna
