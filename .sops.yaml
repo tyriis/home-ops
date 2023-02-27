@@ -1,6 +1,6 @@
 ---
 creation_rules:
-  - path_regex: cluster/.*\.ya?ml
+  - path_regex: (cluster|kubernetes)/.*\.ya?ml
     encrypted_regex: "^(data|stringData)$"
     age: >-
       age16zqeqx5y6ay3flwz0d06rn83yjv9ckys3j8tpkysf9v6295fhc6sf4r0uj
