@@ -7,5 +7,4 @@ resources:
   - csi-driver-nfs
   - kubelet-serving-cert-approver
   - metallb-system
-  # - rook-ceph
   - snapshot-controller

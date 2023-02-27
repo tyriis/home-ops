@@ -8,7 +8,7 @@ spec:
   interval: 10m0s
   dependsOn:
     - name: crds
-    - name: config
+    - name: cluster-sync
     - name: core
   path: ./cluster/apps
   prune: true

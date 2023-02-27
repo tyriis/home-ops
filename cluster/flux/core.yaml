@@ -9,7 +9,7 @@ spec:
   dependsOn:
     - name: charts
     - name: crds
-    - name: config
+    - name: cluster-sync
   path: ./cluster/core
   prune: false
   sourceRef:
