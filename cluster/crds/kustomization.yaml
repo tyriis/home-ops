@@ -6,4 +6,4 @@ resources:
   - cloudnative-pg
   - kube-prometheus-stack
   - snapshot-controller
-  - traefik
+  # - traefik
