@@ -40,7 +40,7 @@ spec:
     env:
       AUTH_HOST: &host auth.${SECRET_DOMAIN}
       DOMAIN: ${SECRET_DOMAIN}
-      COOKIE_DOMAINS: ${SECRET_DOMAIN}
+      COOKIE_DOMAIN: ${SECRET_DOMAIN}
       INSECURE_COOKIE: "false"
       URL_PATH: /_oauth
       LOG_LEVEL: info
