@@ -7,7 +7,6 @@ metadata:
 spec:
   interval: 10m0s
   dependsOn:
-    - name: crds
     - name: cluster-sync
     - name: core
   path: ./cluster/apps
