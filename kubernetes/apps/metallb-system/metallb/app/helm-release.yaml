@@ -4,7 +4,7 @@ kind: HelmRelease
 metadata:
   name: metallb
 spec:
-  interval: 5m
+  interval: 30m
   chart:
     spec:
       chart: metallb
@@ -14,11 +14,28 @@ spec:
         name: metallb-charts
         namespace: flux-system
   install:
+    timeout: 10m
+    replace: true
+    crds: CreateReplace
+    createNamespace: true
     remediation:
       retries: 3
   upgrade:
     remediation:
+      remediateLastFailure: true
       retries: 3
+      strategy: rollback
+    cleanupOnFail: true
+    crds: CreateReplace
+  test:
+    enable: true
+  rollback:
+    recreate: true
+    force: true
+    cleanupOnFail: true
+  uninstall:
+    keepHistory: false
+  maxHistory: 5
   values:
     # prometheus:
     #   podMonitor:

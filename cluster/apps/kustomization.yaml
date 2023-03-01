@@ -9,7 +9,6 @@ resources:
   - hardware
   - home
   - kube-system
-  - metallb-system
   - networking
   - observability
   - office
