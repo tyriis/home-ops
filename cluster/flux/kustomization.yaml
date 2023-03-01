@@ -4,5 +4,4 @@ kind: Kustomization
 resources:
   - flux-system
   - charts.yaml
-  - core.yaml
   - apps.yaml

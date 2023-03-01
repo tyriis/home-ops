@@ -8,7 +8,6 @@ spec:
   interval: 10m0s
   dependsOn:
     - name: cluster-sync
-    - name: core
   path: ./cluster/apps
   prune: false
   sourceRef:
