@@ -6,7 +6,6 @@ resources:
   - database
   - flux-system
   - gaming
-  - github
   - hardware
   - home
   - kube-system
