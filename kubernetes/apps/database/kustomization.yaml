@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./cloudnative-pg/flux-sync.yaml
+  - ./redis/flux-sync.yaml
