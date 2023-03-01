@@ -30,7 +30,7 @@ spec:
     image:
       repository: ghcr.io/weaveworks/wego-app
       pullPolicy: IfNotPresent
-      tag: v0.17.0
+      tag: v0.18.0
     adminUser:
       create: true
       username: admin
