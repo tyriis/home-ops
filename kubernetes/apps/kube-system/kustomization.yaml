@@ -6,4 +6,4 @@ resources:
   # - ./cilium/ks.yaml
   # - ./kubelet-csr-approver/ks.yaml
   - ./metrics-server/flux-sync.yaml
-  # - ./snapshot-controller/ks.yaml
+  - ./snapshot-controller/flux-sync.yaml
