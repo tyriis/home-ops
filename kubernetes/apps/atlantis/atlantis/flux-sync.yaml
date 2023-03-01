@@ -1,0 +1,37 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: apps-atlantis
+  namespace: flux-system
+spec:
+  interval: 10m
+  path: ./kubernetes/apps/atlantis/atlantis/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+  wait: true
+  dependsOn:
+    - name: apps-cert-manager
+    - name: apps-rook-ceph-cluster
+    - name: apps-traefik-forward-auth
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: apps-atlantis-tyriis
+  namespace: flux-system
+spec:
+  interval: 10m
+  path: ./kubernetes/apps/atlantis/atlantis/tyriis
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+  wait: true
+  dependsOn:
+    - name: apps-cert-manager
+    - name: apps-rook-ceph-cluster
+    - name: apps-traefik-forward-auth
