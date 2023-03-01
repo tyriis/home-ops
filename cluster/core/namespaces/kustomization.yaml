@@ -6,7 +6,6 @@ resources:
   - gaming.yaml
   - hardware.yaml
   - home.yaml
-  - metallb-system.yaml
   - networking.yaml
   - office.yaml
   - secops.yaml
