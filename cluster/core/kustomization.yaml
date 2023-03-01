@@ -4,5 +4,4 @@ kind: Kustomization
 resources:
   - namespaces
   - csi-driver-nfs
-  - kubelet-serving-cert-approver
   - metallb-system
