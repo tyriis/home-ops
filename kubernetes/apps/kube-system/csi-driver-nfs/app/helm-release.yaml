@@ -4,7 +4,7 @@ kind: HelmRelease
 metadata:
   name: csi-driver-nfs
 spec:
-  interval: 5m
+  interval: 30m
   chart:
     spec:
       chart: csi-driver-nfs
@@ -13,13 +13,14 @@ spec:
         kind: HelmRepository
         name: csi-driver-nfs-charts
         namespace: flux-system
+  maxHistory: 3
   install:
-    createNamespace: false
+    createNamespace: true
     remediation:
       retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
       retries: 3
-
-  # values:
-  # https://artifacthub.io/packages/helm/keyporttech/csi-driver-nfs?modal=values
+  uninstall:
+    keepHistory: false
