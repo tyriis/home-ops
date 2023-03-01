@@ -48,7 +48,7 @@ spec:
       LIFETIME: "604800"
     envFrom:
       - secretRef:
-          name: traefik-forward-auth
+          name: &secret traefik-forward-auth
     service:
       main:
         ports:
@@ -79,3 +79,5 @@ spec:
         memory: 10Mi
       limits:
         memory: 50Mi
+    podAnnotations:
+      secret.reloader.stakater.com/reload: *secret
