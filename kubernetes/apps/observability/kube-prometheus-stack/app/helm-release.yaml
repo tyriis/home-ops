@@ -3,11 +3,10 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: kube-prometheus-stack
-  namespace: observability
 spec:
-  interval: 1h
+  interval: 15m
   maxHistory: 5
-  timeout: 20m
+  timeout: 15m
   chart:
     spec:
       chart: kube-prometheus-stack
@@ -17,20 +16,25 @@ spec:
         name: prometheus-community-charts
         namespace: flux-system
   install:
-    createNamespace: false
+    createNamespace: true
+    crds: CreateReplace
     remediation:
       retries: 3
   upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
     remediation:
       retries: 3
-      remediateLastFailure: true
-    cleanupOnFail: true
+  uninstall:
+    keepHistory: false
   valuesFrom:
     - kind: ConfigMap
       name: alertmanager-values
     - kind: ConfigMap
       name: prometheus-values
   values:
+    cleanPrometheusOperatorObjectNames: true
+
     fullnameOverride: prometheus
 
     nodeExporter:
@@ -41,8 +45,6 @@ spec:
       extraArgs:
         - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var)($|/)
         - --collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs|tmpfs)$
-        # disable powersupplyclass as it is not recognized on talos02
-        - --no-collector.powersupplyclass
       prometheus:
         monitor:
           enabled: true
