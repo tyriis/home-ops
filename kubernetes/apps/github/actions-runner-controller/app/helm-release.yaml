@@ -4,7 +4,7 @@ kind: HelmRelease
 metadata:
   name: actions-runner-controller
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
       chart: actions-runner-controller
@@ -13,15 +13,19 @@ spec:
         kind: HelmRepository
         name: actions-runner-controller-charts
         namespace: flux-system
+  maxHistory: 5
   install:
-    crds: Skip
     createNamespace: true
+    crds: CreateReplace
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
-    crds: Skip
+    cleanupOnFail: true
+    crds: CreateReplace
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
 
   values:
     # https://artifacthub.io/packages/helm/actions-runner-controller/actions-runner-controller?modal=values
@@ -47,6 +51,20 @@ spec:
 
     metrics:
       serviceMonitor: true
+      port: 8080
+      proxy:
+        enabled: false
+    actionsMetricsServer:
+      enabled: true
+      secret:
+        enabled: true
+        create: false
+        name: *secret
+    actionsMetrics:
+      serviceMonitor: true
+      port: 8080
+      proxy:
+        enabled: false
 
     githubWebhookServer:
       enabled: false

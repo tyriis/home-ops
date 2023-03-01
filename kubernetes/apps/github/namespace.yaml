@@ -4,7 +4,7 @@ kind: Namespace
 metadata:
   name: github
   labels:
-    app.kubernetes.io/managed-by: fluxcd.io
+    kustomize.toolkit.fluxcd.io/prune: disabled
     pod-security.kubernetes.io/enforce: privileged
     pod-security.kubernetes.io/audit: privileged
     pod-security.kubernetes.io/warn: privileged
