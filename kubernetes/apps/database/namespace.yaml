@@ -4,4 +4,4 @@ kind: Namespace
 metadata:
   name: database
   labels:
-    app.kubernetes.io/managed-by: fluxcd.io
+    kustomize.toolkit.fluxcd.io/prune: disabled
