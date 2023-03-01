@@ -7,7 +7,6 @@ resources:
   - botkube
   # - goldilocks
   - grafana
-  - kube-prometheus-stack
   - loki
   - promtail
   - speedtest-exporter
