@@ -2,17 +2,29 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: node-red
+  name: &app node-red
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      chart: node-red
-      version: 10.3.2
+      chart: app-template
+      version: 1.3.2
+      interval: 15m
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  maxHistory: 15
+  uninstall:
+    keepHistory: false
   values:
     image:
       repository: ghcr.io/k8s-at-home/node-red
@@ -24,24 +36,33 @@ spec:
       NODE_RED_ENABLE_PROJECTS: "true"
       NODE_RED_ENABLE_SAFE_MODE: "false"
 
+    service:
+      main:
+        ports:
+          http:
+            port: 1880
+
     ingress:
       main:
         enabled: true
-        ingressClassName: "traefik"
+        ingressClassName: traefik
         annotations:
           cert-manager.io/cluster-issuer: "letsencrypt-production"
+          kubernetes.io/tls-acme: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: resistor-nodes
-          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/affinity: "true"
+          traefik.ingress.kubernetes.io/router.tls: "true"
         hosts:
-          - host: "node-red.${SECRET_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - hosts:
-              - "node-red.${SECRET_DOMAIN}"
-            secretName: "node-red-tls"
+              - *host
+            secretName: "{{ .Release.Name }}-tls"
 
     persistence:
       data:
@@ -58,6 +79,12 @@ spec:
           - path: .gitconfig
             mountPath: /usr/src/node-red/.gitconfig
             readOnly: true
+
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
 
     podAnnotations:
       configmap.reloader.stakater.com/reload: node-red-gitconfig

@@ -7,5 +7,4 @@ resources:
   - esphome
   - hajimari
   - home-assistant
-  - node-red
   - zigbee2mqtt
