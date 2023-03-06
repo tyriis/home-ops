@@ -80,11 +80,11 @@ spec:
             mountPath: /usr/src/node-red/.gitconfig
             readOnly: true
 
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
+    # podSecurityContext:
+    #   runAsUser: 568
+    #   runAsGroup: 568
+    #   fsGroup: 568
+    #   fsGroupChangePolicy: "OnRootMismatch"
 
     podAnnotations:
       configmap.reloader.stakater.com/reload: node-red-gitconfig
