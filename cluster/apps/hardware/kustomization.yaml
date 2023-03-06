@@ -6,4 +6,3 @@ resources:
   # - aircon
   # - pimoroni-fanshim
   - node-feature-discovery
-  - scanservjs
