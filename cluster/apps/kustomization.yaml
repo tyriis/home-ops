@@ -8,7 +8,6 @@ resources:
   - kube-system
   - networking
   - observability
-  - office
   - rook-ceph
   # - secops
   - storage
