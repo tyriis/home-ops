@@ -66,8 +66,9 @@ spec:
     # Use Diff Markdown Format for color coding diffs
     enableDiffMarkdownFormat: true
 
-    # commonLabels:
-    #   app.kubernetes.io/managed-by: fluxcd.io
+    commonLabels:
+      app.kubernetes.io/name: atlantis
+      app.kubernetes.io/instance: atlantis
 
     service:
       type: ClusterIP
