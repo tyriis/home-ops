@@ -22,4 +22,5 @@ generatorOptions:
   labels:
     grafana_dashboard: "true"
 commonLabels:
-  app.kubernetes.io/managed-by: fluxcd.io
+  app.kubernetes.io/name: rook-ceph
+  app.kubernetes.io/instance: rook-ceph
