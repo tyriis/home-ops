@@ -1,9 +1,0 @@
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: node-red-gitconfig
-data:
-  .gitconfig: |-
-    [safe]
-      directory = /data/projects/home-automations

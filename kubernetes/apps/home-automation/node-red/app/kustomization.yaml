@@ -12,3 +12,9 @@ commonLabels:
   app.kubernetes.io/name: node-red
   app.kubernetes.io/instance: node-red
   app.kubernetes.io/managed-by: fluxcd.io
+configMapGenerator:
+  - name: node-red-gitconfig
+    files:
+      - .gitconfig=.gitconfig
+generatorOptions:
+  disableNameSuffixHash: true
