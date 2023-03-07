@@ -9,5 +9,4 @@ resources:
   - grafana
   - loki
   - promtail
-  - speedtest-exporter
   - uptime-kuma

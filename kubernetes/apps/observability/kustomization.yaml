@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./kube-prometheus-stack/flux-sync.yaml
+  - ./speedtest-exporter/flux-sync.yaml
