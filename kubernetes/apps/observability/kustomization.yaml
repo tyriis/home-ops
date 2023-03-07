@@ -5,4 +5,6 @@ resources:
   - ./namespace.yaml
   - ./grafana/flux-sync.yaml
   - ./kube-prometheus-stack/flux-sync.yaml
+  - ./loki/flux-sync.yaml
+  - ./promtail/flux-sync.yaml
   - ./speedtest-exporter/flux-sync.yaml
