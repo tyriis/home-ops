@@ -9,14 +9,17 @@
   suppressNotifications: ["prIgnoreNotification"],
   rebaseWhen: "conflicted",
   "helm-values": {
-    fileMatch: ["cluster/.+/helm-release\\.ya?ml$"],
+    fileMatch: [
+      "cluster/.+/helm-release\\.ya?ml$",
+      "kubernetes/.+/helm-release\\.ya?ml$",
+    ],
   },
   kubernetes: {
-    fileMatch: ["cluster/.+\\.ya?ml$"],
+    fileMatch: ["cluster/.+\\.ya?ml$", "kubernetes/.+\\.ya?ml$"],
     ignorePaths: ["cluster/flux/"],
   },
   flux: {
-    fileMatch: ["cluster/.+\\.ya?ml$"],
+    fileMatch: ["cluster/.+\\.ya?ml$", "kubernetes/.+\\.ya?ml$"],
   },
   regexManagers: [
     // regexManager to read and process HelmRelease files
@@ -38,32 +41,32 @@
     //   ],
     //   datasourceTemplate: "helm",
     // },
-    {
-      description: "update cluster crds released on github",
-      fileMatch: ["cluster/crds/.+\\.yaml$"],
-      matchStrings: [
-        "https://github.com/(?<depName>[a-z\\d-]{1,38}/[a-z\\d-_]{1,100})/releases/download/(?<currentValue>v\\d+.\\d+.\\d+).+",
-      ],
-      datasourceTemplate: "github-tags",
-    },
-    {
-      description: "regexManager to read and process Traefik CRD's",
-      fileMatch: ["cluster/crds/traefik/.+\\.yaml$"],
-      matchStrings: [
-        "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n *tag: v(?<currentValue>.*)\n",
-      ],
-      datasourceTemplate: "helm",
-      depTypeTemplate: "helm",
-    },
-    {
-      description: "regexManager to read and process vault-secrets-operator CRD's",
-      fileMatch: ["cluster/crds/vault-secrets-operator/.+\\.yaml$"],
-      matchStrings: [
-        "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n *tag: (?<currentValue>.*)\n",
-      ],
-      datasourceTemplate: "helm",
-      depTypeTemplate: "helm",
-    },
+    // {
+    //   description: "update cluster crds released on github",
+    //   fileMatch: ["cluster/crds/.+\\.yaml$"],
+    //   matchStrings: [
+    //     "https://github.com/(?<depName>[a-z\\d-]{1,38}/[a-z\\d-_]{1,100})/releases/download/(?<currentValue>v\\d+.\\d+.\\d+).+",
+    //   ],
+    //   datasourceTemplate: "github-tags",
+    // },
+    // {
+    //   description: "regexManager to read and process Traefik CRD's",
+    //   fileMatch: ["cluster/crds/traefik/.+\\.yaml$"],
+    //   matchStrings: [
+    //     "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n *tag: v(?<currentValue>.*)\n",
+    //   ],
+    //   datasourceTemplate: "helm",
+    //   depTypeTemplate: "helm",
+    // },
+    // {
+    //   description: "regexManager to read and process vault-secrets-operator CRD's",
+    //   fileMatch: ["cluster/crds/vault-secrets-operator/.+\\.yaml$"],
+    //   matchStrings: [
+    //     "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n *tag: (?<currentValue>.*)\n",
+    //   ],
+    //   datasourceTemplate: "helm",
+    //   depTypeTemplate: "helm",
+    // },
     // {
     //   description: "regexManager to read and process system-upgrade-controller CRD's",
     //   fileMatch: ["cluster/crds/system-upgrade-controller/.+\\.yaml$"],
@@ -72,24 +75,24 @@
     //   ],
     //   datasourceTemplate: "helm",
     // },
-    {
-      description: "regexManager to read and process kube-prometheus-stack CRDs",
-      fileMatch: ["cluster/crds/kube-prometheus-stack/.+\\.yaml$"],
-      matchStrings: [
-        "registryUrl=(?<registryUrl>.*?)\n *tag: (?<depName>[a-zA-Z-]+)-(?<currentValue>.*)\n",
-      ],
-      datasourceTemplate: "helm",
-      depTypeTemplate: "helm",
-    },
-    {
-      description: "regexManager to read and process actions-runner-controller CRDs",
-      fileMatch: ["cluster/crds/actions-runner-controller/.+\\.yaml$"],
-      matchStrings: [
-        "registryUrl=(?<registryUrl>.*?)\n *tag: (?<depName>[a-zA-Z-]+)-(?<currentValue>.*)\n",
-      ],
-      datasourceTemplate: "helm",
-      depTypeTemplate: "helm",
-    },
+    // {
+    //   description: "regexManager to read and process kube-prometheus-stack CRDs",
+    //   fileMatch: ["cluster/crds/kube-prometheus-stack/.+\\.yaml$"],
+    //   matchStrings: [
+    //     "registryUrl=(?<registryUrl>.*?)\n *tag: (?<depName>[a-zA-Z-]+)-(?<currentValue>.*)\n",
+    //   ],
+    //   datasourceTemplate: "helm",
+    //   depTypeTemplate: "helm",
+    // },
+    // {
+    //   description: "regexManager to read and process actions-runner-controller CRDs",
+    //   fileMatch: ["cluster/crds/actions-runner-controller/.+\\.yaml$"],
+    //   matchStrings: [
+    //     "registryUrl=(?<registryUrl>.*?)\n *tag: (?<depName>[a-zA-Z-]+)-(?<currentValue>.*)\n",
+    //   ],
+    //   datasourceTemplate: "helm",
+    //   depTypeTemplate: "helm",
+    // },
   ],
   packageRules: [
     // setup datasources
