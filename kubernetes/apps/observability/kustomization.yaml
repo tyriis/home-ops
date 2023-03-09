@@ -8,3 +8,4 @@ resources:
   - ./loki/flux-sync.yaml
   - ./promtail/flux-sync.yaml
   - ./speedtest-exporter/flux-sync.yaml
+  - ./uptime-kuma/flux-sync.yaml
