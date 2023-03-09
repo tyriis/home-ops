@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./external-dns/flux-sync.yaml
+  - ./cloudflared/flux-sync.yaml
