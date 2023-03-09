@@ -6,4 +6,3 @@ resources:
   - alertmanager-discord
   - botkube
   # - goldilocks
-  - uptime-kuma
