@@ -10,3 +10,16 @@ resources:
   - ./prometheus-rule.yaml
 commonLabels:
   app.kubernetes.io/part-of: flux
+configMapGenerator:
+  - name: flux-cluster-dashboard
+    files:
+      - flux-cluster-dashboard.json=https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/cluster.json
+  - name: flux-control-plane-dashboard
+    files:
+      - flux-control-plane.json=https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/control-plane.json
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+  labels:
+    grafana_dashboard: "true"
