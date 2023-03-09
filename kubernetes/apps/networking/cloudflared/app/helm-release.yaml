@@ -14,13 +14,17 @@ spec:
         name: bjw-s-charts
         namespace: flux-system
       interval: 15m
+  maxHistory: 15
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     global:
       nameOverride: *app
