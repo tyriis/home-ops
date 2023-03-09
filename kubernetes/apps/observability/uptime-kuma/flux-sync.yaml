@@ -16,4 +16,4 @@ spec:
   wait: true
   dependsOn:
     - name: apps-rook-ceph-cluster
-    - name: apps-nginx
+    - name: apps-traefik
