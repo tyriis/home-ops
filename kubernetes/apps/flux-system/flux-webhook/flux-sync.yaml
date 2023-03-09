@@ -1,0 +1,15 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: apps-flux-webhook
+  namespace: flux-system
+spec:
+  interval: 30m
+  path: ./kubernetes/apps/flux-system/flux-webhook/receiver
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+  wait: true
+  timeout: 3m
