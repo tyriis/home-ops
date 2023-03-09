@@ -4,7 +4,7 @@ kind: HelmRelease
 metadata:
   name: unifi
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: app-template
