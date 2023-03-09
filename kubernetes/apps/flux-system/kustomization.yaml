@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./weave-gitops/flux-sync.yaml
-  - ./flux-webhook/flux-sync.yaml
+  - ./gotk/flux-sync.yaml

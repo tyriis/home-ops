@@ -5,5 +5,3 @@ namespace: flux-system
 resources:
   - gotk
   - dashboard
-  - weave-gitops
-  - webhook-receiver
