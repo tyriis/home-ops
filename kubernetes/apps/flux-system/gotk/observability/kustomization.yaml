@@ -1,0 +1,12 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: flux-system
+resources:
+  - ./helm-controller.yaml
+  - ./kustomize-controller.yaml
+  - ./notification-controller.yaml
+  - ./source-controller.yaml
+  - ./prometheus-rule.yaml
+commonLabels:
+  app.kubernetes.io/part-of: flux

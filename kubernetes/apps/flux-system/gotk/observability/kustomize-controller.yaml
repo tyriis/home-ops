@@ -3,12 +3,10 @@ apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
   name: kustomize-controller
-  namespace: flux-system
-  labels:
-    app.kubernetes.io/part-of: flux
 spec:
   namespaceSelector:
-    matchNames: ["flux-system"]
+    matchNames:
+      - flux-system
   selector:
     matchLabels:
       app: kustomize-controller

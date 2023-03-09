@@ -10,3 +10,4 @@ resources:
 commonLabels:
   app.kubernetes.io/name: webhook-receiver
   app.kubernetes.io/instance: webhook-receiver
+  app.kubernetes.io/part-of: flux

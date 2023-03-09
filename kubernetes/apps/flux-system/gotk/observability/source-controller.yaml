@@ -2,14 +2,13 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: notification-controller
-  labels:
-    app.kubernetes.io/part-of: flux
+  name: source-controller
 spec:
   namespaceSelector:
-    matchNames: ["flux-system"]
+    matchNames:
+      - flux-system
   selector:
     matchLabels:
-      app: notification-controller
+      app: source-controller
   podMetricsEndpoints:
     - port: http-prom

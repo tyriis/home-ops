@@ -2,10 +2,6 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  labels:
-    app.kubernetes.io/name: flux
-    app.kubernetes.io/instance: flux
-    app.kubernetes.io/managed-by: fluxcd.io
   name: flux-rules
 spec:
   groups:
