@@ -21,5 +21,5 @@ spec:
     - kind: OCIRepository
       name: "*"
   exclusionList:
-    - "info.Dependencies do not meet ready condition, retrying in 30s"
+    - "^Dependencies do not meet ready condition, retrying in.*"
   suspend: false
