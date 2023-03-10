@@ -2,6 +2,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./namespace.yaml
+  # - ./namespace.yaml namespace is part of gotk manifests and will switch reconcile
   - ./weave-gitops/flux-sync.yaml
   - ./gotk/flux-sync.yaml
