@@ -14,6 +14,7 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
+  maxHistory: 15
   install:
     createNamespace: true
     remediation:
@@ -22,7 +23,6 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
-  maxHistory: 15
   uninstall:
     keepHistory: false
   values:
