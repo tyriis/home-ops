@@ -46,6 +46,7 @@ spec:
             - delete
             - error
           resources:
+            # TODO: add all crds
             - name: helm.toolkit.fluxcd.io/v2beta1/helmreleases
             - name: source.toolkit.fluxcd.io/v1beta2/helmcharts
             - name: kustomize.toolkit.fluxcd.io/v1beta2/kustomizations
