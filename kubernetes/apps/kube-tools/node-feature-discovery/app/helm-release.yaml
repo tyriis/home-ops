@@ -4,7 +4,7 @@ kind: HelmRelease
 metadata:
   name: node-feature-discovery
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
       chart: node-feature-discovery
@@ -13,6 +13,17 @@ spec:
         kind: HelmRepository
         name: node-feature-discovery-charts
         namespace: flux-system
+  maxHistory: 15
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     worker:
       annotations:
@@ -46,10 +57,3 @@ spec:
                 - pciId:
                     class: ["0300"]
                     vendor: ["8086"]
-
-            - name: "cc2652rb-zigbee-stick"
-              matchOn:
-                - usbId:
-                    class: ["ff"]
-                    vendor: ["10c4"]
-                    device: ["ea60"]
