@@ -4,7 +4,7 @@ kind: HelmRelease
 metadata:
   name: goldilocks
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
       chart: goldilocks
@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: fairwinds-charts
         namespace: flux-system
-      interval: 10m
+      interval: 15m
   values:
     vpa:
       enabled: true
@@ -25,5 +25,4 @@ spec:
         cpu: 15m
         memory: 32Mi
       limit:
-        cpu: 54m
         memory: 32Mi
