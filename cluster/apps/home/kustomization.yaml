@@ -5,6 +5,5 @@ namespace: home
 resources:
   - emqx
   - esphome
-  - hajimari
   - home-assistant
   - zigbee2mqtt
