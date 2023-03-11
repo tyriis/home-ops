@@ -48,6 +48,7 @@ spec:
           - rook-ceph
           - atlantis
           - office
+          - home-automation
       name: sunshine
       lightTheme: chalk
       darkTheme: horizon
