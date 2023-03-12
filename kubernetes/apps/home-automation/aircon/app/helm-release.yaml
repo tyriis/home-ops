@@ -45,7 +45,7 @@ spec:
             secretName: aircon-options
         subPath:
           - path: options.json
-            mountPath: /config/options.json
+            mountPath: /data/options.json
 
     podAnnotations:
       secret.reloader.stakater.com/reload: aircon-options
