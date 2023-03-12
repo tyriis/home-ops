@@ -1,0 +1,12 @@
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: zigbee2mqtt-downstairs-data
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    destinationPVC: zigbee2mqtt-downstairs-data
+    repository: zigbee2mqtt-downstairs-volsync
+    copyMethod: Direct

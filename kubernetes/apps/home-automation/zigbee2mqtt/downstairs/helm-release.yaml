@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app zigbee2mqtt-bridge1
+  name: &app zigbee2mqtt-downstairs
 spec:
   interval: 15m
   chart:
@@ -61,7 +61,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: zigbee2mqtt-bridge1-data
+        existingClaim: zigbee2mqtt-downstairs-data
         mountPath: /config
     resources:
       requests:
