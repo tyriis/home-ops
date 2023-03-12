@@ -5,3 +5,4 @@ metadata:
   namespace: kyverno
 resources:
   - ./ingress-prom-probes.yaml
+  - ./remove-cpu-limits.yaml
