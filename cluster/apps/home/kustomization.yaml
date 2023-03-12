@@ -4,5 +4,4 @@ kind: Kustomization
 namespace: home
 resources:
   - emqx
-  - esphome
   - zigbee2mqtt
