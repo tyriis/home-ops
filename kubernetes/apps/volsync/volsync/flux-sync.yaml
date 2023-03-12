@@ -9,6 +9,8 @@ metadata:
 spec:
   dependsOn:
     - name: apps-snapshot-controller
+    - name: apps-rook-ceph-cluster
+    - name: apps-kube-prometheus-stack
   interval: 10m
   path: ./kubernetes/apps/volsync/volsync/app
   prune: true
