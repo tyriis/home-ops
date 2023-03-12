@@ -6,3 +6,4 @@ resources:
   - ./esphome/flux-sync.yaml
   - ./home-assistant/flux-sync.yaml
   - ./node-red/flux-sync.yaml
+  - ./zigbee2mqtt/flux-sync.yaml
