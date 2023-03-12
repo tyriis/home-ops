@@ -36,6 +36,7 @@ spec:
         ports:
           http:
             port: 8888
+    hostNetwork: true
     persistence:
       options:
         enabled: true
