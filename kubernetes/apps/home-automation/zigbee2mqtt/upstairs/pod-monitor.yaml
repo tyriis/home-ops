@@ -5,7 +5,8 @@ metadata:
   name: zigbee2mqtt-upstairs
 spec:
   namespaceSelector:
-    matchNames: ["home"]
+    matchNames:
+      - home-automation
   selector:
     matchLabels:
       app.kubernetes.io/name: zigbee2mqtt-upstairs
