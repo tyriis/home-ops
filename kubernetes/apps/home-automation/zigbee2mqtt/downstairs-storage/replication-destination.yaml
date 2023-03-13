@@ -10,3 +10,4 @@ spec:
     destinationPVC: zigbee2mqtt-downstairs-data
     repository: zigbee2mqtt-downstairs-volsync
     copyMethod: Direct
+  paused: true
