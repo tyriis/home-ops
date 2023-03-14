@@ -5,7 +5,7 @@ metadata:
   name: zigbee2mqtt-basement-data
   namespace: home
 spec:
-  sourcePVC: zigbee2mqtt-bridge2-data
+  sourcePVC: zigbee2mqtt-basement-data
   trigger:
     schedule: "0 */12 * * *"
   restic:
