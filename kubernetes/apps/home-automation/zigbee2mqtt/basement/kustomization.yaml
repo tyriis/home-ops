@@ -7,5 +7,5 @@ resources:
   - pod-monitor.yaml
   - replication-source.yaml
 commonLabels:
-  app.kubernetes.io/name: zigbee2mqtt
-  app.kubernetes.io/instance: zigbee2mqtt-bridge2
+  app.kubernetes.io/name: zigbee2mqtt-basement
+  app.kubernetes.io/instance: zigbee2mqtt-basement
