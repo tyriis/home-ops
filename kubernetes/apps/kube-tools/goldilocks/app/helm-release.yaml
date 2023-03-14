@@ -22,6 +22,7 @@ spec:
     remediation:
       retries: 5
   values:
+    # https://artifacthub.io/packages/helm/fairwinds-stable/goldilocks?modal=values
     controller:
       resources:
         requests:
@@ -29,6 +30,7 @@ spec:
           memory: 145Mi
         limits:
           memory: 174Mi
+          cpu: 4
     dashboard:
       # replicaCount: 1
       ingress:
@@ -59,3 +61,4 @@ spec:
           memory: 105Mi
         limits:
           memory: 105Mi
+          cpu: 4
