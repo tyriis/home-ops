@@ -6,7 +6,6 @@ metadata:
   labels:
     app.kubernetes.io/instance: esphome
     app.kubernetes.io/name: esphome
-    app.kubernetes.io/managed-by: fluxcd.io
 spec:
   accessModes:
     - ReadWriteOnce
