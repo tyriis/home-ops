@@ -10,4 +10,3 @@ spec:
     destinationPVC: zigbee2mqtt-basement-data
     repository: zigbee2mqtt-basement-volsync
     copyMethod: Direct
-  paused: true
