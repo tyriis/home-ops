@@ -1,0 +1,13 @@
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: zigbee2mqtt-basement-data
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    destinationPVC: zigbee2mqtt-basement-data
+    repository: zigbee2mqtt-basement-volsync
+    copyMethod: Direct
+  paused: true

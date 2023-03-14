@@ -5,6 +5,7 @@ namespace: home-automation
 resources:
   - helm-release.yaml
   - pod-monitor.yaml
+  - prometheus-rule.yaml
   - replication-source.yaml
 commonLabels:
   app.kubernetes.io/name: zigbee2mqtt-downstairs

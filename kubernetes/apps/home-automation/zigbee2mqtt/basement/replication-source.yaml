@@ -2,21 +2,16 @@
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: zigbee2mqtt-downstairs-data
+  name: zigbee2mqtt-basement-data
   namespace: home
-  annotations:
-    volsync.backube/privileged-movers: "true"
 spec:
-  sourcePVC: zigbee2mqtt-bridge1-data
+  sourcePVC: zigbee2mqtt-bridge2-data
   trigger:
-    schedule: "0 * 0 0 0"
+    schedule: "0 */12 * * *"
   restic:
     copyMethod: Snapshot
     pruneIntervalDays: 14
-    repository: zigbee2mqtt-downstairs-volsync
+    repository: zigbee2mqtt-basement-volsync
     cacheCapacity: 2Gi
     volumeSnapshotClassName: csi-ceph-blockpool
     storageClassName: ceph-block
-    retain:
-      daily: 10
-      within: 3d

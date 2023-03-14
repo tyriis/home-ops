@@ -2,14 +2,15 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: zigbee2mqtt-bridge2
+  name: zigbee2mqtt-basement
 spec:
   namespaceSelector:
-    matchNames: ["home"]
+    matchNames:
+      - home-automation
   selector:
     matchLabels:
-      app.kubernetes.io/name: zigbee2mqtt-bridge2
-      app.kubernetes.io/instance: zigbee2mqtt-bridge2
+      app.kubernetes.io/name: zigbee2mqtt-basement
+      app.kubernetes.io/instance: zigbee2mqtt-basement
   podMetricsEndpoints:
     - port: http-prom
       interval: 5m
