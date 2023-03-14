@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: flux-system
 resources:
   - ./helm-release.yaml
-  - ./ingress.yaml
   # - ./secrets.sops.yaml
 commonLabels:
   app.kubernetes.io/name: weave-gitops
