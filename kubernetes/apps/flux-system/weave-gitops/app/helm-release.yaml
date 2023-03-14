@@ -38,10 +38,27 @@ spec:
       # bcrypt hash for password "flux"
       passwordHash: "$2a$10$P/tHQ1DNFXdvX0zRGA8LPeSOyb0JXq9rP3fZ4W8HGTpLV7qHDlWhe"
     ingress:
-      # ingress is broken it seems
-      enabled: false
-    networkPolicy:
-      create: false
+      enabled: true
+      className: traefik
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-production
+        kubernetes.io/tls-acme: "true"
+        traefik.ingress.kubernetes.io/router.middlewares: traefik-ingress-sso@kubernetescrd
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/affinity: "true"
+        traefik.ingress.kubernetes.io/router.tls: "true"
+        hajimari.io/appName: weave-gitops
+        hajimari.io/enable: "true"
+        hajimari.io/icon: simple-icons:git
+      hosts:
+        - host: &host "weave-gitops.${SECRET_DOMAIN}"
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: weave-gitops-tls
+          hosts:
+            - *host
     metrics:
       enabled: true
     securityContext:
