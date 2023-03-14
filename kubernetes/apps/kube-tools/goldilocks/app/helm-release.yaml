@@ -20,9 +20,9 @@ spec:
     dashboard:
       ingress:
         enabled: false
-    resources:
-      request:
-        cpu: 15m
-        memory: 32Mi
-      limit:
-        memory: 32Mi
+    # resources:
+    #   request:
+    #     cpu: 15m
+    #     memory: 32Mi
+    #   limit:
+    #     memory: 32Mi
