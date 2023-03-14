@@ -32,7 +32,7 @@ spec:
           memory: 174Mi
           cpu: 4
     dashboard:
-      # replicaCount: 1
+      replicaCount: 1
       ingress:
         enabled: true
         ingressClassName: traefik

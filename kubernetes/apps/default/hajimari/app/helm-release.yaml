@@ -39,16 +39,17 @@ spec:
       defaultEnable: false
       namespaceSelector:
         matchNames:
-          - networking
-          - home
-          - hardware
-          - observability
-          - secops
-          - database
-          - rook-ceph
           - atlantis
-          - office
+          - default
+          - flux-system
+          - home
           - home-automation
+          - kube-tools
+          - networking
+          - observability
+          - productivity
+          - rook-ceph
+          - traefik-ingress
       name: sunshine
       lightTheme: chalk
       darkTheme: horizon
