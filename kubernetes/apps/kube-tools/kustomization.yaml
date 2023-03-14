@@ -6,3 +6,4 @@ resources:
   - ./goldilocks/flux-sync.yaml
   - ./node-feature-discovery/flux-sync.yaml
   - ./reloader/flux-sync.yaml
+  - ./vpa/flux-sync.yaml
