@@ -14,15 +14,48 @@ spec:
         name: fairwinds-charts
         namespace: flux-system
       interval: 15m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
-    vpa:
-      enabled: true
+    controller:
+      resources:
+        requests:
+          cpu: 48m
+          memory: 145Mi
+        limits:
+          memory: 174Mi
     dashboard:
+      # replicaCount: 1
       ingress:
-        enabled: false
-    # resources:
-    #   request:
-    #     cpu: 15m
-    #     memory: 32Mi
-    #   limit:
-    #     memory: 32Mi
+        enabled: true
+        ingressClassName: traefik
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/tls-acme: "true"
+          traefik.ingress.kubernetes.io/router.middlewares: traefik-ingress-sso@kubernetescrd
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/affinity: "true"
+          traefik.ingress.kubernetes.io/router.tls: "true"
+          hajimari.io/appName: goldilocks
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:face-woman-shimmer
+        hosts:
+          - host: &host "goldilocks.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                type: Prefix
+        tls:
+          - secretName: goldilocks-tls
+            hosts:
+              - *host
+      resources:
+        requests:
+          cpu: 15m
+          memory: 105Mi
+        limits:
+          memory: 105Mi
