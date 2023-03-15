@@ -37,12 +37,18 @@ spec:
     keepHistory: false
   maxHistory: 5
   values:
-    # prometheus:
-    #   podMonitor:
-    #     enabled: true
-    #   prometheusRule:
-    #     enabled: true
-    controller:
-      logLevel: error
     crds:
       enabled: true
+    prometheusRule:
+      enabled: true
+    controller:
+      logLevel: error
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+    speaker:
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
