@@ -1,0 +1,36 @@
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: emqx-data-0
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    destinationPVC: emqx-data-emqx-0
+    repository: emqx-data-0-volsync
+    copyMethod: Direct
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: emqx-data-1
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    destinationPVC: emqx-data-emqx-1
+    repository: emqx-data-1-volsync
+    copyMethod: Direct
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: emqx-data-2
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    destinationPVC: emqx-data-emqx-2
+    repository: emqx-data-2-volsync
+    copyMethod: Direct

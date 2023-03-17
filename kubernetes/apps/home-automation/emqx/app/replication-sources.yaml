@@ -1,0 +1,48 @@
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: emqx-data-0
+spec:
+  sourcePVC: emqx-data-emqx-0
+  trigger:
+    schedule: "5 */12 * * *"
+  restic:
+    copyMethod: Snapshot
+    pruneIntervalDays: 14
+    repository: emqx-data-0-volsync
+    cacheCapacity: 100Mi
+    volumeSnapshotClassName: csi-ceph-blockpool
+    storageClassName: ceph-block
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: emqx-data-1
+spec:
+  sourcePVC: emqx-data-emqx-1
+  trigger:
+    schedule: "5 */12 * * *"
+  restic:
+    copyMethod: Snapshot
+    pruneIntervalDays: 14
+    repository: emqx-data-1-volsync
+    cacheCapacity: 100Mi
+    volumeSnapshotClassName: csi-ceph-blockpool
+    storageClassName: ceph-block
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: emqx-data-2
+spec:
+  sourcePVC: emqx-data-emqx-2
+  trigger:
+    schedule: "5 */12 * * *"
+  restic:
+    copyMethod: Snapshot
+    pruneIntervalDays: 14
+    repository: emqx-data-2-volsync
+    cacheCapacity: 100Mi
+    volumeSnapshotClassName: csi-ceph-blockpool
+    storageClassName: ceph-block

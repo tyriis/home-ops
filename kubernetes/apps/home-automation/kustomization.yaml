@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./aircon/flux-sync.yaml
+  - ./emqx/flux-sync.yaml
   - ./esphome/flux-sync.yaml
   - ./home-assistant/flux-sync.yaml
   - ./node-red/flux-sync.yaml

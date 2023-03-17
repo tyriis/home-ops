@@ -5,7 +5,7 @@ metadata:
   name: apps-vpa
   namespace: flux-system
   labels:
-    substitution.flux.home.arpa/enabled: 'true'
+    substitution.flux.home.arpa/enabled: "true"
 spec:
   path: ./kubernetes/apps/kube-tools/vpa/app
   prune: true
