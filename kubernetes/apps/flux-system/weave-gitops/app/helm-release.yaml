@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: weave-gitops
-      version: 4.0.15
+      version: 4.0.16
       sourceRef:
         kind: HelmRepository
         name: weave-gitops-charts
@@ -30,7 +30,7 @@ spec:
     image:
       repository: ghcr.io/weaveworks/wego-app
       pullPolicy: IfNotPresent
-      tag: v0.18.0
+      tag: v0.19.0
     adminUser:
       create: true
       username: admin
