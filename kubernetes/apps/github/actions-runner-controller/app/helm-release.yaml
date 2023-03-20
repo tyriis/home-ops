@@ -34,7 +34,7 @@ spec:
 
     image:
       repository: summerwind/actions-runner-controller
-      tag: v0.27.0
+      tag: v0.27.1
 
     authSecret:
       create: false
