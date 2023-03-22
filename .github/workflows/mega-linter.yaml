@@ -3,11 +3,11 @@ name: MegaLinter
 
 on:
   # push and pr to main and concurrency are not able to create positive runs as canceled workflows count as failed
-  # push:
+  push:
   workflow_dispatch:
-  pull_request:
-    branches:
-      - main
+  # pull_request:
+  #   branches:
+  #     - main
 
 concurrency:
   group: ${{ github.ref }}
