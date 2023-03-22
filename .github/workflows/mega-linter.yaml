@@ -2,27 +2,14 @@
 name: MegaLinter
 
 on:
-  # push and pr to main and concurrency are not able to create positive runs as canceled workflows count as failed
   push:
   workflow_dispatch:
-  # pull_request:
-  #   branches:
-  #     - main
-
-concurrency:
-  group: ${{ github.ref }}
-  # group: ${{ github.event.after }}
-  cancel-in-progress: true
 
 jobs:
   build:
     name: MegaLinter
     runs-on: ubuntu-latest
     steps:
-      # - name: Dump GitHub context
-      #   id: github_context_step
-      #   run: echo '${{ toJSON(github) }}'
-
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -31,9 +18,9 @@ jobs:
       - name: MegaLinter
         uses: oxsecurity/megalinter/flavors/terraform@v6.20.1
         env:
-          # VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'workflow_dispatch' }}
-          VALIDATE_ALL_CODEBASE: false
+          VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'workflow_dispatch' }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # GITHUB_STATUS_REPORTER only works if VALIDATE_ALL_CODEBASE is false!
           GITHUB_STATUS_REPORTER: true
           REPORTERS_MARKDOWN_TYPE: simple
           SHOW_ELAPSED_TIME: false
