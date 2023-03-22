@@ -9,7 +9,8 @@ on:
       - main
 
 concurrency:
-  group: ${{ github.ref }}
+  # group: ${{ github.ref }}
+  group: ${{ github.head_ref }}.${{ github.sha }}
   cancel-in-progress: true
 
 jobs:
