@@ -32,8 +32,8 @@ jobs:
         env:
           # VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'workflow_dispatch' }}
           VALIDATE_ALL_CODEBASE: true
-          DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # GITHUB_COMMENT_REPORTER: true
-          GITHUB_STATUS_REPORTER: "true"
+          GITHUB_STATUS_REPORTER: true
           REPORTERS_MARKDOWN_TYPE: simple
+          SHOW_ELAPSED_TIME: true
+          SHOW_SKIPPED_LINTERS: true
