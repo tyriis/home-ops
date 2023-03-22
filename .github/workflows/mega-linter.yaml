@@ -10,7 +10,7 @@ on:
 
 concurrency:
   # group: ${{ github.ref }}
-  group: ${{ github.sha }}
+  group: ${{ github.event.after }}
   cancel-in-progress: true
 
 jobs:
@@ -18,9 +18,9 @@ jobs:
     name: MegaLinter
     runs-on: ubuntu-latest
     steps:
-      - name: Dump GitHub context
-        id: github_context_step
-        run: echo '${{ toJSON(github) }}'
+      # - name: Dump GitHub context
+      #   id: github_context_step
+      #   run: echo '${{ toJSON(github) }}'
 
       - name: Checkout
         uses: actions/checkout@v3
@@ -34,7 +34,6 @@ jobs:
           VALIDATE_ALL_CODEBASE: true
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          LINTER_RULES_PATH: .
-          GITHUB_COMMENT_REPORTER: true
-          GITHUB_STATUS_REPORTER: true
+          # GITHUB_COMMENT_REPORTER: true
+          GITHUB_STATUS_REPORTER: "true"
           REPORTERS_MARKDOWN_TYPE: simple
