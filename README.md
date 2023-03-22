@@ -168,7 +168,7 @@ example:
 
 ## Quality
 
-Code lint: [![megalinter][megalinter-shield]][megalinter-url]
+[![megalinter][megalinter-badge]][megalinter-url]
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -196,5 +196,5 @@ Code lint: [![megalinter][megalinter-shield]][megalinter-url]
 [flux-home-cluster-url]: https://github.com/tyriis/flux.home-cluster
 [flux-k3s-home-url]: https://github.com/tyriis/flux.k3s.home
 [flux-pi-k3s-home-url]: https://github.com/tyriis/flux.pi-k3s.home
-[megalinter-shield]: https://img.shields.io/github/actions/workflow/status/tyriis/home-ops/mega-linter.yaml?branch=main&style=flat-square
+[megalinter-badge]: https://github.com/tyriis/home-ops/workflows/MegaLinter/badge.svg?branch=main
 [megalinter-url]: https://github.com/tyriis/home-ops/actions/workflows/mega-linter.yaml?query=branch%3Amain
