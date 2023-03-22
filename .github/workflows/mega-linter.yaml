@@ -2,13 +2,14 @@
 name: MegaLinter
 
 on:
+  push:
   workflow_dispatch:
   pull_request:
     branches:
       - main
 
 concurrency:
-  group: ${{ github.ref }}-${{ github.workflow }}
+  group: ${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -31,3 +32,4 @@ jobs:
           LINTER_RULES_PATH: .
           GITHUB_COMMENT_REPORTER: true
           GITHUB_STATUS_REPORTER: true
+          REPORTERS_MARKDOWN_TYPE: simple
