@@ -8,7 +8,7 @@ on:
     paths: ["kubernetes/**/helm-release.yaml"]
 
 env:
-  KUBERNETES_DIR: kubernetes/
+  KUBERNETES_DIR: kubernetes/flux
 
 jobs:
   changed-files:
