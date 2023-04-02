@@ -1,9 +1,11 @@
 ---
 clusterName: talos-flux
-talosVersion: v1.2.8
-kubernetesVersion: v1.25.6
+talosVersion: v1.3.6
+kubernetesVersion: v1.26.3
 endpoint: https://192.168.1.50:6443
 allowSchedulingOnMasters: true
+cniConfig:
+  name: flannel
 nodes:
   # i7-8650U / 32GB / SAMSUNG EVO 870 500GB SSD / WD BLUE SN550 500GB NVME
   - hostname: talos01
@@ -148,3 +150,7 @@ worker:
       value:
         feature-gates: MixedProtocolLBService=true,GracefulNodeShutdown=true,EphemeralContainers=true
         rotate-server-certificates: true
+    - op: add
+      path: /machine/nodeLabels
+      value:
+        node-role.kubernetes.io/worker: ""
