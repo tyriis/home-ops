@@ -9,5 +9,5 @@ spec:
     spec:
       containers:
         - name: cert-approver
-          image: ghcr.io/alex1989hu/kubelet-serving-cert-approver:0.6.9
+          image: ghcr.io/alex1989hu/kubelet-serving-cert-approver:0.6.10
           imagePullPolicy: IfNotPresent
