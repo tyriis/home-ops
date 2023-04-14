@@ -70,9 +70,9 @@ spec:
       syncPeriod: 10m
       secret:
         create: false
-        name: &webhook-secret actions-runner-controller-webhook
+        name: *secret
       podAnnotations:
-        secret.reloader.stakater.com/reload: *webhook-secret
+        secret.reloader.stakater.com/reload: *secret
       ingress:
         enabled: true
         annotations:
@@ -84,10 +84,11 @@ spec:
           external-dns.alpha.kubernetes.io/target: "${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"
         ingressClassName: "traefik"
         hosts:
-          - host: &host arc-hook.${SECRET_DOMAIN}
+          - host: &host arc-webhook.${SECRET_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
         tls:
-          - hosts:
+          - secretName: arc-webhook-tls
+            hosts:
               - *host
