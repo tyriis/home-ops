@@ -36,7 +36,7 @@ ingress:
   - hostname: arc-webhook.${SECRET_DOMAIN}
     service: https://arc-webhook.${SECRET_DOMAIN}
     originRequest:
-      httpHostHeader: webhook.${SECRET_DOMAIN}
+      httpHostHeader: arc-webhook.${SECRET_DOMAIN}
   # - hostname: example2.com
   #   service: localhost:8001
   # The localhost:8002 service overrides some root-level config.
