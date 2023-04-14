@@ -27,9 +27,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: ghcr.io/weaveworks/wego-app
-      pullPolicy: IfNotPresent
     adminUser:
       create: true
       username: admin
