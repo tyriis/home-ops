@@ -69,5 +69,9 @@
       labels: ["helm", "patch"],
       automerge: true,
     },
+    {
+      matchDatasources: ["flux"],
+      addLabels: ["flux"],
+    },
   ],
 }
