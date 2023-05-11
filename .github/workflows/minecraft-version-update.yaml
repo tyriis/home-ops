@@ -23,7 +23,7 @@ jobs:
 
       # https://github.com/tyriis/bedrock-version-fetcher
       - name: Fetch Bedrock Version
-        uses: tyriis/bedrock-version-fetcher@v2.0.5
+        uses: tyriis/bedrock-version-fetcher@v2.0.6
         id: bedrock
 
       - name: Version Update
