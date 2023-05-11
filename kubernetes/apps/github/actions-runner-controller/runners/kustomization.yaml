@@ -5,5 +5,7 @@ namespace: github
 resources:
   - organization.sops.yaml
   - tyriis.sops.yaml
+  - jazzlyn.sops.yaml
   - organization-runner-deployment.yaml
   - tyriis-runner-deployment.yaml
+  - jazzlyn-runner-deployment.yaml
