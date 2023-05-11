@@ -23,7 +23,7 @@ spec:
 
     executors:
       kubectl-read-only:
-        kubectl:
+        botkube/kubectl:
           enabled: true
 
     deployment:
