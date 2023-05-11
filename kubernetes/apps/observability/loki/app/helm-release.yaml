@@ -14,6 +14,7 @@ spec:
         name: grafana-charts
         namespace: flux-system
       interval: 30m
+  maxHistory: 10
   install:
     remediation:
       retries: 3
@@ -49,10 +50,10 @@ spec:
 
         schema_config:
           configs:
-            - from: "2021-08-01"
+            - from: "2023-01-01"
               store: boltdb-shipper
               object_store: s3
-              schema: v11
+              schema: v12
               index:
                 prefix: loki_index_
                 period: 24h
@@ -205,14 +206,19 @@ spec:
     test:
       enabled: false
     monitoring:
+      dashboards:
+        annotations:
+          kustomize.toolkit.fluxcd.io/substitute: disabled
+        labels:
+          grafana_dashboard: "true"
       serviceMonitor:
         enabled: false
       selfMonitoring:
-        lokiCanary:
-          enabled: false
         enabled: false
         grafanaAgent:
           installOperator: false
+      lokiCanary:
+        enabled: false
 
   valuesFrom:
     - kind: Secret
