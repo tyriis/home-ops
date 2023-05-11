@@ -1,0 +1,69 @@
+---
+name: Minecraft version update
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Minecraft Version Update
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.5.2
+        with:
+          fetch-depth: 0
+
+      - name: Setup Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Setup Tools
+        run: |
+          brew install yq
+
+      # https://github.com/tyriis/bedrock-version-fetcher
+      - name: Fetch Bedrock Version
+        uses: tyriis/bedrock-version-fetcher@v2.0.4
+        id: bedrock
+
+      - name: Version Update
+        id: update
+        run: |
+          version=$(npx zx ./.github/scripts/minecraftVersionCheck.mjs \
+            --helm-release=./kubernetes/apps/gaming/minecraft-bedrock/app/helm-release.yaml \
+            --version=${{ steps.bedrock.outputs.version }})
+          echo "version<<EOF" >> "${GITHUB_OUTPUT}"
+          echo "${update}" >> "${GITHUB_OUTPUT}"
+          echo "EOF" >> "${GITHUB_OUTPUT}"
+
+      # https://github.com/marketplace/actions/install-gh-cli
+      - name: install github cli
+        if: "${{ inputs.update.outputs.version != '' }}"
+        uses: dev-hanz-ops/install-gh-cli-action@v0.1.0
+
+      - name: commit
+        if: "${{ inputs.update.outputs.version != '' }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          export SHA=$( git rev-parse ${{ inputs.destination-branch }}:${{ inputs.file-path }} )
+          export CONTENT=$( base64 -i ${{ inputs.file-path }} )
+          gh api --method PUT /repos/${{ github.repository }}/contents/${{ inputs.file-path }} \
+            --field message="${{ inputs.commit-message }} ${{ inputs.tag }}" \
+            --field content="$CONTENT" \
+            --field encoding="base64" \
+            --field branch="${{ inputs.destination-branch }}" \
+            --field sha="$SHA"
+
+      # https://github.com/marketplace/actions/pull-request-action
+      - name: create pr
+        uses: peter-evans/create-pull-request@v5.0.0
+        if: ${{ inputs.update.outputs.version != '' }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          add-paths: kubernetes/apps/gaming/minecraft-bedrock/app/helm-release.yaml
+          commit-message: "chore(bedrock): update minecraft bedrock to ${{ inputs.update.outputs.version }}"
+          committer: ${{ github.actor }}
+          author: ${{ github.actor }}
+          branch: minecraft/bedrock-${{ inputs.update.outputs.version }}
+          base: main
