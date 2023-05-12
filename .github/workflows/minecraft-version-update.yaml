@@ -46,14 +46,17 @@ jobs:
         if: "${{ steps.update.outputs.version != '' }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FILE_TO_COMMIT: kubernetes/apps/gaming/minecraft-bedrock/app/helm-release.yaml
+          DESTINATION_BRANCH: minecraft/bedrock-${{ steps.update.outputs.version }}
+          MESSAGE: "chore(deps): update minecraft-bedrock to ${{ steps.update.outputs.version }}"
         run: |
-          export SHA=$( git rev-parse ${{ inputs.destination-branch }}:${{ inputs.file-path }} )
-          export CONTENT=$( base64 -i ${{ inputs.file-path }} )
-          gh api --method PUT /repos/${{ github.repository }}/contents/${{ inputs.file-path }} \
-            --field message="${{ inputs.commit-message }} ${{ inputs.tag }}" \
+          export SHA=$( git rev-parse $DESTINATION_BRANCH:$FILE_TO_COMMIT )
+          export CONTENT=$( base64 -i $FILE_TO_COMMIT )
+          gh api --method PUT /repos/${{ github.repository }}/contents/$FILE_TO_COMMIT \
+            --field message="$MESSAGE" \
             --field content="$CONTENT" \
             --field encoding="base64" \
-            --field branch="${{ inputs.destination-branch }}" \
+            --field branch="$DESTINATION_BRANCH" \
             --field sha="$SHA"
 
       # https://github.com/marketplace/actions/pull-request-action
@@ -63,8 +66,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           add-paths: kubernetes/apps/gaming/minecraft-bedrock/app/helm-release.yaml
-          commit-message: "chore(bedrock): update minecraft bedrock to ${{ inputs.update.outputs.version }}"
+          commit-message: "chore(deps): update minecraft bedrock to ${{ steps.update.outputs.version }}"
           committer: ${{ github.actor }}
           author: ${{ github.actor }}
-          branch: minecraft/bedrock-${{ inputs.update.outputs.version }}
+          branch: minecraft/bedrock-${{ steps.update.outputs.version }}
           base: main
