@@ -3,6 +3,8 @@ name: Minecraft version update
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
 
 jobs:
   build:
