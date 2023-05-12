@@ -65,7 +65,7 @@ jobs:
             -f ref="refs/heads/$DESTINATION_BRANCH" \
             -f sha="$(git rev-parse HEAD)"
           git pull
-          export SHA=$( git rev-parse $DESTINATION_BRANCH:$FILE_TO_COMMIT )
+          export SHA=$( git rev-parse origin/$DESTINATION_BRANCH:$FILE_TO_COMMIT )
           export CONTENT=$( base64 -i $FILE_TO_COMMIT )
           gh api --method PUT /repos/${{ github.repository }}/contents/$FILE_TO_COMMIT \
             --field message="$MESSAGE" \
