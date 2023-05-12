@@ -74,7 +74,7 @@ jobs:
             --field branch="$DESTINATION_BRANCH" \
             --field sha="$SHA"
 
-      # https://github.com/marketplace/actions/pull-request-action
+      # https://github.com/marketplace/actions/create-pull-request
       - name: create pr
         uses: peter-evans/create-pull-request@v5.0.1
         if: ${{ steps.update.outputs.version != '' }}
@@ -82,7 +82,5 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           add-paths: kubernetes/apps/gaming/minecraft-bedrock/app/helm-release.yaml
           commit-message: "chore(deps): update minecraft bedrock to ${{ steps.update.outputs.version }}"
-          committer: ${{ github.actor }}
-          author: ${{ github.actor }}
           branch: minecraft/bedrock-${{ steps.update.outputs.version }}
           base: main
