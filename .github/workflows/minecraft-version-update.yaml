@@ -33,7 +33,7 @@ jobs:
             --helm-release=./kubernetes/apps/gaming/minecraft-bedrock/app/helm-release.yaml \
             --version=${{ steps.bedrock.outputs.version }})
           echo "version<<EOF" >> "${GITHUB_OUTPUT}"
-          echo "${update}" >> "${GITHUB_OUTPUT}"
+          echo "${version}" >> "${GITHUB_OUTPUT}"
           echo "EOF" >> "${GITHUB_OUTPUT}"
 
       # https://github.com/marketplace/actions/install-gh-cli
