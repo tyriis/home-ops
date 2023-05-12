@@ -84,3 +84,4 @@ jobs:
           commit-message: "chore(deps): update minecraft bedrock to ${{ steps.update.outputs.version }}"
           branch: minecraft/bedrock-${{ steps.update.outputs.version }}
           base: main
+          title: "chore(deps): update minecraft bedrock to ${{ steps.update.outputs.version }}"
