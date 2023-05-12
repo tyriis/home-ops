@@ -13,5 +13,5 @@ const currentVersion = result.stdout.trim().replace(new RegExp('"', "g"), "")
 
 if (latestVersion !== currentVersion) {
   await $`sed -i "s%${currentVersion}%${latestVersion}%g" ${helmRelease}`
-  echo(latestVersion)
+  echo(`${latestVersion}`)
 }

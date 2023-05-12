@@ -35,6 +35,7 @@ jobs:
           echo "version<<EOF" >> "${GITHUB_OUTPUT}"
           echo "${version}" >> "${GITHUB_OUTPUT}"
           echo "EOF" >> "${GITHUB_OUTPUT}"
+          echo "${version}"
 
       # https://github.com/marketplace/actions/install-gh-cli
       - name: install github cli
