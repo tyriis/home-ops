@@ -39,11 +39,11 @@ jobs:
 
       # https://github.com/marketplace/actions/install-gh-cli
       - name: install github cli
-        if: "${{ inputs.update.outputs.version != '' }}"
+        if: "${{ steps.update.outputs.version != '' }}"
         uses: dev-hanz-ops/install-gh-cli-action@v0.1.0
 
       - name: commit
-        if: "${{ inputs.update.outputs.version != '' }}"
+        if: "${{ steps.update.outputs.version != '' }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -59,7 +59,7 @@ jobs:
       # https://github.com/marketplace/actions/pull-request-action
       - name: create pr
         uses: peter-evans/create-pull-request@v5.0.1
-        if: ${{ inputs.update.outputs.version != '' }}
+        if: ${{ steps.update.outputs.version != '' }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           add-paths: kubernetes/apps/gaming/minecraft-bedrock/app/helm-release.yaml
