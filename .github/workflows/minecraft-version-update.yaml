@@ -62,7 +62,7 @@ jobs:
           gh api --method POST \
             -H "Accept: application/vnd.github.v3+json" \
             /repos/tyriis/home-ops/git/refs \
-            -f ref="refs/heads/$DESTINATION_BRANCH" -f
+            -f ref="refs/heads/$DESTINATION_BRANCH" \
             -f sha="$(git rev-parse HEAD)"
           git pull
           export SHA=$( git rev-parse $DESTINATION_BRANCH:$FILE_TO_COMMIT )
