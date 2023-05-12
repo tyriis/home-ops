@@ -42,6 +42,15 @@ jobs:
         if: "${{ steps.update.outputs.version != '' }}"
         uses: dev-hanz-ops/install-gh-cli-action@v0.1.0
 
+      # https://github.com/EndBug/add-and-commit
+      # - name: commit
+      #   if: "${{ steps.update.outputs.version != '' }}"
+      #   uses: EndBug/add-and-commit@v9.1.3
+      #   with:
+      #     add: kubernetes/apps/gaming/minecraft-bedrock/app/helm-release.yaml
+      #     message: "chore(deps): update minecraft-bedrock to ${{ steps.update.outputs.version }}"
+      #     new_branch: minecraft/bedrock-${{ steps.update.outputs.version }}
+
       - name: commit
         if: "${{ steps.update.outputs.version != '' }}"
         env:
@@ -50,6 +59,12 @@ jobs:
           DESTINATION_BRANCH: minecraft/bedrock-${{ steps.update.outputs.version }}
           MESSAGE: "chore(deps): update minecraft-bedrock to ${{ steps.update.outputs.version }}"
         run: |
+          gh api --method POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            /repos/tyriis/home-ops/git/refs \
+            -f ref="refs/heads/$DESTINATION_BRANCH" -f
+            -f sha="$(git rev-parse HEAD)"
+          git pull
           export SHA=$( git rev-parse $DESTINATION_BRANCH:$FILE_TO_COMMIT )
           export CONTENT=$( base64 -i $FILE_TO_COMMIT )
           gh api --method PUT /repos/${{ github.repository }}/contents/$FILE_TO_COMMIT \
