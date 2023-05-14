@@ -1,0 +1,61 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: win2day-check
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  maxHistory: 15
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controller:
+      type: cronjob
+      cronjob:
+        schedule: "0 */6 * * *"
+        ttlSecondsAfterFinished: 86400
+
+    podSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 999
+      fsGroup: 2000
+      fsGroupChangePolicy: "OnRootMismatch"
+      supplementalGroups:
+        - 65539
+
+    restartPolicy: OnFailure
+
+    image:
+      repository: ghcr.io/tyriis/win2day-check
+      tag: v1.0.1
+
+    envFrom:
+      - secretRef:
+          name: win2day-check-env
+
+    service:
+      main:
+        enabled: false
+
+    resources:
+      requests:
+        cpu: 5m
+        memory: 10Mi
+      limits:
+        memory: 50Mi
