@@ -39,7 +39,7 @@ spec:
       supplementalGroups:
         - 65539
 
-    restartPolicy: OnFailure
+    restartPolicy: Never
 
     image:
       repository: ghcr.io/tyriis/win2day-check
@@ -57,5 +57,3 @@ spec:
       requests:
         cpu: 5m
         memory: 10Mi
-      limits:
-        memory: 50Mi
