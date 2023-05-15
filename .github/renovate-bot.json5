@@ -1,0 +1,6 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  username: "tyriis-automation",
+  gitAuthor: "tyriis-automation <133711747+tyriis-automation[bot]@users.noreply.github.com>",
+  repositories: ["tyriis/home-ops"],
+}
