@@ -1,4 +1,5 @@
 {
+  platform: "github",
   extends: [
     "github>bjw-s/home-ops//.github/renovate/disabledDatasources.json5",
   ],
