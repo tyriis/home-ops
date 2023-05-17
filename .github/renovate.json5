@@ -74,5 +74,10 @@
       matchDatasources: ["flux"],
       addLabels: ["flux"],
     },
+    {
+      matchDatasources: ["terraform"],
+      addLabels: ["terraform"],
+      automerge: true,
+    },
   ],
 }
