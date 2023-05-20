@@ -13,7 +13,7 @@ spec:
       ephemeral: true
       containers:
         - name: docker
-          image: docker:24.0.0-dind@sha256:6893622dae740d55e7879ff7a3d0a3f641e2bb639ea6bbc74bdabfa531db4785
+          image: docker:24.0.1-dind@sha256:ff3b9bc6b87e85ce3a374eef7a8daeb3b23cfa6fa6024382e63041a940cc25b4
       organization: ${SECRET_GH_ORGANIZATION}
       githubAPICredentialsFrom:
         secretRef:
