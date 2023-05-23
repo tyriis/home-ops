@@ -9,7 +9,7 @@ metadata:
 spec:
   interval: 10m
   path: ./kubernetes/apps/gaming/minecraft-bedrock/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops
