@@ -5,7 +5,7 @@ metadata:
   name: minecraft-bedrock-data
 spec:
   trigger:
-    manual: restore
+    manual: restore-once
   restic:
     destinationPVC: minecraft-bedrock-data
     repository: volsync-minecraft-bedrock-data

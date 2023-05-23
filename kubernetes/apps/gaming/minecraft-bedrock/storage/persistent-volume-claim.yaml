@@ -5,8 +5,6 @@ metadata:
   name: minecraft-bedrock-data
   labels:
     kustomize.toolkit.fluxcd.io/prune: disabled
-    app.kubernetes.io/instance: minecraft-bedrock
-    app.kubernetes.io/name: minecraft-bedrock
 spec:
   accessModes:
     - ReadWriteOnce

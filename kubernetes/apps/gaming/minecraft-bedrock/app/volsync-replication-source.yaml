@@ -8,7 +8,7 @@ spec:
   trigger:
     schedule: "*/30 * * * *"
   restic:
-    pruneIntervalDays: 15
+    pruneIntervalDays: 14
     repository: volsync-minecraft-bedrock-data
     retain:
       hourly: 1
@@ -16,4 +16,7 @@ spec:
       weekly: 1
       monthly: 1
       yearly: 1
-    copyMethod: Clone
+    volumeSnapshotClassName: csi-ceph-blockpool
+    storageClassName: ceph-block
+    cacheCapacity: 10Gi
+    copyMethod: Snapshot
