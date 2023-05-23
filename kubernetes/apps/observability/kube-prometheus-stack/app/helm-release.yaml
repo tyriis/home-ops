@@ -100,7 +100,7 @@ spec:
       enabled: true
 
     kubeControllerManager:
-      enabled: true
+      enabled: false
       endpoints:
         - 192.168.1.51
         - 192.168.1.52
@@ -115,7 +115,7 @@ spec:
       #   insecureSkipVerify: true
 
     kubeScheduler:
-      enabled: true
+      enabled: false
       endpoints:
         - 192.168.1.51
         - 192.168.1.52
