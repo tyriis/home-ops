@@ -109,8 +109,10 @@ spec:
               url: "https://medium.muz.li/"
         - group: Dev
           bookmarks:
-            - name: Codepen
-              url: "https://codepen.io/"
+            - name: gitmoji
+              url: https://gitmoji.dev/
+            # - name: Codepen
+            #   url: "https://codepen.io/"
             - name: Devdocs
               url: "https://devdocs.io"
             - name: Devhints
