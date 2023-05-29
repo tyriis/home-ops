@@ -5,4 +5,3 @@ resources:
   - ./namespace.yaml
   - ./echo-server/flux-sync.yaml
   - ./hajimari/flux-sync.yaml
-  - ./win2day-check/flux-sync.yaml
