@@ -8,4 +8,4 @@ resources:
   - jazzlyn.sops.yaml
   # - organization-runner-deployment.yaml
   # - tyriis-runner-deployment.yaml
-  # - jazzlyn-runner-deployment.yaml
+  - jazzlyn-runner-deployment.yaml
