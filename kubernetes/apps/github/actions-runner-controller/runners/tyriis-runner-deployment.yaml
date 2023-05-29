@@ -1,52 +1,47 @@
-# ---
-# # https://github.com/actions-runner-controller/actions-runner-controller
-# apiVersion: actions.summerwind.dev/v1alpha1
-# kind: RunnerDeployment
-# metadata:
-#   name: tyriis-home-ops
-# spec:
-#   # replicas: 1
-#   template:
-#     spec:
-#       image: ghcr.io/actions/actions-runner-controller/actions-runner:v2.299.1-ubuntu-20.04@sha256:69e3b023ecdb34313935952c4375a75414db79f177353123c774290028b3bb3a
-#       dockerdWithinRunnerContainer: false
-#       ephemeral: true
-#       containers:
-#         - name: docker
-#           image: docker:24.0.2-dind@sha256:f44bd33ee57baf0830d8c07a1abd7ce40301a446e819b86ad0d99735c049f6a5
-#       repository: tyriis/home-ops
-#       githubAPICredentialsFrom:
-#         secretRef:
-#           name: tyriis-runner
-#       labels:
-#         - ${SETTING_CLUSTERNAME}
-#         - home-infra
-#       dockerMTU: 1400
-#       env: []
+---
+# https://github.com/actions-runner-controller/actions-runner-controller
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: RunnerDeployment
+metadata:
+  name: tyriis-home-ops
+spec:
+  # replicas: 1
+  template:
+    spec:
+      labels:
+        - ${SETTING_CLUSTERNAME}
+        - home-infra
+      ephemeral: true
+      repository: tyriis/home-ops
+      githubAPICredentialsFrom:
+        secretRef:
+          name: tyriis-runner
+      dockerMTU: 1400
+      env: []
 
-# ---
-# # https://github.com/actions-runner-controller/actions-runner-controller#autoscaling
-# apiVersion: actions.summerwind.dev/v1alpha1
-# kind: HorizontalRunnerAutoscaler
-# metadata:
-#   name: tyriis-home-ops
-# spec:
-#   scaleTargetRef:
-#     name: tyriis-home-ops
-#   githubAPICredentialsFrom:
-#     secretRef:
-#       name: tyriis-runner
-#     # Uncomment the below in case the target is not RunnerDeployment but RunnerSet
-#     # kind: RunnerSet
-#   scaleDownDelaySecondsAfterScaleOut: 300
-#   minReplicas: 1
-#   maxReplicas: 5
-#   metrics:
-#     - type: PercentageRunnersBusy
-#       scaleUpThreshold: "0.75" # The percentage of busy runners at which the number of desired runners are re-evaluated to scale up
-#       scaleDownThreshold: "0.3" # The percentage of busy runners at which the number of desired runners are re-evaluated to scale down
-#       scaleUpAdjustment: 2 # The scale up runner count added to desired count
-#       scaleDownAdjustment: 1 # The scale down runner count subtracted from the desired count
+---
+# https://github.com/actions-runner-controller/actions-runner-controller#autoscaling
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: HorizontalRunnerAutoscaler
+metadata:
+  name: tyriis-home-ops
+spec:
+  scaleTargetRef:
+    name: tyriis-home-ops
+  githubAPICredentialsFrom:
+    secretRef:
+      name: tyriis-runner
+    # Uncomment the below in case the target is not RunnerDeployment but RunnerSet
+    # kind: RunnerSet
+  scaleDownDelaySecondsAfterScaleOut: 300
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+    - type: PercentageRunnersBusy
+      scaleUpThreshold: "0.75" # The percentage of busy runners at which the number of desired runners are re-evaluated to scale up
+      scaleDownThreshold: "0.3" # The percentage of busy runners at which the number of desired runners are re-evaluated to scale down
+      scaleUpAdjustment: 2 # The scale up runner count added to desired count
+      scaleDownAdjustment: 1 # The scale down runner count subtracted from the desired count
 
 ---
 # https://github.com/actions-runner-controller/actions-runner-controller
