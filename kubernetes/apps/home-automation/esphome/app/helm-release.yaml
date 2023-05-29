@@ -28,7 +28,7 @@ spec:
   values:
     image:
       repository: ghcr.io/esphome/esphome
-      tag: 2023.5.4
+      tag: 2023.5.5
     env:
       TZ: ${SETTING_TZ}
       ESPHOME_DASHBOARD_USE_PING: "true"
