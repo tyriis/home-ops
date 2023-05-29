@@ -8,12 +8,6 @@ spec:
   # replicas: 1
   template:
     spec:
-      image: ghcr.io/actions/actions-runner-controller/actions-runner:v2.299.1-ubuntu-20.04@sha256:69e3b023ecdb34313935952c4375a75414db79f177353123c774290028b3bb3a
-      dockerdWithinRunnerContainer: false
-      ephemeral: true
-      containers:
-        - name: docker
-          image: docker:24.0.2-dind@sha256:f44bd33ee57baf0830d8c07a1abd7ce40301a446e819b86ad0d99735c049f6a5
       organization: ${SECRET_GH_ORGANIZATION}
       githubAPICredentialsFrom:
         secretRef:
@@ -21,7 +15,7 @@ spec:
       labels:
         - ${SETTING_CLUSTERNAME}
         - home-infra
-      # dockerMTU: 1400
+      dockerMTU: 1400
       env: []
 
 ---
