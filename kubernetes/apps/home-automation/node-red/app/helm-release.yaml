@@ -33,7 +33,7 @@ spec:
       tag: v3.0.2
 
     env:
-      TZ: ${CONFIG_TZ}
+      TZ: ${SETTING_TZ}
       FLOWS: flows.json
       NODE_RED_ENABLE_PROJECTS: "true"
       NODE_RED_ENABLE_SAFE_MODE: "false"

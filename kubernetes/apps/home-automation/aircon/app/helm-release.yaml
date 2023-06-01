@@ -30,7 +30,7 @@ spec:
       repository: deiger/aircon
       tag: 0.3.14
     env:
-      TZ: ${CONFIG_TZ}
+      TZ: ${SETTING_TZ}
     service:
       main:
         ports:

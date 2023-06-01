@@ -30,7 +30,7 @@ spec:
       repository: ghcr.io/home-assistant/home-assistant
       tag: 2023.5.4
     env:
-      TZ: ${CONFIG_TZ}
+      TZ: ${SETTING_TZ}
     envFrom:
       - secretRef:
           name: home-assistant-secrets
