@@ -24,3 +24,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  values:
+    externalSnapshotter:
+      enabled: false
