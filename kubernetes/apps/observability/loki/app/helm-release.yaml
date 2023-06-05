@@ -4,6 +4,7 @@ kind: HelmRelease
 metadata:
   name: loki
 spec:
+  timeout: 10m
   interval: 30m
   chart:
     spec:
