@@ -78,7 +78,7 @@ jobs:
 
       # https://github.com/marketplace/actions/create-pull-request
       - name: create pr
-        uses: peter-evans/create-pull-request@v5.0.1
+        uses: peter-evans/create-pull-request@v5.0.2
         if: ${{ steps.update.outputs.version != '' }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
