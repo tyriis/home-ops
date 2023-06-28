@@ -27,7 +27,7 @@ terraform {
     }
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "4.8.0"
+      version = "4.9.0"
     }
     http = {
       source  = "hashicorp/http"
