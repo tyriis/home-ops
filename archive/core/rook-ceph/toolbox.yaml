@@ -24,6 +24,8 @@
 # ceph clear osd flags
 #     run: ceph osd rm-noin 3
 #
+# clear crash report
+#     run: ceph crash archive-all
 
 apiVersion: apps/v1
 kind: Deployment
