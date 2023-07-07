@@ -85,6 +85,38 @@ spec:
         kind: Namespace
         version: v1
         name: flux-system
+    # Remove image-automation-controller as we dont use it
+    # - patch: |
+    #     $patch: delete
+    #     apiVersion: apiextensions.k8s.io/v1
+    #     kind: CustomResourceDefinition
+    #     metadata:
+    #       name: imageupdateautomations.image.toolkit.fluxcd.io
+    #   target:
+    #     group: apiextensions.k8s.io
+    #     kind: CustomResourceDefinition
+    #     name: imageupdateautomations.image.toolkit.fluxcd.io
+    - patch: |
+        $patch: delete
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: image-automation-controller
+      target:
+        kind: Deployment
+        version: v1
+        name: image-automation-controller
+    # Remove image-reflector-controller as we dont use it
+    - patch: |
+        $patch: delete
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: image-reflector-controller
+      target:
+        kind: Deployment
+        version: v1
+        name: image-reflector-controller
     # Enable notifications for 3rd party Flux controllers such as tf-controller
     # https://fluxcd.io/flux/cheatsheets/bootstrap/#enable-notifications-for-third-party-controllers
     # - patch: |
