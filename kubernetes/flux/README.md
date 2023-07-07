@@ -5,6 +5,14 @@
 TODO: how to bootstrap flux? check if oci is not a possible attack vector into the cluster?
 [ ] assure sops-age secret is provided for cluster-sync
 
+### Manifests
+
+To generate the manifests run:
+
+```console
+kustomize build kubernetes/bootstrap > kubernetes/flux/flux-manifests/flux-manifests.yaml
+```
+
 ## GitRepo
 
 when flux is up and running, we can apply our manifests
