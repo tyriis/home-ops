@@ -25,7 +25,7 @@ metadata:
 spec:
   interval: 10m
   path: ./kubernetes/apps/rook-ceph/rook-ceph/cluster
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops
