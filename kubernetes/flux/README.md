@@ -10,7 +10,7 @@ TODO: how to bootstrap flux? check if oci is not a possible attack vector into t
 To generate the manifests run:
 
 ```console
-kustomize build kubernetes/bootstrap > kubernetes/flux/flux-manifests/flux-manifests.yaml
+kustomize build kubernetes/bootstrap > kubernetes/flux/flux-manifests/gotk-components.yaml
 ```
 
 ## GitRepo
