@@ -89,9 +89,6 @@ spec:
           - name: talos03
             devices:
               - name: /dev/nvme0n1
-          - name: talos04
-            devices:
-              - name: /dev/nvme0n1
       resources:
         mgr:
           limits:
