@@ -53,8 +53,10 @@ repos:
     hooks:
       - id: check-merge-conflict
       - id: check-added-large-files
+        exclude: "gotk-components.yaml"
         args:
           - --maxkb=200
+
       - id: check-case-conflict
       - id: check-executables-have-shebangs
       - id: check-json
