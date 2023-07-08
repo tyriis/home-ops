@@ -4,4 +4,3 @@ kind: Kustomization
 namespace: kyverno
 resources:
   - ./helm-release.yaml
-  - ./cluster-role-binding.yaml

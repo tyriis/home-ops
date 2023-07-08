@@ -4,5 +4,5 @@ kind: Kustomization
 metadata:
   namespace: kyverno
 resources:
-  - ./ingress-prom-probes.yaml
+  # - ./ingress-prom-probes.yaml
   - ./remove-cpu-limits.yaml
