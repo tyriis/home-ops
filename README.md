@@ -63,17 +63,24 @@
 
 ## About The Project
 
-👋 Hello and welcome to my project. This is a private project heavily inspired by the great [k8s-at-home][k8s-at-home-url] community. I want to share my work and findings but also my frustrations with you.
+👋 Hello and welcome to my Home Lab GitOps Cluster Configuration!
 
-This project is the result of a merge from my previous iterations [flux.home-cluster][flux-home-cluster-url], [flux.k3s.home][flux-k3s-home-url] and [flux.pi-k3s.home][flux-pi-k3s-home-url].
+In this project, I am thrilled to share with you the automated configuration of my home infrastructure. As an ardent believer in continuous learning, I embrace every opportunity to challenge myself and expand my knowledge horizon.
+Through this venture, I aim to not only streamline and automate my daily tasks but also encourage collaboration and knowledge sharing within the community.
 
-### Goals
+This is a private project heavily inspired by the great [k8s-at-home][k8s-at-home-url] community.
 
-- Automate my home and home infrastructure.
-- Learn new things everyday.
-- Challenge myself.
-- Share my findings and work with you. (cause knowledge should be free and humans should not do same things twice)
-- More time for new/other things. :nerd_face:
+Let's take a glimpse into the evolution of this project:
+
+- The Foundation: [flux.home-cluster][flux-home-cluster-url] starting with a first iteration and learn Flux and GitOps principles with some old hardware.
+- The Minimal Redundancy Edition: [flux.pi-k3s.home][flux-pi-k3s-home-url] starting a new project with a Raspberry Pi based GitOps Flux Cluster, with three control planes.
+- The merge: [flux.k3s.home][flux-k3s-home-url] after a successfull testing phase I merged both projects into one cluster.
+
+By making my findings and work accessible to all, I strongly believe in the principle that knowledge should be free, empowering individuals to avoid repetitive endeavors and instead focus on new and exciting challenges.
+
+Join me on this exciting journey as we delve into the realm of Kubernetes and GitOps, uncovering new insights and finding innovative ways to enhance our setups. Let's embrace the spirit of collaboration and empower each other to achieve more.
+
+Happy automating, learning, and exploring!
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
