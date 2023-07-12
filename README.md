@@ -74,7 +74,7 @@ Let's take a glimpse into the evolution of this project:
 
 - The Foundation: [flux.home-cluster][flux-home-cluster-url] starting with a first iteration and learn Flux and GitOps principles with some old hardware.
 - The Minimal Redundancy Edition: [flux.pi-k3s.home][flux-pi-k3s-home-url] starting a new project with a Raspberry Pi based GitOps Flux Cluster, with three control planes.
-- The merge: [flux.k3s.home][flux-k3s-home-url] after a successfull testing phase I merged both projects into one cluster.
+- The Merge: [flux.k3s.home][flux-k3s-home-url] after a successfull testing phase I merged both projects into one cluster.
 
 By making my findings and work accessible to all, I strongly believe in the principle that knowledge should be free, empowering individuals to avoid repetitive endeavors and instead focus on new and exciting challenges.
 
@@ -84,19 +84,20 @@ Happy automating, learning, and exploring!
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-### :toolbox:&nbsp; Tools and Technologies
+### 🧰 Tools and Technologies
 
 Here is the list of tools and technologies I am using in this project.
 
-- [talos][talos-url]
-- [Flux2][flux-url]
-- [Terraform][terraform-url]
-- [Ubuntu](https://ubuntu.com/)
-- [Cloudflare](https://www.cloudflare.com/)
-- [RenovateBot](https://www.whitesourcesoftware.com/free-developer-tools/renovate/)
-- [GitHub](https://github.com)
+| Tool                                                                              | Role                                                                                     |
+| --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| [talos][talos-url]                                                                | Linux designed for Kubernetes – secure, immutable, and minimal.                          |
+| [Flux2][flux-url]                                                                 | Kubernetes GitOps engine                                                                 |
+| [Terraform][terraform-url]                                                        | Infrastructure automation to provision and manage resources in any cloud or data center. |
+| [Cloudflare](https://www.cloudflare.com/)                                         | DNS and tunnels to allow external traffic                                                |
+| [RenovateBot](https://www.whitesourcesoftware.com/free-developer-tools/renovate/) | Automated dependency updates.                                                            |
+| [GitHub](https://github.com)                                                      | Code Hosting and job runnner                                                             |
 
-### :book:&nbsp; Overview
+### 📖 Overview
 
 #### Hardware
 
