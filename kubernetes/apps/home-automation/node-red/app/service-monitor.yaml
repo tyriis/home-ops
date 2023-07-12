@@ -1,0 +1,35 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: node-red-freshair
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: node-red
+      app.kubernetes.io/instance: node-red
+  endpoints:
+    - port: http
+      interval: 1m
+      scrapeTimeout: 15s
+      path: /freshair/office/metrics
+    - port: http
+      interval: 1m
+      scrapeTimeout: 15s
+      path: /freshair/basement/metrics
+    - port: http
+      interval: 1m
+      scrapeTimeout: 15s
+      path: /freshair/livingroom/metrics
+    - port: http
+      interval: 1m
+      scrapeTimeout: 15s
+      path: /freshair/alexroom/metrics
+    - port: http
+      interval: 1m
+      scrapeTimeout: 15s
+      path: /freshair/domiroom/metrics
+    - port: http
+      interval: 1m
+      scrapeTimeout: 15s
+      path: /freshair/bedroom/metrics

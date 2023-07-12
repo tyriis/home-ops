@@ -7,6 +7,7 @@ resources:
   - persistent-volume.yaml
   - persistent-volume-claim.yaml
   - helm-release.yaml
+  - service-monitor.yaml
 commonLabels:
   app.kubernetes.io/name: node-red
   app.kubernetes.io/instance: node-red
