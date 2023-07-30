@@ -20,6 +20,7 @@ spec:
   upgrade:
     remediation:
       retries: 3
+  # https://github.com/sbs20/scanservjs
   values:
     image:
       repository: sbs20/scanservjs
@@ -30,7 +31,7 @@ spec:
       nameOverride: *app
     env:
       TZ: ${SETTING_TZ}
-      AIRSCAN_DEVICES: '"HP" = "http://${SECRET_SCANNER_IP}/eSCL"'
+      AIRSCAN_DEVICES: '"HP" = "http://${SECRET_SCANNER_IP}/eSCL";"LASER" = "http://${SECRET_SCANNER2_IP}/eSCL"'
     command: /bin/sh
     args: [-c, service dbus start && /run.sh]
     service:
