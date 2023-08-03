@@ -28,7 +28,7 @@ spec:
   values:
     image:
       repository: deiger/aircon
-      tag: 0.3.14
+      tag: 0.3.15
     env:
       TZ: ${SETTING_TZ}
     service:
