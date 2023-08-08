@@ -33,7 +33,7 @@ repos:
       - id: forbid-secrets
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.77.1
+    rev: v1.81.0
     hooks:
       - id: terraform_docs
         args:
@@ -76,7 +76,7 @@ repos:
           - --markdown-linebreak-ext=md
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.32.2
+    rev: v0.35.0
     hooks:
       - id: markdownlint-fix
         args:
