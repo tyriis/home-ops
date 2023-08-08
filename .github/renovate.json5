@@ -2,6 +2,8 @@
   platform: "github",
   extends: [
     "github>bjw-s/home-ops//.github/renovate/disabledDatasources.json5",
+    "github>tyriis/renovate-config//pre-commit/automerge.json5",
+    "github>tyriis/renovate-config//pre-commit/labels.json5",
     "github>tyriis/renovate-config//pre-commit/freeze-lucas-c.json5",
   ],
   "pre-commit": {
