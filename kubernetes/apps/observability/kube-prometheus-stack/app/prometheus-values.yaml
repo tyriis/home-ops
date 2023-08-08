@@ -33,7 +33,7 @@ prometheus:
     retentionSize: "8GB"
     retention: 14d
     enableAdminAPI: true
-    walCompression: true
+    # walCompression: true
     storageSpec:
       volumeClaimTemplate:
         spec:
@@ -60,12 +60,12 @@ prometheus:
       secret.reloader.stakater.com/reload: *secret
 
     externalUrl: https://prometheus.${SECRET_DOMAIN}/
-    ruleSelector: {}
-    ruleNamespaceSelector: {}
-    serviceMonitorSelector: {}
-    serviceMonitorNamespaceSelector: {}
-    podMonitorSelector: {}
-    podMonitorNamespaceSelector: {}
+    # ruleSelector: {}
+    # ruleNamespaceSelector: {}
+    # serviceMonitorSelector: {}
+    # serviceMonitorNamespaceSelector: {}
+    # podMonitorSelector: {}
+    # podMonitorNamespaceSelector: {}
 
     additionalScrapeConfigs:
       # - job_name: node-exporter

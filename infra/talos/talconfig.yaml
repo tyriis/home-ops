@@ -76,6 +76,12 @@ nodes:
 controlPlane:
   inlinePatch:
     machine:
+      registries:
+        mirrors:
+          docker.io:
+            endpoints:
+              - https://harbor.techtales.io/v2/proxy-docker.io
+            overridePath: true
       files:
         - content: |
             [plugins."io.containerd.grpc.v1.cri"]
