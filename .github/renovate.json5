@@ -2,7 +2,11 @@
   platform: "github",
   extends: [
     "github>bjw-s/home-ops//.github/renovate/disabledDatasources.json5",
+    "github>tyriis/renovate-config/pre-commit/freeze-lucas-c.json5",
   ],
+  "pre-commit": {
+    enabled: true,
+  },
   enabled: true,
   semanticCommits: "enabled",
   dependencyDashboard: true,
