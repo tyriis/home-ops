@@ -1,14 +1,14 @@
 {
+  enabled: true,
   platform: "github",
   extends: [
     "github>bjw-s/home-ops//.github/renovate/disabledDatasources.json5",
-    "github>tyriis/renovate-config//pre-commit/default.json",
+    "github>tyriis/renovate-config//dashboard/default.json5",
+    "github>tyriis/renovate-config//dashboard/vulnerability-summary.json5",
+    "github>tyriis/renovate-config//pre-commit/default.json5",
     "github>tyriis/renovate-config//pre-commit/freeze-lucas-c.json5",
   ],
-  enabled: true,
   semanticCommits: "enabled",
-  dependencyDashboard: true,
-  dependencyDashboardTitle: "🤖 Renovate Dashboard",
   suppressNotifications: ["prIgnoreNotification"],
   rebaseWhen: "conflicted",
   "helm-values": {
