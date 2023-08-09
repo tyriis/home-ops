@@ -4,7 +4,9 @@
   extends: [
     "github>bjw-s/home-ops//.github/renovate/disabledDatasources.json5",
     "github>tyriis/renovate-config//dashboard/default.json5",
-    "github>tyriis/renovate-config//dashboard/vulnerability-summary.json5",
+    // does not work for docker images
+    // "github>tyriis/renovate-config//dashboard/vulnerability-summary.json5",
+    "github>tyriis/renovate-config//docker/default.json5",
     "github>tyriis/renovate-config//flux/default.json5",
     "github>tyriis/renovate-config//flux/file-match.json5",
     "github>tyriis/renovate-config//flux/disable-automerge-loki.json5",
@@ -42,23 +44,23 @@
       matchUpdateTypes: ["major", "minor", "patch"],
     },
     // add labels according to package and update types
-    {
-      matchDatasources: ["docker"],
-      matchUpdateTypes: ["major"],
-      labels: ["renovate/image", "major"],
-    },
-    {
-      matchDatasources: ["docker"],
-      matchUpdateTypes: ["minor"],
-      labels: ["renovate/image", "minor"],
-      automerge: true,
-    },
-    {
-      matchDatasources: ["docker"],
-      matchUpdateTypes: ["patch"],
-      labels: ["renovate/image", "patch"],
-      automerge: true,
-    },
+    // {
+    //   matchDatasources: ["docker"],
+    //   matchUpdateTypes: ["major"],
+    //   labels: ["renovate/image", "type/major"],
+    // },
+    // {
+    //   matchDatasources: ["docker"],
+    //   matchUpdateTypes: ["minor"],
+    //   labels: ["renovate/image", "type/minor"],
+    //   automerge: true,
+    // },
+    // {
+    //   matchDatasources: ["docker"],
+    //   matchUpdateTypes: ["patch"],
+    //   labels: ["renovate/image", "type/patch"],
+    //   automerge: true,
+    // },
     // {
     //   matchDatasources: ["helm"],
     //   matchUpdateTypes: ["major"],
