@@ -5,6 +5,9 @@
     "github>bjw-s/home-ops//.github/renovate/disabledDatasources.json5",
     "github>tyriis/renovate-config//dashboard/default.json5",
     "github>tyriis/renovate-config//dashboard/vulnerability-summary.json5",
+    "github>tyriis/renovate-config//flux/default.json5",
+    "github>tyriis/renovate-config//flux/file-match.json5",
+    "github>tyriis/renovate-config//flux/disable-automerge-loki.json5",
     "github>tyriis/renovate-config//pre-commit/default.json5",
     "github>tyriis/renovate-config//pre-commit/freeze-lucas-c.json5",
     "github>tyriis/renovate-config//github-actions/default.json5",
@@ -19,9 +22,6 @@
   kubernetes: {
     fileMatch: ["kubernetes/.+\\.ya?ml$"],
     ignorePaths: ["kubernetes/flux/flux-manifests"],
-  },
-  flux: {
-    fileMatch: ["kubernetes/.+\\.ya?ml$"],
   },
   regexManagers: [],
   packageRules: [
@@ -74,9 +74,9 @@
       labels: ["helm", "patch"],
       automerge: true,
     },
-    {
-      matchDatasources: ["flux"],
-      addLabels: ["flux"],
-    },
+    // {
+    //   matchDatasources: ["flux"],
+    //   addLabels: ["flux"],
+    // },
   ],
 }
