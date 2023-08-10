@@ -9,7 +9,7 @@
     "github>tyriis/renovate-config//docker/default.json5",
     "github>tyriis/renovate-config//flux/default.json5",
     "github>tyriis/renovate-config//flux/file-match.json5",
-    "github>tyriis/renovate-config//flux/disable-automerge-loki.json5",
+    "github>tyriis/renovate-config//flux/prevent-automerge-loki.json5",
     "github>tyriis/renovate-config//helm/default.json5",
     "github>tyriis/renovate-config//labels/semantic.json5",
     "github>tyriis/renovate-config//pre-commit/default.json5",
