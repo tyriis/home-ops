@@ -32,7 +32,7 @@ spec:
     minecraftServer:
       eula: "TRUE"
       # https://www.minecraft.net/de-de/download/server/bedrock - hover over download button from ubuntu
-      version: "1.20.14.01"
+      version: "1.20.15.01"
       difficulty: normal
       gameMode: survival
       levelSeed: "-1381486679527427600"
