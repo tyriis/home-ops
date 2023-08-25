@@ -42,8 +42,8 @@ spec:
       cheats: true
       serverName: "home"
       enableLanVisibility: true
-      serviceType: LoadBalancer
-      loadBalancerIP: ${SETTING_METALLB_MINECRAFT_BEDROCK_ADDR}
+      # serviceType: LoadBalancer
+      # loadBalancerIP: ${SETTING_METALLB_MINECRAFT_BEDROCK_ADDR}
       # nodePort: 19132
 
     nodeSelector:
