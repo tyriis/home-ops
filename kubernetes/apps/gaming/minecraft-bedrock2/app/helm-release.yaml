@@ -31,7 +31,7 @@ spec:
       OPS: "2535405985178539"
       MEMBERS: ""
       VISITORS: ""
-      ALLOW_CHEATS: "TRUE"
+      ALLOW_CHEATS: "true"
       MAX_PLAYERS: "10"
       VIEW_DISTANCE: "10"
       TICK_DISTANCE: "4"
