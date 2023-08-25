@@ -82,6 +82,11 @@ spec:
               sans:
                 - "*.${SECRET_DOMAIN}"
           stores: traefik-system-default@kubernetescrd
+      minecraft:
+        port: 19132
+        expose: true
+        exposedPort: 19132
+        protocol: UDP
       metrics:
         port: 8082
         expose: true
