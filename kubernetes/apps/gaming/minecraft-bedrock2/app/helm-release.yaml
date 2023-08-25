@@ -22,7 +22,7 @@ spec:
       retries: 3
   values:
     env:
-      EULA: "TRUE"
+      EULA: "true"
       VERSION: "1.20.15.01"
       DIFFICULTY: normal
       SERVER_NAME: home
@@ -42,10 +42,10 @@ spec:
       LEVEL_NAME: "2022-10-09_survival"
       LEVEL_SEED: "-1381486679527427600"
       DEFAULT_PLAYER_PERMISSION_LEVEL: member
-      TEXTUREPACK_REQUIRED: "FALSE"
-      ONLINE_MODE: "TRUE"
-      EMIT_SERVER_TELEMETRY: "FALSE"
-      ENABLE_LAN_VISIBILITY: "TRUE"
+      TEXTUREPACK_REQUIRED: "false"
+      ONLINE_MODE: "true"
+      EMIT_SERVER_TELEMETRY: "false"
+      ENABLE_LAN_VISIBILITY: "true"
       TZ: ${SETTING_TZ}
     controller:
       replicas: 1
