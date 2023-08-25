@@ -44,7 +44,7 @@ spec:
       enableLanVisibility: true
       serviceType: LoadBalancer
       loadBalancerIP: ${SETTING_METALLB_MINECRAFT_BEDROCK_ADDR}
-      nodePort: 19132
+      # nodePort: 19132
 
     nodeSelector:
       kubernetes.io/arch: amd64
