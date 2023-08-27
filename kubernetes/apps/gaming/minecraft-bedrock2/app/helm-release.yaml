@@ -82,8 +82,8 @@ spec:
         mountPath: /tmp
       data:
         enabled: true
-        type: emptyDir
-        mountPath: /data
+        type: pvc
+        existingClaim: minecraft-bedrock2-data
     probes:
       startup:
         enabled: false
