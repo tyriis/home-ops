@@ -33,7 +33,7 @@ spec:
       VISITORS: ""
       ALLOW_CHEATS: "true"
       MAX_PLAYERS: "10"
-      VIEW_DISTANCE: "10"
+      VIEW_DISTANCE: "20"
       TICK_DISTANCE: "4"
       PLAYER_IDLE_TIMEOUT: "30"
       MAX_THREADS: "0"
