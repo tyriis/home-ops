@@ -75,5 +75,5 @@ spec:
       requests:
         cpu: 5m
         memory: 10Mi
-      limits:
-        memory: 50Mi
+      # limits:
+      #   memory: 50Mi
