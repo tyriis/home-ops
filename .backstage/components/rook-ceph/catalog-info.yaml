@@ -1,0 +1,26 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: rook-ceph
+  description: this is just a first test to see what will happen.
+  annotations:
+    # github.com/project-slug: tyriis/backstage-documentation
+    backstage.io/techdocs-ref: dir:.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/apps/rook-ceph
+      title: Flux definition
+      icon: github
+      type: github-repository
+  tags:
+    - storage
+    - core
+spec:
+  type: service
+  lifecycle: production
+  system: talos-cluster
+  owner: home-ops
+  # dependsOn:
+  #   - resource:default/artists-db
+  # providesApis:
+  #   - test-api

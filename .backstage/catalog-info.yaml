@@ -1,0 +1,14 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: home-ops
+spec:
+  type: url
+  targets:
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/domains/home/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/systems/talos-cluster/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/cert-manager/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/rook-ceph/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/traefik/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/traefik-forward-auth/catalog-info.yaml

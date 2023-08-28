@@ -1,0 +1,24 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: cert-manager
+  description: X.509 certificate management for Kubernetes and OpenShift
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/apps/cert-manager
+      title: Flux definition
+      icon: github
+      type: github-repository
+  tags:
+    - network
+    - security
+    - encryption
+spec:
+  type: service
+  lifecycle: production
+  system: talos-cluster
+  owner: home-ops
+  # dependsOn:
+  #   - resource:default/artists-db
+  # providesApis:
+  #   - test-api

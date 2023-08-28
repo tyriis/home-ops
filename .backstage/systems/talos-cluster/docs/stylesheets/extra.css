@@ -1,0 +1,17 @@
+:root {
+  --md-admonition-icon--prompt: url('data:image/svg+xml;charset=utf-8,<svg width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"/><path d="M11 12l-7.071 7.071-1.414-1.414L8.172 12 2.515 6.343 3.929 4.93 11 12zm0 7h10v2H11v-2z"/></g></svg>');
+}
+.md-typeset .admonition.prompt,
+.md-typeset details.prompt {
+  border-color: rgb(80, 80, 80);
+}
+.md-typeset .prompt > .admonition-title,
+.md-typeset .prompt > summary {
+  background-color: rgba(191, 191, 191, 0.1);
+}
+.md-typeset .prompt > .admonition-title::before,
+.md-typeset .prompt > summary::before {
+  background-color: rgb(152, 152, 152);
+  -webkit-mask-image: var(--md-admonition-icon--prompt);
+  mask-image: var(--md-admonition-icon--prompt);
+}

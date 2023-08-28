@@ -1,0 +1,27 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: traefik-forward-auth
+  description: |
+    A minimal forward authentication service that provides OAuth/SSO login and authentication for the traefik reverse proxy/load balancer
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/apps/traefik-ingress/forward-auth
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/thomseddon/traefik-forward-auth
+      title: GitHub
+      icon: github
+      type: github-repository
+  tags:
+    - network
+    - security
+    - oauth
+spec:
+  type: service
+  lifecycle: production
+  system: talos-cluster
+  owner: home-ops
+  dependsOn:
+    - component:traefik

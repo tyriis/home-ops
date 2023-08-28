@@ -1,0 +1,7 @@
+---
+site_name: rook-ceph
+nav:
+  - Home: index.md
+
+plugins:
+  - techdocs-core

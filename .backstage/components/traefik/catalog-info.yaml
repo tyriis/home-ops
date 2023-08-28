@@ -1,0 +1,29 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: traefik
+  description: A modern HTTP reverse proxy and load balancer that makes deploying microservices easy
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/apps/traefik-ingress/traefik
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/traefik/traefik/
+      title: GitHub
+      icon: github
+      type: github-repository
+    - url: https://doc.traefik.io/traefik/
+      title: Documentation
+      icon: docs
+      type: documentation
+  tags:
+    - network
+    - ingress
+spec:
+  type: service
+  lifecycle: production
+  system: talos-cluster
+  owner: home-ops
+  dependsOn:
+    - component:cert-manager
