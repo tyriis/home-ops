@@ -10,7 +10,7 @@ commonLabels:
 configMapGenerator:
   - name: app-config
     files:
-      - app-config.prodcution.yaml
+      - app-config.production.yaml
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
