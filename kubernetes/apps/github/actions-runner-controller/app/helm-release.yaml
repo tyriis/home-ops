@@ -49,7 +49,8 @@ spec:
         memory: 128Mi
 
     metrics:
-      serviceMonitor: true
+      serviceMonitor:
+        enabled: true
       port: 8080
       proxy:
         enabled: false
@@ -60,7 +61,8 @@ spec:
         create: false
         name: *secret
     actionsMetrics:
-      serviceMonitor: true
+      serviceMonitor:
+        enabled: true
       port: 8080
       proxy:
         enabled: false
