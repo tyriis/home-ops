@@ -36,8 +36,8 @@ spec:
           configMap:
             name: app-config
         subPath:
-          - path: app-config.prodcution.yaml
-            mountPath: /app/app-config.prodcution.yaml
+          - path: app-config.production.yaml
+            mountPath: /app/app-config.production.yaml
             readOnly: true
     podAnnotations:
       reloader.stakater.com/auto: "true"
