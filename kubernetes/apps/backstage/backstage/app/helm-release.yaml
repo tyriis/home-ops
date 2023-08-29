@@ -39,6 +39,8 @@ spec:
           - path: app-config.prodcution.yaml
             mountPath: /app/app-config.prodcution.yaml
             readOnly: true
+    podAnnotations:
+      reloader.stakater.com/auto: "true"
     service:
       main:
         ports:
