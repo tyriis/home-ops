@@ -7,3 +7,11 @@ resources:
 commonLabels:
   app.kubernetes.io/name: backstage
   app.kubernetes.io/instance: backstage
+configMapGenerator:
+  - name: app-config
+    files:
+      - app-config.prodcution.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: enabled
