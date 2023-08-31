@@ -11,11 +11,10 @@ site_description: kubernetes cluster hosted in my bassement
 # Navigation structure
 nav:
   - Overview: index.md
-  - Index: index.md
-  - Introduction: introduction.md
-  - System Architecture: system-architecture.md
-  - Technical Specifications:
-      - "hardware.md"
+  # - Introduction: introduction.md
+  # - System Architecture: system-architecture.md
+  # - Technical Specifications:
+  #     - "hardware.md"
   #   - Cloud Services: cloud-services.md
   #   - Local Services: local-services.md
   #   - Software: software.md
@@ -30,8 +29,6 @@ nav:
 theme:
   name: material
   features:
-    # - navigation.sections
-    # - navigation.tabs
     - navigation.expand
     - navigation.indexes
 

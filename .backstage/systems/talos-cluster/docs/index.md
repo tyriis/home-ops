@@ -8,23 +8,26 @@
 
 <!-- This section provides an overview of the system, its purpose, and its intended users. -->
 
-The `talos-flux` system is a kubernetes cluster based on talos linux.
+The `talos-cluster` is a kubernetes cluster based on [Talos linux](https://www.talos.dev/).
 It is running on low power hardware as a HomeLab.
 
 Its main purpose is to host all applications the smart home and a digital family need.
+
+The `talos-cluster` represents a Kubernetes cluster built upon the robust foundation of [Talos Linux](https://www.talos.dev/). This cluster operates efficiently on low-power hardware within the confines of a HomeLab environment.
+
+Its primary mission is to serve as the hosting platform for a comprehensive suite of applications essential for managing a modern smart home and catering to the digital needs of a family.
 
 ## System Architecture
 
 <!-- This section describes the high-level design of the system, including its components, their interactions, and the system's functionality. -->
 
-The `talos-flux` cluster is running on intel NUC hardware. The choice is based on what others in the kubernetes @ home community are using and the power consumption a 24/7 system has.
-On one side I want to have enough computing power for heavy tasks. On the other side I dont want to spend to much money for the energy bill.
+The `talos-cluster` operates on Intel NUC hardware, a decision influenced by the preferences of the [kubernetes@home community](https://discord.com/invite/k8s-at-home) and the imperative consideration of minimizing 24/7 power consumption. This choice strikes a balance between computing power to handle resource-intensive tasks and the desire to keep energy expenses in check.
 
-The `talos-flux` cluster uses a rook-ceph cluster of 3x 500GB NVMe drives to serve the cluster as the default storage provider.
+Within the `talos-cluster`, a robust storage infrastructure is provided by a [Rook-Ceph cluster](https://rook.io/) comprising three 500GB NVMe drives. This configuration serves as the default storage solution for the entire cluster, ensuring efficient data management.
 
-The current network layer (CNI) is flannel but is planed to be switched in the next iteration to cilium.
+Currently, the network layer, Container Network Interface (CNI), is implemented using Flannel. However, there are plans to transition to Cilium in the upcoming iteration, further enhancing network performance and security.
 
-As kubernetes operating system I have choosen talos from sidero, this allows to reduce OS maintenance.
+For the Kubernetes operating system, the deliberate choice is [Talos Linux](https://www.talos.dev/) from Sidero. This decision is driven by the desire to streamline and simplify OS maintenance, a crucial factor in ensuring the cluster's long-term stability and manageability.
 
 ## Technical Specifications
 
