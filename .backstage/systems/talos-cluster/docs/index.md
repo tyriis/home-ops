@@ -88,6 +88,7 @@ The following dependencies need to be installed on the system for the inital set
 
 | Host    | IP           |
 | ------- | ------------ |
+| VIP     | 192.168.1.50 |
 | talos01 | 192.168.1.51 |
 | talos02 | 192.168.1.52 |
 | talos03 | 192.168.1.53 |
