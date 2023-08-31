@@ -30,11 +30,10 @@ nav:
 theme:
   name: material
   features:
-    - navigation.sections
-    - navigation.tabs
+    # - navigation.sections
+    # - navigation.tabs
     - navigation.expand
     - navigation.indexes
-    - navigation.top
 
 plugins:
   - techdocs-core
