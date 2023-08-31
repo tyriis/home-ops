@@ -36,7 +36,7 @@ talhelper -v
 ➜ talhelper version 1.9.3
 ```
 
-<details>
+</details>
 
 Generate secrets with talhelper:
 
