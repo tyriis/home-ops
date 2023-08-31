@@ -5,6 +5,7 @@ namespace: gaming
 resources:
   - helm-release.yaml
   - volsync-replication-source.yaml
+  - ingress-route-udp.yaml
 labels:
   - pairs:
       app.kubernetes.io/name: minecraft-bedrock2
