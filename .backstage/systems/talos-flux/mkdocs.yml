@@ -4,7 +4,8 @@ site_description: kubernetes cluster hosted in my bassement
 
 nav:
   - Overview: index.md
-  - Installation: installation.md
+  - Installation and Configuration: installation.md
+  - User Manual: manual.md
 
 theme:
   name: material

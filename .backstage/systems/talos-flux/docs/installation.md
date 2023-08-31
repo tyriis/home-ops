@@ -91,9 +91,9 @@ You should have the following folder structure now:
 
 ### first node (control-plane)
 
-Download [talos][talos-url]
+Download [Talos Linux](https://github.com/siderolabs/talos/releases)
 
-Flash with a tool like [etcher][etcher-url]
+Flash with a tool like [etcher](https://etcher.balena.io/)
 
 Boot the 1st node from usb drive.
 
@@ -285,98 +285,3 @@ kubectl kustomize --enable-helm kubelet-csr-approver | kubectl apply -f -
 ### Install flux
 
 <!-- This section provides detailed instructions on how to install flux, including how to perform specific tasks and how to navigate the system's user interface. -->
-
-## User Manual
-
-<!-- This section provides detailed instructions on how to use the system, including how to perform specific tasks and how to navigate the system's user interface. -->
-
-### Troubleshooting Guide
-
-<!-- This section provides information on common problems that users may encounter when using the system, along with instructions on how to resolve these issues. -->
-
-### Maintenance and Support
-
-<!-- This section provides information on how to maintain and support the system, including how to perform regular backups, how to troubleshoot issues, and how to contact support if needed. -->
-
-### Appendix
-
-<!-- This section may include additional information, such as technical diagrams, code samples, or other supplementary material that may be useful to users or developers. -->
-
-<!-- Overall, system documentation should provide a comprehensive and detailed reference guide for users, developers, and other stakeholders who need to understand and work with the system. -->
-
-[talos-url]: https://github.com/siderolabs/talos/releases
-[etcher-url]: https://etcher.balena.io/
-
-<!--
-## something
-
-## something else
-
-??? success
-   Content.
-
-??? warning classes
-   Content.
-
-::uml:: format="png" classes="uml myDiagram" alt="My super diagram placeholder" title="My super diagram" width="300px" height="300px"
-  Goofy ->  MickeyMouse: calls
-  Goofy <-- MickeyMouse: responds
-::end-uml::
-
-```yaml linenums="1" title="test.yaml" hl_lines="2 3"
-test:
-   a: 123
-   b: 213
-```
-
-:fontawesome-regular-face-laugh-wink:
-
-:octicons-heart-fill-24:{.heart}
-
-Lorem ipsum[^1] dolor sit amet, consectetur adipiscing elit.[^2]
-
-!!! note
-
-   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
-   nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
-   massa, nec semper lorem quam in massa.
-
-!!! note "Phasellus posuere in sem ut cursus"
-
-   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
-   nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
-   massa, nec semper lorem quam in massa.
-
-:fontawesome-regular-face-laugh-wink:
-
-!!! note
-
-   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
-   nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
-   massa, nec semper lorem quam in massa.
-
-!!! note "Phasellus posuere in sem ut cursus"
-
-   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
-   nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
-   massa, nec semper lorem quam in massa.
-
-!!! note
-
-   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
-   nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
-   massa, nec semper lorem quam in massa.
-
-!!! note "Phasellus posuere in sem ut cursus"
-
-   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
-   nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
-   massa, nec semper lorem quam in massa.
-
-[^1]: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-
-[^2]:
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
-    nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
-    massa, nec semper lorem quam in massa.
--->
