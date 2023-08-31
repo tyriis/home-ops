@@ -2,49 +2,129 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: minecraft-bedrock
+  name: &app minecraft-bedrock2
 spec:
   interval: 15m
-  releaseName: minecraft-bedrock
   chart:
     spec:
-      chart: minecraft-bedrock
-      version: 2.1.0
+      chart: app-template
+      version: 1.5.1
       sourceRef:
         kind: HelmRepository
-        name: minecraft-server-charts
+        name: bjw-s-charts
         namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
   values:
-    # https://artifacthub.io/packages/helm/minecraft-server-charts/minecraft-bedrock?modal=values
-    extraEnv:
+    env:
+      EULA: "true"
+      VERSION: "1.20.15.01"
+      DIFFICULTY: normal
+      SERVER_NAME: home
+      WHITE_LIST: ""
+      WHITE_LIST_USERS: ""
+      OPS: "2535405985178539"
+      MEMBERS: ""
+      VISITORS: ""
+      ALLOW_CHEATS: "true"
+      MAX_PLAYERS: "10"
+      VIEW_DISTANCE: "20"
+      TICK_DISTANCE: "4"
+      PLAYER_IDLE_TIMEOUT: "30"
+      MAX_THREADS: "0"
+      GAMEMODE: survival
+      LEVEL_TYPE: DEFAULT
+      LEVEL_NAME: "island wonders"
+      LEVEL_SEED: "968565878525959881"
+      DEFAULT_PLAYER_PERMISSION_LEVEL: member
+      TEXTUREPACK_REQUIRED: "false"
+      ONLINE_MODE: "true"
+      EMIT_SERVER_TELEMETRY: "false"
+      ENABLE_LAN_VISIBILITY: "true"
       TZ: ${SETTING_TZ}
-
-    persistence:
-      storageClass: ceph-block
-      dataDir:
+    controller:
+      replicas: 1
+    image:
+      repository: itzg/minecraft-bedrock-server
+      tag: latest
+    service:
+      main:
+        enabled: false
+      minecraft:
         enabled: true
-        existingClaim: minecraft-bedrock-data
-    # resources:
-    #   requests:
-    #     memory: 1024Mi
-    #     cpu: 2000m
-
-    minecraftServer:
-      eula: "TRUE"
-      # https://www.minecraft.net/de-de/download/server/bedrock - hover over download button from ubuntu
-      version: "1.20.15.01"
-      difficulty: normal
-      gameMode: survival
-      levelSeed: "-1381486679527427600"
-      ops: "2535405985178539"
-      levelName: "2022-10-09_survival"
-      maxThreads: 0 # Maximum number of threads the server tries to use. If set to 0 or removed then it uses as many as possible.
-      cheats: true
-      serverName: "home"
-      enableLanVisibility: true
-      # serviceType: LoadBalancer
-      # loadBalancerIP: ${SETTING_METALLB_MINECRAFT_BEDROCK_ADDR}
-      # nodePort: 19132
-
-    nodeSelector:
-      kubernetes.io/arch: amd64
+        ports:
+          minecraft:
+            port: 19132
+            protocol: UDP
+    hostNetwork: true
+    podSecurityContext:
+      fsGroup: 2000
+      runAsGroup: 3000
+      runAsNonRoot: true
+      runAsUser: 1000
+      seccompProfile:
+        type: RuntimeDefault
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      readOnlyRootFilesystem: true
+    persistence:
+      tmp:
+        enabled: true
+        type: emptyDir
+        mountPath: /tmp
+      data:
+        enabled: true
+        type: pvc
+        existingClaim: minecraft-bedrock2-data
+    probes:
+      startup:
+        enabled: false
+      readiness:
+        enabled: true
+        custom: true
+        type: UDP
+        spec:
+          exec:
+            command:
+              - mc-monitor
+              - status-bedrock
+              - --host
+                # force health check against IPv4 port
+              - 127.0.0.1
+          failureThreshold: 3
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+      liveness:
+        enabled: true
+        custom: true
+        type: UDP
+        spec:
+          exec:
+            command:
+              - mc-monitor
+              - status-bedrock
+              - --host
+                # force health check against IPv4 port
+              - 127.0.0.1
+          failureThreshold: 3
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+    ingress:
+      main:
+        enabled: false
+    resources:
+      requests:
+        cpu: 500m
+        memory: 512Mi

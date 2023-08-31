@@ -2,14 +2,14 @@
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: minecraft-bedrock-data
+  name: minecraft-bedrock2-data
 spec:
-  sourcePVC: minecraft-bedrock-data
+  sourcePVC: minecraft-bedrock2-data
   trigger:
     schedule: "*/30 * * * *"
   restic:
     pruneIntervalDays: 14
-    repository: volsync-minecraft-bedrock-data
+    repository: volsync-minecraft-bedrock2-data
     retain:
       hourly: 1
       daily: 1

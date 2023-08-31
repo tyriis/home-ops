@@ -2,7 +2,7 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRouteUDP
 metadata:
-  name: minecraft
+  name: minecraft-bedrock
   namespace: gaming
 
 spec:
@@ -10,7 +10,7 @@ spec:
     - "minecraft"
   routes: # [2]
     - services: # [3]
-        - name: minecraft-bedrock-minecraft-bedrock # [4]
+        - name: minecraft-bedrock2 # [4]
           port: 19132 # [5]
           weight: 10 # [6]
           nativeLB: true # [7]
