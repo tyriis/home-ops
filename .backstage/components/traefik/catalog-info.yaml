@@ -23,7 +23,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  system: talos-cluster
+  system: talos-flux
   owner: home-ops
   dependsOn:
     - component:cert-manager

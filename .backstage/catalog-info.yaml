@@ -7,7 +7,7 @@ spec:
   type: url
   targets:
     - https://github.com/tyriis/home-ops/blob/main/.backstage/domains/home/catalog-info.yaml
-    - https://github.com/tyriis/home-ops/blob/main/.backstage/systems/talos-cluster/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/systems/talos-flux/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/cert-manager/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/rook-ceph/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/traefik/catalog-info.yaml
