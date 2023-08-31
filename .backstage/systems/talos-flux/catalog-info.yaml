@@ -2,7 +2,7 @@
 apiVersion: backstage.io/v1alpha1
 kind: System
 metadata:
-  name: talos-cluster
+  name: talos-flux
   description: kubernetes cluster hosted in my bassement
   annotations:
     backstage.io/techdocs-ref: dir:.

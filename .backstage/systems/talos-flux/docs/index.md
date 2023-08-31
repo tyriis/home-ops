@@ -2,13 +2,13 @@
 <!-- markdownlint-disable MD046 -->
 <!-- markdownlint-disable MD013 -->
 
-# System: talos-cluster
+# System: talos-flux
 
 ## Introduction
 
 <!-- This section provides an overview of the system, its purpose, and its intended users. -->
 
-The `talos-cluster` represents a Kubernetes cluster built upon the robust foundation of [Talos Linux](https://www.talos.dev/). This cluster operates efficiently on low-power hardware within the confines of a HomeLab environment.
+The `talos-flux` represents a Kubernetes cluster built upon the robust foundation of [Talos Linux](https://www.talos.dev/). This cluster operates efficiently on low-power hardware within the confines of a HomeLab environment.
 
 Its primary mission is to serve as the hosting platform for a comprehensive suite of applications essential for managing a modern smart home and catering to the digital needs of a family.
 
@@ -16,9 +16,9 @@ Its primary mission is to serve as the hosting platform for a comprehensive suit
 
 <!-- This section describes the high-level design of the system, including its components, their interactions, and the system's functionality. -->
 
-The `talos-cluster` operates on Intel NUC hardware, a decision influenced by the preferences of the [kubernetes@home community](https://discord.com/invite/k8s-at-home) and the imperative consideration of minimizing 24/7 power consumption. This choice strikes a balance between computing power to handle resource-intensive tasks and the desire to keep energy expenses in check.
+The `talos-flux` operates on Intel NUC hardware, a decision influenced by the preferences of the [kubernetes@home community](https://discord.com/invite/k8s-at-home) and the imperative consideration of minimizing 24/7 power consumption. This choice strikes a balance between computing power to handle resource-intensive tasks and the desire to keep energy expenses in check.
 
-Within the `talos-cluster`, a robust storage infrastructure is provided by a [Rook-Ceph cluster](https://rook.io/) comprising three 500GB NVMe drives. This configuration serves as the default storage solution for the entire cluster, ensuring efficient data management.
+Within the `talos-flux`, a robust storage infrastructure is provided by a [Rook-Ceph cluster](https://rook.io/) comprising three 500GB NVMe drives. This configuration serves as the default storage solution for the entire cluster, ensuring efficient data management.
 
 Currently, the network layer, Container Network Interface (CNI), is implemented using Flannel. However, there are plans to transition to Cilium in the upcoming iteration, further enhancing network performance and security.
 

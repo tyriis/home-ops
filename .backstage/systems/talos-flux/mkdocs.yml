@@ -1,31 +1,10 @@
 ---
-site_name: talos-cluster
+site_name: talos-flux
 site_description: kubernetes cluster hosted in my bassement
 
-# nav:
-#   - Home: index.md
-#   - Introduction: introduction.md
-#   - System Architecture: system-architecture.md
-#   - Technical Specification:
-
-# Navigation structure
 nav:
   - Overview: index.md
   - Installation: installation.md
-  # - Introduction: introduction.md
-  # - System Architecture: system-architecture.md
-  # - Technical Specifications:
-  #     - "hardware.md"
-  #   - Cloud Services: cloud-services.md
-  #   - Local Services: local-services.md
-  #   - Software: software.md
-  #   - Network: network.md
-  # - Installation and Configuration:
-  #   - Bootstrap: bootstrap.md
-  # - User Manual:
-  #     - Troubleshooting Guide: troubleshooting-guide.md
-  #     - Maintenance and Support: maintenanc-and-support.md
-  #     - Appendix: appendix.md
 
 theme:
   name: material

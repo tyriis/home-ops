@@ -2,7 +2,7 @@
 <!-- markdownlint-disable MD046 -->
 <!-- markdownlint-disable MD013 -->
 
-# System: talos-cluster
+# System: talos-flux
 
 ## Installation and Configuration
 
@@ -273,7 +273,7 @@ Create the values file:
 ```yaml linenums="1" title="kubelet-csr-approve/values.yaml"
 ---
 providerRegex: |
-  ^(talos-cluster)$
+  ^(talos-flux)$
 ```
 
 Render and apply the manifests:
