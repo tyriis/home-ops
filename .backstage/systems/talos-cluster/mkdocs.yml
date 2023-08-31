@@ -10,6 +10,7 @@ site_description: kubernetes cluster hosted in my bassement
 
 # Navigation structure
 nav:
+  - Overview: index.md
   - Index: index.md
   - Introduction: introduction.md
   - System Architecture: system-architecture.md
@@ -30,6 +31,7 @@ theme:
   name: material
   features:
     - navigation.sections
+    - navigation.tabs
     - navigation.expand
     - navigation.indexes
     - navigation.top
