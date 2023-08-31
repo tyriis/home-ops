@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: gaming
 resources:
   - persistent-volume-claim.yaml
-  # - secret.sops.yaml
+  - secret.sops.yaml
   # - replication-destination.yaml
 commonLabels:
   app.kubernetes.io/name: minecraft-bedrock2
