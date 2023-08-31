@@ -5,7 +5,7 @@ namespace: gaming
 resources:
   - persistent-volume-claim.yaml
   - secret.sops.yaml
-  - replication-destination.yaml
+  # - replication-destination.yaml
 commonLabels:
   app.kubernetes.io/name: minecraft-bedrock
   app.kubernetes.io/instance: minecraft-bedrock

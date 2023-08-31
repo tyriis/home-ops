@@ -8,5 +8,5 @@ spec:
     manual: restore-once
   restic:
     destinationPVC: minecraft-bedrock-data
-    repository: volsync-minecraft-bedrock2-data
+    repository: volsync-minecraft-bedrock-data
     copyMethod: Direct

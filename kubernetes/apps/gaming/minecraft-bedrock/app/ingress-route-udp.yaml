@@ -10,7 +10,7 @@ spec:
     - "minecraft"
   routes: # [2]
     - services: # [3]
-        - name: minecraft-bedrock2 # [4]
+        - name: minecraft-bedrock # [4]
           port: 19132 # [5]
           weight: 10 # [6]
           nativeLB: true # [7]

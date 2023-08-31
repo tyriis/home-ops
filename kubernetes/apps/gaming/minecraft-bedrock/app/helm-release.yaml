@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app minecraft-bedrock2
+  name: &app minecraft-bedrock
 spec:
   interval: 15m
   chart:
@@ -83,7 +83,7 @@ spec:
       data:
         enabled: true
         type: pvc
-        existingClaim: minecraft-bedrock2-data
+        existingClaim: minecraft-bedrock-data
     probes:
       startup:
         enabled: false
