@@ -11,6 +11,7 @@ site_description: kubernetes cluster hosted in my bassement
 # Navigation structure
 nav:
   - Overview: index.md
+  - Installation: installation.md
   # - Introduction: introduction.md
   # - System Architecture: system-architecture.md
   # - Technical Specifications:
