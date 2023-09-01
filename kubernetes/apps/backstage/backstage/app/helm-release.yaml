@@ -39,6 +39,9 @@ spec:
           - path: app-config.production.yaml
             mountPath: /app/app-config.production.yaml
             readOnly: true
+    envFrom:
+      - secretRef:
+          name: backstage-secrets
     podAnnotations:
       reloader.stakater.com/auto: "true"
     service:
