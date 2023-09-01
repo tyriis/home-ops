@@ -13,6 +13,14 @@ auth:
         clientId: ${AUTH_GOOGLE_CLIENT_ID}
         clientSecret: ${AUTH_GOOGLE_CLIENT_SECRET}
 
+techdocs:
+  builder: "local" # Alternatives - 'external'
+  generator:
+    runIn: "local" # Alternatives - 'local'
+    # dockerImage: 'tyriis/mkdocs-techdocs-kroki'
+  publisher:
+    type: "local" # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
+
 backend:
   # Note that the baseUrl should be the URL that the browser and other clients
   # should use when communicating with the backend, i.e. it needs to be
