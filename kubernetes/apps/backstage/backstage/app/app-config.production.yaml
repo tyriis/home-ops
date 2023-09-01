@@ -56,3 +56,7 @@ catalog:
       target: https://github.com/tyriis/home-ops/blob/main/.backstage/catalog-info.yaml
     - type: url
       target: https://github.com/techtales-io/backstage-docs/blob/main/knowledge/catalog-info.yaml
+    - type: file
+      target: /.backstage/catalog-info.yaml
+      rules:
+        - allow: [User, Group]
