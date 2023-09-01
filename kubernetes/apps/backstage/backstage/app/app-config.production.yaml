@@ -5,6 +5,7 @@ app:
   baseUrl: ${BASE_URL}
 
 auth:
+  enableExperimentalRedirectFlow: true
   environment: production
   providers:
     google:
@@ -18,7 +19,7 @@ backend:
   # reachable not just from within the backend host, but from all of your
   # callers. When its value is "http://localhost:7007", it's strictly private
   # and can't be reached by others.
-  baseUrl: http://localhost:7007
+  baseUrl: ${BASE_URL}
   # The listener can also be expressed as a single <host>:<port> string. In this case we bind to
   # all interfaces, the most permissive setting. The right value depends on your specific deployment.
   listen: ":7007"
