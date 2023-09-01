@@ -3,7 +3,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: backstage
 resources:
-  - ./helm-release.yaml
+  - secrets.sops.yaml
+  - helm-release.yaml
 commonLabels:
   app.kubernetes.io/name: backstage
   app.kubernetes.io/instance: backstage
