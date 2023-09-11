@@ -53,9 +53,3 @@ spec:
             - name: notification.toolkit.fluxcd.io/v1beta1/alerts
             - name: monitoring.coreos.com/v1/podmonitors
             - name: monitoring.coreos.com/v1/servicemonitors
-
-    # revert plugins cause v1.0.1 is not yet released yet
-    plugins:
-      repositories:
-        botkube:
-          url: https://github.com/kubeshop/botkube/releases/download/v1.0.0/plugins-index.yaml
