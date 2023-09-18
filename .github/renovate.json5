@@ -2,7 +2,7 @@
   enabled: true,
   platform: "github",
   extends: [
-    "github>bjw-s/home-ops//.github/renovate/disabledDatasources.json5",
+    "github>tyriis/renovate-config//kubernetes/disable-kubernetes-api.json5",
     "github>tyriis/renovate-config//dashboard/default.json5",
     // does not work for docker images
     // "github>tyriis/renovate-config//dashboard/vulnerability-summary.json5",
@@ -45,40 +45,5 @@
       commitMessageExtra: "to {{#if isSingleVersion}}v{{{newVersion}}}{{else}}{{{newValue}}}{{/if}}",
       matchUpdateTypes: ["major", "minor", "patch"],
     },
-    // add labels according to package and update types
-    // {
-    //   matchDatasources: ["docker"],
-    //   matchUpdateTypes: ["major"],
-    //   labels: ["renovate/image", "type/major"],
-    // },
-    // {
-    //   matchDatasources: ["docker"],
-    //   matchUpdateTypes: ["minor"],
-    //   labels: ["renovate/image", "type/minor"],
-    //   automerge: true,
-    // },
-    // {
-    //   matchDatasources: ["docker"],
-    //   matchUpdateTypes: ["patch"],
-    //   labels: ["renovate/image", "type/patch"],
-    //   automerge: true,
-    // },
-    // {
-    //   matchDatasources: ["helm"],
-    //   matchUpdateTypes: ["major"],
-    //   labels: ["helm", "major"],
-    // },
-    // {
-    //   matchDatasources: ["helm"],
-    //   matchUpdateTypes: ["minor"],
-    //   labels: ["helm", "minor"],
-    //   automerge: true,
-    // },
-    // {
-    //   matchDatasources: ["helm"],
-    //   matchUpdateTypes: ["patch"],
-    //   labels: ["helm", "patch"],
-    //   automerge: true,
-    // },
   ],
 }
