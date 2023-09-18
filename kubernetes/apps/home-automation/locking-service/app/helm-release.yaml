@@ -26,6 +26,8 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    controller:
+      replicas: 3
     image:
       repository: ghcr.io/tyriis/locking-service
       tag: v0.0.5
@@ -56,3 +58,16 @@ spec:
     ingress:
       main:
         enabled: false
+
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: *app
+
+    resources:
+      requests:
+        cpu: 10m
+        memory: 128Mi
