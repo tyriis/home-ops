@@ -7,5 +7,6 @@ resources:
   - ./emqx/flux-sync.yaml
   - ./esphome/flux-sync.yaml
   - ./home-assistant/flux-sync.yaml
+  - ./locking-service/flux-sync.yaml
   - ./node-red/flux-sync.yaml
   - ./zigbee2mqtt/flux-sync.yaml
