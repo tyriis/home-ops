@@ -17,7 +17,6 @@ techdocs:
   builder: "local" # Alternatives - 'external'
   generator:
     runIn: "local" # Alternatives - 'local'
-    # dockerImage: 'tyriis/mkdocs-techdocs-kroki'
   publisher:
     type: "local" # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
 

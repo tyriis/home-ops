@@ -15,6 +15,7 @@
     "github>tyriis/renovate-config//pre-commit/default.json5",
     "github>tyriis/renovate-config//pre-commit/freeze-lucas-c.json5",
     "github>tyriis/renovate-config//github-actions/default.json5",
+    "github>tyriis/renovate-config//github-actions/automerge-selected-major.json5",
     "github>tyriis/renovate-config//terraform/default.json5",
   ],
   semanticCommits: "enabled",
