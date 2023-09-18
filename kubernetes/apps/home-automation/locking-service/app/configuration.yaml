@@ -10,4 +10,4 @@ redis:
   sentinels:
     - host: redis.database.svc.cluster.local
       port: 26379
-      name: redis-master
+  name: redis-master
