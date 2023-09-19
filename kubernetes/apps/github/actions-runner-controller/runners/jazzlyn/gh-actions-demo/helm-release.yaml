@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: tyriis-home-ops
+  name: jazzlyn-gh-actions-demo
 spec:
   interval: 30m
   chart:
@@ -16,22 +16,22 @@ spec:
         namespace: flux-system
       interval: 30m
   values:
-    runnerScaleSetName: arc-runner-set-home-ops
-    githubConfigUrl: https://github.com/tyriis/home-ops
+    runnerScaleSetName: arc-runner-set-terraform-github
+    githubConfigUrl: https://github.com/jazzlyn/gh-actions-demo
     minRunners: 0
-    maxRunners: 0
+    maxRunners: 3
     containerMode:
       type: "dind"
   valuesFrom:
     - kind: Secret
-      name: tyriis-runners
+      name: jazzlyn-runners
       valuesKey: github_app_id
       targetPath: githubConfigSecret.github_app_id
     - kind: Secret
-      name: tyriis-runners
+      name: jazzlyn-runners
       valuesKey: github_app_installation_id
       targetPath: githubConfigSecret.github_app_installation_id
     - kind: Secret
-      name: tyriis-runners
+      name: jazzlyn-runners
       valuesKey: github_app_private_key
       targetPath: githubConfigSecret.github_app_private_key
