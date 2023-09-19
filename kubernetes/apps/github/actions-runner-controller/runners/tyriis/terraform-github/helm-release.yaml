@@ -16,8 +16,8 @@ spec:
         namespace: flux-system
       interval: 30m
   values:
-    runnerScaleSetName: arc-runner-set-tyriis-github
-    githubConfigUrl: https://github.com/tyriis/github
+    runnerScaleSetName: arc-runner-set-terraform-github
+    githubConfigUrl: https://github.com/tyriis/terraform-github
     minRunners: 1
     maxRunners: 3
     containerMode:
