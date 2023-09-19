@@ -16,3 +16,4 @@ namespace: github
 resources:
   - tyriis/secrets.sops.yaml
   - tyriis/home-ops/helm-release.yaml
+  - tyriis/terraform-github/helm-release.yaml

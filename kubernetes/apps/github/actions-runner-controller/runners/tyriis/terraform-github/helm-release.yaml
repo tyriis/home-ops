@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: tyriis-terraform-github
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: gha-runner-scale-set
+      version: 0.6.0
+      sourceRef:
+        kind: HelmRepository
+        name: actions-runner-controller-charts
+        namespace: flux-system
+      interval: 30m
+  values:
+    runnerScaleSetName: arc-runner-set-tyriis-github
+    githubConfigUrl: https://github.com/tyriis/github
+    minRunners: 1
+    maxRunners: 3
+    containerMode:
+      type: "dind"
+    template:
+      spec:
+        containers:
+          - name: runner
+            image: ghcr.io/actions/actions-runner:2.309.0@sha256:689735691f58a631efd20dbf6a0c841ea182d69a38ca0e3984362a14a853d2ce
+  valuesFrom:
+    - kind: Secret
+      name: tyriis-runners
+      valuesKey: github_app_id
+      targetPath: githubConfigSecret.github_app_id
+    - kind: Secret
+      name: tyriis-runners
+      valuesKey: github_app_installation_id
+      targetPath: githubConfigSecret.github_app_installation_id
+    - kind: Secret
+      name: tyriis-runners
+      valuesKey: github_app_private_key
+      targetPath: githubConfigSecret.github_app_private_key
