@@ -1,11 +1,18 @@
+# ---
+# apiVersion: kustomize.config.k8s.io/v1beta1
+# kind: Kustomization
+# namespace: github
+# resources:
+#   - organization.sops.yaml
+#   - tyriis.sops.yaml
+#   - jazzlyn.sops.yaml
+#   - organization-runner-deployment.yaml
+#   - tyriis-runner-deployment.yaml
+#   - jazzlyn-runner-deployment.yaml
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: github
 resources:
-  - organization.sops.yaml
-  - tyriis.sops.yaml
-  - jazzlyn.sops.yaml
-  - organization-runner-deployment.yaml
-  - tyriis-runner-deployment.yaml
-  - jazzlyn-runner-deployment.yaml
+  - tyriis/secrets.sops.yaml
+  - tyriis/home-ops/helm-release.yaml
