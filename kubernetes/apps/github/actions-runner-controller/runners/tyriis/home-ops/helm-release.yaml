@@ -8,7 +8,7 @@ spec:
   interval: 30m
   chart:
     spec:
-      chart: actions-runner-controller-charts/gha-runner-scale-set
+      chart: gha-runner-scale-set
       version: 0.6.0
       sourceRef:
         kind: HelmRepository
@@ -21,7 +21,7 @@ spec:
 
     githubConfigUrl: https://github.com/tyriis/home-ops
 
-    minRunners: 0
+    minRunners: 1
     maxRunners: 3
 
     containerMode:
