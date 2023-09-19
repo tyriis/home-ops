@@ -1,0 +1,37 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: ${SECRET_GH_ORGANIZATION}
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: gha-runner-scale-set
+      version: 0.6.0
+      sourceRef:
+        kind: HelmRepository
+        name: actions-runner-controller-charts
+        namespace: flux-system
+      interval: 30m
+  values:
+    runnerScaleSetName: arc-runner-set-${SECRET_GH_ORGANIZATION}
+    githubConfigUrl: https://github.com/${SECRET_GH_ORGANIZATION}
+    minRunners: 1
+    maxRunners: 3
+    containerMode:
+      type: "dind"
+  valuesFrom:
+    - kind: Secret
+      name: ${SECRET_GH_ORGANIZATION}-runners
+      valuesKey: github_app_id
+      targetPath: githubConfigSecret.github_app_id
+    - kind: Secret
+      name: ${SECRET_GH_ORGANIZATION}-runners
+      valuesKey: github_app_installation_id
+      targetPath: githubConfigSecret.github_app_installation_id
+    - kind: Secret
+      name: ${SECRET_GH_ORGANIZATION}-runners
+      valuesKey: github_app_private_key
+      targetPath: githubConfigSecret.github_app_private_key
