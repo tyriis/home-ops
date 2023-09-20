@@ -21,7 +21,12 @@ spec:
     minRunners: 0
     maxRunners: 3
     containerMode:
-      type: "dind"
+      type: dind
+    template:
+      spec:
+        containers:
+          - name: runner
+            image: ghcr.io/actions/actions-runner:2.309.0@sha256:689735691f58a631efd20dbf6a0c841ea182d69a38ca0e3984362a14a853d2ce
   valuesFrom:
     - kind: Secret
       name: jazzlyn-runners
