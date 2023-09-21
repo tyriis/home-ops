@@ -16,7 +16,7 @@ spec:
         namespace: flux-system
       interval: 30m
   values:
-    runnerScaleSetName: arc-runner-set-terraform-github
+    runnerScaleSetName: arc-runner-set-gh-actions-demo
     githubConfigUrl: https://github.com/jazzlyn/gh-actions-demo
     minRunners: 0
     maxRunners: 3
