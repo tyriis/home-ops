@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -113,7 +114,7 @@ spec:
       storageClassName: ceph-block
 
     environment:
-      ATLANTIS_DEFAULT_TF_VERSION: v1.3.8
+      ATLANTIS_DEFAULT_TF_VERSION: v1.5.7
       ATLANTIS_WRITE_GIT_CREDS: "true"
       # ATLANTIS_GH_APP_KEY_FILE: /config/github.pem
 
