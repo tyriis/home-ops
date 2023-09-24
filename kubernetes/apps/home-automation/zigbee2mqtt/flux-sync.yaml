@@ -1,5 +1,6 @@
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-zigbee2mqtt-basement-storage
@@ -19,7 +20,8 @@ spec:
     - name: apps-volsync
     - name: apps-kube-prometheus-stack
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-zigbee2mqtt-basement
@@ -36,9 +38,9 @@ spec:
   wait: true
   dependsOn:
     - name: apps-zigbee2mqtt-basement-storage
-
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-zigbee2mqtt-downstairs-storage
@@ -57,9 +59,9 @@ spec:
     - name: apps-rook-ceph-cluster
     - name: apps-volsync
     - name: apps-kube-prometheus-stack
-
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-zigbee2mqtt-downstairs
@@ -76,9 +78,9 @@ spec:
   wait: true
   dependsOn:
     - name: apps-zigbee2mqtt-downstairs-storage
-
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-zigbee2mqtt-upstairs-storage
@@ -98,7 +100,8 @@ spec:
     - name: apps-volsync
     - name: apps-kube-prometheus-stack
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-zigbee2mqtt-upstairs
