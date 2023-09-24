@@ -7,6 +7,7 @@
     // does not work for docker images
     // "github>tyriis/renovate-config//dashboard/vulnerability-summary.json5",
     "github>tyriis/renovate-config//flux-infra.json5",
+    "github>tyriis/renovate-config//labels/semantic.json5",
   ],
   semanticCommits: "enabled",
   suppressNotifications: ["prIgnoreNotification"],
