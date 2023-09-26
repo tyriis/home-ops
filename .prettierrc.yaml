@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/prettierrc.json
 trailingComma: "es5"
 tabWidth: 2
 semi: false

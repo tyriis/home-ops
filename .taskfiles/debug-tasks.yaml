@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/taskfile.json
 # Thank you Truxnell and Onedr0p for all the stuff you share with the k8s-at-home community!
 version: "3"
 

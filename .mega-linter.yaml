@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/megalinter/megalinter/main/megalinter/descriptors/schemas/megalinter-configuration.jsonschema.json
 # APPLY_FIXES: all
 # VALIDATE_ALL_CODEBASE: true
 ENABLE_LINTERS:

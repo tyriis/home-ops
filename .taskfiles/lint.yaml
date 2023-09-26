@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/taskfile.json
 version: "3"
 
 tasks:
@@ -12,28 +13,23 @@ tasks:
     desc: Lint Markdown
     cmds:
       - "markdownlint -c .markdownlint.yaml *.md **/*.md"
-    ignore_errors: true
 
   yaml:
     desc: Lint YAML
     cmds:
       - "yamllint -c .yamllint.yaml ."
-    ignore_errors: true
 
   prettier:
     desc: Lint with prettier
     cmds:
       - "prettier --ignore-path .prettierignore --config .prettierrc.yaml --check ."
-    ignore_errors: true
 
   prettier:fix:
     desc: Lint with prettier autofix
     cmds:
       - "prettier --ignore-path .prettierignore --config .prettierrc.yaml --write ."
-    ignore_errors: true
 
   terraform:
     desc: Lint terraform files
     cmds:
       - "terraform fmt -check -diff -recursive infra/terraform"
-    ignore_errors: true
