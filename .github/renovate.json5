@@ -13,4 +13,5 @@
   rebaseWhen: "conflicted",
   regexManagers: [],
   packageRules: [],
+  ignorePaths: ["^archive/**"],
 }
