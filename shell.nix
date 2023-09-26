@@ -10,6 +10,8 @@ in
       pkgs.kubectl
       pkgs.kubernetes-helm
       pkgs.pre-commit
+      pkgs.gitleaks
+      pkgs.ydiff
       pkgs.sops
       pkgs.talosctl
       pkgs.terraform
