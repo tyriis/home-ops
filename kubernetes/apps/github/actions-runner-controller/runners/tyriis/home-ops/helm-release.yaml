@@ -26,7 +26,7 @@ spec:
       spec:
         containers:
           - name: runner
-            image: ghcr.io/actions/actions-runner:2.309.0@sha256:689735691f58a631efd20dbf6a0c841ea182d69a38ca0e3984362a14a853d2ce
+            image: ghcr.io/onedr0p/github-actions-runner:rolling@sha256:387d63a0f5c64876feca3c818dab85e46021ab470f28d8e6f5ac2b4ad0d832ef
   valuesFrom:
     - kind: Secret
       name: tyriis-runners
