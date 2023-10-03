@@ -28,6 +28,9 @@ jobs:
         uses: tyriis/bedrock-version-fetcher@v2.0.12
         id: bedrock
 
+      - name: print the bedrock veesion
+        run: echo "Current Minecraft Bedrock version is ${{ steps.bedrock.outputs.version }}"
+
       - name: Version Update
         id: update
         run: |
