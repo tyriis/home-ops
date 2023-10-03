@@ -25,7 +25,7 @@ jobs:
 
       # https://github.com/tyriis/bedrock-version-fetcher
       - name: Fetch Bedrock Version
-        uses: tyriis/bedrock-version-fetcher@v2.0.12
+        uses: tyriis/bedrock-version-fetcher@v3.0.1
         id: bedrock
 
       - name: print the bedrock veesion
