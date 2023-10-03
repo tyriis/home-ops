@@ -28,7 +28,7 @@ jobs:
         uses: tyriis/bedrock-version-fetcher@v3.0.1
         id: bedrock
 
-      - name: print the bedrock veesion
+      - name: PrintBedrock Version
         run: echo "Current Minecraft Bedrock version is ${{ steps.bedrock.outputs.version }}"
 
       - name: Version Update
@@ -40,7 +40,6 @@ jobs:
           echo "version<<EOF" >> "${GITHUB_OUTPUT}"
           echo "${version}" >> "${GITHUB_OUTPUT}"
           echo "EOF" >> "${GITHUB_OUTPUT}"
-          echo "${version}"
 
       # https://github.com/marketplace/actions/install-gh-cli
       - name: install github cli
@@ -61,8 +60,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FILE_TO_COMMIT: kubernetes/apps/gaming/minecraft-bedrock/app/helm-release.yaml
-          DESTINATION_BRANCH: minecraft/bedrock-${{ steps.update.outputs.version }}
-          MESSAGE: "chore(deps): update minecraft-bedrock to ${{ steps.update.outputs.version }}"
+          DESTINATION_BRANCH: minecraft/bedrock-${{ steps.bedrock.outputs.version }}
+          MESSAGE: "chore(deps): update minecraft-bedrock to ${{ steps.bedrock.outputs.version }}"
         run: |
           gh api --method POST \
             -H "Accept: application/vnd.github.v3+json" \
@@ -86,7 +85,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           add-paths: kubernetes/apps/gaming/minecraft-bedrock/app/helm-release.yaml
-          commit-message: "chore(deps): update minecraft bedrock to ${{ steps.update.outputs.version }}"
-          branch: minecraft/bedrock-${{ steps.update.outputs.version }}
+          commit-message: "chore(deps): update minecraft bedrock to ${{ steps.bedrock.outputs.version }}"
+          branch: minecraft/bedrock-${{ steps.bedrock.outputs.version }}
           base: main
-          title: "chore(deps): update minecraft bedrock to ${{ steps.update.outputs.version }}"
+          title: "chore(deps): update minecraft bedrock to ${{ steps.bedrock.outputs.version }}"
