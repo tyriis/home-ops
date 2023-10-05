@@ -26,6 +26,7 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    # https://github.com/bjw-s/helm-charts/tree/main/charts/other/app-template
     controllers:
       main:
         containers:
@@ -64,6 +65,7 @@ spec:
 
     ingress:
       main:
+        enabled: true
         className: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
