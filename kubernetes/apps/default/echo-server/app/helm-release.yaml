@@ -64,8 +64,7 @@ spec:
 
     ingress:
       main:
-        enabled: true
-        ingressClassName: traefik
+        className: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/tls-acme: "true"
