@@ -24,7 +24,7 @@ spec:
   values:
     env:
       EULA: "true"
-      VERSION: "1.20.31.01"
+      VERSION: "1.20.32.03"
       DIFFICULTY: normal
       SERVER_NAME: home
       WHITE_LIST: ""
