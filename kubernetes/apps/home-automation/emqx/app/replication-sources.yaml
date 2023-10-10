@@ -11,7 +11,7 @@ spec:
     copyMethod: Snapshot
     pruneIntervalDays: 14
     repository: emqx-data-0-volsync
-    cacheCapacity: 100Mi
+    cacheCapacity: 400Mi
     volumeSnapshotClassName: csi-ceph-blockpool
     storageClassName: ceph-block
 ---
@@ -27,7 +27,7 @@ spec:
     copyMethod: Snapshot
     pruneIntervalDays: 14
     repository: emqx-data-1-volsync
-    cacheCapacity: 100Mi
+    cacheCapacity: 400Mi
     volumeSnapshotClassName: csi-ceph-blockpool
     storageClassName: ceph-block
 ---
@@ -43,6 +43,6 @@ spec:
     copyMethod: Snapshot
     pruneIntervalDays: 14
     repository: emqx-data-2-volsync
-    cacheCapacity: 100Mi
+    cacheCapacity: 400Mi
     volumeSnapshotClassName: csi-ceph-blockpool
     storageClassName: ceph-block
