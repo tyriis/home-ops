@@ -103,5 +103,5 @@ spec:
             name: app-config
         subPath:
           - path: app-config.production.yaml
-            mountPath: /app/app-config.production.yaml
+            globalMounts: /app/app-config.production.yaml
             readOnly: true
