@@ -10,7 +10,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Mi
+      storage: 400Mi
   storageClassName: ceph-block
 ---
 apiVersion: v1
@@ -24,7 +24,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Mi
+      storage: 400Mi
   storageClassName: ceph-block
 ---
 apiVersion: v1
@@ -38,5 +38,5 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Mi
+      storage: 400Mi
   storageClassName: ceph-block
