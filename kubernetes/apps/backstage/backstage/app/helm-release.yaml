@@ -97,10 +97,8 @@ spec:
     persistence:
       config:
         enabled: true
-        type: custom
-        volumeSpec:
-          configMap:
-            name: app-config
+        type: configMap
+        name: app-config
         globalMounts:
           - path: app-config.production.yaml
             subPath: /app/app-config.production.yaml
