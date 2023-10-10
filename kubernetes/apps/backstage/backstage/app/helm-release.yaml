@@ -101,7 +101,7 @@ spec:
         volumeSpec:
           configMap:
             name: app-config
-        subPath:
+        globalMounts:
           - path: app-config.production.yaml
-            globalMounts: /app/app-config.production.yaml
+            subPath: /app/app-config.production.yaml
             readOnly: true
