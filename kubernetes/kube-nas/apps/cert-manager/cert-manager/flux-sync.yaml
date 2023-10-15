@@ -7,7 +7,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: ./kubernetes/talos-flux/apps/cert-manager/cert-manager/app
+  path: ./kubernetes/kube-nas/apps/cert-manager/cert-manager/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -22,7 +22,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: ./kubernetes/talos-flux/apps/cert-manager/cert-manager/issuers
+  path: ./kubernetes/kube-nas/apps/cert-manager/cert-manager/issuers
   prune: true
   sourceRef:
     kind: GitRepository
