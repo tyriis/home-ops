@@ -9,7 +9,7 @@ spec:
   dependsOn:
     - name: flux-sync
   interval: 10m
-  path: ./kubernetes/apps
+  path: ./kubernetes/talos-flux/apps
   prune: true
   sourceRef:
     kind: GitRepository
