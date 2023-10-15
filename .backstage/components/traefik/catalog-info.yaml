@@ -5,7 +5,7 @@ metadata:
   name: traefik
   description: A modern HTTP reverse proxy and load balancer that makes deploying microservices easy
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/apps/traefik-ingress/traefik
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/traefik-ingress/traefik
       title: Flux definition
       icon: github
       type: github-repository

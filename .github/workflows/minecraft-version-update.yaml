@@ -35,7 +35,7 @@ jobs:
         id: update
         run: |
           version=$(npx zx ./.github/scripts/minecraftVersionCheck.mjs \
-            --helm-release=./kubernetes/apps/gaming/minecraft-bedrock/app/helm-release.yaml \
+            --helm-release=./kubernetes/talos-flux/apps/gaming/minecraft-bedrock/app/helm-release.yaml \
             --version=${{ steps.bedrock.outputs.version }})
           echo "version<<EOF" >> "${GITHUB_OUTPUT}"
           echo "${version}" >> "${GITHUB_OUTPUT}"
@@ -51,7 +51,7 @@ jobs:
       #   if: "${{ steps.update.outputs.version != '' }}"
       #   uses: EndBug/add-and-commit@v9.1.3
       #   with:
-      #     add: kubernetes/apps/gaming/minecraft-bedrock/app/helm-release.yaml
+      #     add: kubernetes/talos-flux/apps/gaming/minecraft-bedrock/app/helm-release.yaml
       #     message: "chore(deps): update minecraft-bedrock to ${{ steps.update.outputs.version }}"
       #     new_branch: minecraft/bedrock-${{ steps.update.outputs.version }}
 
@@ -59,7 +59,7 @@ jobs:
         if: "${{ steps.update.outputs.version != '' }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FILE_TO_COMMIT: kubernetes/apps/gaming/minecraft-bedrock/app/helm-release.yaml
+          FILE_TO_COMMIT: kubernetes/talos-flux/apps/gaming/minecraft-bedrock/app/helm-release.yaml
           DESTINATION_BRANCH: minecraft/bedrock-${{ steps.bedrock.outputs.version }}
           MESSAGE: "chore(deps): update minecraft-bedrock to ${{ steps.bedrock.outputs.version }}"
         run: |
@@ -84,7 +84,7 @@ jobs:
         if: ${{ steps.update.outputs.version != '' }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          add-paths: kubernetes/apps/gaming/minecraft-bedrock/app/helm-release.yaml
+          add-paths: kubernetes/talos-flux/apps/gaming/minecraft-bedrock/app/helm-release.yaml
           commit-message: "chore(deps): update minecraft bedrock to ${{ steps.bedrock.outputs.version }}"
           branch: minecraft/bedrock-${{ steps.bedrock.outputs.version }}
           base: main

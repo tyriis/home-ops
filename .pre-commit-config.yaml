@@ -105,6 +105,6 @@ repos:
       - id: check-flux-helm-values
         exclude: |
           (?x)^(
-            kubernetes/apps/home-automation/home-assistant/app/patches/db-init.yaml|
-            kubernetes/apps/github/actions-runner-controller/.+/helm-release.yaml
+            kubernetes/talos-flux/apps/home-automation/home-assistant/app/patches/db-init.yaml|
+            kubernetes/talos-flux/apps/github/actions-runner-controller/.+/helm-release.yaml
           )$()

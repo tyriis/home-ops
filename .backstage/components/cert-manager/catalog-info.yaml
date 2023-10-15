@@ -5,7 +5,7 @@ metadata:
   name: cert-manager
   description: X.509 certificate management for Kubernetes and OpenShift
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/apps/cert-manager
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes//talos-flux/apps/cert-manager
       title: Flux definition
       icon: github
       type: github-repository

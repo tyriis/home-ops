@@ -8,7 +8,7 @@ metadata:
     # github.com/project-slug: tyriis/backstage-documentation
     backstage.io/techdocs-ref: dir:.
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/apps/rook-ceph
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/rook-ceph
       title: Flux definition
       icon: github
       type: github-repository
