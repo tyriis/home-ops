@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-settings
+  namespace: flux-system
+  labels:
+    kustomize.toolkit.fluxcd.io/prune: disabled
+data:
+  SETTING_CLUSTERNAME: kube-nas
+  SETTING_TZ: Europe/Vienna
+  SETTING_GATEWAY: 192.168.1.1

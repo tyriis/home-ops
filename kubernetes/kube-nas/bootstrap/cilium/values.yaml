@@ -1,0 +1,46 @@
+---
+# autoDirectNodeRoutes: true
+# bpf:
+#   masquerade: true
+# bgp:
+#   enabled: false
+# cluster:
+#   name: kube-nas
+#   id: 1
+# containerRuntime:
+#   integration: containerd
+#   socketPath: /var/run/k3s/containerd/containerd.sock
+# endpointRoutes:
+#   enabled: true
+# hubble:
+#   enabled: false
+# ipam:
+#   mode: kubernetes
+# ipv4NativeRoutingCIDR: 10.32.0.0/16
+# k8sServiceHost: 192.168.1.242
+# k8sServicePort: 6443
+# kubeProxyReplacement: true
+# kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+# l2announcements:
+#   enabled: true
+#   leaseDuration: 120s
+#   leaseRenewDeadline: 60s
+#   leaseRetryPeriod: 1s
+# loadBalancer:
+#   algorithm: maglev
+#   mode: dsr
+# localRedirectPolicy: true
+# operator:
+#   rollOutPods: true
+# rollOutCiliumPods: true
+# securityContext:
+#   privileged: true
+# tunnel: disabled
+
+containerRuntime:
+  integration: containerd
+  socketPath: /var/run/k3s/containerd/containerd.sock
+
+kubeProxyReplacement: strict
+operator:
+  replicas: 1

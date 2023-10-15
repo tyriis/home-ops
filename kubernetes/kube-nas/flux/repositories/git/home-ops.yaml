@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/gitrepository-source-v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: home-ops
+  namespace: flux-system
+spec:
+  interval: 1m
+  url: https://github.com/tyriis/home-ops.git
+  ref:
+    branch: main
+  ignore: |
+    # exclude all
+    /*
+    # include kubernetes directory only
+    !/kubernetes

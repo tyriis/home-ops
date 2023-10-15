@@ -1,6 +1,10 @@
 ---
 creation_rules:
-  - path_regex: (archive|kubernetes)/.*\.ya?ml
+  - path_regex: kubernetes/kube-nas/.*\.ya?ml
+    encrypted_regex: "^(data|stringData)$"
+    age: >-
+      age1clg0rd6ca86h3lnfnjyqsc9stgr0cnyp3l5uswtusxppjq9h2vcsaqckec
+  - path_regex: (archive|kubernetes/talos-flux)/.*\.ya?ml
     encrypted_regex: "^(data|stringData)$"
     age: >-
       age16zqeqx5y6ay3flwz0d06rn83yjv9ckys3j8tpkysf9v6295fhc6sf4r0uj
