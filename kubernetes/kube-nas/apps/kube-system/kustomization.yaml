@@ -6,5 +6,5 @@ resources:
   - ./namespace.yaml
   - ./coredns/flux-sync.yaml
   - ./kubelet-csr-approver/flux-sync.yaml
-  - ./local-path-provisioner/flux-sync.yaml
+  # - ./local-path-provisioner/flux-sync.yaml
   - ./metrics-server/flux-sync.yaml
