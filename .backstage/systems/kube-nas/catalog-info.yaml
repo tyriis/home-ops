@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: kube-nas
+  description: Nixos + k3s to host a declarative single node cluster to have a unified managment via Flux and GitOps principles
+  annotations:
+    # backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: tyriis/home-ops
+  links:
+    - url: https://github.com/tyriis/home-ops
+      title: home-ops
+      icon: github
+      type: github-repository
+  tags:
+    - k8s
+    - k3s
+    - nixos
+    - flux
+spec:
+  owner: home-ops
+  domain: home
