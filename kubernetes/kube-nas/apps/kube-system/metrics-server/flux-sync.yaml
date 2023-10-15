@@ -8,10 +8,12 @@ metadata:
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
-  interval: 10m
   path: ./kubernetes/kube-nas/apps/kube-system/metrics-server/app
-  prune: true
+  prune: false # never should be deleted
   sourceRef:
     kind: GitRepository
     name: home-ops
-  wait: true
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
