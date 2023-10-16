@@ -49,3 +49,13 @@ kubectl apply --server-side -f  kubernetes/kube-nas/flux/repositories/git/home-o
 ```bash
 kubectl apply --server-side -f  kubernetes/kube-nas/flux/flux-sync.yaml
 ```
+
+### disable local-path-provisioner
+
+on the device
+
+! this does not work!
+
+```bash
+touch /var/lib/rancher/k3s/server/manifests/local-storage.yaml.skip
+```
