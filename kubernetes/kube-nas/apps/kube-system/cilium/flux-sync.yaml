@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1beta2.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps-cilium
+  namespace: flux-system
+spec:
+  path: ./kubernetes/kube-nas/apps/kube-system/cilium/app
+  prune: false # never should be deleted
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
