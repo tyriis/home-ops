@@ -4,6 +4,7 @@
 
 ```bash
 kubectl kustomize --enable-helm kubernetes/kube-nas/bootstrap/cilium | kubectl apply -n kube-system -f -
+kubectl apply -f kubernetes/kube-nas/bootstrap/cilium/l2.yaml
 ```
 
 ## Coredns
@@ -52,10 +53,4 @@ kubectl apply --server-side -f  kubernetes/kube-nas/flux/flux-sync.yaml
 
 ### disable local-path-provisioner
 
-on the device
-
-! this does not work!
-
-```bash
-touch /var/lib/rancher/k3s/server/manifests/local-storage.yaml.skip
-```
+TODO: disable local-path-provisioner and setup with helm chart
