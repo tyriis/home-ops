@@ -71,7 +71,7 @@ spec:
           enabled: true
           className: nginx
           annotations:
-            cert-manager.io/cluster-issuer: self-signed
+            cert-manager.io/cluster-issuer: letsencrypt-production
             kubernetes.io/tls-acme: "true"
             nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
             nginx.ingress.kubernetes.io/ssl-redirect: "true"
@@ -80,6 +80,7 @@ spec:
           tls:
             - hosts:
                 - *host
+              secretName: "hubble-tls"
     ipam:
       mode: kubernetes
     ipv4NativeRoutingCIDR: 10.42.0.0/16
