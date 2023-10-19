@@ -70,8 +70,8 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: self-signed
           kubernetes.io/tls-acme: "true"
-          nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
-          nginx.ingress.kubernetes.io/ssl-redirect: "false"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+          nginx.ingress.kubernetes.io/ssl-redirect: "true"
         hosts:
           - host: &host "{{ .Release.Name }}.tyriis.dev"
             paths:
