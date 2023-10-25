@@ -27,7 +27,7 @@ spec:
   values:
     image:
       repository: rogerrum/alertmanager-discord
-      tag: 1.0.4
+      tag: 1.0.5
     env:
       DISCORD_WEBHOOK: ${SECRET_DISCORD_WEBHOOK}
       DISCORD_USERNAME: ${SETTING_CLUSTERNAME}
