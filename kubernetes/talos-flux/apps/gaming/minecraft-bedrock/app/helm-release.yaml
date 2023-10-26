@@ -24,7 +24,7 @@ spec:
   values:
     env:
       EULA: "true"
-      VERSION: "1.20.32.03"
+      VERSION: "1.20.40.01"
       DIFFICULTY: normal
       SERVER_NAME: home
       WHITE_LIST: ""
@@ -40,8 +40,8 @@ spec:
       MAX_THREADS: "0"
       GAMEMODE: survival
       LEVEL_TYPE: DEFAULT
-      LEVEL_NAME: "island wonders"
-      LEVEL_SEED: "968565878525959881"
+      LEVEL_NAME: "lets go pew pew"
+      LEVEL_SEED: "147950563777164989"
       DEFAULT_PLAYER_PERMISSION_LEVEL: member
       TEXTUREPACK_REQUIRED: "false"
       ONLINE_MODE: "true"
@@ -128,6 +128,4 @@ spec:
     resources:
       requests:
         cpu: 250m
-        memory: 387Mi
-      limits:
         memory: 387Mi
