@@ -66,4 +66,4 @@ spec:
               - path: /musicbot/config/permissions.ini
                 subPath: permissions.ini
               - path: /musicbot/config/autoplaylist.txt
-                subPath: permissions.txt
+                subPath: autoplaylist.txt
