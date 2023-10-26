@@ -35,6 +35,8 @@ spec:
             image:
               repository: harbor.techtales.io:443/library/github/musicbot
               tag: release-250723
+            annotations:
+              reloader.stakater.com/auto: "true"
             resources:
               requests:
                 cpu: 100m
@@ -53,11 +55,11 @@ spec:
 
     persistence:
       config:
+        enabled: true
         type: configMap
         name: musicbot-config
         advancedMounts:
           main:
             main:
               - path: /musicbot/config/options.ini
-                readOnly: true
                 subPath: options.ini
