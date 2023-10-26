@@ -5,10 +5,12 @@ in
     packages = [
       pkgs.age
       pkgs.direnv
+      pkgs.fluxcd
       pkgs.go-task
       pkgs.k9s
       pkgs.kubectl
       pkgs.kubernetes-helm
+      pkgs.kustomize
       pkgs.pre-commit
       pkgs.gitleaks
       pkgs.ydiff
