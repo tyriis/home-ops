@@ -8,10 +8,6 @@ tasks:
     - task: refresh
     - task: apply
 
-  flux:
-    - task: init
-    - task: apply:flux
-
   cloudflare:
     - task: init
     - task: apply:cloudflare
@@ -21,18 +17,6 @@ tasks:
     dir: infra/terraform
     cmds:
       - "terraform init"
-
-  plan:flux:
-    desc: Terraform plan module.flux
-    dir: infra/terraform
-    cmds:
-      - "terraform plan -target=module.flux"
-
-  apply:flux:
-    desc: Terraform apply module.flux
-    dir: infra/terraform
-    cmds:
-      - "terraform apply -target=module.flux"
 
   plan:cloudflare:
     desc: Terraform plan module.cloudflare

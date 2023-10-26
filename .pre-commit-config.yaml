@@ -7,47 +7,31 @@ default_stages:
   - push
 
 repos:
-  - repo: https://github.com/adrienverge/yamllint
-    rev: v1.32.0
+  - repo: https://github.com/thlorenz/doctoc
+    rev: v2.2.0
     hooks:
-      - id: yamllint
+      - id: doctoc
         args:
-          - -c
-          - .yamllint.yaml
-
-  - repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.5.4
-    hooks:
-      - id: remove-crlf
-      - id: remove-tabs
-
-  - repo: https://github.com/sirosen/texthooks
-    rev: 0.6.2
-    hooks:
-      - id: fix-smartquotes
-      - id: fix-ligatures
-      - id: forbid-bidi-controls
-
-  - repo: https://github.com/k8s-at-home/sops-pre-commit
-    rev: v2.1.1
-    hooks:
-      - id: forbid-secrets
+          - --update-only
+          - --maxlevel
+          - "3"
+          - --github
+          - --notitle
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
     rev: v1.83.5
     hooks:
       - id: terraform_docs
         args:
-          - --hook-config=--path-to-file=infra/terraform/README.md
-          - --hook-config=--add-to-existing-file=false
-          - --hook-config=--create-file-if-not-exist=false
+          - --hook-config=--path-to-file=README.md
           - --args=--config=.terraform-docs.yaml
-      - id: terraform_tfsec
-        files: ^infra/
       - id: terraform_fmt
       - id: terraform_tflint
         args:
           - --args=--config=__GIT_WORKING_DIR__/.tflint.hcl
+      # - id: terraform_tfsec
+      #   args:
+      #     - --args=--config-file=__GIT_WORKING_DIR__/.tfsec.yaml
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
@@ -76,6 +60,27 @@ repos:
         args:
           - --markdown-linebreak-ext=md
 
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.32.0
+    hooks:
+      - id: yamllint
+        args:
+          - -c
+          - .yamllint.yaml
+
+  - repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.5.4
+    hooks:
+      - id: remove-crlf
+      - id: remove-tabs
+
+  - repo: https://github.com/sirosen/texthooks
+    rev: 0.6.2
+    hooks:
+      - id: fix-smartquotes
+      - id: fix-ligatures
+      - id: forbid-bidi-controls
+
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.37.0
     hooks:
@@ -93,6 +98,11 @@ repos:
           - .prettierignore
           - --config
           - .prettierrc.yaml
+
+  - repo: https://github.com/k8s-at-home/sops-pre-commit
+    rev: v2.1.1
+    hooks:
+      - id: forbid-secrets
 
   - repo: https://github.com/zricethezav/gitleaks
     rev: v8.18.0

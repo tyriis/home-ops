@@ -1,5 +1,19 @@
 # Infrastructure As Code Definitions
 
+<details>
+  <summary style="font-size:1.2em;">Table of Contents</summary>
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [Ansible](#ansible)
+  - [Todos](#todos)
+- [Terraform](#terraform)
+  - [Flux2 bootstrap and sops secret](#flux2-bootstrap-and-sops-secret)
+  - [Cloudflare](#cloudflare)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+</details>
+
 ## Ansible
 
 ### Todos

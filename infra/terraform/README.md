@@ -2,14 +2,23 @@
 
 # Terraform infrastructure as code for home-ops
 
-## Table of Contents
+<details>
+  <summary style="font-size:1.2em;">Table of Contents</summary>
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-1. [Usage](#usage)
-2. [Prerequisites](#prerequisites)
-3. [Requirements](#requirements)
-4. [Providers](#providers)
-5. [Inputs](#inputs)
-6. [Outputs](#outputs)
+- [Usage](#usage)
+  - [Limitations](#limitations)
+- [Prerequisites](#prerequisites)
+  - [Requirements](#requirements)
+  - [Providers](#providers)
+  - [Modules](#modules)
+  - [Resources](#resources)
+  - [Inputs](#inputs)
+  - [Outputs](#outputs)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+</details>
 
 ## Usage
 
@@ -36,14 +45,13 @@ optional: (dev-prerequisites)
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | <= 1.3.9 |
-| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | 4.0.0 |
-| <a name="requirement_flux"></a> [flux](#requirement\_flux) | >= 0.9.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | <= 1.6.2 |
+| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | 4.17.0 |
 | <a name="requirement_github"></a> [github](#requirement\_github) | >= 4.18.0 |
-| <a name="requirement_http"></a> [http](#requirement\_http) | 3.2.1 |
+| <a name="requirement_http"></a> [http](#requirement\_http) | 3.4.0 |
 | <a name="requirement_kubectl"></a> [kubectl](#requirement\_kubectl) | >= 1.13.1 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.6.1 |
-| <a name="requirement_sops"></a> [sops](#requirement\_sops) | 0.7.2 |
+| <a name="requirement_sops"></a> [sops](#requirement\_sops) | 1.0.0 |
 | <a name="requirement_tls"></a> [tls](#requirement\_tls) | 4.0.4 |
 | <a name="requirement_vault"></a> [vault](#requirement\_vault) | >= 3.2.1 |
 
@@ -51,34 +59,25 @@ optional: (dev-prerequisites)
 
 | Name | Version |
 |------|---------|
-| <a name="provider_sops"></a> [sops](#provider\_sops) | 0.7.2 |
-| <a name="provider_vault"></a> [vault](#provider\_vault) | 3.13.0 |
+| <a name="provider_sops"></a> [sops](#provider\_sops) | 1.0.0 |
 
 ### Modules
 
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_cloudflare"></a> [cloudflare](#module\_cloudflare) | ./cloudflare | n/a |
-| <a name="module_flux"></a> [flux](#module\_flux) | ./flux | n/a |
 
 ### Resources
 
 | Name | Type |
 |------|------|
-| [sops_file.cloudflare_secrets](https://registry.terraform.io/providers/carlpett/sops/0.7.2/docs/data-sources/file) | data source |
-| [vault_generic_secret.github_secrets](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/data-sources/generic_secret) | data source |
-| [vault_generic_secret.sops_secrets](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/data-sources/generic_secret) | data source |
+| [sops_file.cloudflare_secrets](https://registry.terraform.io/providers/carlpett/sops/1.0.0/docs/data-sources/file) | data source |
 
 ### Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_branch"></a> [branch](#input\_branch) | branch name | `string` | `"main"` | no |
-| <a name="input_github_owner"></a> [github\_owner](#input\_github\_owner) | github owner | `string` | `"tyriis"` | no |
 | <a name="input_k8s_context"></a> [k8s\_context](#input\_k8s\_context) | flux sync target path | `string` | `"admin@talos-flux"` | no |
-| <a name="input_repository_name"></a> [repository\_name](#input\_repository\_name) | github repository name | `string` | `"home-ops"` | no |
-| <a name="input_repository_visibility"></a> [repository\_visibility](#input\_repository\_visibility) | How visible is the github repo | `string` | `"public"` | no |
-| <a name="input_target_path"></a> [target\_path](#input\_target\_path) | flux sync target path | `string` | `"cluster/flux/flux-system"` | no |
 
 ### Outputs
 

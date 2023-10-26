@@ -1,5 +1,6 @@
 <!-- markdownlint-disable MD041 -->
 <!-- markdownlint-disable MD033 -->
+<!-- markdownlint-disable MD051 -->
 
 <!-- PROJECT SHIELDS -->
 <!--
@@ -31,33 +32,25 @@
 - 🤖 updated by [RenovateBot][renovate-url]
 - 🔐 secured by [Let's Encrypt][letsencrypt-url]
 
-<br />
-<!-- TABLE OF CONTENTS -->
 <details>
-  <summary style="font-size:1.2em;">📑 Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#goals">Goals</a></li>
-        <li><a href="#toolbox-tools-and-technologies">🧰 Tools and Technologies</a></li>
-        <li><a href="#book-overview"> 📖 Overview</a></li>
-      </ul>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#🕵️-troubleshooting">🕵️ Troubleshooting</a></li>
-  </ol>
+  <summary style="font-size:1.2em;">Table of Contents</summary>
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [About The Project](#about-the-project)
+  - [🧰 Tools and Technologies](#%F0%9F%A7%B0-tools-and-technologies)
+  - [📖 Overview](#-overview)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+- [Roadmap](#roadmap)
+- [🕵️ Troubleshooting](#%EF%B8%8F-troubleshooting)
+  - [Stuck HelmRelease](#stuck-helmrelease)
+- [Quality](#quality)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 </details>
-<br />
 
 <!-- ABOUT THE PROJECT -->
 
