@@ -56,8 +56,8 @@ spec:
         type: configMap
         name: musicbot-config
         advancedMounts:
-        main:
           main:
-            - path: /musicbot/config/options.ini
-              readOnly: true
-              subPath: options.ini
+            main:
+              - path: /musicbot/config/options.ini
+                readOnly: true
+                subPath: options.ini
