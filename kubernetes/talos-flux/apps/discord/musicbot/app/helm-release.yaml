@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: mussicbot
+  name: musicbot
 spec:
   interval: 15m
   chart:
@@ -46,6 +46,10 @@ spec:
                 enabled: false
               readiness: *probes
               startup: *probes
+
+    service:
+      main:
+        enabled: false
 
     persistence:
       config:
