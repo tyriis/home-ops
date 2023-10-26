@@ -13,5 +13,6 @@ configMapGenerator:
     behavior: create
     files:
       - options.ini
+      - permissions.ini
 generatorOptions:
   disableNameSuffixHash: true

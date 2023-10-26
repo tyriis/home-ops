@@ -63,3 +63,5 @@ spec:
             main:
               - path: /musicbot/config/options.ini
                 subPath: options.ini
+              - path: /musicbot/config/permissions.ini
+                subPath: permissions.ini
