@@ -14,5 +14,6 @@ configMapGenerator:
     files:
       - options.ini
       - permissions.ini
+      - autoplaylist.txt
 generatorOptions:
   disableNameSuffixHash: true
