@@ -7,6 +7,7 @@
     // "github>tyriis/renovate-config//dashboard/vulnerability-summary.json5",
     "github>tyriis/renovate-config//flux-infra.json5",
     "github>tyriis/renovate-config//labels/semantic.json5",
+    "github>tyriis/renovate-config//helm/groups/rook-ceph.json5",
   ],
   semanticCommits: "enabled",
   suppressNotifications: ["prIgnoreNotification"],
