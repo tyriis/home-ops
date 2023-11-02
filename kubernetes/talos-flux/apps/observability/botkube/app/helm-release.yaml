@@ -54,7 +54,7 @@ spec:
     sources:
       crds:
         displayName: CRDS
-        kubernetes:
+        botkube/kubernetes:
           enabled: true
           namespaces:
             include:
@@ -72,43 +72,43 @@ spec:
             - name: monitoring.coreos.com/v1/podmonitors
             - name: monitoring.coreos.com/v1/servicemonitors
       k8s-recommendation-events:
-        kubernetes:
+        botkube/kubernetes:
           enabled: true
-      # k8s-all-events:
-      #   kubernetes:
-      #     enabled: true
-      #     resources:
-      #       - type: v1/pods
-      #       - type: v1/services
-      #       - type: networking.k8s.io/v1/ingresses
-      #       - type: v1/nodes
-      #       - type: v1/namespaces
-      #       - type: v1/configmaps
-      #       - type: rbac.authorization.k8s.io/v1/roles
-      #       - type: rbac.authorization.k8s.io/v1/rolebindings
-      #       - type: rbac.authorization.k8s.io/v1/clusterrolebindings
-      #       - type: rbac.authorization.k8s.io/v1/clusterroles
-      #       - type: apps/v1/daemonsets
-      #       - type: apps/v1/deployments
-      #       - type: apps/v1/statefulsets
-      # k8s-create-events:
-      #   kubernetes:
-      #     enabled: true
-      #     resources:
-      #       - type: v1/pods
-      #       - type: v1/services
-      #       - type: networking.k8s.io/v1/ingresses
-      #       - type: v1/nodes
-      #       - type: v1/namespaces
-      #       - type: v1/configmaps
-      #       - type: apps/v1/deployments
-      #       - type: apps/v1/statefulsets
-      #       - type: apps/v1/daemonsets
+      k8s-all-events:
+        botkube/kubernetes:
+          enabled: true
+          resources:
+            - type: v1/pods
+            - type: v1/services
+            - type: networking.k8s.io/v1/ingresses
+            - type: v1/nodes
+            - type: v1/namespaces
+            - type: v1/configmaps
+            - type: rbac.authorization.k8s.io/v1/roles
+            - type: rbac.authorization.k8s.io/v1/rolebindings
+            - type: rbac.authorization.k8s.io/v1/clusterrolebindings
+            - type: rbac.authorization.k8s.io/v1/clusterroles
+            - type: apps/v1/daemonsets
+            - type: apps/v1/deployments
+            - type: apps/v1/statefulsets
+      k8s-create-events:
+        botkube/kubernetes:
+          enabled: true
+          resources:
+            - type: v1/pods
+            - type: v1/services
+            - type: networking.k8s.io/v1/ingresses
+            - type: v1/nodes
+            - type: v1/namespaces
+            - type: v1/configmaps
+            - type: apps/v1/deployments
+            - type: apps/v1/statefulsets
+            - type: apps/v1/daemonsets
       k8s-err-events:
-        kubernetes:
+        botkube/kubernetes:
           enabled: true
       k8s-err-with-logs-events:
-        kubernetes:
+        botkube/kubernetes:
           enabled: true
   valuesFrom:
     - targetPath: communications.default-group.discord.token
