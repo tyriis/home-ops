@@ -4,7 +4,7 @@ kind: Kustomization
 helmCharts:
   - name: coredns
     repo: https://coredns.github.io/helm
-    version: 1.27.1
+    version: 1.28.0
     releaseName: coredns
     namespace: kube-system
     valuesFile: values.yaml
