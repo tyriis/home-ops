@@ -61,7 +61,7 @@ repos:
           - --markdown-linebreak-ext=md
 
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.32.0
+    rev: v1.33.0
     hooks:
       - id: yamllint
         args:
