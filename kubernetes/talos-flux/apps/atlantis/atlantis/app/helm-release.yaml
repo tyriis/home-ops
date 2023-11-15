@@ -34,11 +34,6 @@ spec:
     # If managing secrets outside the chart for the webhook, use this variable to reference the secret name
     # vcsSecretName: 'mysecret'
 
-    ## To be used for mounting credential files (when using google provider).
-    serviceAccountSecrets:
-      # credentials: <json file as base64 encoded string>
-      # credentials-staging: <json file as base64 encoded string>
-
     image:
       repository: ghcr.io/runatlantis/atlantis
       tag: v0.26.0
