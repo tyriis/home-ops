@@ -25,6 +25,7 @@ spec:
     global:
       # imageRegistry: public.ecr.aws
       storageClass: ceph-block
+    useHostnames: false
     auth:
       enabled: false
       sentinel: false
