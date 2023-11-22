@@ -4,7 +4,14 @@ This document explains the office automation flows.
 
 ## light
 
+In previous iterrations i have had a few corner cases,
+therefore I made use of a locking implementation to prevent unwanted/unexpected state transitions.
+
+The main idea is to block any state transaction while lock is active, or refresh lock duration for n time on a motion event for example.
+
 ### entities
+
+This table list all involved entities and the system they belong to:
 
 | system          | entity                                                  |
 | --------------- | ------------------------------------------------------- |
@@ -17,6 +24,8 @@ This document explains the office automation flows.
 
 ### system-states
 
+This table list all system states:
+
 | state | light | time        |
 | ----- | ----- | ----------- |
 | 000   | off   | 00:00-06:00 |
@@ -28,6 +37,8 @@ This document explains the office automation flows.
 | 110   | on    | 08:00-22:00 |
 | 111   | on    | 22:00-00:00 |
 
+The following yaml is a simple explanation on how the state is encoded:
+
 ```yaml
 state-encoding: |
   x     -> 1 = light is on, 0 = light is off
@@ -35,6 +46,8 @@ state-encoding: |
 ```
 
 ### rules
+
+These rules are the requirements, they create the base for our state mashine:
 
 ```yaml
 - if: motion is on light is off and time is between 08:00-24:00
@@ -100,3 +113,7 @@ stateDiagram-v2
     111 --> 011: manual switch, no motion
     111 --> 111: motion detected
 ```
+
+### state mashine
+
+![light states office](https://lh3.googleusercontent.com/u/0/drive-viewer/AK7aPaDr1CXFM3hzB41Agpu_nwX6WN8OrfJKC6NnF4nLLBihjxoLzArLKv3brJ06war_ibX4isQHCvMeElvFI33USr4b05Cx "light states office")
