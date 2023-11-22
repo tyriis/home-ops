@@ -41,6 +41,7 @@ spec:
       namespaceSelector:
         matchNames:
           - atlantis
+          - backstage
           - default
           - flux-system
           - home

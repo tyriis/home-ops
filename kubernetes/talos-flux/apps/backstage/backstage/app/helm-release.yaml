@@ -80,8 +80,8 @@ spec:
           traefik.ingress.kubernetes.io/router.tls: "true"
           ingress.kubernetes.io/content-security-policy: "default-src 'self'; img-src https://storage.googleapis.com/ 'self';"
           # external-dns.alpha.kubernetes.io/target: "${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"
-          # hajimari.io/icon: video-input-antenna
-          # hajimari.io/enable: "true"
+          hajimari.io/icon: simple-icons:backstage
+          hajimari.io/enable: "true"
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
