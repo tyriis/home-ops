@@ -33,7 +33,7 @@ backend:
 
   csp:
     connect-src: ["'self'", "http:", "https:"]
-    image-src: ["'self'", "storage.googleapis.com"]
+    img-src: ["'self'", "storage.googleapis.com"]
 
   # config options: https://node-postgres.com/api/client
   database:
