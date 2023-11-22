@@ -78,7 +78,6 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/affinity: "true"
           traefik.ingress.kubernetes.io/router.tls: "true"
-          ingress.kubernetes.io/content-security-policy: "default-src 'self'; img-src https://storage.googleapis.com/ 'self';"
           # external-dns.alpha.kubernetes.io/target: "${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"
           hajimari.io/icon: simple-icons:backstage
           hajimari.io/enable: "true"
