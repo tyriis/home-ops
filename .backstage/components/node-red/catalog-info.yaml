@@ -1,0 +1,37 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: node-red
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+  description: |
+    Node-RED is a browser-based programming tool that allows you to wire together hardware devices, APIs, and online services in new and interesting ways.
+    The tool provides a browser-based editor that makes it easy to wire together flows using a wide range of nodes.
+    Flows can be created using a rich text editor, and JavaScript functions can be created within the editor.
+    A built-in library allows you to save useful functions, templates, or flows for re-use.
+    The light-weight runtime is built on Node.js, taking full advantage of its event-driven, non-blocking model
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/home-automation
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://nodered.org/
+      title: nodered.org
+      type: homepage
+  tags:
+    - home-automation
+    - low-code
+    - event-driven
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops
+  # dependsOn:
+  #   - resource:default/
+  # providesApis:
+  #   - test-api
+  # consumesApis:
+  #   - home-assistant
+  #   - redis

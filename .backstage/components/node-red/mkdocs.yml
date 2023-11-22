@@ -1,0 +1,11 @@
+---
+site_name: node-red
+site_description: all information about node-red based automations on the homelab
+
+nav:
+  - Overview: index.md
+  - Flows:
+      - office: flows/office.md
+
+plugins:
+  - techdocs-core

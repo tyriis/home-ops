@@ -10,6 +10,7 @@ spec:
     - https://github.com/tyriis/home-ops/blob/main/.backstage/systems/talos-flux/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/systems/kube-nas/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/cert-manager/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/node-red/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/rook-ceph/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/traefik/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/traefik-forward-auth/catalog-info.yaml
