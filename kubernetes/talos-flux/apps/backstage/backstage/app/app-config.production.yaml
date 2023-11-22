@@ -31,6 +31,10 @@ backend:
   # all interfaces, the most permissive setting. The right value depends on your specific deployment.
   listen: ":7007"
 
+  csp:
+    connect-src: ["'self'", "http:", "https:"]
+    image-src: ["'self'", "storage.googleapis.com"]
+
   # config options: https://node-postgres.com/api/client
   database:
     client: better-sqlite3
