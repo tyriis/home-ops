@@ -116,4 +116,4 @@ stateDiagram-v2
 
 ### state mashine
 
-![light states office](https://lh3.googleusercontent.com/u/0/drive-viewer/AK7aPaDr1CXFM3hzB41Agpu_nwX6WN8OrfJKC6NnF4nLLBihjxoLzArLKv3brJ06war_ibX4isQHCvMeElvFI33USr4b05Cx "light states office")
+![light states office](https://storage.googleapis.com/techtales-public-images/node-red_office-light_state-mashine.png "light states office")
