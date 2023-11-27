@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.2.0
       interval: 15m
       sourceRef:
         kind: HelmRepository
@@ -27,34 +27,38 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: deiger/aircon
-      tag: 0.3.17
-    env:
-      TZ: ${SETTING_TZ}
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: deiger/aircon
+              tag: 0.3.17
+            env:
+              TZ: ${SETTING_TZ}
+            resources:
+              requests:
+                cpu: 100m
+                memory: 300Mi
+              limits:
+                memory: 2048Mi
+        annotations:
+          secret.reloader.stakater.com/reload: aircon-options
+
+    defaultPodOptions:
+      hostNetwork: true
+
     service:
       main:
         ports:
           http:
             port: 8888
-    hostNetwork: true
+
     persistence:
       options:
         enabled: true
-        type: custom
-        volumeSpec:
-          secret:
-            secretName: aircon-options
+        type: secret
+        name: aircon-options
         subPath:
           - path: options.json
             mountPath: /data/options.json
-
-    podAnnotations:
-      secret.reloader.stakater.com/reload: aircon-options
-
-    resources:
-      requests:
-        cpu: 100m
-        memory: 300Mi
-      limits:
-        memory: 2048Mi
