@@ -38,6 +38,7 @@ spec:
               type: RuntimeDefault
         containers:
           main:
+            nameOverride: minecraft-bedrock
             env:
               EULA: "true"
               VERSION: "1.20.41.02"
