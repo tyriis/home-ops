@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.2.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -33,32 +33,45 @@ spec:
     force: true
     cleanupOnFail: true
   values:
-    controller:
-      strategy: RollingUpdate
-    image:
-      repository: thomseddon/traefik-forward-auth
-      tag: v2.2.0
-    env:
-      AUTH_HOST: &host auth.${SECRET_DOMAIN}
-      DOMAIN: ${SECRET_DOMAIN}
-      COOKIE_DOMAIN: ${SECRET_DOMAIN}
-      INSECURE_COOKIE: "false"
-      URL_PATH: /_oauth
-      LOG_LEVEL: info
-      # 1 week
-      LIFETIME: "604800"
-    envFrom:
-      - secretRef:
-          name: &secret traefik-forward-auth
+    controllers:
+      main:
+        strategy: RollingUpdate
+        containers:
+          main:
+            image:
+              repository: thomseddon/traefik-forward-auth
+              tag: v2.2.0
+            env:
+              AUTH_HOST: &host auth.${SECRET_DOMAIN}
+              DOMAIN: ${SECRET_DOMAIN}
+              COOKIE_DOMAIN: ${SECRET_DOMAIN}
+              INSECURE_COOKIE: "false"
+              URL_PATH: /_oauth
+              LOG_LEVEL: info
+              # 1 week
+              LIFETIME: "604800"
+            envFrom:
+              - secretRef:
+                  name: &secret traefik-forward-auth
+            resources:
+              requests:
+                cpu: 5m
+                memory: 10Mi
+              limits:
+                memory: 50Mi
+        annotations:
+          secret.reloader.stakater.com/reload: *secret
+
     service:
       main:
         ports:
           http:
             port: 4181
+
     ingress:
       main:
         enabled: true
-        ingressClassName: traefik
+        className: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/tls-acme: "true"
@@ -69,16 +82,10 @@ spec:
           - host: *host
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
             secretName: "{{ .Release.Name }}-tls"
-    resources:
-      requests:
-        cpu: 5m
-        memory: 10Mi
-      limits:
-        memory: 50Mi
-    podAnnotations:
-      secret.reloader.stakater.com/reload: *secret
