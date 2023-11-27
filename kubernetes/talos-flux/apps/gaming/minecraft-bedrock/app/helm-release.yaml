@@ -118,6 +118,8 @@ spec:
     service:
       main:
         ports:
+          http:
+            enabled: false
           minecraft:
             port: 19132
             protocol: UDP
