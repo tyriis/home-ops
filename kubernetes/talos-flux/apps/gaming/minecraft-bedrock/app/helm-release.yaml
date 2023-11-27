@@ -131,7 +131,7 @@ spec:
         globalMounts:
           - path: /tmp
       data:
-        type: pvc
+        type: persistentVolumeClaim
         existingClaim: minecraft-bedrock-data
         globalMounts:
           - path: /data
