@@ -36,6 +36,10 @@ spec:
               tag: 0.3.17
             env:
               TZ: ${SETTING_TZ}
+            ports:
+              - name: http
+                containerPort: 8888
+                protocol: TCP
             resources:
               requests:
                 cpu: 100m
@@ -52,7 +56,7 @@ spec:
       main:
         ports:
           http:
-            port: 8888
+            port: http
 
     persistence:
       options:
