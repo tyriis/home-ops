@@ -59,6 +59,6 @@ spec:
         enabled: true
         type: secret
         name: aircon-options
-        subPath:
+        globalMounts:
           - path: options.json
             mountPath: /data/options.json
