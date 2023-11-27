@@ -61,7 +61,7 @@ spec:
             seccompProfile:
               type: RuntimeDefault
         containers:
-          minecraft:
+          main:
             image:
               repository: itzg/minecraft-bedrock-server
               tag: latest
@@ -117,9 +117,6 @@ spec:
 
     service:
       main:
-        enabled: false
-      minecraft:
-        # enabled: true
         ports:
           minecraft:
             port: 19132
