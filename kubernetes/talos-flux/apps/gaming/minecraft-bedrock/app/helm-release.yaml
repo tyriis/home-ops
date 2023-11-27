@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.2.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -48,84 +48,94 @@ spec:
       EMIT_SERVER_TELEMETRY: "false"
       ENABLE_LAN_VISIBILITY: "true"
       TZ: ${SETTING_TZ}
-    controller:
-      replicas: 1
-    image:
-      repository: itzg/minecraft-bedrock-server
-      tag: latest
+
+    controllers:
+      main:
+        replicas: 1
+        pod:
+          securityContext:
+            fsGroup: 2000
+            runAsGroup: 3000
+            runAsNonRoot: true
+            runAsUser: 1000
+            seccompProfile:
+              type: RuntimeDefault
+        containers:
+          main:
+            image:
+              repository: itzg/minecraft-bedrock-server
+              tag: latest
+            hostNetwork: true
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+              readOnlyRootFilesystem: true
+
+            probes:
+              startup:
+                enabled: false
+              readiness:
+                enabled: true
+                custom: true
+                type: UDP
+                spec:
+                  exec:
+                    command:
+                      - mc-monitor
+                      - status-bedrock
+                      - --host
+                        # force health check against IPv4 port
+                      - 127.0.0.1
+                  failureThreshold: 3
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  successThreshold: 1
+                  timeoutSeconds: 1
+              liveness:
+                enabled: true
+                custom: true
+                type: UDP
+                spec:
+                  exec:
+                    command:
+                      - mc-monitor
+                      - status-bedrock
+                      - --host
+                        # force health check against IPv4 port
+                      - 127.0.0.1
+                  failureThreshold: 3
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  successThreshold: 1
+                  timeoutSeconds: 1
+            resources:
+              requests:
+                cpu: 250m
+                memory: 387Mi
+
     service:
       main:
         enabled: false
       minecraft:
-        enabled: true
+        # enabled: true
         ports:
           minecraft:
             port: 19132
             protocol: UDP
-    hostNetwork: true
-    podSecurityContext:
-      fsGroup: 2000
-      runAsGroup: 3000
-      runAsNonRoot: true
-      runAsUser: 1000
-      seccompProfile:
-        type: RuntimeDefault
-    securityContext:
-      allowPrivilegeEscalation: false
-      capabilities:
-        drop:
-          - ALL
-      readOnlyRootFilesystem: true
+
     persistence:
       tmp:
-        enabled: true
         type: emptyDir
-        mountPath: /tmp
+        globalMounts:
+          - path: /tmp
       data:
-        enabled: true
         type: pvc
         existingClaim: minecraft-bedrock-data
-    probes:
-      startup:
-        enabled: false
-      readiness:
-        enabled: true
-        custom: true
-        type: UDP
-        spec:
-          exec:
-            command:
-              - mc-monitor
-              - status-bedrock
-              - --host
-                # force health check against IPv4 port
-              - 127.0.0.1
-          failureThreshold: 3
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 1
-      liveness:
-        enabled: true
-        custom: true
-        type: UDP
-        spec:
-          exec:
-            command:
-              - mc-monitor
-              - status-bedrock
-              - --host
-                # force health check against IPv4 port
-              - 127.0.0.1
-          failureThreshold: 3
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 1
+        globalMounts:
+          - path: /data
+
     ingress:
       main:
         enabled: false
-    resources:
-      requests:
-        cpu: 250m
-        memory: 387Mi
