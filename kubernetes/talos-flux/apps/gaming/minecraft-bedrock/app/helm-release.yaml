@@ -61,7 +61,7 @@ spec:
             seccompProfile:
               type: RuntimeDefault
         containers:
-          main:
+          minecraft:
             image:
               repository: itzg/minecraft-bedrock-server
               tag: latest
