@@ -6,11 +6,7 @@ metadata:
   annotations:
     backstage.io/techdocs-ref: dir:.
   description: |
-    Node-RED is a browser-based programming tool that allows you to wire together hardware devices, APIs, and online services in new and interesting ways.
-    The tool provides a browser-based editor that makes it easy to wire together flows using a wide range of nodes.
-    Flows can be created using a rich text editor, and JavaScript functions can be created within the editor.
-    A built-in library allows you to save useful functions, templates, or flows for re-use.
-    The light-weight runtime is built on Node.js, taking full advantage of its event-driven, non-blocking model
+    Node-RED is a visual programming tool for wiring together devices, APIs, and online services in an intuitive flow-based interface.
   links:
     - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/home-automation
       title: Flux definition
