@@ -9,8 +9,8 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
-      interval: 15m
+      version: 2.3.0
+      interval: 30m
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,18 +26,38 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  values:
-    strategy:
-      type: Recreate
-    image:
-      repository: ghcr.io/k8s-at-home/node-red
-      tag: v3.0.2
 
-    env:
-      TZ: ${SETTING_TZ}
-      FLOWS: flows.json
-      NODE_RED_ENABLE_PROJECTS: "true"
-      NODE_RED_ENABLE_SAFE_MODE: "false"
+  values:
+    controllers:
+      main:
+        strategy: Recreate
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: "OnRootMismatch"
+
+        containers:
+          main:
+            image:
+              repository: docker.io/nodered/node-red
+              tag: 3.1.0
+            env:
+              TZ: ${SETTING_TZ}
+              FLOWS: flows.json
+              NODE_RED_ENABLE_PROJECTS: "true"
+              NODE_RED_ENABLE_SAFE_MODE: "false"
+            resources:
+              requests:
+                memory: 350Mi
+                cpu: 25m
+              limits:
+                memory: 500Mi
+                cpu: 1000m
 
     service:
       main:
@@ -48,7 +68,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: traefik
+        className: traefik
         annotations:
           cert-manager.io/cluster-issuer: "letsencrypt-production"
           kubernetes.io/tls-acme: "true"
@@ -61,7 +81,9 @@ spec:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
@@ -72,30 +94,14 @@ spec:
         enabled: true
         type: pvc
         existingClaim: node-red-data
+        advancedMounts:
+          main:
+            main:
+              - path: /data
       gitconfig:
-        enabled: true
-        type: custom
-        volumeSpec:
-          configMap:
-            name: node-red-gitconfig
-        subPath:
-          - path: .gitconfig
-            mountPath: /usr/src/node-red/.gitconfig
-            readOnly: true
-
-    # podSecurityContext:
-    #   runAsUser: 568
-    #   runAsGroup: 568
-    #   fsGroup: 568
-    #   fsGroupChangePolicy: "OnRootMismatch"
-
-    podAnnotations:
-      configmap.reloader.stakater.com/reload: node-red-gitconfig
-
-    resources:
-      requests:
-        memory: 350Mi
-        cpu: 25m
-      limits:
-        memory: 500Mi
-        cpu: 1000m
+        type: configMap
+        name: node-red-gitconfig
+        globalMounts:
+          - path: /usr/src/node-red/.gitconfig
+            subPath: .gitconfig
+            readonly: true
