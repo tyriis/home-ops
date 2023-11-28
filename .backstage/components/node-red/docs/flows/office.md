@@ -109,11 +109,11 @@ stateDiagram-v2
     110 --> 010: manual switch, no motion
     110 --> 110: motion detected
     110 --> 111: at 22 o'clock
-    111 --> 000: at midnight
+    111 --> 100: at midnight
     111 --> 011: manual switch, no motion
     111 --> 111: motion detected
 ```
 
 ### state mashine
 
-![light states office](https://storage.googleapis.com/techtales-public-images/node-red_office-light_state-mashine.png "light states office")
+![light states office](https://storage.googleapis.com/techtales-public-images/node-red_office-light_state-mashine2.png "light states office")
