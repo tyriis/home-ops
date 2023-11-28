@@ -92,7 +92,6 @@ spec:
     persistence:
       data:
         enabled: true
-        type: pvc
         existingClaim: node-red-data
         advancedMounts:
           main:
