@@ -18,7 +18,6 @@ This table list all involved entities and the system they belong to:
 | home-assistant  | binary_sensor.mijia_motion_basement_stairs_up_occupancy |
 | home-assistant  | binary_sensor.switch_office_touchpad                    |
 | home-assistant  | group.motion_office                                     |
-| home-assistant  | group.motion_office                                     |
 | home-assistant  | light.office                                            |
 | locking-service | office_light_on                                         |
 
