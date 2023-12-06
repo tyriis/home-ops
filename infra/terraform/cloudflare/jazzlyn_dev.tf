@@ -1,13 +1,13 @@
-# create a data source to get the zone id of tyriis.dev
-data "cloudflare_zones" "tyriis_dev" {
+# create a data source to get the zone id of jazzlyn.dev
+data "cloudflare_zones" "jazzlyn_dev" {
   filter {
-    name = "tyriis.dev"
+    name = "jazzlyn.dev"
   }
 }
 
-# configure the zone settings for tyriis.dev
-resource "cloudflare_zone_settings_override" "tyriis_dev" {
-  zone_id = data.cloudflare_zones.tyriis_dev.zones[0]["id"]
+# configure the zone settings for jazzlyn.dev
+resource "cloudflare_zone_settings_override" "jazzlyn_dev" {
+  zone_id = data.cloudflare_zones.jazzlyn_dev.zones[0]["id"]
   settings {
     always_online            = "off"
     always_use_https         = "off"
@@ -64,31 +64,31 @@ resource "cloudflare_zone_settings_override" "tyriis_dev" {
   }
 }
 
-# create a CNAME record to point tyriis.dev to tyriis.github.io
-resource "cloudflare_record" "cname_tyriis_github_io" {
-  zone_id = data.cloudflare_zones.tyriis_dev.zones[0]["id"]
-  name    = "tyriis.dev"
-  value   = "tyriis.github.io"
+# create a CNAME record to point jazzlyn.dev to tyriis.github.io
+resource "cloudflare_record" "cname_jazzlyn_github_io" {
+  zone_id = data.cloudflare_zones.jazzlyn_dev.zones[0]["id"]
+  name    = "jazzlyn.dev"
+  value   = "jazzlyn.github.io"
   type    = "CNAME"
   proxied = true
 }
 
 
 # create a cloudflare email routing rule to forward all emails sent to
-# me@tyriis.dev to the main email address
-resource "cloudflare_email_routing_rule" "tyriis_dev" {
-  zone_id = data.cloudflare_zones.tyriis_dev.zones[0]["id"]
+# me@jazzlyn.dev to the main email address
+resource "cloudflare_email_routing_rule" "jazzlyn_dev" {
+  zone_id = data.cloudflare_zones.jazzlyn_dev.zones[0]["id"]
   name    = "terraform rule"
   enabled = true
 
   matcher {
     type  = "literal"
     field = "to"
-    value = "me@tyriis.dev"
+    value = "me@jazzlyn.dev"
   }
 
   action {
     type  = "forward"
-    value = [data.sops_file.secrets.data["tyriis_email"]]
+    value = [data.sops_file.secrets.data["jazzlyn_email"]]
   }
 }
