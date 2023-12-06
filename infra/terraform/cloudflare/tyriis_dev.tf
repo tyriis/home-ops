@@ -73,6 +73,11 @@ resource "cloudflare_record" "cname_tyriis_github_io" {
   proxied = true
 }
 
+# enable email routing for tyriis.dev
+resource "cloudflare_email_routing_settings" "tyriis_dev" {
+  zone_id = data.cloudflare_zones.tyriis_dev.zones[0]["id"]
+  enabled = "true"
+}
 
 # create a cloudflare email routing rule to forward all emails sent to
 # me@tyriis.dev to the main email address
