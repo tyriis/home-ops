@@ -29,18 +29,9 @@ terraform {
       source  = "hashicorp/http"
       version = "3.4.0"
     }
-    sops = {
-      source  = "carlpett/sops"
-      version = "1.0.0"
-    }
   }
 }
 
-data "sops_file" "cloudflare_secrets" {
-  source_file = "cloudflare-secrets.sops.yaml"
-}
-
 module "cloudflare" {
-  source            = "./cloudflare"
-  cloudflare_domain = data.sops_file.cloudflare_secrets.data["cloudflare_domain"]
+  source = "./cloudflare"
 }

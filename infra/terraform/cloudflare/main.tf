@@ -9,12 +9,21 @@ terraform {
       source  = "hashicorp/http"
       version = "3.4.0"
     }
+    sops = {
+      source  = "carlpett/sops"
+      version = "1.0.0"
+    }
   }
+}
+
+# read data from sops encrypted file
+data "sops_file" "secrets" {
+  source_file = "${path.module}/secrets.sops.yaml"
 }
 
 data "cloudflare_zones" "domain" {
   filter {
-    name = var.cloudflare_domain
+    name = data.sops_file.secrets.data["cloudflare_domain"]
   }
 }
 
