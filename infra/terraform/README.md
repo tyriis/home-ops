@@ -47,12 +47,8 @@ optional: (dev-prerequisites)
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | <= 1.6.5 |
 | <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | 4.20.0 |
-| <a name="requirement_github"></a> [github](#requirement\_github) | >= 4.18.0 |
 | <a name="requirement_http"></a> [http](#requirement\_http) | 3.4.0 |
-| <a name="requirement_kubectl"></a> [kubectl](#requirement\_kubectl) | >= 1.13.1 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.6.1 |
-| <a name="requirement_tls"></a> [tls](#requirement\_tls) | 4.0.5 |
-| <a name="requirement_vault"></a> [vault](#requirement\_vault) | >= 3.2.1 |
 
 ### Providers
 
@@ -70,9 +66,7 @@ No resources.
 
 ### Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_k8s_context"></a> [k8s\_context](#input\_k8s\_context) | flux sync target path | `string` | `"admin@talos-flux"` | no |
+No inputs.
 
 ### Outputs
 
