@@ -34,7 +34,6 @@ spec:
         annotations:
           secret.reloader.stakater.com/reload: locking-service-options
         pod:
-          enableServiceLinks: false
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
