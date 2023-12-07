@@ -48,7 +48,7 @@ optional: (dev-prerequisites)
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | <= 1.6.5 |
 | <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | 4.20.0 |
 | <a name="requirement_http"></a> [http](#requirement\_http) | 3.4.0 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.6.1 |
+| <a name="requirement_sops"></a> [sops](#requirement\_sops) | 1.0.0 |
 
 ### Providers
 
