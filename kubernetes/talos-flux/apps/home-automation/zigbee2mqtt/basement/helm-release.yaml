@@ -28,7 +28,7 @@ spec:
         replicas: 1
         strategy: RollingUpdate
         annotations:
-          secret.reloader.stakater.com/reload: zigbee2mqtt-basement-options
+          reloader.stakater.com/auto: "true"
         containers:
           main:
             env:
