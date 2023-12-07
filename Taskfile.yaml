@@ -10,9 +10,9 @@ vars:
   TERRAFORM_DIR: "{{.PROJECT_DIR}}/infra/terraform"
 
 includes:
-  pre-commit: .taskfiles/pre-commit.yaml
-  lint: .taskfiles/lint.yaml
-  terraform: .taskfiles/terraform.yaml
-  talos: .taskfiles/talos.yaml
-  rook-ceph: .taskfiles/rook-ceph.yaml
-  debug: .taskfiles/debug-tasks.yaml
+  pre-commit: .taskfiles/pre-commit/Taskfile.yaml
+  lint: .taskfiles/lint/Taskfile.yaml
+  terraform: .taskfiles/terraform/Taskfile.yaml
+  talos: .taskfiles/talos/Taskfile.yaml
+  rook-ceph: .taskfiles/rook-ceph/Taskfile.yaml
+  debug: .taskfiles/debug-tasks/Taskfile.yaml
