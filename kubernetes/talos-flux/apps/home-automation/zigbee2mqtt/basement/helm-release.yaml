@@ -31,6 +31,7 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           main:
+            nameOverride: *app
             env:
               ZIGBEE2MQTT_DATA: /config
               TZ: ${SETTING_TZ}
