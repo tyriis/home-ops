@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.3.0
       interval: 15m
       sourceRef:
         kind: HelmRepository
@@ -27,49 +27,60 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      replicas: 3
-      strategy: RollingUpdate
-    image:
-      repository: ghcr.io/tyriis/locking-service
-      tag: v0.0.5
-    env:
-      TZ: ${SETTING_TZ}
-      NODE_ENV: production
-      CONFIG_PATH: /config/configuration.yaml
+    controllers:
+      main:
+        replicas: 3
+        strategy: RollingUpdate
+        annotations:
+          secret.reloader.stakater.com/reload: locking-service-options
+        pod:
+          enableServiceLinks: false
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: *app
+        containers:
+          main:
+            image:
+              repository: ghcr.io/tyriis/locking-service
+              tag: v0.0.5
+            env:
+              TZ: ${SETTING_TZ}
+              NODE_ENV: production
+              CONFIG_PATH: /config/configuration.yaml
+            ports:
+              - name: http
+                containerPort: 3000
+                protocol: TCP
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+
     service:
       main:
         ports:
           http:
             port: 3000
+
     persistence:
       config:
         enabled: true
-        type: custom
+        type: configMap
+        name: locking-service-config
         readOnly: true
-        volumeSpec:
-          configMap:
-            name: locking-service-config
-        subPath:
-          - path: configuration.yaml
-            mountPath: /config/configuration.yaml
-
-    podAnnotations:
-      configmap.reloader.stakater.com/reload: locking-service-config
+        globalMounts:
+          - subPath: configuration.yaml
+            path: /config/configuration.yaml
 
     ingress:
       main:
         enabled: false
-
-    topologySpreadConstraints:
-      - maxSkew: 1
-        topologyKey: kubernetes.io/hostname
-        whenUnsatisfiable: DoNotSchedule
-        labelSelector:
-          matchLabels:
-            app.kubernetes.io/name: *app
-
-    resources:
-      requests:
-        cpu: 10m
-        memory: 128Mi
