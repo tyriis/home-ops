@@ -1,33 +1,43 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/yamllint.json
 # see https://yamllint.readthedocs.io/en/stable/index.html for more options
+# ignore flux gotk-components.yaml
 ignore: |
   gotk-components.yaml
+  *.sops.yaml
 extends: default
+# https://yamllint.readthedocs.io/en/stable/rules.html
 rules:
+  # https://yamllint.readthedocs.io/en/stable/rules.html#truthy
   truthy:
     allowed-values: ["true", "false", "on"]
 
+  # https://yamllint.readthedocs.io/en/stable/rules.html#line-length
   line-length:
     max: 120
     level: warning
 
+  # https://yamllint.readthedocs.io/en/stable/rules.html#braces
   braces:
     min-spaces-inside: 0
     max-spaces-inside: 1
 
+  # https://yamllint.readthedocs.io/en/stable/rules.html#brackets
   brackets:
     min-spaces-inside: 0
     max-spaces-inside: 0
 
+  # https://yamllint.readthedocs.io/en/stable/rules.html#indentation
   indentation:
     spaces: 2
     indent-sequences: consistent
     check-multi-line-strings: false
 
+  # https://yamllint.readthedocs.io/en/stable/rules.html#document-start
   document-start:
     present: true
     level: error
 
+  # https://yamllint.readthedocs.io/en/stable/rules.html#comments
   comments:
     min-spaces-from-content: 1
