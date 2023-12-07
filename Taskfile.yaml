@@ -3,6 +3,7 @@
 version: "3"
 
 vars:
+  #
   PROJECT_DIR:
     sh: "git rev-parse --show-toplevel"
   FLUX_DIR: "{{.PROJECT_DIR}}/cluster"
