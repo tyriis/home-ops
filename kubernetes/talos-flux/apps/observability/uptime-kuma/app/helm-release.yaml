@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -22,21 +22,36 @@ spec:
       retries: 3
       remediateLastFailure: true
   values:
-    global:
-      nameOverride: *app
-    image:
-      repository: louislam/uptime-kuma
-      tag: 1.23.8
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            nameOverride: *app
+            env:
+              TZ: ${SETTING_TZ}
+            image:
+              repository: louislam/uptime-kuma
+              tag: 1.23.8
+            ports:
+              - name: http
+                containerPort: 3001
+                protocol: TCP
+            resources:
+              requests:
+                cpu: 10m
+                memory: 50Mi
+              limits:
+                memory: 150Mi
+
     service:
       main:
         ports:
           http:
             port: 3001
-    persistence:
-      config:
-        enabled: true
-        existingClaim: uptime-kuma-config
-        mountPath: /app/data
+            protocol: TCP
+
     ingress:
       main:
         enabled: true
@@ -49,14 +64,19 @@ spec:
           - host: &host "status.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
             secretName: status-tls
-    resources:
-      requests:
-        cpu: 10m
-        memory: 50Mi
-      limits:
-        memory: 150Mi
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: uptime-kuma-config
+        advancedMounts:
+          main:
+            main:
+              - path: /app/data
