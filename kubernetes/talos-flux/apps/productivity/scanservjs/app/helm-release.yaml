@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -23,27 +23,44 @@ spec:
       retries: 3
   # https://github.com/sbs20/scanservjs
   values:
-    image:
-      repository: sbs20/scanservjs
-      tag: v3.0.3
-    strategy:
-      type: Recreate
-    global:
-      nameOverride: *app
-    env:
-      TZ: ${SETTING_TZ}
-      AIRSCAN_DEVICES: '"HP" = "http://${SECRET_SCANNER_IP}/eSCL";"LASER" = "http://${SECRET_SCANNER2_IP}/eSCL"'
-    command: /bin/sh
-    args: [-c, service dbus start && /entrypoint.sh]
+    controllers:
+      main:
+        strategy: Recreate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            nameOverride: *app
+            env:
+              TZ: ${SETTING_TZ}
+              AIRSCAN_DEVICES: '"HP" = "http://${SECRET_SCANNER_IP}/eSCL";"LASER" = "http://${SECRET_SCANNER2_IP}/eSCL"'
+            image:
+              repository: sbs20/scanservjs
+              tag: v3.0.3
+            command: /bin/sh
+            args: [-c, service dbus start && /entrypoint.sh]
+            ports:
+              - name: http
+                containerPort: 8080
+                protocol: TCP
+                resources:
+                  requests:
+                    cpu: 100m
+                    memory: 100Mi
+                  # removed because of oom kill when scanning more pages
+                  # limits:
+                  #   memory: 250Mi
+
     service:
       main:
         ports:
           http:
             port: 8080
+
     ingress:
       main:
         enabled: true
-        ingressClassName: traefik
+        className: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/tls-acme: "true"
@@ -58,24 +75,27 @@ spec:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
             secretName: "{{ .Release.Name }}-tls"
+
     persistence:
       scans:
         enabled: true
         existingClaim: scanservjs-scans
-        mountPath: /app/data/output
+        advancedMounts:
+          main:
+            main:
+              - path: /app/data/output
       dbus:
         enabled: true
         type: hostPath
         hostPath: /var/run/dbus
-    resources:
-      requests:
-        cpu: 100m
-        memory: 100Mi
-      # removed because of oom kill when scanning more pages
-      # limits:
-      #   memory: 250Mi
+        advancedMounts:
+          main:
+            main:
+              - path: /var/run/dbus
