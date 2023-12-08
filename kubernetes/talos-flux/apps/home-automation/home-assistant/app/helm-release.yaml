@@ -69,7 +69,7 @@ spec:
               POSTGRES_SUPER_PASS: ${SECRET_CLOUDNATIVE_PG_PASSWORD}
             envFrom:
               - secretRef:
-                name: home-assistant-secrets
+                  name: home-assistant-secrets
 
     service:
       main:
