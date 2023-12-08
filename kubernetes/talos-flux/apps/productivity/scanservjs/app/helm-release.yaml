@@ -43,13 +43,13 @@ spec:
               - name: http
                 containerPort: 8080
                 protocol: TCP
-                resources:
-                  requests:
-                    cpu: 100m
-                    memory: 100Mi
-                  # removed because of oom kill when scanning more pages
-                  # limits:
-                  #   memory: 250Mi
+            resources:
+              requests:
+                cpu: 100m
+                memory: 100Mi
+              # removed because of oom kill when scanning more pages
+              # limits:
+              #   memory: 250Mi
 
     service:
       main:
