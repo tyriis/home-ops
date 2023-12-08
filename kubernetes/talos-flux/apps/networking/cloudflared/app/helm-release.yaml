@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -27,51 +27,59 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    global:
-      nameOverride: *app
-    image:
-      repository: cloudflare/cloudflared
-      tag: 2023.10.0-amd64
-    args:
-      - tunnel
-      - --config
-      - /etc/cloudflared/config.yaml
-      - --metrics
-      - 0.0.0.0:9090
-      - run
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            nameOverride: *app
+            image:
+              repository: cloudflare/cloudflared
+              tag: 2023.10.0-amd64
+            args:
+              - tunnel
+              - --config
+              - /etc/cloudflared/config.yaml
+              - --metrics
+              - 0.0.0.0:9090
+              - run
+            ports:
+              - name: metrics
+                containerPort: 9090
+                protocol: TCP
+            resources:
+              requests:
+                memory: 64Mi
+                cpu: 10m
+              limits:
+                memory: 128Mi
+
     service:
       main:
         nameOverride: metrics
         ports:
           http:
             port: 9090
+
     persistence:
       config:
         enabled: true
-        type: custom
-        volumeSpec:
-          configMap:
-            name: &config cloudflare-tunnel
-        subPath:
-          - path: config.yaml
-            mountPath: /etc/cloudflared/config.yaml
-            readOnly: true
+        type: configMap
+        name: cloudflare-tunnel
+        advancedMounts:
+          main:
+            main:
+              - path: /etc/cloudflared/config.yaml
+                subPath: config.yaml
+                readOnly: true
       credentials:
         enabled: true
-        type: custom
-        volumeSpec:
-          secret:
-            secretName: &secret cloudflare-tunnel
-        subPath:
-          - path: cred.json
-            mountPath: /etc/cloudflared/cred.json
-            readOnly: true
-    resources:
-      requests:
-        memory: 64Mi
-        cpu: 10m
-      limits:
-        memory: 128Mi
-    podAnnotations:
-      secret.reloader.stakater.com/reload: *secret
-      configmap.reloader.stakater.com/reload: *config
+        type: secret
+        name: cloudflare-tunnel
+        advancedMounts:
+          main:
+            main:
+              - path: /etc/cloudflared/cred.json
+                subPath: cred.json
+                readOnly: true
