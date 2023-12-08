@@ -45,8 +45,6 @@ spec:
               requests:
                 cpu: 50m
                 memory: 100Mi
-              limits:
-                memory: 2048Mi
           zigbee2mqtt-exporter:
             env:
               ZIGBEE2MQTT_WS: ws://127.0.0.1:8080/api
