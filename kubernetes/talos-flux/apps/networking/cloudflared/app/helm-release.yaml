@@ -65,7 +65,7 @@ spec:
     persistence:
       config:
         enabled: true
-        type: congigMap
+        type: configMap
         name: cloudflare-tunnel
         advancedMounts:
           main:
