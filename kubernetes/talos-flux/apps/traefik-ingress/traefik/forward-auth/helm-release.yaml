@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.2.0
+      version: 2.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -35,6 +35,8 @@ spec:
   values:
     controllers:
       main:
+        annotations:
+          reloader.stakater.com/auto: "true"
         strategy: RollingUpdate
         containers:
           main:
@@ -59,8 +61,6 @@ spec:
                 memory: 10Mi
               limits:
                 memory: 50Mi
-        annotations:
-          secret.reloader.stakater.com/reload: *secret
 
     service:
       main:
