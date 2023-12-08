@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.3.0
       interval: 15m
       sourceRef:
         kind: HelmRepository
@@ -27,23 +27,60 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: ghcr.io/home-assistant/home-assistant
-      tag: 2023.12.0
-    env:
-      TZ: ${SETTING_TZ}
-    envFrom:
-      - secretRef:
-          name: home-assistant-secrets
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        env:
+          TZ: ${SETTING_TZ}
+        envFrom:
+          - secretRef:
+              name: home-assistant-secrets
+        containers:
+          main:
+            nameOverride: *app
+            image:
+              repository: ghcr.io/home-assistant/home-assistant
+              tag: 2023.12.0
+            ports:
+              - name: http
+                containerPort: 8123
+                protocol: TCP
+                resources:
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+            requests:
+              cpu: 100m
+              memory: 300Mi
+            limits:
+              memory: 2048Mi
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/onedr0p/postgres-initdb
+              tag: 14.8@sha256:0141cf427c47f2d534711a3f9e8c5f9008bc6b585463ccd9288cf0f027e20deb
+            env:
+              TZ: ${SETTING_TZ}
+              POSTGRES_SUPER_PASS: ${SECRET_CLOUDNATIVE_PG_PASSWORD}
+            envFrom:
+              - secretRef:
+                name: home-assistant-secrets
+
     service:
       main:
         ports:
           http:
             port: 8123
+
     ingress:
       main:
         enabled: true
-        ingressClassName: traefik
+        className: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           hajimari.io/enable: "true"
@@ -53,35 +90,30 @@ spec:
           - host: &host hass.${SECRET_DOMAIN}
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
             secretName: hass-cert
-    probes:
-      liveness:
-        enabled: false
-      readiness:
-        enabled: false
-      startup:
-        enabled: false
+
     persistence:
       config:
         enabled: true
-        type: pvc
         existingClaim: home-assistant-data
+        advancedMounts:
+          main:
+            main:
+              - path: /config
       ssh:
         enabled: true
         type: secret
         name: home-assistant-ssh
-        mountPath: /root/.ssh
-        readOnly: true
-        defaultMode: 0600
-    podAnnotations:
-      secret.reloader.stakater.com/reload: "home-assistant-ssh,home-assistant-secrets"
-    resources:
-      requests:
-        cpu: 100m
-        memory: 300Mi
-      limits:
-        memory: 2048Mi
+        advancedMounts:
+          main:
+            main:
+              - path: /root/.ssh
+                subPath: .ssh
+                readOnly: true
+                defaultMode: 0600

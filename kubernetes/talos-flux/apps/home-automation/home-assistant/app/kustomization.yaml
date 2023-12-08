@@ -10,5 +10,3 @@ resources:
   - persistent-volume.yaml
   - persistent-volume-claim.yaml
   - helm-release.yaml
-patchesStrategicMerge:
-  - patches/db-init.yaml
