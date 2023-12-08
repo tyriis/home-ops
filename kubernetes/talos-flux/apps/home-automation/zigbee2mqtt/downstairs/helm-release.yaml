@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -23,23 +23,49 @@ spec:
     remediation:
       retries: 5
   values:
-    global:
-      nameOverride: *app
-    image:
-      repository: ghcr.io/koenkk/zigbee2mqtt
-      tag: 1.34.0
-    env:
-      ZIGBEE2MQTT_DATA: /config
-      TZ: ${SETTING_TZ}
+    controllers:
+      main:
+        replicas: 1
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            nameOverride: *app
+            env:
+              ZIGBEE2MQTT_DATA: /config
+              TZ: ${SETTING_TZ}
+            image:
+              repository: ghcr.io/koenkk/zigbee2mqtt
+              tag: 1.34.0
+            ports:
+              - name: http
+                containerPort: 8080
+                protocol: TCP
+            resources:
+              requests:
+                cpu: 50m
+                memory: 100Mi
+          zigbee2mqtt-exporter:
+            env:
+              ZIGBEE2MQTT_WS: ws://127.0.0.1:8080/api
+              TZ: ${SETTING_TZ}
+            image:
+              repository: ghcr.io/tyriis/zigbee2mqtt-exporter
+              tag: v0.2.7
+            ports:
+              - name: http-prom
+                containerPort: 3000
+                protocol: TCP
     service:
       main:
         ports:
           http:
             port: 8080
+
     ingress:
       main:
         enabled: true
-        ingressClassName: "traefik"
+        className: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/tls-acme: "true"
@@ -54,26 +80,19 @@ spec:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
             secretName: "{{ .Release.Name }}-tls"
+
     persistence:
       config:
         enabled: true
         existingClaim: zigbee2mqtt-downstairs-data
-        mountPath: /config
-    resources:
-      requests:
-        cpu: 50m
-        memory: 100Mi
-    sidecars:
-      zigbee2mqtt-exporter:
-        env:
-          ZIGBEE2MQTT_WS: ws://127.0.0.1:8080/api
-        image: ghcr.io/tyriis/zigbee2mqtt-exporter:v0.2.7
-        ports:
-          - containerPort: 3000
-            name: http-prom
-            protocol: TCP
+        advancedMounts:
+          main:
+            main:
+              - path: /config
