@@ -26,24 +26,24 @@ spec:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
-      containers:
-        main:
-          nameOverride: *app
-          env:
-            TZ: ${SETTING_TZ}
-          image:
-            repository: louislam/uptime-kuma
-            tag: 1.23.8
-          ports:
-            - name: http
-              containerPort: 3001
-              protocol: TCP
-          resources:
-            requests:
-              cpu: 10m
-              memory: 50Mi
-            limits:
-              memory: 150Mi
+        containers:
+          main:
+            nameOverride: *app
+            env:
+              TZ: ${SETTING_TZ}
+            image:
+              repository: louislam/uptime-kuma
+              tag: 1.23.8
+            ports:
+              - name: http
+                containerPort: 3001
+                protocol: TCP
+            resources:
+              requests:
+                cpu: 10m
+                memory: 50Mi
+              limits:
+                memory: 150Mi
 
     service:
       main:
