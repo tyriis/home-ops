@@ -3,13 +3,13 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: unifi
+  name: &app unifi
 spec:
   interval: 15m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.3.0
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -17,28 +17,68 @@ spec:
         namespace: flux-system
 
   values:
-    image:
-      repository: jacobalberty/unifi
-      tag: v7.5.176
-
-    env:
-      TZ: ${SETTING_TZ}
-      RUNAS_UID0: "false"
-      UNIFI_UID: "999"
-      UNIFI_GID: "999"
-      UNIFI_STDOUT: "true"
-      JVM_INIT_HEAP_SIZE:
-      JVM_MAX_HEAP_SIZE: 1024M
-      # CERTNAME: tls.crt
-      # CERT_PRIVATE_NAME: tls.key
-      # CERT_IS_CHAIN: "true"
-      PORTAL_HTTPS_PORT: "443"
+    controllers:
+      main:
+        strategy: Recreate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            nameOverride: *app
+            image:
+              repository: jacobalberty/unifi
+              tag: v7.5.176
+            env:
+              TZ: ${SETTING_TZ}
+              RUNAS_UID0: "false"
+              UNIFI_UID: "999"
+              UNIFI_GID: "999"
+              UNIFI_STDOUT: "true"
+              JVM_INIT_HEAP_SIZE:
+              JVM_MAX_HEAP_SIZE: 1024M
+              # CERTNAME: tls.crt
+              # CERT_PRIVATE_NAME: tls.key
+              # CERT_IS_CHAIN: "true"
+              PORTAL_HTTPS_PORT: "443"
+            ports:
+              - name: controller
+                containerPort: 8080
+                protocol: TCP
+              - name: discovery
+                containerPort: 10001
+                protocol: UDP
+              - name: http
+                containerPort: 8443
+                protocol: TCP
+              - name: portal-http
+                containerPort: 8880
+                protocol: TCP
+              - name: portal-https
+                containerPort: 443
+                protocol: TCP
+              - name: speedtest
+                containerPort: 6789
+                protocol: TCP
+              - name: stun
+                containerPort: 3478
+                protocol: UDP
+              - name: syslog
+                containerPort: 5514
+                protocol: UDP
+            resources:
+              requests:
+                cpu: 23m
+                memory: 1390M
+              limits:
+                memory: 1390M
 
     service:
       main:
         type: LoadBalancer
         loadBalancerIP: ${SETTING_METALLB_UNIFI_ADDR}
         externalTrafficPolicy: Local
+        annotations:
+          traefik.ingress.kubernetes.io/service.serversscheme: https
         ports:
           controller:
             enabled: true
@@ -80,16 +120,17 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "wifi-cog"
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        ingressClassName: "traefik"
+        className: "traefik"
         hosts:
           - host: &host "unifi.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: unifi
+                  port: 8443
           - host: &hotspot "hotspot.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
                 service:
                   name: unifi
                   port: 443
@@ -105,17 +146,7 @@ spec:
       data:
         enabled: true
         existingClaim: unifi-data
-        mountPath: /unifi
-
-      # certs:
-      #   enabled: true
-      #   type: secret
-      #   name: unifi-tls
-      #   mountPath: /unifi/cert
-
-    resources:
-      requests:
-        cpu: 23m
-        memory: 1390M
-      limits:
-        memory: 1390M
+        advancedMounts:
+          main:
+            main:
+              - path: /unifi
