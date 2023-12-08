@@ -110,10 +110,10 @@ spec:
         enabled: true
         type: secret
         name: home-assistant-ssh
+        defaultMode: 0600
         advancedMounts:
           main:
             main:
               - path: /root/.ssh
                 subPath: .ssh
                 readOnly: true
-                defaultMode: 0600
