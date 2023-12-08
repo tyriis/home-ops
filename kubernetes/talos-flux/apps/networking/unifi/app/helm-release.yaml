@@ -124,7 +124,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: http
+                  name: unifi
                   port: 8443
           - host: &hotspot "hotspot.${SECRET_DOMAIN}"
             paths:
