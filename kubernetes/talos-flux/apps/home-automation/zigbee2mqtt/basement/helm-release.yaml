@@ -26,7 +26,6 @@ spec:
     controllers:
       main:
         replicas: 1
-        strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -68,7 +67,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClass: "traefik"
+        className: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/tls-acme: "true"
