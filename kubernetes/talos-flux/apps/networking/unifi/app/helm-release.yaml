@@ -144,4 +144,7 @@ spec:
       data:
         enabled: true
         existingClaim: unifi-data
-        mountPath: /unifi
+        advancedMounts:
+          main:
+            main:
+              - path: /unifi
