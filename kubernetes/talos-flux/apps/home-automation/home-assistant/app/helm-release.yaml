@@ -31,14 +31,14 @@ spec:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
-        env:
-          TZ: ${SETTING_TZ}
-        envFrom:
-          - secretRef:
-              name: home-assistant-secrets
         containers:
           main:
             nameOverride: *app
+            env:
+              TZ: ${SETTING_TZ}
+            envFrom:
+              - secretRef:
+                  name: home-assistant-secrets
             image:
               repository: ghcr.io/home-assistant/home-assistant
               tag: 2023.12.0
