@@ -77,6 +77,8 @@ spec:
         type: LoadBalancer
         loadBalancerIP: ${SETTING_METALLB_UNIFI_ADDR}
         externalTrafficPolicy: Local
+        annotations:
+          traefik.ingress.kubernetes.io/service.serversscheme: https
         ports:
           controller:
             enabled: true
