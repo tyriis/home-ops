@@ -46,9 +46,9 @@ spec:
         sniStrict: true
     pilot:
       enabled: false
-    experimental:
-      plugins:
-        enabled: true
+    # experimental:
+    #   plugins:
+    #     enabled: true
     providers:
       kubernetesCRD:
         enabled: true
