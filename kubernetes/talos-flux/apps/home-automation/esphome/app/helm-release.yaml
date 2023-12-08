@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.3.0
       interval: 15m
       sourceRef:
         kind: HelmRepository
@@ -27,87 +27,34 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: ghcr.io/esphome/esphome
-      tag: 2023.11.6
-    env:
-      TZ: ${SETTING_TZ}
-      ESPHOME_DASHBOARD_USE_PING: "true"
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            nameOverride: *app
+            env:
+              TZ: ${SETTING_TZ}
+              ESPHOME_DASHBOARD_USE_PING: "true"
+            image:
+              repository: ghcr.io/esphome/esphome
+              tag: 2021.9.3
+            ports:
+              - name: http
+                containerPort: 6052
+                protocol: TCP
+
     service:
       main:
         ports:
           http:
             port: 6052
-    persistence:
-      config:
-        enabled: true
-        type: pvc
-        existingClaim: esphome-config
-      secrets:
-        enabled: true
-        type: custom
-        readOnly: true
-        volumeSpec:
-          secret:
-            secretName: esphome-secrets
-        subPath:
-          - path: secrets.yaml
-            mountPath: /config/secrets.yaml
-      esphome-config:
-        enabled: true
-        type: custom
-        readOnly: true
-        volumeSpec:
-          configMap:
-            name: esphome-config
-        subPath:
-          - path: light-alexroom.yaml
-            mountPath: /config/light-alexroom.yaml
-          - path: light-stairs.yaml
-            mountPath: /config/light-stairs.yaml
-          - path: sensor-alexroom.yaml
-            mountPath: /config/sensor-alexroom.yaml
-          - path: sensor-basement.yaml
-            mountPath: /config/sensor-basement.yaml
-          - path: sensor-bathroom.yaml
-            mountPath: /config/sensor-bathroom.yaml
-          - path: sensor-bedroom.yaml
-            mountPath: /config/sensor-bedroom.yaml
-          - path: sensor-domiroom.yaml
-            mountPath: /config/sensor-domiroom.yaml
-          - path: sensor-heating.yaml
-            mountPath: /config/sensor-heating.yaml
-          - path: sensor-kitchen.yaml
-            mountPath: /config/sensor-kitchen.yaml
-          - path: sensor-livingroom.yaml
-            mountPath: /config/sensor-livingroom.yaml
-          - path: sensor-office.yaml
-            mountPath: /config/sensor-office.yaml
-          - path: sensor-stairs.yaml
-            mountPath: /config/sensor-stairs.yaml
-          - path: switch-alexroom.yaml
-            mountPath: /config/switch-alexroom.yaml
-          - path: switch-basement.yaml
-            mountPath: /config/switch-basement.yaml
-          - path: switch-bedroom.yaml
-            mountPath: /config/switch-bedroom.yaml
-          - path: switch-domiroom.yaml
-            mountPath: /config/switch-domiroom.yaml
-          - path: switch-heating.yaml
-            mountPath: /config/switch-heating.yaml
-          - path: switch-livingroom.yaml
-            mountPath: /config/switch-livingroom.yaml
-          - path: switch-office.yaml
-            mountPath: /config/switch-office.yaml
-
-    podAnnotations:
-      secret.reloader.stakater.com/reload: esphome-secrets
-      configmap.reloader.stakater.com/reload: esphome-config
 
     ingress:
       main:
         enabled: true
-        ingressClassName: traefik
+        className: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/tls-acme: "true"
@@ -122,8 +69,76 @@ spec:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
             secretName: "{{ .Release.Name }}-tls"
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: esphome-config
+        advancedMounts:
+          main:
+            main:
+              - path: /config
+      secrets:
+        enabled: true
+        type: secret
+        name: esphome-secrets
+        readOnly: true
+        advancedMounts:
+          main:
+            main:
+              - path: /config/secrets.yaml
+                subPath: secrets.yaml
+
+      esphome-config:
+        enabled: true
+        type: configMap
+        name: esphome-config
+        readOnly: true
+        advancedMounts:
+          main:
+            main:
+              - path: /config/light-alexroom.yaml
+                subPath: light-alexroom.yaml
+              - path: /config/light-stairs.yaml
+                subPath: light-stairs.yaml
+              - path: /config/sensor-alexroom.yaml
+                subPath: sensor-alexroom.yaml
+              - path: /config/sensor-basement.yaml
+                subPath: sensor-basement.yaml
+              - path: /config/sensor-bathroom.yaml
+                subPath: sensor-bathroom.yaml
+              - path: /config/sensor-bedroom.yaml
+                subPath: sensor-bedroom.yaml
+              - path: /config/sensor-domiroom.yaml
+                subPath: sensor-domiroom.yaml
+              - path: /config/sensor-heating.yaml
+                subPath: sensor-heating.yaml
+              - path: /config/sensor-kitchen.yaml
+                subPath: sensor-kitchen.yaml
+              - path: /config/sensor-livingroom.yaml
+                subPath: sensor-livingroom.yaml
+              - path: /config/sensor-office.yaml
+                subPath: sensor-office.yaml
+              - path: /config/sensor-stairs.yaml
+                subPath: sensor-stairs.yaml
+              - path: /config/switch-alexroom.yaml
+                subPath: switch-alexroom.yaml
+              - path: /config/switch-basement.yaml
+                subPath: switch-basement.yaml
+              - path: /config/switch-bedroom.yaml
+                subPath: switch-bedroom.yaml
+              - path: /config/switch-domiroom.yaml
+                subPath: switch-domiroom.yaml
+              - path: /config/switch-heating.yaml
+                subPath: switch-heating.yaml
+              - path: /config/switch-livingroom.yaml
+                subPath: switch-livingroom.yaml
+              - path: /config/switch-office.yaml
+                subPath: switch-office.yaml
