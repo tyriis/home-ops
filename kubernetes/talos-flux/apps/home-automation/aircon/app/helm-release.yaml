@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.2.0
+      version: 2.3.0
       interval: 15m
       sourceRef:
         kind: HelmRepository
@@ -29,6 +29,8 @@ spec:
   values:
     controllers:
       main:
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           main:
             image:
@@ -46,8 +48,6 @@ spec:
                 memory: 300Mi
               limits:
                 memory: 2048Mi
-        annotations:
-          secret.reloader.stakater.com/reload: aircon-options
 
     defaultPodOptions:
       hostNetwork: true
