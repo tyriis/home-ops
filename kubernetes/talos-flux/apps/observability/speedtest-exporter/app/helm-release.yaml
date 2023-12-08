@@ -28,6 +28,10 @@ spec:
             image:
               repository: ghcr.io/miguelndecarvalho/speedtest-exporter
               tag: v3.5.4
+            ports:
+              - name: metrics
+                containerPort: 9798
+                protocol: TCP
             resources:
               requests:
                 cpu: 15m
