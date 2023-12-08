@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: unifi
+  name: &app unifi
 spec:
   interval: 15m
   chart:
@@ -24,6 +24,7 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           main:
+            nameOverride: *app
             image:
               repository: jacobalberty/unifi
               tag: v7.5.176
@@ -39,6 +40,31 @@ spec:
               # CERT_PRIVATE_NAME: tls.key
               # CERT_IS_CHAIN: "true"
               PORTAL_HTTPS_PORT: "443"
+            ports:
+              - name: controller
+                containerPort: 8080
+                protocol: TCP
+              - name: discovery
+                containerPort: 10001
+                protocol: UDP
+              - name: http
+                containerPort: 8443
+                protocol: TCP
+              - name: portal-http
+                containerPort: 8880
+                protocol: TCP
+              - name: portal-https
+                containerPort: 443
+                protocol: TCP
+              - name: speedtest
+                containerPort: 6789
+                protocol: TCP
+              - name: stun
+                containerPort: 3478
+                protocol: UDP
+              - name: syslog
+                containerPort: 5514
+                protocol: UDP
             resources:
               requests:
                 cpu: 23m
