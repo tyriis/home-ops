@@ -33,7 +33,7 @@ spec:
           main:
             nameOverride: *app
             env:
-              DISCORD_WEBHOOK: ${SECRET_DISCORD_WEBHOOK}
+              DISCORD_WEBHOOK: ${SECRET_PROMETHEUS_DISCORD_WEBHOOK}
               DISCORD_USERNAME: ${SETTING_CLUSTERNAME}
               DISCORD_AVATAR_URL: https://avatars3.githubusercontent.com/u/3380462
             image:
