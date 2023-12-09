@@ -7,6 +7,6 @@ metadata:
 spec:
   type: discord
   channel: flux-system
-  username: ${SETTING_CLUSTERNAME}
+  username: ${SETTING_CLUSTERNAME} flux-system
   secretRef:
     name: flux-notifications-webhook-url

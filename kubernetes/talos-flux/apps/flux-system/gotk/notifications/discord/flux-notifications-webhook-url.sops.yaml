@@ -4,7 +4,7 @@ kind: Secret
 metadata:
     name: flux-notifications-webhook-url
 data:
-    address: ENC[AES256_GCM,data:gSlPmU/RRLvjiK3hcmtepeL9rX07x4kRSs2RB4rqQFXWVxBaUqKqLq01HnaNR6Nra92xkMwqGeDH86zn6ugoyTN5cnrNhir9F9eq7tKNShekVxrsMuuHwrVl11kFujNolR+E8utbkEkT2avxYGskDI0fyjNfnO4Se9gjybiNiOW8KQ7oux7YnzpGRN1m6RVS6WZumMJ8qAKDn5aJAp2ojQ==,iv:tvHa5kFGmjUU47T5b99lLcARCZKWrPZKM+KDT1iCgGw=,tag:eTwYoazWzFP/SLuiDmbuFg==,type:str]
+    address: ENC[AES256_GCM,data:Z30+6H/UFNAVLtC/4d3A+VbSb1DrKVqz/8/wGFtZw0QAhhWWmpcTFxe4fhjEjK7HINNYLZuFXdDVECD5pIfiorok3ib50NE7u9FjiMKazgTt14FWOLsxoG5R7oGe2pQpp5+X3kVvdxCYW1LKPxCWCniZ7Lj5yZEPHOeW+97X3usnbSn+ZajWlMS1WPgJwRvHZnggTCQq8naEdh6MoF98w2hDY48=,iv:ATkAcbuJZ1x7PXEO5dmT+Ndnlpgng6UUllgUiwgu5/I=,tag:BURnQ73mcladU9uravyZ4A==,type:str]
 type: Opaque
 sops:
     kms: []
@@ -21,8 +21,8 @@ sops:
             SThDODl4ZFFMMUlxM3BneWlrNDdjdUUKm16agevW+HLV4al0q2m5W/SyS84E5SXh
             QfWlkG1byRaLRQ+tMeTuCN0tk2A2asmSPygQ1IKo4AO9kMirDEjQ6w==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2022-09-25T19:24:26Z"
-    mac: ENC[AES256_GCM,data:6suRQ3N4LLgTNZA3y5bKJ1snA1c4yhvccQD0CHhLCzcZvYap6jLZ88st1dTwbN6LBT8mFtA9x3jPw2uRH4/DbUF/3NILssnNcp9Kn6tZ2op9SPWkXZb1UzfBP2ElpMUmDo8VhF6k3EV2xZuR8nN0gor6BhuL6dtB0XnvAe8h/BA=,iv:BwSEoGFtJ0+8mo4XOk75qpTx1/BsppnboCTaSGAiQzo=,tag:6TDCk7i1OTWMU0rO8zlSlA==,type:str]
+    lastmodified: "2023-12-09T22:45:03Z"
+    mac: ENC[AES256_GCM,data:8IuXLneAB1CAK3bLUaTzARPGSp0fAMVQ6EP5hCjastNm0jYgD4wOR/hcMCW2y9nj/PBnGSFyPxjgNkkQRhDGkkXAmBvMh6FsZPh75dDlSqUcbccm3fC7SA8Fy0SLwz47Xacth7+kXVDyJ5xopRA4Gr50DamPochT84OKdHrsZQs=,iv:MBHb4AaP+4dUqJ42H2qWI1ntiQVauLOM5OlRP+XKd5Q=,tag:usmQYdmbv6Eif4vsp98LCg==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
-    version: 3.7.3
+    version: 3.8.1
