@@ -103,6 +103,7 @@ repos:
     rev: v2.1.1
     hooks:
       - id: forbid-secrets
+        exclude: "kubernetes/talos-flux/apps/secops/vault-auth.yaml"
 
   - repo: https://github.com/zricethezav/gitleaks
     rev: v8.18.1

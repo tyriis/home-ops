@@ -5,6 +5,15 @@ metadata:
   name: vault-auth
   namespace: secops
 ---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: vault-auth
+  namespace: secops
+  annotations:
+    kubernetes.io/service-account.name: vault-auth
+type: kubernetes.io/service-account-token
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
