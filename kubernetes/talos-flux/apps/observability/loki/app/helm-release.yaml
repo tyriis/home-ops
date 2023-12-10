@@ -171,6 +171,10 @@ spec:
 
     backend:
       replicas: 3
+      autoscaling:
+        enabled: true
+        minReplicas: 3
+        maxReplicas: 3
       affinity: |
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
