@@ -5,7 +5,8 @@ kind: HelmRelease
 metadata:
   name: loki
 spec:
-  timeout: 10m
+  # timeout need to be increased because of https://github.com/grafana/loki/issues/9523#issuecomment-1655766287
+  timeout: 30m
   interval: 30m
   chart:
     spec:
@@ -172,6 +173,8 @@ spec:
     backend:
       replicas: 3
       autoscaling:
+        # enabling autoscaling for the backend, but we set minReplicas and maxReplicas to the same value
+        # this is a workaround for https://github.com/grafana/loki/issues/9523#issuecomment-1655766287
         enabled: true
         minReplicas: 3
         maxReplicas: 3
