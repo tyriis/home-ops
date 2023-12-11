@@ -12,7 +12,7 @@ configMapGenerator:
       - sensor-bathroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/sensor-bathroom.yaml
       - sensor-bedroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/sensor-bedroom.yaml
       - sensor-domiroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/sensor-domiroom.yaml
-      - sensor-heating.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/sensor-heating.yaml
+      - sensor-heating.yaml=sensor-heating.yaml
       - sensor-kitchen.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/sensor-kitchen.yaml
       - sensor-livingroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/sensor-livingroom.yaml
       - sensor-office.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/sensor-office.yaml
