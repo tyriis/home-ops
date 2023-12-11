@@ -34,7 +34,7 @@ ota:
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
-  use_address: 192.168.1.150
+  use_address: 192.168.1.233
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
@@ -80,7 +80,7 @@ mqtt:
 prometheus:
 
 dallas:
-  - pin: GPIO0
+  - pin: GPIO22
     update_interval: 15s
 
 # [21:29:42][D][dallas.sensor:077]:   Found sensors:
@@ -208,7 +208,7 @@ switch:
 light:
   - platform: fastled_clockless
     chipset: WS2812B
-    pin: GPIO2
+    pin: 27
     num_leds: 1
     rgb_order: GRB
     id: status_led
