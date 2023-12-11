@@ -176,8 +176,8 @@ spec:
         # enabling autoscaling for the backend, but we set minReplicas and maxReplicas to the same value
         # this is a workaround for https://github.com/grafana/loki/issues/9523#issuecomment-1655766287
         enabled: true
-        minReplicas: 3
-        maxReplicas: 3
+        minReplicas: 2
+        maxReplicas: 4
       affinity: |
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
