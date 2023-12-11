@@ -76,7 +76,7 @@ mqtt:
 prometheus:
 
 dallas:
-  - pin: 32
+  - pin: GPIO32
     update_interval: 15s
 
 # [21:29:42][D][dallas.sensor:077]:   Found sensors:
@@ -204,7 +204,7 @@ switch:
 light:
   - platform: fastled_clockless
     chipset: WS2812B
-    pin: 27
+    pin: GPIO2
     num_leds: 1
     rgb_order: GRB
     id: status_led
