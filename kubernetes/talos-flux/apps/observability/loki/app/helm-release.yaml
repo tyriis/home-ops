@@ -171,6 +171,7 @@ spec:
         storageClass: ceph-block
 
     backend:
+      # backend does not shutdown gracefully, each replica will increase the timeout by ~7m
       replicas: 3
       affinity: |
         podAntiAffinity:
