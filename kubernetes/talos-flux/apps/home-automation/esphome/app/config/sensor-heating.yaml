@@ -14,7 +14,7 @@ esp32:
 
 # Enable logging
 logger:
-  level: INFO
+  level: DEBUG
   logs:
     mqtt.component: INFO
     mqtt.client: INFO
