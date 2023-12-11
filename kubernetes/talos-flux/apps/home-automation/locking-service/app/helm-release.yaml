@@ -50,7 +50,7 @@ spec:
           main:
             image:
               repository: ghcr.io/tyriis/locking-service
-              tag: v0.0.5
+              tag: v0.0.6
             env:
               TZ: ${SETTING_TZ}
               NODE_ENV: production
