@@ -1,0 +1,24 @@
+---
+# Area
+area/github:
+  - changed-files:
+      - any-glob-to-any-file: .github/**/*
+area/kubernetes:
+  - changed-files:
+      - any-glob-to-any-file: kubernetes/**/*
+area/taskfile:
+  - changed-files:
+      - any-glob-to-any-file: .taskfiles/**/*
+      - any-glob-to-any-file: Taskfile*
+area/terraform:
+  - changed-files:
+      - any-glob-to-any-file: infra/terraform/**/*
+# Cluster
+cluster/talos-flux:
+  - changed-files:
+      - any-glob-to-any-file: kubernetes/talos-flux/**/*
+      - any-glob-to-any-file: infra/talos/**/*
+cluster/kube-nas:
+  - changed-files:
+      - any-glob-to-any-file: kubernetes/kube-nas/**/*
+      - any-glob-to-any-file: infra/nix/kube-nas/**/*
