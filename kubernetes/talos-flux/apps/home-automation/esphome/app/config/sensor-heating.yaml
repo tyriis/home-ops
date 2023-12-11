@@ -18,6 +18,7 @@ logger:
   logs:
     mqtt.component: INFO
     mqtt.client: INFO
+    dallas.sensor: DEBUG
 
 # Enable Home Assistant API
 api:
