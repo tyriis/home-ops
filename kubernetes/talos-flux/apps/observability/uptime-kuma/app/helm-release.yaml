@@ -33,7 +33,7 @@ spec:
               TZ: ${SETTING_TZ}
             image:
               repository: louislam/uptime-kuma
-              tag: 1.23.9
+              tag: 1.23.10
             ports:
               - name: http
                 containerPort: 3001
