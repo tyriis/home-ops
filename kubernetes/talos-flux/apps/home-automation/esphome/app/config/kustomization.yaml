@@ -15,13 +15,13 @@ configMapGenerator:
       - sensor-heating.yaml=sensor-heating.yaml
       - sensor-kitchen.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/sensor-kitchen.yaml
       - sensor-livingroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/sensor-livingroom.yaml
-      - sensor-office.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/sensor-office.yaml
+      # - sensor-office.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/sensor-office.yaml
       - sensor-stairs.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/sensor-stairs.yaml
       - switch-alexroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-alexroom.yaml
       - switch-basement.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-basement.yaml
       - switch-bedroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-bedroom.yaml
       - switch-domiroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-domiroom.yaml
-      - switch-heating.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-heating.yaml
+      # - switch-heating.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-heating.yaml
       - switch-livingroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-livingroom.yaml
       - switch-office.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-office.yaml
 generatorOptions:
