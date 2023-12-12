@@ -21,4 +21,5 @@ resources:
   - organization/helm-release.yaml
   - tyriis/secrets.sops.yaml
   - tyriis/home-ops/helm-release.yaml
+  - tyriis/homeassistant-config/helm-release.yaml
   - tyriis/terraform-github/helm-release.yaml

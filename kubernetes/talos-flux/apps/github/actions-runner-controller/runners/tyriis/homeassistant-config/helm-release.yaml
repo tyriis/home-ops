@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: tyriis-homeassistant-config
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: gha-runner-scale-set
+      version: 0.7.0
+      sourceRef:
+        kind: HelmRepository
+        name: actions-runner-controller-charts
+        namespace: flux-system
+      interval: 30m
+  values:
+    runnerScaleSetName: arc-runner-set-homeassistant-config
+    githubConfigUrl: https://github.com/tyriis/homeassistant-config
+    minRunners: 0
+    maxRunners: 1
+    containerMode:
+      type: dind
+    template:
+      spec:
+        containers:
+          - name: runner
+            image: ghcr.io/onedr0p/github-actions-runner:rolling@sha256:e24bb8f3d809b706cd740c47f688dcecbf3886f3ac819d61b7b1f5644a2f091d
+  valuesFrom:
+    - kind: Secret
+      name: tyriis-runners
+      valuesKey: github_app_id
+      targetPath: githubConfigSecret.github_app_id
+    - kind: Secret
+      name: tyriis-runners
+      valuesKey: github_app_installation_id
+      targetPath: githubConfigSecret.github_app_installation_id
+    - kind: Secret
+      name: tyriis-runners
+      valuesKey: github_app_private_key
+      targetPath: githubConfigSecret.github_app_private_key
