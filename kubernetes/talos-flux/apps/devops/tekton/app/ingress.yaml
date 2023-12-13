@@ -6,6 +6,7 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-production
     hajimari.io/enable: "true"
     hajimari.io/icon: simple-icons:tekton
+    hajimari.io/name: Tekton
     kubernetes.io/tls-acme: "true"
     traefik.ingress.kubernetes.io/affinity: "true"
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
@@ -13,7 +14,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.tls: "true"
   labels:
     app.kubernetes.io/instance: tekton-dashboard
-    app.kubernetes.io/name: tekton
+    app.kubernetes.io/name: tekton-dashboard
   name: tekton-dashboard
   namespace: tekton-pipelines
 spec:
