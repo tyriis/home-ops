@@ -1,0 +1,10 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: devops
+resources:
+  - ./helm-release.yaml
+commonLabels:
+  app.kubernetes.io/name: tekton
+  app.kubernetes.io/instance: tekton
