@@ -3,13 +3,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: apps-tekton-pipeline
+  name: apps-tekton
   namespace: flux-system
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
   interval: 15m
-  path: ./kubernetes/talos-flux/apps/devops/tekton/pipeline
+  path: ./kubernetes/talos-flux/apps/devops/tekton/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -34,5 +34,28 @@ spec:
     name: home-ops
   wait: true
   dependsOn:
-    - name: apps-tekton-pipeline
+    - name: apps-tekton
+      namespace: flux-system
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1beta2.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: apps-tekton-pipelines
+  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/enabled: "true"
+spec:
+  interval: 15m
+  path: ./kubernetes/talos-flux/apps/devops/tekton/pipelines
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+  wait: true
+  dependsOn:
+    - name: apps-tekton
+      namespace: flux-system
+    - name: apps-tekton-tasks
       namespace: flux-system
