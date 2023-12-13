@@ -147,7 +147,7 @@ spec:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-production
         hajimari.io/enable: "true"
-        hajimari.io/icon: chart-areaspline
+        hajimari.io/icon: simple-icons:grafana
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         external-dns.alpha.kubernetes.io/target: "${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"
       hosts:
