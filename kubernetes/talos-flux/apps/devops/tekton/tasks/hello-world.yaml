@@ -19,6 +19,5 @@ kind: TaskRun
 metadata:
   name: hello-task-run
 spec:
-  serviceAccountName: tekton-bot
   taskRef:
     name: hello
