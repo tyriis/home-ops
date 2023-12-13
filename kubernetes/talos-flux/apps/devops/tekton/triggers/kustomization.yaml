@@ -6,3 +6,4 @@ namespace: devops
 resources:
   - ./release.yaml
   - ./interceptors.yaml
+  - ./templates/hello.yaml
