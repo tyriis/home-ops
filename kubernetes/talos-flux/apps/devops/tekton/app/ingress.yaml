@@ -13,7 +13,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.tls: "true"
   labels:
     app.kubernetes.io/instance: tekton-dashboard
-    app.kubernetes.io/name: tekton-dashboard
+    app.kubernetes.io/name: tekton
   name: tekton-dashboard
   namespace: tekton-pipelines
 spec:
@@ -33,7 +33,3 @@ spec:
     - hosts:
         - *host
       secretName: tekton-dashboard-tls
-status:
-  loadBalancer:
-    ingress:
-      - ip: 192.168.1.80
