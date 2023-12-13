@@ -11,6 +11,7 @@ resources:
   - https://storage.googleapis.com/tekton-releases/triggers/previous/v0.25.3/interceptors.yaml
   # https://github.com/tektoncd/dashboard/releases
   - https://storage.googleapis.com/tekton-releases/dashboard/previous/v0.42.0/release.yaml
+  - ./ingress.yaml
 # patches:
 #   # Remove namesapce tekton-pipelines
 #   - patch: |
