@@ -61,16 +61,16 @@ spec:
           apps:
             - name: OPNsense
               url: https://opnsense.${SECRET_DOMAIN}
-              icon: router-network
+              icon: simple-icons:opnsense
             - name: NAS
               url: https://nas.${SECRET_DOMAIN}
-              icon: nas
+              icon: simple-icons:synology
             - name: minio
               url: ${SECRET_MINIO_URL}
-              icon: server
+              icon: simple-icons:minio
             - name: vault
               url: https://vault.${SECRET_DOMAIN}
-              icon: shield-key
+              icon: simple-icons:vault
             - name: AdGuard
               url: https://opnsense.${SECRET_DOMAIN}:3443
               icon: shield-check
