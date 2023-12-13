@@ -19,5 +19,6 @@ kind: TaskRun
 metadata:
   name: hello-task-run
 spec:
+  serviceAccountName: default
   taskRef:
     name: hello
