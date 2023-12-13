@@ -45,7 +45,7 @@ spec:
           traefik.ingress.kubernetes.io/router.tls: "true"
           hajimari.io/appName: rook-ceph
           hajimari.io/enable: "true"
-          hajimari.io/icon: "harddisk"
+          hajimari.io/icon: simple-icons:ceph
         host:
           name: &host rook.${SECRET_DOMAIN}
           path: /
