@@ -46,7 +46,7 @@ spec:
         traefik.ingress.kubernetes.io/router.tls: "true"
         hajimari.io/appName: weave-gitops
         hajimari.io/enable: "true"
-        hajimari.io/icon: simple-icons:git
+        hajimari.io/icon: simple-icons:flux
       hosts:
         - host: &host "weave-gitops.${SECRET_DOMAIN}"
           paths:
