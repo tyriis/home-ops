@@ -10,3 +10,11 @@ spec:
       script: |
         #!/bin/sh
         echo "Hello World from Tekton"
+---
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: hello-task-run
+spec:
+  taskRef:
+    name: hello
