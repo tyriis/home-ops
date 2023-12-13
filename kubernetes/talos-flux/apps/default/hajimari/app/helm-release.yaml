@@ -52,6 +52,7 @@ spec:
           - productivity
           - rook-ceph
           - traefik-ingress
+          - tekton-pipelines
       name: sunshine
       lightTheme: chalk
       darkTheme: horizon
