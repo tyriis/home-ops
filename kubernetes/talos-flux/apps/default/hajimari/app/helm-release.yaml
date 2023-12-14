@@ -114,12 +114,8 @@ spec:
           bookmarks:
             - name: gitmoji
               url: https://gitmoji.dev/
-            - name: Aleen42 badges
-              url: https://badges.aleen42.com/
-            # - name: Codepen
-            #   url: "https://codepen.io/"
-            # - name: Devdocs
-            #   url: "https://devdocs.io"
+            - name: Shields.io
+              url: https://shields.io/
             - name: Devhints
               url: "https://devhints.io"
         - group: Lifestyle
