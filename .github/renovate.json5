@@ -15,5 +15,8 @@
   rebaseWhen: "conflicted",
   regexManagers: [],
   packageRules: [],
-  ignorePaths: ["^archive/**"],
+  ignorePaths: [
+    "^archive/**",
+    "^kubernets/talos-flux/apps/home-automation/esphome/app/config/**",
+  ],
 }
