@@ -6,7 +6,8 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-production
     hajimari.io/enable: "true"
     hajimari.io/icon: simple-icons:tekton
-    hajimari.io/name: Tekton
+    hajimari.io/appName: Tekton
+    hajimari.io/info: CloudNative CI/CD
     kubernetes.io/tls-acme: "true"
     traefik.ingress.kubernetes.io/affinity: "true"
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
