@@ -130,22 +130,22 @@ spec:
               url: "https://www.dwell.com/"
             - name: Freshome
               url: "https://www.mymove.com/freshome/"
-        - group: Media
+        - group: Icons
           bookmarks:
-            - name: Spotify
-              url: "http://browse.spotify.com"
-            - name: Trakt
-              url: "http://trakt.tv"
-            - name: YouTube
-              url: "https://youtube.com/feed/subscriptions"
-        - group: Reading
+            - name: Simple Icons
+              url: https://simpleicons.org/
+            - name: Material Design Icons
+              url: https://fonts.google.com/icons
+            - name: Iconic Icons
+              url: https://ionic.io/ionicons
+        - group: Badges
           bookmarks:
-            - name: Instapaper
-              url: "https://www.instapaper.com/u"
-            - name: Medium
-              url: "http://medium.com"
-            - name: Reddit
-              url: "http://reddit.com"
+            - name: Awesome Badges
+              url: https://dev.to/envoy_/150-badges-for-github-pnk
+            - name: Alle42 Badges
+              url: https://badges.aleen42.com/
+            - name: Badges4Readme
+              url: https://github.com/alexandresanlim/Badges4-README.md-Profile
         - group: Entertainment
           bookmarks:
             - name: Amazon Prime
