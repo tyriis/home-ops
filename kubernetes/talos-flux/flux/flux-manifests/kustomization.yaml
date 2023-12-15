@@ -99,9 +99,9 @@ patches:
       - op: add
         path: /spec/template/spec/containers/0/args/-
         value: --feature-gates=DetectDrift=true,CorrectDrift=false
-    #   - op: add
-    #     path: /spec/template/spec/containers/0/args/-
-    #     value: --log-level=debug
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: --log-level=debug
     target:
       kind: Deployment
       name: helm-controller
@@ -117,13 +117,6 @@ patches:
       - op: add
         path: /spec/template/spec/containers/0/args/-
         value: --oom-watch-interval=500ms
-    target:
-      kind: Deployment
-      name: helm-controller
-  - patch: |
-      - op: add
-        path: /spec/template/spec/containers/0/args/-
-        value: --log-level="debug"
     target:
       kind: Deployment
       name: helm-controller
