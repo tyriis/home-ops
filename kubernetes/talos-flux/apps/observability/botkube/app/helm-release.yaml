@@ -15,15 +15,40 @@ spec:
         name: botkube-charts
         namespace: flux-system
   driftDetection:
-    mode: disabled
-    # ignore:
-    #   - target:
-    #       kind: Secret
-    #       name: botkube-communication-secret
-    #     paths:
-    #       - /annotations
-    #       - /labels
-
+    mode: enabled
+    # ignore secret and service monitor
+    ignore:
+      - target:
+          kind: Secret
+          name: botkube-communication-secret
+        paths:
+          - /metadata
+          - /data
+      - target:
+          kind: ServiceMonitor
+          name: botkube
+        paths:
+          - /metadata
+          - /spec
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              version: v1
+              kind: Secret
+              name: botkube-communication-secret
+            patch: |
+              - op: add
+                path: /metadata/annotations/helm.toolkit.fluxcd.io~1driftDetection
+                value: disabled
+          - target:
+              version: v1
+              kind: ServiceMonitor
+              name: botkube
+            patch: |
+              - op: add
+                path: /metadata/annotations/helm.toolkit.fluxcd.io~1driftDetection
+                value: disabled
   # https://artifacthub.io/packages/helm/infracloudio/botkube?modal=values
   values:
     settings:
@@ -140,23 +165,3 @@ spec:
       kind: Secret
       name: botkube-secrets
       valuesKey: BOTKUBE_DISCORD_CHANNEL_ID
-
-  # postRenderers:
-  #   - kustomize:
-  #       patches:
-  #         - target:
-  #             version: v1
-  #             kind: Secret
-  #             name: botkube-communication-secret
-  #           patch: |
-  #             - op: add
-  #               path: /metadata/annotations/helm.toolkit.fluxcd.io~1driftDetection
-  #               value: disabled
-  #         - target:
-  #             version: v1
-  #             kind: ServiceMonitor
-  #             name: botkube
-  #           patch: |
-  #             - op: add
-  #               path: /metadata/annotations/helm.toolkit.fluxcd.io~1driftDetection
-  #               value: disabled
