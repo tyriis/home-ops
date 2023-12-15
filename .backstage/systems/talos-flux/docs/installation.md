@@ -206,6 +206,7 @@ Create the following file:
 
 ```yaml linenums="1" title="metrics-server/kustomization.yaml"
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 helmCharts:
@@ -248,6 +249,7 @@ Create the following file:
 
 ```yaml linenums="1" title="kubelet-csr-approve/kustomization.yaml"
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 helmCharts:
