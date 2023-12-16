@@ -1,0 +1,149 @@
+---
+labels:
+  - name: area/github
+    description: ""
+    color: ededed
+  - name: area/kubernetes
+    description: ""
+    color: ededed
+  - name: area/terraform
+    description: ""
+    color: ededed
+  - name: bug
+    description: Something isn't working
+    color: d73a4a
+  - name: cluster/kube-nas
+    description: ""
+    color: ededed
+  - name: cluster/talos-flux
+    description: ""
+    color: ededed
+  - name: documentation
+    description: Improvements or additions to documentation
+    color: 0075ca
+  - name: duplicate
+    description: This issue or pull request already exists
+    color: cfd3d7
+  - name: enhancement
+    description: New feature or request
+    color: a2eeef
+  - name: evaluate
+    description: evaluation is the beginning of something new, or maybe not
+    color: 25DEBF
+  - name: good first issue
+    description: Good for newcomers
+    color: 7057ff
+  - name: hardware
+    description: Hardware related issues and topics
+    color: 1267D8
+  - name: help wanted
+    description: Extra attention is needed
+    color: "008672"
+  - name: invalid
+    description: This doesn't seem right
+    color: e4e669
+  - name: question
+    description: Further information is requested
+    color: d876e3
+  - name: renovate/annotations
+    description: ""
+    color: ededed
+  - name: renovate/docker
+    description: renovate docker datasource
+    color: 319def
+  - name: renovate/flux
+    description: renovate flux manager
+    color: 3d6ddd
+  - name: renovate/github-actions
+    description: renovate github-actions manager
+    color: c5def5
+  - name: renovate/github-release
+    description: ""
+    color: ededed
+  - name: renovate/github-tag
+    description: ""
+    color: ededed
+  - name: renovate/helm
+    description: renovate helm datasource
+    color: 0f1689
+  - name: renovate/image
+    description: ""
+    color: ededed
+  - name: renovate/kubernetes
+    description: ""
+    color: ededed
+  - name: renovate/kustomize
+    description: ""
+    color: ededed
+  - name: renovate/pre-commit
+    description: renovate pre-commit manager
+    color: f8b424
+  - name: renovate/terraform
+    description: renovate terraform manager
+    color: 7b42bc
+  - name: setup
+    description: setup something
+    color: fbca04
+  - name: stop-updating
+    description: prevent renovate from updating this pr
+    color: b60205
+  - name: test
+    description: just test if this is working
+    color: 267F10
+  - name: type/digest
+    description: a digest update
+    color: ededed
+  - name: type/major
+    description: a major update
+    color: b60205
+  - name: type/minor
+    description: a minor update
+    color: fbca04
+  - name: type/patch
+    description: a patch for a bug
+    color: 0e8a16
+  - name: wontfix
+    description: This will not be worked on
+    color: ffffff
+  - name: workaround
+    description: ""
+    color: 964E9D
+repos:
+  - name: tyriis/home-ops
+    labels:
+      - area/github
+      - area/kubernetes
+      - area/terraform
+      - bug
+      - cluster/kube-nas
+      - cluster/talos-flux
+      - documentation
+      - duplicate
+      - enhancement
+      - evaluate
+      - good first issue
+      - hardware
+      - help wanted
+      - invalid
+      - question
+      - renovate/annotations
+      - renovate/docker
+      - renovate/flux
+      - renovate/github-actions
+      - renovate/github-release
+      - renovate/github-tag
+      - renovate/helm
+      - renovate/image
+      - renovate/kubernetes
+      - renovate/kustomize
+      - renovate/pre-commit
+      - renovate/terraform
+      - setup
+      - stop-updating
+      - test
+      - type/digest
+      - type/major
+      - type/minor
+      - type/patch
+      - wontfix
+      - workaround
