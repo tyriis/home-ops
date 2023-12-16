@@ -41,7 +41,7 @@ spec:
             nameOverride: minecraft-bedrock
             env:
               EULA: "true"
-              # renovate: depName=tyriis/bedrock-tags
+              # renovate: depName=tyriis/bedrock-tags datasource=github-releases versioning=loose extractVersion=^(?<version>.*)$
               VERSION: "1.20.41.02"
               DIFFICULTY: normal
               SERVER_NAME: home

@@ -10,24 +10,23 @@
     "github>tyriis/renovate-config//labels/semantic.json5",
     "github>tyriis/renovate-config//helm/groups/rook-ceph.json5",
     "github>tyriis/renovate-config//flux/groups/flux.json5",
-    // "github>tyriis/renovate-config//generic-regex-manager.json5",
+    "github>tyriis/renovate-config//generic-regex-manager.json5",
     "security:openssf-scorecard",
   ],
   semanticCommits: "enabled",
   suppressNotifications: ["prIgnoreNotification"],
   rebaseWhen: "conflicted",
   regexManagers: [
-    {
-      description: "Update minecraft-bedrock version",
-      fileMatch: ["minecraft-bedrock/app/helm-release\\.yaml$"],
-      matchStrings: [
-        '(?m:^\\s+# ?renovate: depName=(?<depName>\\S+)\\n[\\t|\\s]*? \\S+: "?(?<currentValue>[^" ]+)"?$)',
-      ],
-      datasourceTemplate: "github-releases",
-      // versioningTemplate: "^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+).(?<compatibility>\\d+)$",
-      versioningTemplate: "loose",
-      extractVersionTemplate: "^(?<version>.*)",
-    },
+    // {
+    //   description: "Update minecraft-bedrock version",
+    //   fileMatch: ["minecraft-bedrock/app/helm-release\\.yaml$"],
+    //   matchStrings: [
+    //     '(?m:^\\s+# ?renovate: depName=(?<depName>\\S+)\\n[\\t|\\s]*? \\S+: "?(?<currentValue>[^" ]+)"?$)',
+    //   ],
+    //   datasourceTemplate: "github-releases",
+    //   versioningTemplate: "loose",
+    //   extractVersionTemplate: "^(?<version>.*)",
+    // },
   ],
   packageRules: [],
   ignorePaths: [
