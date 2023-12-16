@@ -125,3 +125,7 @@ repos:
             kubernetes/talos-flux/apps/home-automation/home-assistant/app/patches/db-init.yaml|
             kubernetes/talos-flux/apps/github/actions-runner-controller/.+/helm-release.yaml
           )$()
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.16.3
+    hooks:
+      - id: gitleaks

@@ -6,6 +6,9 @@ on:
     branches: ["main"]
     paths: ["kubernetes/**.yaml"]
 
+permissions:
+  contents: read
+
 jobs:
   flux-diff:
     name: Flux Diff
@@ -17,6 +20,11 @@ jobs:
         path: ["kubernetes"]
         resource: ["helmrelease", "kustomization"]
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@eb238b55efaa70779f274895e782ed17c84f2895 # v2.6.1
+        with:
+          egress-policy: audit
+
       - name: Generate Token
         uses: tibdex/github-app-token@3beb63f4bd073e61482598c45c71c1019b59b73a # v2.1.0
         id: generate-token
