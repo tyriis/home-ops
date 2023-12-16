@@ -2,6 +2,7 @@
   enabled: true,
   platform: "github",
   extends: [
+    "config:best-practices",
     "github>tyriis/renovate-config//dashboard/default.json5",
     // does not work for docker images
     // "github>tyriis/renovate-config//dashboard/vulnerability-summary.json5",
