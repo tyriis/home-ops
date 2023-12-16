@@ -42,6 +42,13 @@
       matchUpdateTypes: ["patch"],
       semanticCommitType: "fix",
     },
+    {
+      matchPackageNames: ["tyriis/bedrock-tags"],
+      matchDatasources: ["github-releases"],
+      automerge: true,
+      matchUpdateTypes: ["major", "minor", "patch"],
+      automergeType: "pr",
+    },
   ],
   ignorePaths: [
     "^archive/**",
