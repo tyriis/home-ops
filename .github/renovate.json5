@@ -16,19 +16,33 @@
   semanticCommits: "enabled",
   suppressNotifications: ["prIgnoreNotification"],
   rebaseWhen: "conflicted",
-  regexManagers: [
-    // {
-    //   description: "Update minecraft-bedrock version",
-    //   fileMatch: ["minecraft-bedrock/app/helm-release\\.yaml$"],
-    //   matchStrings: [
-    //     '(?m:^\\s+# ?renovate: depName=(?<depName>\\S+)\\n[\\t|\\s]*? \\S+: "?(?<currentValue>[^" ]+)"?$)',
-    //   ],
-    //   datasourceTemplate: "github-releases",
-    //   versioningTemplate: "loose",
-    //   extractVersionTemplate: "^(?<version>.*)",
-    // },
+  regexManagers: [],
+  packageRules: [
+    {
+      matchPackageNames: ["tyriis/bedrock-tags"],
+      matchUpdateTypes: ["major", "minor", "patch"],
+      semanticCommitScope: "minecraft",
+      commitMessageTopic: "bedrock",
+    },
+    {
+      matchPackageNames: ["tyriis/bedrock-tags"],
+      matchDatasources: ["github-releases"],
+      matchUpdateTypes: ["major"],
+      semanticCommitType: "feat",
+    },
+    {
+      matchPackageNames: ["tyriis/bedrock-tags"],
+      matchDatasources: ["github-releases"],
+      matchUpdateTypes: ["minor"],
+      semanticCommitType: "feat",
+    },
+    {
+      matchPackageNames: ["tyriis/bedrock-tags"],
+      matchDatasources: ["github-releases"],
+      matchUpdateTypes: ["patch"],
+      semanticCommitType: "fix",
+    },
   ],
-  packageRules: [],
   ignorePaths: [
     "^archive/**",
     "^kubernets/talos-flux/apps/home-automation/esphome/app/config/**",
