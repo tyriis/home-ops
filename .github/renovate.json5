@@ -18,13 +18,14 @@
   rebaseWhen: "conflicted",
   regexManagers: [
     {
-      description: "Process various dependencies in YAML files",
+      description: "Update minecraft-bedrock version",
       fileMatch: ["minecraft-bedrock/app/helm-release\\.yaml$"],
       matchStrings: [
         '(?m:^\\s+# ?renovate: depName=(?<depName>\\S+)\\n[\\t|\\s]*? \\S+: "?(?<currentValue>[^" ]+)"?$)',
       ],
       datasourceTemplate: "github-releases",
-      versioningTemplate: "^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+).(?<compatibility>\\d+)$",
+      // versioningTemplate: "^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+).(?<compatibility>\\d+)$",
+      versioningTemplate: "loose",
       extractVersionTemplate: "^(?<version>.*)",
     },
   ],
