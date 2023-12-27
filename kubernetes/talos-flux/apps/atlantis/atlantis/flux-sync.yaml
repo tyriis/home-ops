@@ -17,6 +17,7 @@ spec:
     - name: apps-cert-manager
     - name: apps-rook-ceph-cluster
     - name: apps-traefik-forward-auth
+    - name: apps-external-secrets
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1beta2.json
