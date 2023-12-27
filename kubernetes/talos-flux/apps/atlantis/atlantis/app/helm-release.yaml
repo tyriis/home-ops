@@ -41,23 +41,23 @@ spec:
     ## Use Server Side Repo Config,
     ## ref: https://www.runatlantis.io/docs/server-side-repo-config.html
     ## Example default configuration
-    repoConfig: |
-      ---
-      repos:
-      - id: /.*/
-        apply_requirements: []
-        workflow: default
-        allowed_overrides: []
-        allow_custom_workflows: true
-      workflows:
-        default:
-          plan:
-            steps: [init, plan]
-          apply:
-            steps: [apply]
-      # metrics:
-      #   prometheus:
-      #     endpoint: /metrics
+    # repoConfig: |
+    #   ---
+    #   repos:
+    #   - id: /.*/
+    #     apply_requirements: []
+    #     workflow: default
+    #     allowed_overrides: []
+    #     allow_custom_workflows: true
+    #   workflows:
+    #     default:
+    #       plan:
+    #         steps: [init, plan]
+    #       apply:
+    #         steps: [apply]
+    #   metrics:
+    #     prometheus:
+    #       endpoint: /metrics
 
     # Use Diff Markdown Format for color coding diffs
     enableDiffMarkdownFormat: true
