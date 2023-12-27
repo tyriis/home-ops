@@ -133,3 +133,13 @@ spec:
     readinessProbe:
       periodSeconds: 5
       initialDelaySeconds: 10
+
+    extraVolumes:
+      - name: terraform-gworkspace
+        secret:
+          secretName: terraform-gworkspace
+
+    extraVolumeMounts:
+      - name: terraform-gworkspace
+        mountPath: /home/atlantis/.config/sops/age
+        readOnly: true
