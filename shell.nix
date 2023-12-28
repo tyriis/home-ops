@@ -21,6 +21,7 @@ in
       pkgs.tig
       pkgs.tflint
       pkgs.tfsec
+      pkgs.vault
       (builtins.getFlake "github:budimanjojo/talhelper").packages.x86_64-linux.default
     ];
   }
