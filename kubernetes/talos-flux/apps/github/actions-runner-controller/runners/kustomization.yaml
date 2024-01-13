@@ -17,6 +17,7 @@ namespace: github
 resources:
   - jazzlyn/secrets.sops.yaml
   - jazzlyn/gh-actions-demo/helm-release.yaml
+  - jazzlyn/kind-flux-demo/helm-release.yaml
   - organization/secrets.sops.yaml
   - organization/helm-release.yaml
   - tyriis/secrets.sops.yaml
