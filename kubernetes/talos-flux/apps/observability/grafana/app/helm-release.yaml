@@ -33,6 +33,9 @@ spec:
       GF_DATE_FORMATS_USE_BROWSER_LOCALE: "true"
       VAR_BLOCKY_URL: http://blocky.networking.svc.cluster.local:4000
 
+    envFromSecrets:
+      - name: grafana-env
+
     adminPassword: "${SECRET_GRAFANA_PASSWORD}"
     grafana.ini:
       server:
@@ -41,8 +44,6 @@ spec:
         auto_assign_org_role: "Admin"
       auth.google:
         enabled: true
-        client_id: "${SECRET_GRAFANA_OAUTH_CLIENT_ID}"
-        client_secret: "${SECRET_GRAFANA_OAUTH_CLIENT_SECRET}"
         scopes: https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email
         auth_url: https://accounts.google.com/o/oauth2/auth
         token_url: https://accounts.google.com/o/oauth2/token

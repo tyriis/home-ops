@@ -1,0 +1,30 @@
+# yamllint disable
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+    name: grafana-env
+stringData:
+    GF_AUTH_GOOGLE_ENABLED: ENC[AES256_GCM,data:Vf684g==,iv:lb3T33RlQFvsJUwhQsJc4fySF+ricMiO1LgCZ0hs3ro=,tag:Pjr0vd0Eallec2eorwU51g==,type:str]
+    GF_AUTH_GOOGLE_CLIENT_ID: ENC[AES256_GCM,data:EaJ5MS9jmXKZ1gbBwJU8xL09E95Lzog/ncqnq8+TYC/e27JpcE4LdQC2ZwjIWPcTDuUM5m7NpjMzUzIvISXoOJdDSxe/waRr,iv:Oub/mmnsIBGMB4GMMvL2eUK7Uz4XgHdIIdPiAeFuiXY=,tag:gKByk2mmlmJc5+yJmkXcAQ==,type:str]
+    GF_AUTH_GOOGLE_CLIENT_SECRET: ENC[AES256_GCM,data:YLlBwyOWV0zksdQoc2Rp0GrNxXCBtsxbvhPSSBHy/By4djo=,iv:sHFcGqQj6Ak0GvA+I7guGLPY40bHO3re7XPV2xsToPA=,tag:1Ns/P/xXdUpNS6iYjv4Rxw==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age16zqeqx5y6ay3flwz0d06rn83yjv9ckys3j8tpkysf9v6295fhc6sf4r0uj
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBSZVh5OStSeE0xc3VDYTUx
+            OENIOFByblU2aDNHbjZ4elpreWZjK1dHNVhNCm44TG5HeTNzaFBWSytKTEdCdUw1
+            L0dFaklFb1hHVzNrRWp3V0d4c3BkNzQKLS0tIHZpMURFWE9rR3ZKZ1kyNVY2cmZz
+            eUQwcWJxQWZIUkRsb291SHpGSDhqT1EKgTQ1qSb4D0VNoXTiTkz9sHrHFPNHcPCW
+            IQ8/QYEA6iWVt+v8s+ATb2OaLZhha5FgwCOGVyIv6GJLP1kBlz8RwQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-01-13T23:45:15Z"
+    mac: ENC[AES256_GCM,data:/r1EiqbWn/ho1aIXzVsc/ZlcTZTff4bhGA8pP1W0QbI/DCsyFkc7h/BNQkthEseVeXbDLjqvE7OKchuGJKGaQTMwt+19WRCJSUmayJponTitay3ZKvRDmAgaT13u7pXteHalccjankpE4cBy2bdiVzQw0FQnhVqx+wY//uyb3OI=,iv:mzlgJJXYDQCbumfWvhPutdicue/aHwjyA2dhy9nA/Bs=,tag:b8iuZwbP4h5lbr7asY2tjw==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.8.1
