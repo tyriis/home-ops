@@ -35,7 +35,7 @@ spec:
           main:
             image:
               repository: harbor.${SECRET_DOMAIN}/library/techtales/backstage
-              tag: v0.2.1
+              tag: v0.2.2
             resources:
               requests:
                 cpu: 9m
