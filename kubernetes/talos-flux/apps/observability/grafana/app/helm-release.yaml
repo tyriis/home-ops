@@ -23,6 +23,7 @@ spec:
     remediation:
       retries: 3
 
+  # https://artifacthub.io/packages/helm/grafana/grafana?modal=values
   values:
     replicas: 1
 
