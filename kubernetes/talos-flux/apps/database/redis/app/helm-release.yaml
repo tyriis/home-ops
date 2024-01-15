@@ -39,3 +39,9 @@ spec:
       enabled: true
       serviceMonitor:
         enabled: true
+    master:
+      serviceAccount:
+        name: redis-master
+    replica:
+      serviceAccount:
+        name: redis-replica
