@@ -54,15 +54,3 @@ kubectl apply --server-side -f  kubernetes/kube-nas/flux/flux-sync.yaml
 ### disable local-path-provisioner
 
 TODO: disable local-path-provisioner and setup with helm chart
-
-terraform state rm module.flux.data.flux_sync.main
-terraform state rm module.flux.data.kubectl_file_documents.fluxcd_install
-terraform state rm module.flux.data.kubectl_file_documents.fluxcd_sync
-terraform state rm module.flux.github_repository_deploy_key.main
-terraform state rm module.flux.github_repository_deploy_key.talos_flux
-terraform state rm module.flux.kubernetes_namespace.flux_system
-terraform state rm module.flux.kubernetes_secret.github_deploy_key
-terraform state rm module.flux.kubernetes_secret.main
-terraform state rm module.flux.kubernetes_secret.sops_age
-terraform state rm module.flux.tls_private_key.home_ops
-terraform state rm module.flux.tls_private_key.main
