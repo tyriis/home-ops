@@ -36,7 +36,7 @@ spec:
             nameOverride: *app
             image:
               repository: cloudflare/cloudflared
-              tag: 2024.1.2-amd64@sha256:2dbc6ae14925d8a4152122343fe306d41f640428813188f7f3e97dd5c89a2ab5
+              tag: 2024.1.3-amd64@sha256:0006c0e922784b9bbba542b8ccf82a6261698a82a78ff54632103f6036b34ab3
             args:
               - tunnel
               - --config
