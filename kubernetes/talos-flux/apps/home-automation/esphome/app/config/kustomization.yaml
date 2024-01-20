@@ -7,16 +7,9 @@ configMapGenerator:
     files:
       - light-alexroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/light-alexroom.yaml
       - light-stairs.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/light-stairs.yaml
-      - sensor-alexroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/sensor-alexroom.yaml
-      - sensor-basement.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/sensor-basement.yaml
       - sensor-bathroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/sensor-bathroom.yaml
-      - sensor-bedroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/sensor-bedroom.yaml
       - sensor-domiroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/sensor-domiroom.yaml
       - sensor-heating.yaml=sensor-heating.yaml
-      - sensor-kitchen.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/sensor-kitchen.yaml
-      - sensor-livingroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/sensor-livingroom.yaml
-      # - sensor-office.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/sensor-office.yaml
-      - sensor-stairs.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/sensor-stairs.yaml
       - switch-alexroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-alexroom.yaml
       - switch-basement.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-basement.yaml
       - switch-bedroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-bedroom.yaml

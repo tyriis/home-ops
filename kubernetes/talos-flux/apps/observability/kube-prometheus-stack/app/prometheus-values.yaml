@@ -89,30 +89,12 @@ prometheus:
             labels:
               device: light-stairs
       # ESPHome sensors
-      - job_name: esphome-sensor-alexroom
-        static_configs:
-          - targets:
-              - esphome-sensor-alexroom.home
-            labels:
-              device: sensor-alexroom
-      - job_name: esphome-sensor-basement
-        static_configs:
-          - targets:
-              - esphome-sensor-basement.home
-            labels:
-              device: sensor-basement
       - job_name: esphome-sensor-bathroom
         static_configs:
           - targets:
               - esphome-sensor-bathroom.home
             labels:
               device: sensor-bathroom
-      - job_name: esphome-sensor-bedroom
-        static_configs:
-          - targets:
-              - esphome-sensor-bedroom.home
-            labels:
-              device: sensor-bedroom
       - job_name: esphome-sensor-domiroom
         static_configs:
           - targets:
@@ -125,30 +107,6 @@ prometheus:
               - esphome-sensor-heating.home
             labels:
               device: sensor-heating
-      - job_name: esphome-sensor-kitchen
-        static_configs:
-          - targets:
-              - esphome-sensor-kitchen.home
-            labels:
-              device: sensor-kitchen
-      - job_name: esphome-sensor-livingroom
-        static_configs:
-          - targets:
-              - esphome-sensor-livingroom.home
-            labels:
-              device: sensor-livingroom
-      # - job_name: esphome-sensor-office
-      #   static_configs:
-      #     - targets:
-      #         - esphome-sensor-office.home
-      #       labels:
-      #         device: sensor-office
-      - job_name: esphome-sensor-stairs
-        static_configs:
-          - targets:
-              - esphome-sensor-stairs.home
-            labels:
-              device: sensor-stairs
       # ESPHome switches
       - job_name: esphome-switch-alexroom
         static_configs:
