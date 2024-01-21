@@ -108,24 +108,12 @@ spec:
                 subPath: light-alexroom.yaml
               - path: /config/light-stairs.yaml
                 subPath: light-stairs.yaml
-              - path: /config/sensor-alexroom.yaml
-                subPath: sensor-alexroom.yaml
-              - path: /config/sensor-basement.yaml
-                subPath: sensor-basement.yaml
               - path: /config/sensor-bathroom.yaml
                 subPath: sensor-bathroom.yaml
-              - path: /config/sensor-bedroom.yaml
-                subPath: sensor-bedroom.yaml
               - path: /config/sensor-domiroom.yaml
                 subPath: sensor-domiroom.yaml
               - path: /config/sensor-heating.yaml
                 subPath: sensor-heating.yaml
-              - path: /config/sensor-kitchen.yaml
-                subPath: sensor-kitchen.yaml
-              - path: /config/sensor-livingroom.yaml
-                subPath: sensor-livingroom.yaml
-              - path: /config/sensor-stairs.yaml
-                subPath: sensor-stairs.yaml
               - path: /config/switch-alexroom.yaml
                 subPath: switch-alexroom.yaml
               - path: /config/switch-basement.yaml
