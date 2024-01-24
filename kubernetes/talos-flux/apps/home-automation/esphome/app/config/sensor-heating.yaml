@@ -20,6 +20,20 @@ logger:
     mqtt.client: INFO
     dallas.sensor: INFO
 
+globals:
+  - id: min_temp
+    type: float
+    restore_value: yes
+    initial_value: "24.0"
+  - id: max_temp
+    type: float
+    restore_value: yes
+    initial_value: "24.0"
+  - id: heating
+    type: bool
+    restore_value: yes
+    initial_value: "false"
+
 web_server:
   port: 80
 
@@ -27,6 +41,36 @@ web_server:
 api:
   encryption:
     key: !secret api_encription_key
+  # id: espapi
+  port: 6053
+  reboot_timeout: 5min
+  services:
+    - service: set_heating_min_temp
+      variables:
+        heating_min_temp: float
+      then:
+        - logger.log:
+            format: "Setting ${friendly_name} min_temp value: %.1f"
+            args: [heating_min_temp]
+        - globals.set:
+            id: min_temp
+            value: !lambda "return (heating_min_temp);"
+        - logger.log:
+            format: "${friendly_name} min_temp value: %.1f"
+            args: [id(min_temp)]
+    - service: set_heating_max_temp
+      variables:
+        heating_max_temp: float
+      then:
+        - logger.log:
+            format: "Setting ${friendly_name} max_temp value: %.1f"
+            args: [heating_max_temp]
+        - globals.set:
+            id: max_temp
+            value: !lambda "return (heating_max_temp);"
+        - logger.log:
+            format: "${friendly_name} max_temp value: %.1f"
+            args: [id(max_temp)]
 
 ota:
   password: !secret ota_password
@@ -126,6 +170,29 @@ binary_sensor:
   - platform: status
     name: "${friendly_name} Status"
 
+script:
+  - id: heat
+    then:
+      - logger.log:
+          format: "Heating START"
+      - globals.set:
+          id: heating
+          value: "true"
+      - switch.turn_on: relay1
+      - delay: 45s
+      - switch.turn_off: relay1
+
+  - id: stop_heat
+    then:
+      - logger.log:
+          format: "Heating STOP"
+      - switch.turn_on: relay2
+      - delay: 45s
+      - switch.turn_off: relay2
+      - globals.set:
+          id: heating
+          value: "false"
+
 sensor:
   - platform: uptime
     name: "${friendly_name} Uptime"
@@ -171,6 +238,17 @@ sensor:
     accuracy_decimals: 1
     filters:
       - offset: 0.125
+    on_value:
+      then:
+        - logger.log:
+            format: "Dallas sensor value: %.1f"
+            args: ["x"]
+        - lambda: |-
+            if (x < id(min_temp) && id(heating) == false && id(relay1).state == false && id(relay2).state == false) {
+              id(heat).execute();
+            } else if (x >= id(max_temp) && id(heating) == true && id(relay2).state == false) {
+              id(stop_heat).execute();
+            }
 
   - platform: dallas
     address: 0xE20516D07C0BFF28
@@ -198,6 +276,14 @@ switch:
   - platform: restart
     name: "${friendly_name} Restart"
     disabled_by_default: true
+
+  - platform: homeassistant
+    id: relay1
+    entity_id: switch.heating_valve_l1
+
+  - platform: homeassistant
+    id: relay2
+    entity_id: switch.heating_valve_l2
 
 # status_led:
 #   # https://esphome.io/components/status_led
