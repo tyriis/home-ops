@@ -277,14 +277,41 @@ switch:
     name: "${friendly_name} Restart"
     disabled_by_default: true
 
-  - platform: homeassistant
+  # - platform: homeassistant
+  #   id: relay1
+  #   entity_id: switch.heating_valve_l1
+
+  # - platform: homeassistant
+  #   id: relay2
+  #   entity_id: switch.heating_valve_l2
+
+  - platform: template
     id: relay1
-    entity_id: switch.heating_valve_l1
+    optimistic: true
+    turn_on_action:
+      - homeassistant.service:
+          service: homeassistant.turn_on
+          data:
+            entity_id: "switch.heating_valve_l1"
+    turn_off_action:
+      - homeassistant.service:
+          service: homeassistant.turn_off
+          data:
+            entity_id: "switch.heating_valve_l1"
 
-  - platform: homeassistant
+  - platform: template
     id: relay2
-    entity_id: switch.heating_valve_l2
-
+    optimistic: true
+    turn_on_action:
+      - homeassistant.service:
+          service: homeassistant.turn_on
+          data:
+            entity_id: "switch.heating_valve_l2"
+    turn_off_action:
+      - homeassistant.service:
+          service: homeassistant.turn_off
+          data:
+            entity_id: "switch.heating_valve_l2"
 # status_led:
 #   # https://esphome.io/components/status_led
 #   pin:
