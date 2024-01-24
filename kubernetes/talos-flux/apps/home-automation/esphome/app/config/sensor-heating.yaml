@@ -216,6 +216,14 @@ text_sensor:
 binary_sensor:
   - platform: status
     name: "${friendly_name} Status"
+  - platform: homeassistant
+    name: "Heating Valve L1 State"
+    entity_id: switch.heating_valve_l1
+    id: heating_valve_l1_state
+  - platform: homeassistant
+    name: "Heating Valve L2 State"
+    entity_id: switch.heating_valve_l2
+    id: heating_valve_l2_state
 
 script:
   - id: heat
@@ -345,6 +353,8 @@ switch:
           service: homeassistant.turn_off
           data:
             entity_id: "switch.heating_valve_l1"
+    lambda: |-
+      return id(heating_valve_l1_state).state;
 
   - platform: template
     id: relay2
@@ -359,6 +369,8 @@ switch:
           service: homeassistant.turn_off
           data:
             entity_id: "switch.heating_valve_l2"
+    lambda: |-
+      return id(heating_valve_l2_state).state;
 # status_led:
 #   # https://esphome.io/components/status_led
 #   pin:
