@@ -33,6 +33,10 @@ globals:
     type: bool
     restore_value: yes
     initial_value: "false"
+  - id: in_transition
+    type: bool
+    restore_value: false
+    initial_value: "false"
 
 web_server:
   port: 80
@@ -231,27 +235,63 @@ binary_sensor:
 
 script:
   - id: heat
+    if:
+      condition:
+        and:
+          - lambda: |-
+              return (id(heating) == false)
+          - lambda: |-
+              return (id(relay1).state == false)
+          - lambda: |-
+              return (id(relay2).state == false)
+          - lambda: |-
+              return (id(in_transition) == false)
     then:
       - logger.log:
           level: INFO
           format: "Heating START"
+      - globals.set:
+          id: in_transition
+          value: "true"
       - globals.set:
           id: heating
           value: "true"
       - switch.turn_on: relay1
       - delay: 45s
       - switch.turn_off: relay1
+      - delay: 180s
+      - globals.set:
+          id: in_transition
+          value: "false"
 
   - id: stop_heat
+    if:
+      condition:
+        and:
+          - lambda: |-
+              return (id(heating) == true)
+          - lambda: |-
+              return (id(relay1).state == false)
+          - lambda: |-
+              return (id(relay2).state == false)
+          - lambda: |-
+              return (id(in_transition) == false)
     then:
       - logger.log:
           level: INFO
           format: "Heating STOP"
+      - globals.set:
+          id: in_transition
+          value: "true"
       - switch.turn_on: relay2
       - delay: 45s
       - switch.turn_off: relay2
       - globals.set:
           id: heating
+          value: "false"
+      - delay: 180s
+      - globals.set:
+          id: in_transition
           value: "false"
 
 sensor:
@@ -301,10 +341,10 @@ sensor:
       - offset: 0.125
     on_value:
       then:
-        - logger.log:
-            level: INFO
-            format: "Dallas sensor value: %.1f"
-            args: ["x"]
+        # - logger.log:
+        #     level: INFO
+        #     format: "Dallas sensor value: %.1f"
+        #     args: ["x"]
         - lambda: |-
             if (x < id(min_temp) && id(heating) == false && id(relay1).state == false && id(relay2).state == false) {
               id(heat).execute();
