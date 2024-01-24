@@ -14,7 +14,7 @@ esp32:
 
 # Enable logging
 logger:
-  level: DEBUG
+  level: INFO
   # logs:
   #   mqtt.component: INFO
   #   mqtt.client: INFO
@@ -50,12 +50,14 @@ api:
         heating_min_temp: float
       then:
         - logger.log:
+            level: INFO
             format: "Setting ${friendly_name} min_temp value: %.1f"
             args: [heating_min_temp]
         - globals.set:
             id: min_temp
             value: !lambda "return (heating_min_temp);"
         - logger.log:
+            level: INFO
             format: "${friendly_name} min_temp value: %.1f"
             args: [id(min_temp)]
     - service: set_heating_max_temp
@@ -63,12 +65,14 @@ api:
         heating_max_temp: float
       then:
         - logger.log:
+            level: INFO
             format: "Setting ${friendly_name} max_temp value: %.1f"
             args: [heating_max_temp]
         - globals.set:
             id: max_temp
             value: !lambda "return (heating_max_temp);"
         - logger.log:
+            level: INFO
             format: "${friendly_name} max_temp value: %.1f"
             args: [id(max_temp)]
 
@@ -173,7 +177,7 @@ text_sensor:
   - platform: template
     name: "${friendly_name} relay2"
     lambda: |-
-      if (id(relay1).state == true) {
+      if (id(relay2).state == true) {
         return {"ON"};
       } else {
         return {"OFF"};
@@ -229,6 +233,7 @@ script:
   - id: heat
     then:
       - logger.log:
+          level: INFO
           format: "Heating START"
       - globals.set:
           id: heating
@@ -240,6 +245,7 @@ script:
   - id: stop_heat
     then:
       - logger.log:
+          level: INFO
           format: "Heating STOP"
       - switch.turn_on: relay2
       - delay: 45s
@@ -296,6 +302,7 @@ sensor:
     on_value:
       then:
         - logger.log:
+            level: INFO
             format: "Dallas sensor value: %.1f"
             args: ["x"]
         - lambda: |-
