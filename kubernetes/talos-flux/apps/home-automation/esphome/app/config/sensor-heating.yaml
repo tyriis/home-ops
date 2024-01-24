@@ -312,10 +312,10 @@ sensor:
       - offset: 0.125
     on_value:
       then:
-        - logger.log:
-            level: INFO
-            format: "Dallas sensor value: %.1f"
-            args: ["x"]
+        # - logger.log:
+        #     level: INFO
+        #     format: "Dallas sensor value: %.1f"
+        #     args: ["x"]
         - lambda: |-
             if (x < id(min_temp) && id(heating) == false && id(relay1).state == false && id(relay2).state == false) {
               id(heat).execute();
