@@ -31,11 +31,7 @@ globals:
     initial_value: "24.0"
   - id: heating
     type: bool
-    restore_value: yes
-    initial_value: "false"
-  - id: in_transition
-    type: bool
-    restore_value: false
+    restore_value: true
     initial_value: "false"
 
 web_server:
@@ -235,51 +231,40 @@ binary_sensor:
 
 script:
   - id: heat
-    if:
-      condition:
-        - lambda: |-
-            return (id(heating) == false && id(relay1).state == false && id(relay2).state == false && id(in_transition) == false);
     then:
-      - logger.log:
-          level: INFO
-          format: "Heating START"
-      - globals.set:
-          id: in_transition
-          value: "true"
-      - globals.set:
-          id: heating
-          value: "true"
-      - switch.turn_on: relay1
-      - delay: 45s
-      - switch.turn_off: relay1
-      - delay: 180s
-      - globals.set:
-          id: in_transition
-          value: "false"
+      if:
+        condition:
+          lambda: |-
+            return (id(heating) == false && id(relay1).state == false && id(relay2).state == false && id(stop_heat).is_running() == false);
+        then:
+          - logger.log:
+              level: INFO
+              format: "Heating START"
+          - globals.set:
+              id: heating
+              value: "true"
+          - switch.turn_on: relay1
+          - delay: 45s
+          - switch.turn_off: relay1
+          - delay: 180s
 
   - id: stop_heat
-    if:
-      condition:
-        - lambda: |-
-            return (id(heating) == true && id(relay1).state == false && id(relay2).state == false && id(in_transition) == false);
     then:
-      - logger.log:
-          level: INFO
-          format: "Heating STOP"
-      - globals.set:
-          id: in_transition
-          value: "true"
-      - switch.turn_on: relay2
-      - delay: 45s
-      - switch.turn_off: relay2
-      - globals.set:
-          id: heating
-          value: "false"
-      - delay: 180s
-      - globals.set:
-          id: in_transition
-          value: "false"
-
+      if:
+        condition:
+          - lambda: |-
+              return (id(heating) == true && id(relay1).state == false && id(relay2).state == false && id(heat).is_running() == false);
+        then:
+          - logger.log:
+              level: INFO
+              format: "Heating STOP"
+          - switch.turn_on: relay2
+          - delay: 45s
+          - switch.turn_off: relay2
+          - globals.set:
+              id: heating
+              value: "false"
+          - delay: 180s
 sensor:
   - platform: uptime
     name: "${friendly_name} Uptime"
