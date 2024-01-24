@@ -148,6 +148,39 @@ text_sensor:
     icon: mdi:thermometer-chevron-down
     update_interval: 15s
 
+  - platform: template
+    name: "${friendly_name} Heating"
+    lambda: |-
+      if (id(heating) == true) {
+        return {"ON"};
+      } else {
+        return {"OFF"};
+      }
+    icon: mdi:radiator
+    update_interval: 15s
+
+  - platform: template
+    name: "${friendly_name} relay1"
+    lambda: |-
+      if (id(relay1).state == true) {
+        return {"ON"};
+      } else {
+        return {"OFF"};
+      }
+    icon: mdi:pipe-valve
+    update_interval: 15s
+
+  - platform: template
+    name: "${friendly_name} relay2"
+    lambda: |-
+      if (id(relay1).state == true) {
+        return {"ON"};
+      } else {
+        return {"OFF"};
+      }
+    icon: mdi:pipe-valve
+    update_interval: 15s
+
   # wifi info
   - platform: wifi_info
     ip_address:
