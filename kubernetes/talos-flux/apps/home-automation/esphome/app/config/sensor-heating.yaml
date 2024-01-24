@@ -14,11 +14,11 @@ esp32:
 
 # Enable logging
 logger:
-  level: INFO
-  logs:
-    mqtt.component: INFO
-    mqtt.client: INFO
-    dallas.sensor: INFO
+  level: DEBUG
+  # logs:
+  #   mqtt.component: INFO
+  #   mqtt.client: INFO
+  #   dallas.sensor: INFO
 
 globals:
   - id: min_temp
