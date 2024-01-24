@@ -135,14 +135,14 @@ dallas:
 
 text_sensor:
   - platform: template
-    name: "${friendly_name} max temperature"
+    name: "${friendly_name} Temperature MAX"
     lambda: |-
       return {"%.1f" | format(id(max_temp))};
     icon: mdi:thermometer-chevron-up
     update_interval: 15s
 
   - platform: template
-    name: "${friendly_name} min temperature"
+    name: "${friendly_name} Temperature MIN"
     lambda: |-
       return {"%.1f" | format(id(min_temp))};
     icon: mdi:thermometer-chevron-down
