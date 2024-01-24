@@ -237,15 +237,8 @@ script:
   - id: heat
     if:
       condition:
-        and:
-          - lambda: |-
-              return (id(heating) == false)
-          - lambda: |-
-              return (id(relay1).state == false)
-          - lambda: |-
-              return (id(relay2).state == false)
-          - lambda: |-
-              return (id(in_transition) == false)
+        - lambda: |-
+            return (id(heating) == false && id(relay1).state == false && id(relay2).state == false && id(in_transition) == false);
     then:
       - logger.log:
           level: INFO
@@ -267,15 +260,8 @@ script:
   - id: stop_heat
     if:
       condition:
-        and:
-          - lambda: |-
-              return (id(heating) == true)
-          - lambda: |-
-              return (id(relay1).state == false)
-          - lambda: |-
-              return (id(relay2).state == false)
-          - lambda: |-
-              return (id(in_transition) == false)
+        - lambda: |-
+            return (id(heating) == true && id(relay1).state == false && id(relay2).state == false && id(in_transition) == false);
     then:
       - logger.log:
           level: INFO
@@ -341,10 +327,10 @@ sensor:
       - offset: 0.125
     on_value:
       then:
-        # - logger.log:
-        #     level: INFO
-        #     format: "Dallas sensor value: %.1f"
-        #     args: ["x"]
+        - logger.log:
+            level: INFO
+            format: "Dallas sensor value: %.1f"
+            args: ["x"]
         - lambda: |-
             if (x < id(min_temp) && id(heating) == false && id(relay1).state == false && id(relay2).state == false) {
               id(heat).execute();
