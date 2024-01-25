@@ -27,7 +27,7 @@ metadata:
     substitution.flux.home.arpa/enabled: "true"
 spec:
   interval: 10m
-  path: ./kubernetes/talos-flux/apps/home-automation/esphome/obervability
+  path: ./kubernetes/talos-flux/apps/home-automation/esphome/observability
   prune: true
   sourceRef:
     kind: GitRepository
