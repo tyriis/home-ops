@@ -1,0 +1,12 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: home-automation
+resources:
+  - prometheus-rule.yaml
+labels:
+  - pairs:
+      app.kubernetes.io/name: esphome-observability
+      app.kubernetes.io/instance: esphome-observability
+      app.kubernetes.io/part-of: esphome

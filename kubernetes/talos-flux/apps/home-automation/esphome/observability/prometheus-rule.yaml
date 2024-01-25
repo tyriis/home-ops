@@ -1,0 +1,37 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: esphome-alerts
+spec:
+  groups:
+    - name: esphome.sensor-heating.rules
+      rules:
+        - alert: ESPHomeHeatingSensorAbsent
+          annotations:
+            description: ESPHome sensor-heating has disappeared from Prometheus target discovery
+            summary: ESPHome sensor-heating has disappeared from Prometheus target discovery
+          expr: |-
+            absent(up{device="sensor-heating"})
+          for: 15m
+          labels:
+            severity: warning
+        - alert: ESPHomeHeatingSensorHighTemperature
+          annotations:
+            description: ESPHome sensor-heating temperature is too high
+            summary: ESPHome sensor-heating high temp
+          expr: |-
+            esphome_sensor_value{device="sensor-heating", name="Sensor Heating Temperature Flow Upstairs"} > 30
+          for: 10m
+          labels:
+            severity: warning
+        - alert: ESPHomeHeatingSensorLowTemperature
+          annotations:
+            description: ESPHome sensor-heating temperature is low
+            summary: ESPHome sensor-heating low temp
+          expr: |-
+            esphome_sensor_value{device="sensor-heating", name="Sensor Heating Temperature Flow Upstairs"} < 22
+          for: 10m
+          labels:
+            severity: warning
