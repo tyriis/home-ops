@@ -1,0 +1,95 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: syncthing
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+      interval: 15m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: syncthing/syncthing
+              tag: 1.27.2
+            resources:
+              requests:
+                cpu: 15m
+                memory: 249Mi
+              limits:
+                memory: 265Mi
+            env:
+              PUID: "1000"
+              PGID: "1000"
+    service:
+      main:
+        ports:
+          http:
+            port: 8384
+      listdisc:
+        enabled: true
+        controller: main
+        type: LoadBalancer
+        ports:
+          discovery:
+            enabled: true
+            port: 21027
+            protocol: UDP
+          listen:
+            enabled: true
+            port: 22000
+            protocol: TCP
+
+    ingress:
+      main:
+        enabled: true
+        primary: true
+        className: traefik
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/tls-acme: "true"
+          traefik.ingress.kubernetes.io/router.middlewares: traefik-ingress-sso@kubernetescrd
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/affinity: "true"
+          traefik.ingress.kubernetes.io/router.tls: "true"
+          hajimari.io/appName: syncthing
+          hajimari.io/enable: "true"
+          hajimari.io/icon: folder-sync
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  name: main
+                  port: http
+        tls:
+          - hosts:
+              - *host
+            secretName: "{{ .Release.Name }}-tls"
+
+    persistence:
+      config:
+        enabled: true
+        type: persistentVolumeClaim
+        size: 10Gi
+        storageClass: nfs-csi
+        globalMounts:
+          - path: /var/syncthing
