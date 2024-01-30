@@ -22,11 +22,11 @@ spec:
     maxRunners: 3
     containerMode:
       type: dind
-    template:
-      spec:
-        containers:
-          - name: runner
-            image: ghcr.io/onedr0p/github-actions-runner:rolling@sha256:97b74a2c9ae3f573e5168a247d3e0a14bd18aaf1e7b1003192090f4a089a8c07
+    # template:
+    #   spec:
+    #     containers:
+    #       - name: runner
+    #         image: ghcr.io/onedr0p/github-actions-runner:rolling@sha256:97b74a2c9ae3f573e5168a247d3e0a14bd18aaf1e7b1003192090f4a089a8c07
   valuesFrom:
     - kind: Secret
       name: jazzlyn-runners
