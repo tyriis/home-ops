@@ -32,7 +32,10 @@ spec:
     - kind: ConfigMap
       name: alertmanager-values
     - kind: ConfigMap
+      name: kube-state-metrics-values
+    - kind: ConfigMap
       name: prometheus-values
+  # https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack?modal=values
   values:
     cleanPrometheusOperatorObjectNames: true
 
@@ -73,14 +76,6 @@ spec:
           operator: "Exists"
         - effect: "NoSchedule"
           operator: "Exists"
-
-    kube-state-metrics:
-      fullnameOverride: kube-state-metrics
-      selfMonitor:
-        enabled: true
-      prometheus:
-        monitor:
-          enabled: true
 
     grafana:
       enabled: false
