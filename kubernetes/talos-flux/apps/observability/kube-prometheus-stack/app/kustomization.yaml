@@ -12,6 +12,9 @@ configMapGenerator:
   - name: alertmanager-values
     files:
       - values.yaml=alertmanager-values.yaml
+  - name: kube-state-metrics-values
+    files:
+      - values.yaml=kube-state-metrics-values.yaml
   - name: prometheus-values
     files:
       - values.yaml=prometheus-values.yaml
