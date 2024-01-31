@@ -1,5 +1,5 @@
 terraform {
-  required_version = "<= 1.7.1"
+  required_version = "<= 1.7.2"
   required_providers {
     cloudflare = {
       source  = "cloudflare/cloudflare"
