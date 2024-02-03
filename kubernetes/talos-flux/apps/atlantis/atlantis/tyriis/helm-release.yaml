@@ -54,8 +54,7 @@ spec:
         custom:
           plan:
             steps:
-            - run: env
-            - run: echo $USERNAME
+            - run: if [ $USER_NAME != "tyriis" ]; then echo "NO!" && exit 1; fi
             - init
             - plan
           apply:
