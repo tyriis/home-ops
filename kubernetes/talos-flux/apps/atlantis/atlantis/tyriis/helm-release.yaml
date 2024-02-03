@@ -55,6 +55,7 @@ spec:
           plan:
             steps:
             - run: env
+            - run: echo $USERNAME
             - init
             - plan
           apply:
