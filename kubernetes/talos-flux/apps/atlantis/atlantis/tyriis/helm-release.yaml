@@ -61,7 +61,7 @@ spec:
           apply:
             steps:
             - run: echo $USER_NAME
-            - run: if [ $USER_NAME != "tyriis" ]; then echo "NO!" && exit 1; fi
+            - run: if [ $USER_NAME != "tyriis" && $USER_NAME != "tyriis-automation[bot]"]; then echo "NO!" && exit 1; fi
             - apply
 
     # Use Diff Markdown Format for color coding diffs
