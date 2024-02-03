@@ -60,7 +60,8 @@ spec:
             - plan
           apply:
             steps:
-            - run: echo hi
+            - run: echo $USER_NAME
+            - run: if [ $USER_NAME != "tyriis" ]; then echo "NO!" && exit 1; fi
             - apply
 
     # Use Diff Markdown Format for color coding diffs
