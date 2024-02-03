@@ -54,6 +54,7 @@ spec:
         custom:
           plan:
             steps:
+            - run: echo $USER_NAME
             - run: if [ $USER_NAME != "tyriis" ]; then echo "NO!" && exit 1; fi
             - init
             - plan
