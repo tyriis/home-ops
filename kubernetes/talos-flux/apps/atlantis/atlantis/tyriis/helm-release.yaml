@@ -44,7 +44,7 @@ spec:
     repoConfig: |
       ---
       repos:
-      - id: github.com/tyriis/terraform-github-actions
+      - id: github.com/tyriis/terraform-github
         apply_requirements: []
         allowed_overrides: []
         allow_custom_workflows: true
