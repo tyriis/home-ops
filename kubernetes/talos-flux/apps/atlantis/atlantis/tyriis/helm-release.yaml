@@ -41,28 +41,28 @@ spec:
     ## Use Server Side Repo Config,
     ## ref: https://www.runatlantis.io/docs/server-side-repo-config.html
     ## Example default configuration
-    repoConfig: |
-      ---
-      repos:
-      - id: github.com/tyriis/terraform-github
-        apply_requirements: []
-        allowed_overrides: []
-        allow_custom_workflows: true
-        workflow: custom
-        allowed_workflows: [custom]
-      workflows:
-        custom:
-          plan:
-            steps:
-            - run: echo $USER_NAME
-            - run: if [ $USER_NAME != "tyriis" ]; then echo "NO!" && exit 1; fi
-            - init
-            - plan
-          apply:
-            steps:
-            - run: echo $USER_NAME
-            - run: if [ $USER_NAME != "tyriis" && $USER_NAME != "tyriis-automation[bot]"]; then echo "NO!" && exit 1; fi
-            - apply
+    # repoConfig: |
+    #   ---
+    #   repos:
+    #   - id: github.com/tyriis/terraform-github
+    #     apply_requirements: []
+    #     allowed_overrides: []
+    #     allow_custom_workflows: true
+    #     workflow: custom
+    #     allowed_workflows: [custom]
+    #   workflows:
+    #     custom:
+    #       plan:
+    #         steps:
+    #         - run: echo $USER_NAME
+    #         - run: if [ $USER_NAME != "tyriis" ]; then echo "NO!" && exit 1; fi
+    #         - init
+    #         - plan
+    #       apply:
+    #         steps:
+    #         - run: echo $USER_NAME
+    #         - run: if [ $USER_NAME != "tyriis" && $USER_NAME != "tyriis-automation[bot]" ]; then echo "NO!" && exit 1; fi
+    #         - apply
 
     # Use Diff Markdown Format for color coding diffs
     enableDiffMarkdownFormat: true
