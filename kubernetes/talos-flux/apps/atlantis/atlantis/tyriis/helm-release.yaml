@@ -46,10 +46,10 @@ spec:
       repos:
       - id: github.com/tyriis/terraform-github-actions
         apply_requirements: []
-        workflow: default
         allowed_overrides: []
         allow_custom_workflows: true
         workflow: custom
+        allowed_workflows: [custom]
       workflows:
         custom:
           plan:
