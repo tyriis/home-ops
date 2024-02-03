@@ -48,13 +48,8 @@ spec:
         apply_requirements: []
         workflow: default
         allowed_overrides: []
-        allow_custom_workflows: false
+        allow_custom_workflows: true
         workflow: custom
-      - id: /.*/
-        apply_requirements: []
-        workflow: default
-        allowed_overrides: []
-        allow_custom_workflows: false
       workflows:
         custom:
           plan:
