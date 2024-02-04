@@ -41,6 +41,14 @@ spec:
     ## Use Server Side Repo Config,
     ## ref: https://www.runatlantis.io/docs/server-side-repo-config.html
     ## Example default configuration
+    repoConfig: |
+      ---
+      repos:
+        - id: /.*/
+          allowed_overrides:
+            - plan_requirements
+            - apply_requirements
+
     # repoConfig: |
     #   ---
     #   repos:
