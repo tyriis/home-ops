@@ -75,17 +75,17 @@ spec:
                   name: SOPS_AGE_KEY_FILE
                   value: $HOME/sops/age/terraform-github.txt
               - run: echo $USER_NAME
-              - run: if [ $USER_NAME != "tyriis" && $USER_NAME != "jazzlyn" ]; then echo "NO!" && exit 1; fi
+              - run: if [ $USER_NAME != "tyriis" ] && [ $USER_NAME != "jazzlyn" ]; then echo "NO!" && exit 1; fi
               - init
               - plan
           apply:
             steps:
-            - env:
-                  name: SOPS_AGE_KEY_FILE
-                  value: $HOME/sops/age/terraform-github.txt
-            - run: echo $USER_NAME
-            - run: if [ $USER_NAME != "tyriis" && $USER_NAME != "jazzlyn" ]; then echo "NO!" && exit 1; fi
-            - apply
+              - env:
+                    name: SOPS_AGE_KEY_FILE
+                    value: $HOME/sops/age/terraform-github.txt
+              - run: echo $USER_NAME
+              - run: if [ $USER_NAME != "tyriis" ] && [ $USER_NAME != "jazzlyn" ]; then echo "NO!" && exit 1; fi
+              - apply
 
     # Use Diff Markdown Format for color coding diffs
     enableDiffMarkdownFormat: true
