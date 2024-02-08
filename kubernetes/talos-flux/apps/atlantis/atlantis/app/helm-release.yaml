@@ -74,9 +74,7 @@ spec:
               - env:
                   name: SOPS_AGE_KEY_FILE
                   value: /home/atlantis/.config/sops/age/terraform-github.txt
-              - run: ls $SOPS_AGE_KEY_FILE
-              - run: echo $USER_NAME
-              - run: if [ $USER_NAME != "tyriis" ] && [ $USER_NAME != "jazzlyn" ]; then echo "NO!" && exit 1; fi
+              - run: if [ $USER_NAME != "tyriis" ] && [ $USER_NAME != "jazzlyn" ] && [ $USER_NAME != "techtales-bot[bot]" ]; then echo "NO!" && exit 1; fi
               - init
               - plan
           apply:
@@ -84,8 +82,7 @@ spec:
               - env:
                     name: SOPS_AGE_KEY_FILE
                     value: /home/atlantis/.config/sops/age/terraform-github.txt
-              - run: echo $USER_NAME
-              - run: if [ $USER_NAME != "tyriis" ] && [ $USER_NAME != "jazzlyn" ]; then echo "NO!" && exit 1; fi
+              - run: if [ $USER_NAME != "tyriis" ] && [ $USER_NAME != "jazzlyn" ] && [ $USER_NAME != "techtales-bot[bot]" ]; then echo "NO!" && exit 1; fi
               - apply
 
     # Use Diff Markdown Format for color coding diffs
