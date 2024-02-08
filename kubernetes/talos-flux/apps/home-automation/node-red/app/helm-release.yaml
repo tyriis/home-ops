@@ -45,7 +45,7 @@ spec:
           main:
             image:
               repository: docker.io/nodered/node-red
-              tag: 3.1.5@sha256:f21fb390f70464b1385fc12781928e30eb90f8bdd8971589422f68f80fe51c45
+              tag: 3.1.5@sha256:a5cc2d5417d48c13a50de322aa4c0b909ff28f826e6f6449c5d8aaefbf01b558
             env:
               TZ: ${SETTING_TZ}
               FLOWS: flows.json
