@@ -164,17 +164,11 @@ spec:
       initialDelaySeconds: 10
 
     extraVolumes:
-      - name: terraform-gworkspace
+      - name: age-keys
         secret:
-          secretName: terraform-gworkspace
-      - name: terraform-github
-        secret:
-          secretName: terraform-github
+          secretName: age-keys
 
     extraVolumeMounts:
-      - name: terraform-gworkspace
-        mountPath: /home/atlantis/.config/sops/age
-        readOnly: true
-      - name: terraform-github
+      - name: age-keys
         mountPath: /home/atlantis/.config/sops/age
         readOnly: true
