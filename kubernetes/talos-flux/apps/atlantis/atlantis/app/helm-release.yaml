@@ -166,7 +166,7 @@ spec:
     extraVolumes:
       - name: age-keys
         secret:
-          secretName: age-keys
+          secretName: atlantis-age-keys
 
     extraVolumeMounts:
       - name: age-keys
