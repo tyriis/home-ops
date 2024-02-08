@@ -73,7 +73,7 @@ spec:
             steps:
               - env:
                   name: SOPS_AGE_KEY_FILE
-                  value: $HOME/sops/age/terraform-github.txt
+                  value: $HOME/.config/sops/age/terraform-github.txt
               - run: ls $SOPS_AGE_KEY_FILE
               - run: echo $USER_NAME
               - run: if [ $USER_NAME != "tyriis" ] && [ $USER_NAME != "jazzlyn" ]; then echo "NO!" && exit 1; fi
@@ -83,7 +83,7 @@ spec:
             steps:
               - env:
                     name: SOPS_AGE_KEY_FILE
-                    value: $HOME/sops/age/terraform-github.txt
+                    value: $HOME/.config/sops/age/terraform-github.txt
               - run: echo $USER_NAME
               - run: if [ $USER_NAME != "tyriis" ] && [ $USER_NAME != "jazzlyn" ]; then echo "NO!" && exit 1; fi
               - apply
