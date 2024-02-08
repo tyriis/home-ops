@@ -71,12 +71,18 @@ spec:
         custom:
           plan:
             steps:
-            - run: echo $USER_NAME
-            - run: if [ $USER_NAME != "tyriis" && $USER_NAME != "jazzlyn" ]; then echo "NO!" && exit 1; fi
-            - init
-            - plan
+              - env:
+                  name: SOPS_AGE_KEY_FILE
+                  value: $HOME/sops/age/terraform-github.txt
+              - run: echo $USER_NAME
+              - run: if [ $USER_NAME != "tyriis" && $USER_NAME != "jazzlyn" ]; then echo "NO!" && exit 1; fi
+              - init
+              - plan
           apply:
             steps:
+            - env:
+                  name: SOPS_AGE_KEY_FILE
+                  value: $HOME/sops/age/terraform-github.txt
             - run: echo $USER_NAME
             - run: if [ $USER_NAME != "tyriis" && $USER_NAME != "jazzlyn" ]; then echo "NO!" && exit 1; fi
             - apply
@@ -160,8 +166,14 @@ spec:
       - name: terraform-gworkspace
         secret:
           secretName: terraform-gworkspace
+      - name: terraform-github
+        secret:
+          secretName: terraform-github
 
     extraVolumeMounts:
       - name: terraform-gworkspace
+        mountPath: /home/atlantis/.config/sops/age
+        readOnly: true
+      - name: terraform-github
         mountPath: /home/atlantis/.config/sops/age
         readOnly: true
