@@ -156,7 +156,7 @@ spec:
         mountPath: /home/atlantis/.config/sops/age
         readOnly: true
       - name: allow-list
-        mountPath: /etc/atlantis
+        mountPath: /etc/atlantis/orgAllowlist.txt
         subPath: orgAllowlist.txt
         readOnly: true
       - name: scripts
