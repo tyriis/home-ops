@@ -11,7 +11,11 @@ resources:
 configMapGenerator:
   - name: atlantis-config
     files:
-      - repoConfig=config/atlantis-repo-config.yaml
+      - repoConfig=config/repos.yaml
 commonLabels:
   app.kubernetes.io/name: atlantis
   app.kubernetes.io/instance: atlantis
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
