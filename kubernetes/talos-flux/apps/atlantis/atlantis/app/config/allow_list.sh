@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if grep -Fxq "$USER_NAME" /etc/atlantis/orgAllowlist.txt
+if grep -Fxq "$USER_NAME" /home/atlantis/.config/allowlist/orgAllowlist.txt
 then
     exit 0
 else
