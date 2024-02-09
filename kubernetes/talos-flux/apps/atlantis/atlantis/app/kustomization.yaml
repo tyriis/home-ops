@@ -9,9 +9,9 @@ resources:
   - ./ingress.yaml
   - ./external-secret.yaml
 configMapGenerator:
-  - name: atlantis-repo-config
+  - name: atlantis-config
     files:
-      - repoConfig=atlantis-repo-config.yaml
+      - repoConfig=config/atlantis-repo-config.yaml
 commonLabels:
   app.kubernetes.io/name: atlantis
   app.kubernetes.io/instance: atlantis

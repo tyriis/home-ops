@@ -27,7 +27,7 @@ spec:
   # https://artifacthub.io/packages/helm/atlantis/atlantis?modal=values
   valuesFrom:
     - kind: ConfigMap
-      name: atlantis-repo-config
+      name: atlantis-config
       valuesKey: repoConfig
       targetPath: repoConfig
   values:
