@@ -23,3 +23,6 @@ workflows:
             value: /home/atlantis/.config/sops/age/terraform-github.txt
         - run: if [ $USER_NAME != "tyriis" ] && [ $USER_NAME != "jazzlyn" ] && [ $USER_NAME != "techtales-bot[bot]" ]; then echo "NO!" && exit 1; fi
         - apply
+metrics:
+  prometheus:
+    endpoint: /metrics

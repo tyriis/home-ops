@@ -63,32 +63,6 @@ spec:
     #   metrics:
     #     prometheus:
     #       endpoint: /metrics
-    # repoConfig: |
-    #   ---
-    #   repos:
-    #   - id: github.com/techtales-io/terraform-github
-    #     apply_requirements: []
-    #     allowed_overrides: []
-    #     allow_custom_workflows: true
-    #     workflow: custom
-    #     allowed_workflows: [custom]
-    #   workflows:
-    #     custom:
-    #       plan:
-    #         steps:
-    #           - env:
-    #               name: SOPS_AGE_KEY_FILE
-    #               value: /home/atlantis/.config/sops/age/terraform-github.txt
-    #           - run: if [ $USER_NAME != "tyriis" ] && [ $USER_NAME != "jazzlyn" ] && [ $USER_NAME != "techtales-bot[bot]" ]; then echo "NO!" && exit 1; fi
-    #           - init
-    #           - plan
-    #       apply:
-    #         steps:
-    #           - env:
-    #                 name: SOPS_AGE_KEY_FILE
-    #                 value: /home/atlantis/.config/sops/age/terraform-github.txt
-    #           - run: if [ $USER_NAME != "tyriis" ] && [ $USER_NAME != "jazzlyn" ] && [ $USER_NAME != "techtales-bot[bot]" ]; then echo "NO!" && exit 1; fi
-    #           - apply
 
     # Use Diff Markdown Format for color coding diffs
     enableDiffMarkdownFormat: true
