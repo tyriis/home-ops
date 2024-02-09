@@ -144,8 +144,21 @@ spec:
       - name: age-keys
         secret:
           secretName: atlantis-age-keys
+      - name: allow-list
+        configMap:
+          name: atlantis-allow-list
+      - name: scripts
+        configMap:
+          name: atlantis-scripts
 
     extraVolumeMounts:
       - name: age-keys
         mountPath: /home/atlantis/.config/sops/age
+        readOnly: true
+      - name: allow-list
+        mountPath: /etc/atlantis
+        subPath: orgAllowlist.txt
+        readOnly: true
+      - name: scripts
+        mountPath: /home/atlantis/scripts
         readOnly: true

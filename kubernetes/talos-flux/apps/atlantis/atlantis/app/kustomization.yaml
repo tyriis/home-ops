@@ -12,6 +12,12 @@ configMapGenerator:
   - name: atlantis-config
     files:
       - repoConfig=config/repos.yaml
+  - name: atlantis-allow-list
+    files:
+      - orgAllowlist.txt=config/orgAllowlist.txt
+  - name: atlantis-scripts
+    files:
+      - allow_list.sh=config/allow_list.sh
 commonLabels:
   app.kubernetes.io/name: atlantis
   app.kubernetes.io/instance: atlantis
