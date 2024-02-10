@@ -14,7 +14,7 @@ workflows:
       steps:
         - env:
             name: SOPS_AGE_KEY_FILE
-            value: "$HOME/.config/sops/age/$BASE_REPO_NAME.txt"
+            command: echo $HOME/.config/sops/age/$BASE_REPO_NAME.txt
         - run: echo $SOPS_AGE_KEY_FILE
         - init
         - plan
@@ -22,7 +22,7 @@ workflows:
       steps:
         - env:
             name: SOPS_AGE_KEY_FILE
-            value: "$HOME/.config/sops/age/$BASE_REPO_NAME.txt"
+            command: echo $HOME/.config/sops/age/$BASE_REPO_NAME.txt
         - apply
 metrics:
   prometheus:
