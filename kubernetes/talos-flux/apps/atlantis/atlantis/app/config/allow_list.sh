@@ -2,8 +2,9 @@
 
 if grep -Fxq "$USER_NAME" /home/atlantis/.config/allowlist/orgAllowlist.txt
 then
-    exit 0
+  echo "$USER_NAME is allowed to run atlantis."
+  exit 0
 else
-    echo "$USER_NAME is not allowed to run atlantis."
-    exit 1
+  echo "$USER_NAME is not allowed to run atlantis."
+  exit 1
 fi
