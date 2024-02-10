@@ -3,6 +3,8 @@ repos:
   - id: "/.*/"
     pre_workflow_hooks:
       - run: sh /home/atlantis/scripts/allow_list.sh
+        description: Check Allow List
+        # commands: plan, apply
     apply_requirements: []
     allowed_overrides: []
     allow_custom_workflows: true
