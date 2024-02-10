@@ -14,14 +14,16 @@ workflows:
   custom:
     plan:
       steps:
-        - env: &SOPS
+        - env:
             name: SOPS_AGE_KEY_FILE
             command: echo $HOME/.config/sops/age/$BASE_REPO_NAME.txt
         - init
         - plan
     apply:
       steps:
-        - env: *SOPS
+        - env:
+            name: SOPS_AGE_KEY_FILE
+            command: echo $HOME/.config/sops/age/$BASE_REPO_NAME.txt
         - apply
 metrics:
   prometheus:
