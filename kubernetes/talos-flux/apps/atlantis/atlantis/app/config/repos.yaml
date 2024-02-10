@@ -3,7 +3,6 @@ repos:
   - id: "/.*/"
     pre_workflow_hooks:
       - run: sh /home/atlantis/scripts/allow_list.sh
-  - id: github.com/techtales-io/terraform-github
     apply_requirements: []
     allowed_overrides: []
     allow_custom_workflows: true
@@ -15,14 +14,15 @@ workflows:
       steps:
         - env:
             name: SOPS_AGE_KEY_FILE
-            value: /home/atlantis/.config/sops/age/$BASE_REPO_NAME.txt
+            value: "$HOME/.config/sops/age/$BASE_REPO_NAME.txt"
+        - run: echo $SOPS_AGE_KEY_FILE
         - init
         - plan
     apply:
       steps:
         - env:
             name: SOPS_AGE_KEY_FILE
-            value: /home/atlantis/.config/sops/age/$BASE_REPO_NAME.txt
+            value: "$HOME/.config/sops/age/$BASE_REPO_NAME.txt"
         - apply
 metrics:
   prometheus:
