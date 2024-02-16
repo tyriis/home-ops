@@ -85,6 +85,10 @@ spec:
         existingClaim: gimlet-data
         globalMounts:
           - path: /var/lib/gimlet-dashboard
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp/gimlet-dashboard
 
     ingress:
       main:
