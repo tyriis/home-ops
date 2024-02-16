@@ -2,7 +2,9 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: devops
 resources:
-  - ./namespace.yaml
-  - ./tekton/flux-sync.yaml
-  - ./argo-workflows/flux-sync.yaml
+  - ./helm-release.yaml
+commonLabels:
+  app.kubernetes.io/name: argo-workflows
+  app.kubernetes.io/instance: argo-workflows
