@@ -1,0 +1,91 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: &app gimlet
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.6.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      main:
+        replicas: 1
+        pod:
+          securityContext:
+            fsGroup: 999
+            # runAsGroup: 3000
+            # runAsNonRoot: true
+            # runAsUser: 1000
+            # seccompProfile:
+            #   type: RuntimeDefault
+        containers:
+          main:
+            nameOverride: minecraft-bedrock
+            env:
+              API_HOST: "http://gimlet.flux-system.svc.cluster.local:9000"
+              HOST: "http://127.0.0.1:9000"
+              TZ: ${SETTING_TZ}
+
+            image:
+              repository: ghcr.io/gimlet-io/gimlet
+              tag: v0.25.0
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+              readOnlyRootFilesystem: true
+
+            probes:
+              startup:
+                enabled: false
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 9000
+                    scheme: HTTP
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+            resources:
+              requests:
+                cpu: 200m
+                memory: 200Mi
+
+    service:
+      main:
+        ports:
+          http:
+            enabled: true
+            port: 9000
+            protocol: TCP
+
+    persistence:
+      data:
+        type: persistentVolumeClaim
+        existingClaim: gimlet-data
+        globalMounts:
+          - path: /var/lib/gimlet-dashboard
+
+    ingress:
+      main:
+        enabled: false
