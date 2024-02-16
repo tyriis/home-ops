@@ -35,7 +35,7 @@ spec:
             #   type: RuntimeDefault
         containers:
           main:
-            nameOverride: minecraft-bedrock
+            nameOverride: gimlet
             env:
               API_HOST: "http://gimlet.flux-system.svc.cluster.local:9000"
               HOST: "http://127.0.0.1:9000"
