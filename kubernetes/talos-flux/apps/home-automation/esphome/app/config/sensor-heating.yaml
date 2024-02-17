@@ -29,10 +29,6 @@ globals:
     type: float
     restore_value: yes
     initial_value: "24.0"
-  - id: heating
-    type: bool
-    restore_value: true
-    initial_value: "false"
 
 web_server:
   port: 80
@@ -153,17 +149,6 @@ text_sensor:
     update_interval: 15s
 
   - platform: template
-    name: "${friendly_name} Heating"
-    lambda: |-
-      if (id(heating) == true) {
-        return {"ON"};
-      } else {
-        return {"OFF"};
-      }
-    icon: mdi:radiator
-    update_interval: 15s
-
-  - platform: template
     name: "${friendly_name} relay1"
     lambda: |-
       if (id(relay1).state == true) {
@@ -229,42 +214,6 @@ binary_sensor:
     entity_id: switch.heating_valve_l2
     id: heating_valve_l2_state
 
-script:
-  - id: heat
-    then:
-      if:
-        condition:
-          lambda: |-
-            return (id(heating) == false && id(relay1).state == false && id(relay2).state == false && id(stop_heat).is_running() == false);
-        then:
-          - logger.log:
-              level: INFO
-              format: "Heating START"
-          - globals.set:
-              id: heating
-              value: "true"
-          - switch.turn_on: relay1
-          - delay: 45s
-          - switch.turn_off: relay1
-          - delay: 180s
-
-  - id: stop_heat
-    then:
-      if:
-        condition:
-          - lambda: |-
-              return (id(heating) == true && id(relay1).state == false && id(relay2).state == false && id(heat).is_running() == false);
-        then:
-          - logger.log:
-              level: INFO
-              format: "Heating STOP"
-          - switch.turn_on: relay2
-          - delay: 45s
-          - switch.turn_off: relay2
-          - globals.set:
-              id: heating
-              value: "false"
-          - delay: 180s
 sensor:
   - platform: uptime
     name: "${friendly_name} Uptime"
@@ -310,18 +259,6 @@ sensor:
     accuracy_decimals: 1
     filters:
       - offset: 0.125
-    on_value:
-      then:
-        # - logger.log:
-        #     level: INFO
-        #     format: "Dallas sensor value: %.1f"
-        #     args: ["x"]
-        - lambda: |-
-            if (x < id(min_temp) && id(heating) == false && id(relay1).state == false && id(relay2).state == false) {
-              id(heat).execute();
-            } else if (x >= id(max_temp) && id(heating) == true && id(relay2).state == false) {
-              id(stop_heat).execute();
-            }
 
   - platform: dallas
     address: 0xE20516D07C0BFF28
