@@ -58,8 +58,8 @@ spec:
               MAX_THREADS: "0"
               GAMEMODE: survival
               LEVEL_TYPE: DEFAULT
-              LEVEL_NAME: "lets go pew pew"
-              LEVEL_SEED: "147950563777164989"
+              LEVEL_NAME: "home"
+              LEVEL_SEED: "-1381486679527427600"
               DEFAULT_PLAYER_PERMISSION_LEVEL: member
               TEXTUREPACK_REQUIRED: "false"
               ONLINE_MODE: "true"
