@@ -59,7 +59,7 @@ spec:
               GAMEMODE: survival
               LEVEL_TYPE: DEFAULT
               LEVEL_NAME: "home"
-              LEVEL_SEED: "-1381486679527427600"
+              LEVEL_SEED: "-1981529738609109822"
               DEFAULT_PLAYER_PERMISSION_LEVEL: member
               TEXTUREPACK_REQUIRED: "false"
               ONLINE_MODE: "true"
