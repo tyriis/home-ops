@@ -132,12 +132,6 @@ prometheus:
               - esphome-switch-livingroom.home
             labels:
               device: switch-livingroom
-      - job_name: esphome-switch-office
-        static_configs:
-          - targets:
-              - esphome-switch-office.home
-            labels:
-              device: switch-office
       - job_name: esphome-switch-bedroom
         static_configs:
           - targets:
