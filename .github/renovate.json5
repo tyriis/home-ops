@@ -51,6 +51,6 @@
   ],
   ignorePaths: [
     "^archive/**",
-    "^kubernets/talos-flux/apps/home-automation/esphome/app/config/**",
+    "^kubernetes/talos-flux/apps/home-automation/esphome/app/config/**",
   ],
 }
