@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: ${SECRET_GH_ORGANIZATION}
+  name: techtales-io
 spec:
   interval: 30m
   chart:
@@ -16,8 +16,8 @@ spec:
         namespace: flux-system
       interval: 30m
   values:
-    runnerScaleSetName: arc-runner-set-${SECRET_GH_ORGANIZATION}
-    githubConfigUrl: https://github.com/${SECRET_GH_ORGANIZATION}
+    runnerScaleSetName: arc-runner-set-techtales-io
+    githubConfigUrl: https://github.com/techtales-io
     minRunners: 1
     maxRunners: 3
     containerMode:
@@ -29,14 +29,14 @@ spec:
             image: ghcr.io/onedr0p/github-actions-runner:rolling@sha256:97b74a2c9ae3f573e5168a247d3e0a14bd18aaf1e7b1003192090f4a089a8c07
   valuesFrom:
     - kind: Secret
-      name: ${SECRET_GH_ORGANIZATION}-runners
+      name: techtales-io-runners
       valuesKey: github_app_id
       targetPath: githubConfigSecret.github_app_id
     - kind: Secret
-      name: ${SECRET_GH_ORGANIZATION}-runners
+      name: techtales-io-runners
       valuesKey: github_app_installation_id
       targetPath: githubConfigSecret.github_app_installation_id
     - kind: Secret
-      name: ${SECRET_GH_ORGANIZATION}-runners
+      name: techtales-io-runners
       valuesKey: github_app_private_key
       targetPath: githubConfigSecret.github_app_private_key

@@ -33,7 +33,7 @@ spec:
   values:
     atlantisUrl: https://atlantis.${SECRET_DOMAIN}
 
-    orgAllowlist: github.com/${SECRET_GH_ORGANIZATION}/*
+    orgAllowlist: github.com/techtales-io/*
     # logLevel: "debug"
 
     # If managing secrets outside the chart for the webhook, use this variable to reference the secret name
