@@ -4,4 +4,5 @@
   gitAuthor: "tyriis-automation <133711747+tyriis-automation[bot]@users.noreply.github.com>",
   platformCommit: true,
   repositories: ["tyriis/home-ops"],
+  platform: "github",
 }
