@@ -8,6 +8,7 @@
     "github>tyriis/renovate-config//flux/prevent-automerge-flux.json5",
     "github>tyriis/renovate-config//labels/semantic.json5",
     "github>tyriis/renovate-config//helm/groups/rook-ceph.json5",
+    "github>tyriis/renovate-config//helm/groups/gha-runner-scale-set.json5",
     "github>tyriis/renovate-config//flux/groups/flux.json5",
     "github>tyriis/renovate-config//generic-regex-manager.json5",
     "security:openssf-scorecard",
