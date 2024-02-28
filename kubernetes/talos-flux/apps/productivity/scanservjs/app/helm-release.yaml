@@ -36,7 +36,7 @@ spec:
               AIRSCAN_DEVICES: '"HP" = "http://${SECRET_SCANNER_IP}/eSCL";"LASER" = "http://${SECRET_SCANNER2_IP}/eSCL"'
             image:
               repository: sbs20/scanservjs
-              tag: v3.0.3
+              tag: v3.0.3@sha256:dad1fd6e9a98957d324499e822a3019cc43d6557e314635c82665baf576b960e
             command: /bin/sh
             args: [-c, service dbus start && /entrypoint.sh]
             ports:
