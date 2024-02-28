@@ -1,6 +1,5 @@
 {
   enabled: true,
-  platform: "github",
   extends: [
     "config:best-practices",
     "github>tyriis/renovate-config//dashboard/default.json5",
