@@ -22,11 +22,12 @@ spec:
     maxRunners: 3
     containerMode:
       type: dind
-    # template:
-    #   spec:
-    #     containers:
-    #       - name: runner
-    #         image: ghcr.io/onedr0p/github-actions-runner:rolling@sha256:97b74a2c9ae3f573e5168a247d3e0a14bd18aaf1e7b1003192090f4a089a8c07
+    template:
+      spec:
+        containers:
+          - name: runner
+            image: ghcr.io/onedr0p/actions-runner:2.314.1@sha256:338d851a66c4942f7a33d4dc3d0ff1459e05e31e258153242521e9f8e4c64dd7
+            command: ["/home/runner/run.sh"]
     controllerServiceAccount:
       namespace: github
       name: gha-runner-scale-set-controller
