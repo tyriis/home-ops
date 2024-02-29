@@ -35,7 +35,7 @@ spec:
           main:
             image:
               repository: deiger/aircon
-              tag: 0.3.17
+              tag: 0.3.17@sha256:f7b2f819be19924a05193f03370964816694760871c6da242311591c8d246b8b
             env:
               TZ: ${SETTING_TZ}
             ports:

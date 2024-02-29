@@ -42,7 +42,7 @@ spec:
           main:
             image:
               repository: thomseddon/traefik-forward-auth
-              tag: v2.2.0
+              tag: v2.2.0@sha256:882e6c07e137ea23dac85afee30676d3bf676418d471bfa4df7c16da1567d45e
             env:
               AUTH_HOST: &host auth.${SECRET_DOMAIN}
               DOMAIN: ${SECRET_DOMAIN}

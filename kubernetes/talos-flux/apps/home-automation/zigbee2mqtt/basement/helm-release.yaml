@@ -51,7 +51,7 @@ spec:
               TZ: ${SETTING_TZ}
             image:
               repository: ghcr.io/tyriis/zigbee2mqtt-exporter
-              tag: v0.2.7
+              tag: v0.2.7@sha256:27563503a27da9a4e64c2a5fd2f75967af95b8e54452d576a20364efa56c8321
             ports:
               - name: http-prom
                 containerPort: 3000
