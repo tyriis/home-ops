@@ -59,7 +59,7 @@ jobs:
           path: default
 
       - name: Setup Homebrew
-        uses: Homebrew/actions/setup-homebrew@33f5ca51cd950d511f326f346b6744473844f043 # master
+        uses: Homebrew/actions/setup-homebrew@0e821193e83a7dc6e7d549737188aecf05702487 # master
 
       - name: Setup Tools
         run: |
