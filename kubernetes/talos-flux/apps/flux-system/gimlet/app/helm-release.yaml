@@ -54,7 +54,7 @@ spec:
             probes:
               startup:
                 enabled: false
-              liveness: &probes
+              liveness:
                 enabled: true
                 custom: true
                 spec:
@@ -66,6 +66,7 @@ spec:
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 3
+
             resources:
               requests:
                 cpu: 200m

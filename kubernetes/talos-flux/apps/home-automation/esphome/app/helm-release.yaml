@@ -44,6 +44,13 @@ spec:
               - name: http
                 containerPort: 6052
                 protocol: TCP
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
 
     service:
       app:
@@ -80,29 +87,26 @@ spec:
 
     persistence:
       config:
-        enabled: true
         existingClaim: esphome-config
         advancedMounts:
-          main:
-            main:
+          esphome:
+            app:
               - path: /config
       secrets:
-        enabled: true
         type: secret
         name: esphome-secrets
         advancedMounts:
-          main:
-            main:
+          esphome:
+            app:
               - path: /config/secrets.yaml
                 subPath: secrets.yaml
 
       esphome-config:
-        enabled: true
         type: configMap
         name: esphome-config
         advancedMounts:
-          main:
-            main:
+          esphome:
+            app:
               - path: /config/light-alexroom.yaml
                 subPath: light-alexroom.yaml
               - path: /config/light-stairs.yaml
