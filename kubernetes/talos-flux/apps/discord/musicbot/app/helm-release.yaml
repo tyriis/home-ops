@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.0.2/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -29,11 +29,11 @@ spec:
     # https://github.com/bjw-s/helm-charts/tree/main/charts/other/app-template
     # https://github.com/Just-Some-Bots/MusicBot
     controllers:
-      main:
+      musicbot:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
               repository: harbor.techtales.io:443/library/github/musicbot
               tag: release-250723
@@ -50,7 +50,8 @@ spec:
               startup: *probes
 
     service:
-      main:
+      app:
+        controller: musicbot
         enabled: false
 
     persistence:
