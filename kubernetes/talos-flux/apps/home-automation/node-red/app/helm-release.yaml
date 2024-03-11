@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.0.2/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -29,7 +29,7 @@ spec:
 
   values:
     controllers:
-      main:
+      node-red:
         strategy: Recreate
         annotations:
           reloader.stakater.com/auto: "true"
@@ -42,7 +42,7 @@ spec:
             fsGroupChangePolicy: "OnRootMismatch"
 
         containers:
-          main:
+          app:
             image:
               repository: docker.io/nodered/node-red
               tag: 3.1.6@sha256:3d968a967d27b37388ea14019a75b2b2660b208ae3b500269c71e01eca67f28a
@@ -60,13 +60,14 @@ spec:
                 cpu: 1000m
 
     service:
-      main:
+      app:
+        controller: *app
         ports:
           http:
             port: 1880
 
     ingress:
-      main:
+      app:
         enabled: true
         className: traefik
         annotations:
@@ -82,7 +83,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
@@ -103,4 +104,3 @@ spec:
         globalMounts:
           - path: /usr/src/node-red/.gitconfig
             subPath: .gitconfig
-            readonly: true
