@@ -45,10 +45,10 @@ spec:
             probes:
               liveness:
                 enabled: true
-                spec:
-                  failureThreshold: 3
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
             resources:
               requests:
                 cpu: 100m
