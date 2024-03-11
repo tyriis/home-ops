@@ -58,6 +58,13 @@ spec:
               limits:
                 memory: 500Mi
                 cpu: 1000m
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
 
     service:
       app:
