@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.0.2/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -24,12 +24,12 @@ spec:
       retries: 5
   values:
     controllers:
-      main:
+      zigbee2mqtt:
         replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             nameOverride: *app
             env:
               ZIGBEE2MQTT_DATA: /config
@@ -57,13 +57,14 @@ spec:
                 containerPort: 3000
                 protocol: TCP
     service:
-      main:
+      app:
+        controller: zigbee2mqtt
         ports:
           http:
             port: 8080
 
     ingress:
-      main:
+      app:
         enabled: true
         className: traefik
         annotations:
@@ -81,7 +82,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
