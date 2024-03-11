@@ -102,8 +102,8 @@ spec:
         enabled: true
         existingClaim: node-red-data
         advancedMounts:
-          main:
-            main:
+          node-red:
+            app:
               - path: /data
       gitconfig:
         type: configMap
