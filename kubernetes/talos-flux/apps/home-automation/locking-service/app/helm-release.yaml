@@ -63,6 +63,13 @@ spec:
               requests:
                 cpu: 10m
                 memory: 128Mi
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
 
     service:
       app:
