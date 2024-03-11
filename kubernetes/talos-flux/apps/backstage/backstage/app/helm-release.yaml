@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.0.2/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -28,11 +28,11 @@ spec:
   values:
     # https://github.com/bjw-s/helm-charts/tree/main/charts/other/app-template
     controllers:
-      main:
+      backstage:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
               repository: harbor.${SECRET_DOMAIN}/library/techtales/backstage
               tag: v0.2.2
@@ -62,13 +62,14 @@ spec:
                   name: backstage-secrets
 
     service:
-      main:
+      app:
+        controller: backstage
         ports:
           http:
             port: *port
 
     ingress:
-      main:
+      app:
         enabled: true
         className: traefik
         annotations:
@@ -87,7 +88,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
