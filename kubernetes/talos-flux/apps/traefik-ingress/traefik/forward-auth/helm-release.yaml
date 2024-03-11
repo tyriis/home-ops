@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.0.2/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -34,12 +34,12 @@ spec:
     cleanupOnFail: true
   values:
     controllers:
-      main:
+      traefik-forward-auth:
         annotations:
           reloader.stakater.com/auto: "true"
         strategy: RollingUpdate
         containers:
-          main:
+          app:
             image:
               repository: thomseddon/traefik-forward-auth
               tag: v2.2.0@sha256:882e6c07e137ea23dac85afee30676d3bf676418d471bfa4df7c16da1567d45e
@@ -63,13 +63,14 @@ spec:
                 memory: 50Mi
 
     service:
-      main:
+      app:
+        controller: traefik-forward-auth
         ports:
           http:
             port: 4181
 
     ingress:
-      main:
+      app:
         enabled: true
         className: traefik
         annotations:
@@ -83,7 +84,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
