@@ -1,0 +1,42 @@
+name: update-flake-lock
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '37 0 * * *'
+
+permissions:
+  actions: write
+  contents: write
+  pull-requests: write
+
+jobs:
+  lockfile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Install nix
+        uses: DeterminateSystems/nix-installer-action@cd46bde16ab981b0a7b2dce0574509104543276e # v9
+        with:
+          extra-conf: |
+            extra-platforms = aarch64-linux i686-linux
+
+      - name: Use cache
+        uses: DeterminateSystems/magic-nix-cache-action@eeabdb06718ac63a7021c6132129679a8e22d0c7 # v3
+
+      - name: Update flake.lock
+        id: update
+        uses: DeterminateSystems/update-flake-lock@da2fd6f2563fe3e4f2af8be73b864088564e263d # v20
+        with:
+          path-to-flake-dir: infra/nixos
+
+      # - name: Enable automerge
+      #   if: ${{ steps.update.outputs.pull-request-number != '' }}
+      #   run: gh pr merge --squash --auto ${{ steps.update.outputs.pull-request-number }}
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: diff
+        run: git diff
