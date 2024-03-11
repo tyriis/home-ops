@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.0.2/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -24,9 +24,9 @@ spec:
       retries: 5
   values:
     controllers:
-      main:
+      syncthing:
         containers:
-          main:
+          app:
             image:
               repository: syncthing/syncthing
               tag: 1.27.4@sha256:4d4d44bf19bace6c0949067fd83d288871ddb49ae9b023092d9885ee9e231d48
@@ -39,8 +39,10 @@ spec:
             env:
               PUID: "1000"
               PGID: "1000"
+
     service:
-      main:
+      app:
+        controller: syncthing
         ports:
           http:
             port: 8384
@@ -59,9 +61,8 @@ spec:
             protocol: TCP
 
     ingress:
-      main:
+      app:
         enabled: true
-        primary: true
         className: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
@@ -78,7 +79,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
@@ -87,6 +88,7 @@ spec:
 
     persistence:
       config:
+        accessMode: ReadWriteOnce
         enabled: true
         type: persistentVolumeClaim
         size: 10Gi
