@@ -35,7 +35,7 @@
       name = host;
       value = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs.channels = { inherit nixpkgs unstable hardware; };
+        specialArgs.channels = { inherit nixpkgs unstable; };
         modules = [
           overlayModule
           ./hosts/${host}/configuration.nix
