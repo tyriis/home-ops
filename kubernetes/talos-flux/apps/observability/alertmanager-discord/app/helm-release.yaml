@@ -43,6 +43,13 @@ spec:
               - name: http
                 containerPort: &port 9094
                 protocol: TCP
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
 
     service:
       app:
