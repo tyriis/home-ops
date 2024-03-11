@@ -104,8 +104,8 @@ spec:
         enabled: true
         existingClaim: home-assistant-data
         advancedMounts:
-          main:
-            main:
+          home-assistant:
+            app:
               - path: /config
       ssh:
         enabled: true
@@ -113,8 +113,8 @@ spec:
         name: home-assistant-ssh
         defaultMode: 0600
         advancedMounts:
-          main:
-            main:
+          home-assistant:
+            app:
               - path: /root/.ssh
                 subPath: .ssh
                 readOnly: true
