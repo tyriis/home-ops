@@ -53,4 +53,11 @@
     "^archive/**",
     "^kubernetes/talos-flux/apps/home-automation/esphome/app/config/**",
   ],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "extends": ["schedule:weekly"]
+  },
+  "nix": {
+    "enabled": true
+  },
 }
