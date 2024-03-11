@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.0.2/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -18,12 +18,12 @@ spec:
 
   values:
     controllers:
-      main:
+      unifi:
         strategy: Recreate
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             nameOverride: *app
             image:
               repository: jacobalberty/unifi
@@ -34,7 +34,7 @@ spec:
               UNIFI_UID: "999"
               UNIFI_GID: "999"
               UNIFI_STDOUT: "true"
-              JVM_INIT_HEAP_SIZE:
+              # JVM_INIT_HEAP_SIZE:
               JVM_MAX_HEAP_SIZE: 1024M
               # CERTNAME: tls.crt
               # CERT_PRIVATE_NAME: tls.key
@@ -73,7 +73,8 @@ spec:
                 memory: 1390M
 
     service:
-      main:
+      app:
+        controller: unifi
         type: LoadBalancer
         loadBalancerIP: ${SETTING_METALLB_UNIFI_ADDR}
         externalTrafficPolicy: Local
@@ -113,7 +114,7 @@ spec:
             protocol: UDP
 
     ingress:
-      main:
+      app:
         enabled: true
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
@@ -126,14 +127,14 @@ spec:
             paths:
               - path: /
                 service:
-                  name: unifi
-                  port: 8443
+                  identifier: app
+                  port: http
           - host: &hotspot "hotspot.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
-                  name: unifi
-                  port: 443
+                  identifier: app
+                  port: portal-https
         tls:
           - hosts:
               - *host
