@@ -89,7 +89,6 @@ spec:
     persistence:
       config:
         accessMode: ReadWriteOnce
-        enabled: true
         type: persistentVolumeClaim
         size: 10Gi
         storageClass: nfs-csi

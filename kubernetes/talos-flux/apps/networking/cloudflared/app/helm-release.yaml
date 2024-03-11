@@ -54,6 +54,13 @@ spec:
                 cpu: 10m
               limits:
                 memory: 128Mi
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
 
     service:
       app:
@@ -69,8 +76,8 @@ spec:
         type: configMap
         name: cloudflare-tunnel
         advancedMounts:
-          main:
-            main:
+          cloudflared:
+            app:
               - path: /etc/cloudflared/config.yaml
                 subPath: config.yaml
                 readOnly: true
@@ -79,8 +86,8 @@ spec:
         type: secret
         name: cloudflare-tunnel
         advancedMounts:
-          main:
-            main:
+          cloudflared:
+            app:
               - path: /etc/cloudflared/cred.json
                 subPath: cred.json
                 readOnly: true

@@ -46,6 +46,13 @@ spec:
                 memory: 10Mi
               limits:
                 memory: 50Mi
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
 
     service:
       app:

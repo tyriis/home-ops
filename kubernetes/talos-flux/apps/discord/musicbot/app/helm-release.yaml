@@ -60,8 +60,8 @@ spec:
         type: configMap
         name: musicbot-config
         advancedMounts:
-          main:
-            main:
+          musicbot:
+            app:
               - path: /musicbot/config/options.ini
                 subPath: options.ini
               - path: /musicbot/config/permissions.ini

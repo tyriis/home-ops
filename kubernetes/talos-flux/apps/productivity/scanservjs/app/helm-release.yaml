@@ -89,14 +89,14 @@ spec:
         enabled: true
         existingClaim: scanservjs-scans
         advancedMounts:
-          main:
-            main:
+          scanservjs:
+            app:
               - path: /app/data/output
       dbus:
         enabled: true
         type: hostPath
         hostPath: /var/run/dbus
         advancedMounts:
-          main:
-            main:
+          scanservjs:
+            app:
               - path: /var/run/dbus
