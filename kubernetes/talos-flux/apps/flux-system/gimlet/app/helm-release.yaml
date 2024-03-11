@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.0.2/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -23,7 +23,7 @@ spec:
       retries: 3
   values:
     controllers:
-      main:
+      gimlet:
         replicas: 1
         pod:
           securityContext:
@@ -34,7 +34,7 @@ spec:
             # seccompProfile:
             #   type: RuntimeDefault
         containers:
-          main:
+          app:
             nameOverride: gimlet
             env:
               API_HOST: "http://gimlet.flux-system.svc.cluster.local:9000"
@@ -72,7 +72,8 @@ spec:
                 memory: 200Mi
 
     service:
-      main:
+      app:
+        controller: gimlet
         ports:
           http:
             enabled: true
@@ -89,7 +90,3 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /tmp/gimlet-dashboard
-
-    ingress:
-      main:
-        enabled: false
