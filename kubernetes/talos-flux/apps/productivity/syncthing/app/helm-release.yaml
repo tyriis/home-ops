@@ -58,6 +58,7 @@ spec:
       listdisc:
         controller: syncthing
         type: LoadBalancer
+        loadBalancerIP: ${SETTING_METALLB_SYNCTHING_ADDR}
         ports:
           discovery:
             enabled: true
