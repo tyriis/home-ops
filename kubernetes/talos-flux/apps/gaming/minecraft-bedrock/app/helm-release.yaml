@@ -69,7 +69,7 @@ spec:
 
             image:
               repository: itzg/minecraft-bedrock-server
-              tag: latest@sha256:82339bbaebf54a10d16be8d123abfce92e715f717751136ea4ba63f0335d1c1e
+              tag: latest@sha256:d6dacd73a72a535d9b930932006423c7254940b3327d471d6d36e5e2d725adec
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
