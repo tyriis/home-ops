@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.0.2/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -24,13 +24,11 @@ spec:
   # https://github.com/sbs20/scanservjs
   values:
     controllers:
-      main:
-        strategy: Recreate
+      scanservjs:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
-            nameOverride: *app
+          app:
             env:
               TZ: ${SETTING_TZ}
               AIRSCAN_DEVICES: '"HP" = "http://${SECRET_SCANNER_IP}/eSCL";"LASER" = "http://${SECRET_SCANNER2_IP}/eSCL"'
@@ -50,16 +48,23 @@ spec:
               # removed because of oom kill when scanning more pages
               # limits:
               #   memory: 250Mi
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
 
     service:
-      main:
+      app:
+        controller: scanservjs
         ports:
           http:
             port: 8080
 
     ingress:
-      main:
-        enabled: true
+      app:
         className: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
@@ -76,7 +81,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
@@ -85,17 +90,15 @@ spec:
 
     persistence:
       scans:
-        enabled: true
         existingClaim: scanservjs-scans
         advancedMounts:
-          main:
-            main:
+          scanservjs:
+            app:
               - path: /app/data/output
       dbus:
-        enabled: true
         type: hostPath
         hostPath: /var/run/dbus
         advancedMounts:
-          main:
-            main:
+          scanservjs:
+            app:
               - path: /var/run/dbus

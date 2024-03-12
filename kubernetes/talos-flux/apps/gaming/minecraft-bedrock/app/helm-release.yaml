@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.0.2/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,7 +26,7 @@ spec:
       hostNetwork: true
 
     controllers:
-      main:
+      bedrock:
         replicas: 1
         pod:
           securityContext:
@@ -37,7 +37,7 @@ spec:
             seccompProfile:
               type: RuntimeDefault
         containers:
-          main:
+          app:
             nameOverride: minecraft-bedrock
             env:
               EULA: "true"
@@ -83,7 +83,7 @@ spec:
               readiness:
                 enabled: true
                 custom: true
-                type: UDP
+                type: AUTO
                 spec:
                   exec:
                     command:
@@ -100,7 +100,7 @@ spec:
               liveness:
                 enabled: true
                 custom: true
-                type: UDP
+                type: AUTO
                 spec:
                   exec:
                     command:
@@ -120,11 +120,9 @@ spec:
                 memory: 387Mi
 
     service:
-      main:
+      app:
+        controller: bedrock
         ports:
-          # need to be disabled, as it is configured by default
-          http:
-            enabled: false
           minecraft:
             port: 19132
             protocol: UDP
@@ -139,7 +137,3 @@ spec:
         existingClaim: minecraft-bedrock-data
         globalMounts:
           - path: /data
-
-    ingress:
-      main:
-        enabled: false

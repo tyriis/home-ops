@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.0.2/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -23,12 +23,11 @@ spec:
       remediateLastFailure: true
   values:
     controllers:
-      main:
+      uptime-kuma:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
-            nameOverride: *app
+          app:
             env:
               TZ: ${SETTING_TZ}
             image:
@@ -44,17 +43,24 @@ spec:
                 memory: 50Mi
               limits:
                 memory: 150Mi
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
 
     service:
-      main:
+      app:
+        controller: uptime-kuma
         ports:
           http:
             port: 3001
             protocol: TCP
 
     ingress:
-      main:
-        enabled: true
+      app:
         className: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
@@ -65,7 +71,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
@@ -74,9 +80,8 @@ spec:
 
     persistence:
       config:
-        enabled: true
         existingClaim: uptime-kuma-config
         advancedMounts:
-          main:
-            main:
+          uptime-kuma:
+            app:
               - path: /app/data
