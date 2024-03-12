@@ -39,13 +39,22 @@ spec:
             env:
               PUID: "1000"
               PGID: "1000"
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
 
     service:
       app:
+        nameOverride: "{{ .Release.Name }}"
         controller: syncthing
         ports:
           http:
             port: 8384
+
       listdisc:
         controller: syncthing
         type: LoadBalancer
