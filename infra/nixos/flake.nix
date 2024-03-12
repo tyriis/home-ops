@@ -28,7 +28,7 @@
     overlayModule = ({ config, pkgs, ... }: {
       nixpkgs.overlays = [ overlay ];
     });
-     # To generate host configurations for all hosts.
+    # To generate host configurations for all hosts.
     hostnames = builtins.attrNames (builtins.readDir ./hosts);
   in {
     nixosConfigurations = builtins.listToAttrs (builtins.map (host: {
