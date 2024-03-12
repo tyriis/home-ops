@@ -74,13 +74,13 @@ spec:
             probes:
               liveness:
                 enabled: true
-                port: 8443
+                port: 8080
               readiness:
                 enabled: true
-                port: 8443
+                port: 8080
               startup:
                 enabled: true
-                port: 8443
+                port: 8080
 
     service:
       app:
