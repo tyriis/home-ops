@@ -45,6 +45,14 @@ spec:
               requests:
                 cpu: 50m
                 memory: 100Mi
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+
           zigbee2mqtt-exporter:
             env:
               ZIGBEE2MQTT_WS: ws://127.0.0.1:8080/api

@@ -50,6 +50,13 @@ spec:
               # removed because of oom kill when scanning more pages
               # limits:
               #   memory: 250Mi
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
 
     service:
       app:

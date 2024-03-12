@@ -47,8 +47,7 @@ spec:
           http:
             port: 8384
       listdisc:
-        enabled: true
-        controller: main
+        controller: syncthing
         type: LoadBalancer
         ports:
           discovery:

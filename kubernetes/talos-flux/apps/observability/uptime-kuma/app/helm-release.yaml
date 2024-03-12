@@ -44,6 +44,13 @@ spec:
                 memory: 50Mi
               limits:
                 memory: 150Mi
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
 
     service:
       app:
@@ -55,7 +62,6 @@ spec:
 
     ingress:
       app:
-        enabled: true
         className: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
@@ -75,9 +81,8 @@ spec:
 
     persistence:
       config:
-        enabled: true
         existingClaim: uptime-kuma-config
         advancedMounts:
-          main:
-            main:
+          uptime-kuma:
+            app:
               - path: /app/data

@@ -34,7 +34,7 @@ spec:
               UNIFI_UID: "999"
               UNIFI_GID: "999"
               UNIFI_STDOUT: "true"
-              # JVM_INIT_HEAP_SIZE:
+              # JVM_INIT_HEAP_SIZE: null
               JVM_MAX_HEAP_SIZE: 1024M
               # CERTNAME: tls.crt
               # CERT_PRIVATE_NAME: tls.key
@@ -71,6 +71,13 @@ spec:
                 memory: 1390M
               limits:
                 memory: 1390M
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
 
     service:
       app:
@@ -148,6 +155,6 @@ spec:
         enabled: true
         existingClaim: unifi-data
         advancedMounts:
-          main:
-            main:
+          unifi::
+            app:
               - path: /unifi
