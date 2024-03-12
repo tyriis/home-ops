@@ -43,20 +43,9 @@ spec:
                 memory: 100Mi
               limits:
                 memory: 100Mi
-            probes:
-              liveness: &probes
-                enabled: false
-              readiness: *probes
-              startup: *probes
-
-    service:
-      app:
-        controller: musicbot
-        enabled: false
 
     persistence:
       config:
-        enabled: true
         type: configMap
         name: musicbot-config
         advancedMounts:

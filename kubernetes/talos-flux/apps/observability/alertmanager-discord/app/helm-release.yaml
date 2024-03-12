@@ -26,12 +26,11 @@ spec:
     keepHistory: false
   values:
     controllers:
-      app:
+      alertmanager-discord:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          alertmanager-discord:
-            nameOverride: *app
+          app:
             env:
               DISCORD_WEBHOOK: ${SECRET_PROMETHEUS_DISCORD_WEBHOOK}
               DISCORD_USERNAME: alertmanager ${SETTING_CLUSTERNAME}

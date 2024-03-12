@@ -33,7 +33,6 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           app:
-            nameOverride: *app
             env:
               TZ: ${SETTING_TZ}
             envFrom:
@@ -46,19 +45,10 @@ spec:
               - name: http
                 containerPort: 8123
                 protocol: TCP
-            probes:
-              liveness:
-                enabled: false
-              readiness:
-                enabled: false
-              startup:
-                enabled: false
             resources:
               requests:
                 cpu: 100m
                 memory: 300Mi
-              limits:
-                memory: 2048Mi
         initContainers:
           init-db:
             image:

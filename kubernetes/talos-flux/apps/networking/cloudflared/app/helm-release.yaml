@@ -33,7 +33,6 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           app:
-            nameOverride: *app
             image:
               repository: cloudflare/cloudflared
               tag: 2024.2.1-amd64@sha256:ce8d6fa2e5cc55d86351e018ee5051a86fdcb7cf0bdad30baa4e14943966cae5
@@ -72,7 +71,6 @@ spec:
 
     persistence:
       config:
-        enabled: true
         type: configMap
         name: cloudflare-tunnel
         advancedMounts:
@@ -82,7 +80,6 @@ spec:
                 subPath: config.yaml
                 readOnly: true
       credentials:
-        enabled: true
         type: secret
         name: cloudflare-tunnel
         advancedMounts:

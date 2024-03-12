@@ -29,7 +29,6 @@ spec:
     # https://github.com/bjw-s/helm-charts/tree/main/charts/other/app-template
     controllers:
       echo-server:
-        strategy: RollingUpdate
         containers:
           app:
             image:

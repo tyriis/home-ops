@@ -80,7 +80,6 @@ spec:
 
     persistence:
       config:
-        enabled: true
         type: configMap
         name: locking-service-config
         globalMounts:

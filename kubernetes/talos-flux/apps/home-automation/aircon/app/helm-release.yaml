@@ -68,7 +68,6 @@ spec:
 
     persistence:
       options:
-        enabled: true
         type: secret
         name: aircon-options
         globalMounts:

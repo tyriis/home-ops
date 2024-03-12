@@ -75,7 +75,6 @@ spec:
 
     ingress:
       app:
-        enabled: true
         className: traefik
         annotations:
           cert-manager.io/cluster-issuer: "letsencrypt-production"
@@ -99,7 +98,6 @@ spec:
 
     persistence:
       data:
-        enabled: true
         existingClaim: node-red-data
         advancedMounts:
           node-red:

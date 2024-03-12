@@ -73,7 +73,6 @@ spec:
 
     ingress:
       app:
-        enabled: true
         className: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
@@ -99,7 +98,6 @@ spec:
 
     persistence:
       config:
-        enabled: true
         existingClaim: zigbee2mqtt-upstairs-data
         advancedMounts:
           zigbee2mqtt:

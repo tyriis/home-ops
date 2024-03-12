@@ -33,7 +33,6 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           app:
-            nameOverride: *app
             env:
               TZ: ${SETTING_TZ}
               ESPHOME_DASHBOARD_USE_PING: "true"
@@ -61,7 +60,6 @@ spec:
 
     ingress:
       app:
-        enabled: true
         className: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production

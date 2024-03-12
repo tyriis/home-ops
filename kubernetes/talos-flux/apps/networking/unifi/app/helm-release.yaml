@@ -125,7 +125,6 @@ spec:
 
     ingress:
       app:
-        enabled: true
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           hajimari.io/enable: "true"
@@ -155,7 +154,6 @@ spec:
 
     persistence:
       data:
-        enabled: true
         existingClaim: unifi-data
         advancedMounts:
           unifi:
