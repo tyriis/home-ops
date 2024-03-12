@@ -102,6 +102,6 @@ spec:
         enabled: true
         existingClaim: zigbee2mqtt-downstairs-data
         advancedMounts:
-          main:
-            main:
+          zigbee2mqtt:
+            app:
               - path: /config

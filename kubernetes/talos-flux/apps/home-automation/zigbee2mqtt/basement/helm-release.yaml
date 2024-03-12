@@ -103,6 +103,6 @@ spec:
         enabled: true
         existingClaim: zigbee2mqtt-basement-data
         advancedMounts:
-          main:
-            main:
+          zigbee2mqtt:
+            app:
               - path: /config

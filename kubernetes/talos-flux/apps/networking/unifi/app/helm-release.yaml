@@ -74,10 +74,13 @@ spec:
             probes:
               liveness:
                 enabled: true
+                port: 8443
               readiness:
                 enabled: true
+                port: 8443
               startup:
                 enabled: true
+                port: 8443
 
     service:
       app:
@@ -155,6 +158,6 @@ spec:
         enabled: true
         existingClaim: unifi-data
         advancedMounts:
-          unifi::
+          unifi:
             app:
               - path: /unifi
