@@ -29,7 +29,7 @@ repos:
       - id: terraform_tflint
         args:
           - --args=--config=__GIT_WORKING_DIR__/.tflint.hcl
-      # - id: terraform_tfsec
+      - id: terraform_trivy
       #   args:
       #     - --args=--config-file=__GIT_WORKING_DIR__/.tfsec.yaml
 
