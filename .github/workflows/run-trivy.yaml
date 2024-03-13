@@ -1,18 +1,29 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Run Aqua Security Trivy vulnerability scanner
+
 on:
   push:
     branches:
       - main
   pull_request:
+
 jobs:
   trivy:
     name: Trivy
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      # https://github.com/marketplace/actions/harden-runner
+      - name: Harden Runner
+        uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
+        with:
+          egress-policy: audit
 
+      # https://github.com/marketplace/actions/checkout
+      - name: Checkout Repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      # https://github.com/marketplace/actions/aqua-security-trivy
       - name: Run Trivy vulnerability scanner in IaC mode
         uses: aquasecurity/trivy-action@062f2592684a31eb3aa050cc61e7ca1451cecd3d # 0.18.0
         with:
@@ -25,6 +36,7 @@ jobs:
           severity: CRITICAL,HIGH
           scan-ref: infra/terraform
 
+      # https://github.com/github/codeql-action
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@e56cfd0877b4826be144d11aa31e6c64a55828e9 # v2
         with:
