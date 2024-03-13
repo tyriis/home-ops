@@ -24,7 +24,7 @@ jobs:
             extra-platforms = aarch64-linux i686-linux
 
       - name: Use cache
-        uses: DeterminateSystems/magic-nix-cache-action@eeabdb06718ac63a7021c6132129679a8e22d0c7 # v3
+        uses: DeterminateSystems/magic-nix-cache-action@fc6aaceb40b9845a02b91e059ec147e78d1b4e41 # v4
 
       - name: Update flake.lock
         id: update
