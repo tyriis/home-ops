@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: MegaLinter
 
 on:
@@ -10,28 +11,32 @@ jobs:
     name: MegaLinter
     runs-on: ubuntu-latest
     steps:
+      # https://github.com/marketplace/actions/harden-runner
       - name: Harden Runner
         uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
         with:
           egress-policy: audit
 
-      - name: Checkout
+      # https://github.com/marketplace/actions/checkout
+      - name: Checkout Repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           fetch-depth: 0
 
+      # https://github.com/marketplace/actions/create-github-app-token
       - name: Generate Token
-        uses: tibdex/github-app-token@3beb63f4bd073e61482598c45c71c1019b59b73a # v2.1.0
-        id: generate-token
+        uses: actions/create-github-app-token@f2acddfb5195534d487896a656232b016a682f3c # v1.9.0
+        id: app-token
         with:
-          app_id: "${{ secrets.BOT_APP_ID }}"
-          private_key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
 
+      # https://github.com/marketplace/actions/megalinter
       - name: MegaLinter
         uses: oxsecurity/megalinter/flavors/terraform@a7a0163b6c8ff7474a283d99a706e27483ddd80f # v7.10.0
         env:
           VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'workflow_dispatch' }}
-          GITHUB_TOKEN: "${{ steps.generate-token.outputs.token }}"
+          GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
           # GITHUB_STATUS_REPORTER only works if VALIDATE_ALL_CODEBASE is false!
           GITHUB_STATUS_REPORTER: true
           REPORTERS_MARKDOWN_TYPE: simple

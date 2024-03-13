@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: update-flake-lock
 
 on:
@@ -15,18 +16,22 @@ jobs:
   lockfile:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      # https://github.com/marketplace/actions/checkout
+      - name: Checkout Repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
+      # https://github.com/marketplace/actions/the-determinate-nix-installer
       - name: Install nix
         uses: DeterminateSystems/nix-installer-action@de22e16c4711fca50c816cc9081563429d1cf563 # v10
         with:
           extra-conf: |
             extra-platforms = aarch64-linux i686-linux
 
+      # https://github.com/marketplace/actions/magic-nix-cache
       - name: Use cache
         uses: DeterminateSystems/magic-nix-cache-action@fc6aaceb40b9845a02b91e059ec147e78d1b4e41 # v4
 
+      # https://github.com/marketplace/actions/update-nix-flake-lock
       - name: Update flake.lock
         id: update
         uses: DeterminateSystems/update-flake-lock@a3ccb8f59719c48d6423e97744560221bcf7a3fa # v21

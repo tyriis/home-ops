@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Pull Request Labeler
 
 on:
@@ -12,11 +13,13 @@ jobs:
     name: Pull Request Labeler
     runs-on: ubuntu-latest
     steps:
+      # https://github.com/marketplace/actions/harden-runner
       - name: Harden Runner
         uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
         with:
           egress-policy: audit
 
+      # https://github.com/marketplace/actions/create-github-app-token
       - name: Generate Token
         uses: actions/create-github-app-token@f2acddfb5195534d487896a656232b016a682f3c # v1.9.0
         id: app-token
@@ -24,6 +27,7 @@ jobs:
           app-id: "${{ secrets.BOT_APP_ID }}"
           private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
 
+      # https://github.com/marketplace/actions/labeler
       - name: Labeler
         uses: actions/labeler@8558fd74291d67161a8a78ce36a881fa63b766a9 # v5.0.0
         with:

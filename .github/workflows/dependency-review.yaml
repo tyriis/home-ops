@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 # Dependency Review Action
 #
 # This Action will scan dependency manifest files that change as part of a Pull Request,
@@ -7,8 +8,10 @@
 # PRs introducing known-vulnerable packages will be blocked from merging.
 #
 # Source repository: https://github.com/actions/dependency-review-action
-name: "Dependency Review"
-on: [pull_request]
+name: Dependency Review
+
+on:
+  - pull_request
 
 permissions:
   contents: read
@@ -17,12 +20,16 @@ jobs:
   dependency-review:
     runs-on: ubuntu-latest
     steps:
+      # https://github.com/marketplace/actions/harden-runner
       - name: Harden Runner
         uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
         with:
           egress-policy: audit
 
-      - name: "Checkout Repository"
+      # https://github.com/marketplace/actions/checkout
+      - name: Checkout Repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      - name: "Dependency Review"
+
+      # https://github.com/marketplace/actions/dependency-review
+      - name: Dependency Review
         uses: actions/dependency-review-action@9129d7d40b8c12c1ed0f60400d00c92d437adcce # v4.1.3
