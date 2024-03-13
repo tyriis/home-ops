@@ -6,13 +6,13 @@ on:
   workflow_dispatch:
     inputs:
       dryRun:
-        description: "Dry-Run"
+        description: Dry-Run
         default: false
         required: false
         type: boolean
       logLevel:
-        description: "Log-Level"
-        default: "debug"
+        description: Log-Level
+        default: debug
         required: false
   schedule:
     - cron: "0 * * * *"
@@ -20,9 +20,9 @@ on:
     branches:
       - main
     paths:
-      - ".github/renovate.json5"
-      - ".github/renovate/**.json5"
-      - ".github/workflows/schedule-renovate.yaml"
+      - .github/renovate.json5
+      - .github/renovate/**.json5
+      - .github/workflows/schedule-renovate.yaml
 
 env:
   LOG_LEVEL: debug
