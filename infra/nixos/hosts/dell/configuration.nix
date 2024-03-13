@@ -10,7 +10,8 @@
 # in
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ../../users.nix
       ../../fonts.nix
@@ -40,7 +41,7 @@
   networking.hostName = "dell";
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
   # Set your time zone.
   time.timeZone = "Europe/Vienna";
@@ -67,37 +68,37 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-#  # Enable i3
-#  services.xserver = {
-#    enable = true;
-#    layout = "de";
-#
-#    desktopManager = {
-#      xterm.enable = false;
-#      xfce = {
-#        enable = true;
-#        noDesktop = true;
-#        enableXfwm = false;
-#      };
-#    };
-#
-#    displayManager = {
-#      defaultSession = "xfce+i3";
-#    };
-#
-#    windowManager.i3 = {
-#      enable = true;
-#      extraPackages = with pkgs; [
-#        dmenu #application launcher most people use
-#        rofi # dmenu but better ;)
-#        i3status # gives you the default i3 status bar
-#        i3lock #default i3 screen locker
-#        betterlockscreen # some better lockscreen
-#        i3blocks #if you are planning on using i3blocks over i3status
-#        # i3blocks-contrib
-#      ];
-#    };
-#  };
+  #  # Enable i3
+  #  services.xserver = {
+  #    enable = true;
+  #    layout = "de";
+  #
+  #    desktopManager = {
+  #      xterm.enable = false;
+  #      xfce = {
+  #        enable = true;
+  #        noDesktop = true;
+  #        enableXfwm = false;
+  #      };
+  #    };
+  #
+  #    displayManager = {
+  #      defaultSession = "xfce+i3";
+  #    };
+  #
+  #    windowManager.i3 = {
+  #      enable = true;
+  #      extraPackages = with pkgs; [
+  #        dmenu #application launcher most people use
+  #        rofi # dmenu but better ;)
+  #        i3status # gives you the default i3 status bar
+  #        i3lock #default i3 screen locker
+  #        betterlockscreen # some better lockscreen
+  #        i3blocks #if you are planning on using i3blocks over i3status
+  #        # i3blocks-contrib
+  #      ];
+  #    };
+  #  };
 
 
   # Enable the Plasma 5 Desktop Environment.
@@ -128,35 +129,35 @@
   # };
 
   # users.users.nils = {
-    # isNormalUser = true;
-    # createHome = true;
-    # home = "/home/nils";
-    # extraGroups = [ "wheel" "networkmanager" "audio"];
-    # openssh.authorizedKeys.keys = let
-    #   authorizedKeys = pkgs.fetchurl {
-    #     url = "https://github.com/tyriis.keys";
-    #     sha256 = "HQJOzIzdTcapfYRMueESfmlWGaylteMBLU8AqqwMTS4=";
-    #   };
-    # in pkgs.lib.splitString "\n" (builtins.readFile authorizedKeys);
-    # packages = with pkgs; [
-    #   go-task
-    #   chezmoi
-    #   vault
-    #   age
-    #   sops
-    #   zsh
-    #   zsh-autosuggestions
-    #   zsh-syntax-highlighting
-    #   spaceship-prompt
-    #   nodePackages.zx
-    #   unstable.vscode
-    #   # tabby ;(
-    #   barrier
-    #   fluxcd
-    #   kubectl
-    #   kubernetes-helm
-    #   k9s
-    # ];
+  # isNormalUser = true;
+  # createHome = true;
+  # home = "/home/nils";
+  # extraGroups = [ "wheel" "networkmanager" "audio"];
+  # openssh.authorizedKeys.keys = let
+  #   authorizedKeys = pkgs.fetchurl {
+  #     url = "https://github.com/tyriis.keys";
+  #     sha256 = "HQJOzIzdTcapfYRMueESfmlWGaylteMBLU8AqqwMTS4=";
+  #   };
+  # in pkgs.lib.splitString "\n" (builtins.readFile authorizedKeys);
+  # packages = with pkgs; [
+  #   go-task
+  #   chezmoi
+  #   vault
+  #   age
+  #   sops
+  #   zsh
+  #   zsh-autosuggestions
+  #   zsh-syntax-highlighting
+  #   spaceship-prompt
+  #   nodePackages.zx
+  #   unstable.vscode
+  #   # tabby ;(
+  #   barrier
+  #   fluxcd
+  #   kubectl
+  #   kubernetes-helm
+  #   k9s
+  # ];
   # };
 
   # List packages installed in system profile. To search, run:
@@ -230,7 +231,7 @@
   system.stateVersion = "23.11"; # Did you read the comment?
 
   hardware.pulseaudio.enable = true;
-  hardware.pulseaudio.support32Bit = true;    ## If compatibility with 32-bit applications is desired.
+  hardware.pulseaudio.support32Bit = true; ## If compatibility with 32-bit applications is desired.
   nixpkgs.config.pulseaudio = true;
 
 }

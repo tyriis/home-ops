@@ -6,7 +6,8 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
       # Include nfs config.
       ./nfs.nix
@@ -25,7 +26,7 @@
   networking.hostName = "kube-nas"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
   # Set your time zone.
   time.timeZone = "Europe/Vienna";
@@ -94,26 +95,30 @@
     createHome = true;
     home = "/home/nils";
     extraGroups = [ "wheel" "networkmanager" ];
-    openssh.authorizedKeys.keys = let
-      authorizedKeys = pkgs.fetchurl {
-        url = "https://github.com/tyriis.keys";
-        sha256 = "HQJOzIzdTcapfYRMueESfmlWGaylteMBLU8AqqwMTS4=";
-      };
-    in pkgs.lib.splitString "\n" (builtins.readFile
-    authorizedKeys);
+    openssh.authorizedKeys.keys =
+      let
+        authorizedKeys = pkgs.fetchurl {
+          url = "https://github.com/tyriis.keys";
+          sha256 = "HQJOzIzdTcapfYRMueESfmlWGaylteMBLU8AqqwMTS4=";
+        };
+      in
+      pkgs.lib.splitString "\n" (builtins.readFile
+        authorizedKeys);
   };
   users.users.jasmin = {
     isNormalUser = true;
     createHome = true;
     home = "/home/jasmin";
     extraGroups = [ "wheel" "networkmanager" ];
-    openssh.authorizedKeys.keys = let
-      authorizedKeys = pkgs.fetchurl {
-        url = "https://github.com/jazzlyn.keys";
-        sha256 = "Xeu/F1/mWxWwE4uN+Jar+R25ChQx0EEYZxE0E3Yxj5s=";
-      };
-    in pkgs.lib.splitString "\n" (builtins.readFile
-    authorizedKeys);
+    openssh.authorizedKeys.keys =
+      let
+        authorizedKeys = pkgs.fetchurl {
+          url = "https://github.com/jazzlyn.keys";
+          sha256 = "Xeu/F1/mWxWwE4uN+Jar+R25ChQx0EEYZxE0E3Yxj5s=";
+        };
+      in
+      pkgs.lib.splitString "\n" (builtins.readFile
+        authorizedKeys);
   };
 
   # List packages installed in system profile. To search, run:
