@@ -1,18 +1,35 @@
+# ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: capacitor
+#   namespace: flux-system
+# spec:
+#   targetNamespace: flux-system
+#   interval: 1h
+#   retryInterval: 2m
+#   timeout: 5m
+#   wait: true
+#   prune: true
+#   path: ./
+#   sourceRef:
+#     kind: OCIRepository
+#     name: capacitor-manifests
+
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: capacitor
+  name: apps-capacitor
   namespace: flux-system
 spec:
-  targetNamespace: flux-system
-  interval: 1h
-  retryInterval: 2m
-  timeout: 5m
-  wait: true
+  interval: 30m
+  path: ./kubernetes/talos-flux/apps/flux-system/capacitor/app
   prune: true
-  path: ./
   sourceRef:
-    kind: OCIRepository
-    name: capacitor-manifests
+    kind: GitRepository
+    name: home-ops
+  wait: true
+  timeout: 3m
