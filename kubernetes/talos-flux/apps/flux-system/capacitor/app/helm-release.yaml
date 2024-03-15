@@ -1,0 +1,104 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.0.2/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: &app capacitor
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.0.4
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      capacitor:
+        replicas: 1
+        pod:
+          securityContext:
+            fsGroup: 999
+            # runAsGroup: 3000
+            # runAsNonRoot: true
+            # runAsUser: 1000
+            # seccompProfile:
+            #   type: RuntimeDefault
+        containers:
+          app:
+            env:
+              TZ: ${SETTING_TZ}
+
+            image:
+              repository: ghcr.io/gimlet-io/capacitor
+              tag: v0.3.2@sha256:e9961dd344271da18e9df9d931fd9087406fa98f354d2d28cc61deab9cd7f8f5
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+              readOnlyRootFilesystem: true
+
+            probes:
+              startup:
+                enabled: false
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 9000
+                    scheme: HTTP
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probe
+
+            resources:
+              requests:
+                cpu: 200m
+                memory: 200Mi
+
+    service:
+      app:
+        controller: capacitor
+        ports:
+          http:
+            enabled: true
+            port: *port
+            protocol: HTTP
+
+    ingress:
+      app:
+        enabled: true
+        className: nginx
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/tls-acme: "true"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+          nginx.ingress.kubernetes.io/ssl-redirect: "true"
+          hajimari.io/icon: simple-icons:flux
+          hajimari.io/enable: "true"
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+            secretName: "{{ .Release.Name }}-tls"
