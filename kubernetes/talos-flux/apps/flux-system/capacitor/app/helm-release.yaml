@@ -70,6 +70,10 @@ spec:
                 cpu: 200m
                 memory: 200Mi
 
+    serviceAccount:
+      create: false
+      name: capacitor
+
     service:
       app:
         controller: capacitor
