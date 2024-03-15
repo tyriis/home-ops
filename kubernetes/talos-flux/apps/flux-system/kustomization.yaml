@@ -6,3 +6,4 @@ resources:
   # - ./namespace.yaml namespace is part of gotk manifests and will switch reconcile
   - ./gotk/flux-sync.yaml
   - ./gimlet/flux-sync.yaml
+  - ./capacitor/flux-sync.yaml
