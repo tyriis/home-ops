@@ -11,6 +11,7 @@
       ./hardware-configuration.nix
       # Include nfs config.
       ./nfs.nix
+      ../../users.nix
     ];
 
   # enable nix-flakes
