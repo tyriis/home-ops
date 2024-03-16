@@ -28,6 +28,22 @@
       pkgs.lib.splitString "\n" (builtins.readFile authorizedKeys);
   };
 
+  users.users.jasmin = {
+    isNormalUser = true;
+    createHome = true;
+    home = "/home/jasmin";
+    extraGroups = [ "wheel" "networkmanager" ];
+    openssh.authorizedKeys.keys =
+      let
+        authorizedKeys = pkgs.fetchurl {
+          url = "https://github.com/jazzlyn.keys";
+          sha256 = "Xeu/F1/mWxWwE4uN+Jar+R25ChQx0EEYZxE0E3Yxj5s=";
+        };
+      in
+      pkgs.lib.splitString "\n" (builtins.readFile
+        authorizedKeys);
+  };
+
   # allow of sudo without password
   # security.sudo.wheelNeedsPassword = false;
 }
