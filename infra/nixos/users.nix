@@ -17,7 +17,7 @@
     createHome = true;
     useDefaultShell = true;
     home = "/home/nils";
-    extraGroups = [ "wheel" "networkmanager" "audio" ];
+    extraGroups = [ "wheel" "networkmanager" "audio" "docker" ];
     openssh.authorizedKeys.keys =
       let
         authorizedKeys = pkgs.fetchurl {
@@ -32,7 +32,7 @@
     isNormalUser = true;
     createHome = true;
     home = "/home/jasmin";
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" "audio" "docker" ];
     openssh.authorizedKeys.keys =
       let
         authorizedKeys = pkgs.fetchurl {
