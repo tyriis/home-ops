@@ -165,6 +165,9 @@
     # openFirewall = true;
   };
 
+  # Enable zsh.
+  programs.zsh.enable = true;
+
   # Enable k3s
   services.k3s.enable = true;
   services.k3s.role = "server";
