@@ -13,6 +13,12 @@
       ./nfs.nix
     ];
 
+  # enable nix-flakes
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.consoleMode = "auto";
@@ -90,36 +96,36 @@
   #     tree
   #   ];
   # };
-  users.users.nils = {
-    isNormalUser = true;
-    createHome = true;
-    home = "/home/nils";
-    extraGroups = [ "wheel" "networkmanager" ];
-    openssh.authorizedKeys.keys =
-      let
-        authorizedKeys = pkgs.fetchurl {
-          url = "https://github.com/tyriis.keys";
-          sha256 = "HQJOzIzdTcapfYRMueESfmlWGaylteMBLU8AqqwMTS4=";
-        };
-      in
-      pkgs.lib.splitString "\n" (builtins.readFile
-        authorizedKeys);
-  };
-  users.users.jasmin = {
-    isNormalUser = true;
-    createHome = true;
-    home = "/home/jasmin";
-    extraGroups = [ "wheel" "networkmanager" ];
-    openssh.authorizedKeys.keys =
-      let
-        authorizedKeys = pkgs.fetchurl {
-          url = "https://github.com/jazzlyn.keys";
-          sha256 = "Xeu/F1/mWxWwE4uN+Jar+R25ChQx0EEYZxE0E3Yxj5s=";
-        };
-      in
-      pkgs.lib.splitString "\n" (builtins.readFile
-        authorizedKeys);
-  };
+  # users.users.nils = {
+  #   isNormalUser = true;
+  #   createHome = true;
+  #   home = "/home/nils";
+  #   extraGroups = [ "wheel" "networkmanager" ];
+  #   openssh.authorizedKeys.keys =
+  #     let
+  #       authorizedKeys = pkgs.fetchurl {
+  #         url = "https://github.com/tyriis.keys";
+  #         sha256 = "HQJOzIzdTcapfYRMueESfmlWGaylteMBLU8AqqwMTS4=";
+  #       };
+  #     in
+  #     pkgs.lib.splitString "\n" (builtins.readFile
+  #       authorizedKeys);
+  # };
+  # users.users.jasmin = {
+  #   isNormalUser = true;
+  #   createHome = true;
+  #   home = "/home/jasmin";
+  #   extraGroups = [ "wheel" "networkmanager" ];
+  #   openssh.authorizedKeys.keys =
+  #     let
+  #       authorizedKeys = pkgs.fetchurl {
+  #         url = "https://github.com/jazzlyn.keys";
+  #         sha256 = "Xeu/F1/mWxWwE4uN+Jar+R25ChQx0EEYZxE0E3Yxj5s=";
+  #       };
+  #     in
+  #     pkgs.lib.splitString "\n" (builtins.readFile
+  #       authorizedKeys);
+  # };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -148,7 +154,15 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    settings = {
+      X11Forwarding = true;
+      PermitRootLogin = "no";
+      PasswordAuthentication = false;
+    };
+    # openFirewall = true;
+  };
 
   # Enable k3s
   services.k3s.enable = true;
@@ -178,7 +192,7 @@
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
   # accidentally delete configuration.nix.
-  system.copySystemConfiguration = true;
+  # system.copySystemConfiguration = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -199,4 +213,10 @@
   # Enable VSCode server
   # https://nixos.wiki/wiki/Visual_Studio_Code#nix-ld
   programs.nix-ld.enable = true;
+
+  # Enable neovim as default editor.
+  programs.neovim.enable = true;
+  programs.neovim.defaultEditor = true;
+  programs.neovim.vimAlias = true;
+  programs.neovim.viAlias = true;
 }
