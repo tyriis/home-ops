@@ -43,7 +43,7 @@ spec:
 
             image:
               repository: ghcr.io/gimlet-io/gimlet
-              tag: v0.25.0@sha256:23e90ca5cafc1214380f28e5874df2eb9319d1e5cce100301ac7ecc35d0d0b16
+              tag: v0.26.0@sha256:533a4e85faf8356bf3b4563c67c86c83bf21d46281f39292820b6d92b6c3261e
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
