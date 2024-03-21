@@ -37,7 +37,7 @@
       let
         authorizedKeys = pkgs.fetchurl {
           url = "https://github.com/jazzlyn.keys";
-          sha256 = "Xeu/F1/mWxWwE4uN+Jar+R25ChQx0EEYZxE0E3Yxj5s=";
+          sha256 = "5pYk7Rxc0IS3Ov7A5AVgqG5/DjjwiuCcp2jlY838/LM=";
         };
       in
       pkgs.lib.splitString "\n" (builtins.readFile
