@@ -1,0 +1,28 @@
+---
+# https://grafana.com/docs/grafana/latest/datasources/
+apiVersion: 1
+# list of datasources that should be deleted from the database
+deleteDatasources:
+  - name: Loki
+    orgId: 1
+  - name: Prometheus
+    orgId: 1
+  - name: GitHub
+    orgId: 1
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus-prometheus:9090/
+    isDefault: true
+  - name: Loki
+    type: loki
+    access: proxy
+    url: http://loki-gateway:80/
+  - name: GitHub
+    type: grafana-github-datasource
+    jsonData:
+      owner: "tyriis"
+      repository: "home-ops"
+    secureJsonData:
+      accessToken: ${SECRET_GH_PAT}

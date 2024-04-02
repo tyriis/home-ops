@@ -1,0 +1,29 @@
+# yamllint disable
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+    name: grafana-admin
+stringData:
+    USERNAME: ENC[AES256_GCM,data:n57P/S4=,iv:7qajI1QASF15zpMqcVjal8XvBEG+BxezxegKPrJePdg=,tag:tbf5BF3JKgFkeFI+4FFJ5g==,type:str]
+    PASSWORD: ENC[AES256_GCM,data:J4Zg6RQ8K2ECZRg2/1jbjHS2u+T7j7U1f2OZOAUuVbFHt7yjpNFEN8tiUts=,iv:s2ifsOTwHK/h4CMBfpDx75ibAuzeo6+tNJshR7xfgCs=,tag:dzsXSSgspFSTdLFhOk2TFg==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age16zqeqx5y6ay3flwz0d06rn83yjv9ckys3j8tpkysf9v6295fhc6sf4r0uj
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBIZzFkbDhYbElUcTJQZ1ls
+            T25TeWN3M3NXRzAvMXJjQXVsa0VGSk1tYjNrClJrb0JQbjk2NnhaUjNtbVN1U1JU
+            dVpXZW9OaUh0YU1GQmhiOHIyNnBYNDAKLS0tIHdZdk4rUVdIYzUyMURzc2FsV3hL
+            TTcwSDlkQ3VPM1NTWFdoTzZ5MVBEeDAKXeIe9FM/ZenGa8kVJjMIC9hcAwktLR/U
+            T5O1xTcVAhgBUDYbKdrexWuFIAsqhXVMAh0xhQEs3m9gdygDPAL6Mw==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-04-02T22:00:12Z"
+    mac: ENC[AES256_GCM,data:EGShcemEHAQOZ58+2fS1kt416dUUROQ0RTgbxZsfM7TQ+ueDGHPybePhPauYn/V6AeirrU7soNY0Es3BcjfG/pKNcKS/OYXCpKOWaQzE0m+r/PCPPHtdSMemb9Jvky/7wRVI9OgU+SFtOrVslQS/gVjsXgeVsC3mpILX2l7dx+Y=,iv:STI/yC8BWa+V/z7hpqNRSJa+tqJXhYi4LDGn+5XjaiA=,tag:mqdeAmh8U4J9fPhJqkGC9g==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.8.1
