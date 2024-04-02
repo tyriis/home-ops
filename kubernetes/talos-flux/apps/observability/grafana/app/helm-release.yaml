@@ -27,12 +27,27 @@ spec:
   values:
     replicas: 1
 
+    alerting:
+      contactpoints.yaml:
+        secret:
+          apiVersion: 1
+          contactPoints:
+            - orgId: 1
+              name: alertmanager-notifications
+              receivers:
+                - uid: test
+                  type: prometheus-alertmanager
+                  settings:
+                    url: $TEST_URL
+                    send_resolved: true
+
     env:
       TZ: ${SETTING_TZ}
       GF_EXPLORE_ENABLED: "true"
       GF_PANELS_DISABLE_SANITIZE_HTML: "true"
       GF_DATE_FORMATS_USE_BROWSER_LOCALE: "true"
       VAR_BLOCKY_URL: http://blocky.networking.svc.cluster.local:4000
+      TEST_URL: http://alertmanager.observability.svc.cluster.local:9093
 
     envFromSecrets:
       - name: grafana-env
