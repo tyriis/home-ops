@@ -5,7 +5,7 @@ kind: Kustomization
 namespace: observability
 resources:
   - grafana-admin.sops.yaml
-  - grafana-auth-google.sops.yaml
+  - grafana-env.sops.yaml
   - helm-release.yaml
 configMapGenerator:
   - name: grafana-contactpoints

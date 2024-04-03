@@ -22,7 +22,7 @@ datasources:
   - name: GitHub
     type: grafana-github-datasource
     jsonData:
-      owner: "tyriis"
-      repository: "home-ops"
+      owner: tyriis
+      repository: home-ops
     secureJsonData:
-      accessToken: ${SECRET_GH_PAT}
+      accessToken: $GITHUB_PAT

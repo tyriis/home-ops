@@ -31,7 +31,7 @@ spec:
       TZ: ${SETTING_TZ}
 
     envFromSecrets:
-      - name: grafana-auth-google
+      - name: grafana-env
 
     admin:
       existingSecret: grafana-admin
