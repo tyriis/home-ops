@@ -1,14 +1,12 @@
 # yamllint disable
 apiVersion: v1
 kind: Secret
-type: Opaque
 metadata:
     name: grafana-env
 stringData:
-    GF_AUTH_GOOGLE_ENABLED: ENC[AES256_GCM,data:Vf684g==,iv:lb3T33RlQFvsJUwhQsJc4fySF+ricMiO1LgCZ0hs3ro=,tag:Pjr0vd0Eallec2eorwU51g==,type:str]
     GF_AUTH_GOOGLE_CLIENT_ID: ENC[AES256_GCM,data:EaJ5MS9jmXKZ1gbBwJU8xL09E95Lzog/ncqnq8+TYC/e27JpcE4LdQC2ZwjIWPcTDuUM5m7NpjMzUzIvISXoOJdDSxe/waRr,iv:Oub/mmnsIBGMB4GMMvL2eUK7Uz4XgHdIIdPiAeFuiXY=,tag:gKByk2mmlmJc5+yJmkXcAQ==,type:str]
     GF_AUTH_GOOGLE_CLIENT_SECRET: ENC[AES256_GCM,data:YLlBwyOWV0zksdQoc2Rp0GrNxXCBtsxbvhPSSBHy/By4djo=,iv:sHFcGqQj6Ak0GvA+I7guGLPY40bHO3re7XPV2xsToPA=,tag:1Ns/P/xXdUpNS6iYjv4Rxw==,type:str]
-    TEST_URL: ENC[AES256_GCM,data:3a+t4QGIjlOyTZ9zuGP5k+t84yFAAh5NHqVmZ8j0AIRfvvNLMLceqHpNkLAFfXEU+eZluMBIQ4cRlmAcoI8VhSvnFw==,iv:fL2xK2uaIMQmhWospg9ea0y4bZT8NroW3A+utaluGi4=,tag:/eZd9XOBIREKM8BVTbnfCg==,type:str]
+    GITHUB_PAT: ENC[AES256_GCM,data:XkHDWOs2UQP3yT5NwiilDrDTOK7NDNAKWBqF4wuY31yA2TW70Vqfjg==,iv:SgHDC9NTU5bVpJNIX9DxwKo6WgNLs6T1Kjsi7T0HpcQ=,tag:E967XwHdFfwU0ERYYMIetQ==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -24,8 +22,8 @@ sops:
             eUQwcWJxQWZIUkRsb291SHpGSDhqT1EKgTQ1qSb4D0VNoXTiTkz9sHrHFPNHcPCW
             IQ8/QYEA6iWVt+v8s+ATb2OaLZhha5FgwCOGVyIv6GJLP1kBlz8RwQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-04-03T09:52:00Z"
-    mac: ENC[AES256_GCM,data:DUi4H37y8DF36dwKIQomOdytiNH2Yic3o0D9I30ChOo283G3p7Lr3sZalEAp6tJ75jAanL/cp1oUPZCGUwkqtrmHJK9Z1QjAHUmDOHZ27WKYpT/FNOxeXummx0w5IyXZeF1YMpzO9ddQ5LaBSyXt1S6fpqJLEeMeeZLy/NDst1o=,iv:K93XNG1Au/M81KhIw+xU4SHuqJ/JSGSteyT65t6FNxA=,tag:1l9fxpMJMjEKjnCRsEiJNg==,type:str]
+    lastmodified: "2024-04-03T20:30:42Z"
+    mac: ENC[AES256_GCM,data:7isbGbxz0t0NxjhGER9Mq/TWUK20My9Z4b0yYcD1SWJ+toAGH36NmxC2i36bChU16d0ZPanlW6wmUL7O+1Ihvp/5tQyFp7ZW+6cPIAhWekdFYOrFk68pfB+IlD/YYOt6HO6bmcfXispqyqDZkr9k8UgirsEt7sA36NMs/nByWXY=,iv:y7jqoj+G/HzAKXmY6yI82AEfwo/ueGw1p8gbS9/GkTA=,tag:QagM09nKrdiO/mCBFDOSzw==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1

@@ -4,5 +4,26 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: observability
 resources:
+  - grafana-admin.sops.yaml
   - grafana-env.sops.yaml
   - helm-release.yaml
+configMapGenerator:
+  - name: grafana-contactpoints
+    files:
+      - contactpoints.yaml=config/contactpoints.yaml
+  - name: grafana-datasources
+    files:
+      - datasources.yaml=config/datasources.yaml
+  - name: grafana-ini
+    files:
+      - grafana.ini=config/grafana.ini
+  - name: grafana-policies
+    files:
+      - policies.yaml=config/policies.yaml
+commonLabels:
+  app.kubernetes.io/name: grafana
+  app.kubernetes.io/instance: grafana
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
