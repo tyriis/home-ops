@@ -101,7 +101,7 @@ spec:
         configMap: grafana-datasources
         readOnly: true
       - name: grafana-ini
-        mountPath: /etc/grafana/
+        mountPath: /etc/grafana/grafana.ini
         subPath: grafana.ini
         configMap: grafana-ini
         readOnly: true
