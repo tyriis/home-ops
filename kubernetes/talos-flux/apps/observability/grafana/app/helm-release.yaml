@@ -108,17 +108,17 @@ spec:
     createConfigmap: true
     extraConfigmapMounts:
       - name: grafana-contactpoints
-        mountPath: /etc/grafana/alerting/contactpoints.yaml
+        mountPath: /etc/grafana/provisioning/alerting/contactpoints.yaml
         subPath: contactpoints.yaml
         configMap: grafana-contactpoints
         readOnly: true
       - name: grafana-datasources
-        mountPath: /etc/grafana/datasources/datasources.yaml
+        mountPath: /etc/grafana/provisioning/datasources/datasources.yaml
         subPath: datasources.yaml
         configMap: grafana-datasources
         readOnly: true
       - name: grafana-policies
-        mountPath: /etc/grafana/alerting/policies.yaml
+        mountPath: /etc/grafana/provisioning/alerting/policies.yaml
         subPath: policies.yaml
         configMap: grafana-policies
         readOnly: true
