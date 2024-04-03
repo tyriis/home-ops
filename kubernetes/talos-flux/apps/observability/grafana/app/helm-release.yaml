@@ -47,7 +47,6 @@ spec:
       GF_PANELS_DISABLE_SANITIZE_HTML: "true"
       GF_DATE_FORMATS_USE_BROWSER_LOCALE: "true"
       VAR_BLOCKY_URL: http://blocky.networking.svc.cluster.local:4000
-      TEST_URL: http://prometheus-alertmanager.observability.svc.cluster.local:9093
 
     envFromSecrets:
       - name: grafana-env
