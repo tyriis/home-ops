@@ -29,6 +29,10 @@ spec:
 
     env:
       TZ: ${SETTING_TZ}
+      GF_EXPLORE_ENABLED: "true"
+      GF_PANELS_DISABLE_SANITIZE_HTML: "true"
+      GF_DATE_FORMATS_USE_BROWSER_LOCALE: "true"
+      GF_LOG_LEVEL: info
 
     envFromSecrets:
       - name: grafana-env
@@ -37,6 +41,19 @@ spec:
       existingSecret: grafana-admin
       userKey: USERNAME
       passwordKey: PASSWORD
+
+    grafana.ini:
+      server:
+        root_url: https://grafana.techtales.io
+      users:
+        auto_assign_org_role: Admin
+      auth.google:
+        enabled: true
+        allow_sign_up: true
+        allowed_domains: techtales.io
+        scopes: https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email
+        auth_url: https://accounts.google.com/o/oauth2/auth
+        token_url: https://accounts.google.com/o/oauth2/token
 
     dashboards:
       default:
@@ -91,22 +108,17 @@ spec:
     createConfigmap: true
     extraConfigmapMounts:
       - name: grafana-contactpoints
-        mountPath: /etc/grafana/alerting/
+        mountPath: /etc/grafana/alerting/contactpoints.yaml
         subPath: contactpoints.yaml
         configMap: grafana-contactpoints
         readOnly: true
       - name: grafana-datasources
-        mountPath: /etc/grafana/datasources/
+        mountPath: /etc/grafana/datasources/datasources.yaml
         subPath: datasources.yaml
         configMap: grafana-datasources
         readOnly: true
-      - name: grafana-ini
-        mountPath: /etc/grafana/grafana.ini
-        subPath: grafana.ini
-        configMap: grafana-ini
-        readOnly: true
       - name: grafana-policies
-        mountPath: /etc/grafana/alerting/
+        mountPath: /etc/grafana/alerting/policies.yaml
         subPath: policies.yaml
         configMap: grafana-policies
         readOnly: true
