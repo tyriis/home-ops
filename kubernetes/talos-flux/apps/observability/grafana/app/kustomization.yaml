@@ -25,3 +25,5 @@ commonLabels:
   app.kubernetes.io/instance: grafana
 generatorOptions:
   disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
