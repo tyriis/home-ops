@@ -14,9 +14,6 @@ configMapGenerator:
   - name: grafana-datasources
     files:
       - datasources.yaml=config/datasources.yaml
-  - name: grafana-ini
-    files:
-      - grafana.ini=config/grafana.ini
   - name: grafana-policies
     files:
       - policies.yaml=config/policies.yaml
