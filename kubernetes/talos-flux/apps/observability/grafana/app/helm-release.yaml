@@ -29,8 +29,6 @@ spec:
 
     env:
       TZ: ${SETTING_TZ}
-      VAR_BLOCKY_URL: http://blocky.networking.svc.cluster.local:4000 # for dashboard
-      ALERTMANAGER_URL: http://prometheus-alertmanager.observability.svc.cluster.local:9093
 
     envFromSecrets:
       - name: grafana-auth-google
@@ -46,11 +44,6 @@ spec:
         "Node Exporter for Prometheus Dashboard":
           gnetId: 11074
           revision: 9
-          datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/13768
-        blocky:
-          gnetId: 13768
-          revision: 3
           datasource: Prometheus
 
     sidecar:
@@ -81,12 +74,12 @@ spec:
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         external-dns.alpha.kubernetes.io/target: "${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"
       hosts:
-        - "grafana.${SECRET_DOMAIN}"
+        - &host grafana.techtales.io
       path: /
       tls:
         - secretName: grafana-cert
           hosts:
-            - "grafana.${SECRET_DOMAIN}"
+            - *host
 
     serviceAccount:
       create: true

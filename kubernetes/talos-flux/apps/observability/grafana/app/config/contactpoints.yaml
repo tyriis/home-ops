@@ -9,4 +9,4 @@ contactPoints:
         type: prometheus-alertmanager
         disableResolveMessage: false
         settings:
-          url: $ALERTMANAGER_URL
+          url: http://prometheus-alertmanager.observability.svc.cluster.local:9093

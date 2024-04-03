@@ -1,7 +1,6 @@
 # yamllint disable
 apiVersion: v1
 kind: Secret
-type: Opaque
 metadata:
     name: grafana-auth-google
 stringData:
@@ -22,8 +21,8 @@ sops:
             eUQwcWJxQWZIUkRsb291SHpGSDhqT1EKgTQ1qSb4D0VNoXTiTkz9sHrHFPNHcPCW
             IQ8/QYEA6iWVt+v8s+ATb2OaLZhha5FgwCOGVyIv6GJLP1kBlz8RwQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-04-02T21:27:47Z"
-    mac: ENC[AES256_GCM,data:oZqVunsLWCslIaZlRUOX3FHd66bIfhmHLuywVnQeda8ZrQX13LEJmbvEvApUrJGtoY5Zi8qFKank/NIwskNVGZpaOLcrGEm2tlLPuNn7e5ViLdjcqZu095zIEKQbx2wTeSZPMGe1wRbsjhivuHXmewEfAiQlmpuMu5ni2jE6nI8=,iv:LOGm+ROa6KYR+sD+aVgJWW3ifkA5Xx/893scQPryclw=,tag:yszeKmOf73y8311FI8fkAA==,type:str]
+    lastmodified: "2024-04-03T20:17:40Z"
+    mac: ENC[AES256_GCM,data:JQr1hrOpDMRAuxbA/7I6aJgQ5ReLfwqPW3SvgVvUVcJXeWTPt9xvYRUrUBzqunfiJ6wZKRCkuSZ5uRthlDwR2fAVqxbFjAhUxWuld7P5fZs6u63Qx/+cgd8WkLZZ8ikNI249eDn0rzTo1UfGSI4eAozejvCufyuGh/L+o2MCKQc=,iv:o557kvzdsWv+3VkT+WH1i0iyhxFc2sR1FIO8hlzSfIU=,tag:lzVtBxhbs5aRA7XhCnfS/Q==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1
