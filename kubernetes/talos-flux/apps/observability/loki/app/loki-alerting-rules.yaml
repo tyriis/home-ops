@@ -56,12 +56,12 @@ groups:
           category: logs
         annotations:
           summary: "Node-Red is unable to connect to Home Assistant"
-      # - alert: NodeRedTest
-      #   expr: |
-      #     sum(count_over_time({app="node-red"} |~ "(?i)debug:office light"[2m])) > 0
-      #   for: 2m
-      #   labels:
-      #     severity: critical
-      #     category: logs
-      #   annotations:
-      #     summary: "Node-Red is testing"
+      - alert: NodeRedTest
+        expr: |
+          sum(count_over_time({app="node-red"} |~ "(?i)debug:office light"[2m])) > 0
+        for: 2m
+        labels:
+          severity: critical
+          category: logs
+        annotations:
+          summary: "Node-Red is testing"
