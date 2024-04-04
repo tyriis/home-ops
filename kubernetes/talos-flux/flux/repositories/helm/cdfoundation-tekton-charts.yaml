@@ -6,6 +6,6 @@ metadata:
   name: cdfoundation-tekton-charts
   namespace: flux-system
 spec:
-  interval: 30m
-  url: https://cdfoundation.github.io/tekton-helm-chart/
+  interval: 1h
   timeout: 3m
+  url: https://cdfoundation.github.io/tekton-helm-chart/

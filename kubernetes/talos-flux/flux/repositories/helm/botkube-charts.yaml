@@ -6,6 +6,6 @@ metadata:
   name: botkube-charts
   namespace: flux-system
 spec:
-  interval: 15m
-  url: https://charts.botkube.io/
+  interval: 1h
   timeout: 3m
+  url: https://charts.botkube.io/
