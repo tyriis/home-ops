@@ -16,6 +16,7 @@
 [![renovate][renovate-shield]][renovate-dashboard-url]
 [![commits][commits-shield]][commits-url]
 [![talos][talos-shield]][talos-url]
+[![kubernetes][kubernetes-shield]][kubernetes-url]
 [![terraform][terraform-shield]][terraform-url]
 [![cloudflare][cloudflare-shield]][cloudflare-url]
 
@@ -205,6 +206,8 @@ example:
 [commits-url]: https://github.com/tyriis/home-ops/commits/main
 [talos-shield]: https://img.shields.io/badge/Talos-1.3.6-ff7300?style=for-the-badge&logo=talos
 [talos-url]: https://www.talos.dev/
+[kubernetes-shield]: https://img.shields.io/badge/kubernetes-1.29.3-326CE5?style=for-the-badge&logo=kubernetes
+[kubernetes-url]: https://kubernetes.io/releases/
 [terraform-shield]: https://img.shields.io/badge/terraform-1.x-844fba?style=for-the-badge&logo=terraform
 [terraform-url]: https://github.com/hashicorp/terraform/releases
 [cloudflare-shield]: https://img.shields.io/badge/cloudflare-dns-F38020?style=for-the-badge&logo=cloudflare
