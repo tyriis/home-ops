@@ -177,12 +177,10 @@ example:
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
+<!-- Links -->
+
 [backstage-url]: https://backstage.spotify.com/
 [cloudflare-homepage]: https://www.cloudflare.com/
-[cloudflare-shield]: https://img.shields.io/badge/cloudflare-dns-F38020?logo=cloudflare&style=for-the-badge&logoColor=white
-[cloudflare-url]: https://dash.cloudflare.com/
-[commits-shield]: https://img.shields.io/github/last-commit/tyriis/home-ops?logo=github&style=for-the-badge
-[commits-url]: https://github.com/tyriis/home-ops/commits/main
 [flux-home-cluster-url]: https://github.com/tyriis/flux.home-cluster
 [flux-k3s-home-url]: https://github.com/tyriis/flux.k3s.home
 [flux-pi-k3s-home-url]: https://github.com/tyriis/flux.pi-k3s.home
@@ -191,16 +189,23 @@ example:
 [github-issues]: https://github.com/tyriis/home-ops/issues
 [k8s-at-home-url]: https://k8s-at-home.com/
 [letsencrypt-url]: https://letsencrypt.org/
+[renovate-dashboard-url]: https://app.renovatebot.com/dashboard#github/tyriis/home-ops
 [megalinter-badge]: https://github.com/tyriis/home-ops/workflows/MegaLinter/badge.svg?branch=main
 [megalinter-url]: https://github.com/tyriis/home-ops/actions/workflows/mega-linter.yaml?query=branch%3Amain
-[pre-commit-shield]: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&style=for-the-badge
-[pre-commit-url]: https://github.com/pre-commit/pre-commit
-[renovate-dashboard-url]: https://app.renovatebot.com/dashboard#github/tyriis/home-ops
-[renovate-shield]: https://img.shields.io/badge/renovate-enabled-brightgreen?logo=renovatebot&style=for-the-badge
-[renovate-url]: https://www.whitesourcesoftware.com/free-developer-tools/renovate/
-[talos-shield]: https://img.shields.io/badge/Talos-v1.3.6-fa371a?style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAW9yTlQBz6J3mgAABGRJREFUOMttlE+IXWcZxn/P+51zz52ZTCYNiQYnGkUxlVIl/glGWqJWi03SGruQLsQsWiiktCBCXUjqTmitXYjQjtiVigSRVhorGqf+wYpU07hwkagwqSSTTu/8u/eee++Zc873vS6iaYq+y3fx43ng4SduOH8acORom8tKbXfHKISfAbnH/Bgp1hq0hrMNtyHI9Ui8zrDrsMczKAWl3aMxCzZMb+MqsAreA+85cbOBXgsVe9ji+1753b6V8Cfs/wABHwvfYo6RjlPqsIbAmqG1AOsGGwlKwwfh0z6yu71mzifgruvArP5aDkC7DiZALKr1fyn6cZXhp2l76+YAwiwQq5iH3I7LeI3AIoD6Ef/qfxLmp4+T9eLR0GsPWM85+807r1CyqFK3eWJfmuA+FowMG3YTW3q3j/2Qj/zsLx/3Za0ZbHQ+7BvZ0fTbjCwefGmW8dQjju+0OvvSnff97qKHzq9i1An38NGYVa/JO+BG1s6mFOLHkO+Q+dnPfjGQetl+7/qCZ3FdN/P7jKW1ob9j7js0etbb7EnbmvlyMzs6TwxrSnaoiFPPpZBwidpT5po6lOS9oPTXdpLfFPL47dRob+qEb4z+9q6hNXM7yX72lZ+nsjgVy/xTTcVDsV+8wbC4wDD/UF12Ztph4WnQIQ3zaYbFBzXoXmB9esVG3YfSqPgkZTjVff7zL07vu4oAqo/Mg/kUVedZEp/w5HdYsIfl6ag7n3Gl7yFIsgcNfm3oBY98V+aLydIf6qnmgSxaNf2XZTKA7rkrTN77vgn4D5TsHnMdSMZVSLNyn3UiAnfCbFLa5mhZrgMudgX0w+6wqDpL/7w2m//uJ00y3BUMMFdM1goyF+54Dg6SOziOSXh0RHRloLcOu7/7ZtrGp2OrE21rr8dW51Pje1OjQWyyQWwzYhtE3R2kphjE1t7ZtuF829rrddKJOoaZwe5brwGX3/4BruSVKnXurxXuat2e2aSzUnlxS+N2qUX9GlRJmhibtbhUY7dsxXyl8fBM4+HIWH7/hShd3nUr9pgfYqqZvXcLPVahX2wFX2iJeydo/0h2bmQ2rpAqiVLFeILOTQj7y2DzjbSwBS/Wbqd2m9/7QCPsYTs/N7RwspRdbLBHN1MYbpoO9s22bwR7eQN83Yy+jCYl3zR7ecPCXN/s4KqF4ch4tDQujoyT3yo0l81k9FdaewL55ehaGloRplJzl5Eum/zVltxEwlzEDMtlr0a0nNw+NzA7vSf6UsAfdGPvTsq+bvTh6T23AXp/ULNoxBe+sPbnkz/Z9fECOCOX5zE79p75cf33lc7TIh5t4Q7gH/ctv/K/+npy/jB9M3qmIz3lO1ZVPLew63Z6ylhVzqoyrgbxx5UZ1pQ//4aKm3oqjvTV4an5w2/q68aES11ne2NXHH7UifZKFFRm4AI5LYGChOF/SvIfB/nyOMCO+k3GWyp/fd/t6Nqvm0RVptwdCtCZaw62Y8LrWY9qjalWVA7pqUu/uc74N6DdUmr/G0k5AAAAAElFTkSuQmCC
-[talos-url]: https://www.talos.dev/
+
+<!-- Badges -->
+
 [taskfile-shield]: https://img.shields.io/badge/Taskfile-Enabled-brightgreen?style=for-the-badge&logo=task
 [taskfile-url]: https://taskfile.dev/
+[pre-commit-shield]: https://img.shields.io/badge/pre--commit-enabled-brightgreen?style=for-the-badge&logo=pre-commit
+[pre-commit-url]: https://github.com/pre-commit/pre-commit
+[renovate-shield]: https://img.shields.io/badge/renovate-enabled-brightgreen?style=for-the-badge&logo=renovatebot
+[renovate-url]: https://www.whitesourcesoftware.com/free-developer-tools/renovate/
+[commits-shield]: https://img.shields.io/github/last-commit/tyriis/home-ops?style=for-the-badge&logo=github
+[commits-url]: https://github.com/tyriis/home-ops/commits/main
+[talos-shield]: https://img.shields.io/badge/Talos-v1.3.6-fa371a?style=for-the-badge&logo=talos
+[talos-url]: https://www.talos.dev/
 [terraform-shield]: https://img.shields.io/badge/terraform-1.x-844fba?style=for-the-badge&logo=terraform
 [terraform-url]: https://github.com/hashicorp/terraform/releases
+[cloudflare-shield]: https://img.shields.io/badge/cloudflare-dns-F38020?style=for-the-badge&logo=cloudflare
+[cloudflare-url]: https://dash.cloudflare.com/
