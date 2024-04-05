@@ -69,8 +69,8 @@ nodes:
         dhcp: true
     nodeLabels:
       node-role.kubernetes.io/worker: ""
-talosVersion: v1.5.6
-kubernetesVersion: v1.28.3
+talosVersion: v1.6.7
+kubernetesVersion: v1.29.3
 domain: cluster.local
 allowSchedulingOnMasters: true
 allowSchedulingOnControlPlanes: true
