@@ -123,3 +123,35 @@ tasks:
     desc: backup etcd from ip 192.168.1.51
     cmds:
       - talosctl -n 192.168.1.51 etcd snapshot db.snapshot
+
+  dashboard:talos01:
+    desc: Dashboard talos01
+    dir: infra/talos
+    cmds:
+      - |
+        talosctl dashboard \
+          --nodes 192.168.1.51
+
+  dashboard:talos02:
+    desc: Dashboard talos02
+    dir: infra/talos
+    cmds:
+      - |
+        talosctl dashboard \
+          --nodes 192.168.1.52
+
+  dashboard:talos03:
+    desc: Dashboard talos03
+    dir: infra/talos
+    cmds:
+      - |
+        talosctl dashboard \
+          --nodes 192.168.1.53
+
+  dashboard:talos04:
+    desc: Dashboard talos04
+    dir: infra/talos
+    cmds:
+      - |
+        talosctl dashboard \
+          --nodes 192.168.1.54

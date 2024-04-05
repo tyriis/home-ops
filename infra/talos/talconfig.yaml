@@ -1,11 +1,6 @@
 ---
 clusterName: talos-flux
-talosVersion: v1.3.6
-kubernetesVersion: v1.26.3
 endpoint: https://192.168.1.50:6443
-allowSchedulingOnMasters: true
-cniConfig:
-  name: flannel
 nodes:
   # i7-8650U / 32GB / SAMSUNG EVO 870 500GB SSD / WD BLUE SN550 500GB NVME
   - hostname: talos01
@@ -72,91 +67,94 @@ nodes:
       - interface: eth0
         mtu: 0
         dhcp: true
+    nodeLabels:
+      node-role.kubernetes.io/worker: ""
+talosVersion: v1.4.8
+kubernetesVersion: v1.27.4
+domain: cluster.local
+allowSchedulingOnMasters: true
+allowSchedulingOnControlPlanes: true
+cniConfig:
+  name: flannel
 
 controlPlane:
-  inlinePatch:
-    machine:
-      registries:
-        mirrors:
-          docker.io:
-            endpoints:
-              - https://harbor.techtales.io/v2/proxy-docker.io
-            overridePath: true
-      files:
-        - content: |
-            [plugins."io.containerd.grpc.v1.cri"]
-              enable_unprivileged_ports = true
-              enable_unprivileged_icmp = true
-          op: create
-          path: /var/cri/conf.d/allow-unpriv-ports.toml
-      sysctls:
-        fs.inotify.max_user_instances: "8192"
-        fs.inotify.max_user_watches: "1048576"
-      time:
-        disabled: false
-        servers:
-          - 192.168.1.1
-          - time.cloudflare.com
-  configPatches:
-    # deploy metrics server
-    # https://www.talos.dev/v1.0/kubernetes-guides/configuration/deploy-metrics-server/
-    # !!! when doing this it is broken when installing it with flux helmrelease !!!
-    # - op: add
-    #   path: /cluster/extraManifests
-    #   value:
-    #     - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml
-    #     - https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-    # - op: add
-    #   path: /machine/install/extraKernelArgs
-    #   value:
-    #     - talos.logging.kernel=udp://10.45.0.2:6050/
-    - op: add
-      path: /cluster/apiServer/extraArgs
-      value:
-        feature-gates: MixedProtocolLBService=true,GracefulNodeShutdown=true,EphemeralContainers=true
-    - op: add
-      path: /cluster/controllerManager/extraArgs
-      value:
-        feature-gates: MixedProtocolLBService=true,GracefulNodeShutdown=true,EphemeralContainers=true
-    - op: add
-      path: /cluster/proxy/extraArgs
-      value:
-        feature-gates: MixedProtocolLBService=true,GracefulNodeShutdown=true,EphemeralContainers=true
-    - op: add
-      path: /cluster/scheduler/extraArgs
-      value:
-        feature-gates: MixedProtocolLBService=true,GracefulNodeShutdown=true,EphemeralContainers=true
-    - op: add
-      path: /machine/kubelet/extraArgs
-      value:
-        feature-gates: MixedProtocolLBService=true,GracefulNodeShutdown=true,EphemeralContainers=true
-        rotate-server-certificates: true
+  schematic:
+    customization:
+      extraKernelArgs:
+        - net.ifnames=0
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/intel-ucode
+          - siderolabs/i915-ucode
+  patches:
+    - |-
+      - op: add
+        path: /machine/kubelet/extraArgs
+        value:
+          rotate-server-certificates: "true"
+          feature-gates: GracefulNodeShutdown=true
+    - |-
+      machine:
+        files:
+          - op: create
+            path: /etc/cri/conf.d/20-customization.part
+            content: |
+              [plugins]
+                [plugins."io.containerd.grpc.v1.cri"]
+                  enable_unprivileged_ports = true
+                  enable_unprivileged_icmp = true
+        sysctls:
+          fs.inotify.max_user_instances: "8192"
+          fs.inotify.max_user_watches: "1048576"
+        time:
+          disabled: false
+          servers:
+            - 192.168.1.1
+            - time.cloudflare.com
+        registries:
+          mirrors:
+            docker.io:
+              endpoints:
+                - https://harbor.techtales.io/v2/proxy-docker.io
+              overridePath: true
 
 worker:
-  inlinePatch:
-    machine:
-      files:
-        - content: |
-            [plugins."io.containerd.grpc.v1.cri"]
-              enable_unprivileged_ports = true
-              enable_unprivileged_icmp = true
-          op: create
-          path: /var/cri/conf.d/allow-unpriv-ports.toml
-      sysctls:
-        fs.inotify.max_user_instances: "8192"
-        fs.inotify.max_user_watches: "1048576"
-      time:
-        disabled: false
-        servers:
-          - 192.168.1.1
-          - time.cloudflare.com
-  configPatches:
-    - op: add
-      path: /machine/kubelet/extraArgs
-      value:
-        feature-gates: MixedProtocolLBService=true,GracefulNodeShutdown=true,EphemeralContainers=true
-        rotate-server-certificates: true
-    - op: add
-      path: /machine/nodeLabels
-      value:
-        node-role.kubernetes.io/worker: ""
+  schematic:
+    customization:
+      extraKernelArgs:
+        - net.ifnames=0
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/intel-ucode
+          - siderolabs/i915-ucode
+  patches:
+    - |-
+      - op: add
+        path: /machine/kubelet/extraArgs
+        value:
+          rotate-server-certificates: "true"
+          feature-gates: GracefulNodeShutdown=true
+    - |-
+      machine:
+        files:
+          - op: create
+            path: /etc/cri/conf.d/20-customization.part
+            content: |
+              [plugins]
+                [plugins."io.containerd.grpc.v1.cri"]
+                  enable_unprivileged_ports = true
+                  enable_unprivileged_icmp = true
+        sysctls:
+          fs.inotify.max_user_instances: "8192"
+          fs.inotify.max_user_watches: "1048576"
+        time:
+          disabled: false
+          servers:
+            - 192.168.1.1
+            - time.cloudflare.com
+        registries:
+          mirrors:
+            docker.io:
+              endpoints:
+                - https://harbor.techtales.io/v2/proxy-docker.io
+              overridePath: true
