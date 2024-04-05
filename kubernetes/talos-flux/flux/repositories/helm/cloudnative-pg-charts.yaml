@@ -6,6 +6,6 @@ metadata:
   name: cloudnative-pg-charts
   namespace: flux-system
 spec:
-  interval: 30m
-  url: https://cloudnative-pg.github.io/charts
+  interval: 1h
   timeout: 3m
+  url: https://cloudnative-pg.github.io/charts
