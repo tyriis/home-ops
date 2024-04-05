@@ -7,5 +7,5 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h
-  url: https://argoproj.github.io/argo-helm
   timeout: 3m
+  url: https://argoproj.github.io/argo-helm

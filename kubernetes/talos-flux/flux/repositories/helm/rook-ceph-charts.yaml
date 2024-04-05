@@ -6,6 +6,6 @@ metadata:
   name: rook-ceph-charts
   namespace: flux-system
 spec:
-  interval: 30m
-  url: https://charts.rook.io/release
+  interval: 1h
   timeout: 3m
+  url: https://charts.rook.io/release

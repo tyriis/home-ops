@@ -6,6 +6,6 @@ metadata:
   name: hajimari-charts
   namespace: flux-system
 spec:
-  interval: 15m
-  url: https://hajimari.io
+  interval: 1h
   timeout: 3m
+  url: https://hajimari.io

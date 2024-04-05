@@ -6,6 +6,6 @@ metadata:
   name: minecraft-server-charts
   namespace: flux-system
 spec:
-  interval: 15m
-  url: https://itzg.github.io/minecraft-server-charts/
+  interval: 1h
   timeout: 3m
+  url: https://itzg.github.io/minecraft-server-charts/
