@@ -101,11 +101,11 @@ spec:
     ipv4NativeRoutingCIDR: 10.42.0.0/16
     # kubeProxyReplacement: strict
     # kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
-    # l2announcements:
-    #   enabled: true
-    #   leaseDuration: 120s
-    #   leaseRenewDeadline: 60s
-    #   leaseRetryPeriod: 1s
+    l2announcements:
+      enabled: false
+      leaseDuration: 120s
+      leaseRenewDeadline: 60s
+      leaseRetryPeriod: 1s
     loadBalancer:
       algorithm: maglev
       mode: dsr
