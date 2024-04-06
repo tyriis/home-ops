@@ -29,7 +29,7 @@ spec:
     cluster:
       name: ${SETTING_CLUSTERNAME}
       id: 1
-    k8sServiceHost: 127.0.0.1
+    k8sServiceHost: 192.168.1.50
     k8sServicePort: 6443
     tunnel: disabled
     proxy:
@@ -39,9 +39,9 @@ spec:
       enabled: false
 
     autoDirectNodeRoutes: true
-    bandwidthManager:
-      enabled: true
-      bbr: true
+    # bandwidthManager:
+    #   enabled: true
+    #   bbr: true
     # bpf:
     #   masquerade: true
     bgp:
@@ -95,7 +95,7 @@ spec:
           tls:
             - hosts:
                 - *host
-              secretName: "hubble-tls"
+              secretName: hubble-tls
     ipam:
       mode: kubernetes
     ipv4NativeRoutingCIDR: 10.42.0.0/16
