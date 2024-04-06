@@ -42,8 +42,8 @@ spec:
     bandwidthManager:
       enabled: true
       bbr: true
-    bpf:
-      masquerade: true
+    # bpf:
+    #   masquerade: true
     bgp:
       enabled: false
     containerRuntime:
