@@ -75,7 +75,7 @@ domain: cluster.local
 allowSchedulingOnMasters: true
 allowSchedulingOnControlPlanes: true
 cniConfig:
-  name: flannel
+  name: none
 
 controlPlane:
   schematic:
