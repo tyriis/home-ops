@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+helmCharts:
+  - name: metrics-server
+    repo: https://kubernetes-sigs.github.io/metrics-server
+    version: 3.12.1
+    releaseName: metrics-server
+    namespace: kube-system
+    valuesFile: values.yaml
+commonAnnotations:
+  meta.helm.sh/release-name: metrics-server
+  meta.helm.sh/release-namespace: kube-system
+commonLabels:
+  app.kubernetes.io/managed-by: Helm

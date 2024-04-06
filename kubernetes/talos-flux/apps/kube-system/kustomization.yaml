@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./cilium/flux-sync.yaml
+  - ./coredns/flux-sync.yaml
   - ./kubelet-csr-approver/flux-sync.yaml
   - ./csi-driver-nfs/flux-sync.yaml
   - ./metrics-server/flux-sync.yaml
