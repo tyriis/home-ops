@@ -1,0 +1,136 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: &app cilium
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: cilium
+      version: 1.15.3
+      sourceRef:
+        kind: HelmRepository
+        name: cilium-charts
+        namespace: flux-system
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+      remediateLastFailure: true
+    cleanupOnFail: true
+  uninstall:
+    keepHistory: false
+  values:
+    cluster:
+      name: ${SETTING_CLUSTERNAME}
+      id: 1
+    k8sServiceHost: 127.0.0.1
+    k8sServicePort: 6443
+    tunnel: disabled
+    proxy:
+      prometheus:
+        enabled: true
+    externalIPs:
+      enabled: false
+
+    autoDirectNodeRoutes: true
+    bandwidthManager:
+      enabled: true
+      bbr: true
+    bpf:
+      masquerade: true
+    bgp:
+      enabled: false
+    containerRuntime:
+      integration: containerd
+    endpointRoutes:
+      enabled: true
+    hubble:
+      enabled: true
+      metrics:
+        enabled:
+          - dns:query;ignoreAAAA
+          - drop
+          - tcp
+          - flow
+          - port-distribution
+          - icmp
+          - http
+
+        serviceMonitor:
+          enabled: true
+        dashboards:
+          enabled: false
+          annotations:
+            grafana_folder: Cilium
+      relay:
+        enabled: true
+        rollOutPods: true
+        prometheus:
+          serviceMonitor:
+            enabled: false
+      ui:
+        enabled: true
+        rollOutPods: true
+        ingress:
+          enabled: true
+          className: traefik
+          annotations:
+            cert-manager.io/cluster-issuer: letsencrypt-production
+            kubernetes.io/tls-acme: "true"
+            traefik.ingress.kubernetes.io/router.middlewares: traefik-ingress-sso@kubernetescrd
+            traefik.ingress.kubernetes.io/router.entrypoints: websecure
+            traefik.ingress.kubernetes.io/affinity: "true"
+            traefik.ingress.kubernetes.io/router.tls: "true"
+            hajimari.io/enable: "true"
+            hajimari.io/appName: simple-icons:hubble
+            hajimari.io/icon: cilium
+          hosts:
+            - &host hubble.techtales.io
+          tls:
+            - hosts:
+                - *host
+              secretName: "hubble-tls"
+    ipam:
+      mode: kubernetes
+    ipv4NativeRoutingCIDR: 10.42.0.0/16
+    # kubeProxyReplacement: strict
+    # kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+    # l2announcements:
+    #   enabled: true
+    #   leaseDuration: 120s
+    #   leaseRenewDeadline: 60s
+    #   leaseRetryPeriod: 1s
+    loadBalancer:
+      algorithm: maglev
+      mode: dsr
+    localRedirectPolicy: true
+    operator:
+      rollOutPods: true
+      replicas: 3
+      prometheus:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+      dashboards:
+        enabled: true
+        annotations:
+          grafana_folder: cilium
+    prometheus:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        trustCRDsExist: false
+    dashboards:
+      enabled: true
+      annotations:
+        grafana_folder: cilium
+    rollOutCiliumPods: true
+    securityContext:
+      privileged: true
+    routingMode: native
