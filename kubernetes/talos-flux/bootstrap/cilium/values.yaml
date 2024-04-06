@@ -71,7 +71,7 @@ endpointRoutes:
   #         secretName: "hubble-tls"
 ipam:
   mode: kubernetes
-ipv4NativeRoutingCIDR: 10.42.0.0/16
+ipv4NativeRoutingCIDR: 10.244.0.0/16
 # kubeProxyReplacement: strict
 # kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 l2announcements:
