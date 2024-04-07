@@ -46,6 +46,7 @@ spec:
           - flux-system
           - home
           - home-automation
+          - kube-system
           - kube-tools
           - networking
           - observability
