@@ -18,19 +18,36 @@ prometheus:
       hajimari.io/enable: "true"
       hajimari.io/icon: simple-icons:prometheus
     hosts:
-      - prometheus.${SECRET_DOMAIN}
+      - &host prometheus.techtales.io
     tls:
-      - secretName: prometheus-cert
+      - secretName: prometheus-tls
         hosts:
-          - prometheus.${SECRET_DOMAIN}
+          - *host
   prometheusSpec:
+    podMetadata:
+      annotations:
+        secret.reloader.stakater.com/reload: &secret thanos-objstore-secret
+    scrapeInterval: 1m # Must match interval in Grafana Helm chart
+    scrapeConfigSelectorNilUsesHelmValues: false
+    walCompression: true
+    enableFeatures:
+      - auto-gomemlimit
+      - memory-snapshot-on-shutdown
+      - new-service-discovery-manager
+    image:
+      registry: quay.io
+      repository: prometheus/prometheus
+      tag: v2.51.0-dedupelabels
+    externalLabels:
+      cluster: ${SETTING_CLUSTERNAME}
+
     replicas: 3
     replicaExternalLabelName: __replica__
     ruleSelectorNilUsesHelmValues: false
     serviceMonitorSelectorNilUsesHelmValues: false
     podMonitorSelectorNilUsesHelmValues: false
     probeSelectorNilUsesHelmValues: false
-    retentionSize: "8GB"
+    retentionSize: 8GB
     retention: 14d
     enableAdminAPI: true
     # walCompression: true
@@ -53,7 +70,7 @@ prometheus:
       image: quay.io/thanos/thanos:v0.28.0
       version: v0.28.0
       objectStorageConfig:
-        name: &secret thanos-objstore-secret
+        name: *secret
         key: objstore.yml
 
     podAnnotations:

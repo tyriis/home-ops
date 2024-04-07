@@ -84,59 +84,70 @@ spec:
     kubelet:
       enabled: true
       serviceMonitor:
-        # lens ide config
-        # see https://github.com/lensapp/lens/blob/33c405bdcf86ff755069ce50a21efbf10985810e/troubleshooting/custom-prometheus.md
         metricRelabelings:
+          # lens ide config
+          # see https://github.com/lensapp/lens/blob/33c405bdcf86ff755069ce50a21efbf10985810e/troubleshooting/custom-prometheus.md
           - action: replace
             sourceLabels:
               - node
             targetLabel: instance
+          # Drop high cardinality labels by onedr0p
+          - action: labeldrop
+            regex: (uid)
+          - action: labeldrop
+            regex: (id|name)
+          - action: drop
+            sourceLabels: ["__name__"]
+            regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
 
     kubeApiServer:
       enabled: true
+      serviceMonitor:
+        metricRelabelings:
+          # Drop high cardinality labels by onedr0p
+          - action: drop
+            sourceLabels: ["__name__"]
+            regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
+          - action: drop
+            sourceLabels: ["__name__"]
+            regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
 
     kubeControllerManager:
-      enabled: false
-      endpoints:
-        - 192.168.1.51
-        - 192.168.1.52
-        - 192.168.1.53
-      # service:
-      #   enabled: true
-      #   port: 10257
-      #   targetPort: 10257
-      # serviceMonitor:
-      #   enabled: true
-      #   https: true
-      #   insecureSkipVerify: true
-
-    kubeScheduler:
-      enabled: false
-      endpoints:
-        - 192.168.1.51
-        - 192.168.1.52
-        - 192.168.1.53
-      # service:
-      #   enabled: true
-      #   port: 10259
-      #   targetPort: 10259
-      # serviceMonitor:
-      #   enabled: true
-      #   https: true
-      #   insecureSkipVerify: true
-
-    kubeProxy:
-      enabled: false
-      endpoints:
+      enabled: true
+      endpoints: &cp
         - 192.168.1.51
         - 192.168.1.52
         - 192.168.1.53
 
     kubeEtcd:
       enabled: true
+      endpoints: *cp
+
+    kubeScheduler:
+      enabled: true
+      endpoints: *cp
+
+    kubeProxy:
+      enabled: false
 
     coreDns:
       enabled: true
 
     kubeStateMetrics:
       enabled: true
+
+    kube-state-metrics:
+      fullnameOverride: kube-state-metrics
+      metricLabelsAllowlist:
+        - pods=[*]
+        - deployments=[*]
+        - persistentvolumeclaims=[*]
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels: ["__meta_kubernetes_pod_node_name"]
+              targetLabel: kubernetes_node
