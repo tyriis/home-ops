@@ -88,8 +88,8 @@ spec:
             traefik.ingress.kubernetes.io/affinity: "true"
             traefik.ingress.kubernetes.io/router.tls: "true"
             hajimari.io/enable: "true"
-            hajimari.io/appName: simple-icons:hubble
-            hajimari.io/icon: cilium
+            hajimari.io/appName: hubble
+            hajimari.io/icon: simple-icons:cilium
           hosts:
             - &host hubble.techtales.io
           tls:
