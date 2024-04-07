@@ -7,6 +7,7 @@ resources:
   - ./alertmanager-discord/flux-sync.yaml
   - ./botkube/flux-sync.yaml
   - ./grafana/flux-sync.yaml
+  - ./kromgo/flux-sync.yaml
   - ./kube-prometheus-stack/flux-sync.yaml
   - ./loki/flux-sync.yaml
   - ./promtail/flux-sync.yaml
