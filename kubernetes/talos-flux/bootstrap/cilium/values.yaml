@@ -71,7 +71,7 @@ endpointRoutes:
   #         secretName: "hubble-tls"
 ipam:
   mode: kubernetes
-ipv4NativeRoutingCIDR: 10.245.0.0/16
+ipv4NativeRoutingCIDR: 10.244.0.0/16
 kubeProxyReplacement: disabled
 # kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 l2announcements:
@@ -123,8 +123,8 @@ securityContext:
       - NET_ADMIN
       - SYS_ADMIN
       - SYS_RESOURCE
-  cgroup:
-    autoMount:
-      enabled: false
-    hostRoot: /sys/fs/cgroup
+cgroup:
+  autoMount:
+    enabled: false
+  hostRoot: /sys/fs/cgroup
 # routingMode: native
