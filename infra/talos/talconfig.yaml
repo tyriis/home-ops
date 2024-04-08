@@ -117,6 +117,15 @@ controlPlane:
               endpoints:
                 - https://harbor.techtales.io/v2/proxy-docker.io
               overridePath: true
+            ghcr.io:
+              endpoints:
+                - https://harbor.techtales.io/v2/proxy-ghcr.io
+              overridePath: true
+    - |-
+      cluster:
+        etcd:
+          extraArgs:
+            listen-metrics-urls: http://0.0.0.0:2381
 
 worker:
   schematic:
@@ -157,4 +166,8 @@ worker:
             docker.io:
               endpoints:
                 - https://harbor.techtales.io/v2/proxy-docker.io
+              overridePath: true
+            ghcr.io:
+              endpoints:
+                - https://harbor.techtales.io/v2/proxy-ghcr.io
               overridePath: true
