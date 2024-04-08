@@ -37,6 +37,10 @@ ingress:
     service: https://arc-webhook.${SECRET_DOMAIN}
     originRequest:
       httpHostHeader: arc-webhook.${SECRET_DOMAIN}
+  - hostname: kromgo.${SECRET_DOMAIN}
+    service: https://kromgo.${SECRET_DOMAIN}
+    originRequest:
+      httpHostHeader: kromgo.${SECRET_DOMAIN}
   # - hostname: example2.com
   #   service: localhost:8001
   # The localhost:8002 service overrides some root-level config.
