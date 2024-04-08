@@ -4,6 +4,7 @@ nav:
   - Home: index.md
   - Runnbooks:
       - CephPGsDamaged: runbooks/ceph-pgs-damaged.md
+      - CephHealthError: runbooks/ceph-health-error.md
 
 plugins:
   - techdocs-core
