@@ -2,6 +2,8 @@
 site_name: rook-ceph
 nav:
   - Home: index.md
+  - Runnbooks:
+      - CephPGsDamaged: runbooks/ceph-pgs-damaged.md
 
 plugins:
   - techdocs-core
