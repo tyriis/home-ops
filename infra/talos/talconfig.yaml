@@ -94,13 +94,11 @@ controlPlane:
           - siderolabs/i915-ucode
   patches:
     - |-
-      - op: add
-        path: /machine/kubelet/extraArgs
-        value:
-          rotate-server-certificates: "true"
-          feature-gates: GracefulNodeShutdown=true
-    - |-
       machine:
+        kubelet:
+          extraArgs:
+            rotate-server-certificates: "true"
+            feature-gates: GracefulNodeShutdown=true
         files:
           - op: create
             path: /etc/cri/conf.d/20-customization.part
@@ -127,12 +125,14 @@ controlPlane:
               endpoints:
                 - https://harbor.techtales.io/v2/proxy-ghcr.io
               overridePath: true
-    - |-
       cluster:
         etcd:
           extraArgs:
             listen-metrics-urls: http://0.0.0.0:2381
         controllerManager:
+          extraArgs:
+            bind-address: 0.0.0.0
+        scheduler:
           extraArgs:
             bind-address: 0.0.0.0
 
@@ -147,13 +147,11 @@ worker:
           - siderolabs/i915-ucode
   patches:
     - |-
-      - op: add
-        path: /machine/kubelet/extraArgs
-        value:
-          rotate-server-certificates: "true"
-          feature-gates: GracefulNodeShutdown=true
-    - |-
       machine:
+        kubelet:
+          extraArgs:
+            rotate-server-certificates: "true"
+            feature-gates: GracefulNodeShutdown=true
         files:
           - op: create
             path: /etc/cri/conf.d/20-customization.part

@@ -131,7 +131,7 @@ spec:
       endpoints: *cp
 
     kubeScheduler:
-      enabled: false
+      enabled: true
       endpoints: *cp
 
     kubeProxy:
