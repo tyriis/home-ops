@@ -1,6 +1,19 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
+
+# renovate: depName=ghcr.io/siderolabs/installer datasource=docker extractVersion=^(?<version>.*)$
+talosVersion: v1.6.7
+# renovate: depName=kubernetes/kubernetes datasource=github-releases extractVersion=^v(?<version>.*)$
+kubernetesVersion: v1.29.3
+
 clusterName: talos-flux
 endpoint: https://192.168.1.50:6443
+domain: cluster.local
+allowSchedulingOnMasters: true
+allowSchedulingOnControlPlanes: true
+cniConfig:
+  name: none
+
 nodes:
   # i7-8650U / 32GB / SAMSUNG EVO 870 500GB SSD / WD BLUE SN550 500GB NVME
   - hostname: talos01
@@ -69,13 +82,6 @@ nodes:
         dhcp: true
     nodeLabels:
       node-role.kubernetes.io/worker: ""
-talosVersion: v1.6.7
-kubernetesVersion: v1.29.3
-domain: cluster.local
-allowSchedulingOnMasters: true
-allowSchedulingOnControlPlanes: true
-cniConfig:
-  name: none
 
 controlPlane:
   schematic:
