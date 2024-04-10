@@ -15,6 +15,9 @@ metadata:
       type: admin-dashboard
   tags:
     - opnsense
+    - firewall
+    - network
+    - security
 spec:
   owner: home-ops
   domain: home
