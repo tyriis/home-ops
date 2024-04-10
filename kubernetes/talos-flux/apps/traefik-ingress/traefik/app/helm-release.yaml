@@ -71,7 +71,8 @@ spec:
       - "--providers.kubernetescrd.allowexternalnameservices=true"
     ports:
       traefik:
-        expose: true
+        expose:
+          default: true
       web:
         redirectTo:
           port: websecure
@@ -86,12 +87,14 @@ spec:
           stores: traefik-system-default@kubernetescrd
       minecraft:
         port: 19132
-        expose: true
+        expose:
+          default: true
         exposedPort: 19132
         protocol: UDP
       metrics:
         port: 8082
-        expose: true
+        expose:
+          default: true
         exposedPort: 8082
     resources:
       requests:
