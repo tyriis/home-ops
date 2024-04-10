@@ -18,6 +18,7 @@ spec:
     - name: cert-manager
       namespace: cert-manager
   values:
+    # https://artifacthub.io/packages/helm/traefik/traefik?modal=values
     deployment:
       enabled: true
       replicas: 3
