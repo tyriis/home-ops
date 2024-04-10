@@ -64,6 +64,9 @@ spec:
           gnetId: 11074
           revision: 9
           datasource: Prometheus
+        dragonfly:
+          url: https://raw.githubusercontent.com/dragonflydb/dragonfly/main/tools/local/monitoring/grafana/provisioning/dashboards/dashboard.json
+          datasource: Prometheus
 
     sidecar:
       dashboards:
