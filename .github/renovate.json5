@@ -60,4 +60,7 @@
   nix: {
     enabled: true,
   },
+  ansible: {
+    enabled: false,
+  },
 }
