@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:

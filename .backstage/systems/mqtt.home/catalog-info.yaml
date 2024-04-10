@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: mqtt.home
+  description: raspberry pi mosquitto mqtt broker
+  annotations:
+    # backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: tyriis/home-ops
+  tags:
+    - raspberry-pi
+    - messaging
+    - iot
+    - mqtt
+spec:
+  owner: home-ops
+  domain: home
+  type: infrastructure
+  lifecycle: production
+  system: mqtt-broker
