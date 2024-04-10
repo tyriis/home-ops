@@ -120,7 +120,7 @@ spec:
             regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
 
     kubeControllerManager:
-      enabled: false
+      enabled: true
       endpoints: &cp
         - 192.168.1.51
         - 192.168.1.52
