@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: opnsense
+  description: opnsense firewall
+  annotations:
+    # backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: tyriis/home-ops
+  links:
+    - url: https://opnsense.techtales.io
+      title: opnsense
+      icon: dashboard
+      type: admin-dashboard
+  tags:
+    - opnsense
+spec:
+  owner: home-ops
+  domain: home
+  type: network-security
+  lifecycle: production
+  system: firewall
