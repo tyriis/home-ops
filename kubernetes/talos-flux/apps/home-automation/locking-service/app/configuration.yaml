@@ -4,10 +4,10 @@ app:
   host: 0.0.0.0
 
 redis:
-  #   host: redis.database.svc.cluster.local
-  #   port: 6379
+  host: dragonfly.database.svc.cluster.local
+  port: 6379
   keyPrefix: locking-service.
-  sentinels:
-    - host: redis.database.svc.cluster.local
-      port: 26379
-  name: redis-master
+  # sentinels:
+  #   - host: redis.database.svc.cluster.local
+  #     port: 26379
+  # name: redis-master
