@@ -32,7 +32,7 @@ spec:
         replicas: 3
         strategy: RollingUpdate
         annotations:
-          secret.reloader.stakater.com/reload: locking-service-options
+          reloader.stakater.com/auto: "true"
         pod:
           securityContext:
             runAsUser: 1000
