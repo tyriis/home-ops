@@ -7,14 +7,15 @@ resources:
   - https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/v1.1.2/manifests/crd.yaml
   - helm-release.yaml
   - rbac.yaml
-# configMapGenerator:
-#   - name: dragonfly-dashboard
-#     files:
-#       # renovate: datasource=github-releases depName=dragonflydb/dragonfly-operator
-#       - dragonfly-dashboard.json=https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/v1.1.2/monitoring/grafana-dashboard.json
-# generatorOptions:
-#   disableNameSuffixHash: true
-#   annotations:
-#     kustomize.toolkit.fluxcd.io/substitute: disabled
-#   labels:
-#     grafana_dashboard: "true"
+configMapGenerator:
+  - name: dragonfly-dashboard
+    files:
+      # renovate: datasource=github-releases depName=dragonflydb/dragonfly-operator
+      - dragonfly-dashboard.json=https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/v1.1.2/monitoring/grafana-dashboard.json
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+    grafana_folder: "dragonfly"
+  labels:
+    grafana_dashboard: "true"
