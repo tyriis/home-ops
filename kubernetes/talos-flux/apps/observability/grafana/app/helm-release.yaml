@@ -35,6 +35,7 @@ spec:
       GF_LOG_LEVEL: info
       GF_AUTH_DISABLE_LOGIN_FORM: "true"
       GF_AUTH_GENERIC_OAUTH_AUTO_LOGIN: "true"
+      DS_PROMETHEUS: prometheus
 
     envFromSecrets:
       - name: grafana-env
