@@ -84,9 +84,9 @@ spec:
         retention_delete_worker_count: 150
       ingester:
         max_chunk_age: 1h
+      analytics:
+        reporting_enabled: false
 
-        analytics:
-          reporting_enabled: false
     gateway:
       replicas: 3
       ingress:
