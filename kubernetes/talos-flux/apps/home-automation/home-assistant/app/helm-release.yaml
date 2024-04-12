@@ -56,7 +56,7 @@ spec:
               tag: 14.10@sha256:71ddc70edccf201d6a521fe6216bc58d8c7c856a1ef96c4d4fbe9f548818ea4d
             env:
               TZ: ${SETTING_TZ}
-              POSTGRES_SUPER_PASS: ${SECRET_CLOUDNATIVE_PG_PASSWORD}
+              INIT_POSTGRES_SUPER_PASS: ${SECRET_CLOUDNATIVE_PG_PASSWORD}
             envFrom:
               - secretRef:
                   name: home-assistant-secrets
