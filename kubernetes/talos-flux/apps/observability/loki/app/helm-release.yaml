@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -30,7 +30,17 @@ spec:
   # https://artifacthub.io/packages/helm/grafana/loki?modal=values
   # https://github.com/grafana/loki/blob/main/production/helm/loki/values.yaml
   values:
+    deploymentMode: SimpleScalable
     loki:
+      podAnnotations:
+        secret.reloader.stakater.com/reload: loki-s3
+      storage:
+        bucketNames:
+          chunks: ""
+        type: s3
+        s3:
+          s3ForcePathStyle: true
+          insecure: true
       structuredConfig:
         auth_enabled: false
         server:
@@ -40,132 +50,61 @@ spec:
         memberlist:
           join_members: ["loki-memberlist"]
         limits_config:
-          retention_period: 14d
           enforce_metric_name: false
+          ingestion_burst_size_mb: 32
+          ingestion_rate_mb: 16
+          max_cache_freshness_per_query: 10m
           reject_old_samples: true
           reject_old_samples_max_age: 168h
-          max_cache_freshness_per_query: 10m
-          split_queries_by_interval: 15m
-          ingestion_rate_mb: 16
-          ingestion_burst_size_mb: 32
+          retention_period: 14d
           shard_streams:
             enabled: true
+          split_queries_by_interval: 15m
+      rulerConfig:
+        enable_api: true
+        enable_alertmanager_v2: true
+        alertmanager_url: http://prometheus-alertmanager.observability.svc.cluster.local:9093
+        storage:
+          type: local
+          local:
+            directory: /rules
+        rule_path: /rules/fake
+      schemaConfig:
+        configs:
+          - from: "2024-04-01"
+            store: tsdb
+            object_store: s3
+            schema: v13
+            index:
+              prefix: loki_index_
+              period: 24h
+      compactor:
+        retention_enabled: true
+        retention_delete_delay: 2h
+        retention_delete_worker_count: 150
+      ingester:
+        max_chunk_age: 1h
 
-        schema_config:
-          configs:
-            - from: "2023-01-01"
-              store: boltdb-shipper
-              object_store: s3
-              schema: v12
-              index:
-                prefix: loki_index_
-                period: 24h
-        common:
-          path_prefix: /var/loki
-          replication_factor: 3
-          storage:
-            s3:
-              s3: null
-              insecure: false
-              sse_encryption: false
-              http_config:
-                idle_conn_timeout: 90s
-                response_header_timeout: 0s
-                insecure_skip_verify: true
-              s3forcepathstyle: true
-          ring:
-            kvstore:
-              store: memberlist
-        ruler:
-          enable_api: true
-          enable_alertmanager_v2: true
-          alertmanager_url: http://prometheus-alertmanager.observability.svc.cluster.local:9093
-          storage:
-            type: local
-            local:
-              directory: /rules
-          rule_path: /tmp/scratch
-          ring:
-            kvstore:
-              store: memberlist
-        distributor:
-          ring:
-            kvstore:
-              store: memberlist
-        compactor:
-          working_directory: /var/loki/boltdb-shipper-compactor
-          shared_store: s3
-          compaction_interval: 10m
-          retention_enabled: true
-          retention_delete_delay: 2h
-          retention_delete_worker_count: 150
-        ingester:
-          max_chunk_age: 1h
-          lifecycler:
-            ring:
-              kvstore:
-                store: memberlist
         analytics:
           reporting_enabled: false
-      podAnnotations:
-        secret.reloader.stakater.com/reload: loki-s3
     gateway:
-      enabled: true
       replicas: 3
-      affinity: |
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    {{- include "loki.gatewaySelectorLabels" . | nindent 12 }}
-                topologyKey: kubernetes.io/hostname
       ingress:
         # use dedicated ingress definition
         enabled: false
 
     write:
       replicas: 3
-      affinity: |
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    {{- include "loki.writeSelectorLabels" . | nindent 12 }}
-                topologyKey: kubernetes.io/hostname
       persistence:
         size: 15Gi
         storageClass: ceph-block
 
     read:
       replicas: 3
-      affinity: |
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    {{- include "loki.readSelectorLabels" . | nindent 12 }}
-                topologyKey: kubernetes.io/hostname
-      extraVolumeMounts:
-        - name: loki-rules
-          mountPath: /rules/fake
-        - name: loki-rules-tmp
-          mountPath: /tmp/scratch
-        - name: loki-tmp
-          mountPath: /tmp/loki-tmp
       extraVolumes:
         - name: loki-rules
           configMap:
             name: loki-alerting-rules
-        - name: loki-rules-tmp
-          emptyDir: {}
-        - name: loki-tmp
-          emptyDir: {}
       persistence:
         size: 15Gi
         storageClass: ceph-block
@@ -173,36 +112,26 @@ spec:
     backend:
       # backend does not shutdown gracefully, each replica will increase the timeout by ~7m
       replicas: 3
-      affinity: |
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    {{- include "loki.backendSelectorLabels" . | nindent 12 }}
-                topologyKey: kubernetes.io/hostname
-      extraVolumeMounts:
-        - name: loki-rules
-          mountPath: /rules/fake
-        - name: loki-rules-tmp
-          mountPath: /tmp/scratch
-        - name: loki-tmp
-          mountPath: /tmp/loki-tmp
       extraVolumes:
         - name: loki-rules
           configMap:
             name: loki-alerting-rules
-        - name: loki-rules-tmp
-          emptyDir: {}
-        - name: loki-tmp
-          emptyDir: {}
       persistence:
         size: 15Gi
         storageClass: ceph-block
 
+    sidecar:
+      image:
+        repository: ghcr.io/kiwigrid/k8s-sidecar
+      rules:
+        searchNamespace: ALL
+        folder: /rules/fake
+
+    lokiCanary:
+      enabled: false
     test:
       enabled: false
+
     monitoring:
       dashboards:
         annotations:
@@ -211,27 +140,21 @@ spec:
           grafana_dashboard: "true"
       serviceMonitor:
         enabled: true
-      selfMonitoring:
-        enabled: false
-        grafanaAgent:
-          installOperator: false
-      lokiCanary:
-        enabled: false
 
   valuesFrom:
     - kind: Secret
       name: loki-s3
       valuesKey: S3_BUCKET_NAME
-      targetPath: loki.structuredConfig.common.storage.s3.bucketnames
+      targetPath: loki.storage.bucketNames.chunks
     - kind: Secret
       name: loki-s3
       valuesKey: S3_BUCKET_HOST
-      targetPath: loki.structuredConfig.common.storage.s3.endpoint
+      targetPath: loki.storage.s3.endpoint
     - kind: Secret
       name: loki-s3
       valuesKey: S3_ACCESS_KEY
-      targetPath: loki.structuredConfig.common.storage.s3.access_key_id
+      targetPath: loki.storage.s3.accessKeyId
     - kind: Secret
       name: loki-s3
       valuesKey: S3_SECRET_KEY
-      targetPath: loki.structuredConfig.common.storage.s3.secret_access_key
+      targetPath: loki.storage.s3.secretAccessKey
