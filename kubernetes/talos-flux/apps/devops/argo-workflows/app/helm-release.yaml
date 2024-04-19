@@ -42,7 +42,7 @@ spec:
       image:
         registry: quay.io
         repository: argoproj/argocli
-        tag: v3.5.5@sha256:91b9825f09a8d097cc7ca339ab3e8a6387d18a8c705819e37114600640d871b2
+        tag: v3.5.6@sha256:721e70b1ce7c691411a29432f1594b720e58c676453ee04d83a605e56013f259
 
       extraArgs:
         - --auth-mode=server
