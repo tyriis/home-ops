@@ -43,8 +43,9 @@
   - [📖 Overview](#-overview)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
 - [Usage](#usage)
+  - [Configure SOPS](#configure-sops)
+  - [Configure kubectl](#configure-kubectl)
 - [Roadmap](#roadmap)
 - [🕵️ Troubleshooting](#%EF%B8%8F-troubleshooting)
   - [Stuck HelmRelease](#stuck-helmrelease)
@@ -109,16 +110,11 @@ Here is the list of tools and technologies I am using in this project.
 
 ## Getting Started
 
-TBD
-
 ### Prerequisites
 
 - mozilla sops
 - age
-
-### Installation
-
-TBD
+- talhelper
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -126,7 +122,18 @@ TBD
 
 ## Usage
 
-TBD
+### Configure SOPS
+
+Provide key in path defined in `.envrc`.
+
+### Configure kubectl
+
+Just run
+
+```shell
+task talos:config
+task talos:kubeconfig
+```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
