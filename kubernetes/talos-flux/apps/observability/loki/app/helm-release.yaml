@@ -82,7 +82,7 @@ spec:
         log_level: info
       storage:
         bucketNames:
-          chunks: ""
+          chunks: loki
         type: s3
         s3:
           s3ForcePathStyle: true
