@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: loki
-      version: 6.2.0
+      version: 6.3.4
       sourceRef:
         kind: HelmRepository
         name: grafana-charts
@@ -40,15 +40,12 @@ spec:
         type: s3
         s3:
           s3ForcePathStyle: true
-          insecure: true
       structuredConfig:
         auth_enabled: false
         server:
           log_level: info
           http_listen_port: 3100
           grpc_listen_port: 9095
-        memberlist:
-          join_members: ["loki-memberlist"]
         limits_config:
           enforce_metric_name: false
           ingestion_burst_size_mb: 32
