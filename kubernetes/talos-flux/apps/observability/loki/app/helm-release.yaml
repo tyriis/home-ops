@@ -38,23 +38,28 @@ spec:
         reporting_enabled: false
       auth_enabled: false
       compactor:
+        delete_request_store: s3
         retention_enabled: true
         retention_delete_delay: 2h
         retention_delete_worker_count: 150
+      frontend:
+        max_outstanding_per_tenant: 4096
       ingester:
         chunk_encoding: snappy
-        max_chunk_age: 1h
       limits_config:
-        enforce_metric_name: false
-        ingestion_burst_size_mb: 32
-        ingestion_rate_mb: 16
-        max_cache_freshness_per_query: 10m
+        ingestion_burst_size_mb: 128
+        ingestion_rate_mb: 64
+        max_query_parallelism: 100
+        per_stream_rate_limit: 64M
+        per_stream_rate_limit_burst: 128M
         reject_old_samples: true
         reject_old_samples_max_age: 168h
-        retention_period: 14d
+        retention_period: 30d
         shard_streams:
           enabled: true
-        split_queries_by_interval: 15m
+        split_queries_by_interval: 1h
+      query_scheduler:
+        max_outstanding_requests_per_tenant: 4096
       rulerConfig:
         enable_api: true
         enable_alertmanager_v2: true
