@@ -34,29 +34,27 @@ spec:
     loki:
       podAnnotations:
         secret.reloader.stakater.com/reload: loki-s3
-      storage:
-        bucketNames:
-          chunks: ""
-        type: s3
-        s3:
-          s3ForcePathStyle: true
-      structuredConfig:
-        auth_enabled: false
-        server:
-          log_level: info
-          http_listen_port: 3100
-          grpc_listen_port: 9095
-        limits_config:
-          enforce_metric_name: false
-          ingestion_burst_size_mb: 32
-          ingestion_rate_mb: 16
-          max_cache_freshness_per_query: 10m
-          reject_old_samples: true
-          reject_old_samples_max_age: 168h
-          retention_period: 14d
-          shard_streams:
-            enabled: true
-          split_queries_by_interval: 15m
+      analytics:
+        reporting_enabled: false
+      auth_enabled: false
+      compactor:
+        retention_enabled: true
+        retention_delete_delay: 2h
+        retention_delete_worker_count: 150
+      ingester:
+        chunk_encoding: snappy
+        max_chunk_age: 1h
+      limits_config:
+        enforce_metric_name: false
+        ingestion_burst_size_mb: 32
+        ingestion_rate_mb: 16
+        max_cache_freshness_per_query: 10m
+        reject_old_samples: true
+        reject_old_samples_max_age: 168h
+        retention_period: 14d
+        shard_streams:
+          enabled: true
+        split_queries_by_interval: 15m
       rulerConfig:
         enable_api: true
         enable_alertmanager_v2: true
@@ -75,14 +73,14 @@ spec:
             index:
               prefix: loki_index_
               period: 24h
-      compactor:
-        retention_enabled: true
-        retention_delete_delay: 2h
-        retention_delete_worker_count: 150
-      ingester:
-        max_chunk_age: 1h
-      analytics:
-        reporting_enabled: false
+      server:
+        log_level: info
+      storage:
+        bucketNames:
+          chunks: ""
+        type: s3
+        s3:
+          s3ForcePathStyle: true
 
     gateway:
       replicas: 3
