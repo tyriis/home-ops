@@ -59,7 +59,7 @@ spec:
         enable_api: true
         enable_alertmanager_v2: true
         #pragma warning disable S5332
-        alertmanager_url: http://prometheus-alertmanager.observability.svc.cluster.local:9093
+        alertmanager_url: http://prometheus-alertmanager.observability.svc.cluster.local:9093 #NOSONAR allow http
         #pragma warning restore S5332
         storage:
           type: local
