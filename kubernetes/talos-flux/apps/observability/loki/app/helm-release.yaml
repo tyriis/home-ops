@@ -58,7 +58,9 @@ spec:
       rulerConfig:
         enable_api: true
         enable_alertmanager_v2: true
+        #pragma warning disable kubernetes:S5332
         alertmanager_url: http://prometheus-alertmanager.observability.svc.cluster.local:9093
+        #pragma warning restore kubernetes:S5332
         storage:
           type: local
           local:
