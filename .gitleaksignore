@@ -1,3 +1,4 @@
 d518055fb132ca94988fc1e117c804881cfabe0d:cluster/apps/secops/vault/configure-oidc.yaml:generic-api-key:4
 d518055fb132ca94988fc1e117c804881cfabe0d:cluster/apps/secops/vault/configure-oidc.yaml:generic-api-key:44
 bc59aa503eef55651de6262404967b126faa963e:cluster/apps/secops/vaultwarden/helm-release.yaml:hashicorp-tf-password:51
+885eacca31b4c2f5c5e660cbc178083dac7bcc2b:kubernetes/talos-flux/apps/observability/loki/app/helm-release.yaml:generic-api-key:153
