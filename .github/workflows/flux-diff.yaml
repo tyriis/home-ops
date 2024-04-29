@@ -47,7 +47,7 @@ jobs:
 
       # https://github.com/allenporter/flux-local
       - name: Diff Resources
-        uses: allenporter/flux-local/action/diff@e630daec1a1bcd24dc80f5100c6e1c7b6a091153 # 4.3.1
+        uses: allenporter/flux-local/action/diff@fda7a951ed2249b11ade013ff099f302c98335f3 # 5.1.0
         id: diff
         with:
           sources: home-ops
