@@ -58,6 +58,8 @@ spec:
         shard_streams:
           enabled: true
         split_queries_by_interval: 1h
+      query_range:
+        parallelise_shardable_queries: false
       query_scheduler:
         max_outstanding_requests_per_tenant: 4096
       rulerConfig:
