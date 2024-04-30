@@ -58,8 +58,6 @@ spec:
         shard_streams:
           enabled: true
         split_queries_by_interval: 1h
-      query_range:
-        parallelise_shardable_queries: false
       query_scheduler:
         max_outstanding_requests_per_tenant: 4096
       rulerConfig:
@@ -139,6 +137,8 @@ spec:
           grafana_dashboard: "true"
       serviceMonitor:
         enabled: true
+        metricsInstance:
+          enabled: false
 
   valuesFrom:
     - kind: Secret
