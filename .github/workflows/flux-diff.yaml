@@ -28,7 +28,7 @@ jobs:
 
       # https://github.com/marketplace/actions/checkout
       - name: Checkout Default Branch
-        uses: actions/checkout@v4.1.4
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
         with:
           fetch-depth: 0
           repository: ${{ github.event.pull_request.head.repo.full_name }}
@@ -36,7 +36,7 @@ jobs:
       # https://github.com/marketplace/actions/changed-files
       - name: Get Changed Clusters
         id: changed-clusters
-        uses: tj-actions/changed-files@v44.3.0
+        uses: tj-actions/changed-files@0874344d6ebbaa00a27da73276ae7162fadcaf69 # v44.3.0
         with:
           files: kubernetes/**
           dir_names: true
@@ -74,21 +74,21 @@ jobs:
 
       # https://github.com/marketplace/actions/checkout
       - name: Checkout
-        uses: actions/checkout@v4.1.4
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
         with:
           token: "${{ steps.app-token.outputs.token }}"
           path: pull
 
       # https://github.com/marketplace/actions/checkout
       - name: Checkout Default Branch
-        uses: actions/checkout@v4.1.4
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
         with:
           token: "${{ steps.app-token.outputs.token }}"
           ref: "${{ github.event.repository.default_branch }}"
           path: default
 
       - name: Diff Resources
-        uses: docker://ghcr.io/allenporter/flux-local:v5.1.0
+        uses: docker://ghcr.io/allenporter/flux-local:v5.1.0@sha256:0e956a1b4b7c7da8e9a9451c85db66f3613dcadd6dcf6b0813d7b459d51514f4
         with:
           args: >-
             diff ${{ matrix.resources }}
