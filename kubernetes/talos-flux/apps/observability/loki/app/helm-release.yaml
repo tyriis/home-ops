@@ -42,6 +42,7 @@ spec:
         retention_enabled: true
         retention_delete_delay: 2h
         retention_delete_worker_count: 150
+        working_directory: /var/loki/compactor/retention
       frontend:
         max_outstanding_per_tenant: 4096
       ingester:
@@ -58,6 +59,8 @@ spec:
         shard_streams:
           enabled: true
         split_queries_by_interval: 1h
+      query_range:
+        parallelise_shardable_queries: false
       query_scheduler:
         max_outstanding_requests_per_tenant: 4096
       rulerConfig:
@@ -138,6 +141,8 @@ spec:
           grafana_dashboard: "true"
       serviceMonitor:
         enabled: true
+        metricsInstance:
+          enabled: false
 
   valuesFrom:
     - kind: Secret
