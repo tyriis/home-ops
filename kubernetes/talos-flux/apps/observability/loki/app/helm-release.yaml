@@ -5,8 +5,7 @@ kind: HelmRelease
 metadata:
   name: loki
 spec:
-  # timeout need to be increased because of https://github.com/grafana/loki/issues/9523#issuecomment-1655766287
-  timeout: 30m
+  timeout: 5m
   interval: 30m
   chart:
     spec:
@@ -42,6 +41,7 @@ spec:
         retention_enabled: true
         retention_delete_delay: 2h
         retention_delete_worker_count: 150
+        working_directory: /var/loki/compactor/retention
       frontend:
         max_outstanding_per_tenant: 4096
       ingester:
@@ -110,7 +110,6 @@ spec:
         storageClass: ceph-block
 
     backend:
-      # backend does not shutdown gracefully, each replica will increase the timeout by ~7m
       replicas: 3
       extraVolumes:
         - name: loki-rules
