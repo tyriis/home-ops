@@ -53,11 +53,10 @@ spec:
               NODE_RED_ENABLE_SAFE_MODE: "false"
             resources:
               requests:
-                memory: 350Mi
-                cpu: 25m
+                memory: 247Mi
+                cpu: 20m
               limits:
-                memory: 500Mi
-                cpu: 1000m
+                memory: 247Mi
             probes:
               liveness:
                 enabled: true
