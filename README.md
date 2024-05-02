@@ -211,9 +211,9 @@ example:
 [renovate-url]: https://www.whitesourcesoftware.com/free-developer-tools/renovate/
 [commits-shield]: https://img.shields.io/github/last-commit/tyriis/home-ops?style=for-the-badge&logo=github
 [commits-url]: https://github.com/tyriis/home-ops/commits/main
-[talos-shield]: https://img.shields.io/badge/Talos-1.6.7-ff7300?style=for-the-badge&logo=talos
+[talos-shield]: https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fkromgo.techtales.io%2Fquery%3Fformat%3Dendpoint%26metric%3Dtalos_version&query=%24.message&style=for-the-badge&logo=talos&label=talos&color=%23ff7300&cacheSeconds=600
 [talos-url]: https://www.talos.dev/
-[kubernetes-shield]: https://img.shields.io/badge/kubernetes-1.29.3-326CE5?style=for-the-badge&logo=kubernetes
+[kubernetes-shield]: https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fkromgo.techtales.io%2Fquery%3Fformat%3Dendpoint%26metric%3Dkubernetes_version&query=%24.message&style=for-the-badge&logo=kubernetes&label=kubernetes&color=%23326CE5&cacheSeconds=600
 [kubernetes-url]: https://kubernetes.io/releases/
 [terraform-shield]: https://img.shields.io/badge/terraform-1.x-844fba?style=for-the-badge&logo=terraform
 [terraform-url]: https://github.com/hashicorp/terraform/releases
