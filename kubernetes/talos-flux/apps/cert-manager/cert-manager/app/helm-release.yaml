@@ -24,9 +24,8 @@ spec:
     remediation:
       retries: 5
   values:
+    # https://artifacthub.io/packages/helm/cert-manager/cert-manager?modal=values
     installCRDs: true
-    webhook:
-      enabled: true
     extraArgs:
       - --dns01-recursive-nameservers=1.1.1.1:53,9.9.9.9:53
       - --dns01-recursive-nameservers-only
@@ -37,3 +36,24 @@ spec:
       nameservers:
         - "1.1.1.1"
         - "9.9.9.9"
+    resources:
+      requests:
+        cpu: 10m
+        memory: 100Mi
+      limits:
+        memory: 100Mi
+    cainjector:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 223Mi
+        limits:
+          memory: 223Mi
+    webhook:
+      enabled: true
+      resources:
+        requests:
+          cpu: 10m
+          memory: 100Mi
+        limits:
+          memory: 100Mi
