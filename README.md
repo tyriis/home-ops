@@ -27,11 +27,11 @@
 </div>-->
 <br />
 
-# Kubernetes GitOps Cluster
+# GitOps my homelab
 
 - 💼 managed with [Flux2][flux-url] and [Terraform][terraform-url]
 - 🤖 updated by [RenovateBot][renovate-url]
-- 🔐 secured by [Let's Encrypt][letsencrypt-url]
+- 🔐 secured by [Let's Encrypt][letsencrypt-url] and [Cloudflare Tunnel][cloudflared-url]
 
 <details>
   <summary style="font-size:1.2em;">Table of Contents</summary>
@@ -219,3 +219,4 @@ example:
 [terraform-url]: https://github.com/hashicorp/terraform/releases
 [cloudflare-shield]: https://img.shields.io/badge/cloudflare-dns-F38020?style=for-the-badge&logo=cloudflare
 [cloudflare-url]: https://dash.cloudflare.com/
+[cloudflared-url]: https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/
