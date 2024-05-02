@@ -38,10 +38,10 @@ spec:
               tag: v0.2.2
             resources:
               requests:
-                cpu: 9m
+                cpu: 24m
                 memory: 313Mi
-              # limits:
-              #   memory: 313Mi
+              limits:
+                memory: 313Mi
             probes:
               liveness: &probes
                 enabled: true
