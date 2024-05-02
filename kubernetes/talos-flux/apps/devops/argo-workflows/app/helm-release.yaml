@@ -31,6 +31,13 @@ spec:
 
       namespaceParallelism: 10
 
+      resources:
+        requests:
+          cpu: 10m
+          memory: 100Mi
+        limits:
+          memory: 100Mi
+
     executor:
       image:
         registry: quay.io
@@ -43,6 +50,12 @@ spec:
         registry: quay.io
         repository: argoproj/argocli
         tag: v3.5.6@sha256:721e70b1ce7c691411a29432f1594b720e58c676453ee04d83a605e56013f259
+      resources:
+        requests:
+          cpu: 10m
+          memory: 100Mi
+        limits:
+          memory: 100Mi
 
       extraArgs:
         - --auth-mode=server
