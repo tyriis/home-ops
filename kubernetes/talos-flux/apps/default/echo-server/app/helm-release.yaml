@@ -37,10 +37,10 @@ spec:
               tag: 0.3.6@sha256:86f2c45aa7e7ebe1be30b21f8cfff25a7ed6e3b059751822d4b35bf244a688d5
             resources:
               requests:
-                cpu: 5m
-                memory: 10Mi
+                cpu: 10m
+                memory: 100Mi
               limits:
-                memory: 50Mi
+                memory: 100Mi
             probes:
               liveness: &probes
                 enabled: true
