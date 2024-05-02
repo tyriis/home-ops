@@ -33,10 +33,10 @@ spec:
                 protocol: TCP
             resources:
               requests:
-                cpu: 15m
-                memory: 64M
+                cpu: 26m
+                memory: 100Mi
               limits:
-                memory: 64M
+                memory: 100Mi
             probes:
               liveness:
                 enabled: true
