@@ -27,4 +27,4 @@ spec:
           labels:
             severity: warning
           annotations:
-            summary: "HelmRelease {{ $labels.exported_namespace }}/{{ $labels.name }} with chart {{ $chart_name }}@{{ $revision  }} not ready for more than fifteen minutes."
+            summary: "HelmRelease {{ $labels.exported_namespace }}/{{ $labels.name }} with chart {{ $labels.chart_name }}@{{ $labels.revision }} not ready for more than fifteen minutes."
