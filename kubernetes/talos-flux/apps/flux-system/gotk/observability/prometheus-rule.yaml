@@ -21,3 +21,10 @@ spec:
             severity: warning
           annotations:
             summary: "{{ $labels.kind }} {{ $labels.exported_namespace }}/{{ $labels.name }} reconciliation has been suspended for more than fifteen minutes."
+        - alert: HelmReleaseFailed
+          expr: max(gotk_resource_info{ready="False"}) by (exported_namespace, name) == 1
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "HelmRelease {{ $labels.exported_namespace }}/{{ $labels.name }} reconciliation has been failing for more than ten minutes."
