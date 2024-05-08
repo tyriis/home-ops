@@ -89,9 +89,10 @@ patches:
                 resources:
                   requests:
                     memory: 1029Mi
-                    cpu: 69m
+                    cpu: 59m
                   limits:
                     memory: 1029Mi
+                    cpu: 2
     target:
       kind: Deployment
       name: helm-controller
@@ -111,6 +112,7 @@ patches:
                     cpu: 27m
                   limits:
                     memory: 221Mi
+                    cpu: 2
     target:
       kind: Deployment
       name: kustomize-controller
@@ -130,6 +132,7 @@ patches:
                     cpu: 14m
                   limits:
                     memory: 466Mi
+                    cpu: 2
     target:
       kind: Deployment
       name: source-controller
