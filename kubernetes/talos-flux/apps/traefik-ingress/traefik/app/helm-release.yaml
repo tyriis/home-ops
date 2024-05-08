@@ -82,9 +82,9 @@ spec:
           enabled: true
           options: "default"
           domains:
-            - main: "${SECRET_DOMAIN}"
+            - main: techtales.io
               sans:
-                - "*.${SECRET_DOMAIN}"
+                - "*.techtales.io"
           stores: traefik-system-default@kubernetescrd
       minecraft:
         port: 19132

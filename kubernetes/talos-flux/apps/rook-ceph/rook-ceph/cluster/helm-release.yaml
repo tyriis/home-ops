@@ -47,7 +47,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: simple-icons:ceph
         host:
-          name: &host rook.${SECRET_DOMAIN}
+          name: &host rook.techtales.io
           path: /
         tls:
           - hosts:

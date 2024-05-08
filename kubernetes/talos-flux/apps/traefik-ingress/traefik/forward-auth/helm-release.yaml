@@ -44,9 +44,9 @@ spec:
               repository: thomseddon/traefik-forward-auth
               tag: v2.2.0@sha256:882e6c07e137ea23dac85afee30676d3bf676418d471bfa4df7c16da1567d45e
             env:
-              AUTH_HOST: &host auth.${SECRET_DOMAIN}
-              DOMAIN: ${SECRET_DOMAIN}
-              COOKIE_DOMAIN: ${SECRET_DOMAIN}
+              AUTH_HOST: &host auth.techtales.io
+              DOMAIN: techtales.io
+              COOKIE_DOMAIN: techtales.io
               INSECURE_COOKIE: "false"
               URL_PATH: /_oauth
               LOG_LEVEL: info

@@ -26,7 +26,7 @@ spec:
     keepHistory: false
   # https://artifacthub.io/packages/helm/atlantis/atlantis?modal=values
   values:
-    atlantisUrl: https://atlantis-tyriis.${SECRET_DOMAIN}
+    atlantisUrl: https://atlantis-tyriis.techtales.io
 
     orgAllowlist: github.com/tyriis/*
     # logLevel: "debug"
@@ -100,7 +100,7 @@ spec:
         hajimari.io/enable: "true"
       pathType: Prefix
       hosts:
-        - host: &host atlantis-tyriis.${SECRET_DOMAIN}
+        - host: &host atlantis-tyriis.techtales.io
           paths:
             - /
       tls:

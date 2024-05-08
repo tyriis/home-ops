@@ -15,7 +15,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: &host "atlantis-tyriis-webhook.${SECRET_DOMAIN}"
+    - host: &host atlantis-tyriis-webhook.techtales.io
       http:
         paths:
           - path: /events

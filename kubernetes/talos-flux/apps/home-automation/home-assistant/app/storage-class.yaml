@@ -3,7 +3,7 @@ apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: home-assistant
-provisioner: ${SECRET_DOMAIN}/home-assistant-nfs
+provisioner: techtales.io/home-assistant-nfs
 reclaimPolicy: Retain
 allowVolumeExpansion: true
 volumeBindingMode: Immediate

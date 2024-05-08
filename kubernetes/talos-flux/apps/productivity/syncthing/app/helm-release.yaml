@@ -83,7 +83,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: folder-sync
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.techtales.io"
             paths:
               - path: /
                 service:

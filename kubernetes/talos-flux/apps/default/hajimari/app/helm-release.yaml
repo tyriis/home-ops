@@ -61,20 +61,17 @@ spec:
         - group: Infrastructure
           apps:
             - name: OPNsense
-              url: https://opnsense.${SECRET_DOMAIN}
+              url: https://opnsense.techtales.io
               icon: simple-icons:opnsense
             - name: NAS
-              url: https://nas.${SECRET_DOMAIN}
+              url: https://nas.techtales.io
               icon: simple-icons:synology
             - name: minio
-              url: ${SECRET_MINIO_URL}
+              url: https://minio.techtales.io
               icon: simple-icons:minio
             - name: vault
-              url: https://vault.${SECRET_DOMAIN}
+              url: https://vault.techtales.io
               icon: simple-icons:vault
-            - name: AdGuard
-              url: https://opnsense.${SECRET_DOMAIN}:3443
-              icon: shield-check
             - name: GitOps
               url: https://github.com/tyriis/home-ops
               icon: github
@@ -90,11 +87,11 @@ spec:
         - group: Kubernetes
           bookmarks:
             - name: k8s-at-home search
-              url: https://nanne.dev/k8s-at-home-search/
+              url: https://kubesearch.dev/
             - name: app-template
               url: https://bjw-s.github.io/helm-charts/docs/
             - name: talos
-              url: https://www.talos.dev/v1.3/
+              url: https://www.talos.dev/v1.7/
         # - group: Cloud
         #   bookmarks:
         #     - name: Box
@@ -163,13 +160,13 @@ spec:
           # hajimari.io/icon: "weather-sunset"
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
         hosts:
-          - host: hajimari.${SECRET_DOMAIN}
+          - host: hajimari.techtales.io
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - hosts:
-              - hajimari.${SECRET_DOMAIN}
+              - hajimari.techtales.io
             secretName: hajimari-tls
     podAnnotations:
       configmap.reloader.stakater.com/reload: hajimari-settings

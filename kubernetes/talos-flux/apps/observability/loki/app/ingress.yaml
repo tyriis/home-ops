@@ -11,7 +11,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: "loki.${SECRET_DOMAIN}"
+    - host: loki.techtales.io
       http:
         paths:
           - backend:
@@ -23,5 +23,5 @@ spec:
             pathType: Prefix
   tls:
     - hosts:
-        - "loki.${SECRET_DOMAIN}"
-      secretName: loki-cert
+        - loki.techtales.io
+      secretName: loki-tls

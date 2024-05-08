@@ -75,7 +75,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: draw-pen
         hosts:
-          - host: &host "draw.${SECRET_DOMAIN}"
+          - host: &host draw.techtales.io
             paths:
               - path: /
                 service:

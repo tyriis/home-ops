@@ -7,7 +7,7 @@ spec:
   capacity:
     storage: 5Gi
   nfs:
-    server: nas.${SECRET_DOMAIN}
+    server: nas.techtales.io
     path: /volume1/node-red.k8s.home
   accessModes:
     - ReadWriteOnce

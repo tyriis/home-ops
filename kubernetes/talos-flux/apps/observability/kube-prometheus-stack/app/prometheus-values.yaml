@@ -76,7 +76,7 @@ prometheus:
     podAnnotations:
       secret.reloader.stakater.com/reload: *secret
 
-    externalUrl: https://prometheus.${SECRET_DOMAIN}/
+    externalUrl: https://prometheus.techtales.io/
     # ruleSelector: {}
     # ruleNamespaceSelector: {}
     # serviceMonitorSelector: {}
@@ -85,13 +85,6 @@ prometheus:
     # podMonitorNamespaceSelector: {}
 
     additionalScrapeConfigs:
-      # - job_name: node-exporter
-      #   honor_timestamps: true
-      #   static_configs:
-      #     - targets:
-      #         - nas.${SECRET_DOMAIN}:9100
-      #         - cubietruck.home:9100
-      #         - opnsense.home:9100
       # ESPHome lights
       - job_name: esphome-light-alexroom
         static_configs:
@@ -167,7 +160,7 @@ prometheus:
         scheme: https
         static_configs:
           - targets:
-              - hass.${SECRET_DOMAIN}
+              - hass.techtales.io
 
       # - job_name: ohm-exporter
       #   scrape_interval: 15s
