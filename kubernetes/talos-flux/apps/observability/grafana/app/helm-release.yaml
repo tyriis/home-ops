@@ -104,7 +104,7 @@ spec:
         - &host grafana.techtales.io
       path: /
       tls:
-        - secretName: grafana-cert
+        - secretName: grafana-tls
           hosts:
             - *host
 
