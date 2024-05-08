@@ -43,8 +43,8 @@ spec:
                 protocol: TCP
             resources:
               requests:
-                cpu: 100m
-                memory: 100Mi
+                cpu: 10m
+                memory: 301Mi
               # removed because of oom kill when scanning more pages
               # limits:
               #   memory: 250Mi
@@ -94,7 +94,7 @@ spec:
         advancedMounts:
           scanservjs:
             app:
-              - path: /app/data/output
+              - path: /var/lib/scanservjs/output
       dbus:
         type: hostPath
         hostPath: /var/run/dbus
