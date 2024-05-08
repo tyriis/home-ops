@@ -4,7 +4,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: flux-system
 resources:
-  - https://raw.githubusercontent.com/gimlet-io/capacitor/capacitor-v0.3.2/deploy/k8s/rbac.yaml
+  - ./rbac.yaml
   - ./helm-release.yaml
 commonLabels:
   app.kubernetes.io/name: capacitor
