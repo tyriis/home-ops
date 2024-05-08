@@ -63,13 +63,13 @@ alertmanager:
       hajimari.io/enable: "true"
       hajimari.io/icon: clipboard-alert
     hosts:
-      - "alertmanager.${SECRET_DOMAIN}"
+      - &host alertmanager.techtales.io
     tls:
-      - secretName: alertmanager-cert
+      - secretName: alertmanager-tls
         hosts:
-          - "alertmanager.${SECRET_DOMAIN}"
+          - *host
   alertmanagerSpec:
-    externalUrl: "https://alertmanager.${SECRET_DOMAIN}/"
+    externalUrl: https://alertmanager.techtales.io/
     storage:
       volumeClaimTemplate:
         spec:

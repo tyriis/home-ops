@@ -84,7 +84,7 @@ spec:
           traefik.ingress.kubernetes.io/affinity: "true"
           traefik.ingress.kubernetes.io/router.tls: "true"
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.techtales.io"
             paths:
               - path: /
                 service:

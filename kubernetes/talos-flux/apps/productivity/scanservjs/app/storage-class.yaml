@@ -3,7 +3,7 @@ apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: scans-nfs
-provisioner: ${SECRET_DOMAIN}/scans-nfs
+provisioner: techtales.io/scans-nfs
 reclaimPolicy: Retain
 allowVolumeExpansion: true
 volumeBindingMode: Immediate

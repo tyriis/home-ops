@@ -9,38 +9,38 @@ warp-routing:
 ingress:
   # The localhost:8000 service inherits all root-level configuration.
   # In other words, it will use a connectTimeout of 30 seconds.
-  - hostname: grafana.${SECRET_DOMAIN}
-    service: https://grafana.${SECRET_DOMAIN}
+  - hostname: grafana.techtales.io
+    service: https://grafana.techtales.io
     originRequest:
-      httpHostHeader: grafana.${SECRET_DOMAIN}
-  - hostname: auth.${SECRET_DOMAIN}
-    service: https://auth.${SECRET_DOMAIN}
+      httpHostHeader: grafana.techtales.io
+  - hostname: auth.techtales.io
+    service: https://auth.techtales.io
     originRequest:
-      httpHostHeader: auth.${SECRET_DOMAIN}
-  - hostname: echo-server.${SECRET_DOMAIN}
-    service: https://echo-server.${SECRET_DOMAIN}
+      httpHostHeader: auth.techtales.io
+  - hostname: echo-server.techtales.io
+    service: https://echo-server.techtales.io
     originRequest:
-      httpHostHeader: echo-server.${SECRET_DOMAIN}
-  - hostname: flux-webhook.${SECRET_DOMAIN}
-    service: https://flux-webhook.${SECRET_DOMAIN}
+      httpHostHeader: echo-server.techtales.io
+  - hostname: flux-webhook.techtales.io
+    service: https://flux-webhook.techtales.io
     originRequest:
-      httpHostHeader: flux-webhook.${SECRET_DOMAIN}
-  - hostname: atlantis-webhook.${SECRET_DOMAIN}
-    service: https://atlantis-webhook.${SECRET_DOMAIN}
+      httpHostHeader: flux-webhook.techtales.io
+  - hostname: atlantis-webhook.techtales.io
+    service: https://atlantis-webhook.techtales.io
     originRequest:
-      httpHostHeader: atlantis-webhook.${SECRET_DOMAIN}
-  - hostname: atlantis-tyriis-webhook.${SECRET_DOMAIN}
-    service: https://atlantis-tyriis-webhook.${SECRET_DOMAIN}
+      httpHostHeader: atlantis-webhook.techtales.io
+  - hostname: atlantis-tyriis-webhook.techtales.io
+    service: https://atlantis-tyriis-webhook.techtales.io
     originRequest:
-      httpHostHeader: atlantis-tyriis-webhook.${SECRET_DOMAIN}
-  - hostname: arc-webhook.${SECRET_DOMAIN}
-    service: https://arc-webhook.${SECRET_DOMAIN}
+      httpHostHeader: atlantis-tyriis-webhook.techtales.io
+  - hostname: arc-webhook.techtales.io
+    service: https://arc-webhook.techtales.io
     originRequest:
-      httpHostHeader: arc-webhook.${SECRET_DOMAIN}
-  - hostname: kromgo.${SECRET_DOMAIN}
-    service: https://kromgo.${SECRET_DOMAIN}
+      httpHostHeader: arc-webhook.techtales.io
+  - hostname: kromgo.techtales.io
+    service: https://kromgo.techtales.io
     originRequest:
-      httpHostHeader: kromgo.${SECRET_DOMAIN}
+      httpHostHeader: kromgo.techtales.io
   # - hostname: example2.com
   #   service: localhost:8001
   # The localhost:8002 service overrides some root-level config.

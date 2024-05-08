@@ -78,7 +78,7 @@ spec:
           hajimari.io/icon: *app
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
         hosts:
-          - host: &host hass.${SECRET_DOMAIN}
+          - host: &host hass.techtales.io
             paths:
               - path: /
                 service:
@@ -87,7 +87,7 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: hass-cert
+            secretName: hass-tls
 
     persistence:
       config:

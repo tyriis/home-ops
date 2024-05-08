@@ -3,7 +3,7 @@ apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: node-red
-provisioner: "${SECRET_DOMAIN}/node-red-nfs"
+provisioner: techtales.io/node-red-nfs
 reclaimPolicy: Retain
 allowVolumeExpansion: true
 volumeBindingMode: Immediate

@@ -15,7 +15,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: &host "flux-webhook.${SECRET_DOMAIN}"
+    - host: &host flux-webhook.techtales.io
       http:
         paths:
           - path: /
@@ -26,6 +26,6 @@ spec:
                 port:
                   number: 80
   tls:
-    - secretName: "webhook-receiver-tls"
+    - secretName: webhook-receiver-tls
       hosts:
         - *host

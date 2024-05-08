@@ -21,7 +21,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: &host tekton.${SECRET_DOMAIN}
+    - host: &host tekton.techtales.io
       http:
         paths:
           - backend:

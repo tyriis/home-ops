@@ -19,4 +19,4 @@ spec:
               key: api-key
         selector:
           dnsZones:
-            - ${SECRET_DOMAIN}
+            - techtales.io

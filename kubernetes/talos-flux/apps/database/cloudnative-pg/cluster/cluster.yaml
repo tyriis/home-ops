@@ -20,7 +20,7 @@ spec:
         compression: bzip2
         maxParallel: 8
       destinationPath: s3://cloudnative-pg-backups/
-      endpointURL: ${SECRET_MINIO_URL}
+      endpointURL: https://minio.techtales.io
       serverName: postgres-v1
       s3Credentials:
         accessKeyId:

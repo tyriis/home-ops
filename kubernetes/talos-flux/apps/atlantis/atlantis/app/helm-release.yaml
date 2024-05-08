@@ -31,7 +31,7 @@ spec:
       valuesKey: repoConfig
       targetPath: repoConfig
   values:
-    atlantisUrl: https://atlantis.${SECRET_DOMAIN}
+    atlantisUrl: https://atlantis.techtales.io
 
     orgAllowlist: github.com/techtales-io/*
     # logLevel: "debug"
@@ -92,7 +92,7 @@ spec:
         hajimari.io/enable: "true"
       pathType: Prefix
       hosts:
-        - host: &host atlantis.${SECRET_DOMAIN}
+        - host: &host atlantis.techtales.io
           paths:
             - /
       tls:

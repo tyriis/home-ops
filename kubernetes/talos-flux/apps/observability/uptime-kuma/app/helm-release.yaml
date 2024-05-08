@@ -67,7 +67,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: web-check
         hosts:
-          - host: &host "status.${SECRET_DOMAIN}"
+          - host: &host status.techtales.io
             paths:
               - path: /
                 service:

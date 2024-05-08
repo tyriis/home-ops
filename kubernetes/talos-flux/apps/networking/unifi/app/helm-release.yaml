@@ -132,13 +132,13 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
         className: "traefik"
         hosts:
-          - host: &host "unifi.${SECRET_DOMAIN}"
+          - host: &host unifi.techtales.io
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-          - host: &hotspot "hotspot.${SECRET_DOMAIN}"
+          - host: &hotspot hotspot.techtales.io
             paths:
               - path: /
                 service:

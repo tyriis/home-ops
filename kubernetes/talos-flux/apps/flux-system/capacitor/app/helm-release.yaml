@@ -99,7 +99,7 @@ spec:
           hajimari.io/icon: simple-icons:flux
           hajimari.io/enable: "true"
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.techtales.io"
             paths:
               - path: /
                 pathType: Prefix
