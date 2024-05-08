@@ -87,12 +87,52 @@ patches:
             containers:
               - name: manager
                 resources:
+                  requests:
+                    memory: 1029Mi
+                    cpu: 69m
                   limits:
-                    cpu: 2000m
-                    memory: 2Gi
+                    memory: 1029Mi
     target:
       kind: Deployment
-      name: (kustomize-controller|helm-controller|source-controller)
+      name: helm-controller
+  - patch: |
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: not-used
+      spec:
+        template:
+          spec:
+            containers:
+              - name: manager
+                resources:
+                  requests:
+                    memory: 221Mi
+                    cpu: 27m
+                  limits:
+                    memory: 221Mi
+    target:
+      kind: Deployment
+      name: kustomize-controller
+  - patch: |
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: not-used
+      spec:
+        template:
+          spec:
+            containers:
+              - name: manager
+                resources:
+                  requests:
+                    memory: 466Mi
+                    cpu: 14m
+                  limits:
+                    memory: 466Mi
+    target:
+      kind: Deployment
+      name: source-controller
   # Enable in-memory-kustomize builds
   # https://fluxcd.io/flux/installation/configuration/vertical-scaling/#enable-in-memory-kustomize-builds
   - patch: |
