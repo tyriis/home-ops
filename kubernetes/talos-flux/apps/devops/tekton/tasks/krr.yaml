@@ -17,7 +17,7 @@ spec:
       type: string
       default: "true"
   steps:
-    - name: goodbye
+    - name: krr
       image: us-central1-docker.pkg.dev/genuine-flight-317411/devel/krr:v1.8.3@sha256:3bb188753d4b8c5844041a10a9fc5e6bc1e2eb6a04682a5572728b23c13b3d71
       env:
         - name: PARAM_VERBOSE
