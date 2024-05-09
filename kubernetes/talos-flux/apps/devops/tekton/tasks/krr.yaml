@@ -46,10 +46,14 @@ spec:
           --resource=DaemonSet \
           -f csv_export
 
-          echo $WORKSPACE_OUTPUT_PATH
-          mv /app/krr-*.csv "${WORKSPACE_OUTPUT_PATH}/"
+          echo $(workspaces.output.path)
 
-          cat ${WORKSPACE_OUTPUT_PATH}/krr-*.csv
+          if [ "$(workspaces.output.bound)" == "true" ] ; then
+            echo hello! > $(workspaces.output.path)/message
+          fi
+          mv /app/krr-*.csv $(workspaces.output.path)/
+
+          cat $(workspaces.output.path)/krr-*.csv
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/tekton.dev/v1beta1_TaskRun.json
