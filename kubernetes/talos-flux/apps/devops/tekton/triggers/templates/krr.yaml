@@ -1,0 +1,67 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/triggers.tekton.dev/v1beta1_TriggerTemplate.json
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: krr-template
+spec:
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: krr-run-
+      spec:
+        pipelineRef:
+          name: krr
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/triggers.tekton.dev/v1beta1_TriggerBinding.json
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  name: krr-binding
+spec:
+  params: []
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/triggers.tekton.dev/v1beta1_EventListener.json
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: krr-listener
+spec:
+  serviceAccountName: tekton-trigger-krr
+  triggers:
+    - name: krr-trigger
+      bindings:
+        - ref: krr-binding
+      template:
+        ref: krr-template
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: tekton-trigger-krr
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: tekton-trigger-krr-eventlistener
+subjects:
+  - kind: ServiceAccount
+    name: tekton-trigger-krr
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: tekton-triggers-eventlistener-roles
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: tekton-trigger-krr-eventlistener
+subjects:
+  - kind: ServiceAccount
+    name: tekton-trigger-krr
+    namespace: devops
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: tekton-triggers-eventlistener-clusterroles

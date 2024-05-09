@@ -46,11 +46,9 @@ spec:
           --resource=DaemonSet \
           -f csv_export
 
-          echo $(workspaces.output.path)
+        cp /app/krr-*.csv $(workspaces.output.path)/
 
-          cp /app/krr-*.csv $(workspaces.output.path)/
-
-          cat $(workspaces.output.path)/krr-*.csv
+        cat $(workspaces.output.path)/krr-*.csv
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/tekton.dev/v1beta1_TaskRun.json

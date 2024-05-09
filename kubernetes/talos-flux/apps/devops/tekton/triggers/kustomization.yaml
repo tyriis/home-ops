@@ -5,3 +5,4 @@ kind: Kustomization
 namespace: devops
 resources:
   - ./templates/hello.yaml
+  - ./templates/krr.yaml
