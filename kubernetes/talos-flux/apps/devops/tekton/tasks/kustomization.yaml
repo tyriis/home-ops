@@ -6,3 +6,5 @@ namespace: devops
 resources:
   - ./hello-world.yaml
   - ./goodbye.yaml
+  - ./krr-rbac.yaml
+  - ./krr.yaml

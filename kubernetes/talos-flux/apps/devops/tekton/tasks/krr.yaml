@@ -1,0 +1,44 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/tekton.dev/v1beta1_Task.json
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: krr
+  annotations:
+    tekton.dev/pipelines.minVersion: 0.54.0
+    tekton.dev/categories: FinOps
+    tekton.dev/tags: krr
+    tekton.dev/displayName: krr - Kubernetes Resource Report
+    tekton.dev/platforms: linux/amd64
+spec:
+  params:
+    - name: username
+      type: string
+  steps:
+    - name: goodbye
+      image: us-central1-docker.pkg.dev/genuine-flight-317411/devel/krr:v1.8.3@sha256:3bb188753d4b8c5844041a10a9fc5e6bc1e2eb6a04682a5572728b23c13b3d71
+      script: |
+        #!/usr/bin/env sh
+        set -eu
+
+        if [ "${PARAM_VERBOSE}" = "true" ] ; then
+          set -x
+        fi
+
+        python /app/krr.py simple \
+          -p http://prometheus-prometheus.observability.svc.cluster.local:9090 \
+          --history_duration=720 \
+          --cpu_percentile=95 \
+          --mem-min=10 \
+          -f yaml
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/tekton.dev/v1beta1_TaskRun.json
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: run-krr
+spec:
+  serviceAccountName: tekton-task-krr
+  taskRef:
+    name: krr
