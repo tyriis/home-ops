@@ -48,10 +48,7 @@ spec:
 
           echo $(workspaces.output.path)
 
-          if [ "$(workspaces.output.bound)" == "true" ] ; then
-            echo hello! > $(workspaces.output.path)/message
-          fi
-          mv /app/krr-*.csv $(workspaces.output.path)/
+          cp /app/krr-*.csv $(workspaces.output.path)/
 
           cat $(workspaces.output.path)/krr-*.csv
 
