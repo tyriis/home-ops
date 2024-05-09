@@ -11,17 +11,23 @@ metadata:
     tekton.dev/displayName: krr - Kubernetes Resource Report
     tekton.dev/platforms: linux/amd64
 spec:
+  workspaces:
+    - name: output
+      description: The krr csv result will be placed here.
   params:
     - name: verbose
       description: Log the commands that are executed during `krr`'s operation.
       type: string
       default: "true"
+
   steps:
     - name: krr
       image: us-central1-docker.pkg.dev/genuine-flight-317411/devel/krr:v1.8.2
       env:
         - name: PARAM_VERBOSE
           value: $(params.verbose)
+        - name: WORKSPACE_OUTPUT_PATH
+          value: $(workspaces.output.path)
       script: |
         #!/usr/bin/env sh
         set -eu
@@ -37,7 +43,12 @@ spec:
           --mem-min=10 \
           --resource=Deployment \
           --resource=StatefulSet \
-          --resource=DaemonSet
+          --resource=DaemonSet \
+          -f csv_export
+
+          mv /app/krr-*.csv ${WORKSPACE_OUTPUT_PATH}
+
+          cat ${WORKSPACE_OUTPUT_PATH}/krr-*.csv
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/tekton.dev/v1beta1_TaskRun.json
