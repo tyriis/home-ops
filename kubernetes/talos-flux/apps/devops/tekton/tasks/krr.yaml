@@ -34,8 +34,7 @@ spec:
           -p http://prometheus-prometheus.observability.svc.cluster.local:9090 \
           --history_duration=720 \
           --cpu_percentile=95 \
-          --mem-min=10 \
-          -f yaml
+          --mem-min=10
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/tekton.dev/v1beta1_TaskRun.json
