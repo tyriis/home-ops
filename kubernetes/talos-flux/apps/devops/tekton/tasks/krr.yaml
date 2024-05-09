@@ -60,3 +60,13 @@ spec:
   serviceAccountName: tekton-task-krr
   taskRef:
     name: krr
+  workspaces:
+    - name: output
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+          storageClassName: nfs-csi
