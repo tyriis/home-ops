@@ -46,7 +46,8 @@ spec:
           --resource=DaemonSet \
           -f csv_export
 
-          mv /app/krr-*.csv ${WORKSPACE_OUTPUT_PATH}
+          echo $WORKSPACE_OUTPUT_PATH
+          mv /app/krr-*.csv "${WORKSPACE_OUTPUT_PATH}/"
 
           cat ${WORKSPACE_OUTPUT_PATH}/krr-*.csv
 
