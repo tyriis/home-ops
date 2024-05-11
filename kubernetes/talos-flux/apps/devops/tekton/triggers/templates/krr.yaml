@@ -19,8 +19,7 @@ apiVersion: triggers.tekton.dev/v1beta1
 kind: TriggerBinding
 metadata:
   name: krr-binding
-spec:
-  params: []
+spec: {}
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/triggers.tekton.dev/v1beta1_EventListener.json
 apiVersion: triggers.tekton.dev/v1beta1
