@@ -13,13 +13,13 @@ spec:
       spec:
         pipelineRef:
           name: krr
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/triggers.tekton.dev/v1beta1_TriggerBinding.json
-apiVersion: triggers.tekton.dev/v1beta1
-kind: TriggerBinding
-metadata:
-  name: krr-binding
-spec: {}
+# ---
+# # yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/triggers.tekton.dev/v1beta1_TriggerBinding.json
+# apiVersion: triggers.tekton.dev/v1beta1
+# kind: TriggerBinding
+# metadata:
+#   name: krr-binding
+# spec: {}
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/triggers.tekton.dev/v1beta1_EventListener.json
 apiVersion: triggers.tekton.dev/v1beta1
@@ -30,8 +30,8 @@ spec:
   serviceAccountName: tekton-trigger-krr
   triggers:
     - name: krr-trigger
-      bindings:
-        - ref: krr-binding
+      # bindings:
+      #   - ref: krr-binding
       template:
         ref: krr-template
 ---
