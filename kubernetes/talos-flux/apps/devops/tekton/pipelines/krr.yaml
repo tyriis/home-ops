@@ -15,23 +15,24 @@ spec:
   workspaces:
     - name: output
       optional: false
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/tekton.dev/v1beta1_PipelineRun.json
-apiVersion: tekton.dev/v1beta1
-kind: PipelineRun
-metadata:
-  name: krr-run
-spec:
-  pipelineRef:
-    name: krr
-  serviceAccountName: tekton-task-krr
-  workspaces:
-    - name: output
-      volumeClaimTemplate:
-        spec:
-          storageClassName: nfs-csi
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 1Gi
+# For debuging purpose only, no manual pipeline run is needed.
+# ---
+# # yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/tekton.dev/v1beta1_PipelineRun.json
+# apiVersion: tekton.dev/v1beta1
+# kind: PipelineRun
+# metadata:
+#   name: krr-run
+# spec:
+#   pipelineRef:
+#     name: krr
+#   serviceAccountName: tekton-task-krr
+#   workspaces:
+#     - name: output
+#       volumeClaimTemplate:
+#         spec:
+#           storageClassName: nfs-csi
+#           accessModes:
+#             - ReadWriteOnce
+#           resources:
+#             requests:
+#               storage: 1Gi
