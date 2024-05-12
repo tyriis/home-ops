@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: krr
+  name: krr-cron
 spec:
   interval: 15m
   chart:
