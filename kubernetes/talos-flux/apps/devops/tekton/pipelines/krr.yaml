@@ -24,6 +24,7 @@ metadata:
 spec:
   pipelineRef:
     name: krr
+  serviceAccountName: tekton-task-krr
   workspaces:
     - name: output
       volumeClaimTemplate:

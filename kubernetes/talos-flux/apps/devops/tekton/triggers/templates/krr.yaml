@@ -13,27 +13,28 @@ spec:
       spec:
         pipelineRef:
           name: krr
+        serviceAccountNames:
+          - taskName: krr
+            serviceAccountName: tekton-task-krr
+        workspaces:
+          - name: output
+            volumeClaimTemplate:
+              spec:
+                storageClassName: nfs-csi
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 1Gi
 
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/triggers.tekton.dev/v1beta1_TriggerBinding.json
-apiVersion: triggers.tekton.dev/v1beta1
-kind: TriggerBinding
-metadata:
-  name: krr-binding
-spec:
-  workspaces:
-    - name: output
-      volumeClaimTemplate:
-        spec:
-          storageClassName: nfs-csi
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 1Gi
-  serviceAccountNames:
-    - taskName: krr
-      name: tekton-task-krr
+# ---
+# # yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/triggers.tekton.dev/v1beta1_TriggerBinding.json
+# apiVersion: triggers.tekton.dev/v1beta1
+# kind: TriggerBinding
+# metadata:
+#   name: krr-binding
+# spec:
+#   params: []
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/triggers.tekton.dev/v1beta1_EventListener.json
@@ -45,8 +46,8 @@ spec:
   serviceAccountName: tekton-trigger-krr
   triggers:
     - name: krr-trigger
-      bindings:
-        - ref: krr-binding
+      # bindings:
+      #   - ref: krr-binding
       template:
         ref: krr-template
 
