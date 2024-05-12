@@ -10,6 +10,7 @@
     "github>tyriis/renovate-config//helm/groups/gha-runner-scale-set.json5",
     "github>tyriis/renovate-config//flux/groups/flux.json5",
     "github>tyriis/renovate-config//generic-regex-manager.json5",
+    "github>tyriis/renovate-config//docker/prevent-automerge-talos.json5",
     "github>tyriis/renovate-config//nix/default.json5",
     "security:openssf-scorecard",
   ],
