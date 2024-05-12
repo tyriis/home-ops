@@ -13,13 +13,24 @@ spec:
       spec:
         pipelineRef:
           name: krr
+  workspaces:
+    - name: output
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+          storageClassName: nfs-csi
 # ---
 # # yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/triggers.tekton.dev/v1beta1_TriggerBinding.json
 # apiVersion: triggers.tekton.dev/v1beta1
 # kind: TriggerBinding
 # metadata:
 #   name: krr-binding
-# spec: {}
+# spec:
+#   params: []
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/triggers.tekton.dev/v1beta1_EventListener.json
 apiVersion: triggers.tekton.dev/v1beta1
