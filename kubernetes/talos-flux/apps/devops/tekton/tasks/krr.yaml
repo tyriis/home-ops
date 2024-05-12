@@ -50,23 +50,24 @@ spec:
 
         cat $(workspaces.output.path)/krr-*.csv
 
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/tekton.dev/v1beta1_TaskRun.json
-apiVersion: tekton.dev/v1beta1
-kind: TaskRun
-metadata:
-  name: run-krr
-spec:
-  serviceAccountName: tekton-task-krr
-  taskRef:
-    name: krr
-  workspaces:
-    - name: output
-      volumeClaimTemplate:
-        spec:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 1Gi
-          storageClassName: nfs-csi
+# Disable manual taks run, use pipeline instead.
+# ---
+# # yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/tekton.dev/v1beta1_TaskRun.json
+# apiVersion: tekton.dev/v1beta1
+# kind: TaskRun
+# metadata:
+#   name: run-krr
+# spec:
+#   serviceAccountName: tekton-task-krr
+#   taskRef:
+#     name: krr
+#   workspaces:
+#     - name: output
+#       volumeClaimTemplate:
+#         spec:
+#           accessModes:
+#             - ReadWriteOnce
+#           resources:
+#             requests:
+#               storage: 1Gi
+#           storageClassName: nfs-csi
