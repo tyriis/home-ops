@@ -9,6 +9,12 @@ spec:
     - name: krr
       taskRef:
         name: krr
+      workspaces:
+        - name: output
+          workspace: output
+  workspaces:
+    - name: output
+      optional: true
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/tekton.dev/v1beta1_PipelineRun.json
 apiVersion: tekton.dev/v1beta1
@@ -23,9 +29,9 @@ spec:
     - name: output
       volumeClaimTemplate:
         spec:
+          storageClassName: nfs-csi
           accessModes:
             - ReadWriteOnce
           resources:
             requests:
               storage: 1Gi
-          storageClassName: nfs-csi
