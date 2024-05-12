@@ -33,7 +33,13 @@ spec:
         cronjob:
           concurrencyPolicy: Forbid
           schedule: "0 6 * * *"
-          startingDeadlineSeconds: 120
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: "OnRootMismatch"
+
         containers:
           cron:
             image:
@@ -50,3 +56,9 @@ spec:
               requests:
                 cpu: 10m
                 memory: 10Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
