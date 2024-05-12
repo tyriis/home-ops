@@ -58,7 +58,7 @@ spec:
               MAX_THREADS: "0"
               GAMEMODE: survival
               LEVEL_TYPE: DEFAULT
-              LEVEL_NAME: "mothersday"
+              LEVEL_NAME: "mothersdayfun"
               LEVEL_SEED: "-103998222530161779"
               DEFAULT_PLAYER_PERMISSION_LEVEL: member
               TEXTUREPACK_REQUIRED: "false"
