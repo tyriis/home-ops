@@ -13,9 +13,10 @@ spec:
       spec:
         pipelineRef:
           name: krr
-        serviceAccountNames:
-          - taskName: krr
-            serviceAccountName: tekton-task-krr
+        serviceAccountName: tekton-task-krr
+        # serviceAccountNames:
+        #   - taskName: krr
+        #     serviceAccountName: tekton-task-krr
         workspaces:
           - name: output
             volumeClaimTemplate:
