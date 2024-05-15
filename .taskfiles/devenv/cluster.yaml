@@ -1,0 +1,44 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/taskfile.json
+version: "3"
+
+tasks:
+  create:
+    desc: create kind cluster with terraform
+    internal: true
+    dir: "{{.DEVENV_DIR}}/infra"
+    cmds:
+      - terraform init
+      - terraform apply -auto-approve
+      - docker update --restart=unless-stopped
+        home-ops-kind-registry
+        home-ops-devenv-control-plane
+        home-ops-devenv-worker
+        # home-ops-devenv-worker2
+        # home-ops-devenv-worker3
+
+  delete-cluster:
+    desc: delete kind cluster and remove associated containers
+    internal: true
+    silent: true
+    cmds:
+      - |
+        if kind get clusters | grep home-ops-devenv >> /dev/null; then
+          kind delete cluster --name home-ops-devenv
+        fi
+      - docker rm -f home-ops-kind-registry &> /dev/null
+
+  delete-terraform:
+    desc: delete terraform states
+    internal: true
+    silent: true
+    dir: "{{.DEVENV_DIR}}/infra"
+    cmds:
+      - rm -rf terraform.tfstate* .terraform.lock.hcl .terraform
+
+  upgrade-terraform:
+    desc: upgrade infra
+    internal: true
+    dir: "{{.DEVENV_DIR}}/infra"
+    cmds:
+      - terraform init -upgrade

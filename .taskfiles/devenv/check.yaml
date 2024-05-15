@@ -1,0 +1,65 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/taskfile.json
+version: "3"
+
+tasks:
+  dependencies:
+    desc: check if dependencies for oci are installed
+    internal: true
+    silent: true
+    cmds:
+      - echo "================="
+      - echo "DEPENDENCY CHECK:"
+      - echo "================="
+      - task: dependency
+        vars: { DEPENDENCY: docker }
+      - task: dependency
+        vars: { DEPENDENCY: flux }
+      - task: dependency
+        vars: { DEPENDENCY: go }
+      - task: dependency
+        vars: { DEPENDENCY: kind }
+      - task: dependency
+        vars: { DEPENDENCY: kubectl }
+      - task: dependency
+        vars: { DEPENDENCY: kustomize }
+      - task: dependency
+        vars: { DEPENDENCY: pre-commit }
+      - task: dependency
+        vars: { DEPENDENCY: task }
+      - task: dependency
+        vars: { DEPENDENCY: terraform }
+
+  ports:
+    desc: check if ports for oci are available
+    internal: true
+    silent: true
+    cmds:
+      - echo "==========="
+      - echo "PORT CHECK:"
+      - echo "==========="
+      - task: port
+        vars: { PORT: 443 }
+      - task: port
+        vars: { PORT: 5050 }
+
+  dependency:
+    desc: check if a binary is available in the $PATH
+    internal: true
+    silent: true
+    cmds:
+      - |
+        which "{{.DEPENDENCY}}" &>/dev/null && echo "✅ {{.DEPENDENCY}}" \
+          || (echo "❌ {{.DEPENDENCY}}" && exit 1)
+
+  port:
+    desc: check if a given {{.PORT}} is in use
+    internal: true
+    silent: true
+    cmds:
+      - |
+        if timeout 2 bash -c "</dev/tcp/localhost/{{.PORT}}" 2> /dev/null; then
+          echo "❌ port {{.PORT}} unavailable" && exit 1
+        else
+          echo "✅ port {{.PORT}} available"
+        fi
