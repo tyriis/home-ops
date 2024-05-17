@@ -63,17 +63,11 @@ resource "kind_cluster" "flux_devenv" {
     # # add 1 observability node
     # node {
     #   role = "worker"
-    #   labels = {
-    #     "application/role" = "observability"
-    #   }
     # }
 
     # add 1 workload node
     node {
       role = "worker"
-      labels = {
-        "application/role" = "workload"
-      }
     }
   }
 }
