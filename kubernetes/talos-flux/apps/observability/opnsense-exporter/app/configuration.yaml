@@ -6,5 +6,5 @@ app:
 
 opnsense:
   url: https://opnsense.techtales.io
-  apiKey: ${OPNSENSE_API_KEY}
-  apiSecret: ${OPNSENSE_API_SECRET}
+  apiKey: "${env.OPNSENSE_API_KEY}"
+  apiSecret: "${env.OPNSENSE_API_SECRET}"
