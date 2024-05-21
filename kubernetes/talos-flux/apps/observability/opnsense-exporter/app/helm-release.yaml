@@ -99,3 +99,7 @@ spec:
         globalMounts:
           - subPath: configuration.yaml
             path: /config/configuration.yaml
+      cache:
+        type: emptyDir
+        globalMounts:
+          - path: /home/node/.cache/node/corepack/v1
