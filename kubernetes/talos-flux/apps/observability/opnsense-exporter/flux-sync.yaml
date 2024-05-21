@@ -19,3 +19,4 @@ spec:
   wait: true
   dependsOn:
     - name: apps-kube-prometheus-stack
+    - name: apps-external-secrets-stores
