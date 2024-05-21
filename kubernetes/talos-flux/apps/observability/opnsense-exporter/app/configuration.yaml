@@ -1,0 +1,10 @@
+---
+app:
+  port: 3000
+  host: 0.0.0.0
+  pretty: true
+
+opnsense:
+  url: https://opnsense.techtales.io
+  apiKey: ${OPNSENSE_API_KEY}
+  apiSecret: ${OPNSENSE_API_SECRET}

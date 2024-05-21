@@ -1,0 +1,95 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: &app opnsense-exporter
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.1.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      app:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+        containers:
+          app:
+            image:
+              repository: ghcr.io/tyriis/opnsense-exporter
+              tag: v0.1.1@sha256:1c71ee4efbc37b88efde85cb96abf4778bfdd76ef483bed8dccd35ce81e08112
+            env:
+              TZ: ${SETTING_TZ}
+              NODE_ENV: production
+              CONFIG_PATH: /config/configuration.yaml
+            envFrom:
+              - secretRef:
+                  name: opnsense-exporter-env
+            ports:
+              - name: http
+                containerPort: &port 3000
+                protocol: TCP
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+
+    serviceMonitor:
+      app:
+        enabled: true
+        serviceName: '{{ include "bjw-s.common.lib.chart.names.fullname" $ }}'
+
+    persistence:
+      config:
+        type: configMap
+        name: opnsense-exporter-config
+        globalMounts:
+          - subPath: configuration.yaml
+            path: /config/configuration.yaml

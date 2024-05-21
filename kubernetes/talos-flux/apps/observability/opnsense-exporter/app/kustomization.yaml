@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: observability
+resources:
+  - external-secrets.yaml
+  - helm-release.yaml
+commonLabels:
+  app.kubernetes.io/name: opnsense-exporter
+  app.kubernetes.io/instance: opnsense-exporter
+configMapGenerator:
+  - name: opnsense-exporter-config
+    behavior: create
+    files:
+      - configuration.yaml
+generatorOptions:
+  disableNameSuffixHash: true
