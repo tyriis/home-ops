@@ -27,7 +27,7 @@ tasks:
     dir: "{{.PROJECT_DIR}}"
     deps:
       - task: check:dependencies
-      - task: cluster:destroy
+      - task: destroy
     cmds:
       - task: check:ports
       - task: cluster:create
