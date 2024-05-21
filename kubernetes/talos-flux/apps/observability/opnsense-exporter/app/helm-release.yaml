@@ -24,7 +24,7 @@ spec:
       retries: 3
   values:
     controllers:
-      app:
+      opnsense-exporter:
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
@@ -82,7 +82,7 @@ spec:
             port: *port
 
     serviceMonitor:
-      app:
+      opnsense-exporter:
         enabled: true
         serviceName: '{{ include "bjw-s.common.lib.chart.names.fullname" $ }}'
 
