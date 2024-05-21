@@ -14,7 +14,7 @@ resources:
   - https://github.com/tektoncd/triggers/releases/download/v0.25.3/interceptors.yaml
   # https://github.com/tektoncd/dashboard/releases
   # renovate: depName=tektoncd/dashboard datasource=github-releases
-  - https://github.com/tektoncd/dashboard/releases/download/v0.42.0/release.yaml
+  - https://github.com/tektoncd/dashboard/releases/download/v0.46.0/release.yaml
   - ./ingress.yaml
 # patches:
 #   # Remove namesapce tekton-pipelines
