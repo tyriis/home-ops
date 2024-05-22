@@ -41,7 +41,7 @@ spec:
 
     image:
       repository: ghcr.io/runatlantis/atlantis
-      tag: v0.27.3@sha256:5ad2e3fe752104a614374490d111ed1230f8ebf5409552d0ad3b716de356dc45
+      tag: v0.28.0@sha256:0a6b5e8120d0ac8af39309d0e26e889f2a64d0ce2b5799b8f4e6de61c894ec88
 
     ## Use Server Side Repo Config,
     ## ref: https://www.runatlantis.io/docs/server-side-repo-config.html
