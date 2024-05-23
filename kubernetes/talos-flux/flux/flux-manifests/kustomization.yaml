@@ -91,7 +91,7 @@ patches:
                     memory: 1029Mi
                     cpu: 59m
                   limits:
-                    memory: 1029Mi
+                    memory: 2Gi
                     cpu: 2
     target:
       kind: Deployment
