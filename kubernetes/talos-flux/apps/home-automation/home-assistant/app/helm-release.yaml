@@ -53,7 +53,7 @@ spec:
           init-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: 14.10@sha256:71ddc70edccf201d6a521fe6216bc58d8c7c856a1ef96c4d4fbe9f548818ea4d
+              tag: 16.3@sha256:dc0e7510173f389ebd6754a753fa7a745127ed69c54e0eef6882704532fef1a3
             env:
               TZ: ${SETTING_TZ}
               INIT_POSTGRES_SUPER_PASS: ${SECRET_CLOUDNATIVE_PG_PASSWORD}
