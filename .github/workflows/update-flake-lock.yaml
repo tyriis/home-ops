@@ -16,9 +16,21 @@ jobs:
   lockfile:
     runs-on: ubuntu-latest
     steps:
+      # https://github.com/marketplace/actions/create-github-app-token
+      - name: Generate Token
+        uses: actions/create-github-app-token@a0de6af83968303c8c955486bf9739a57d23c7f1 # v1.10.0
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+        id: app-token
+        with:
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+
       # https://github.com/marketplace/actions/checkout
-      - name: Checkout Repository
+      - name: Checkout
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        with:
+          token: "${{ steps.app-token.outputs.token }}"
+          path: pull
 
       # https://github.com/marketplace/actions/the-determinate-nix-installer
       - name: Install nix
@@ -34,6 +46,7 @@ jobs:
         uses: DeterminateSystems/update-flake-lock@a3ccb8f59719c48d6423e97744560221bcf7a3fa # v21
         with:
           path-to-flake-dir: infra/nixos
+          token: ${{ steps.app-token.outputs.token }}
 
       # - name: Enable automerge
       #   if: ${{ steps.update.outputs.pull-request-number != '' }}
