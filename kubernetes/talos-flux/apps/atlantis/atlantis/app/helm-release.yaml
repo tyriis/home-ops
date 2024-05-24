@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: atlantis
-      version: 5.0.2
+      version: 5.1.0
       sourceRef:
         kind: HelmRepository
         name: runatlantis-charts
@@ -41,7 +41,7 @@ spec:
 
     image:
       repository: ghcr.io/runatlantis/atlantis
-      tag: v0.27.3@sha256:5ad2e3fe752104a614374490d111ed1230f8ebf5409552d0ad3b716de356dc45
+      tag: v0.28.1@sha256:f82aae61fddc4dc8ebf6f006385447cc4eb26139de854ac37bf8344d4e9a0a42
 
     ## Use Server Side Repo Config,
     ## ref: https://www.runatlantis.io/docs/server-side-repo-config.html
