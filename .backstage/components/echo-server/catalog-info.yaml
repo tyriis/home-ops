@@ -1,0 +1,33 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: echo-server
+  description: An HTTP and WebSocket "echo" server for testing proxies and HTTP clients.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/default/echo-server
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/jmalloc/echo-server
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+    - url: https://echo-server.techtales.io/
+      title: Service Endpoint
+      icon: link
+      type: service
+  tags:
+    - networking
+    - development
+    - testing
+    - http
+spec:
+  type: tool
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops
+  dependsOn:
+    - component:cert-manager
+    - component:traefik

@@ -5,6 +5,9 @@ kind: Kustomization
 metadata:
   name: apps-cert-manager
   namespace: flux-system
+  annotations:
+    backstage.io/discovery: enabled
+    backstage.io/name: cert-manager
 spec:
   interval: 10m
   path: ./kubernetes/talos-flux/apps/cert-manager/cert-manager/app

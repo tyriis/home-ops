@@ -5,6 +5,9 @@ kind: Kustomization
 metadata:
   name: apps-dragonfly-operator
   namespace: flux-system
+  annotations:
+    backstage.io/discovery: enabled
+    backstage.io/name: dragonfly
 spec:
   targetNamespace: database
   commonMetadata:

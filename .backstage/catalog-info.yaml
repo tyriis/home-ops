@@ -1,5 +1,4 @@
 ---
-# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
 apiVersion: backstage.io/v1alpha1
 kind: Location
 metadata:
@@ -7,6 +6,18 @@ metadata:
 spec:
   type: url
   targets:
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/argo-workflows/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/atlantis/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/backstage/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/cert-manager/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/cloudnative-pg/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/dragonfly/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/echo-server/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/hajimari/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/node-red/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/rook-ceph/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/traefik-forward-auth/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/traefik/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/domains/home/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/systems/kube-nas/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/systems/mqtt.home/catalog-info.yaml
@@ -14,12 +25,3 @@ spec:
     - https://github.com/tyriis/home-ops/blob/main/.backstage/systems/opnsense/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/systems/talos-flux/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/systems/zigbee-bridge/catalog-info.yaml
-    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/atlantis/catalog-info.yaml
-    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/backstage/catalog-info.yaml
-    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/cert-manager/catalog-info.yaml
-    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/cloudnative-pg/catalog-info.yaml
-    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/dragonfly/catalog-info.yaml
-    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/node-red/catalog-info.yaml
-    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/rook-ceph/catalog-info.yaml
-    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/traefik/catalog-info.yaml
-    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/traefik-forward-auth/catalog-info.yaml

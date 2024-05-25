@@ -5,6 +5,9 @@ kind: Kustomization
 metadata:
   name: apps-cloudnative-pg
   namespace: flux-system
+  annotations:
+    backstage.io/discovery: enabled
+    backstage.io/name: cloudnative-pg
 spec:
   path: ./kubernetes/talos-flux/apps/database/cloudnative-pg/app
   prune: true

@@ -5,6 +5,9 @@ kind: Kustomization
 metadata:
   name: apps-atlantis
   namespace: flux-system
+  annotations:
+    backstage.io/discovery: enabled
+    backstage.io/name: atlantis
 spec:
   interval: 10m
   path: ./kubernetes/talos-flux/apps/atlantis/atlantis/app

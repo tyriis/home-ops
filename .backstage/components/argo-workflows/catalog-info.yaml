@@ -1,0 +1,33 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: argo-workflows
+  description: Argo Workflows is a Kubernetes-native workflow engine for complex job orchestration, primarily used in DevOps pipelines.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/devops/argo-workflows
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://argoproj.github.io/workflows/
+      title: Upstream Documentation
+      icon: book
+      type: documentation
+    - url: https://argo-workflows.techtales.io/
+      title: Service Endpoint
+      icon: dashboard
+      type: dashboard
+  tags:
+    - workflow-engine
+    - devops
+    - pipelines
+    - infrastructure-as-code
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops
+  dependsOn:
+    - component:cert-manager
+    - component:traefik
