@@ -31,9 +31,9 @@ spec:
   system: talos-flux
   owner: home-ops
   dependsOn:
-    - resource:default/cert-manager
-    - resource:default/rook-ceph
-    - resource:default/traefik-forward-auth
+    - cert-manager
+    - rook-ceph
+    - traefik-forward-auth
   #  - resource:default/external-secrets
   # providesApis:
   #   - test-api
