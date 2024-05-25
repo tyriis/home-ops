@@ -1,0 +1,39 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: atlantis
+  description: Atlantis automates Terraform workflows, enabling collaborative, version-controlled infrastructure as code deployments.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/atlantis/atlantis
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://atlantis.techtales.io/
+      title: Atlantis techtales dashboard
+      icon: dashboard
+      type: dashboard
+      # TODO: move to https://atlantis.tyriis.dev/
+    - url: https://atlantis-tyriis.techtales.io/
+      title: Atlantis tyriis dashboard
+      icon: dashboard
+      type: dashboard
+  tags:
+    - iac
+    - terraform
+    - automation
+    - devops
+    - gitops
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops
+  dependsOn:
+    - resource:default/cert-manager
+    - resource:default/rook-ceph
+    - resource:default/traefik-forward-auth
+  #  - resource:default/external-secrets
+  # providesApis:
+  #   - test-api
