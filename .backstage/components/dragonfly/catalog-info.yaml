@@ -1,0 +1,24 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: dragonfly
+  description: Distributed, in-memory database designed as a drop-in replacement for Redis, enhancing scalability and performance.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/database/dragonfly
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://www.dragonflydb.io/
+      title: Dragonfly website
+      icon: website
+      type: website
+  tags:
+    - database
+    - infrastructure
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops
