@@ -3,23 +3,23 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: dragonfly
-  description: Distributed, in-memory database designed as a drop-in replacement for Redis, enhancing scalability and performance.
+  name: cloudnative-pg
+  description: A PostgreSQL operator for Kubernetes, enabling easy deployment and management of PostgreSQL databases.
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/database/dragonfly
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/database/cloudnative-pg
       title: Flux definition
       icon: github
       type: github-repository
-    - url: https://www.dragonflydb.io/
+    - url: https://cloudnative-pg.io/
       title: Dragonfly website
       icon: website
       type: website
   tags:
     - database
     - infrastructure
-    - redis
-    - cache
-    - key-value-store
+    - postgresql
+    - sql
+    - relational-database
 spec:
   type: service
   lifecycle: production
