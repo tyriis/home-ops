@@ -26,7 +26,8 @@ spec:
   system: talos-flux
   owner: home-ops
   dependsOn:
-    - resource:default/cert-manager
+    - component:cert-manager
+    - component:traefik
   #  - resource:default/external-secrets
   # providesApis:
   #   - test-api
