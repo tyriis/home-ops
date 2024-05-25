@@ -1,0 +1,32 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: backstage
+  description: Spotify's open-source platform unifying infrastructure tooling, services, and documentation for developers.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/backstage/backstage
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://backstage.techtales.io/
+      title: You are here :)
+      icon: dashboard
+      type: dashboard
+  tags:
+    - devops
+    - documentation-as-code
+    - documentation
+    - service-catalog
+    - idp
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops
+  dependsOn:
+    - resource:default/cert-manager
+  #  - resource:default/external-secrets
+  # providesApis:
+  #   - test-api

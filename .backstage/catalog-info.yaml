@@ -15,6 +15,7 @@ spec:
     - https://github.com/tyriis/home-ops/blob/main/.backstage/systems/talos-flux/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/systems/zigbee-bridge/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/atlantis/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/backstage/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/cert-manager/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/node-red/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/rook-ceph/catalog-info.yaml
