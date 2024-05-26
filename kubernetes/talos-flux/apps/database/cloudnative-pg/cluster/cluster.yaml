@@ -6,6 +6,7 @@ metadata:
   name: postgres
 spec:
   instances: 3
+  # renovate: depName=ghcr.io/cloudnative-pg/postgresql datasource=docker
   imageName: ghcr.io/cloudnative-pg/postgresql:15.3
   primaryUpdateStrategy: unsupervised
   storage:
