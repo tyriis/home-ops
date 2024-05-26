@@ -7,6 +7,7 @@ spec:
   type: url
   targets:
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/actions-runner-controller/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/hisense-aircon/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/argo-workflows/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/atlantis/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/backstage/catalog-info.yaml
