@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: hisense-aircon
+  description: This program implements the Ayla Networks LAN API to interact with HiSense WiFi Air Conditioner module, models AEH-W4B1 and AEH-W4E1, as well as Fujitsu FGLair.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/home-automation/aircon
+      title: Flux definition
+      icon: github
+      type: github-repository
+  tags:
+    - home-automation
+    - air-condition
+    - hisense
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops
+  # dependsOn:
+  #  - component:cert-manager
+  #  - component:traefik
+  # providesApis:
+  #   - test-api

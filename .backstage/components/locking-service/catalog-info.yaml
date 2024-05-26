@@ -3,24 +3,26 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: actions-runner-controller
-  description: A controller for managing GitHub Actions runners on Kubernetes for efficient CI/CD operations.
+  name: locking-service
+  description: Simple service to create auto expiring locks between resource reference and owner reference.
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/github/actions-runner-controller
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/home-automation/locking-service
       title: Flux definition
       icon: github
       type: github-repository
-    - url: https://github.com/actions/actions-runner-controller
+    - url: https://github.com/tyriis/locking-service
       title: Upstream Repository
       icon: github
       type: github-repository
   tags:
-    - devops
     - automation
-    - github-actions
-    - workflow
+    - home-automation
 spec:
   type: service
   lifecycle: production
   system: talos-flux
   owner: home-ops
+  dependsOn:
+    - component:dragonfly
+  providesApis:
+    - locking-service

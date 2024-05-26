@@ -1,0 +1,34 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: home-assistant
+  description: Home Assistant is a component for orchestrating smart home devices, providing automation and integration capabilities.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/home-automation/home-assistant
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://hass.techtales.io/
+      title: Home Assistant dashboard
+      icon: dashboard
+      type: dashboard
+    - url: https://www.home-assistant.io/
+      title: Home Assistant documentation
+      icon: docs
+      type: documentation
+  tags:
+    - home-automation
+    - iot
+    - smart-home
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops
+  dependsOn:
+    - component:cert-manager
+    - component:traefik
+    - component:cloudnative-pg
+    - system:nas

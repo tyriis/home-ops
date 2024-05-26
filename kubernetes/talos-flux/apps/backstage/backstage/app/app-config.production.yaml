@@ -52,6 +52,10 @@ backend:
   # ssl:
   #   ca: # if you have a CA file and want to verify it you can uncomment this section
   #     $file: <file-path>/ca/server.crt
+  reading:
+    allow:
+      - host: raw.githubusercontent.com
+        path: /tyriis/locking-service/main/openapi.yaml
 
 catalog:
   # Overrides the default list locations from app-config.yaml as these contain example data.
