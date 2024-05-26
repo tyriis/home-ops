@@ -10,4 +10,4 @@ spec:
   lifecycle: production
   owner: user:tyriis
   definition:
-    $openapi: https://raw.githubusercontent.com/tyriis/locking-service/main/openapi.yaml
+    $text: https://raw.githubusercontent.com/tyriis/locking-service/main/openapi.yaml
