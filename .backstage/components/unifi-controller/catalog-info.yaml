@@ -1,0 +1,33 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: unifi-controller
+  description: A component for managing the UniFi Controller, enabling network device administration and analytics.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/networking/unifi
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://unifi.ui.com/
+      title: UniFi Controller
+      icon: website
+      type: website
+    - url: https://unifi.techtales.io/
+      title: Controller Dashboard
+      icon: dashboard
+      type: dashboard
+  tags:
+    - networking
+    - controller
+    - analytics
+    - administration
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops
+  dependsOn:
+    - component:cert-manager
+    - component:traefik
