@@ -16,7 +16,6 @@ metadata:
       type: github-repository
   tags:
     - devops
-    - ci/cd
     - automation
     - github-actions
     - workflow

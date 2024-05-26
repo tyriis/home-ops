@@ -15,7 +15,6 @@ metadata:
       icon: dashboard
       type: dashboard
   tags:
-    - ci/cd
     - automation
     - pipelines-as-code
     - devops
