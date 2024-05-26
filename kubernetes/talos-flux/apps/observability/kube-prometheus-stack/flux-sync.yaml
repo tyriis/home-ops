@@ -5,6 +5,9 @@ kind: Kustomization
 metadata:
   name: apps-kube-prometheus-stack
   namespace: flux-system
+  annotations:
+    backstage.io/discovery: enabled
+    backstage.io/name: kube-prometheus-stack
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:

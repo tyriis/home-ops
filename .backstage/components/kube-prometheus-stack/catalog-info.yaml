@@ -1,0 +1,36 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: kube-prometheus-stack
+  description: The kube-prometheus-stack is a collection of Kubernetes manifests, Grafana dashboards, and Prometheus rules combined with Helm charts to provide a monitoring solution for your Kubernetes cluster.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/observability/kube-prometheus-stack
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://prometheus.techtales.io/
+      title: Prometheus Internal
+      icon: dashboard
+      type: dashboard
+    - url: https://alertmanager.techtales.io/
+      title: Alertmanager Internal
+      icon: dashboard
+      type: dashboard
+    - url: https://prometheus.io/
+      title: Prometheus Homepage
+      icon: website
+      type: website
+  tags:
+    - monitoring
+    - observability
+    - metrics
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops
+  dependsOn:
+    - component:cert-manager
+    - component:traefik
