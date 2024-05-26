@@ -1,0 +1,33 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: esphome
+  description: A component for managing ESPHome, enabling easy and efficient creation and management of smart home devices.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/home-automation/esphome
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://esphome.techtales.io/
+      title: ESPHome dashboard
+      icon: dashboard
+      type: dashboard
+    - url: https://esphome.io/
+      title: ESPHome documentation
+      icon: docs
+      type: documentation
+  tags:
+    - home-automation
+    - iot
+    - smart-home
+    - home-assistant
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops
+  dependsOn:
+    - component:cert-manager
+    - component:traefik
