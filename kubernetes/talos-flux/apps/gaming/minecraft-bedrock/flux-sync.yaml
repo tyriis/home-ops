@@ -25,6 +25,9 @@ kind: Kustomization
 metadata:
   name: apps-minecraft-bedrock
   namespace: flux-system
+  annotations:
+    backstage.io/discovery: enabled
+    backstage.io/name: minecraft-bedrock
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:

@@ -15,6 +15,7 @@ spec:
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/dragonfly/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/echo-server/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/hajimari/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/minecraft-bedrock/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/node-red/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/rook-ceph/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/tekton/catalog-info.yaml

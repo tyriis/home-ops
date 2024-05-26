@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: minecraft-bedrock
+  description: A Minecraft Bedrock server managed through Kubernetes for seamless multiplayer gaming experiences.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/gaming/minecraft-bedrock
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://www.minecraft.net/en-us/download/server/bedrock
+      title: Official Download
+      icon: link
+      type: download
+  tags:
+    - gaming
+    - multiplayer
+    - minecraft
+    - self-hosted
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops
