@@ -22,7 +22,7 @@ metadata:
     - dashboard
     - devops
 spec:
-  type: service
+  type: website
   lifecycle: production
   system: talos-flux
   owner: home-ops

@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: actions-runner-controller
+  description: A controller for managing GitHub Actions runners on Kubernetes for efficient CI/CD operations.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/github/actions-runner-controller
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/actions/actions-runner-controller
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+  tags:
+    - devops
+    - ci/cd
+    - automation
+    - github-actions
+    - workflow
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops

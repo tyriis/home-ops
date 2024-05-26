@@ -16,6 +16,7 @@ metadata:
   tags:
     - storage
     - core
+    - kubernetes
 spec:
   type: service
   lifecycle: production

@@ -24,7 +24,7 @@ metadata:
     - testing
     - http
 spec:
-  type: tool
+  type: service
   lifecycle: production
   system: talos-flux
   owner: home-ops

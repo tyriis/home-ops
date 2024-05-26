@@ -7,6 +7,9 @@ metadata:
   namespace: flux-system
   labels:
     substitution.flux.home.arpa/enabled: "true"
+  annotations:
+    backstage.io/discovery: enabled
+    backstage.io/name: actions-runner-controller
 spec:
   interval: 10m
   path: ./kubernetes/talos-flux/apps/github/actions-runner-controller/operator
