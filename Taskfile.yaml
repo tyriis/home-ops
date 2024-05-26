@@ -3,16 +3,17 @@
 version: "3"
 
 vars:
-  #
   PROJECT_DIR:
     sh: "git rev-parse --show-toplevel"
-  FLUX_DIR: "{{.PROJECT_DIR}}/cluster"
+  DEVENV_DIR: "{{.PROJECT_DIR}}/devenv"
+  FLUX_DIR: "{{.PROJECT_DIR}}/kubernetes"
   TERRAFORM_DIR: "{{.PROJECT_DIR}}/infra/terraform"
 
 includes:
-  pre-commit: .taskfiles/pre-commit/Taskfile.yaml
-  lint: .taskfiles/lint/Taskfile.yaml
-  terraform: .taskfiles/terraform/Taskfile.yaml
-  talos: .taskfiles/talos/Taskfile.yaml
-  rook-ceph: .taskfiles/rook-ceph/Taskfile.yaml
   debug: .taskfiles/debug-tasks/Taskfile.yaml
+  devenv: .taskfiles/devenv/Taskfile.yaml
+  lint: .taskfiles/lint/Taskfile.yaml
+  pre-commit: .taskfiles/pre-commit/Taskfile.yaml
+  rook-ceph: .taskfiles/rook-ceph/Taskfile.yaml
+  talos: .taskfiles/talos/Taskfile.yaml
+  terraform: .taskfiles/terraform/Taskfile.yaml

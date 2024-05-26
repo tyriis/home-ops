@@ -1,0 +1,78 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/taskfile.json
+version: "3"
+
+includes:
+  check: check.yaml
+  flux: flux.yaml
+  cluster: cluster.yaml
+
+tasks:
+  sync:
+    desc: sync oci folder with local oci registry and reconcile cluster
+    dir: "{{.PROJECT_DIR}}"
+    cmds:
+      - task: flux:push-artifact
+      - task: flux:reconcile-oci
+
+  pre-flight:
+    desc: run a pre-flight check for cluster setup
+    dir: "{{.PROJECT_DIR}}"
+    cmds:
+      - task: check:dependencies
+      - task: check:ports
+
+  setup:
+    desc: full setup of devenv with local kind cluster, will destroy existing devenv!
+    dir: "{{.PROJECT_DIR}}"
+    deps:
+      - task: check:dependencies
+      - task: destroy
+    cmds:
+      - task: check:ports
+      - task: cluster:create
+      - task: flux:bootstrap
+      - task: flux:wait-sync-complete
+
+  start:
+    desc: start the devenv
+    silent: true
+    ignore_error: true
+    cmds:
+      - docker start home-ops-kind-registry
+      - docker start home-ops-devenv-control-plane
+      - docker start home-ops-devenv-worker
+      # - docker start home-ops-devenv-worker2
+      # - docker start home-ops-devenv-worker3
+      - kubectl config use-context kind-home-ops-devenv
+
+  stop:
+    desc: stop the devenv
+    silent: true
+    ignore_error: true
+    cmds:
+      # - docker stop home-ops-devenv-worker3
+      # - docker stop home-ops-devenv-worker2
+      - docker stop home-ops-devenv-worker
+      - docker stop home-ops-devenv-control-plane
+      - docker stop home-ops-kind-registry
+
+  destroy:
+    desc: destroy the devenv, will delete all resources!
+    dir: "{{.PROJECT_DIR}}"
+    cmds:
+      - task: cluster:delete-cluster
+      - task: cluster:delete-terraform
+
+  lint:
+    desc: lint codebase
+    dir: "{{.PROJECT_DIR}}"
+    cmds:
+      - task: pre-commit:init
+      - task: pre-commit:run
+
+  update:
+    desc: update codebase - upgrade terraform
+    dir: "{{.PROJECT_DIR}}"
+    cmds:
+      - task: cluster:upgrade-terraform

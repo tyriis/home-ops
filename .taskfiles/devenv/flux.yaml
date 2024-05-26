@@ -1,0 +1,39 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/taskfile.json
+version: "3"
+
+tasks:
+  bootstrap:
+    desc: bootstrap of flux-system
+    internal: true
+    cmds:
+      - task: push-artifact
+      - kustomize build {{.DEVENV_DIR}}/oci --load-restrictor LoadRestrictionsNone | kubectl apply -f -
+      - kubectl wait --for condition=established --timeout=60s crd/ocirepositories.source.toolkit.fluxcd.io
+      - kubectl apply -f {{.DEVENV_DIR}}/oci/flux/repositories/oci/home-ops-devenv.yaml
+      - kubectl apply -f {{.DEVENV_DIR}}/oci/flux/flux-sync.yaml
+      - task: reconcile-oci
+
+  push-artifact:
+    desc: push to local oci registry
+    internal: true
+    cmds:
+      - |
+        flux push artifact oci://localhost:5050/home-ops-devenv:local \
+          --path="{{.PROJECT_DIR}}" \
+          --source="local" \
+          --revision="latest"
+
+  reconcile-oci:
+    desc: reconcile local oci registry
+    internal: true
+    cmds:
+      - kubectl -n flux-system wait ocirepository/home-ops-devenv --for=condition=ready --timeout=5m
+      - flux reconcile source oci home-ops-devenv
+
+  wait-sync-complete:
+    desc: wait for flux system to be ready
+    internal: true
+    cmds:
+      - kubectl -n flux-system wait kustomization/flux-sync --for=condition=ready --timeout=5m
+      - kubectl -n flux-system wait kustomization/apps-sync --for=condition=ready --timeout=5m
