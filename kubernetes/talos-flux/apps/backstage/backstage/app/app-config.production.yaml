@@ -54,8 +54,8 @@ backend:
   #     $file: <file-path>/ca/server.crt
   reading:
     allow:
-      - host: "https://raw.githubusercontent.com"
-        path: "/tyriis/locking-service/main/openapi.yaml"
+      - host: raw.githubusercontent.com
+        path: /tyriis/locking-service/main/openapi.yaml
 
 catalog:
   # Overrides the default list locations from app-config.yaml as these contain example data.
