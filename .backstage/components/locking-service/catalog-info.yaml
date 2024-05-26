@@ -1,0 +1,28 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: locking-service
+  description: Simple service to create auto expiring locks between resource reference and owner reference.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/home-automation/locking-service
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/tyriis/locking-service
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+  tags:
+    - automation
+    - home-automation
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops
+  dependsOn:
+    - component:dragonfly
+  providesApis:
+    - locking-service

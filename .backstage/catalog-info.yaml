@@ -6,6 +6,7 @@ metadata:
 spec:
   type: url
   targets:
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/api/locking-service/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/actions-runner-controller/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/argo-workflows/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/atlantis/catalog-info.yaml
@@ -19,6 +20,7 @@ spec:
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/hajimari/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/hisense-aircon/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/home-assistant/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/locking-service/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/minecraft-bedrock/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/node-red/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/rook-ceph/catalog-info.yaml

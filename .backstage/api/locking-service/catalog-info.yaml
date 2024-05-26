@@ -1,0 +1,13 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: locking-service
+  description: API for managing locks between resource reference and owner reference.
+spec:
+  type: openapi
+  lifecycle: production
+  owner: user:tyriis
+  definition:
+    $openapi: https://raw.githubusercontent.com/tyriis/locking-service/main/openapi.yaml
