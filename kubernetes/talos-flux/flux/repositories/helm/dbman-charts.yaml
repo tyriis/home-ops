@@ -9,4 +9,4 @@ spec:
   type: oci
   interval: 1h
   timeout: 3m
-  url: oci://ghcr.io/hef/charts/dbman
+  url: oci://ghcr.io/hef/charts
