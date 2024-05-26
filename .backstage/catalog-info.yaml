@@ -18,6 +18,7 @@ spec:
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/dragonfly/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/echo-server/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/esphome/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/grafana/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/hajimari/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/hisense-aircon/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/home-assistant/catalog-info.yaml

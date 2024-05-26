@@ -1,0 +1,33 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: grafana
+  description: Grafana is an open-source platform for monitoring and observability, with a focus on providing beautiful, interactive visualizations.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/observability/grafana
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://grafana.techtales.io/
+      title: Grafana Dashboard
+      icon: dashboard
+      type: dashboard
+    - url: https://grafana.com/
+      title: Grafana Homepage
+      icon: website
+      type: website
+  tags:
+    - monitoring
+    - observability
+    - visualisation
+    - metrics
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops
+  dependsOn:
+    - component:cert-manager
+    - component:traefik
