@@ -24,6 +24,7 @@ spec:
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/home-assistant/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/kube-prometheus-stack/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/locking-service/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/loki/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/minecraft-bedrock/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/node-red/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/rook-ceph/catalog-info.yaml

@@ -1,0 +1,25 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: loki
+  description: Loki is a horizontally-scalable, highly-available, multi-tenant log aggregation system inspired by Prometheus.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/observability/loki
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://grafana.com/oss/loki/
+      title: Loki Homepage
+      icon: website
+      type: website
+  tags:
+    - monitoring
+    - observability
+    - logging
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops
