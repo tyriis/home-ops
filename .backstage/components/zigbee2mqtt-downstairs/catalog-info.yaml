@@ -1,0 +1,38 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: zigbee2mqtt-downstairs
+  description: A component managing Zigbee2mqtt downstairs, facilitating wireless device communication in smart homes.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/home-automation/zigbee2mqtt/downstairs
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://www.zigbee2mqtt.io/
+      title: Documentation
+      icon: docs
+      type: documentation
+    - url: https://zigbee2mqtt-downstairs.techtales.io/
+      title: Zigbee2mqtt dashboard
+      icon: dashboard
+      type: dashboard
+  tags:
+    - home-automation
+    - iot
+    - smart-home
+    - zigbee
+    - mqtt
+    - home-assistant
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops
+  dependsOn:
+    - component:cert-manager
+    - component:traefik
+    - component:rook-ceph
+    - system:mqtt.home
+    - system:zigbee-bridge

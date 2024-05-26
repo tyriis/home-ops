@@ -27,6 +27,9 @@ spec:
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/tekton/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/traefik-forward-auth/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/traefik/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/zigbee2mqtt-basement/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/zigbee2mqtt-downstairs/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/zigbee2mqtt-upstairs/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/domains/home/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/systems/kube-nas/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/systems/mqtt.home/catalog-info.yaml

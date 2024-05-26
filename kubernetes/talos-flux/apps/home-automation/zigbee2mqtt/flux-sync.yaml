@@ -26,6 +26,9 @@ kind: Kustomization
 metadata:
   name: apps-zigbee2mqtt-basement
   namespace: flux-system
+  annotations:
+    backstage.io/discovery: enabled
+    backstage.io/name: zigbee2mqtt-basement
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
@@ -68,6 +71,9 @@ kind: Kustomization
 metadata:
   name: apps-zigbee2mqtt-downstairs
   namespace: flux-system
+  annotations:
+    backstage.io/discovery: enabled
+    backstage.io/name: zigbee2mqtt-downstairs
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
@@ -109,6 +115,9 @@ kind: Kustomization
 metadata:
   name: apps-zigbee2mqtt-upstairs
   namespace: flux-system
+  annotations:
+    backstage.io/discovery: enabled
+    backstage.io/name: zigbee2mqtt-upstairs
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
