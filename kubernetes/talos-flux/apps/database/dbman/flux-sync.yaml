@@ -6,7 +6,7 @@ metadata:
   name: apps-dbman
   namespace: flux-system
 spec:
-  path: ./kubernetes/talos-flux/apps/database/dbman/app
+  path: ./kubernetes/talos-flux/apps/database/dbman/operator
   prune: true
   sourceRef:
     kind: GitRepository
