@@ -1,0 +1,32 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: cloudflared
+  description: A component for managing Cloudflare's cloudflared service, providing secure, fast networking tunnels.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/networking/cloudflared
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://one.dash.cloudflare.com/?to=/:account/access/tunnels
+      title: Cloudflare dashboard
+      icon: dashboard
+      type: dashboard
+    - url: https://www.cloudflare.com/en-gb/products/tunnel/
+      title: Cloudflare Tunnel
+      icon: website
+      type: website
+  tags:
+    - cloudflare
+    - cloudflared
+    - networking
+    - tunnel
+    - security
+    - vpc
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops

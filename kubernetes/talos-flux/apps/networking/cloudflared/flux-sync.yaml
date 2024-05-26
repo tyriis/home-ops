@@ -5,6 +5,9 @@ kind: Kustomization
 metadata:
   name: apps-cloudflared
   namespace: flux-system
+  annotations:
+    backstage.io/discovery: enabled
+    backstage.io/name: cloudflared
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:

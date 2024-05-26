@@ -12,6 +12,7 @@ spec:
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/atlantis/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/backstage/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/cert-manager/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/cloudflared/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/cloudnative-pg/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/discord-musicbot/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/dragonfly/catalog-info.yaml
