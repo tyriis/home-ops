@@ -19,7 +19,6 @@ metadata:
     - security
     - encryption
     - certificates
-    - X.509
 spec:
   type: service
   lifecycle: production
