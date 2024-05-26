@@ -12,7 +12,7 @@ metadata:
       type: github-repository
     - url: https://argoproj.github.io/workflows/
       title: Upstream Documentation
-      icon: book
+      icon: docs
       type: documentation
     - url: https://argo-workflows.techtales.io/
       title: Service Endpoint

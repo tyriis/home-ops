@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: discord-musicbot
+  description: A Discord bot providing music streaming capabilities to enhance user experience in voice channels.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/discord/musicbot
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/Just-Some-Bots/MusicBot
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+    - url: https://just-some-bots.github.io/MusicBot/
+      title: Documentation
+      icon: docs
+      type: documentation
+  tags:
+    - discord
+    - music
+    - streaming
+    - bot
+    - audio
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops

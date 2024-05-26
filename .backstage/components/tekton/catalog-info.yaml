@@ -1,0 +1,30 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: tekton
+  description: Tekton is a powerful and flexible open-source framework for creating CI/CD systems, allowing developers to build, test, and deploy across cloud providers and on-premises systems.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/devops/tekton
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://tekton.techtales.io/
+      title: Tekton Dashboard
+      icon: dashboard
+      type: dashboard
+  tags:
+    - ci/cd
+    - automation
+    - pipelines-as-code
+    - devops
+    - workflows
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops
+  dependsOn:
+    - component:cert-manager
+    - component:traefik
