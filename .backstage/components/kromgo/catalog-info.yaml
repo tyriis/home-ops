@@ -1,0 +1,36 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: kromgo
+  description: Easily expose preconfigured prometheus metrics to the outside using badges.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/observability/kromgo
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/kashalls/kromgo
+      title: Github Repository
+      icon: github
+      type: github-repository
+    - url: https://kromgo.techtales.io/
+      title: Kromgo API Endpoint
+      icon: website
+      type: website
+  tags:
+    - monitoring
+    - observability
+    - metrics
+    - prometheus
+    - badges
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops
+  dependsOn:
+    - component:cert-manager
+    - component:traefik
+    - component:kube-prometheus-stack
+    - component:cloudflared
