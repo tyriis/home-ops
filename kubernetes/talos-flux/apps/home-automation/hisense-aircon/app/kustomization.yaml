@@ -7,5 +7,5 @@ resources:
   - aircon-options.sops.yaml
   - helm-release.yaml
 commonLabels:
-  app.kubernetes.io/instance: aircon
-  app.kubernetes.io/name: aircon
+  app.kubernetes.io/instance: hisense-aircon
+  app.kubernetes.io/name: hisense-aircon
