@@ -15,7 +15,7 @@ metadata:
       icon: github
       type: github-repository
     - url: https://hajimari.techtales.io/
-      title: You are here :)
+      title: Hajimari dashboard
       icon: dashboard
       type: dashboard
   tags:
