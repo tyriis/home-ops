@@ -9,13 +9,14 @@ metadata:
   description: |
     Node-RED is a visual programming tool for wiring together devices, APIs, and online services in an intuitive flow-based interface.
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/home-automation
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/home-automation/node-red
       title: Flux definition
       icon: github
       type: github-repository
     - url: https://nodered.org/
       title: nodered.org
-      type: homepage
+      icon: docs
+      type: documentation
   tags:
     - home-automation
     - low-code
@@ -25,10 +26,8 @@ spec:
   lifecycle: production
   system: talos-flux
   owner: home-ops
-  # dependsOn:
-  #   - resource:default/
-  # providesApis:
-  #   - test-api
-  # consumesApis:
-  #   - home-assistant
-  #   - redis
+  dependsOn:
+    - component:cert-manager
+    - component:traefik
+  consumesApis:
+    - locking-service
