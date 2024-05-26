@@ -25,7 +25,7 @@ metadata:
     - infrastructure-as-code
 spec:
   type: service
-  lifecycle: production
+  lifecycle: experimental
   system: talos-flux
   owner: home-ops
   dependsOn:
