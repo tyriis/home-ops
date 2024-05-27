@@ -1,0 +1,9 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/taskfile.json
+version: "3"
+
+tasks:
+  build:
+    desc: build backstage components
+    cmds:
+      - npx --yes zx --install scripts/backstage-helper/main.mjs

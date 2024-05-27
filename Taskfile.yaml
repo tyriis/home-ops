@@ -10,6 +10,7 @@ vars:
   TERRAFORM_DIR: "{{.PROJECT_DIR}}/infra/terraform"
 
 includes:
+  backstage: .taskfiles/backstage/Taskfile.yaml
   debug: .taskfiles/debug-tasks/Taskfile.yaml
   devenv: .taskfiles/devenv/Taskfile.yaml
   lint: .taskfiles/lint/Taskfile.yaml
