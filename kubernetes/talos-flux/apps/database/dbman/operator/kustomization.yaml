@@ -5,3 +5,4 @@ kind: Kustomization
 namespace: database
 resources:
   - helm-release.yaml
+  - database.yaml
