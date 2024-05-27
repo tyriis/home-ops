@@ -9,6 +9,8 @@ metadata:
     backstage.io/discovery: enabled
     backstage.io/name: cloudnative-pg
 spec:
+  dependsOn:
+    - name: apps-dbman
   path: ./kubernetes/talos-flux/apps/database/cloudnative-pg/app
   prune: true
   sourceRef:
