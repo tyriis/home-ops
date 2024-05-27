@@ -1,0 +1,28 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: dbman
+  description: Create and drop databases, and an associated role for postgres in kubernetes.
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/database/dbman
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/hef/dbman
+      title: GitHub repository
+      icon: website
+      type: website
+  tags:
+    - database
+    - postgresql
+    - automation
+    - gitops
+spec:
+  type: service
+  lifecycle: experimental
+  system: talos-flux
+  owner: home-ops

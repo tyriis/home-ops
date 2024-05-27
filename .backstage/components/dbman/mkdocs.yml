@@ -1,0 +1,7 @@
+---
+site_name: dbman
+nav:
+  - Home: index.md
+
+plugins:
+  - techdocs-core
