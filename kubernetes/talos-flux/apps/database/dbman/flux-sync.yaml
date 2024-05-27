@@ -5,6 +5,9 @@ kind: Kustomization
 metadata:
   name: apps-dbman
   namespace: flux-system
+  annotations:
+    backstage.io/discovery: enabled
+    backstage.io/name: dbman
 spec:
   path: ./kubernetes/talos-flux/apps/database/dbman/operator
   prune: true
