@@ -5,6 +5,7 @@ kind: Kustomization
 namespace: home-automation
 resources:
   - database.yaml
+  - database2.yaml
   - home-assistant-ssh.sops.yaml
   - home-assistant-secrets.sops.yaml
   - storage-class.yaml
