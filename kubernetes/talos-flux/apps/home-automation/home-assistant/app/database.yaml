@@ -3,7 +3,6 @@ apiVersion: dbman.hef.sh/v1alpha3
 kind: Database
 metadata:
   name: hass
-  namespace: database
 spec:
   credentials:
     usernameSecretRef:
