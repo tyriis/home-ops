@@ -1,0 +1,12 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - helm-release.yaml
+configMapGenerator:
+  - name: blocky-config
+    files:
+      - config.yml=./resources/config.yaml
+generatorOptions:
+  disableNameSuffixHash: true

@@ -128,7 +128,7 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           hajimari.io/enable: "true"
-          hajimari.io/icon: "wifi-cog"
+          hajimari.io/icon: "simple-icons:ubiquiti"
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
         className: "traefik"
         hosts:
