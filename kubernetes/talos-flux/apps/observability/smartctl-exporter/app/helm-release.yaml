@@ -27,17 +27,9 @@ spec:
       namespace: observability
   values:
     fullnameOverride: *app
-    extraInstances:
-      - config:
-          devices:
-            - /dev/nvme0n1
-            - /dev/sda
-          nodeSelector:
-            node-role.kubernetes.io/control-plane: ""
-      - config:
-          devices:
-            - /dev/sda
-          nodeSelector:
-            node-role.kubernetes.io/worker: ""
+    config:
+      devices:
+        - /dev/nvme0n1
+        - /dev/sda
     serviceMonitor:
       enabled: true
