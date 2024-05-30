@@ -31,5 +31,13 @@ spec:
       devices:
         - /dev/nvme0n1
         - /dev/sda
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: ""
+    extraInstances:
+      - config:
+          devices:
+            - /dev/sda
+          nodeSelector:
+            node-role.kubernetes.io/worker: ""
     serviceMonitor:
       enabled: true
