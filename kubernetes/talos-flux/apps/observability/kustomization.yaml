@@ -12,5 +12,6 @@ resources:
   - ./loki/flux-sync.yaml
   - ./opnsense-exporter/flux-sync.yaml
   - ./promtail/flux-sync.yaml
+  - ./smartctl-exporter/flux-sync.yaml
   - ./speedtest-exporter/flux-sync.yaml
   - ./uptime-kuma/flux-sync.yaml
