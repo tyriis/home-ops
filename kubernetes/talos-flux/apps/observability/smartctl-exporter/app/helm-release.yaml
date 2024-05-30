@@ -30,8 +30,11 @@ spec:
     config:
       devices:
         - /dev/sda
-        - /dev/nvme0n1
+    extraInstances:
+      - config:
+          devices:
+            - /dev/nvme0n1
+          nodeSelector:
+            node-role.kubernetes.io/control-plane: ""
     serviceMonitor:
       enabled: true
-    prometheusRules:
-      enabled: false
