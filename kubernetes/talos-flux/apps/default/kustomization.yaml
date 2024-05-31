@@ -6,3 +6,4 @@ resources:
   - ./namespace.yaml
   - ./echo-server/flux-sync.yaml
   - ./hajimari/flux-sync.yaml
+  - ./homepage/flux-sync.yaml

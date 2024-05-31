@@ -1,0 +1,30 @@
+---
+- Favorites:
+    - My GitHub Repo:
+        icon: si-github
+        href: https://github.com/tyriis
+        description: My Code Repository
+    - Grafana Dashboard:
+        icon: si-grafana
+        href: https://grafana.techtales.io
+        description: My Cluster Metrics Visualization
+    - k8s-at-home-search:
+        icon: si-kubernetes
+        href: https://kubesearch.dev/
+        description: Kubesearch home-ops resources
+    - onedr0p home-ops:
+        icon: si-github
+        href: https://github.com/onedr0p/home-ops
+        description: onedr0p HomeOps Repository
+    - bjw-s home-ops:
+        icon: si-github
+        href: https://github.com/bjw-s/home-ops
+        description: bjw-s HomeOps Repository
+    - bjw-s Chart Values:
+        icon: si-github
+        href: https://github.com/bjw-s/helm-charts/tree/main/charts/library/common#values
+        description: app-template Helm Chart Values
+    - NixOS Search:
+        icon: si-nixos
+        href: https://search.nixos.org
+        description: Search NixOS Packages and Options
