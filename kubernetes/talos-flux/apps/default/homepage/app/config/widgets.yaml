@@ -1,7 +1,4 @@
 ---
-- search:
-    provider:
-      - google
 - kubernetes:
     cluster:
       show: true
@@ -14,3 +11,11 @@
       cpu: true
       memory: true
       showLabel: true
+- datetime:
+    text_size: xl
+    locale: en-GB
+    format:
+      dateStyle: short
+      timeStyle: medium
+      hourCycle: h23
+      timeZone: Europe/Vienna
