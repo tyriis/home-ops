@@ -11,13 +11,13 @@
       cpu: true
       memory: true
       showLabel: true
-- openmeteo:
-    label: Weather
-    timezone: Europe/Vienna
-    units: metric
-    cache: 10
+# - openmeteo:
+#     label: Weather
+#     timezone: Europe/Vienna
+#     units: metric
+#     cache: 10
 - datetime:
-    # text_size: xl
+    text_size: xs
     locale: en-GB
     format:
       dateStyle: short
