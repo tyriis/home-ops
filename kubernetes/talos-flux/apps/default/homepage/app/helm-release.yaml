@@ -25,6 +25,8 @@ spec:
   values:
     controllers:
       homepage:
+        replicas: 3
+        strategy: RollingUpdate
         pod:
           annotations:
             reloader.stakater.com/auto: "true"
