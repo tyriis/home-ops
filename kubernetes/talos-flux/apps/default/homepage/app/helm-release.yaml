@@ -47,9 +47,9 @@ spec:
               requests:
                 cpu: 25m
                 memory: 50Mi
-            envFrom:
-              - secretRef:
-                  name: homepage-secret
+            # envFrom:
+            #   - secretRef:
+            #       name: homepage-secret
     service:
       main:
         controller: homepage
