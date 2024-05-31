@@ -11,3 +11,6 @@
       label: talos-flux
     nodes:
       show: true
+      cpu: true
+      memory: true
+      showLabel: true

@@ -7,7 +7,9 @@ target: _blank
 layout:
   Favorites:
     style: row
-    columns: 3
+    columns: 4
+  kubernetes:
+    style: row
 quicklaunch:
   searchDescription: true
   hideInternetSearch: true
