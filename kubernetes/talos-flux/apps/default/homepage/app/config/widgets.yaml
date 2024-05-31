@@ -1,7 +1,7 @@
 ---
 - kubernetes:
     cluster:
-      show: true
+      show: false
       cpu: false
       memory: false
       showLabel: true
