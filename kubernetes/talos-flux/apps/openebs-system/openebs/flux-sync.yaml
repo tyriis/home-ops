@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: ./kubernetes/talos-flux/apps/openebs/openebs/app
+  path: ./kubernetes/talos-flux/apps/openebs-system/openebs/app
   prune: false
   sourceRef:
     kind: GitRepository
