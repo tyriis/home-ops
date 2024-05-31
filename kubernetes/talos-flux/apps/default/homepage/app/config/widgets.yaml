@@ -21,6 +21,6 @@
     locale: en-GB
     format:
       dateStyle: short
-      timeStyle: medium
+      timeStyle: short
       hourCycle: h23
       timeZone: Europe/Vienna
