@@ -17,7 +17,7 @@
     units: metric
     cache: 10
 - datetime:
-    text_size: xl
+    # text_size: xl
     locale: en-GB
     format:
       dateStyle: short
