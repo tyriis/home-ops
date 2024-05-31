@@ -2,7 +2,7 @@
 title: My Personal Home Dashboard
 theme: dark
 color: slate
-headerStyle: boxedWidgets
+headerStyle: clean
 iconStyle: theme
 target: _blank
 layout:

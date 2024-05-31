@@ -2,8 +2,8 @@
 - kubernetes:
     cluster:
       show: true
-      cpu: true
-      memory: true
+      cpu: false
+      memory: false
       showLabel: true
       label: talos-flux
     nodes:
