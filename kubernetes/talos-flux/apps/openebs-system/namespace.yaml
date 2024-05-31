@@ -3,11 +3,12 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: openebs-system
-  annotations:
-    kustomize.toolkit.fluxcd.io/prune: disabled
-    volsync.backube/privileged-movers: "true"
+  labels:
     pod-security.kubernetes.io/enforce: privileged
     pod-security.kubernetes.io/enforce-version: latest
+    kustomize.toolkit.fluxcd.io/prune: disabled
+  annotations:
+    volsync.backube/privileged-movers: "true"
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/notification.toolkit.fluxcd.io/provider_v1beta3.json
 apiVersion: notification.toolkit.fluxcd.io/v1beta3
