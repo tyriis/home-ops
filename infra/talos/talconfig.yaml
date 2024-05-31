@@ -107,7 +107,6 @@ controlPlane:
                 - bind
                 - rw
                 - rshared
-        defaultRuntimeSeccompProfileEnabled: true
         files:
           - op: create
             path: /etc/cri/conf.d/20-customization.part
@@ -172,7 +171,6 @@ worker:
                 - bind
                 - rw
                 - rshared
-        defaultRuntimeSeccompProfileEnabled: true
         files:
           - op: create
             path: /etc/cri/conf.d/20-customization.part
