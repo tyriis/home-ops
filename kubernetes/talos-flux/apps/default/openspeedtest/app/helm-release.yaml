@@ -1,0 +1,91 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: openspeedtest
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.2.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+
+  values:
+    # https://github.com/bjw-s/helm-charts/tree/main/charts/other/app-template
+    controllers:
+      openspeedtest:
+        replicas: 1
+        containers:
+          app:
+            image:
+              repository: openspeedtest/latest
+              tag: v2.0.5@sha256:bbddd8eda80cc4deb2a5702efd0acd826137650ba0bfcc6720f896c74bca02ee
+            resources:
+              requests:
+                cpu: 10m
+                memory: 100Mi
+              limits:
+                memory: 100Mi
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 3000
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+
+    service:
+      app:
+        controller: openspeedtest
+        ports:
+          http:
+            port: *port
+            protocol: TCP
+
+    ingress:
+      app:
+        enabled: true
+        className: traefik
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/tls-acme: "true"
+          traefik.ingress.kubernetes.io/router.middlewares: traefik-ingress-sso@kubernetescrd
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/affinity: "true"
+          traefik.ingress.kubernetes.io/router.tls: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:speedometer
+          hajimari.io/group: network
+        hosts:
+          - host: &host speedtest.techtales.io
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+            secretName: "{{ .Release.Name }}-tls"
