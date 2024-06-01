@@ -1,0 +1,13 @@
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: system:i-see-dead-pods
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:i-see-dead-pods
+subjects:
+  - kind: ServiceAccount
+    name: i-see-dead-pods
+    namespace: devenv
