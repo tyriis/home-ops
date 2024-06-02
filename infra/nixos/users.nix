@@ -22,7 +22,7 @@
       let
         authorizedKeys = pkgs.fetchurl {
           url = "https://github.com/tyriis.keys";
-          sha256 = "HQJOzIzdTcapfYRMueESfmlWGaylteMBLU8AqqwMTS4=";
+          sha256 = "pMt/WQcQJQ4vf0Z61rOc2u3jo5ylpmfK3Y5YKQyI4bU=";
         };
       in
       pkgs.lib.splitString "\n" (builtins.readFile authorizedKeys);
