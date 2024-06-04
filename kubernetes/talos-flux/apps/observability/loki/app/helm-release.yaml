@@ -94,6 +94,9 @@ spec:
       ingress:
         # use dedicated ingress definition
         enabled: false
+      service:
+        labels:
+          prometheus.io/service-monitor: "false"
 
     write:
       replicas: 2
