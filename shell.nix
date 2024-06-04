@@ -21,6 +21,6 @@ pkgs.mkShell {
     pkgs.tfsec
     pkgs.vault
     pkgs.trivy
-    (builtins.getFlake "github:budimanjojo/talhelper").packages.x86_64-linux.default
+    # (builtins.getFlake "github:budimanjojo/talhelper").packages.x86_64-linux.default
   ];
 }
