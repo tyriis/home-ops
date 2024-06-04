@@ -34,7 +34,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: cilium
+    - name: apps-cilium
   path: ./kubernetes/talos-flux/apps/kube-system/cilium/config
   prune: false # do not remove our network stack by accident!
   sourceRef:
