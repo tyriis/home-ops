@@ -113,6 +113,9 @@
     kubectl
     kubernetes-helm
     k9s
+
+    # devenv
+    # mise
   ];
 
   # basic configuration of git, please change to your own
@@ -144,6 +147,9 @@
   #     line_break.disabled = true;
   #   };
   # };
+
+  # mise a modern development environment manager
+  programs.mise.enable = true;
 
   # alacritty - a cross-platform, GPU-accelerated terminal emulator
   programs.alacritty = {
