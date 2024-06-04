@@ -174,6 +174,13 @@
     alacritty
     nodePackages.zx
     unstable.google-chrome
+
+    # build tools
+    gcc
+    gnumake
+
+    # python
+    python3
     # google-chrome
   ];
 
