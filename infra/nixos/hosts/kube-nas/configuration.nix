@@ -12,6 +12,7 @@
       # Include nfs config.
       ./nfs.nix
       ../../users.nix
+      ../../modules/neovim.nix
     ];
 
   # enable nix-flakes
@@ -217,10 +218,4 @@
   # Enable VSCode server
   # https://nixos.wiki/wiki/Visual_Studio_Code#nix-ld
   programs.nix-ld.enable = true;
-
-  # Enable neovim as default editor.
-  programs.neovim.enable = true;
-  programs.neovim.defaultEditor = true;
-  programs.neovim.vimAlias = true;
-  programs.neovim.viAlias = true;
 }

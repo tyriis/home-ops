@@ -16,6 +16,7 @@
       ../../users.nix
       ../../fonts.nix
       ../../modules/openssh.nix
+      ../../modules/neovim.nix
     ];
 
   # enable nix-flakes
@@ -102,7 +103,7 @@
   #  };
 
 
-  # Enable the Plasma 5 Desktop Environment.
+  # Enable the Plasma 6 Desktop Environment.
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
 
@@ -191,12 +192,6 @@
 
   # Enable VSCode server.
   programs.nix-ld.enable = true;
-
-  # Enable neovim as default editor.
-  programs.neovim.enable = true;
-  programs.neovim.defaultEditor = true;
-  programs.neovim.vimAlias = true;
-  programs.neovim.viAlias = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
