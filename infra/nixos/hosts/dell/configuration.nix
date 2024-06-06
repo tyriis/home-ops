@@ -182,6 +182,8 @@
     # python
     python3
     # google-chrome
+    distrobox
+
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -199,6 +201,9 @@
 
   # Enable VSCode server.
   programs.nix-ld.enable = true;
+
+  # Enable docker
+  virtualisation.docker.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
