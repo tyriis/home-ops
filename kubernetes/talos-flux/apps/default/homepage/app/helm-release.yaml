@@ -16,12 +16,13 @@ spec:
         namespace: flux-system
       interval: 15m
   install:
-    createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+      strategy: rollback
   values:
     controllers:
       homepage:
@@ -30,6 +31,13 @@ spec:
         pod:
           annotations:
             reloader.stakater.com/auto: "true"
+          securityContext:
+            fsGroup: 2000
+            runAsGroup: 3000
+            runAsNonRoot: true
+            runAsUser: 1000
+            seccompProfile:
+              type: RuntimeDefault
         containers:
           main:
             image:
@@ -52,6 +60,10 @@ spec:
             # envFrom:
             #   - secretRef:
             #       name: homepage-secret
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
     service:
       main:
         controller: homepage
