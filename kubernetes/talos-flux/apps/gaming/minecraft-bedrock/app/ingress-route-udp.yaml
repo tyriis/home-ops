@@ -4,13 +4,12 @@ kind: IngressRouteUDP
 metadata:
   name: minecraft-bedrock
   namespace: gaming
-
 spec:
-  entryPoints: # [1]
-    - "minecraft"
-  routes: # [2]
-    - services: # [3]
-        - name: minecraft-bedrock # [4]
-          port: 19132 # [5]
-          weight: 10 # [6]
-          nativeLB: true # [7]
+  entryPoints:
+    - minecraft
+  routes:
+    - services:
+        - name: minecraft-bedrock
+          port: 19132
+          weight: 10
+          nativeLB: true
