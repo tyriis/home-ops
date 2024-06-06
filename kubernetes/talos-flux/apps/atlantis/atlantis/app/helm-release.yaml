@@ -91,8 +91,8 @@ spec:
         hajimari.io/icon: simple-icons:terraform
         hajimari.io/enable: "true"
         gethomepage.dev/enabled: "true"
-        gethomepage.dev/description: Automated Terraform GitOps Workflows
-        gethomepage.dev/group: GitOps
+        gethomepage.dev/description: Terraform Pull Request Automation
+        gethomepage.dev/group: Development
         gethomepage.dev/icon: si-terraform
         gethomepage.dev/name: Atlantis
         gethomepage.dev/weight: "10" # optional
