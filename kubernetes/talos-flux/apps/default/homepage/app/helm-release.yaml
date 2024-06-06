@@ -32,10 +32,9 @@ spec:
           annotations:
             reloader.stakater.com/auto: "true"
           securityContext:
-            fsGroup: 2000
-            runAsGroup: 3000
+            runAsGroup: 65534
             runAsNonRoot: true
-            runAsUser: 1000
+            runAsUser: 65534
             seccompProfile:
               type: RuntimeDefault
         containers:
