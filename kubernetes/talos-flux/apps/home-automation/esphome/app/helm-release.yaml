@@ -71,6 +71,12 @@ spec:
           hajimari.io/appName: *app
           hajimari.io/enable: "true"
           hajimari.io/icon: simple-icons:esphome
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Reimagining DIY Home Automation
+          gethomepage.dev/group: Home Automation
+          gethomepage.dev/icon: esphome
+          gethomepage.dev/name: ESPHome
+          gethomepage.dev/weight: "10" # optional
         hosts:
           - host: &host "{{ .Release.Name }}.techtales.io"
             paths:
