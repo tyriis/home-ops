@@ -141,6 +141,9 @@ spec:
     podTemplate:
       annotations:
         secret.reloader.stakater.com/reload: *secret
+      labels:
+        app.kubernetes.io/name: atlantis
+        app.kubernetes.io/instance: atlantis
 
     readinessProbe:
       periodSeconds: 5
