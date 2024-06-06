@@ -12,7 +12,7 @@ spec:
     kind: OCIRepository
     name: home-ops-devenv
   wait: false
-  interval: 1m
+  interval: 24h
   retryInterval: 5s
   timeout: 5m
   dependsOn:

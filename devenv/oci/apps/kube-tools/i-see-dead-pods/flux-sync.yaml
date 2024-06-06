@@ -14,5 +14,5 @@ spec:
     name: home-ops-devenv
   wait: true
   interval: 15m
-  retryInterval: 1m
+  retryInterval: 5s
   timeout: 5m
