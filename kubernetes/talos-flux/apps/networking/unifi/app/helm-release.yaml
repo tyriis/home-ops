@@ -86,10 +86,11 @@ spec:
       app:
         controller: unifi
         type: LoadBalancer
-        loadBalancerIP: ${SETTING_METALLB_UNIFI_ADDR}
+        loadBalancerIP: &ip ${SETTING_CILIUM_UNIFI_ADDR}
         externalTrafficPolicy: Local
         annotations:
           traefik.ingress.kubernetes.io/service.serversscheme: https
+          io.cilium/lb-ipam-ips: *ip
         ports:
           controller:
             enabled: true

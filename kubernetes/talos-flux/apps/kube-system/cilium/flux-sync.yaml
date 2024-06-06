@@ -28,6 +28,8 @@ kind: Kustomization
 metadata:
   name: &app cilium-config
   namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/enabled: "true"
 spec:
   targetNamespace: kube-system
   commonMetadata:

@@ -79,11 +79,15 @@ spec:
       dns:
         controller: blocky
         type: LoadBalancer
-        externalIPs: ["${SETTING_METALLB_BLOCKY_ADDR}"]
+        externalIPs:
+          - &ip ${SETTING_CILIUM_BLOCKY_ADDR}
         externalTrafficPolicy: Local
+        annotations:
+          io.cilium/lb-ipam-ips: *ip
         ipFamilyPolicy: SingleStack
         # ipFamilyPolicy: PreferDualStack
-        ipFamilies: [IPv4]
+        ipFamilies:
+          - IPv4
         ports:
           dns-tcp:
             port: 53

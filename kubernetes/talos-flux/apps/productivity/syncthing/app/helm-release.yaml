@@ -58,9 +58,9 @@ spec:
       listdisc:
         controller: syncthing
         type: LoadBalancer
-        loadBalancerIP: ${SETTING_METALLB_SYNCTHING_ADDR}
+        loadBalancerIP: &ip ${SETTING_CILIUM_SYNCTHING_ADDR}
         annotations:
-          io.cilium/lb-ipam-ips: ${SETTING_METALLB_SYNCTHING_ADDR}
+          io.cilium/lb-ipam-ips: *ip
         ports:
           discovery:
             enabled: true

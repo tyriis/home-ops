@@ -44,8 +44,10 @@ spec:
 
     service:
       type: LoadBalancer
-      loadBalancerIP: "${SETTING_METALLB_EMQX_ADDR}"
+      loadBalancerIP: &ip ${SETTING_CILIUM_EMQX_ADDR}
       externalTrafficPolicy: Local
+      annotations:
+        io.cilium/lb-ipam-ips: *ip
     ingress:
       dashboard:
         enabled: true

@@ -11,5 +11,5 @@ This just does not work. you need to ssh into the device and inform the controll
 login into your unifi device default user password: ubnt/ubnt
 
 ```console
-set-inform http://${SETTING_METALLB_UNIFI_ADDR}:8080/inform
+set-inform http://${SETTING_CILIUM_UNIFI_ADDR}:8080/inform
 ```
