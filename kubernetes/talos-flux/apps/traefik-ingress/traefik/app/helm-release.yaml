@@ -50,8 +50,8 @@ spec:
       enabled: true
       type: LoadBalancer
       annotations:
-        metallb.universe.tf/loadBalancerIPs: ${SETTING_METALLB_TRAEFIK_ADDR}
-        # io.cilium/lb-ipam-ips: 192.168.1.60
+        # metallb.universe.tf/loadBalancerIPs: ${SETTING_METALLB_TRAEFIK_ADDR}
+        io.cilium/lb-ipam-ips: ${SETTING_METALLB_TRAEFIK_ADDR}
       spec:
         externalTrafficPolicy: Local
     logs:
