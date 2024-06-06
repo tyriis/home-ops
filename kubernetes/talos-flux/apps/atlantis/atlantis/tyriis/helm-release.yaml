@@ -102,7 +102,7 @@ spec:
         gethomepage.dev/description: Terraform Pull Request Automation
         gethomepage.dev/group: Development
         gethomepage.dev/icon: si-terraform
-        gethomepage.dev/name: *app
+        gethomepage.dev/name: Atlantis (tyriis)
         gethomepage.dev/weight: "10" # optional
       pathType: Prefix
       hosts:
