@@ -77,6 +77,12 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:speedometer
           hajimari.io/group: network
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: HTML5 Network Performance Estimation Tool
+          gethomepage.dev/group: Development
+          gethomepage.dev/icon: mdi-speedometer
+          gethomepage.dev/name: SpeedTest
+          gethomepage.dev/weight: "10" # optional
         hosts:
           - host: &host speedtest.techtales.io
             paths:
