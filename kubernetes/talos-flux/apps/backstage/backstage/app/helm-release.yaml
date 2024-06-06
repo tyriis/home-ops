@@ -85,7 +85,7 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Developer Portal Platform
           gethomepage.dev/group: Documentation
-          gethomepage.dev/icon: emby.png
+          gethomepage.dev/icon: si-backstage
           gethomepage.dev/name: Backstage
           gethomepage.dev/weight: "10" # optional
         hosts:
