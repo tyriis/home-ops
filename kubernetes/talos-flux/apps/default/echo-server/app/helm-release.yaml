@@ -78,7 +78,7 @@ spec:
           hajimari.io/icon: video-input-antenna
           hajimari.io/enable: "true"
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: simple HTTP echo server
+          gethomepage.dev/description: Simple HTTP Echo Server
           gethomepage.dev/group: Development
           gethomepage.dev/icon: mdi-video-input-antenna
           gethomepage.dev/name: Echo Server
