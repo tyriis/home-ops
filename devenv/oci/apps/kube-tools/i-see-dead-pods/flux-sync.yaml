@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 15m
-  path: ./devenv/oci/devenv/i-see-dead-pods/app
+  path: ./devenv/oci/apps/kube-tools/i-see-dead-pods/app
   prune: true
   sourceRef:
     kind: OCIRepository

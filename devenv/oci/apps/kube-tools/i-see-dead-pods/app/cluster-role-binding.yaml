@@ -10,4 +10,4 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: i-see-dead-pods
-    namespace: devenv
+    namespace: kube-tools
