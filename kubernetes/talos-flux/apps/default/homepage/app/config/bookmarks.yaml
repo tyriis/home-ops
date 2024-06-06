@@ -1,0 +1,14 @@
+---
+- Communicate:
+    - Discord:
+        - icon: discord.png
+          href: https://discord.com
+          description: Discord Chat
+    - Gmail:
+        - icon: gmail.png
+          href: https://gmail.com
+          description: Google Mail
+    - Slack:
+        - icon: slack.png
+          href: https://slack.com/signin
+          description: Slack Chat
