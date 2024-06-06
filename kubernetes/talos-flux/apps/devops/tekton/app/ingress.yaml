@@ -4,15 +4,21 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
-    hajimari.io/enable: "true"
-    hajimari.io/icon: simple-icons:tekton
-    hajimari.io/appName: Tekton
-    hajimari.io/info: CloudNative CI/CD
     kubernetes.io/tls-acme: "true"
     traefik.ingress.kubernetes.io/affinity: "true"
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.middlewares: traefik-ingress-sso@kubernetescrd
     traefik.ingress.kubernetes.io/router.tls: "true"
+    hajimari.io/enable: "true"
+    hajimari.io/icon: simple-icons:tekton
+    hajimari.io/appName: Tekton
+    hajimari.io/info: CloudNative CI/CD
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/description: CloudNative CI/CD
+    gethomepage.dev/group: Development
+    gethomepage.dev/icon: si-tekton
+    gethomepage.dev/name: Tekton
+    gethomepage.dev/weight: "10" # optional
   labels:
     app.kubernetes.io/instance: tekton-dashboard
     app.kubernetes.io/name: tekton-dashboard
