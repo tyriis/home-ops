@@ -64,6 +64,7 @@ spec:
             #       name: homepage-secret
             securityContext:
               allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
     service:
       main:
@@ -114,5 +115,7 @@ spec:
             path: /app/config/widgets.yaml
           - subPath: custom.css
             path: /app/config/custom.css
+          - subPath: custom.js
+            path: /app/config/custom.js
     serviceAccount:
       create: true
