@@ -1,5 +1,5 @@
 ---
-title: My Personal Home Dashboard
+title: Home Dashboard
 theme: dark
 color: slate
 headerStyle: clean
@@ -9,8 +9,6 @@ layout:
   Favorites:
     style: row
     columns: 4
-  kubernetes:
-    style: row
 quicklaunch:
   searchDescription: true
   hideInternetSearch: true

@@ -24,3 +24,6 @@
       timeStyle: short
       hourCycle: h23
       timeZone: Europe/Vienna
+- widget:
+  type: minecraft
+  url: udp://talos.techtales.io:19132
