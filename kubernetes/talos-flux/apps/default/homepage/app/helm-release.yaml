@@ -33,8 +33,8 @@ spec:
             reloader.stakater.com/auto: "true"
           securityContext:
             runAsGroup: 65534
-            runAsNonRoot: true
             runAsUser: 65534
+            runAsNonRoot: true
             seccompProfile:
               type: RuntimeDefault
         containers:
@@ -63,7 +63,6 @@ spec:
             #       name: homepage-secret
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
     service:
       main:
