@@ -76,7 +76,7 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Kubernetes-native Workflow Engine
           gethomepage.dev/group: Development
-          gethomepage.dev/icon: si-argo
+          gethomepage.dev/icon: argocd
           gethomepage.dev/name: Argo Workflows
           gethomepage.dev/weight: "10" # optional
         hosts:
