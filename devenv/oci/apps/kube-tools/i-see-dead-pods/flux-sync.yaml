@@ -3,16 +3,16 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: repos-sync
+  name: apps-i-see-dead-pods
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: flux-sync
-  interval: 1m
-  retryInterval: 5s
-  timeout: 5m
-  path: ./kubernetes/talos-flux/flux/repositories
+  targetNamespace: kube-tools
+  path: ./devenv/oci/apps/kube-tools/i-see-dead-pods/app
   prune: true
   sourceRef:
     kind: OCIRepository
     name: home-ops-devenv
+  wait: true
+  interval: 15m
+  retryInterval: 5s
+  timeout: 5m

@@ -6,16 +6,17 @@ metadata:
   name: apps-sync
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: flux-sync
-  interval: 1m
-  retryInterval: 5s
-  timeout: 5m
   path: ./devenv/oci/apps
   prune: true
   sourceRef:
     kind: OCIRepository
     name: home-ops-devenv
+  wait: false
+  interval: 24h
+  retryInterval: 5s
+  timeout: 5m
+  dependsOn:
+    - name: flux-sync
   postBuild:
     substituteFrom:
       - kind: ConfigMap
