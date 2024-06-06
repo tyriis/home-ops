@@ -28,11 +28,3 @@
         icon: si-nixos
         href: https://search.nixos.org
         description: Search NixOS Packages and Options
-- Gaming:
-    icon: si-minecraft
-    href: https://minecraft.techtales.io
-    description: Minecraft Server
-    widget:
-      type: minecraft
-      server: udp://talos.techtales.io:19132
-

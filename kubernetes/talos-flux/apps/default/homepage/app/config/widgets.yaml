@@ -24,3 +24,10 @@
       timeStyle: short
       hourCycle: h23
       timeZone: Europe/Vienna
+- Gaming:
+    icon: si-minecraft
+    href: https://minecraft.techtales.io
+    description: Minecraft Server
+    widget:
+      type: minecraft
+      server: udp://talos.techtales.io:19132
