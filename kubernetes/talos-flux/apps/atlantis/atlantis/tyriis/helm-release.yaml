@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: atlantis-tyriis
+  name: &app atlantis-tyriis
 spec:
   interval: 15m
   chart:
@@ -76,8 +76,8 @@ spec:
     enableDiffMarkdownFormat: true
 
     commonLabels:
-      app.kubernetes.io/name: atlantis-tyriis
-      app.kubernetes.io/instance: atlantis-tyriis
+      app.kubernetes.io/name: *app
+      app.kubernetes.io/instance: *app
 
     service:
       type: ClusterIP
@@ -98,6 +98,12 @@ spec:
         # external-dns.alpha.kubernetes.io/target: "${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"
         hajimari.io/icon: simple-icons:terraform
         hajimari.io/enable: "true"
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/description: Terraform Pull Request Automation
+        gethomepage.dev/group: Development
+        gethomepage.dev/icon: si-terraform
+        gethomepage.dev/name: *app
+        gethomepage.dev/weight: "10" # optional
       pathType: Prefix
       hosts:
         - host: &host atlantis-tyriis.techtales.io
@@ -142,6 +148,9 @@ spec:
     podTemplate:
       annotations:
         secret.reloader.stakater.com/reload: *secret
+      labels:
+        app.kubernetes.io/name: *app
+        app.kubernetes.io/instance: *app
 
     readinessProbe:
       periodSeconds: 5
