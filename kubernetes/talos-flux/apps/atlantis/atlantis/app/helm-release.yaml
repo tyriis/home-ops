@@ -90,6 +90,12 @@ spec:
         # external-dns.alpha.kubernetes.io/target: "${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"
         hajimari.io/icon: simple-icons:terraform
         hajimari.io/enable: "true"
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/description: Automated Terraform GitOps Workflows
+        gethomepage.dev/group: GitOps
+        gethomepage.dev/icon: si-terraform
+        gethomepage.dev/name: Atlantis
+        gethomepage.dev/weight: "10" # optional
       pathType: Prefix
       hosts:
         - host: &host atlantis.techtales.io
