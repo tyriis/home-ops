@@ -4,6 +4,7 @@ kind: HelmRelease
 metadata:
   name: cert-manager
 spec:
+  interval: 15m
   # https://artifacthub.io/packages/helm/cert-manager/cert-manager?modal=values
   values:
     extraArgs: []

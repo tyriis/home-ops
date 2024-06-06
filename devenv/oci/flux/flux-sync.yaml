@@ -6,11 +6,13 @@ metadata:
   name: flux-sync
   namespace: flux-system
 spec:
-  interval: 1m
-  timeout: 5m
+  targetNamespace: flux-system
   path: ./devenv/oci/flux
   prune: true
-  wait: false
   sourceRef:
     kind: OCIRepository
     name: home-ops-devenv
+  wait: false
+  interval: 24h
+  retryInterval: 5s
+  timeout: 5m
