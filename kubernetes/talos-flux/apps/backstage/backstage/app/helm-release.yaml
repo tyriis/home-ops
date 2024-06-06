@@ -83,7 +83,7 @@ spec:
           hajimari.io/icon: simple-icons:backstage
           hajimari.io/enable: "true"
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Developer Portal Platform
+          gethomepage.dev/description: Internal Developer Portal
           gethomepage.dev/group: Documentation
           gethomepage.dev/icon: si-backstage
           gethomepage.dev/name: Backstage
