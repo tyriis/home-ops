@@ -18,6 +18,7 @@ configMapGenerator:
       - services.yaml=config/services.yaml
       - settings.yaml=config/settings.yaml
       - widgets.yaml=config/widgets.yaml
+      - custom.css=config/custom.css
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
