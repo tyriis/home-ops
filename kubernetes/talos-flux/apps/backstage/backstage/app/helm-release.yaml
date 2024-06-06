@@ -82,6 +82,12 @@ spec:
           # external-dns.alpha.kubernetes.io/target: "${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"
           hajimari.io/icon: simple-icons:backstage
           hajimari.io/enable: "true"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Developer Portal Platform
+          gethomepage.dev/group: Documentation
+          gethomepage.dev/icon: emby.png
+          gethomepage.dev/name: Backstage
+          gethomepage.dev/weight: "10" # optional
         hosts:
           - host: &host "{{ .Release.Name }}.techtales.io"
             paths:
