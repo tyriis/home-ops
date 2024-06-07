@@ -78,11 +78,17 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: "letsencrypt-production"
           kubernetes.io/tls-acme: "true"
-          hajimari.io/enable: "true"
-          hajimari.io/icon: resistor-nodes
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/affinity: "true"
           traefik.ingress.kubernetes.io/router.tls: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: resistor-nodes
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Low-code programming for event-driven applications
+          gethomepage.dev/group: Home Automation
+          gethomepage.dev/icon: node-red
+          gethomepage.dev/name: Node-RED
+          gethomepage.dev/weight: "10" # optional
         hosts:
           - host: &host "{{ .Release.Name }}.techtales.io"
             paths:
