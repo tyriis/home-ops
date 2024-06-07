@@ -228,4 +228,7 @@
   hardware.pulseaudio.support32Bit = true; ## If compatibility with 32-bit applications is desired.
   nixpkgs.config.pulseaudio = true;
 
+  services.gnome3.gnome-keyring.enable = true;
+  security.pam.services.lightdm.enableGnomeKeyring = true;
+  ssh.startAgent = true;
 }
