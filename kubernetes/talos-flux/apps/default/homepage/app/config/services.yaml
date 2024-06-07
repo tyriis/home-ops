@@ -33,3 +33,4 @@
         icon: opnsense
         href: https://opnsense.techtales.io
         description: OPNSense Firewall Management
+        ping: opnsense.techtales.io
