@@ -39,14 +39,14 @@
         ping: nas.techtales.io
         siteMonitor: https://nas.techtales.io
     - Minio:
-        icon: minio
+        icon: minio-light
         href: https://minio.techtales.io
         description: Minio Object Storage
         ping: minio.techtales.io
         siteMonitor: https://minio.techtales.io
 - Security:
     - Hashicorp Vault:
-        icon: vault
+        icon: vault-light
         href: https://vault.techtales.io
         description: Hashicorp Vault Secrets Management
         ping: vault.techtales.io
