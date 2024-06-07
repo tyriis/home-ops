@@ -34,3 +34,5 @@
         href: https://opnsense.techtales.io
         description: OPNSense Firewall Management
         ping: opnsense.techtales.io
+        siteMonitor: https://opnsense.techtales.io
+
