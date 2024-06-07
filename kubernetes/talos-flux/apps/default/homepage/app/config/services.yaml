@@ -24,14 +24,13 @@
         icon: si-nixos
         href: https://search.nixos.org
         description: Search NixOS Packages and Options
-- Networking:
+- Infrasructure:
     - OPNSense Firewall:
         icon: opnsense
         href: https://opnsense.techtales.io
         description: OPNSense Firewall Management
         ping: opnsense.techtales.io
         siteMonitor: https://opnsense.techtales.io
-- Storage:
     - Synology NAS:
         icon: synology-dsm
         href: https://nas.techtales.io
@@ -44,10 +43,15 @@
         description: Minio Object Storage
         ping: minio.techtales.io
         siteMonitor: https://minio.techtales.io
-- Security:
     - Hashicorp Vault:
-        icon: vault-light
+        icon: vault
         href: https://vault.techtales.io
         description: Hashicorp Vault Secrets Management
         ping: vault.techtales.io
         siteMonitor: https://vault.techtales.io
+    - Harbor:
+        icon: harbor
+        href: https://harbor.techtales.io
+        description: Harbor Container Registry
+        ping: harbor.techtales.io
+        siteMonitor: https://harbor.techtales.io
