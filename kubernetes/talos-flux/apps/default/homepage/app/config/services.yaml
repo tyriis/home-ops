@@ -4,10 +4,6 @@
         icon: si-github
         href: https://github.com/tyriis
         description: My Code Repository
-    - Grafana Dashboard:
-        icon: si-grafana
-        href: https://grafana.techtales.io
-        description: My Cluster Metrics Visualization
     - kubesearch.dev:
         icon: si-kubernetes
         href: https://kubesearch.dev/
@@ -35,4 +31,10 @@
         description: OPNSense Firewall Management
         ping: opnsense.techtales.io
         siteMonitor: https://opnsense.techtales.io
+    - Synology NAS:
+        icon: synology
+        href: https://nas.techtales.io
+        description: Synology NAS Management
+        ping: nas.techtales.io
+        siteMonitor: https://nas.techtales.io
 
