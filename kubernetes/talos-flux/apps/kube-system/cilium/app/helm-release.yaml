@@ -90,6 +90,12 @@ spec:
             hajimari.io/enable: "true"
             hajimari.io/appName: hubble
             hajimari.io/icon: simple-icons:cilium
+            gethomepage.dev/enabled: "true"
+            gethomepage.dev/description: Cloud Native, eBPF-based Networking, Observability, and Security
+            gethomepage.dev/group: Networking
+            gethomepage.dev/icon: cilium
+            gethomepage.dev/name: Hubble
+            gethomepage.dev/weight: "10" # optional
           hosts:
             - &host hubble.techtales.io
           tls:
