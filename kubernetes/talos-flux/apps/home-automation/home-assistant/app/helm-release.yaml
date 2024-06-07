@@ -63,9 +63,15 @@ spec:
         className: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
           hajimari.io/enable: "true"
           hajimari.io/icon: *app
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Home Automation That Puts Local Control
+          gethomepage.dev/group: Home Automation
+          gethomepage.dev/icon: home-assistant
+          gethomepage.dev/name: Home Assistant
+          gethomepage.dev/weight: "10" # optional
         hosts:
           - host: &host hass.techtales.io
             paths:
