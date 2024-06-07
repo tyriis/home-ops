@@ -93,7 +93,7 @@ spec:
         gethomepage.dev/enabled: "true"
         gethomepage.dev/description: Terraform Pull Request Automation
         gethomepage.dev/group: Development
-        gethomepage.dev/icon: si-terraform
+        gethomepage.dev/icon: terraform
         gethomepage.dev/name: Atlantis
         gethomepage.dev/weight: "10" # optional
       pathType: Prefix
