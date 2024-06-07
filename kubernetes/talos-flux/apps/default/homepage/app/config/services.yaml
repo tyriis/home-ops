@@ -32,7 +32,7 @@
         ping: opnsense.techtales.io
         siteMonitor: https://opnsense.techtales.io
     - Synology NAS:
-        icon: synology
+        icon: synology-dsm
         href: https://nas.techtales.io
         description: Synology NAS Management
         ping: nas.techtales.io
