@@ -79,7 +79,7 @@ spec:
           hajimari.io/enable: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Simple HTTP Echo Server
-          gethomepage.dev/group: Development
+          gethomepage.dev/group: Networking
           gethomepage.dev/icon: mdi-video-input-antenna
           gethomepage.dev/name: Echo Server
           gethomepage.dev/weight: "10" # optional
