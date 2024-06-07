@@ -84,7 +84,7 @@ spec:
           hajimari.io/enable: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Internal Developer Portal
-          gethomepage.dev/group: Documentation
+          gethomepage.dev/group: Development
           gethomepage.dev/icon: si-backstage
           gethomepage.dev/name: Backstage
           gethomepage.dev/weight: "10" # optional
