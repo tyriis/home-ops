@@ -28,3 +28,8 @@
         icon: si-nixos
         href: https://search.nixos.org
         description: Search NixOS Packages and Options
+- Networking:
+    - OPNSense Firewall:
+        icon: opnsense
+        href: https://opnsense.techtales.io
+        description: OPNSense Firewall Management
