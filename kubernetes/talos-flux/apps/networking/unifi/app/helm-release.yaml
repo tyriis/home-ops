@@ -128,9 +128,15 @@ spec:
       app:
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:ubiquiti"
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Ubiquiti Unifi Controller
+          gethomepage.dev/group: Networking
+          gethomepage.dev/icon: unifi
+          gethomepage.dev/name: Unifi Controller
+          gethomepage.dev/weight: "10" # optional
         className: "traefik"
         hosts:
           - host: &host unifi.techtales.io
