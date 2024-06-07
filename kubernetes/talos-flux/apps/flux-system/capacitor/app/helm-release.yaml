@@ -100,7 +100,7 @@ spec:
           hajimari.io/enable: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: The Missing Fluxcd UI
-          gethomepage.dev/group: Cluster
+          gethomepage.dev/group: Observability
           gethomepage.dev/icon: flux-cd
           gethomepage.dev/name: Capacitor
           gethomepage.dev/weight: "10" # optional
