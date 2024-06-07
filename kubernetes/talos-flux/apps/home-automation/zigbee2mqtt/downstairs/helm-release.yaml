@@ -84,6 +84,12 @@ spec:
           hajimari.io/appName: *app
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:zigbee
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Get rid of your proprietary Zigbee bridges
+          gethomepage.dev/group: Home Automation
+          gethomepage.dev/icon: zigbee2mqtt
+          gethomepage.dev/name: Zigbee2MQTT Downstairs
+          gethomepage.dev/weight: "10" # optional
         hosts:
           - host: &host "{{ .Release.Name }}.techtales.io"
             paths:
