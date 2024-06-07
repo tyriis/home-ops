@@ -9,6 +9,9 @@ layout:
   Favorites:
     style: row
     columns: 4
+  Infrasructure:
+    style: row
+    columns: 4
 quicklaunch:
   searchDescription: true
   hideInternetSearch: true
