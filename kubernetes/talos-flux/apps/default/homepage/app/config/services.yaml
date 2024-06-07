@@ -34,7 +34,7 @@
     - Synology NAS:
         icon: synology-dsm
         href: https://nas.techtales.io
-        description: Synology NAS Management
+        description: Synology Disk Station Manager
         ping: nas.techtales.io
         siteMonitor: https://nas.techtales.io
 
