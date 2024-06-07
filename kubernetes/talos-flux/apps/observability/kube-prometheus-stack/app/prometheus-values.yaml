@@ -17,6 +17,12 @@ prometheus:
       hajimari.io/appName: prometheus
       hajimari.io/enable: "true"
       hajimari.io/icon: simple-icons:prometheus
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: Monitoring and Alerting Toolkit
+      gethomepage.dev/group: Observability
+      gethomepage.dev/icon: prometheus
+      gethomepage.dev/name: Prometheus
+      gethomepage.dev/weight: "10" # optional
     hosts:
       - &host prometheus.techtales.io
     tls:

@@ -62,6 +62,12 @@ alertmanager:
       hajimari.io/appName: alertmanager
       hajimari.io/enable: "true"
       hajimari.io/icon: clipboard-alert
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: Alerting system that works with Prometheus
+      gethomepage.dev/group: Observability
+      gethomepage.dev/icon: alertmanager
+      gethomepage.dev/name: Alertmanager
+      gethomepage.dev/weight: "10" # optional
     hosts:
       - &host alertmanager.techtales.io
     tls:
