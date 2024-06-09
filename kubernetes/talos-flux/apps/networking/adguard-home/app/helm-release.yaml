@@ -1,0 +1,125 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app addguard-home
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.2.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: uninstall
+      retries: 3
+  values:
+    controllers:
+      adguard-home:
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: adguard/adguardhome
+              tag: v0.107.51@sha256:3a143e6c071cd72b1aa5aa46ba0205a86f085d54daca94b7fc7ab6759e3fb6fa
+            env:
+              TZ: ${SETTING_TZ}
+            probes:
+              liveness: &probes
+                enabled: true
+                type: HTTP
+                port: 3000
+                path: /login.html
+              readiness: *probes
+              startup:
+                <<: *probe
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+            resources:
+              requests:
+                cpu: 10m
+                memory: 100Mi
+            securityContext:
+              readOnlyRootFilesystem: true
+        # pod:
+        #   # securityContext:
+        #   #   runAsUser: 568
+        #   #   runAsGroup: 568
+        #   topologySpreadConstraints:
+        #     - maxSkew: 1
+        #       topologyKey: kubernetes.io/hostname
+        #       whenUnsatisfiable: DoNotSchedule
+        #       labelSelector:
+        #         matchLabels:
+        #           app.kubernetes.io/name: *app
+
+    service:
+      app:
+        controller: adguard-home
+        type: LoadBalancer
+        externalTrafficPolicy: Local
+        annotations:
+          io.cilium/lb-ipam-ips: ${SETTING_CILIUM_ADGUARD_ADDR}
+        ipFamilyPolicy: SingleStack
+        ports:
+          http:
+            primary: true
+            port: 3000
+          dns-tcp:
+            port: 53
+            protocol: TCP
+          dns-udp:
+            port: 53
+            protocol: UDP
+    # serviceMonitor:
+    #   app:
+    #     serviceName: *app
+    #     endpoints:
+    #       - port: http
+
+    ingress:
+      app:
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "simple-icons:adguard"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Software for blocking ads & tracking
+          gethomepage.dev/group: Networking
+          gethomepage.dev/icon: adguard-home
+          gethomepage.dev/name: AdGuard Home
+          gethomepage.dev/weight: "10" # optional
+        className: traefik
+        hosts:
+          - host: &host adguard.techtales.io
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+            secretName: adguard-tls
+    persistence:
+      data:
+        existingClaim: adguard-data
+        globalMounts:
+          - path: /opt/adguardhome/data
+      conf:
+        existingClaim: adguard-conf
+        globalMounts:
+          - path: /opt/adguardhome/conf

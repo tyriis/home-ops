@@ -11,7 +11,7 @@ layout:
     columns: 4
   Infrasructure:
     style: row
-    columns: 4
+    columns: 1
 quicklaunch:
   searchDescription: true
   hideInternetSearch: true
