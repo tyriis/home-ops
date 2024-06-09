@@ -43,7 +43,7 @@ spec:
                 path: /login.html
               readiness: *probes
               startup:
-                <<: *probe
+                <<: *probes
                 spec:
                   failureThreshold: 30
                   periodSeconds: 5
