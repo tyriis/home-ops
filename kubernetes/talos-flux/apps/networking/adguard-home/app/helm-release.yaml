@@ -71,7 +71,7 @@ spec:
         ports:
           http:
             primary: true
-            port: 3000
+            port: 80
       dns:
         controller: adguard-home
         type: LoadBalancer
@@ -79,10 +79,12 @@ spec:
         annotations:
           io.cilium/lb-ipam-ips: ${SETTING_CILIUM_ADGUARD_ADDR}
         ipFamilyPolicy: SingleStack
+        ipFamilies:
+          - IPv4
         ports:
-          http:
-            primary: true
-            port: 3000
+          # http:
+          #   primary: true
+          #   port: 80
           dns-tcp:
             port: 53
             protocol: TCP
