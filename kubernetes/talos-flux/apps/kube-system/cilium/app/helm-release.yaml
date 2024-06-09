@@ -42,9 +42,9 @@ spec:
     bandwidthManager:
       enabled: true
       bbr: true
-    bpf:
-      masquerade: true
-      tproxy: true
+    # bpf:
+    #   masquerade: true
+    #   tproxy: true
     bgp:
       enabled: false
     containerRuntime:
