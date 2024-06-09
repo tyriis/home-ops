@@ -68,6 +68,12 @@ spec:
     service:
       app:
         controller: adguard-home
+        ports:
+          http:
+            primary: true
+            port: 3000
+      dns:
+        controller: adguard-home
         type: LoadBalancer
         externalTrafficPolicy: Local
         annotations:
@@ -83,6 +89,7 @@ spec:
           dns-udp:
             port: 53
             protocol: UDP
+
     # serviceMonitor:
     #   app:
     #     serviceName: *app
