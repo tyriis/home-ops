@@ -13,6 +13,12 @@ metadata:
     hajimari.io/appName: *app
     hajimari.io/enable: "true"
     hajimari.io/icon: web
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/description: A modern HTTP reverse proxy
+    gethomepage.dev/group: Networking
+    gethomepage.dev/icon: traefik
+    gethomepage.dev/name: Traefik
+    gethomepage.dev/weight: "10" # optional
 spec:
   ingressClassName: "traefik"
   tls:
