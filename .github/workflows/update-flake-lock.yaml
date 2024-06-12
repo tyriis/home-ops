@@ -33,16 +33,16 @@ jobs:
 
       # https://github.com/marketplace/actions/the-determinate-nix-installer
       - name: Install nix
-        uses: DeterminateSystems/nix-installer-action@8cdf194da984e4f12b2f8c36d1fa107c1dd67f5c # v11
+        uses: DeterminateSystems/nix-installer-action@7993355175c2765e5733dae74f3e0786fe0e5c4f # v12
 
       # https://github.com/marketplace/actions/magic-nix-cache
       - name: Use cache
-        uses: DeterminateSystems/magic-nix-cache-action@87e8236f46702ab0ce5a058b605a173ec88d618e # v6
+        uses: DeterminateSystems/magic-nix-cache-action@b46e247b898aa56e6d2d2e728dc6df6c84fdb738 # v7
 
       # https://github.com/marketplace/actions/update-nix-flake-lock
       - name: Update flake.lock
         id: update
-        uses: DeterminateSystems/update-flake-lock@a3ccb8f59719c48d6423e97744560221bcf7a3fa # v21
+        uses: DeterminateSystems/update-flake-lock@bba6a453b747fa3bd82895a4a296c3d0e3cfabd4 # v22
         with:
           path-to-flake-dir: infra/nixos
           token: ${{ steps.app-token.outputs.token }}
