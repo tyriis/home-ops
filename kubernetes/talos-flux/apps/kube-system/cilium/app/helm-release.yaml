@@ -36,8 +36,8 @@ spec:
     proxy:
       prometheus:
         enabled: true
-    # externalIPs:
-    #   enabled: false
+    externalIPs:
+      enabled: true
 
     autoDirectNodeRoutes: true
     bandwidthManager:
