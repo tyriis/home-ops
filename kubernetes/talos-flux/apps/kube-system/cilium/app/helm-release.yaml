@@ -26,6 +26,7 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    # https://artifacthub.io/packages/helm/cilium/cilium?modal=values
     cluster:
       name: ${SETTING_CLUSTERNAME}
       id: 1
@@ -49,7 +50,6 @@ spec:
       enabled: false
     containerRuntime:
       integration: containerd
-    devices: eth+
     enableRuntimeDeviceDetection: true
     endpointRoutes:
       enabled: true
