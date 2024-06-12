@@ -15,6 +15,7 @@ blocking:
       - https://raw.githubusercontent.com/BlackJack8/iOSAdblockList/master/Regular%20Hosts.txt
     youtube:
       - |
+        youtube.com
         www.youtube.com
         m.youtube.com
         youtubei.googleapis.com
