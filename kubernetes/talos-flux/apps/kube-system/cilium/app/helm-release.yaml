@@ -50,6 +50,7 @@ spec:
       enabled: false
     containerRuntime:
       integration: containerd
+    devices: eth0
     enableRuntimeDeviceDetection: true
     endpointRoutes:
       enabled: true
@@ -115,9 +116,6 @@ spec:
       # leaseDuration: 120s
       # leaseRenewDeadline: 60s
       # leaseRetryPeriod: 1s
-    l2podAnnouncements:
-      enabled: true
-      interface: eth0
     loadBalancer:
       algorithm: maglev
       mode: dsr
