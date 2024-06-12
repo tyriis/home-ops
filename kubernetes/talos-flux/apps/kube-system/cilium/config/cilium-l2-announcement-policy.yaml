@@ -6,7 +6,6 @@ metadata:
   name: l2-policy
 spec:
   loadBalancerIPs: true
-  externalIPs: true
   interfaces:
     - ^eth[0-9]+
   nodeSelector:
