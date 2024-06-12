@@ -14,15 +14,15 @@ spec:
         kind: HelmRepository
         name: cilium-charts
         namespace: flux-system
-  maxHistory: 3
   install:
     remediation:
       retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
       remediateLastFailure: true
-    cleanupOnFail: true
   uninstall:
     keepHistory: false
   values:

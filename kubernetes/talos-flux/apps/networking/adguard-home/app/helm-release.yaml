@@ -78,8 +78,8 @@ spec:
         externalTrafficPolicy: Local
         annotations:
           io.cilium/lb-ipam-ips: &ip ${SETTING_CILIUM_ADGUARD_ADDR}
-        # externalIPs:
-        #   - *ip
+        externalIPs:
+          - *ip
         ipFamilyPolicy: SingleStack
         ipFamilies:
           - IPv4
