@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./blocky/flux-sync.yaml
-  - ./adguard-home/flux-sync.yaml
+  # - ./adguard-home/flux-sync.yaml
   - ./cloudflared/flux-sync.yaml
   - ./external-dns/flux-sync.yaml
   - ./unifi/flux-sync.yaml
