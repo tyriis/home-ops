@@ -35,7 +35,7 @@ spec:
           app:
             image:
               repository: cloudflare/cloudflared
-              tag: 2024.6.0-amd64@sha256:3daf642dd14e67c8ba51063aa0abd76fe165ff4fdf0669e37ae356008fccfb74
+              tag: 2024.6.1-amd64@sha256:f6e9fff347602b8e70f1765127abc96f3b8d1af4cc46185913a043edab75ae5b
             args:
               - tunnel
               - --config
