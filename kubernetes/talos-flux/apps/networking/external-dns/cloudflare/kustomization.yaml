@@ -4,8 +4,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: networking
 resources:
-  - secret.sops.yaml
+  - external-secret.yaml
   - helm-release.yaml
 commonLabels:
-  app.kubernetes.io/name: external-dns
-  app.kubernetes.io/instance: external-dns
+  app.kubernetes.io/name: external-dns-cloudflare
+  app.kubernetes.io/instance: external-dns-cloudflare
