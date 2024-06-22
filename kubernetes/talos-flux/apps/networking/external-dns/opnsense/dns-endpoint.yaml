@@ -32,3 +32,33 @@ spec:
       recordType: A
       targets:
         - 192.168.1.4
+
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: kube-nas
+  annotations:
+    external-dns/opnsense: "true"
+spec:
+  endpoints:
+    - dnsName: kube-nas.techtales.io
+      recordTTL: 300
+      recordType: A
+      targets:
+        - 192.168.1.90
+
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: talos-flux
+  annotations:
+    external-dns/opnsense: "true"
+spec:
+  endpoints:
+    - dnsName: talos.techtales.io
+      recordTTL: 300
+      recordType: A
+      targets:
+        - 192.168.1.80
