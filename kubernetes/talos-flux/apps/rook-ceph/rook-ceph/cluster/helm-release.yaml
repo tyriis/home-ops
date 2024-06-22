@@ -15,24 +15,32 @@ spec:
         name: rook-ceph-charts
         namespace: flux-system
   install:
-    # createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      strategy: rollback
+      retries: 3
   dependsOn:
     - name: rook-ceph-operator
       namespace: rook-ceph
+    - name: snapshot-controller
+      namespace: kube-system
   values:
     # https://artifacthub.io/packages/helm/rook/rook-ceph-cluster?modal=values
-    operatorNamespace: rook-ceph
-    toolbox:
-      enabled: false
-      # image:
     monitoring:
       enabled: true
       createPrometheusRules: true
+    toolbox:
+      enabled: true
+    configOverride: |
+      [global]
+      bdev_enable_discard = true
+      bdev_async_discard = true
+      osd_class_update_on_start = false
+
+    operatorNamespace: rook-ceph
     ingress:
       dashboard:
         ingressClassName: "traefik"
@@ -46,7 +54,7 @@ spec:
           external-dns/opnsense: "true"
           hajimari.io/appName: rook-ceph
           hajimari.io/enable: "true"
-          hajimari.io/icon: simple-icons:ceph
+          hajimari.io/icon: simple-icons:cephcephBlockPools
         host:
           name: &host rook.techtales.io
           path: /
@@ -54,13 +62,11 @@ spec:
           - hosts:
               - *host
             secretName: rook-tls
-    # configOverride: |
-    #   [global]
-    #   bdev_enable_discard = true
-    #   bdev_async_discard = true
     cephClusterSpec:
       network:
         provider: host
+        connections:
+          requireMsgr2: true
       mon:
         count: 3
         allowMultiplePerNode: false
@@ -74,8 +80,8 @@ spec:
       dashboard:
         enabled: true
         urlPrefix: /
-        port: 8080
         ssl: false
+        prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090
       storage:
         useAllNodes: false
         useAllDevices: false
@@ -152,6 +158,7 @@ spec:
           isDefault: true
           reclaimPolicy: Delete
           allowVolumeExpansion: true
+          volumeBindingMode: Immediate
           parameters:
             imageFormat: "2"
             imageFeatures: layering
@@ -165,70 +172,3 @@ spec:
 
     cephFileSystems: null
     cephObjectStores: null
-
-    # cephFileSystems:
-    #   - name: ceph-filesystem
-    #     spec:
-    #       metadataPool:
-    #         replicated:
-    #           size: 3
-    #       dataPools:
-    #         - failureDomain: host
-    #           replicated:
-    #             size: 3
-    #       metadataServer:
-    #         activeCount: 1
-    #         activeStandby: true
-    #         resources:
-    #           limits:
-    #             # cpu: "500m"
-    #             memory: "4Gi"
-    #           requests:
-    #             cpu: "1000m"
-    #             memory: "4Gi"
-    #     storageClass:
-    #       enabled: true
-    #       isDefault: false
-    #       name: ceph-filesystem
-    #       reclaimPolicy: Delete
-    #       allowVolumeExpansion: true
-    #       mountOptions: []
-    #       parameters:
-    #         csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
-    #         csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
-    #         csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
-    #         csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
-    #         csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
-    #         csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
-    #         csi.storage.k8s.io/fstype: ext4
-
-    # cephObjectStores:
-    #   - name: ceph-objectstore
-    #     # see https://github.com/rook/rook/blob/master/Documentation/ceph-object-store-crd.md#object-store-settings for available configuration
-    #     spec:
-    #       metadataPool:
-    #         failureDomain: host
-    #         replicated:
-    #           size: 3
-    #       dataPool:
-    #         failureDomain: host
-    #         erasureCoded:
-    #           dataChunks: 2
-    #           codingChunks: 1
-    #       preservePoolsOnDelete: true
-    #       gateway:
-    #         port: 80
-    #         # securePort: 443
-    #         # sslCertificateRef:
-    #         instances: 1
-    #       healthCheck:
-    #         bucket:
-    #           interval: 60s
-    #     storageClass:
-    #       enabled: true
-    #       name: ceph-bucket
-    #       reclaimPolicy: Delete
-    #       # see https://github.com/rook/rook/blob/master/Documentation/ceph-object-bucket-claim.md#storageclass for available configuration
-    #       parameters:
-    #         # note: objectStoreNamespace and objectStoreName are configured by the chart
-    #         region: us-east-1
