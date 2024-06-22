@@ -62,7 +62,7 @@ spec:
       recordType: A
       targets:
         - 192.168.1.80
-    - dnsName: flux-webook.techtales.io
+    - dnsName: flux-webhook.techtales.io
       recordTTL: 300
       recordType: A
       targets:
