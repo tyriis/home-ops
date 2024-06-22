@@ -61,9 +61,39 @@ spec:
       recordTTL: 300
       recordType: A
       targets:
-        - 192.168.1.80
+        - &ip 192.168.1.80
     - dnsName: flux-webhook.techtales.io
       recordTTL: 300
       recordType: A
       targets:
-        - 192.168.1.80
+        - *ip
+    - dnsName: atlantis-webhook.techtales.io
+      recordTTL: 300
+      recordType: A
+      targets:
+        - *ip
+    - dnsName: atlantis-tyriis-webhook.techtales.io
+      recordTTL: 300
+      recordType: A
+      targets:
+        - *ip
+    - dnsName: echo-server.techtales.io
+      recordTTL: 300
+      recordType: A
+      targets:
+        - *ip
+    - dnsName: grafana.techtales.io
+      recordTTL: 300
+      recordType: A
+      targets:
+        - *ip
+    - dnsName: kromgo.techtales.io
+      recordTTL: 300
+      recordType: A
+      targets:
+        - *ip
+    - dnsName: auth.techtales.io
+      recordTTL: 300
+      recordType: A
+      targets:
+        - *ip
