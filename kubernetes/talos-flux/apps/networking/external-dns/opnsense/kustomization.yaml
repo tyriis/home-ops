@@ -10,3 +10,5 @@ configMapGenerator:
   - name: external-dns-opnsense-helm-values
     files:
       - values.yaml=./helm-values.yaml
+configurations:
+  - kustomize-config.yaml
