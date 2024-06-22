@@ -12,3 +12,23 @@ spec:
       recordType: A
       targets:
         - 192.168.1.1
+    - dnsName: nas.techtales.io
+      recordTTL: 300
+      recordType: A
+      targets:
+        - 192.168.1.4
+    - dnsName: minio.techtales.io
+      recordTTL: 300
+      recordType: A
+      targets:
+        - 192.168.1.4
+    - dnsName: vault.techtales.io
+      recordTTL: 300
+      recordType: A
+      targets:
+        - 192.168.1.4
+    - dnsName: harbor.techtales.io
+      recordTTL: 300
+      recordType: A
+      targets:
+        - 192.168.1.4
