@@ -12,6 +12,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.tls: "true"
     external-dns.alpha.kubernetes.io/target: "${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"
     external-dns/cloudflare: "true"
+    external-dns/opnsense: "true"
     hajimari.io/enable: "false"
 spec:
   ingressClassName: traefik
