@@ -1,0 +1,57 @@
+---
+# https://artifacthub.io/packages/helm/external-dns/external-dns?modal=values
+fullnameOverride: external-dns-opnsense
+logLevel: debug
+interval: 2m
+provider:
+  name: webhook
+  webhook:
+    image:
+      repository: ghcr.io/crutonjohn/external-dns-opnsense-webhook
+      tag: v0.1.0@sha256:72d4f5c79e515b8a70bb2e48f6472c746671a3ae3d8ad224aa686dd7192e1609
+    env:
+      - name: OPNSENSE_API_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: &secret external-dns-opnsense-credentials
+            key: OPNSENSE_API_SECRET
+      - name: OPNSENSE_API_KEY
+        valueFrom:
+          secretKeyRef:
+            name: *secret
+            key: OPNSENSE_API_KEY
+      - name: OPNSENSE_HOST
+        value: https://opnsense.techtales.io
+      - name: OPNSENSE_SKIP_TLS_VERIFY
+        value: "false"
+      - name: LOG_LEVEL
+        value: debug
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: http-wh-metrics
+      initialDelaySeconds: 10
+      timeoutSeconds: 5
+    readinessProbe:
+      httpGet:
+        path: /readyz
+        port: http-wh-metrics
+      initialDelaySeconds: 10
+      timeoutSeconds: 5
+extraArgs:
+  - --ignore-ingress-tls-spec
+  - --annotation-filter=external-dns/opnsense in (true)
+policy: sync
+sources:
+  - ingress
+  - service
+  - crd
+registry: noop
+domainFilters:
+  - techtales.io
+txtPrefix: k8s.talos-flux.
+txtOwnerId: talos-flux
+serviceMonitor:
+  enabled: true
+podAnnotations:
+  secret.reloader.stakater.com/reload: *secret
