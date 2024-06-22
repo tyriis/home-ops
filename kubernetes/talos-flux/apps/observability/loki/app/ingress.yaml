@@ -6,7 +6,8 @@ metadata:
     ingress.kubernetes.io/auth-type: basic
     ingress.kubernetes.io/auth-secret: htpasswd
     cert-manager.io/cluster-issuer: letsencrypt-production
-    ttraefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    external-dns/opnsense: "true"
   name: loki
 spec:
   ingressClassName: traefik

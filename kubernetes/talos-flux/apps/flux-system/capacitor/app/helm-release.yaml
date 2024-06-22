@@ -96,6 +96,7 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/affinity: "true"
           traefik.ingress.kubernetes.io/router.tls: "true"
+          external-dns/opnsense: "true"
           hajimari.io/icon: simple-icons:flux
           hajimari.io/enable: "true"
           gethomepage.dev/enabled: "true"

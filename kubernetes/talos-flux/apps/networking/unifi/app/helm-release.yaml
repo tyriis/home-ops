@@ -129,6 +129,7 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          external-dns/opnsense: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:ubiquiti"
           gethomepage.dev/enabled: "true"

@@ -10,6 +10,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/affinity: "true"
     traefik.ingress.kubernetes.io/router.tls: "true"
+    external-dns/opnsense: "true"
     hajimari.io/appName: *app
     hajimari.io/enable: "true"
     hajimari.io/icon: web

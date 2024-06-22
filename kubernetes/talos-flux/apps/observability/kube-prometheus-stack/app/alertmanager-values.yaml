@@ -59,6 +59,7 @@ alertmanager:
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/affinity: "true"
       traefik.ingress.kubernetes.io/router.tls: "true"
+      external-dns/opnsense: "true"
       hajimari.io/appName: alertmanager
       hajimari.io/enable: "true"
       hajimari.io/icon: clipboard-alert

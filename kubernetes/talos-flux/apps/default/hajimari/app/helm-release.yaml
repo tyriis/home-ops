@@ -159,6 +159,7 @@ spec:
           # hajimari.io/enable: "false"
           # hajimari.io/icon: "weather-sunset"
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          external-dns/opnsense: "true"
         hosts:
           - host: hajimari.techtales.io
             paths:

@@ -64,6 +64,7 @@ spec:
         className: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
+          external-dns/opnsense: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: web-check
         hosts:
