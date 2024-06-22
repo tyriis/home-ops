@@ -2,7 +2,7 @@
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
-  name: desktops
+  name: techtales-infra
   annotations:
     external-dns/opnsense: "true"
 spec:
