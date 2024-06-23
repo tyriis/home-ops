@@ -36,7 +36,7 @@ jobs:
       # https://github.com/marketplace/actions/changed-files
       - name: Get Changed Clusters
         id: changed-clusters
-        uses: tj-actions/changed-files@eaf854ef0c266753e1abec356dcf17d92695b251 # v44.5.3
+        uses: tj-actions/changed-files@cc3bbb0c526f8ee1d282f8c5f9f4e50745a5b457 # v44.5.4
         with:
           files: kubernetes/**
           dir_names: true
