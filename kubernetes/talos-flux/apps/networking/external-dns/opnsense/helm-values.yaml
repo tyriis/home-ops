@@ -1,7 +1,7 @@
 ---
 # https://artifacthub.io/packages/helm/external-dns/external-dns?modal=values
 fullnameOverride: external-dns-opnsense
-logLevel: debug
+logLevel: info
 interval: 2m
 provider:
   name: webhook
