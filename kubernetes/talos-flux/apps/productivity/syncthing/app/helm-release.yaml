@@ -102,6 +102,6 @@ spec:
         accessMode: ReadWriteOnce
         type: persistentVolumeClaim
         size: 10Gi
-        storageClass: nfs-csi
+        storageClass: syncthing
         globalMounts:
           - path: /var/syncthing
