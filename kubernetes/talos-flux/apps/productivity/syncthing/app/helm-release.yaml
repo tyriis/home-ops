@@ -99,9 +99,8 @@ spec:
 
     persistence:
       config:
-        accessMode: ReadWriteOnce
-        type: persistentVolumeClaim
-        size: 10Gi
-        storageClass: syncthing-nfs
-        globalMounts:
-          - path: /var/syncthing
+        existingClaim: syncthing-data
+        advancedMounts:
+          syncthing:
+            app:
+              - path: /config
