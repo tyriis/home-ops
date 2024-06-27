@@ -123,6 +123,7 @@ spec:
       ATLANTIS_DEFAULT_TF_VERSION: v1.3.8
       ATLANTIS_WRITE_GIT_CREDS: "true"
       ATLANTIS_FAIL_ON_PRE_WORKFLOW_HOOK_ERROR: "true"
+      ATLANTIS_EMOJI_REACTION: eyes
 
     loadEnvFromSecrets:
       - &secret atlantis-env-secrets
