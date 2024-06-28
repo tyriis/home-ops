@@ -42,7 +42,7 @@ jobs:
       # https://github.com/marketplace/actions/update-nix-flake-lock
       - name: Update flake.lock
         id: update
-        uses: DeterminateSystems/update-flake-lock@bba6a453b747fa3bd82895a4a296c3d0e3cfabd4 # v22
+        uses: DeterminateSystems/update-flake-lock@db4ee38117a597ea8df8f7f75a187dd65093eade # v23
         with:
           path-to-flake-dir: infra/nixos
           token: ${{ steps.app-token.outputs.token }}
