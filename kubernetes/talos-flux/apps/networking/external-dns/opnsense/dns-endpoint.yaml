@@ -97,3 +97,8 @@ spec:
       recordType: A
       targets:
         - *ip
+    - dnsName: traefik.techtales.io
+      recordTTL: 300
+      recordType: A
+      targets:
+        - *ip
