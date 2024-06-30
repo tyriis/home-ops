@@ -102,3 +102,9 @@ spec:
       recordType: A
       targets:
         - *ip
+    # this should work with the traefik ingress
+    - dnsName: adguard.techtales.io
+      recordTTL: 300
+      recordType: A
+      targets:
+        - *ip
