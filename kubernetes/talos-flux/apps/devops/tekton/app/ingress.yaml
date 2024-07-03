@@ -20,6 +20,7 @@ metadata:
     gethomepage.dev/icon: si-tekton
     gethomepage.dev/name: Tekton
     gethomepage.dev/weight: "10" # optional
+    gethomepage.dev/pod-selector: app.kubernetes.io/name=dashboard
   labels:
     app.kubernetes.io/instance: tekton-dashboard
     app.kubernetes.io/name: tekton-dashboard
