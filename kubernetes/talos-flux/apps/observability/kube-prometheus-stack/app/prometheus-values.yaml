@@ -24,6 +24,9 @@ prometheus:
       gethomepage.dev/icon: prometheus
       gethomepage.dev/name: Prometheus
       gethomepage.dev/weight: "10" # optional
+      gethomepage.dev/widget.type: prometheus
+      gethomepage.dev/widget.url: http://prometheus-operated.observability.svc.cluster.local:9090
+      gethomepage.dev/pod-selector: app.kubernetes.io/name=prometheus
     hosts:
       - &host prometheus.techtales.io
     tls:
