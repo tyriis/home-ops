@@ -54,7 +54,13 @@ spec:
           external-dns/opnsense: "true"
           hajimari.io/appName: rook-ceph
           hajimari.io/enable: "true"
-          hajimari.io/icon: simple-icons:cephcephBlockPools
+          hajimari.io/icon: simple-icons:ceph
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Cloud-Native Storage for Kubernetes
+          gethomepage.dev/group: Storage
+          gethomepage.dev/icon: rook
+          gethomepage.dev/name: Rook
+          gethomepage.dev/weight: "10" # optional
         host:
           name: &host rook.techtales.io
           path: /
