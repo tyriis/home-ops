@@ -31,11 +31,11 @@
         description: OPNSense Firewall Management
         # ping: opnsense.techtales.io
         siteMonitor: https://opnsense.techtales.io
-        widget:
-          type: opnsense
-          url: https://opnsense.techtales.io
-          username: "{{HOMEPAGE_VAR_OPNSENSE_API_KEY}}"
-          password: "{{HOMEPAGE_VAR_OPNSENSE_SECRET}}"
+        # widget:
+        #   type: opnsense
+        #   url: https://opnsense.techtales.io
+        #   username: "{{HOMEPAGE_VAR_OPNSENSE_API_KEY}}"
+        #   password: "{{HOMEPAGE_VAR_OPNSENSE_SECRET}}"
     - Synology NAS:
         icon: synology-dsm
         href: https://nas.techtales.io
