@@ -69,6 +69,7 @@ alertmanager:
       gethomepage.dev/icon: alertmanager
       gethomepage.dev/name: Alertmanager
       gethomepage.dev/weight: "10" # optional
+      gethomepage.dev/pod-selector: app.kubernetes.io/name=alertmanager
     hosts:
       - &host alertmanager.techtales.io
     tls:
