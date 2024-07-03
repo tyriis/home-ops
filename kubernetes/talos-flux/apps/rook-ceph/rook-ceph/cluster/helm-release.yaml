@@ -61,6 +61,7 @@ spec:
           gethomepage.dev/icon: rook
           gethomepage.dev/name: Rook
           gethomepage.dev/weight: "10" # optional
+          gethomepage.dev/pod-selector: app.kubernetes.io/name=rook-ceph
         host:
           name: &host rook.techtales.io
           path: /
