@@ -34,8 +34,8 @@
         widget:
           type: opnsense
           url: https://opnsense.techtales.io
-          username: "{{HOMEPAGE_VAR_OPNSENSE_API_KEY}}"
-          password: "{{HOMEPAGE_VAR_OPNSENSE_SECRET}}"
+          username: {{HOMEPAGE_VAR_OPNSENSE_API_KEY}}
+          password: {{HOMEPAGE_VAR_OPNSENSE_SECRET}}
     - Synology NAS:
         icon: synology-dsm
         href: https://nas.techtales.io
