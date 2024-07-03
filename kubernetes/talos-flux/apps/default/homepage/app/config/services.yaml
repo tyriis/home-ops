@@ -55,3 +55,9 @@
         description: Harbor Container Registry
         # ping: harbor.techtales.io
         siteMonitor: https://harbor.techtales.io
+    - Cloudflare:
+        icon: cloudflare
+        href: https://dash.cloudflare.com
+        description: Cloudflare DNS and CDN
+        # ping: cloudflare.techtales.io
+        # siteMonitor: https://dash.cloudflare.com
