@@ -15,3 +15,5 @@ spec:
     kind: GitRepository
     name: home-ops
   wait: true
+  dependsOn:
+    - name: apps-external-secrets-stores
