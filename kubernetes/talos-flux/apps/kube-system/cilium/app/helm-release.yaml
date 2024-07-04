@@ -94,7 +94,7 @@ spec:
             hajimari.io/appName: hubble
             hajimari.io/icon: simple-icons:cilium
             gethomepage.dev/enabled: "true"
-            gethomepage.dev/description: Cloud Native, eBPF-based Networking, Observability, and Security
+            gethomepage.dev/description: eBPF-based Networking, Observability, and Security
             gethomepage.dev/group: Networking
             gethomepage.dev/icon: cilium
             gethomepage.dev/name: Hubble
