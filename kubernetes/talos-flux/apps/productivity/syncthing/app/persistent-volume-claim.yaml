@@ -11,3 +11,17 @@ spec:
       storage: 10Gi
   volumeName: syncthing-data
   storageClassName: syncthing-nfs
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: syncthing-config
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  volumeName: syncthing-config
+  storageClassName: rook-ceph

@@ -59,6 +59,9 @@ spec:
         controller: syncthing
         type: LoadBalancer
         loadBalancerIP: &ip ${SETTING_CILIUM_SYNCTHING_ADDR}
+        externalIPs:
+          - *ip
+        externalTrafficPolicy: Local
         annotations:
           io.cilium/lb-ipam-ips: *ip
         ports:
@@ -90,7 +93,6 @@ spec:
           gethomepage.dev/group: Storage
           gethomepage.dev/icon: syncthing
           gethomepage.dev/name: Syncthing
-          # gethomepage.dev/weight: "10"
         hosts:
           - host: &host "{{ .Release.Name }}.techtales.io"
             paths:
@@ -105,8 +107,15 @@ spec:
 
     persistence:
       config:
-        existingClaim: syncthing-data
+        existingClaim: syncthing-config
         advancedMounts:
           syncthing:
             app:
               - path: /config
+
+      data:
+        existingClaim: syncthing-data
+        advancedMounts:
+          syncthing:
+            app:
+              - path: /var/syncthing
