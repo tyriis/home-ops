@@ -70,11 +70,11 @@
         # siteMonitor: https://dash.cloudflare.com
 - Storage:
     - Synology NAS:
-      icon: synology-dsm
-      href: https://nas.techtales.io
-      description: Synology Disk Station Manager
-      # ping: nas.techtales.io
-      siteMonitor: https://nas.techtales.io
+        icon: synology-dsm
+        href: https://nas.techtales.io
+        description: Synology Disk Station Manager
+        # ping: nas.techtales.io
+        siteMonitor: https://nas.techtales.io
     - Minio:
         icon: minio-light
         href: https://minio.techtales.io
