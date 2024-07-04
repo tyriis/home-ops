@@ -27,7 +27,7 @@
           description: The Kubernetes Operating System
 - dev:
     - gitmoji:
-        - icon: mdi-mood
+        - icon: mdi-sticker-emoji
           href: https://gitmoji.dev/
           description: An emoji guide for your commit messages
     - shields.io:
@@ -35,6 +35,6 @@
           href: https://shields.io/
           description: Concise, consistent, and legible badges
     - devhints.io:
-        - icon: mdi-code_blocks
+        - icon: mdi-code-block-tags
           href: https://devhints.io/
           description: Devhints.io cheatsheets
