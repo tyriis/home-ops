@@ -76,7 +76,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: draw-pen
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Create diagrams and collaborate with others in real-time
+          gethomepage.dev/description: Create diagrams and collaborate with others
           gethomepage.dev/group: Productivity
           gethomepage.dev/icon: excalidraw-light
           gethomepage.dev/name: Excalidraw
