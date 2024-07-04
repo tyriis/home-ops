@@ -15,7 +15,7 @@ layout:
   Development:
     style: columns
     # columns: 1
-  Storage:
+  Productivity:
     style: columns
     # columns: 1
   Networking:
@@ -24,7 +24,7 @@ layout:
   Home Automation:
     style: columns
     # columns: 1
-  Productivity:
+  Storage:
     style: columns
     # columns: 1
   Favorites:

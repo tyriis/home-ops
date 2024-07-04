@@ -1,14 +1,14 @@
 ---
 - Favorites:
-    - Tyriis GitHub Repos:
+    - tyriis GitHub:
         icon: si-github
         href: https://github.com/tyriis
         description: https://github.com/tyriis
-    - Jazzlyn Github Repos:
+    - jazzlyn Github:
         icon: si-github
         href: https://github.com/jazzlyn
         description: https://github.com/jazzlyn
-    - Techtales GitHub Repos:
+    - techtales GitHub:
         icon: si-github
         href: https://github.com/techtales-io
         description: https://github.com/techtales-io
