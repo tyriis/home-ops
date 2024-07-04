@@ -26,7 +26,7 @@
         description: Search NixOS Packages and Options
 - Infrasructure:
     - FRITZ!Box:
-        icon: http://192.168.178.1/assets/logos/logo_fritzDiamond.svg
+        icon: avmfritzbox
         href: http://192.168.178.1
         description: FRITZ!Box Router Management
         # ping: 192.168.178.
@@ -34,7 +34,11 @@
         widget:
           type: fritzbox
           url: http://192.168.178.1
-          fields: ["externalIPAddress", "uptime", "received", "sent"]
+          fields:
+            - externalIPAddress
+            - uptime
+            - received
+            - sent
     - OPNSense Firewall:
         icon: opnsense
         href: https://opnsense.techtales.io
