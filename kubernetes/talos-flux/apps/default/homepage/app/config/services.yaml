@@ -88,3 +88,16 @@
         description: Grafana Cloud Monitoring
         # ping: grafana.techtales.io
         siteMonitor: https://grafana.techtales.io
+- Productivity:
+    - Gmail:
+        icon: gmail
+        href: https://mail.google.com
+        description: Google Mail
+        # ping: mail.google.com
+        siteMonitor: https://mail.google.com
+    - Discord:
+        icon: discord
+        href: https://discord.com
+        description: Discord Chat
+        # ping: discord.com
+        siteMonitor: https://discord.com
