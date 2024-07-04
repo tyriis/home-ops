@@ -78,7 +78,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: scanner
           gethomepage.dev/enabled: "true"
-          # gethomepage.dev/description: Web UI frontend for your scanner
+          gethomepage.dev/description: Web UI frontend for your scanner
           gethomepage.dev/group: Productivity
           gethomepage.dev/icon: scanservjs
           gethomepage.dev/name: scanservjs

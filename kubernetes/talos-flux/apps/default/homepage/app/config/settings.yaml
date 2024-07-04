@@ -12,19 +12,19 @@ layout:
   Observability:
     style: columns
     # columns: 1
-  Networking:
+  Development:
     style: columns
     # columns: 1
   Storage:
+    style: columns
+    # columns: 1
+  Networking:
     style: columns
     # columns: 1
   Home Automation:
     style: columns
     # columns: 1
   Productivity:
-    style: columns
-    # columns: 1
-  Development:
     style: columns
     # columns: 1
   Favorites:
