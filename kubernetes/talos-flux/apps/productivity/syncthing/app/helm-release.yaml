@@ -107,7 +107,10 @@ spec:
 
     persistence:
       config:
-        existingClaim: syncthing-config
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block
         advancedMounts:
           syncthing:
             app:
