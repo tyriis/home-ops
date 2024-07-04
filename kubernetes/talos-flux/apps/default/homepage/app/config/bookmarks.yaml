@@ -12,3 +12,16 @@
         - icon: slack.png
           href: https://slack.com/signin
           description: Slack Chat
+- Kubernetes:
+    - kubesearch.dev:
+        - icon: kubernetes
+          href: https://kubesearch.dev/
+          description: Kubesearch home-ops resources
+    - bjw-s Helm Charts:
+        - icon: github
+          href: https://bjw-s.github.io/helm-charts/docs/
+          description: app-template Helm Chart Values
+    - Talos:
+        - icon: talos
+          href: https://www.talos.dev/v1.7/
+          description: The Kubernetes Operating System

@@ -5,7 +5,7 @@
         href: https://github.com/tyriis
         description: My Code Repository
     - kubesearch.dev:
-        icon: si-kubernetes
+        icon: kubernetes
         href: https://kubesearch.dev/
         description: Kubesearch home-ops resources
     - onedr0p home-ops:
