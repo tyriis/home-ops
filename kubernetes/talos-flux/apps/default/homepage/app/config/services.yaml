@@ -31,14 +31,14 @@
         description: FRITZ!Box Router Management
         # ping: 192.168.178.
         siteMonitor: http://192.168.178.1
-        widget:
-          type: fritzbox
-          url: http://192.168.178.1
-          fields:
-            - externalIPAddress
-            - uptime
-            - received
-            - sent
+        # widget:
+        #   type: fritzbox
+        #   url: http://192.168.178.1
+        #   fields:
+        #     - externalIPAddress
+        #     - uptime
+        #     - received
+        #     - sent
     - OPNSense Firewall:
         icon: opnsense
         href: https://opnsense.techtales.io
