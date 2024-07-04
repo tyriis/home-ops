@@ -78,9 +78,9 @@ spec:
           gethomepage.dev/icon: esphome
           gethomepage.dev/name: ESPHome
           gethomepage.dev/weight: "3" # optional
-          gethomepage.dev/widget.type: esphome
-          gethomepage.dev/widget.url: http://esphome.home-automation.svc.cluster.local:6052
-          gethomepage.dev/widget.fields: '["total", "online", "offline_alt"]'
+          # gethomepage.dev/widget.type: esphome
+          # gethomepage.dev/widget.url: http://esphome.home-automation.svc.cluster.local:6052
+          # gethomepage.dev/widget.fields: '["total", "online", "offline_alt"]'
         hosts:
           - host: &host "{{ .Release.Name }}.techtales.io"
             paths:
