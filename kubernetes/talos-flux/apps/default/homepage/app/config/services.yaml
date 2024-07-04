@@ -1,13 +1,15 @@
 ---
 - Favorites:
-    - My GitHub Repo:
+    - Tyriis GitHub Repos:
         icon: si-github
         href: https://github.com/tyriis
         description: My Code Repository
-    - kubesearch.dev:
-        icon: kubernetes
-        href: https://kubesearch.dev/
-        description: Kubesearch home-ops resources
+    - Jazzlyn Github Repos:
+        icon: si-github
+        href: https://github.com/jazzlyn
+    - Techtales GitHub Repos:
+        icon: si-github
+        href: https://github.com/techtales-io
     - onedr0p home-ops:
         icon: si-github
         href: https://github.com/onedr0p/home-ops
@@ -16,10 +18,6 @@
         icon: si-github
         href: https://github.com/bjw-s/home-ops
         description: bjw-s HomeOps Repository
-    - bjw-s Chart Values:
-        icon: si-github
-        href: https://github.com/bjw-s/helm-charts/tree/main/charts/library/common#values
-        description: app-template Helm Chart Values
     - NixOS Search:
         icon: si-nixos
         href: https://search.nixos.org
