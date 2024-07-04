@@ -1,45 +1,36 @@
 ---
-- Communicate:
-    - Discord:
-        - icon: discord.png
-          href: https://discord.com
-          # description: Discord Chat
-    - Gmail:
-        - icon: gmail.png
-          href: https://gmail.com
-          # description: Google Mail
-    - Slack:
-        - icon: slack.png
-          href: https://slack.com/signin
-          # description: Slack Chat
 - Kubernetes:
     - kubesearch.dev:
         - icon: kubernetes
           href: https://kubesearch.dev/
-          # description: Kubesearch home-ops resources
     - bjw-s Helm Charts:
         - icon: si-github
           href: https://bjw-s.github.io/helm-charts/docs/
-          # description: app-template Helm Chart Values
     - Talos:
         - icon: talos
           href: https://www.talos.dev/v1.7/
-          # description: The Kubernetes Operating System
+    - kubernetes.io:
+        - icon: kubernetes
+          href: https://kubernetes.io/
+
 - Dev:
     - gitmoji:
         - icon: mdi-sticker-emoji
           href: https://gitmoji.dev/
-          # description: An emoji guide for your commit messages
-    - shields.io:
-        - icon: https://shields.io/img/logo.png
-          href: https://shields.io/
-          # description: Concise, consistent, and legible badges
     - devhints.io:
         - icon: mdi-code-block-tags
           href: https://devhints.io/
-          # description: Devhints.io cheatsheets
+    - labs4grabs:
+        - icon: kubernetes
+          href: https://labs4grabs.io
+    - stackoverflow:
+        - icon: stackoverflow
+          href: https://stackoverflow.com/
 
 - Badges:
+    - shields.io:
+        - icon: https://shields.io/img/logo.png
+          href: https://shields.io/
     - Awesome Badges:
         - icon: si-github
           href: https://github.com/Envoy-VC/awesome-badges
@@ -49,3 +40,17 @@
     - Badges 4 README:
         - icon: si-github
           href: https://github.com/alexandresanlim/Badges4-README.md-Profile
+
+- Entertainment:
+    - YouTube:
+        - icon: youtube
+          href: https://www.youtube.com/
+    - Netflix:
+        - icon: netflix
+          href: https://www.netflix.com/
+    - Spotify:
+        - icon: spotify
+          href: https://open.spotify.com/
+    - Disney+:
+        - icon: disneyplus
+          href: https://www.disneyplus.com/
