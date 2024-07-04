@@ -70,7 +70,7 @@ spec:
           http:
             port: 8384
 
-      listdisc:
+      listen:
         controller: syncthing
         type: LoadBalancer
         loadBalancerIP: &ip ${SETTING_CILIUM_SYNCTHING_ADDR}
