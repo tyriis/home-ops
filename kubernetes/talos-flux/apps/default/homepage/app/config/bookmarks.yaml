@@ -41,20 +41,6 @@
         - icon: si-github
           href: https://github.com/alexandresanlim/Badges4-README.md-Profile
 
-- Entertainment:
-    - YouTube:
-        - icon: youtube
-          href: https://www.youtube.com/
-    - Netflix:
-        - icon: netflix
-          href: https://www.netflix.com/
-    - Spotify:
-        - icon: spotify
-          href: https://open.spotify.com/
-    - Disney+:
-        - icon: disney-plus-light
-          href: https://www.disneyplus.com/
-
 - Icons:
     - Simple Icons:
         - icon: si-simpleicons
@@ -68,3 +54,17 @@
     - Dashboard Icons:
         - icon: si-github
           href: https://github.com/walkxcode/dashboard-icons/blob/main/ICONS.md
+
+- Entertainment:
+    - YouTube:
+        - icon: youtube
+          href: https://www.youtube.com/
+    - Netflix:
+        - icon: netflix
+          href: https://www.netflix.com/
+    - Spotify:
+        - icon: spotify
+          href: https://open.spotify.com/
+    - Disney+:
+        - icon: disney-plus-light
+          href: https://www.disneyplus.com/
