@@ -90,7 +90,7 @@ spec:
           gethomepage.dev/group: Home Automation
           gethomepage.dev/icon: zigbee2mqtt
           gethomepage.dev/name: Zigbee2MQTT Upstairs
-          gethomepage.dev/weight: "7" # optional
+          gethomepage.dev/weight: "4" # optional
         hosts:
           - host: &host "{{ .Release.Name }}.techtales.io"
             paths:

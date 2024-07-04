@@ -72,7 +72,7 @@ spec:
           gethomepage.dev/group: Home Automation
           gethomepage.dev/icon: home-assistant
           gethomepage.dev/name: Home Assistant
-          gethomepage.dev/weight: "10" # optional
+          gethomepage.dev/weight: "1" # optional
         hosts:
           - host: &host hass.techtales.io
             paths:
