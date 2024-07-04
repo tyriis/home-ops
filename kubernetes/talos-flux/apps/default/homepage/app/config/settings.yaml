@@ -5,13 +5,13 @@ color: slate
 headerStyle: clean
 iconStyle: theme
 target: _blank
-# layout:
-#   Favorites:
-#     style: row
-#     columns: 4
-#   Infrasructure:
-#     style: row
-#     columns: 4
+layout:
+  Favorites:
+    style: row
+    columns: 1
+  Infrasructure:
+    style: row
+    columns: 1
 quicklaunch:
   searchDescription: true
   hideInternetSearch: true
