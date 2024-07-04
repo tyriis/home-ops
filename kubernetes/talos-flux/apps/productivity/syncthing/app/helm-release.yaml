@@ -129,11 +129,11 @@ spec:
         advancedMounts:
           syncthing:
             app:
-              - path: /config
+              - path: /var/syncthing
 
       data:
         existingClaim: syncthing-data
         advancedMounts:
           syncthing:
             app:
-              - path: /var/syncthing
+              - path: /data
