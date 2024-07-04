@@ -24,4 +24,4 @@ spec:
     requests:
       storage: 10Gi
   volumeName: syncthing-config
-  storageClassName: rook-ceph
+  storageClassName: ceph-block
