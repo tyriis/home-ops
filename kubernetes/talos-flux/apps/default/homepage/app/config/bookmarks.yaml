@@ -54,3 +54,17 @@
     - Disney+:
         - icon: disney-plus-light
           href: https://www.disneyplus.com/
+
+- Icons:
+    - Simple Icons:
+        - icon: si-simpleicons
+          href: https://simpleicons.org/
+    - Material Design Icons:
+        - icon: https://pictogrammers.com/images/libraries/mdi.svg
+          href: https://materialdesignicons.com/
+    - Heroicons:
+        - icon: mdi-shield-outline
+          href: https://heroicons.com/
+    - Dashboard Icons:
+        - icon: si-github
+          href: https://github.com/walkxcode/dashboard-icons/blob/main/ICONS.md
