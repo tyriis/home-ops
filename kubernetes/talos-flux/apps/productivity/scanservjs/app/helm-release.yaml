@@ -77,6 +77,12 @@ spec:
           hajimari.io/appName: scanner
           hajimari.io/enable: "true"
           hajimari.io/icon: scanner
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Web UI frontend for your scanner
+          gethomepage.dev/group: Productivity
+          gethomepage.dev/icon: scanservjs
+          gethomepage.dev/name: scanservjs
+          # gethomepage.dev/weight: "10"
         hosts:
           - host: &host "{{ .Release.Name }}.techtales.io"
             paths:
