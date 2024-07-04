@@ -15,10 +15,13 @@ layout:
   Networking:
     style: columns
     # columns: 1
+  Storage:
+    style: columns
+    # columns: 1
   Home Automation:
     style: columns
     # columns: 1
-  Storage:
+  Productivity:
     style: columns
     # columns: 1
   Development:
