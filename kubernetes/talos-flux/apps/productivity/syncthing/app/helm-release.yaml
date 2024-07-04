@@ -43,16 +43,24 @@ spec:
             env:
               PUID: "1000"
               PGID: "1000"
+            ports:
+              - containerPort: 8384
+                name: http
             probes:
-              liveness:
+              liveness: &probes
                 enabled: true
-                port: 8384
-              readiness:
-                enabled: true
-                port: 8384
-              startup:
-                enabled: true
-                port: 8384
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 8384
+                    scheme: HTTP
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup: *probes
 
     service:
       app:
