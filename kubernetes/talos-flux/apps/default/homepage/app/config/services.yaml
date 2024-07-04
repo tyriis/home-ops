@@ -84,20 +84,26 @@
 - Observability:
     - Grafana Cloud:
         icon: grafana
-        href: https://grafana.techtales.io
+        href: https://homecluster.grafana.net
         description: Grafana Cloud Monitoring
-        # ping: grafana.techtales.io
-        siteMonitor: https://grafana.techtales.io
+        ping: homecluster.grafana.net
+        # siteMonitor: https://homecluster.grafana.net
 - Productivity:
     - Gmail:
         icon: gmail
         href: https://mail.google.com
         description: Google Mail
-        # ping: mail.google.com
-        siteMonitor: https://mail.google.com
+        ping: mail.google.com
+        # siteMonitor: https://mail.google.com
     - Discord:
         icon: discord
         href: https://discord.com
         description: Discord Chat
-        # ping: discord.com
-        siteMonitor: https://discord.com
+        ping: discord.com
+        # siteMonitor: https://discord.com
+    - Google Drive:
+        icon: google-drive
+        href: https://drive.google.com
+        description: Google Drive
+        ping: drive.google.com
+        # siteMonitor: https://drive.google.com
