@@ -46,10 +46,13 @@ spec:
             probes:
               liveness:
                 enabled: true
+                port: 8384
               readiness:
                 enabled: true
+                port: 8384
               startup:
                 enabled: true
+                port: 8384
 
     service:
       app:
