@@ -50,18 +50,6 @@
         #   url: https://opnsense.techtales.io
         #   username: "{{HOMEPAGE_VAR_OPNSENSE_API_KEY}}"
         #   password: "{{HOMEPAGE_VAR_OPNSENSE_SECRET}}"
-    - Synology NAS:
-        icon: synology-dsm
-        href: https://nas.techtales.io
-        description: Synology Disk Station Manager
-        # ping: nas.techtales.io
-        siteMonitor: https://nas.techtales.io
-    - Minio:
-        icon: minio-light
-        href: https://minio.techtales.io
-        description: Minio Object Storage
-        # ping: minio.techtales.io
-        siteMonitor: https://minio.techtales.io
     - Hashicorp Vault:
         icon: vault
         href: https://vault.techtales.io
@@ -80,3 +68,16 @@
         description: Cloudflare DNS and CDN
         # ping: cloudflare.techtales.io
         # siteMonitor: https://dash.cloudflare.com
+- Storage:
+    - Synology NAS:
+      icon: synology-dsm
+      href: https://nas.techtales.io
+      description: Synology Disk Station Manager
+      # ping: nas.techtales.io
+      siteMonitor: https://nas.techtales.io
+    - Minio:
+        icon: minio-light
+        href: https://minio.techtales.io
+        description: Minio Object Storage
+        # ping: minio.techtales.io
+        siteMonitor: https://minio.techtales.io
