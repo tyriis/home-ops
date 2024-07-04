@@ -6,34 +6,27 @@ headerStyle: clean
 iconStyle: theme
 target: _blank
 layout:
-  Favorites:
-    style: row
-    columns: 1
   Infrasructure:
-    style: row
-    columns: 1
-    Bookmark Group on First Tab:
-    tab: First
-
-  First Service Group:
-    tab: First
-    style: row
-    columns: 4
-
-  Second Service Group:
-    tab: Second
-    columns: 4
-
-  Third Service Group:
-    tab: Third
-    style: row
-
-  Bookmark Group on Fourth Tab:
-    tab: Fourth
-
-  Service Group on every Tab:
-    style: row
-    columns: 4
+    style: columns
+    # columns: 1
+  Observability:
+    style: columns
+    # columns: 1
+  Networking:
+    style: columns
+    # columns: 1
+  Home Automation:
+    style: columns
+    # columns: 1
+  Storage:
+    style: columns
+    # columns: 1
+  Development:
+    style: columns
+    # columns: 1
+  Favorites:
+    style: columns
+    # columns: 1
 quicklaunch:
   searchDescription: true
   hideInternetSearch: true
