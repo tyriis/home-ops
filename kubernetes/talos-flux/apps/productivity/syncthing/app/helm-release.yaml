@@ -85,6 +85,12 @@ spec:
           hajimari.io/appName: syncthing
           hajimari.io/enable: "true"
           hajimari.io/icon: folder-sync
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Sync your files with Syncthing
+          gethomepage.dev/group: Storage
+          gethomepage.dev/icon: syncthing
+          gethomepage.dev/name: Syncthing
+          # gethomepage.dev/weight: "10"
         hosts:
           - host: &host "{{ .Release.Name }}.techtales.io"
             paths:
