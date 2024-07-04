@@ -3,21 +3,23 @@
     - Tyriis GitHub Repos:
         icon: si-github
         href: https://github.com/tyriis
-        description: My Code Repository
+        description: https://github.com/tyriis
     - Jazzlyn Github Repos:
         icon: si-github
         href: https://github.com/jazzlyn
+        description: https://github.com/jazzlyn
     - Techtales GitHub Repos:
         icon: si-github
         href: https://github.com/techtales-io
+        description: https://github.com/techtales-io
     - onedr0p home-ops:
         icon: si-github
         href: https://github.com/onedr0p/home-ops
-        description: onedr0p HomeOps Repository
+        description: https://github.com/onedr0p/home-ops
     - bjw-s home-ops:
         icon: si-github
         href: https://github.com/bjw-s/home-ops
-        description: bjw-s HomeOps Repository
+        description: https://github.com/bjw-s/home-ops
     - NixOS Search:
         icon: si-nixos
         href: https://search.nixos.org

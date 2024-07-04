@@ -24,7 +24,7 @@
         - icon: kubernetes
           href: https://labs4grabs.io
     - stackoverflow:
-        - icon: stackoverflow
+        - icon: mdi-stackoverflow
           href: https://stackoverflow.com/
 
 - Badges:
@@ -52,5 +52,5 @@
         - icon: spotify
           href: https://open.spotify.com/
     - Disney+:
-        - icon: disneyplus
+        - icon: disney-plus-light
           href: https://www.disneyplus.com/
