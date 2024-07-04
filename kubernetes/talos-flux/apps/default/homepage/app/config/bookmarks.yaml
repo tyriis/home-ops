@@ -24,7 +24,7 @@
         - icon: kubernetes
           href: https://labs4grabs.io
     - stackoverflow:
-        - icon: mdi-stackoverflow
+        - icon: si-stackoverflow
           href: https://stackoverflow.com/
 
 - Badges:
@@ -45,7 +45,7 @@
     - Simple Icons:
         - icon: si-simpleicons
           href: https://simpleicons.org/
-    - Material Design Icons:
+    - MDI:
         - icon: https://pictogrammers.com/images/libraries/mdi.svg
           href: https://materialdesignicons.com/
     - Heroicons:
