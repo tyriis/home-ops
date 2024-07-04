@@ -81,3 +81,10 @@
         description: Minio Object Storage
         # ping: minio.techtales.io
         siteMonitor: https://minio.techtales.io
+- Observability:
+    - Grafana Cloud:
+        icon: grafana
+        href: https://grafana.techtales.io
+        description: Grafana Cloud Monitoring
+        # ping: grafana.techtales.io
+        siteMonitor: https://grafana.techtales.io

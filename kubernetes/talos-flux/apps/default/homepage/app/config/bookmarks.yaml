@@ -3,38 +3,49 @@
     - Discord:
         - icon: discord.png
           href: https://discord.com
-          description: Discord Chat
+          # description: Discord Chat
     - Gmail:
         - icon: gmail.png
           href: https://gmail.com
-          description: Google Mail
+          # description: Google Mail
     - Slack:
         - icon: slack.png
           href: https://slack.com/signin
-          description: Slack Chat
+          # description: Slack Chat
 - Kubernetes:
     - kubesearch.dev:
         - icon: kubernetes
           href: https://kubesearch.dev/
-          description: Kubesearch home-ops resources
+          # description: Kubesearch home-ops resources
     - bjw-s Helm Charts:
         - icon: si-github
           href: https://bjw-s.github.io/helm-charts/docs/
-          description: app-template Helm Chart Values
+          # description: app-template Helm Chart Values
     - Talos:
         - icon: talos
           href: https://www.talos.dev/v1.7/
-          description: The Kubernetes Operating System
-- dev:
+          # description: The Kubernetes Operating System
+- Dev:
     - gitmoji:
         - icon: mdi-sticker-emoji
           href: https://gitmoji.dev/
-          description: An emoji guide for your commit messages
+          # description: An emoji guide for your commit messages
     - shields.io:
         - icon: https://shields.io/img/logo.png
           href: https://shields.io/
-          description: Concise, consistent, and legible badges
+          # description: Concise, consistent, and legible badges
     - devhints.io:
         - icon: mdi-code-block-tags
           href: https://devhints.io/
-          description: Devhints.io cheatsheets
+          # description: Devhints.io cheatsheets
+
+- Badges:
+    - Awesome Badges:
+        - icon: si-github
+          href: https://github.com/Envoy-VC/awesome-badges
+    - Aleen42 Badges:
+        - icon: https://badges.aleen42.com/badges.svg
+          href: https://badges.aleen42.com/
+    - Badges 4 README:
+        - icon: si-github
+          href: https://github.com/alexandresanlim/Badges4-README.md-Profile
