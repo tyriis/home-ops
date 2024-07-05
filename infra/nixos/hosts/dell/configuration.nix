@@ -59,7 +59,8 @@
   # Nice font for the framebuffer console.
   console = {
     earlySetup = true;
-    font = "${pkgs.terminus_font}/share/consolefonts/ter-120n.psf.gz";
+    # https://www.if-not-true-then-false.com/2024/fedora-terminus-console-font/
+    font = "${pkgs.terminus_font}/share/consolefonts/ter-116n.psf.gz";
     packages = with pkgs; [ terminus_font ];
     keyMap = "de";
     # useXkbConfig = true; # use xkbOptions in tty.
