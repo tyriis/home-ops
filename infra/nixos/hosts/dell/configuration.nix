@@ -230,5 +230,5 @@
 
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.lightdm.enableGnomeKeyring = true;
-  ssh.startAgent = true;
+  programs.ssh.startAgent = true;
 }
