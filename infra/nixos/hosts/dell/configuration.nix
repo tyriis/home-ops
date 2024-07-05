@@ -17,6 +17,7 @@
       ../../fonts.nix
       ../../modules/openssh.nix
       ../../modules/neovim.nix
+      ../../modules/gnome-keyring.nix
     ];
 
   # enable nix-flakes
@@ -227,7 +228,4 @@
   hardware.pulseaudio.enable = true;
   hardware.pulseaudio.support32Bit = true; ## If compatibility with 32-bit applications is desired.
   nixpkgs.config.pulseaudio = true;
-
-  services.gnome.gnome-keyring.enable = true;
-  security.pam.services.lightdm.enableGnomeKeyring = true;
 }
