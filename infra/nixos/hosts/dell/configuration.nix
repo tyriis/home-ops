@@ -15,9 +15,9 @@
       ./hardware-configuration.nix
       ../../users.nix
       ../../fonts.nix
+      ../../modules/gnome-keyring.nix
       ../../modules/openssh.nix
       ../../modules/neovim.nix
-      ../../modules/gnome-keyring.nix
     ];
 
   # enable nix-flakes
