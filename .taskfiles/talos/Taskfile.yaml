@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://json.schemastore.org/taskfile.json
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
 tasks:
@@ -113,16 +113,25 @@ tasks:
           --endpoints 192.168.1.50 \
           --force
 
-  dashboard:
-    desc: start the theila dashboard
-    cmds:
-      - theila --address 127.0.0.1 --port 8080
+  # dashboard:
+  #   desc: start the theila dashboard
+  #   cmds:
+  #     - theila --address 127.0.0.1 --port 8080
 
   # https://www.talos.dev/v1.2/advanced/disaster-recovery/
   backup:etcd:
     desc: backup etcd from ip 192.168.1.51
     cmds:
       - talosctl -n 192.168.1.51 etcd snapshot db.snapshot
+
+  dashboard:
+    desc: Dashboard talos01
+    dir: infra/talos
+    cmds:
+      - talosctl dashboard --nodes {{.hostname}}
+    requires:
+      vars:
+        - hostname
 
   dashboard:talos01:
     desc: Dashboard talos01
@@ -155,3 +164,29 @@ tasks:
       - |
         talosctl dashboard \
           --nodes 192.168.1.54
+
+  upgrade:
+    # usage: task talos:upgrade hostname=192.168.1.51 cluster=talos-flux
+    desc: Upgrade talos on a node
+    dir: infra/talos
+    prompt: do you want to upgrade talos to {{.TALOS_VERSION}} on node {{.hostname}}?
+    cmds:
+      - until kubectl --context {{.cluster}} wait --timeout=5m --for=condition=Complete jobs --all --all-namespaces; do sleep 10; done
+      - talosctl --context {{.cluster}} --nodes {{.hostname}} upgrade --image="ghcr.io/siderolabs/installer:{{.TALOS_VERSION}}" --wait=true --timeout=10m --preserve=true
+      - talosctl --context {{.cluster}} --nodes {{.hostname}} health --wait-timeout=10m --server=false
+      - until kubectl --context {{.cluster}} wait --timeout=5m --for=jsonpath=.status.ceph.health=HEALTH_OK cephcluster --all --all-namespaces; do sleep 10; done
+    vars:
+      TALOS_VERSION:
+        sh: yq 'select(document_index == 0).talosVersion' {{.TALOS_DIR}}/talconfig.yaml
+      KUBERNETES_VERSION:
+        sh: yq 'select(document_index == 0).kubernetesVersion' {{.TALOS_DIR}}/talconfig.yaml
+      # CONTROLLER:
+      #   sh: talosctl --context {{.cluster}} config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
+    requires:
+      vars:
+        - cluster
+        - hostname
+    preconditions:
+      - test -f {{.TALOS_DIR}}/talconfig.yaml
+      - talosctl --context {{.cluster}} config info >/dev/null 2>&1
+      - talosctl --context {{.cluster}} --nodes {{.hostname}} get machineconfig >/dev/null 2>&1

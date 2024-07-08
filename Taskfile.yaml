@@ -8,6 +8,8 @@ vars:
   DEVENV_DIR: "{{.PROJECT_DIR}}/devenv"
   FLUX_DIR: "{{.PROJECT_DIR}}/kubernetes"
   TERRAFORM_DIR: "{{.PROJECT_DIR}}/infra/terraform"
+  TALOS_DIR: "{{.ROOT_DIR}}/infra/talos"
+  KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
 
 includes:
   backstage: .taskfiles/backstage/Taskfile.yaml
