@@ -1,0 +1,29 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: actions-runner-controller
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/part-of: gha-rs-controller
+  podMetricsEndpoints:
+    - port: metrics
+      path: /metrics
+      interval: 1m
+      scrapeTimeout: 5s
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: actions-runner-controller-runners
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/part-of: gha-runner-scale-set
+  podMetricsEndpoints:
+    - port: metrics
+      path: /metrics
+      interval: 1m
+      scrapeTimeout: 5s
