@@ -5,3 +5,18 @@ kind: Kustomization
 namespace: github
 resources:
   - ./helm-release.yaml
+  - ./pod-monitor.yaml
+configMapGenerator:
+  # Ref: https://github.com/actions/actions-runner-controller/blob/master/docs/gha-runner-scale-set-controller/samples/grafana-dashboard/ARC-Autoscaling-Runner-Set-Monitoring_1692627561838.json
+  - name: arc-dashboard
+    files:
+      - arc-dashboard.json
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+  labels:
+    grafana_dashboard: "true"
+commonLabels:
+  app.kubernetes.io/instance: actions-runner-controller
+  app.kubernetes.io/name: actions-runner-controller
