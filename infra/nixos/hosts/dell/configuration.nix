@@ -229,4 +229,9 @@
   hardware.pulseaudio.enable = true;
   hardware.pulseaudio.support32Bit = true; ## If compatibility with 32-bit applications is desired.
   nixpkgs.config.pulseaudio = true;
+
+  # adjust size of /run/user/1000 this is required to compile f.e. node with mise
+  services.logind.extraConfig = ''
+    RuntimeDirectorySize=3G
+  '';
 }
