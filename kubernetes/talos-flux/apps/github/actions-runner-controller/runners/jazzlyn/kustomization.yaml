@@ -4,6 +4,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: github
 resources:
-  - ./jazzlyn
-  - ./organization
-  - ./tyriis
+  - secrets.sops.yaml
+  - gh-actions-demo.yaml
+  - kind-flux-demo.yaml
