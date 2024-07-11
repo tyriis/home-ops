@@ -6,6 +6,8 @@ metadata:
   name: tyriis-terraform-github
 spec:
   interval: 30m
+  driftDetection:
+    mode: enabled
   chart:
     spec:
       chart: gha-runner-scale-set
