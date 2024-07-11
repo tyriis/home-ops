@@ -171,10 +171,10 @@ tasks:
     dir: infra/talos
     prompt: do you want to upgrade talos to {{.TALOS_VERSION}} on node {{.hostname}}?
     cmds:
-      - until kubectl --context {{.cluster}} wait --timeout=5m --for=condition=Complete jobs --all --all-namespaces; do sleep 10; done
+      - until kubectl --context {{.KUBE_CONTEXT}} wait --timeout=5m --for=condition=Complete jobs --all --all-namespaces; do sleep 10; done
       - talosctl --context {{.cluster}} --nodes {{.hostname}} upgrade --image="ghcr.io/siderolabs/installer:{{.TALOS_VERSION}}" --wait=true --timeout=10m --preserve=true
       - talosctl --context {{.cluster}} --nodes {{.hostname}} health --wait-timeout=10m --server=false
-      - until kubectl --context {{.cluster}} wait --timeout=5m --for=jsonpath=.status.ceph.health=HEALTH_OK cephcluster --all --all-namespaces; do sleep 10; done
+      - until kubectl --context {{.KUBE_CONTEXT}} wait --timeout=5m --for=jsonpath=.status.ceph.health=HEALTH_OK cephcluster --all --all-namespaces; do sleep 10; done
     vars:
       TALOS_VERSION:
         sh: yq 'select(document_index == 0).talosVersion' {{.TALOS_DIR}}/talconfig.yaml
@@ -182,6 +182,8 @@ tasks:
         sh: yq 'select(document_index == 0).kubernetesVersion' {{.TALOS_DIR}}/talconfig.yaml
       # CONTROLLER:
       #   sh: talosctl --context {{.cluster}} config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
+      KUBE_CONTEXT:
+        sh: echo admin@{{.cluster}}
     requires:
       vars:
         - cluster
