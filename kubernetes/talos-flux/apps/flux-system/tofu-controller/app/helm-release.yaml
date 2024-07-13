@@ -1,0 +1,50 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: tofu-controller
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: tf-controller
+      version: 0.16.0-rc.4
+      sourceRef:
+        kind: HelmRepository
+        name: flux-iac-charts
+        namespace: flux-system
+  install:
+    crds: Create
+    remediation:
+      retries: 3
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    replicaCount: 3
+    concurrency: 24
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 2Gi
+      requests:
+        cpu: 400m
+        memory: 64Mi
+    caCertValidityDuration: 24h
+    certRotationCheckFrequency: 30m
+    image:
+      tag: v0.16.0-rc.4
+    runner:
+      image:
+        tag: v0.16.0-rc.4
+      grpc:
+        maxMessageSize: 30
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        interval: 15s
