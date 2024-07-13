@@ -46,3 +46,18 @@ spec:
       name: tyriis-runners
       valuesKey: github_app_private_key
       targetPath: githubConfigSecret.github_app_private_key
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: &app tyriis-home-ops
+spec:
+  selector:
+    matchLabels:
+      helm.toolkit.fluxcd.io/name: *app
+  podMetricsEndpoints:
+    - port: metrics
+      path: /metrics
+      interval: 15s
+      scrapeTimeout: 5s

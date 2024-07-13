@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: techtales-io
+  name: jazzlyn-kind-flux-demo
 spec:
   interval: 30m
   driftDetection:
@@ -18,9 +18,9 @@ spec:
         namespace: flux-system
       interval: 30m
   values:
-    runnerScaleSetName: arc-runner-set-techtales-io
-    githubConfigUrl: https://github.com/techtales-io
-    minRunners: 1
+    runnerScaleSetName: arc-runner-set-kind-flux-demo
+    githubConfigUrl: https://github.com/jazzlyn/kind-flux-demo
+    minRunners: 0
     maxRunners: 3
     containerMode:
       type: dind
@@ -35,14 +35,29 @@ spec:
       name: gha-runner-scale-set-controller
   valuesFrom:
     - kind: Secret
-      name: techtales-io-runners
+      name: jazzlyn-runners
       valuesKey: github_app_id
       targetPath: githubConfigSecret.github_app_id
     - kind: Secret
-      name: techtales-io-runners
+      name: jazzlyn-runners
       valuesKey: github_app_installation_id
       targetPath: githubConfigSecret.github_app_installation_id
     - kind: Secret
-      name: techtales-io-runners
+      name: jazzlyn-runners
       valuesKey: github_app_private_key
       targetPath: githubConfigSecret.github_app_private_key
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: &app jazzlyn-kind-flux-demo
+spec:
+  selector:
+    matchLabels:
+      helm.toolkit.fluxcd.io/name: *app
+  podMetricsEndpoints:
+    - port: metrics
+      path: /metrics
+      interval: 15s
+      scrapeTimeout: 5s

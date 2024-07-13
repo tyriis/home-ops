@@ -23,6 +23,10 @@ spec:
 
   values:
     fullnameOverride: gha-runner-scale-set-controller
+    metrics:
+      controllerManagerAddr: :8080
+      listenerAddr: :8080
+      listenerEndpoint: /metrics
     # resources:
     #   requests:
     #     memory: 64Mi
