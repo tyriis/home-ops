@@ -21,7 +21,7 @@ provider:
             name: *secret
             key: OPNSENSE_API_KEY
       - name: OPNSENSE_HOST
-        value: http://192.168.1.1
+        value: http://opnsense.techtales.io
       - name: OPNSENSE_SKIP_TLS_VERIFY
         value: "true"
       - name: LOG_LEVEL

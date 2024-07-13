@@ -2,41 +2,6 @@
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
-  name: techtales-infra
-  annotations:
-    external-dns/opnsense: "true"
-spec:
-  endpoints:
-    - dnsName: opnsense.techtales.io
-      recordTTL: 300
-      recordType: A
-      targets:
-        - 192.168.1.1
-    - dnsName: nas.techtales.io
-      recordTTL: 300
-      recordType: A
-      targets:
-        - 192.168.1.4
-    - dnsName: minio.techtales.io
-      recordTTL: 300
-      recordType: A
-      targets:
-        - 192.168.1.4
-    - dnsName: vault.techtales.io
-      recordTTL: 300
-      recordType: A
-      targets:
-        - 192.168.1.4
-    - dnsName: harbor.techtales.io
-      recordTTL: 300
-      recordType: A
-      targets:
-        - 192.168.1.4
-
----
-apiVersion: externaldns.k8s.io/v1alpha1
-kind: DNSEndpoint
-metadata:
   name: kube-nas
   annotations:
     external-dns/opnsense: "true"
