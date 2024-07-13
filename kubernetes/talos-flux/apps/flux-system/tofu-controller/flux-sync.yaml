@@ -39,8 +39,8 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-kubernetes
-  wait: false # no flux ks dependents
+    name: home-ops
+  wait: true # no flux ks dependendsOn, could be false
   interval: 30m
   retryInterval: 1m
   timeout: 5m
