@@ -23,7 +23,7 @@ provider:
       - name: OPNSENSE_HOST
         value: http://opnsense.techtales.io
       - name: OPNSENSE_SKIP_TLS_VERIFY
-        value: "true"
+        value: "false"
       - name: LOG_LEVEL
         value: debug
     livenessProbe:
