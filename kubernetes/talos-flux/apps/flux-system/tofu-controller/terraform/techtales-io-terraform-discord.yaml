@@ -1,4 +1,40 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/external-secrets.io/externalsecret_v1beta1.json
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: &name techtales-io-terraform-discord-env
+spec:
+  refreshInterval: 5m
+  secretStoreRef:
+    name: vault-backend
+    kind: ClusterSecretStore
+  target:
+    name: *name
+    creationPolicy: Owner
+  data:
+    - secretKey: VAULT_TOKEN
+      remoteRef:
+        key: infra/techtales/poc-techtales-io-terraform-discord
+        property: VAULT_TOKEN
+    - secretKey: AWS_ENDPOINT_URL_S3
+      remoteRef:
+        key: infra/techtales/poc-techtales-io-terraform-discord
+        property: AWS_ENDPOINT_URL_S3
+    - secretKey: AWS_REGION
+      remoteRef:
+        key: infra/techtales/poc-techtales-io-terraform-discord
+        property: AWS_REGION
+    - secretKey: AWS_ACCESS_KEY_ID
+      remoteRef:
+        key: infra/techtales/poc-techtales-io-terraform-discord
+        property: AWS_ACCESS_KEY_ID
+    - secretKey: AWS_SECRET_ACCESS_KEY
+      remoteRef:
+        key: infra/techtales/poc-techtales-io-terraform-discord
+        property: AWS_SECRET_ACCESS_KEY
+
+---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/gitrepository_v1.json
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
@@ -24,3 +60,11 @@ spec:
     kind: GitRepository
     name: techtales-io-terraform-discord
     namespace: flux-system
+  runnerPodTemplate:
+    spec:
+      env:
+        - name: AWS_REGION
+          value: home
+      envFrom:
+        - secretRef:
+            name: techtales-io-terraform-discord-env
