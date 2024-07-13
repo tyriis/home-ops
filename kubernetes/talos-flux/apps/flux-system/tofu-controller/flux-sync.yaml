@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: external-secrets-stores
+    - name: apps-external-secrets-stores
   path: ./kubernetes/talos-flux/apps/flux-system/tofu-controller/app
   prune: true
   sourceRef:
