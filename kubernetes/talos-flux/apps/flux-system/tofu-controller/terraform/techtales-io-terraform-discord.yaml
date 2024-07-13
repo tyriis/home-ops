@@ -21,6 +21,6 @@ spec:
   approvePlan: auto
   path: ./
   sourceRef:
-    kind: OCIRepository
+    kind: GitRepository
     name: techtales-io-terraform-discord
     namespace: flux-system
