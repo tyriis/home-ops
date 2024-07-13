@@ -65,6 +65,8 @@ spec:
       env:
         - name: AWS_REGION
           value: home
+        - name: VAULT_ADDR
+          value: "https://vault.techtales.io"
       envFrom:
         - secretRef:
             name: techtales-io-terraform-discord-env
