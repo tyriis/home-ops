@@ -25,6 +25,7 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    fullnameOverride: tofu-controller
     replicaCount: 3
     concurrency: 24
     resources:
