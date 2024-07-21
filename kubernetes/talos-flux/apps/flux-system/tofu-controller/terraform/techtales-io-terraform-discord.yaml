@@ -46,6 +46,9 @@ spec:
   url: https://github.com/techtales-io/terraform-discord
   ref:
     branch: main
+  ignore: |
+    # include all
+    !/**
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/infra.contrib.fluxcd.io/terraform_v1alpha2.json
 apiVersion: infra.contrib.fluxcd.io/v1alpha2
