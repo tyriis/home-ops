@@ -110,9 +110,6 @@ patches:
                   requests:
                     memory: 221Mi
                     cpu: 27m
-                  limits:
-                    memory: 221Mi
-                    cpu: 2
     target:
       kind: Deployment
       name: kustomize-controller
