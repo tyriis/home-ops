@@ -29,7 +29,7 @@ spec:
   # https://artifacthub.io/packages/helm/grafana/loki?modal=values
   # https://github.com/grafana/loki/blob/main/production/helm/loki/values.yaml
   values:
-    deploymentMode: SimpleScalable
+    deploymentMode: SingleBinary
     loki:
       podAnnotations:
         secret.reloader.stakater.com/reload: loki-s3
@@ -42,33 +42,17 @@ spec:
         retention_delete_delay: 2h
         retention_delete_worker_count: 150
         working_directory: /var/loki/compactor/retention
-      frontend:
-        max_outstanding_per_tenant: 4096
       ingester:
         chunk_encoding: snappy
       limits_config:
-        ingestion_burst_size_mb: 128
-        ingestion_rate_mb: 64
-        max_query_parallelism: 100
-        per_stream_rate_limit: 64M
-        per_stream_rate_limit_burst: 128M
-        reject_old_samples: true
-        reject_old_samples_max_age: 168h
         retention_period: 30d
-        shard_streams:
-          enabled: true
-        split_queries_by_interval: 1h
-      query_scheduler:
-        max_outstanding_requests_per_tenant: 4096
       rulerConfig:
         enable_api: true
         enable_alertmanager_v2: true
         alertmanager_url: http://prometheus-alertmanager.observability.svc.cluster.local:9093 #NOSONAR allow http
-        storage:
-          type: local
-          local:
-            directory: /rules
         rule_path: /rules/fake
+        storage:
+          type: s3
       schemaConfig:
         configs:
           - from: "2024-04-01"
@@ -85,34 +69,15 @@ spec:
           chunks: loki
         type: s3
         s3:
+          insecure: false
           s3ForcePathStyle: true
 
-    gateway:
-      image:
-        registry: ghcr.io
+    singleBinary:
       replicas: 2
-      ingress:
-        # use dedicated ingress definition
-        enabled: false
-      service:
-        labels:
-          prometheus.io/service-monitor: "false"
-
-    write:
-      replicas: 2
-      persistence:
-        size: 20Gi
-        storageClass: openebs-hostpath
-
-    read:
-      replicas: 2
-      extraVolumes:
-        - name: loki-rules
-          configMap:
-            name: loki-alerting-rules
-
-    backend:
-      replicas: 2
+      resources:
+        requests:
+          cpu: 10m
+          memory: 100Mi
       extraVolumes:
         - name: loki-rules
           configMap:
@@ -126,6 +91,14 @@ spec:
         searchNamespace: ALL
         folder: /rules/fake
 
+    backend:
+      replicas: 0
+    read:
+      replicas: 0
+    write:
+      replicas: 0
+    gateway:
+      enabled: false
     lokiCanary:
       enabled: false
     test:
