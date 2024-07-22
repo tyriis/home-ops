@@ -57,7 +57,7 @@ metadata:
   name: techtales-io-terraform-discord
 spec:
   interval: 12h
-  approvePlan: auto
+  approvePlan: disable
   backendConfig:
     customConfiguration: |
       backend "s3" {
