@@ -79,6 +79,8 @@ spec:
   runnerPodTemplate:
     spec:
       env:
+        - name: OPENTOFU_ENFORCE_GPG_VALIDATION
+          value: "false"
         - name: AWS_REGION
           value: home
         - name: VAULT_ADDR
