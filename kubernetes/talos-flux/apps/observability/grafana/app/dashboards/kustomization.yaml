@@ -5,7 +5,7 @@ kind: Kustomization
 configMapGenerator:
   - name: dashboards
     files:
-      - resource-usage.json=dashboards/resource-usage.json
+      - resource-usage.json=resource-usage.json
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
