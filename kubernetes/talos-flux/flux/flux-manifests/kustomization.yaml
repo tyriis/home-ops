@@ -88,8 +88,8 @@ patches:
               - name: manager
                 resources:
                   requests:
-                    cpu: 20m
-                    memory: 100Mi
+                    cpu: 30m
+                    memory: 300Mi
     target:
       kind: Deployment
       name: helm-controller
@@ -105,7 +105,7 @@ patches:
               - name: manager
                 resources:
                   requests:
-                    cpu: 20m
+                    cpu: 30m
                     memory: 100Mi
     target:
       kind: Deployment
@@ -123,7 +123,7 @@ patches:
                 resources:
                   requests:
                     cpu: 15m
-                    memory: 250Mi
+                    memory: 350Mi
     target:
       kind: Deployment
       name: source-controller
