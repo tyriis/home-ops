@@ -12,7 +12,7 @@ on:
         type: boolean
       logLevel:
         description: Log-Level
-        default: debug
+        default: info
         required: false
   schedule:
     - cron: "0 * * * *"
@@ -25,7 +25,7 @@ on:
       - .github/workflows/schedule-renovate.yaml
 
 env:
-  LOG_LEVEL: debug
+  LOG_LEVEL: info
   RENOVATE_DRY_RUN: false
   RENOVATE_CONFIG_FILE: .github/renovate-bot.json5
 
