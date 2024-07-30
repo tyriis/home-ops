@@ -5,7 +5,6 @@ kind: Kustomization
 resources:
   - external-secret.yaml
   - helm-release.yaml
-  - dns-endpoint.yaml
 configMapGenerator:
   - name: external-dns-opnsense-helm-values
     files:
