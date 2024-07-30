@@ -25,6 +25,7 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    # https://artifacthub.io/packages/helm/cilium/cilium?modal=values
     autoDirectNodeRoutes: true
     bandwidthManager:
       enabled: true
@@ -36,9 +37,6 @@ spec:
     cluster:
       name: kube-nas
       id: 1
-    containerRuntime:
-      integration: containerd
-      socketPath: /var/run/k3s/containerd/containerd.sock
     endpointRoutes:
       enabled: true
     hubble:
@@ -86,7 +84,7 @@ spec:
     ipv4NativeRoutingCIDR: 10.42.0.0/16
     # k8sServiceHost: 192.168.1.90
     # k8sServicePort: 6443
-    kubeProxyReplacement: strict
+    kubeProxyReplacement: true
     # kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
     l2announcements:
       enabled: true
@@ -118,6 +116,6 @@ spec:
       annotations:
         grafana_folder: Cilium
     rollOutCiliumPods: true
+    routingMode: native
     securityContext:
       privileged: true
-    routingMode: native
