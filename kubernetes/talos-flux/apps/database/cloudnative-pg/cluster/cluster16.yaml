@@ -1,0 +1,51 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres16
+spec:
+  instances: 3
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.3-10
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 30Gi
+    storageClass: ceph-block
+  superuserSecret:
+    name: postgres-superuser
+  monitoring:
+    enablePodMonitor: true
+
+  backup:
+    retentionPolicy: 30d
+    # https://cloudnative-pg.io/documentation/current/wal_archiving/
+    barmanObjectStore: &barmanObjectStore
+      data:
+        compression: bzip2
+      wal:
+        compression: bzip2
+        maxParallel: 8
+      destinationPath: s3://cloudnative-pg-backups/
+      endpointURL: https://minio.techtales.io
+      # Note: serverName version needs to be inclemented
+      # when recovering from an existing cnpg cluster
+      serverName: &currentCluster postgres16-v1
+      s3Credentials:
+        accessKeyId:
+          name: postgres-minio
+          key: MINIO_ACCESS_KEY
+        secretAccessKey:
+          name: postgres-minio
+          key: MINIO_SECRET_KEY
+
+  # Note: previousCluster needs to be set to the name of the previous cluster
+  # when recovering from an existing cnpg cluster
+  # https://cloudnative-pg.io/documentation/current/recovery/#recovery-from-an-object-store
+  bootstrap:
+    recovery:
+      source: &previousCluster postgres-v1
+  externalClusters:
+    - name: *previousCluster
+      barmanObjectStore:
+        <<: *barmanObjectStore
+        serverName: *previousCluster
