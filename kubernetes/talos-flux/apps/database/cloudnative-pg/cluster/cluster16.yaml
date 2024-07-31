@@ -46,18 +46,18 @@ spec:
   #       <<: *barmanObjectStore
   #       serverName: *clustername
 
-bootstrap:
-  initdb:
-    import:
-      type: monolith
-      databases:
-        - "*"
-      roles:
-        - "*"
-      source:
-        externalCluster: postgres-v1
+  bootstrap:
+    initdb:
+      import:
+        type: monolith
+        databases:
+          - "*"
+        roles:
+          - "*"
+        source:
+          externalCluster: postgres-v1
 
-  externalCluster:
+  externalClusters:
     - name: postgres-v1
       connectionParameters:
         host: postgres-rw
