@@ -27,9 +27,7 @@ spec:
         maxParallel: 8
       destinationPath: s3://cloudnative-pg-backups/
       endpointURL: https://minio.techtales.io
-      # Note: serverName version needs to be inclemented
-      # when recovering from an existing cnpg cluster
-      serverName: &currentCluster postgres16-v1
+      serverName: &clustername postgres16
       s3Credentials:
         accessKeyId:
           name: postgres-minio
@@ -38,14 +36,34 @@ spec:
           name: postgres-minio
           key: MINIO_SECRET_KEY
 
-  # Note: previousCluster needs to be set to the name of the previous cluster
-  # when recovering from an existing cnpg cluster
   # https://cloudnative-pg.io/documentation/current/recovery/#recovery-from-an-object-store
-  bootstrap:
-    recovery:
-      source: &previousCluster postgres-v1
-  externalClusters:
-    - name: *previousCluster
-      barmanObjectStore:
-        <<: *barmanObjectStore
-        serverName: *previousCluster
+  # bootstrap:
+  #   recovery:
+  #     source: *clustername
+  # externalClusters:
+  #   - name: *clustername
+  #     barmanObjectStore:
+  #       <<: *barmanObjectStore
+  #       serverName: *clustername
+
+bootstrap:
+  initdb:
+    import:
+      type: monolith
+      databases:
+        - "*"
+      roles:
+        - "*"
+      source:
+        externalCluster: postgres-v1
+
+  externalCluster:
+    - name: postgres-v1
+      connectionParameters:
+        host: postgres-rw
+        user: postgres
+        dbname: postgres
+        sslmode: require
+      password:
+        name: postgres-superuser
+        key: password
