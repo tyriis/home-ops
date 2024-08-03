@@ -34,7 +34,7 @@ kubectl apply -k kubernetes/kube-nas/flux/flux-manifests
 ### age key
 
 ```bash
-sops --decrypt kubernetes/kube-nas/flux/config/age-key.sops.yaml | kubectl apply -f -
+sops --decrypt kubernetes/kube-nas/flux/config/sops-age.sops.yaml | kubectl apply -f -
 ```
 
 ### GitRepo
