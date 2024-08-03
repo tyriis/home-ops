@@ -6,7 +6,8 @@ metadata:
   name: home-ops
   namespace: flux-system
 spec:
-  interval: 1m
+  # as we use webhooks, this does not need to be aggressive
+  interval: 2h
   url: https://github.com/tyriis/home-ops.git
   ref:
     branch: main

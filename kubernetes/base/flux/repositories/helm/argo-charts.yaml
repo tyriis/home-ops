@@ -3,8 +3,9 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: bjw-s-charts
+  name: argo-charts
   namespace: flux-system
 spec:
   interval: 1h
-  url: https://bjw-s.github.io/helm-charts/
+  timeout: 3m
+  url: https://argoproj.github.io/argo-helm
