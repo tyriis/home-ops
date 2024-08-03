@@ -234,4 +234,6 @@
   services.logind.extraConfig = ''
     RuntimeDirectorySize=3G
   '';
+  # Allow Chrome screen sharing https://github.com/NixOS/nixpkgs/issues/91218
+  services.pipewire.enable = true;
 }
