@@ -6,7 +6,7 @@ metadata:
 spec:
   loadBalancerIPs: true
   interfaces:
-    - eno1
+    - enp2s0
     - wlp58s0
   nodeSelector:
     matchLabels:
