@@ -19,6 +19,15 @@
   rebaseWhen: "conflicted",
   customManagers: [],
   packageRules: [
+    // fix: prevent pin on oci helm charts
+    {
+      matchDepNames: [
+        "gha-runner-scale-set",
+        "gha-runner-scale-set-controller",
+      ],
+      matchUpdateTypes: ["pin", "pinDigest"],
+      enabled: false,
+    },
     {
       matchPackageNames: ["tyriis/bedrock-tags"],
       matchUpdateTypes: ["major", "minor", "patch"],

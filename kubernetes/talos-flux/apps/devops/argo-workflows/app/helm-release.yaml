@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: argo-workflows
-      version: 0.41.12
+      version: 0.41.14
       sourceRef:
         kind: HelmRepository
         name: argo-charts
@@ -23,7 +23,7 @@ spec:
       image:
         registry: quay.io
         repository: argoproj/workflow-controller
-        tag: v3.5.9@sha256:c4ee8cb89958ef30eb972498adf89f14c7634266cc9b4ec2678762c5e4d79570
+        tag: v3.5.10@sha256:84e2d74b5c73b4c8d1f55673ba9e8a128ba1c60889996538eaf9d291cb3fdefa
       parallelism: 20
       resourceRateLimit:
         limit: 10
@@ -42,14 +42,14 @@ spec:
       image:
         registry: quay.io
         repository: argoproj/argoexec
-        tag: v3.5.9@sha256:cb5a9f6dd344d2b13fdef59f57f4123b94a6936d5da8133a74c58e7225d7c527
+        tag: v3.5.10@sha256:1acea82e52e3707682d73cb0898738dbde70c2b47536d640688ef11e738a4062
 
     server:
       enabled: true
       image:
         registry: quay.io
         repository: argoproj/argocli
-        tag: v3.5.9@sha256:c0a3620866c52cce811edb3627289f44474ddee44cb507a40975e298891700be
+        tag: v3.5.10@sha256:ccc55a32c9739f6d3e7649fe8b896ea90980fae95c4d318a43610dc80d20ddf9
       resources:
         requests:
           cpu: 10m
