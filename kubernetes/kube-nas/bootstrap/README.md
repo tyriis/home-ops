@@ -42,13 +42,13 @@ sops --decrypt kubernetes/kube-nas/flux/config/age-key.sops.yaml | kubectl apply
 when flux is up and running, we can apply our manifests
 
 ```bash
-kubectl apply --server-side -f  kubernetes/kube-nas/flux/repositories/git/home-ops.yaml
+kubectl apply --server-side -f kubernetes/base/flux/repositories/git/home-ops.yaml
 ```
 
 ### Reconcilation
 
 ```bash
-kubectl apply --server-side -f  kubernetes/kube-nas/flux/flux-sync.yaml
+kubectl apply --server-side -f  kubernetes/kube-nas/flux/flux-system-sync.yaml
 ```
 
 ### disable local-path-provisioner
