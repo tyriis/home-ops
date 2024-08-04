@@ -74,7 +74,7 @@ spec:
           nginx.ingress.kubernetes.io/ssl-redirect: "true"
           nginx.ingress.kubernetes.io/auth-url: "https://auth.tyriis.dev/oauth2/auth"
           nginx.ingress.kubernetes.io/auth-signin: "https://auth.tyriis.dev/oauth2/start?rd=$escaped_request_uri"
-          nginx.ingress.kubernetes.io/auth-response-headers: "X-Auth-Request-User"
+          nginx.ingress.kubernetes.io/auth-response-headers: x-auth-request-user, x-auth-request-email
         hosts:
           - host: &host "{{ .Release.Name }}.tyriis.dev"
             paths:
