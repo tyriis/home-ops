@@ -50,6 +50,7 @@ spec:
               OAUTH2_PROXY_SET_AUTHORIZATION-HEADER: "true"
               OAUTH2_PROXY_SET_XAUTHREQUEST: "true"
               OAUTH2_PROXY_REVERSE_PROXY: "true"
+              OAUTH2_PROXY_SILENCE_PING_LOGGING: "true"
 
             probes:
               liveness:
