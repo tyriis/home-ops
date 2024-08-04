@@ -20,7 +20,7 @@ spec:
   values:
     runnerScaleSetName: arc-runner-set-kind-flux-demo
     githubConfigUrl: https://github.com/jazzlyn/kind-flux-demo
-    minRunners: 0
+    minRunners: 1
     maxRunners: 3
     containerMode:
       type: dind

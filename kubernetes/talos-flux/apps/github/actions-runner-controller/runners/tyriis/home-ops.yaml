@@ -20,8 +20,8 @@ spec:
   values:
     runnerScaleSetName: arc-runner-set-home-ops
     githubConfigUrl: https://github.com/tyriis/home-ops
-    minRunners: 0
-    maxRunners: 0
+    minRunners: 1
+    maxRunners: 3
     containerMode:
       type: dind
     template:
