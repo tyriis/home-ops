@@ -35,7 +35,7 @@ spec:
           app:
             image:
               repository: harbor.techtales.io/library/techtales/backstage
-              tag: v0.2.2
+              tag: v0.2.2@sha256:3c557807f82774554e5d12eb4590ab19311544c8fb662ad64b0680198c17bd5d
             resources:
               requests:
                 cpu: 24m
