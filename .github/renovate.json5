@@ -30,7 +30,11 @@
     },
     {
       description: "prevent pinDigest for unpinnable packages",
-      matchDepNames: ["ghcr.io/cloudnative-pg/postgresql"],
+      matchDepNames: [
+        "ghcr.io/cloudnative-pg/postgresql",
+        "ghcr.io/siderolabs/installer",
+        "ghcr.io/siderolabs/kubelet",
+      ],
       pinDigests: false,
     },
     {
