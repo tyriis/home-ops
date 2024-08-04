@@ -36,7 +36,7 @@ spec:
           app:
             image:
               repository: harbor.techtales.io/library/github/musicbot
-              tag: release-250723
+              tag: release-250723@sha256:0ca43a16a3e6784b5c77cb45e9025af4a0a8ecd3a900abd46882123e9867c3c8
             resources:
               requests:
                 cpu: 10m
