@@ -2,19 +2,6 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: postgres
-  namespace: database
-spec:
-  schedule: "0 0 0 * * *"
-  immediate: true
-  backupOwnerReference: self
-  cluster:
-    name: postgres
-
----
-apiVersion: postgresql.cnpg.io/v1
-kind: ScheduledBackup
-metadata:
   name: postgres16
   namespace: database
 spec:
