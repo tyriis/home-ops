@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.2.1
+      version: 3.3.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -87,10 +87,19 @@ spec:
     ingress:
       app:
         className: nginx
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/tls-acme: "true"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+          nginx.ingress.kubernetes.io/ssl-redirect: "true"
         hosts:
-          - host: "auth.tyriis.dev"
+          - host: &host auth.tyriis.dev
             paths:
               - path: /oauth2
                 service:
                   identifier: app
                   port: http
+        tls:
+          - hosts:
+              - *host
+            secretName: "{{ .Release.Name }}-tls"
