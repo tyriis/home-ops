@@ -22,8 +22,10 @@
     // fix: prevent pin on oci helm charts
     {
       matchDepNames: [
+        "dbman",
         "gha-runner-scale-set",
         "gha-runner-scale-set-controller",
+        "tf-controller",
       ],
       matchUpdateTypes: ["pin", "pinDigest"],
       enabled: false,
