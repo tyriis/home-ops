@@ -40,7 +40,8 @@ spec:
               OAUTH2_PROXY_COOKIE_DOMAINS: tyriis.dev
               OAUTH2_PROXY_COOKIE_SECURE: "true"
               OAUTH2_PROXY_EMAIL_DOMAINS: "*"
-              OAUTH2_PROXY_SCOPE: "openid profile email"
+              OAUTH2_PROXY_SCOPE: openid profile email
+              OAUTH2_PROXY_HTTP_ADDRESS: "0.0.0.0:4180"
 
             probes:
               liveness:
