@@ -37,6 +37,10 @@ spec:
                   name: oauth2-proxy-env-secrets
             env:
               OAUTH2_PROXY_PROVIDER: google
+              OAUTH2_PROXY_COOKIE_DOMAINS: tyriis.dev
+              OAUTH2_PROXY_COOKIE_SECURE: "true"
+              OAUTH2_PROXY_EMAIL_DOMAINS: "*"
+              OAUTH2_PROXY_SCOPE: "openid profile email"
 
             probes:
               liveness:
