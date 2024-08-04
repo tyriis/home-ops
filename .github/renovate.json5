@@ -1,5 +1,9 @@
 {
   enabled: true,
+  ignorePaths: [
+    "^archive/**",
+    "^kubernetes/talos-flux/apps/home-automation/esphome/app/config/**",
+  ],
   extends: [
     "config:best-practices",
     "github>tyriis/renovate-config//dashboard/default.json5",
@@ -19,16 +23,15 @@
   rebaseWhen: "conflicted",
   customManagers: [],
   packageRules: [
-    // fix: prevent pin on oci helm charts
     {
-      matchDepNames: [
-        "dbman",
-        "gha-runner-scale-set",
-        "gha-runner-scale-set-controller",
-        "tf-controller",
-      ],
-      matchUpdateTypes: ["pin", "pinDigest"],
-      enabled: false,
+      description: "prevent pinDigest for managers that don't use digests",
+      matchManagers: ["flux"],
+      pinDigests: false,
+    },
+    {
+      description: "prevent pinDigest for unpinnable packages",
+      matchDepNames: ["ghcr.io/cloudnative-pg/postgresql"],
+      pinDigests: false,
     },
     {
       matchPackageNames: ["tyriis/bedrock-tags"],
@@ -39,13 +42,7 @@
     {
       matchPackageNames: ["tyriis/bedrock-tags"],
       matchDatasources: ["github-releases"],
-      matchUpdateTypes: ["major"],
-      semanticCommitType: "feat",
-    },
-    {
-      matchPackageNames: ["tyriis/bedrock-tags"],
-      matchDatasources: ["github-releases"],
-      matchUpdateTypes: ["minor"],
+      matchUpdateTypes: ["major", "minor"],
       semanticCommitType: "feat",
     },
     {
@@ -62,19 +59,15 @@
       automergeType: "pr",
     },
   ],
-  ignorePaths: [
-    "^archive/**",
-    "^kubernetes/talos-flux/apps/home-automation/esphome/app/config/**",
-  ],
+  ansible: {
+    enabled: false,
+  },
   lockFileMaintenance: {
     enabled: true,
     extends: ["schedule:weekly"],
   },
   nix: {
     enabled: true,
-  },
-  ansible: {
-    enabled: false,
   },
   vulnerabilityAlerts: {
     enabled: false,

@@ -35,7 +35,7 @@ spec:
         containers:
           app:
             image:
-              repository: harbor.techtales.io:443/library/github/musicbot
+              repository: harbor.techtales.io/library/github/musicbot
               tag: release-250723
             resources:
               requests:
