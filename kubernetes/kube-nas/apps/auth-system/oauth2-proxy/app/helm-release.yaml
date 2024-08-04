@@ -41,8 +41,8 @@ spec:
               OAUTH2_PROXY_COOKIE_SECURE: "true"
               OAUTH2_PROXY_EMAIL_DOMAINS: "*"
               OAUTH2_PROXY_SCOPE: openid profile email
-              OAUTH2_PROXY_HTTP_ADDRESS: "0.0.0.0:4180"
-              OAUTH2_PROXY_METRICS_ADDRESS: "0.0.0.0:4180"
+              OAUTH2_PROXY_HTTP_ADDRESS: 0.0.0.0:4180
+              OAUTH2_PROXY_METRICS_ADDRESS: 0.0.0.0:44180
               OAUTH2_PROXY_PASS_AUTHORIZATION_HEADER: "true"
               OAUTH2_PROXY_PASS_HOST_HEADER: "true"
               OAUTH2_PROXY_PASS_ACCESS_TOKEN: "true"
@@ -52,7 +52,9 @@ spec:
               OAUTH2_PROXY_SET_XAUTHREQUEST: "true"
               OAUTH2_PROXY_REVERSE_PROXY: "true"
               OAUTH2_PROXY_SILENCE_PING_LOGGING: "true"
-              OAUTH2_PROXY_OIDC_ISSUER_URL: "https://accounts.google.com"
+              OAUTH2_PROXY_OIDC_ISSUER_URL: https://accounts.google.com
+              OAUTH2_PROXY_LOGIN_URL: https://accounts.google.com/o/oauth2/v2/auth?access_type=offline
+              OAUTH2_PROXY_REDEEM_URL: https://oauth2.googleapis.com/token
 
             probes:
               liveness:
