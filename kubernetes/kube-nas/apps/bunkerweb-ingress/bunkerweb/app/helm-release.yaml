@@ -37,7 +37,7 @@ spec:
               tag: 1.5.9
             env:
               KUBERNETES_MODE: "yes"
-              DATABASE_URI: "postgresql://bunkerweb:changeme@bunkerweb-db:5432/db"
+              DATABASE_URI: "postgresql://bunkerweb:changeme@bunkerweb-bunkerweb-db:5432/db"
       bunkerweb:
         replicas: 2
         annotations:
