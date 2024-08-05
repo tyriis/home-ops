@@ -36,11 +36,6 @@ spec:
             args:
               - --health-probe-bind-address=:8081
               - --metrics-bind-address=:8080
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop: -ALL
             probes:
               liveness:
                 enabled: true
@@ -67,10 +62,13 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 64Mi
+                memory: 100Mi
               limits:
                 memory: 100Mi
-
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
         pod:
           securityContext:
             runAsUser: 65534
