@@ -8,7 +8,7 @@ metadata:
 spec:
   interval: 30m
   path: ./kubernetes/talos-flux/flux
-  prune: true
+  prune: false
   wait: false
   sourceRef:
     kind: GitRepository
