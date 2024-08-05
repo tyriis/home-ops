@@ -43,7 +43,12 @@ spec:
           reloader.stakater.com/auto: "true"
           bunkerweb.io/AUTOCONF: "yes"
         containers:
-          app:
+          bunkerweb:
+            ports:
+              - containerPort: 8080
+                hostPort: 80
+              - containerPort: 8443
+                hostPort: 443
             image:
               repository: bunkerity/bunkerweb
               tag: 1.5.9
