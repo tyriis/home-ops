@@ -28,7 +28,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   # btrfs
-  boot.supportedFilesystems = [ "btrfs", "xfs" ];
+  boot.supportedFilesystems = [ "btrfs" "xfs" ];
 
   nixpkgs.config.allowUnfree = true;
 
@@ -243,6 +243,7 @@
   # create folder
   # https://discourse.nixos.org/t/adding-folders-and-scripts/5114/4
   systemd.tmpfiles.rules = [
-    "d /mount/volume1/minio 0755 568 568" # 568 is the minio user
+    "d /mnt/volume1/data 0777 root root"
+    "d /mnt/volume1/minio 0755 568 568" # 568 is the minio user
   ];
 }
