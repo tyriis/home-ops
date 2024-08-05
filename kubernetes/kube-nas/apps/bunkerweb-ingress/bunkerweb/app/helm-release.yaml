@@ -50,7 +50,7 @@ spec:
               runAsUser: 101
               runAsGroup: 101
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
+              # readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             ports:
               - containerPort: 8080
