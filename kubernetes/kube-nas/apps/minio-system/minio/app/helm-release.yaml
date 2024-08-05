@@ -127,6 +127,6 @@ spec:
         size: 100Gi
         storageClass: openebs-hostpath
         advancedMounts:
-          syncthing:
+          minio:
             app:
               - path: /data
