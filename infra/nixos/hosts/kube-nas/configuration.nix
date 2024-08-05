@@ -28,7 +28,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   # btrfs
-  boot.supportedFilesystems = [ "btrfs" ];
+  boot.supportedFilesystems = [ "btrfs", "xfs" ];
 
   nixpkgs.config.allowUnfree = true;
 
@@ -239,4 +239,10 @@
   # Enable VSCode server
   # https://nixos.wiki/wiki/Visual_Studio_Code#nix-ld
   programs.nix-ld.enable = true;
+
+  # create folder
+  # https://discourse.nixos.org/t/adding-folders-and-scripts/5114/4
+  systemd.tmpfiles.rules = [
+    "d /mount/volume1/minio 0755 568 568" # 568 is the minio user
+  ];
 }
