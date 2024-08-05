@@ -77,7 +77,7 @@ spec:
                 spec:
                   exec:
                     command:
-                      - /opt/bunkerweb/helpers/healthcheck.sh
+                      - /usr/share/bunkerweb/helpers/healthcheck.sh
                   initialDelaySeconds: 30
                   periodSeconds: 1
                   timeoutSeconds: 1
