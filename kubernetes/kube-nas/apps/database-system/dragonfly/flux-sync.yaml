@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *appname
       app.kubernetes.io/instance: *appname
       app.kubernetes.io/component: dragonfly
-  path: ./kubernetes/kube-nas/apps/database/dragonfly/operator
+  path: ./kubernetes/kube-nas/apps/database-system/dragonfly/operator
   prune: true
   sourceRef:
     kind: GitRepository
@@ -37,7 +37,7 @@ spec:
       app.kubernetes.io/component: dragonfly
   dependsOn:
     - name: dragonfly-operator
-  path: ./kubernetes/kube-nas/apps/database/dragonfly/cluster
+  path: ./kubernetes/kube-nas/apps/database-system/dragonfly/cluster
   prune: true
   sourceRef:
     kind: GitRepository
