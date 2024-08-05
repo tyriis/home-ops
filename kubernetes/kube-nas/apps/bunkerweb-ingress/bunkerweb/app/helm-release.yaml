@@ -31,17 +31,19 @@ spec:
         replicas: 1
         strategy: Recreate
         containers:
-          app:
+          bunkerweb-controller:
             image:
               repository: bunkerity/bunkerweb-autoconf
               tag: 1.5.9
             env:
               KUBERNETES_MODE: "yes"
+              DATABASE_URI: "postgresql://bunkerweb:changeme@bunkerweb-db:5432/db"
       bunkerweb:
         replicas: 2
         annotations:
           reloader.stakater.com/auto: "true"
           bunkerweb.io/AUTOCONF: "yes"
+          bunkerweb.io/INSTANCE: "yes"
         containers:
           bunkerweb:
             ports:
@@ -57,9 +59,11 @@ spec:
               DNS_RESOLVER: kube-dns.kube-system.svc.cluster.local
               USE_API: "yes"
               API_WHITELIST_IP: "127.0.0.0/8 10.0.0.0/8"
-              SERVER_NAME: bunkerweb.tyriis.dev
+              SERVER_NAME: ""
               MULTISITE: "yes"
               USE_UI: "yes"
+              USE_REDIS: "yes"
+              REDIS_HOST: dragonfly.database-system.svc.cluster.local
             probes:
               liveness: &probes
                 enabled: true
@@ -82,6 +86,42 @@ spec:
             #     cpu: 100m
             #   limits:
             #     memory: 2Gi
+      bunkerweb-scheduler:
+        replicas: 1
+        strategy: Recreate
+        containers:
+          bunkerweb-scheduler:
+            image:
+              repository: bunkerity/bunkerweb-scheduler
+              tag: 1.5.9
+            env:
+              KUBERNETES_MODE: "yes"
+              DATABASE_URI: "postgresql://bunkerweb:changeme@bunkerweb-db:5432/db"
+      bunkerweb-db:
+        replicas: 1
+        strategy: Recreate
+        containers:
+          bunkerweb-db:
+            image:
+              repository: postgres
+              tag: 13.3
+            env:
+              POSTGRES_DB: db
+              POSTGRES_USER: bunkerweb
+              POSTGRES_PASSWORD: changeme
+              PGDATA: /var/lib/postgresql/data/pgdata
+      bunkerweb-ui:
+        replicas: 1
+        strategy: Recreate
+        containers:
+          app:
+            image:
+              repository: bunkerity/bunkerweb-ui
+              tag: 1.5.9
+            env:
+              ADMIN_USERNAME: "admin"
+              ADMIN_PASSWORD: "admin"
+              DATABASE_URI: "postgresql://bunkerweb:changeme@bunkerweb-db:5432/db"
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -92,12 +132,17 @@ spec:
         supplementalGroups: [10000]
         seccompProfile: { type: RuntimeDefault }
     service:
+      bunkerweb-db:
+        controller: bunkerweb-db
+        ports:
+          sql:
+            port: 5432
+            protocol: TCP
       app:
-        controller: bunkerweb
-        # clusterIP: None
+        controller: bunkerweb-ui
         ports:
           http:
-            port: 8080
+            port: 7000
 
     # serviceMonitor:
     #   app:
@@ -108,39 +153,32 @@ spec:
     #         path: /minio/v2/metrics/cluster
     #         interval: 1m
     #         scrapeTimeout: 10s
-    # ingress:
-    #   app:
-    #     annotations:
-    #       cert-manager.io/cluster-issuer: letsencrypt-production
-    #       kubernetes.io/tls-acme: "true"
-    #       nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    #       nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    #     className: internal
-    #     hosts:
-    #       - host: &host1 "{{ .Release.Name }}.tyriis.dev"
-    #         paths:
-    #           - path: /
-    #             service:
-    #               identifier: app
-    #               port: http
-    #       - host: &host2 s3.tyriis.dev
-    #         paths:
-    #           - path: /
-    #             service:
-    #               identifier: app
-    #               port: s3
-    #     tls:
-    #       - hosts:
-    #           - *host1
-    #           - *host2
-    #         secretName: "{{ .Release.Name }}-tls"
+    ingress:
+      app:
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/tls-acme: "true"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+          nginx.ingress.kubernetes.io/ssl-redirect: "true"
+        className: nginx
+        hosts:
+          - host: &host "{{ .Release.Name }}.tyriis.dev"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+            secretName: "{{ .Release.Name }}-tls"
     persistence:
       data:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
-        size: 10Gi
+        size: 5Gi
         storageClass: openebs-hostpath
         advancedMounts:
-          bunkerweb-controller:
-            app:
-              - path: /data
+          bunkerweb-db:
+            bunkerweb-db:
+              - path: /var/lib/postgresql/data/pgdata
