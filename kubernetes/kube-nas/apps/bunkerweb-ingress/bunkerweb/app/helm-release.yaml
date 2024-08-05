@@ -94,7 +94,10 @@ spec:
     service:
       app:
         controller: bunkerweb
-        clusterIP: None
+        # clusterIP: None
+        ports:
+          http:
+            port: 8080
 
     # serviceMonitor:
     #   app:
