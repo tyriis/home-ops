@@ -101,7 +101,7 @@ spec:
           kubernetes.io/tls-acme: "true"
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
           nginx.ingress.kubernetes.io/ssl-redirect: "true"
-        className: internal
+        className: nginx
         hosts:
           - host: &host1 "{{ .Release.Name }}.tyriis.dev"
             paths:
