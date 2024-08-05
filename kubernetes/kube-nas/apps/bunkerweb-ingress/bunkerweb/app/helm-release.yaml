@@ -46,6 +46,12 @@ spec:
           bunkerweb.io/INSTANCE: "yes"
         containers:
           bunkerweb:
+            securityContext:
+              runAsUser: 101
+              runAsGroup: 101
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             ports:
               - containerPort: 8080
                 hostPort: 80
@@ -77,10 +83,6 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
             # resources:
             #   requests:
             #     cpu: 100m
@@ -122,15 +124,15 @@ spec:
               ADMIN_USERNAME: "admin"
               ADMIN_PASSWORD: "admin"
               DATABASE_URI: "postgresql://bunkerweb:changeme@bunkerweb-db:5432/db"
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 101
-        runAsGroup: 101
-        fsGroup: 568
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [10000]
-        seccompProfile: { type: RuntimeDefault }
+    # defaultPodOptions:
+    #   securityContext:
+    #     runAsNonRoot: true
+    #     runAsUser: 101
+    #     runAsGroup: 101
+    #     fsGroup: 568
+    #     fsGroupChangePolicy: OnRootMismatch
+    #     supplementalGroups: [10000]
+    #     seccompProfile: { type: RuntimeDefault }
     service:
       bunkerweb-db:
         controller: bunkerweb-db
