@@ -1,0 +1,138 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app bunkerweb
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.3.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    serviceAccount:
+      create: true
+      name: *app
+    controllers:
+      bunkerweb-controller:
+        replicas: 1
+        strategy: Recreate
+        containers:
+          app:
+            image:
+              repository: bunkerity/bunkerweb-autoconf
+              tag: 1.5.9
+            env:
+              KUBERNETES_MODE: "yes"
+      bunkerweb:
+        replicas: 2
+        annotations:
+          reloader.stakater.com/auto: "true"
+          bunkerweb.io/AUTOCONF: "yes"
+        containers:
+          app:
+            image:
+              repository: bunkerity/bunkerweb
+              tag: 1.5.9
+            env:
+              KUBERNETES_MODE: "yes"
+              DNS_RESOLVER: kube-dns.kube-system.svc.cluster.local
+              USE_API: "yes"
+              API_WHITELIST_IP: "127.0.0.0/8 10.0.0.0/8"
+              SERVER_NAME: bunkerweb.tyriis.dev
+              MULTISITE: "yes"
+              USE_UI: "yes"
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - /opt/bunkerweb/helpers/healthcheck.sh
+                  initialDelaySeconds: 30
+                  periodSeconds: 1
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            # resources:
+            #   requests:
+            #     cpu: 100m
+            #   limits:
+            #     memory: 2Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        runAsGroup: 101
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [10000]
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      app:
+        controller: bunkerweb
+        clusterIP: None
+
+    # serviceMonitor:
+    #   app:
+    #     serviceName: minio
+    #     endpoints:
+    #       - port: s3
+    #         scheme: http
+    #         path: /minio/v2/metrics/cluster
+    #         interval: 1m
+    #         scrapeTimeout: 10s
+    # ingress:
+    #   app:
+    #     annotations:
+    #       cert-manager.io/cluster-issuer: letsencrypt-production
+    #       kubernetes.io/tls-acme: "true"
+    #       nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    #       nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    #     className: internal
+    #     hosts:
+    #       - host: &host1 "{{ .Release.Name }}.tyriis.dev"
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: app
+    #               port: http
+    #       - host: &host2 s3.tyriis.dev
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: app
+    #               port: s3
+    #     tls:
+    #       - hosts:
+    #           - *host1
+    #           - *host2
+    #         secretName: "{{ .Release.Name }}-tls"
+    persistence:
+      data:
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 10Gi
+        storageClass: openebs-hostpath
+        advancedMounts:
+          bunkerweb-controller:
+            app:
+              - path: /data
