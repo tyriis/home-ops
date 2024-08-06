@@ -1,0 +1,45 @@
+---
+apiVersion: fluxcd.controlplane.io/v1
+kind: FluxInstance
+metadata:
+  name: flux
+spec:
+  distribution:
+    version: 2.3.0
+    registry: ghcr.io/fluxcd
+    artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests
+  components:
+    - source-controller
+    - kustomize-controller
+    - helm-controller
+    - notification-controller
+  cluster:
+    type: kubernetes
+  storage:
+    class: standard
+    size: 10Gi
+  kustomize:
+    patches:
+      - patch: |
+          - op: add
+            path: /spec/template/spec/containers/0/args/-
+            value: --concurrent=20
+          - op: add
+            path: /spec/template/spec/containers/0/args/-
+            value: --kube-api-qps=500
+          - op: add
+            path: /spec/template/spec/containers/0/args/-
+            value: --kube-api-burst=1000
+          - op: add
+            path: /spec/template/spec/containers/0/args/-
+            value: --requeue-dependency=5s
+        target:
+          kind: Deployment
+          name: (kustomize-controller|helm-controller|source-controller)
+  sync:
+    kind: OCIRepository
+    url: oci://home-ops-kind-registry:5000/home-ops-devenv
+    ref: local
+    path: ./devenv/oci/flux
+    # insecure: true
+    # name: home-ops-devenv
