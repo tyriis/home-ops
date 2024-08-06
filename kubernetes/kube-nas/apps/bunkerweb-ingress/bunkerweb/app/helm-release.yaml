@@ -108,7 +108,7 @@ spec:
           bunkerweb-db:
             image:
               repository: postgres
-              tag: 13.3
+              tag: 13.15@sha256:4449213fadd4f03c628c8f7e4182c03f1c38151ca4814a375273c6811e67ad70
             env:
               POSTGRES_DB: db
               POSTGRES_USER: bunkerweb
