@@ -54,9 +54,11 @@ spec:
               capabilities: { drop: ["ALL"] }
             ports:
               - containerPort: 8080
-                hostPort: 80
+                protocol: TCP
+                # hostPort: 80
               - containerPort: 8443
-                hostPort: 443
+                # hostPort: 443
+                protocol: TCP
             image:
               repository: bunkerity/bunkerweb
               tag: 1.5.9
