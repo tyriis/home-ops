@@ -34,7 +34,7 @@ spec:
           bunkerweb-controller:
             image:
               repository: bunkerity/bunkerweb-autoconf
-              tag: 1.5.9
+              tag: 1.5.9@sha256:467d9468b060e42b30272bd928f6efa04e62f0aaa358e94ae5634e3b8d3a2f6b
             env:
               KUBERNETES_MODE: "yes"
               DATABASE_URI: "postgresql://bunkerweb:changeme@bunkerweb-bunkerweb-db:5432/db"
@@ -61,7 +61,7 @@ spec:
                 protocol: TCP
             image:
               repository: bunkerity/bunkerweb
-              tag: 1.5.9
+              tag: 1.5.9@sha256:93c067a639c9d06cffb545d9bf6a626e59b783b9273f138bad264891570c2ea6
             env:
               KUBERNETES_MODE: "yes"
               DNS_RESOLVER: kube-dns.kube-system.svc.cluster.local
@@ -97,7 +97,7 @@ spec:
           bunkerweb-scheduler:
             image:
               repository: bunkerity/bunkerweb-scheduler
-              tag: 1.5.9
+              tag: 1.5.9@sha256:f91442cc0dc0b41f3f7969ec9da14de16de0fcd94fb51cd344dba185bf1099c2
             env:
               KUBERNETES_MODE: "yes"
               DATABASE_URI: "postgresql://bunkerweb:changeme@bunkerweb-bunkerweb-db:5432/db"
@@ -121,7 +121,7 @@ spec:
           app:
             image:
               repository: bunkerity/bunkerweb-ui
-              tag: 1.5.9
+              tag: 1.5.9@sha256:1d60d58e03b258b7b3f60d1b77c638766a83ae98c981da2ee9ecdf35261a332c
             env:
               ADMIN_USERNAME: "admin"
               ADMIN_PASSWORD: "Admin1234$"
