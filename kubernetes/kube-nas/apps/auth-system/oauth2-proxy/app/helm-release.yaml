@@ -55,6 +55,8 @@ spec:
               OAUTH2_PROXY_OIDC_ISSUER_URL: https://accounts.google.com
               OAUTH2_PROXY_LOGIN_URL: https://accounts.google.com/o/oauth2/v2/auth?access_type=offline
               OAUTH2_PROXY_REDEEM_URL: https://oauth2.googleapis.com/token
+              OAUTH2_PROXY_SESSION_STORE_TYPE: redis
+              OAUTH2_PROXY_REDIS_CONNECTION_URL: redis://dragonfly.database-system.svc.cluster.local:6379
 
             probes:
               liveness:

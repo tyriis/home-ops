@@ -1,0 +1,82 @@
+---
+apiVersion: fluxcd.controlplane.io/v1
+kind: FluxInstance
+metadata:
+  name: flux
+spec:
+  distribution:
+    version: 2.3.0
+    registry: ghcr.io/fluxcd
+    artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests
+  components:
+    - source-controller
+    - kustomize-controller
+    - helm-controller
+    - notification-controller
+  cluster:
+    type: kubernetes
+  storage:
+    class: openebs-hostpath
+    size: 10Gi
+  kustomize:
+    patches:
+      # prevent deletion of namespace by flux
+      - patch: |
+          - op: add
+            path: /metadata/labels/kustomize.toolkit.fluxcd.io~1prune
+            value: disabled
+        target:
+          kind: Namespace
+          version: v1
+          name: flux-system
+      # Increase the number of reconciliations that can be performed in parallel and bump the resources limits
+      # https://fluxcd.io/flux/cheatsheets/bootstrap/#increase-the-number-of-workers
+      - patch: |
+          - op: add
+            path: /spec/template/spec/containers/0/args/-
+            value: --concurrent=20
+          - op: add
+            path: /spec/template/spec/containers/0/args/-
+            value: --kube-api-qps=500
+          - op: add
+            path: /spec/template/spec/containers/0/args/-
+            value: --kube-api-burst=1000
+          - op: add
+            path: /spec/template/spec/containers/0/args/-
+            value: --requeue-dependency=5s
+        target:
+          kind: Deployment
+          name: (kustomize-controller|helm-controller|source-controller)
+      # increase resource limits for the controllers
+      - patch: |
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: not-used
+          spec:
+            template:
+              spec:
+                containers:
+                  - name: manager
+                    resources:
+                      limits:
+                        cpu: 2000m
+                        memory: 2Gi
+        target:
+          kind: Deployment
+          name: (kustomize-controller|helm-controller|source-controller)
+      # Enable Helm near OOM detection
+      # https://fluxcd.io/flux/cheatsheets/bootstrap/#enable-helm-near-oom-detection
+      - patch: |
+          - op: add
+            path: /spec/template/spec/containers/0/args/-
+            value: --feature-gates=OOMWatch=true
+          - op: add
+            path: /spec/template/spec/containers/0/args/-
+            value: --oom-watch-memory-threshold=95
+          - op: add
+            path: /spec/template/spec/containers/0/args/-
+            value: --oom-watch-interval=500ms
+        target:
+          kind: Deployment
+          name: helm-controller
