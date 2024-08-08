@@ -18,7 +18,7 @@ datasources:
   - name: Loki
     type: loki
     access: proxy
-    url: http://loki-gateway:80/
+    url: http://loki:3100/
   - name: GitHub
     type: grafana-github-datasource
     jsonData:
