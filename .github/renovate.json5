@@ -1,9 +1,5 @@
 {
   enabled: true,
-  ignorePaths: [
-    "^archive/**",
-    "^kubernetes/talos-flux/apps/home-automation/esphome/app/config/**",
-  ],
   extends: [
     "config:best-practices",
     "github>tyriis/renovate-config//dashboard/default.json5",
@@ -17,6 +13,10 @@
     "github>tyriis/renovate-config//docker/prevent-automerge-talos.json5",
     "github>tyriis/renovate-config//nix/default.json5",
     "security:openssf-scorecard",
+  ],
+  ignorePaths: [
+    "^archive/**",
+    "^kubernetes/talos-flux/apps/home-automation/esphome/app/config/**",
   ],
   semanticCommits: "enabled",
   suppressNotifications: ["prIgnoreNotification"],
