@@ -13,7 +13,6 @@ tasks:
       - kubectl wait --for condition=established --timeout=60s crd/fluxinstances.fluxcd.controlplane.io
       - kubectl apply -k {{.DEVENV_DIR}}/oci/flux/instance/ -n flux-system
       - kubectl -n flux-system wait fluxinstance/flux --for=condition=ready --timeout=10m
-      - task: reconcile-oci
 
   push-artifact:
     desc: push to local oci registry
