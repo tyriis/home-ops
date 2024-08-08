@@ -14,8 +14,6 @@ tasks:
         home-ops-kind-registry
         home-ops-devenv-control-plane
         home-ops-devenv-worker
-        # home-ops-devenv-worker2
-        # home-ops-devenv-worker3
 
   delete-cluster:
     desc: delete kind cluster and remove associated containers
