@@ -36,10 +36,28 @@ spec:
         target:
           kind: Deployment
           name: (kustomize-controller|helm-controller|source-controller)
-  # sync:
-  #   kind: OCIRepository
-  #   url: oci://home-ops-kind-registry:5000/home-ops-devenv
-  #   ref: local
-  #   path: ./devenv/oci/flux
-  #   insecure: true
-  #   name: home-ops-devenv
+      - patch: |
+          - op: replace
+            path: /metadata/name
+            value: home-ops-devenv
+          - op: add
+            path: /spec/insecure
+            value: true
+        target:
+          kind: OCIRepository
+          name: flux-system
+      - patch: |
+          - op: replace
+            path: /metadata/name
+            value: flux-sync
+          - op: replace
+            path: /spec/sourceRef/name
+            value: home-ops-devenv
+        target:
+          kind: Kustomization
+          name: flux-system
+  sync:
+    kind: OCIRepository
+    url: oci://home-ops-kind-registry:5000/home-ops-devenv
+    ref: local
+    path: ./devenv/oci/flux

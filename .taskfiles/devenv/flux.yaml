@@ -10,10 +10,8 @@ tasks:
       - task: push-artifact
       - helm install flux-operator oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator -n flux-system --create-namespace
       - kubectl wait --for condition=established --timeout=60s crd/fluxinstances.fluxcd.controlplane.io
-      - kubectl apply -k {{.DEVENV_DIR}}/oci/apps/flux-system/flux/resources/ -n flux-system
+      - kubectl apply -k {{.DEVENV_DIR}}/oci/flux/instance/ -n flux-system
       - kubectl -n flux-system wait fluxinstance/flux --for=condition=ready --timeout=10m
-      - kubectl apply -f {{.DEVENV_DIR}}/oci/flux/repositories/oci/home-ops-devenv.yaml
-      - kubectl apply -f {{.DEVENV_DIR}}/oci/flux/flux-sync.yaml
       - task: reconcile-oci
 
   push-artifact:
