@@ -1,7 +1,7 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: flux-system
 resources:
-  - registry-config.yaml
-  - flux/flux-pvc.yaml
-  - flux/flux-manifests
+  - config/cluster-settings.yaml
+  - flux-sync.yaml

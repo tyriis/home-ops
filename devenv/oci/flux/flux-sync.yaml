@@ -3,16 +3,95 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: flux-sync
-  namespace: flux-system
+  name: flux-repositories
 spec:
   targetNamespace: flux-system
-  path: ./devenv/oci/flux
-  prune: true
+  prune: false
+  path: ./kubernetes/base/flux/repositories
+  sourceRef:
+    kind: OCIRepository
+    name: home-ops-devenv
+  wait: true
+  interval: 30m
+  retryInterval: 5s
+  timeout: 5m
+
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: flux-operator
+spec:
+  targetNamespace: flux-system
+  prune: false
+  path: ./devenv/oci/flux/operator
   sourceRef:
     kind: OCIRepository
     name: home-ops-devenv
   wait: false
-  interval: 24h
+  interval: 30m
   retryInterval: 5s
   timeout: 5m
+  dependsOn:
+    - name: flux-repositories
+
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: flux-instance
+spec:
+  targetNamespace: flux-system
+  prune: false
+  path: ./devenv/oci/flux/instance
+  sourceRef:
+    kind: OCIRepository
+    name: home-ops-devenv
+  wait: false
+  interval: 30m
+  retryInterval: 5s
+  timeout: 5m
+  dependsOn:
+    - name: flux-operator
+
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps
+spec:
+  prune: true
+  path: ./devenv/oci/apps
+  sourceRef:
+    kind: OCIRepository
+    name: home-ops-devenv
+  wait: false
+  interval: 30m
+  retryInterval: 5s
+  timeout: 5m
+  dependsOn:
+    - name: flux-sync
+    - name: flux-repositories
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: cluster-settings
+  patches:
+    - patch: |-
+        apiVersion: kustomize.toolkit.fluxcd.io/v1
+        kind: Kustomization
+        metadata:
+          name: not-used
+        spec:
+          postBuild:
+            substituteFrom:
+              - kind: ConfigMap
+                name: cluster-settings
+      target:
+        group: kustomize.toolkit.fluxcd.io
+        version: v1
+        kind: Kustomization
+        labelSelector: substitution.flux.home.arpa/disabled notin (true)
