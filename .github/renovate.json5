@@ -15,8 +15,9 @@
     "security:openssf-scorecard",
   ],
   ignorePaths: [
-    "^archive/**",
-    "^kubernetes/talos-flux/apps/home-automation/esphome/app/config/**",
+    "archive/**",
+    "kubernetes/talos-flux/apps/home-automation/esphome/app/config/**",
+    "kubernetes/talos-flux/apps/default/homepage/app/config/**",
   ],
   semanticCommits: "enabled",
   suppressNotifications: ["prIgnoreNotification"],
