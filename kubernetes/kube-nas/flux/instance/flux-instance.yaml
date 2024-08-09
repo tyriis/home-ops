@@ -80,3 +80,46 @@ spec:
         target:
           kind: Deployment
           name: helm-controller
+      # Configure home-ops GitRepository
+      - patch: |
+          - op: replace
+            path: /metadata/name
+            value: home-ops
+          - op: replace
+            path /spec/interval
+            value: 2h
+          - op: add
+            path: /spec/ignore
+            value: |
+              # exclude all
+              /*
+              # include kubernetes directory only
+              !/kubernetes
+        target:
+          kind: GitRepository
+          name: flux-system
+      # Configure flux-system Kustomization
+      - patch: |
+          - op: replace
+            path: /spec/sourceRef/name
+            value: home-ops
+          - op: add
+            path: /spec/targetNamespace
+            value: flux-system
+          - op: replace
+            path: /spec/prune
+            value: false
+          - op: add
+            path: /spec/decryption
+            value:
+              provider: sops
+              secretRef:
+                name: sops-age
+        target:
+          kind: Kustomization
+          name: flux-system
+  sync:
+    kind: GitRepository
+    url: https://github.com/tyriis/home-ops.git
+    ref: refs/heads/main
+    path: ./kubernetes/kube-nas/flux
