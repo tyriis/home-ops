@@ -5,9 +5,6 @@ kind: HelmRelease
 metadata:
   name: oauth2-proxy
 spec:
-  dependsOn:
-    - name: dragonfly
-      namespace: database-system
   interval: 30m
   chart:
     spec:

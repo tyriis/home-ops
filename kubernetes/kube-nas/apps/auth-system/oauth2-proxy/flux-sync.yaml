@@ -6,6 +6,8 @@ metadata:
   name: oauth2-proxy
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: dragonfly-cluster
   interval: 10m
   path: ./kubernetes/kube-nas/apps/auth-system/oauth2-proxy/app
   prune: true
