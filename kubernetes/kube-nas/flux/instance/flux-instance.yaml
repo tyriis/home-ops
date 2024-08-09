@@ -86,7 +86,7 @@ spec:
             path: /metadata/name
             value: home-ops
           - op: replace
-            path /spec/interval
+            path: /spec/interval
             value: 2h
           - op: add
             path: /spec/ignore
