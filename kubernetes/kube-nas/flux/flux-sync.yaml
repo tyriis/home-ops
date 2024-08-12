@@ -10,7 +10,7 @@ spec:
   interval: 30m
   path: ./kubernetes/kube-nas/flux
   prune: false
-  wait: true
+  wait: false
   sourceRef:
     kind: GitRepository
     name: home-ops
