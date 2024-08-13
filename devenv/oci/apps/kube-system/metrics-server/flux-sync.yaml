@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps-metrics-server
+  namespace: flux-system
+spec:
+  targetNamespace: kube-system
+  path: ./devenv/oci/apps/kube-system/metrics-server/app
+  prune: true
+  sourceRef:
+    kind: OCIRepository
+    name: home-ops-devenv
+  wait: true
+  interval: 15m
+  retryInterval: 5s
+  timeout: 5m
