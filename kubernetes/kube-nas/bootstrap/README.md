@@ -25,10 +25,19 @@ kubectl kustomize --enable-helm kubernetes/kube-nas/bootstrap/metrics-server | k
 kubectl kustomize --enable-helm kubernetes/kube-nas/bootstrap/kubelet-csr-approver | kubectl apply -n kube-system -f -
 ```
 
-## Flux
+## OpenEBS Storage
 
 ```bash
-kubectl apply -k kubernetes/kube-nas/flux/manifests
+kubectl create namespace openebs-system
+kubectl kustomize --enable-helm kubernetes/kube-nas/bootstrap/openebs | kubectl apply -n openebs-system -f -
+```
+
+## Flux
+
+> Currently it is not possible to load it with kubectl, kustomize and helm :(
+
+```bash
+helm install flux-operator oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator -n flux-system --create-namespace
 ```
 
 ### age key
@@ -37,20 +46,10 @@ kubectl apply -k kubernetes/kube-nas/flux/manifests
 sops --decrypt kubernetes/kube-nas/flux/config/sops-age.sops.yaml | kubectl apply -f - -n flux-system
 ```
 
-### GitRepo
+### FluxInstance
 
 when flux is up and running, we can apply our manifests
 
 ```bash
-kubectl apply --server-side -f kubernetes/base/flux/repositories/git/home-ops.yaml
+kubectl apply --server-side -k kubernetes/kube-nas/flux/instance
 ```
-
-### Reconcilation
-
-```bash
-kubectl apply --server-side -f  kubernetes/kube-nas/flux/flux-system-sync.yaml
-```
-
-### disable local-path-provisioner
-
-TODO: disable local-path-provisioner and setup with helm chart
