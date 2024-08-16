@@ -28,7 +28,7 @@ kubectl kustomize --enable-helm kubernetes/kube-nas/bootstrap/kubelet-csr-approv
 ## Flux
 
 ```bash
-kubectl apply -k kubernetes/kube-nas/flux/flux-manifests
+kubectl apply -k kubernetes/kube-nas/flux/manifests
 ```
 
 ### age key
