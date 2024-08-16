@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
+{ config, inputs, pkgs, ... }:
 
 {
+
+
   home.username = "nils";
   home.homeDirectory = "/home/nils";
 
@@ -118,6 +120,13 @@
     # mise
 
     obsidian
+
+    # wayland only
+    watershot
+    grim
+    slurp
+    wl-clipboard
+    libnotify
   ];
 
   # basic configuration of git, please change to your own

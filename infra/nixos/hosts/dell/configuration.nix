@@ -18,6 +18,8 @@
       ../../modules/gnome-keyring.nix
       ../../modules/openssh.nix
       ../../modules/neovim.nix
+      ../../modules/hyprland.nix
+      ../../modules/ags.nix
     ];
 
   # enable nix-flakes
@@ -70,7 +72,7 @@
   environment.pathsToLink = [ "/libexec" ];
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
+  # services.xserver.enable = true;
 
   #  # Enable i3
   #  services.xserver = {
@@ -106,12 +108,12 @@
 
 
   # Enable the Plasma 6 Desktop Environment.
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
+  services.displayManager.sddm.enable = false;
+  services.desktopManager.plasma6.enable = false;
 
   # Configure keymap in X11
-  services.xserver.xkb.layout = "de";
-  services.xserver.xkb.options = "eurosign:e,caps:escape";
+  # services.xserver.xkb.layout = "de";
+  # services.xserver.xkb.options = "eurosign:e,caps:escape";
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -184,7 +186,7 @@
     # python
     python3
     # google-chrome
-    distrobox
+    waybar
 
   ];
 
@@ -238,13 +240,20 @@
   services.pipewire.enable = true;
 
   xdg = {
-  portal = {
-    enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-wlr
-      xdg-desktop-portal-gtk
-    ];
-    xdgOpenUsePortal = true;
+    portal = {
+      enable = true;
+      wlr.enable = true;
+      extraPortals = [
+        pkgs.xdg-desktop-portal-gtk
+        pkgs.xdg-desktop-portal
+      ];
+      configPackages = [
+      pkgs.xdg-desktop-portal-gtk
+      pkgs.xdg-desktop-portal-hyprland
+      pkgs.xdg-desktop-portal
+
+      ];
+      xdgOpenUsePortal = true;
+    };
   };
-};
 }
