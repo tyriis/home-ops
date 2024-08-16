@@ -35,7 +35,6 @@ spec:
     - name: cloudnative-pg
     - name: dbman
     - name: minio
-      namespace: minio-system
   interval: 30m
   path: ./kubernetes/kube-nas/apps/database-system/cloudnative-pg/cluster
   prune: true
