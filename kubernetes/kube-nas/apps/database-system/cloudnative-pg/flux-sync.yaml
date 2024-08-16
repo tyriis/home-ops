@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 30m
-  path: ./kubernetes/kube-nas/apps/database/cloudnative-pg/operator
+  path: ./kubernetes/kube-nas/apps/database-system/cloudnative-pg/operator
   prune: true
   retryInterval: 1m
   sourceRef:
@@ -34,8 +34,10 @@ spec:
   dependsOn:
     - name: cloudnative-pg
     - name: dbman
+    - name: minio
+      namespace: minio-system
   interval: 30m
-  path: ./kubernetes/kube-nas/apps/database/cloudnative-pg/cluster
+  path: ./kubernetes/kube-nas/apps/database-system/cloudnative-pg/cluster
   prune: true
   retryInterval: 15s
   sourceRef:

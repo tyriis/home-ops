@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 30m
-  path: ./kubernetes/kube-nas/apps/database/dbman/operator
+  path: ./kubernetes/kube-nas/apps/database-system/dbman/operator
   prune: true
   sourceRef:
     kind: GitRepository
