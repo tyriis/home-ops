@@ -10,7 +10,7 @@ spec:
   primaryUpdateStrategy: unsupervised
   storage:
     size: 10Gi
-    storageClass: default
+    storageClass: openebs-hostpath
   superuserSecret:
     name: postgres-superuser
   monitoring:
