@@ -1,0 +1,4 @@
+[tools]
+kubectl="1.30.3"
+flux2="2.3.0"
+node = "22.2.0"
