@@ -2,7 +2,7 @@
 apiVersion: dbman.hef.sh/v1alpha3
 kind: Database
 metadata:
-  name: hass
+  name: bunkerweb
 spec:
   credentials:
     usernameSecretRef:
