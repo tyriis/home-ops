@@ -163,13 +163,3 @@ spec:
           - hosts:
               - *host
             secretName: "{{ .Release.Name }}-tls"
-    persistence:
-      data:
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 5Gi
-        storageClass: openebs-hostpath
-        advancedMounts:
-          bunkerweb-db:
-            bunkerweb-db:
-              - path: /var/lib/postgresql/data/pgdata
