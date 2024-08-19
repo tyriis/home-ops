@@ -142,6 +142,8 @@
     kubectl
     kustomize
     k9s
+    sops
+    age
   ];
 
   # basic configuration of git, please change to your own
