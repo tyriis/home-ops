@@ -6,10 +6,10 @@ metadata:
 spec:
   credentials:
     usernameSecretRef:
-      name: bunkerweb-database-secrets
+      name: bunkerweb-database
       key: POSTGRES_USER
     passwordSecretRef:
-      name: bunkerweb-database-secrets
+      name: bunkerweb-database
       key: POSTGRES_PASS
   databaseName: bunkerweb
   databaseServerRef:
