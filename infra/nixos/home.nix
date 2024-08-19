@@ -135,7 +135,16 @@
     # file explorer
     xfce.thunar
 
+    # dev
     nodePackages.zx
+    direnv
+    mise
+
+    # k8s
+    helm
+    kubectl
+    kustomize
+    k9s
   ];
 
   # basic configuration of git, please change to your own
