@@ -117,9 +117,6 @@
 
     vault
 
-    # devenv
-    # mise
-
     obsidian
 
     # wayland only
