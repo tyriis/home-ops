@@ -186,8 +186,6 @@
     # python
     python3
     # google-chrome
-    waybar
-
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

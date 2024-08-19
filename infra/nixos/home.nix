@@ -53,7 +53,6 @@
     iperf3
     dnsutils # `dig` + `nslookup`
     ldns # replacement of `dig`, it provide the command `drill`
-    aria2 # A lightweight multi-protocol & multi-source command-line download utility
     socat # replacement of openbsd-netcat
     nmap # A utility for network discovery and security auditing
     ipcalc # it is a calculator for the IPv4/v6 addresses
@@ -102,19 +101,20 @@
     zsh-autocomplete
     nix-zsh-completions
     spaceship-prompt
-    go-task
     chezmoi
+
     vault
-    age
-    sops
+
     nodePackages.zx
     unstable.vscode
     # tabby ;(
     barrier
-    fluxcd
-    kubectl
-    kubernetes-helm
-    k9s
+
+    # git cli ui
+    tig
+    ydiff
+
+    vault
 
     # devenv
     # mise
@@ -127,6 +127,12 @@
     slurp
     wl-clipboard
     libnotify
+
+    # wayland terminal emulator, we can use alacritty aswell
+    kitty
+
+    # file explorer
+    xfce.thunar
   ];
 
   # basic configuration of git, please change to your own
