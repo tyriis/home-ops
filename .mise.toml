@@ -28,7 +28,7 @@ talosctl = "1.7.6"
 # https://taskfile.dev/
 task = "3.38.0"
 # https://www.terraform.io/
-terraform = "1.9.4"
+terraform = "1.9.5"
 # https://terraform-docs.io/
 terraform-docs = "0.18.0"
 # https://github.com/terraform-linters/tflint
