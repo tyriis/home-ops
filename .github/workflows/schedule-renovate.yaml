@@ -7,9 +7,8 @@ on:
     inputs:
       dryRun:
         description: Dry-Run
-        default: false
+        default: "null"
         required: false
-        type: boolean
       logLevel:
         description: Log-Level
         default: debug
@@ -21,6 +20,7 @@ on:
       - main
     paths:
       - .github/renovate.json5
+      - .github/renovate-bot.json5
       - .github/renovate/**.json5
       - .github/workflows/schedule-renovate.yaml
 
@@ -66,3 +66,13 @@ jobs:
         with:
           configurationFile: "${{ env.RENOVATE_CONFIG_FILE }}"
           token: "${{ steps.app-token.outputs.token }}"
+        env:
+          RENOVATE_HOST_RULES: |
+            [
+              {
+                matchHost: "docker.io",
+                hostType: "docker",
+                username: "${{ secrets.DOCKER_IO_USER }}",
+                password: "${{ secrets.DOCKER_IO_TOKEN }}",
+              },
+            ]
