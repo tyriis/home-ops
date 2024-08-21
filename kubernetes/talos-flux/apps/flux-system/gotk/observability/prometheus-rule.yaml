@@ -8,24 +8,32 @@ spec:
   groups:
     - name: flux.rules
       rules:
-        - alert: ReconciliationFailure
-          expr: max(gotk_reconcile_condition{status="False",type="Ready"}) by (exported_namespace, name, kind) + on(exported_namespace, name, kind) (max(gotk_reconcile_condition{status="Deleted"}) by (exported_namespace, name, kind)) * 2 == 1
-          for: 10m
-          labels:
-            severity: warning
+        - alert: FluxComponentAbsent
           annotations:
-            summary: "{{ $labels.kind }} {{ $labels.exported_namespace }}/{{ $labels.name }} reconciliation has been failing for more than ten minutes."
-        - alert: ReconcilatonSuspended
-          expr: max(gotk_suspend_status) by (exported_namespace, kind, name) >= 1
+            summary: Flux component has disappeared from Prometheus target discovery.
+          expr: absent(up{job=~".*flux-system.*"} == 1)
+          for: 15m
+          labels:
+            severity: critical
+
+        - alert: FluxReconciliationFailure
+          annotations:
+            summary: Flux reconciliation failed
+            description: |
+              {{ $labels.kind }} {{ $labels.exported_namespace }}/{{ $labels.name }} reconciliation
+              has been failing for more than 15 minutes.
+          expr: max(gotk_resource_info{ready="False"} or gotk_resource_info{ready="Unknown"}) by (exported_namespace, customresource_kind, name)
+          for: 15m
+          labels:
+            severity: critical
+
+        - alert: FluxReconciliationSuspended
+          annotations:
+            summary: Flux reconciliation suspended
+            description: |
+              {{ $labels.kind }} {{ $labels.exported_namespace }}/{{ $labels.name }} reconciliation
+              has been suspended for more than fifteen minutes.
+          expr: max(gotk_resource_info{suspended="true"}) by (exported_namespace, customresource_kind, name)
           for: 15m
           labels:
             severity: warning
-          annotations:
-            summary: "{{ $labels.kind }} {{ $labels.exported_namespace }}/{{ $labels.name }} reconciliation has been suspended for more than fifteen minutes."
-        - alert: HelmReleaseNotReady
-          expr: max(gotk_resource_info{ready="False"}) by (exported_namespace, name, revision, chart_name) == 1
-          for: 15m
-          labels:
-            severity: warning
-          annotations:
-            summary: "HelmRelease {{ $labels.exported_namespace }}/{{ $labels.name }} with chart {{ $labels.chart_name }}@{{ $labels.revision }} not ready for more than fifteen minutes."
