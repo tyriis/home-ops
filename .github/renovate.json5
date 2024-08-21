@@ -35,6 +35,7 @@
         "ghcr.io/cloudnative-pg/postgresql",
         "ghcr.io/siderolabs/installer",
         "ghcr.io/siderolabs/kubelet",
+        "ghcr.io/controlplaneio-fluxcd/charts/flux-operator",
       ],
       pinDigests: false,
     },
