@@ -4,7 +4,7 @@
     ./cli/tools.nix
     ./desktop/discord.nix
     ./desktop/file-explorer.nix
-    ./dekstop/google-chrome.nix
+    ./desktop/google-chrome.nix
     ./desktop/kitty.nix
     ./desktop/spotify.nix
     ./desktop/vscode.nix
