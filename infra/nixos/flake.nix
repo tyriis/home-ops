@@ -17,6 +17,7 @@
     };
     # https://aylur.github.io/ags-docs/config/home-manager/
     ags.url ="github:Aylur/ags";
+    rose-pine-hyprcursor.url = "github:ndom91/rose-pine-hyprcursor";
   };
 
   outputs = { self, nixpkgs, unstable, home-manager, ags, ... }:

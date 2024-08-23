@@ -57,11 +57,20 @@
 
     # wayland notification daemon
     mako
+    wofi
+    # screenshot
+    swappy
+
+    # https://github.com/ndom91/rose-pine-hyprcursor
+    inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
 
 
 
 
   ];
+  services.mako = {
+    enable = true;
+  };
 
   # Let home Manager install and manage itself.
   programs.home-manager.enable = true;
