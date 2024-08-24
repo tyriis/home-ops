@@ -40,6 +40,7 @@ spec:
       difficulty: peaceful
       ops: "tyriis,jazzlyn"
       worldSaveName: lobby-world
+      enableCommandBlock: true
       maxPlayers: 20
       viewDistance: 14
       levelType: FLAT
