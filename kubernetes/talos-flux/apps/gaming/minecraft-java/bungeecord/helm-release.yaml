@@ -40,7 +40,7 @@ spec:
         memory: 500Mi
     podAnnotations:
       reloader.stakater.com/auto: "true"
-    # configFilePath: /config/config.yml
+    configFilePath: /config/config.yml
     minecraftProxy:
       type: WATERFALL
       plugins:
@@ -70,5 +70,5 @@ spec:
                 path: /spec/template/spec/containers/0/volumeMounts/-
                 value:
                   name: config
-                  mountPath: /server/config.yml
+                  mountPath: /config/config.yml
                   subPath: config.yml
