@@ -46,7 +46,7 @@ spec:
       plugins:
         - https://github.com/Army-py/SlashServer/releases/download/tested/SlashServer-4.0.jar
       serviceType: LoadBalancer
-      loadBalancerIP: ${SETTING_CILIUM_MINECRAFT_LOBBY_ADDR}
+      loadBalancerIP: ${SETTING_CILIUM_MINECRAFT_PROXY_ADDR}
       externalTrafficPolicy: Local
       rcon:
         enabled: true
