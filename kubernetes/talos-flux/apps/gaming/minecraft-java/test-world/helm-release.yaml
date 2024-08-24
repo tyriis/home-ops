@@ -26,8 +26,6 @@ spec:
     image:
       repository: itzg/minecraft-server
       tag: latest
-    nodeSelector:
-      services/minecraft: active
     resources:
       requests:
         memory: 8192Mi
@@ -38,7 +36,7 @@ spec:
       type: SPIGOT
       motd: "hello minecraft test world"
       difficulty: normal
-      ops: "superdigdug"
+      ops: "tyriis,jazzlyn"
       worldSaveName: test-world
       maxPlayers: 20
       viewDistance: 14
@@ -55,7 +53,7 @@ spec:
     # persistence:
     #   dataDir:
     #     enabled: true
-    #     existingClaim: local-mc-superdigdug
+    #     existingClaim: local-mc
 
   valuesFrom:
     - kind: Secret
