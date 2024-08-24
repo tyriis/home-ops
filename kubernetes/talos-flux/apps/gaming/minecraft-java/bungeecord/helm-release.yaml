@@ -36,6 +36,7 @@ spec:
         memory: 500Mi
     podAnnotations:
       reloader.stakater.com/auto: "true"
+    configFilePath: /config/config.yml
     minecraftProxy:
       type: BUNGEECORD
       serviceType: LoadBalancer
@@ -63,5 +64,5 @@ spec:
                 path: /spec/template/spec/containers/0/volumeMounts/-
                 value:
                   name: config
-                  mountPath: /etc/bungeecord/config.yml
+                  mountPath: /config/config.yml
                   subPath: config.yml
