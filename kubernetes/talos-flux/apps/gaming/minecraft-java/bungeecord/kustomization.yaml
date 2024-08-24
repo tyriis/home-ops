@@ -1,0 +1,11 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: gaming
+resources:
+  - ./helm-release.yaml
+  - ./external-secret.yaml
+commonLabels:
+  app.kubernetes.io/name: minecraft-bungeecord
+  app.kubernetes.io/instance: minecraft-bungeecord
