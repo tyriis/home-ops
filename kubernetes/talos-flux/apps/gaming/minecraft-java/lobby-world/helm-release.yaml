@@ -42,6 +42,10 @@ spec:
       worldSaveName: lobby-world
       enableCommandBlock: true
       maxPlayers: 20
+      spawnAnimals: false
+      spawnNPCs: false
+      spawnProtection: 0
+      spawnMonsters: false
       viewDistance: 14
       levelType: FLAT
       gameMode: creative
