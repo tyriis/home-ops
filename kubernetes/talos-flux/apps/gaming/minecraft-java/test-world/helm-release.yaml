@@ -24,7 +24,7 @@ spec:
       retries: 3
   values:
     image:
-      repository: itzg/minecraft-server
+      repository: ghcr.io/itzg/minecraft-server
       tag: latest
     resources:
       requests:
