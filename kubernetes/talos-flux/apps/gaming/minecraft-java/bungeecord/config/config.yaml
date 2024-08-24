@@ -27,10 +27,11 @@ servers:
     address: minecraft-test-world-minecraft:25565
     restricted: false
     online_mode: false
-  # survival:
-  #   motd: "techtales survival"
-  #   address: minecraft-test-world-minecraft:25565
-  #   restricted: false
+  creative:
+    motd: "techtales creative"
+    address: minecraft-creative-world-minecraft:25565
+    restricted: false
+    online_mode: false
 listeners:
   - query_port: 25577
     force_deafult_server: false
