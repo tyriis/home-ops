@@ -7,3 +7,11 @@ resources:
 commonLabels:
   app.kubernetes.io/name: minecraft-test-world
   app.kubernetes.io/instance: minecraft-test-world
+configMapGenerator:
+  - name: test-world-config
+    files:
+      - spigot.yml=config/spigot.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled

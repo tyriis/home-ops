@@ -6,6 +6,8 @@ metadata:
   name: minecraft-test-world
 spec:
   interval: 15m
+  driftDetection:
+    mode: enabled
   chart:
     spec:
       chart: minecraft
@@ -60,3 +62,22 @@ spec:
       name: bungeecord-rcon
       valuesKey: RCON_PASSWORD
       targetPath: minecraftServer.rcon.password
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+              name: minecraft-test-world-minecraft
+            patch: |-
+              - op: add
+                path: /spec/template/spec/volumes/-
+                value:
+                  name: config
+                  configMap:
+                    name: test-world-config
+              - op: add
+                path: /spec/template/spec/containers/0/volumeMounts/-
+                value:
+                  name: config
+                  mountPath: /data/spigot.yml
+                  subPath: spigot.yml
