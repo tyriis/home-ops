@@ -9,3 +9,11 @@ resources:
 commonLabels:
   app.kubernetes.io/name: minecraft-bungeecord
   app.kubernetes.io/instance: minecraft-bungeecord
+configMapGenerator:
+  - name: bungeecord-config
+    files:
+      - config.yml=config/config.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
