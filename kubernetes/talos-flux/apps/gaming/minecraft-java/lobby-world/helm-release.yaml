@@ -30,25 +30,23 @@ spec:
       tag: latest
     resources:
       requests:
-        memory: 8192Mi
-        cpu: 600m
+        cpu: 100m
+        memory: 1024Mi
     minecraftServer:
       eula: "TRUE"
       version: "1.21"
       type: SPIGOT
-      motd: "hello minecraft creative world"
-      difficulty: normal
+      motd: "techtales lobby"
+      difficulty: peaceful
       ops: "tyriis,jazzlyn"
-      worldSaveName: creative-world
+      worldSaveName: lobby-world
       maxPlayers: 20
       viewDistance: 14
-      # levelSeed: '1123197228000674286'
+      levelType: FLAT
       gameMode: creative
       pvp: false
       onlineMode: false
-      memory: 8192M
-      # serviceType: LoadBalancer
-      # loadBalancerIP: ${SETTING_CILIUM_MINECRAFT_ADDR2}
+      memory: 1024M
       rcon:
         enabled: true
         existingSecret: bungeecord-rcon
@@ -64,14 +62,14 @@ spec:
         patches:
           - target:
               kind: Deployment
-              name: minecraft-creative-world-minecraft
+              name: minecraft-lobby-world-minecraft
             patch: |-
               - op: add
                 path: /spec/template/spec/volumes/-
                 value:
                   name: config
                   configMap:
-                    name: creative-world-config
+                    name: lobby-world-config
               - op: add
                 path: /spec/template/spec/containers/0/volumeMounts/-
                 value:

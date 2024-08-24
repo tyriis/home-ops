@@ -47,8 +47,6 @@ spec:
       pvp: false
       onlineMode: false
       memory: 8192M
-      # serviceType: LoadBalancer
-      # loadBalancerIP: ${SETTING_CILIUM_MINECRAFT_ADDR2}
       rcon:
         enabled: true
         existingSecret: bungeecord-rcon
