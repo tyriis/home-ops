@@ -23,6 +23,8 @@ spec:
     remediation:
       retries: 3
   values:
+    extraEnv:
+      SPIGOT_PLUGIN: "78915"
     podSecurityContext:
       runAsUser: 1000
       runAsGroup: 1000
@@ -38,7 +40,9 @@ spec:
       reloader.stakater.com/auto: "true"
     configFilePath: /config/config.yml
     minecraftProxy:
-      type: BUNGEECORD
+      type: WATERFALL
+      plugins:
+        - https://github.com/Army-py/SlashServer/releases/download/tested/SlashServer-4.0.jar
       serviceType: LoadBalancer
       loadBalancerIP: ${SETTING_CILIUM_MINECRAFT_LOBBY_ADDR}
       externalTrafficPolicy: Local
