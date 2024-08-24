@@ -32,7 +32,7 @@ spec:
         cpu: 600m
     minecraftServer:
       eula: "TRUE"
-      version: "1.21.1"
+      version: "1.21"
       type: SPIGOT
       motd: "hello minecraft test world"
       difficulty: normal
