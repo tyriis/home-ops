@@ -6,6 +6,8 @@ metadata:
   name: &app minecraft-bungeecord
 spec:
   interval: 15m
+  driftDetection:
+    mode: enabled
   chart:
     spec:
       chart: minecraft-proxy
