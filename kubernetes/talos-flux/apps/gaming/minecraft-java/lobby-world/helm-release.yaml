@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: minecraft-test-world
+  name: minecraft-lobby-world
 spec:
   interval: 15m
   driftDetection:
@@ -36,45 +36,42 @@ spec:
       eula: "TRUE"
       version: "1.21"
       type: SPIGOT
-      motd: "hello minecraft test world"
+      motd: "hello minecraft creative world"
       difficulty: normal
       ops: "tyriis,jazzlyn"
-      worldSaveName: test-world
+      worldSaveName: creative-world
       maxPlayers: 20
       viewDistance: 14
       # levelSeed: '1123197228000674286'
-      gameMode: survival
+      gameMode: creative
       pvp: false
       onlineMode: false
       memory: 8192M
-      serviceType: LoadBalancer
-      loadBalancerIP: ${SETTING_CILIUM_MINECRAFT_ADDR}
+      # serviceType: LoadBalancer
+      # loadBalancerIP: ${SETTING_CILIUM_MINECRAFT_ADDR2}
       rcon:
         enabled: true
-        password: "password"
+        existingSecret: bungeecord-rcon
+        secretKey: RCON_PASSWORD
+        serviceType: ClusterIP
     # persistence:
     #   dataDir:
     #     enabled: true
     #     existingClaim: local-mc
 
-  valuesFrom:
-    - kind: Secret
-      name: bungeecord-rcon
-      valuesKey: RCON_PASSWORD
-      targetPath: minecraftServer.rcon.password
   postRenderers:
     - kustomize:
         patches:
           - target:
               kind: Deployment
-              name: minecraft-test-world-minecraft
+              name: minecraft-creative-world-minecraft
             patch: |-
               - op: add
                 path: /spec/template/spec/volumes/-
                 value:
                   name: config
                   configMap:
-                    name: test-world-config
+                    name: creative-world-config
               - op: add
                 path: /spec/template/spec/containers/0/volumeMounts/-
                 value:
