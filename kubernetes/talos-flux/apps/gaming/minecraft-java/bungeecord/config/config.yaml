@@ -1,6 +1,7 @@
 ---
 player_limit: -1
 ip_forward: true
+force_deafult_server: false
 permissions:
   default:
     - bungeecord.command.server
@@ -26,10 +27,10 @@ servers:
     motd: "techtales lobby"
     address: minecraft-test-world-minecraft:25565
     restricted: false
-  survival:
-    motd: "techtales survival"
-    address: minecraft-test-world-minecraft:25565
-    restricted: false
+  # survival:
+  #   motd: "techtales survival"
+  #   address: minecraft-test-world-minecraft:25565
+  #   restricted: false
 listeners:
   - query_port: 25577
     motd: "techtales lobby"
