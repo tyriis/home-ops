@@ -1,0 +1,64 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: minecraft-test-world
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: minecraft
+      interval: 15m
+      version: 3.8.0
+      sourceRef:
+        kind: HelmRepository
+        name: minecraft-server-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    image:
+      repository: itzg/minecraft-server
+      tag: latest
+    nodeSelector:
+      services/minecraft: active
+    resources:
+      requests:
+        memory: 8192Mi
+        cpu: 600m
+    minecraftServer:
+      eula: "TRUE"
+      version: "1.20.6"
+      type: SPIGOT
+      motd: "hello minecraft test world"
+      difficulty: normal
+      ops: "superdigdug"
+      worldSaveName: test-world
+      maxPlayers: 20
+      viewDistance: 14
+      # levelSeed: '1123197228000674286'
+      gameMode: survival
+      pvp: false
+      onlineMode: false
+      memory: 8192M
+      serviceType: LoadBalancer
+      loadBalancerIP: ${SETTING_CILIUM_MINECRAFT_ADDR}
+      rcon:
+        enabled: true
+        password: "password"
+    # persistence:
+    #   dataDir:
+    #     enabled: true
+    #     existingClaim: local-mc-superdigdug
+
+  valuesFrom:
+    - kind: Secret
+      name: bungeecord-rcon
+      valuesKey: RCON_PASSWORD
+      targetPath: minecraftServer.rcon.password
