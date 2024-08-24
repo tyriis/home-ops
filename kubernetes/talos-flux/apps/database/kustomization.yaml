@@ -7,4 +7,3 @@ resources:
   - ./cloudnative-pg/flux-sync.yaml
   - ./dbman/flux-sync.yaml
   - ./dragonfly/flux-sync.yaml
-  - ./redis/flux-sync.yaml
