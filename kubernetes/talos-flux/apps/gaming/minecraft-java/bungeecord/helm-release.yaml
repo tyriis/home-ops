@@ -26,14 +26,60 @@ spec:
     minecraftProxy:
       type: BUNGEECORD
       serviceType: LoadBalancer
-      LoadBalancerIP: ${SETTING_CILIUM_MINECRAFT_ADDR}
+      loadBalancerIP: 192.168.1.82
+      externalIPs:
+        - 192.168.1.82
+      externalTrafficPolicy: Local
       rcon:
         enabled: true
-        password: "password"
+        existingSecret: bungeecord-rcon
+        secretKey: RCON_PASSWORD
         serviceType: ClusterIP
-      motd: "Minecraft Bungeecord"
-  valuesFrom:
-    - kind: Secret
-      name: bungeecord-rcon
-      valuesKey: RCON_PASSWORD
-      targetPath: minecraftProxy.rcon.password
+      config: |
+        player_limit: -1
+        ip_forward: true
+        permissions:
+          default:
+            - bungeecord.command.server
+            - bungeecord.command.list
+            - alert.trigger
+            - slashserver.lobby
+            - slashserver.survival
+            - slashserver.survival2
+          admin:
+            - bungeecord.command.alert
+            - bungeecord.command.end
+            - bungeecord.command.ip
+            - bungeecord.command.reload
+            - alert.receive
+            - alert.receive.firstjoin
+            - alert.command.toggle
+            - alert.command.reload
+        timeout: 30000
+        log_pings: true
+        log_commands: false
+        online_mode: true
+        servers:
+          lobby:
+            motd: 'techtales lobby'
+            address: minecraft-test-world-minecraft:25565
+            restricted: false
+          survival:
+            motd: 'Survival SMP'
+            address: minecraft-test-world-minecraft:25565
+            restricted: false
+        listeners:
+          - query_port: 25577
+            motd: 'techtales lobby'
+            priorities:
+              - lobby
+            bind_local_address: true
+            tab_list: GLOBAL_PING
+            query_enabled: true
+            host: 0.0.0.0:25577
+        ping_passthrough: true
+        groups:
+          tyriis:
+            - admin
+          jazzlyn:
+            - admin
