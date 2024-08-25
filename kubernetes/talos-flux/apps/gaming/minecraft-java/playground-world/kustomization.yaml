@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./helm-release.yaml
+commonLabels:
+  app.kubernetes.io/name: minecraft-playground-world
+  app.kubernetes.io/instance: minecraft-playground-world
+configMapGenerator:
+  - name: playground-world-config
+    files:
+      - spigot.yml=config/spigot.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
