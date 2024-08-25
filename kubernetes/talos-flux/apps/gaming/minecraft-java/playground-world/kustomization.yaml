@@ -9,7 +9,7 @@ commonLabels:
   app.kubernetes.io/name: minecraft-playground-world
   app.kubernetes.io/instance: minecraft-playground-world
 configMapGenerator:
-  - name: playground-world-config
+  - name: minecraft-playground-world-config
     files:
       - spigot.yml=config/spigot.yaml
 generatorOptions:
