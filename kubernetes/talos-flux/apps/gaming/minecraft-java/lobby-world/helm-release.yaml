@@ -57,10 +57,10 @@ spec:
         existingSecret: bungeecord-rcon
         secretKey: RCON_PASSWORD
         serviceType: ClusterIP
-    # persistence:
-    #   dataDir:
-    #     enabled: true
-    #     existingClaim: local-mc
+    persistence:
+      dataDir:
+        enabled: true
+        existingClaim: minecraft-lobby-world-data
 
   postRenderers:
     - kustomize:
@@ -74,7 +74,7 @@ spec:
                 value:
                   name: config
                   configMap:
-                    name: lobby-world-config
+                    name: minecraft-lobby-world-config
               - op: add
                 path: /spec/template/spec/containers/0/volumeMounts/-
                 value:

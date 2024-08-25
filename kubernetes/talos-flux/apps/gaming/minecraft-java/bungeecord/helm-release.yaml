@@ -45,6 +45,7 @@ spec:
       type: WATERFALL
       plugins:
         - https://github.com/Army-py/SlashServer/releases/download/tested/SlashServer-4.0.jar
+        - https://www.spigotmc.org/resources/bungeeteleportmanager.80677/download?version=552226
       serviceType: LoadBalancer
       loadBalancerIP: ${SETTING_CILIUM_MINECRAFT_PROXY_ADDR}
       externalTrafficPolicy: Local
