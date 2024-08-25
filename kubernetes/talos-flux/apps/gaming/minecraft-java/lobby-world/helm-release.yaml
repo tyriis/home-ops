@@ -36,18 +36,21 @@ spec:
       eula: "TRUE"
       version: "1.21"
       type: SPIGOT
-      motd: "techtales lobby"
+      motd: techtales lobby
       difficulty: peaceful
       ops: "tyriis,jazzlyn"
-      worldSaveName: lobby-world
+      worldSaveName: lobby
       enableCommandBlock: true
       maxPlayers: 20
       spawnAnimals: false
       spawnNPCs: false
       spawnProtection: 0
       spawnMonsters: false
+      allowNether: false
+      generateStructures: false
       viewDistance: 14
       levelType: FLAT
+      # maxBuildHeight: 256
       gameMode: creative
       pvp: false
       onlineMode: false
