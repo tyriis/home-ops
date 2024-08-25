@@ -45,7 +45,7 @@ spec:
       type: WATERFALL
       plugins:
         - https://github.com/Army-py/SlashServer/releases/download/tested/SlashServer-4.0.jar
-        - https://github-registry-files.githubusercontent.com/268014849/c6515b80-45c1-11ef-985f-33a17a6f478a?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240825%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240825T124450Z&X-Amz-Expires=300&X-Amz-Signature=5d15c14a3b5f1159ca9b8163829d8470aa4f042e1554c10b8296d31d7c0ef7d6&X-Amz-SignedHeaders=host&actor_id=0&key_id=0&repo_id=268014849&response-content-disposition=filename%3Dbungeeteleportmanager-7-5-0.jar&response-content-type=application%2Foctet-stream #gitleaks:allow
+        # - https://github-registry-files.githubusercontent.com/268014849/c6515b80-45c1-11ef-985f-33a17a6f478a?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240825%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240825T124450Z&X-Amz-Expires=300&X-Amz-Signature=5d15c14a3b5f1159ca9b8163829d8470aa4f042e1554c10b8296d31d7c0ef7d6&X-Amz-SignedHeaders=host&actor_id=0&key_id=0&repo_id=268014849&response-content-disposition=filename%3Dbungeeteleportmanager-7-5-0.jar&response-content-type=application%2Foctet-stream #gitleaks:allow
       serviceType: LoadBalancer
       loadBalancerIP: ${SETTING_CILIUM_MINECRAFT_PROXY_ADDR}
       externalTrafficPolicy: Local
