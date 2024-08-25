@@ -38,7 +38,7 @@ spec:
       type: SPIGOT
       motd: techtales lobby
       difficulty: peaceful
-      ops: "tyriis,jazzlyn"
+      ops: "tyriis,jazzlyn,ForscherAlex"
       worldSaveName: lobby
       enableCommandBlock: true
       maxPlayers: 20
