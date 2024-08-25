@@ -53,6 +53,9 @@
 
     # wayland terminal emulator, we can use alacritty aswell
 
+    # inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
+    # inputs.ags.packages.${pkgs.system}.default
+
 
 
     # wayland notification daemon
@@ -61,12 +64,10 @@
     # screenshot
     swappy
 
-    # https://github.com/ndom91/rose-pine-hyprcursor
-    inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
-
-
-
-
+    # inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
+    # https://github.com/hyprwm/Hyprland/issues/6320#issuecomment-2243109637
+    nwg-look
+    rose-pine-cursor
   ];
   services.mako = {
     enable = true;
@@ -74,4 +75,9 @@
 
   # Let home Manager install and manage itself.
   programs.home-manager.enable = true;
+  home.pointerCursor = {
+      name = "rose-pine-hyprcursor";
+      package = inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default;
+      size = 32; # Adjust as needed
+    };
 }

@@ -2,7 +2,7 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ inputs, config, lib, pkgs, ... }:
 
 {
   imports =
@@ -18,6 +18,7 @@
       ../../modules/ags.nix
       ../../modules/docker.nix
       ../../modules/system-packages.nix
+      ../../modules/lutris.nix
     ];
 
   # enable nix-flakes
@@ -159,4 +160,19 @@
     };
   };
 
+  environment.systemPackages = [
+    # TODO find a way to load this with home-manager
+    inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
+    inputs.ags.packages.${pkgs.system}.default
+    pkgs.smartmontools
+  ];
+  system.activationScripts.linkCursorTheme = ''
+    mkdir -p /usr/share/icons
+    ln -sfn ${inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default}/share/icons/rose-pine-hyprcursor /usr/share/icons/rose-pine-hyprcursor
+  '';
+
+  services.smartd = {
+    enable = true;
+    autodetect = true;
+  };
 }

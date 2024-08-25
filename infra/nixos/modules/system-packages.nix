@@ -21,6 +21,8 @@
 
     plymouth
     nixos-bgrt-plymouth
+
+    nodejs
   ];
 
   # Enable zsh.

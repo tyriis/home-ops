@@ -20,7 +20,7 @@
     rose-pine-hyprcursor.url = "github:ndom91/rose-pine-hyprcursor";
   };
 
-  outputs = { self, nixpkgs, unstable, home-manager, ags, ... }:
+  outputs = { self, nixpkgs, unstable, home-manager, ags, ... }@inputs:
   let
     overlay = final: prev:
     let
@@ -43,6 +43,7 @@
         value = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs.channels = { inherit nixpkgs unstable; };
+          specialArgs = { inherit inputs; };
           modules = [
             overlayModule
             ./hosts/${host}/configuration.nix
@@ -54,12 +55,8 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.nils = import ./home-manager/home.nix;
-              # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
-            }
-            {
-              environment.systemPackages = with nixpkgs; [
-                (ags.packages.x86_64-linux.default)
-              ];
+              # pass flake inputs to home-manager
+              home-manager.extraSpecialArgs = { inherit inputs; };
             }
           ];
         };
