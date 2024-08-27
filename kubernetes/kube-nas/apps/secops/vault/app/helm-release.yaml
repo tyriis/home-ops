@@ -68,40 +68,14 @@ spec:
         limits:
           memory: 256Mi
       standalone:
-        enabled: false
-      ha:
         enabled: true
-        replicas: 3
-        raft:
-          enabled: true
-          setNodeId: true
-          # config: |
-          #   ui = true
-          #   listener "tcp" {
-          #     tls_disable = 1
-          #     address = "[::]:8200"
-          #     cluster_address = "[::]:8201"
-          #   }
-          #   storage "raft" {
-          #     path = "/vault/data"
-          #   }
-          #   seal "gcpckms" {
-          #     project     = "${GCP_PROJECT_KEY_0}"
-          #     region      = "${GCP_VAULT_KMS_REGION}"
-          #     key_ring    = "${GCP_VAULT_KEYRING_NAME}"
-          #     crypto_key  = "${GCP_VAULT_CRYPTO_NAME}"
-          #   }
-          #   service_registration "kubernetes" {}
-          config: |
-            ui = true
-            listener "tcp" {
-              tls_disable = 1
-              address = "[::]:8200"
-              cluster_address = "[::]:8201"
-            }
-            storage "raft" {
-              path = "/vault/data"
-            }
-            service_registration "kubernetes" {}
+
+        config: |
+          ui = true
+          listener "tcp" {
+            tls_disable = 1
+            address = "[::]:8200"
+          }
+          // service_registration "kubernetes" {}
     ui:
       enabled: true

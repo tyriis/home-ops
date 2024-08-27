@@ -9,7 +9,7 @@ metadata:
     substitution.flux.home.arpa/enabled: "true"
 spec:
   interval: 10m
-  path: ./kubernetes/kube-nas/secops/vault
+  path: ./kubernetes/kube-nas/apps/secops/vault/app
   prune: false
   sourceRef:
     kind: GitRepository
