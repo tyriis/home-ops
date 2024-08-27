@@ -30,15 +30,15 @@ spec:
       tag: latest
     resources:
       requests:
-        cpu: 100m
-        memory: 1024Mi
+        cpu: 500m
+        memory: 4096Mi
     minecraftServer:
       eula: "TRUE"
       version: "1.21"
       type: SPIGOT
-      motd: welcome to techtales survival
+      motd: techtales survival
       difficulty: hard
-      ops: "tyriis,jazzlyn"
+      ops: "tyriis,jazzlyin"
       worldSaveName: survival
       enableCommandBlock: false
       maxPlayers: 20

@@ -38,7 +38,7 @@ spec:
       type: SPIGOT
       motd: techtales playground
       difficulty: peaceful
-      ops: "tyriis,jazzlyn,ForscherAlex,ForscherDominik"
+      ops: "tyriis,jazzlyin,ForscherAlex,ForscherDominik"
       worldSaveName: playground
       enableCommandBlock: true
       maxPlayers: 20

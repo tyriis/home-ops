@@ -38,7 +38,7 @@ spec:
       type: SPIGOT
       motd: "hello minecraft creative world"
       difficulty: normal
-      ops: "tyriis,jazzlyn"
+      ops: "tyriis,jazzlyin"
       worldSaveName: creative-world
       maxPlayers: 20
       viewDistance: 14
