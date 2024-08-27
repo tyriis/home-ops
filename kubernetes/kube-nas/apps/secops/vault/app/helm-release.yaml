@@ -1,0 +1,107 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: vault
+  namespace: vault
+spec:
+  interval: 75m
+  chart:
+    spec:
+      chart: vault
+      version: 0.27.0
+      sourceRef:
+        kind: HelmRepository
+        name: hashicorp-charts
+        namespace: flux-system
+
+  # valuesFrom:
+  #   # Injected by init-job
+  #   - targetPath: server.extraEnvironmentVars.VAULT_TOKEN
+  #     kind: Secret
+  #     name: vault-tokens
+  #     optional: true
+  #     valuesKey: vault_root_token
+  values:
+    metrics:
+      enabled: true
+    service:
+      enabled: true
+
+    server:
+      ingress:
+        enabled: true
+        ingressClassName: nginx
+        # When HA mode is enabled and K8s service registration is being used,
+        # configure the ingress to point to the Vault active service.
+        activeService: true
+        pathType: Prefix
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/tls-acme: "true"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+          nginx.ingress.kubernetes.io/ssl-redirect: "true"
+        hosts:
+          - host: &host vault.tyriis.dev
+            paths: []
+        tls:
+          - hosts:
+              - *host
+            secretName: vault-tls
+      extraLabels:
+        configmap.reloader.stakater.com/reload: vault-config
+      dataStorage:
+        enabled: true
+        storageClass: "ceph-block"
+      extraEnvironmentVars:
+        # VAULT_TOKEN: ${SECRET_VAULT_TOKEN}
+        TZ: ${SETTING_TZ}
+        # GOOGLE_APPLICATION_CREDENTIALS: /vault/userconfig/kms-vault-unseal/serviceaccount.json
+      # extraVolumes:
+      #   - type: secret
+      #     name: kms-vault-unseal
+      #     path: /vault/userconfig
+      resources:
+        requests:
+          memory: 256Mi
+          cpu: 250m
+        limits:
+          memory: 256Mi
+      standalone:
+        enabled: false
+      ha:
+        enabled: true
+        replicas: 3
+        raft:
+          enabled: true
+          setNodeId: true
+          # config: |
+          #   ui = true
+          #   listener "tcp" {
+          #     tls_disable = 1
+          #     address = "[::]:8200"
+          #     cluster_address = "[::]:8201"
+          #   }
+          #   storage "raft" {
+          #     path = "/vault/data"
+          #   }
+          #   seal "gcpckms" {
+          #     project     = "${GCP_PROJECT_KEY_0}"
+          #     region      = "${GCP_VAULT_KMS_REGION}"
+          #     key_ring    = "${GCP_VAULT_KEYRING_NAME}"
+          #     crypto_key  = "${GCP_VAULT_CRYPTO_NAME}"
+          #   }
+          #   service_registration "kubernetes" {}
+          config: |
+            ui = true
+            listener "tcp" {
+              tls_disable = 1
+              address = "[::]:8200"
+              cluster_address = "[::]:8201"
+            }
+            storage "raft" {
+              path = "/vault/data"
+            }
+            service_registration "kubernetes" {}
+    ui:
+      enabled: true
