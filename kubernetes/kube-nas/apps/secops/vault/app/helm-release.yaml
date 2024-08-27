@@ -52,7 +52,7 @@ spec:
         configmap.reloader.stakater.com/reload: vault-config
       dataStorage:
         enabled: true
-        storageClass: "ceph-block"
+        storageClass: openebs-hostpath
       extraEnvironmentVars:
         # VAULT_TOKEN: ${SECRET_VAULT_TOKEN}
         TZ: ${SETTING_TZ}
