@@ -36,7 +36,7 @@ spec:
       eula: "TRUE"
       version: "1.21"
       type: SPIGOT
-      motd: techtales survival
+      motd: welcome to techtales survival
       difficulty: peaceful
       ops: "tyriis,jazzlyn"
       worldSaveName: survival
@@ -44,12 +44,14 @@ spec:
       maxPlayers: 20
       spawnAnimals: true
       spawnNPCs: true
-      spawnProtection: 16
+      spawnProtection: 0
       spawnMonsters: true
       allowNether: true
       generateStructures: true
       viewDistance: 14
       levelType: DEFAULT
+      dificulty: hard
+      forcegameMode: true
       # maxBuildHeight: 256
       gameMode: survival
       pvp: false
