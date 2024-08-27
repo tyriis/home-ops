@@ -38,7 +38,7 @@ spec:
       type: SPIGOT
       motd: techtales survival
       difficulty: peaceful
-      ops: "tyriis,jazzlyn"
+      ops: "tyriis,jazzlyin"
       worldSaveName: survival
       enableCommandBlock: false
       maxPlayers: 20
