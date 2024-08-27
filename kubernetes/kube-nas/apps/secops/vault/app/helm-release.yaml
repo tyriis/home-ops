@@ -76,6 +76,9 @@ spec:
             tls_disable = 1
             address = "[::]:8200"
           }
+          storage "file" {
+            path = "/vault/data"
+          }
           // service_registration "kubernetes" {}
     ui:
       enabled: true
