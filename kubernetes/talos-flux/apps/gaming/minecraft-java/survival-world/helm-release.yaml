@@ -1,0 +1,87 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: minecraft-survival-world
+spec:
+  interval: 15m
+  driftDetection:
+    mode: enabled
+  chart:
+    spec:
+      chart: minecraft
+      interval: 15m
+      version: 4.22.0
+      sourceRef:
+        kind: HelmRepository
+        name: minecraft-server-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    image:
+      repository: ghcr.io/itzg/minecraft-server
+      tag: latest
+    resources:
+      requests:
+        cpu: 100m
+        memory: 1024Mi
+    minecraftServer:
+      eula: "TRUE"
+      version: "1.21"
+      type: SPIGOT
+      motd: techtales survival
+      difficulty: peaceful
+      ops: "tyriis,jazzlyn"
+      worldSaveName: survival
+      enableCommandBlock: false
+      maxPlayers: 20
+      spawnAnimals: true
+      spawnNPCs: true
+      spawnProtection: 16
+      spawnMonsters: true
+      allowNether: true
+      generateStructures: true
+      viewDistance: 14
+      levelType: DEFAULT
+      # maxBuildHeight: 256
+      gameMode: survival
+      pvp: false
+      onlineMode: false
+      levelSeed: "-5719961998413710668"
+      memory: 4096M
+      rcon:
+        enabled: true
+        existingSecret: bungeecord-rcon
+        secretKey: RCON_PASSWORD
+        serviceType: ClusterIP
+    persistence:
+      dataDir:
+        enabled: true
+        existingClaim: minecraft-survival-world-data
+
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+              name: minecraft-survival-world-minecraft
+            patch: |-
+              - op: add
+                path: /spec/template/spec/volumes/-
+                value:
+                  name: config
+                  configMap:
+                    name: minecraft-survival-world-config
+              - op: add
+                path: /spec/template/spec/containers/0/volumeMounts/-
+                value:
+                  name: config
+                  mountPath: /data/spigot.yml
+                  subPath: spigot.yml
