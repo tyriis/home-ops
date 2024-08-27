@@ -37,7 +37,7 @@ spec:
       version: "1.21"
       type: SPIGOT
       motd: welcome to techtales survival
-      difficulty: peaceful
+      difficulty: hard
       ops: "tyriis,jazzlyn"
       worldSaveName: survival
       enableCommandBlock: false
@@ -50,7 +50,6 @@ spec:
       generateStructures: true
       viewDistance: 14
       levelType: DEFAULT
-      dificulty: hard
       forcegameMode: true
       # maxBuildHeight: 256
       gameMode: survival
