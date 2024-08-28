@@ -37,8 +37,6 @@ spec:
       requests:
         memory: 250Mi
         cpu: 50m
-      limits:
-        memory: 500Mi
     podAnnotations:
       reloader.stakater.com/auto: "true"
     configFilePath: /config/config.yml
@@ -51,6 +49,16 @@ spec:
       serviceType: LoadBalancer
       loadBalancerIP: ${SETTING_CILIUM_MINECRAFT_PROXY_ADDR}
       externalTrafficPolicy: Local
+      extraPorts:
+        - name: bedrock
+          containerPort: 19132
+          protocol: UDP
+          service:
+            enabled: true
+            embedded: true
+            port: 19132
+          ingress:
+            enabled: false
       rcon:
         enabled: true
         existingSecret: bungeecord-rcon
