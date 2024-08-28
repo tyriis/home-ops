@@ -55,6 +55,8 @@ spec:
           protocol: UDP
           service:
             enabled: true
+          ingress:
+            enabled: false
       rcon:
         enabled: true
         existingSecret: bungeecord-rcon
