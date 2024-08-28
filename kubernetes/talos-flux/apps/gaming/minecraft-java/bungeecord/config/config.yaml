@@ -43,7 +43,7 @@ servers:
     restricted: false
     online_mode: false
 listeners:
-  - query_port: 25577
+  - query_port: 25565
     force_deafult_server: false
     motd: "techtales lobby"
     priorities:
@@ -51,7 +51,7 @@ listeners:
     bind_local_address: true
     tab_list: GLOBAL_PING
     query_enabled: true
-    host: 0.0.0.0:25577
+    host: 0.0.0.0:25565
     max_players: 10
 ping_passthrough: true
 groups:
