@@ -36,7 +36,7 @@ spec:
       enabled: true
       # Enable integration with the Prometheus Operator
       # See the top level serverTelemetry section below before enabling this feature.
-      prometheusOperator: true
+      # prometheusOperator: true
 
     # inject valut sidecars via admission webhook
     # injector:
@@ -187,25 +187,25 @@ spec:
     # For more information see:
     # https://www.vaultproject.io/docs/configuration/telemetry
     # https://www.vaultproject.io/docs/internals/telemetry
-    serverTelemetry:
-      # Enable support for the Prometheus Operator. Currently, this chart does not support
-      serviceMonitor:
-        # Enable deployment of the Vault Server ServiceMonitor CustomResource.
-        enabled: true
-      prometheusRules:
-        enabled: true
-        rules:
-          - alert: vault-HighResponseTime
-            annotations:
-              message: The response time of Vault is over 500ms on average over the last 5 minutes.
-            expr: vault_core_handle_request{quantile="0.5", namespace="vault-system"} > 500
-            for: 5m
-            labels:
-              severity: warning
-          - alert: vault-HighResponseTime
-            annotations:
-              message: The response time of Vault is over 1s on average over the last 5 minutes.
-            expr: vault_core_handle_request{quantile="0.5", namespace="vault-system"} > 1000
-            for: 5m
-            labels:
-              severity: critical
+    # serverTelemetry:
+    #   # Enable support for the Prometheus Operator. Currently, this chart does not support
+    #   serviceMonitor:
+    #     # Enable deployment of the Vault Server ServiceMonitor CustomResource.
+    #     enabled: true
+    #   prometheusRules:
+    #     enabled: true
+    #     rules:
+    #       - alert: vault-HighResponseTime
+    #         annotations:
+    #           message: The response time of Vault is over 500ms on average over the last 5 minutes.
+    #         expr: vault_core_handle_request{quantile="0.5", namespace="vault-system"} > 500
+    #         for: 5m
+    #         labels:
+    #           severity: warning
+    #       - alert: vault-HighResponseTime
+    #         annotations:
+    #           message: The response time of Vault is over 1s on average over the last 5 minutes.
+    #         expr: vault_core_handle_request{quantile="0.5", namespace="vault-system"} > 1000
+    #         for: 5m
+    #         labels:
+    #           severity: critical
