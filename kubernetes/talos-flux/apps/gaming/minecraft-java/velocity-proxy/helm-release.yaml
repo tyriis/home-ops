@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app minecraft-bungeecord
+  name: &app minecraft-velocity-proxy
 spec:
   interval: 15m
   driftDetection:
@@ -39,15 +39,26 @@ spec:
         cpu: 50m
     podAnnotations:
       reloader.stakater.com/auto: "true"
-    configFilePath: /config/config.yml
+    configFilePath: /config/velocity.toml
     minecraftProxy:
-      type: WATERFALL
+      type: VELOCITY
+      velocityVersion: 3.3.0-SNAPSHOT
       plugins:
-        - https://github.com/Army-py/SlashServer/releases/download/tested/SlashServer-4.0.jar
-        # - https://github-registry-files.githubusercontent.com/268014849/c6515b80-45c1-11ef-985f-33a17a6f478a?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240825%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240825T124450Z&X-Amz-Expires=300&X-Amz-Signature=5d15c14a3b5f1159ca9b8163829d8470aa4f042e1554c10b8296d31d7c0ef7d6&X-Amz-SignedHeaders=host&actor_id=0&key_id=0&repo_id=268014849&response-content-disposition=filename%3Dbungeeteleportmanager-7-5-0.jar&response-content-type=application%2Foctet-stream #gitleaks:allow
+        # - https://github.com/Army-py/SlashServer/releases/download/tested/SlashServer-4.0.jar
+        - https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/velocity
       serviceType: LoadBalancer
-      loadBalancerIP: ${SETTING_CILIUM_MINECRAFT_PROXY_ADDR}
+      loadBalancerIP: ${SETTING_CILIUM_MINECRAFT_PROXY_ADDR2}
       externalTrafficPolicy: Local
+      extraPorts:
+        - name: bedrock
+          containerPort: 19132
+          protocol: UDP
+          service:
+            enabled: true
+            embedded: true
+            port: 19132
+          ingress:
+            enabled: false
       rcon:
         enabled: true
         existingSecret: bungeecord-rcon
@@ -58,17 +69,17 @@ spec:
         patches:
           - target:
               kind: Deployment
-              name: minecraft-bungeecord-minecraft-proxy
+              name: minecraft-velocity-proxy-minecraft-proxy
             patch: |-
               - op: add
                 path: /spec/template/spec/volumes/-
                 value:
                   name: config
                   configMap:
-                    name: bungeecord-config
+                    name: velocity-config
               - op: add
                 path: /spec/template/spec/containers/0/volumeMounts/-
                 value:
                   name: config
-                  mountPath: /config/config.yml
-                  subPath: config.yml
+                  mountPath: /config/velocity.toml
+                  subPath: velocity.toml

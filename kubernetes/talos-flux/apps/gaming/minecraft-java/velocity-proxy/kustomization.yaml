@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: gaming
+resources:
+  - ./helm-release.yaml
+commonLabels:
+  app.kubernetes.io/name: minecraft-velocity
+  app.kubernetes.io/instance: minecraft-velocity
+configMapGenerator:
+  - name: velocity-config
+    files:
+      - velocity.toml=config/velocity.toml
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
