@@ -3,9 +3,8 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: vault
-  namespace: vault
 spec:
-  interval: 75m
+  interval: 15m
   chart:
     spec:
       chart: vault
@@ -14,6 +13,16 @@ spec:
         kind: HelmRepository
         name: hashicorp-charts
         namespace: flux-system
+  maxHistory: 5
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
 
   # valuesFrom:
   #   # Injected by init-job
@@ -23,12 +32,46 @@ spec:
   #     optional: true
   #     valuesKey: vault_root_token
   values:
+    global:
+      enabled: true
+      # Enable integration with the Prometheus Operator
+      # See the top level serverTelemetry section below before enabling this feature.
+      prometheusOperator: true
+
+    # inject valut sidecars via admission webhook
+    # injector:
+    #   replicas: 1
+    #   leaderElector:
+    #     enabled: true
+    #   metrics:
+    #     enabled: true
+    #   logLevel: "info"
+    #   logFormat: "json"
+    #   revokeOnShutdown: true
+    #   webhook:
+    #     failurePolicy: Ignore
+    #     matchPolicy: Exact
+    #     timeoutSeconds: 30
+    #   failurePolicy: Ignore
+    #   resources:
+    #     requests:
+    #       memory: 256Mi
+    #       cpu: 250m
+    #     limits:
+    #       memory: 256Mi
+    #       cpu: 250m
+
     metrics:
       enabled: true
     service:
       enabled: true
 
     server:
+      updateStrategyType: "OnDelete"
+      logLevel: "info"
+      logFormat: "json"
+      extraLabels:
+        reloader.stakater.com/auto: "true"
       ingress:
         enabled: true
         ingressClassName: nginx
@@ -48,37 +91,121 @@ spec:
           - hosts:
               - *host
             secretName: vault-tls
-      extraLabels:
-        configmap.reloader.stakater.com/reload: vault-config
       dataStorage:
         enabled: true
+        size: 10Gi
+        mountPath: /vault/data
+        storageClass: openebs-hostpath
+      auditStorage:
+        enabled: true
+        size: 10Gi
+        mountPath: /vault/audit
         storageClass: openebs-hostpath
       extraEnvironmentVars:
         # VAULT_TOKEN: ${SECRET_VAULT_TOKEN}
         TZ: ${SETTING_TZ}
         # GOOGLE_APPLICATION_CREDENTIALS: /vault/userconfig/kms-vault-unseal/serviceaccount.json
+
+      # authDelegator enables a cluster role binding to be attached to the service
+      # account.  This cluster role binding can be used to setup Kubernetes auth
+      # method.  https://www.vaultproject.io/docs/auth/kubernetes.html
+      # authDelegator:
+      #   enabled: true
+
       # extraVolumes:
       #   - type: secret
       #     name: kms-vault-unseal
       #     path: /vault/userconfig
+
+      service:
+        enabled: true
+        # Enable or disable the vault-active service, which selects Vault pods that
+        # have labelled themselves as the cluster leader with `vault-active: "true"`
+        active:
+          enabled: true
+        # Enable or disable the vault-standby service, which selects Vault pods that
+        # have labelled themselves as a cluster follower with `vault-active: "false"`
+        standby:
+          enabled: true
+        # If enabled, the service selectors will include `app.kubernetes.io/instance: {{ .Release.Name }}`
+        # When disabled, services may select Vault pods not deployed from the chart.
+        # Does not affect the headless vault-internal service with `ClusterIP: None`
+        instanceSelector:
+          enabled: true
       resources:
         requests:
           memory: 256Mi
           cpu: 250m
         limits:
           memory: 256Mi
-      standalone:
+      ha:
         enabled: true
+        replicas: 1
+        raft:
+          enabled: true
+          setNodeId: true
+          config: |
+            # api_addr = "http://127.0.0.1:8200"
+            # cluster_addr = "https://127.0.0.1:8201"
 
-        config: |
-          ui = true
-          listener "tcp" {
-            tls_disable = 1
-            address = "[::]:8200"
-          }
-          storage "file" {
-            path = "/vault/data"
-          }
-          // service_registration "kubernetes" {}
+            disable_mlock = true
+            ui = true
+
+            listener "tcp" {
+              tls_disable = 1
+              address = "[::]:8200"
+              cluster_address = "[::]:8201"
+              telemetry {
+                unauthenticated_metrics_access = "true"
+              }
+            }
+            storage "file" {
+              path = "/vault/data"
+            }
+            storage "raft" {
+              path = "/vault/data"
+              retry_join {
+                leader_api_addr = "https://vault-0.vault-internal:8200"
+              }
+            }
+            # service_registration "kubernetes" {}
+
     ui:
       enabled: true
+      publishNotReadyAddresses: true
+      # The service should only contain selectors for active Vault pod
+      activeVaultPodOnly: true
+      serviceType: "ClusterIP"
+      serviceNodePort: null
+      externalPort: 8200
+      targetPort: 8200
+
+    # Vault is able to collect and publish various runtime metrics.
+    # Enabling this feature requires setting adding `telemetry{}` stanza to
+    # the Vault configuration. There are a few examples included in the `config` sections above.
+    #
+    # For more information see:
+    # https://www.vaultproject.io/docs/configuration/telemetry
+    # https://www.vaultproject.io/docs/internals/telemetry
+    serverTelemetry:
+      # Enable support for the Prometheus Operator. Currently, this chart does not support
+      serviceMonitor:
+        # Enable deployment of the Vault Server ServiceMonitor CustomResource.
+        enabled: true
+      prometheusRules:
+        enabled: true
+        rules:
+          - alert: vault-HighResponseTime
+            annotations:
+              message: The response time of Vault is over 500ms on average over the last 5 minutes.
+            expr: vault_core_handle_request{quantile="0.5", namespace="vault-system"} > 500
+            for: 5m
+            labels:
+              severity: warning
+          - alert: vault-HighResponseTime
+            annotations:
+              message: The response time of Vault is over 1s on average over the last 5 minutes.
+            expr: vault_core_handle_request{quantile="0.5", namespace="vault-system"} > 1000
+            for: 5m
+            labels:
+              severity: critical
