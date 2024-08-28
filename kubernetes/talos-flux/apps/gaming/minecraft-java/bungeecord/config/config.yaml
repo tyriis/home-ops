@@ -44,7 +44,7 @@ servers:
     online_mode: false
 listeners:
   - query_port: 25565
-    force_deafult_server: false
+    force_default_server: false
     motd: "techtales lobby"
     priorities:
       - lobby
