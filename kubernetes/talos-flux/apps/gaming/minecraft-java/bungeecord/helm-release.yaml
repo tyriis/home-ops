@@ -42,6 +42,7 @@ spec:
     configFilePath: /config/config.yml
     minecraftProxy:
       type: VELOCITY
+      velocityVersion: 3.3.0-SNAPSHOT
       plugins:
         - https://github.com/Army-py/SlashServer/releases/download/tested/SlashServer-4.0.jar
         - https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/velocity
