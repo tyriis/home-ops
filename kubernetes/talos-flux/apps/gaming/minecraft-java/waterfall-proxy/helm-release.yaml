@@ -27,6 +27,8 @@ spec:
     controllers:
       waterfall:
         replicas: 1
+        annotations:
+          reloader.stakater.com/auto: "true"
         pod:
           securityContext:
             fsGroup: 1000
