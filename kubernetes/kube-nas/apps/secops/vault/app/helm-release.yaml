@@ -159,9 +159,9 @@ spec:
                 unauthenticated_metrics_access = "true"
               }
             }
-            storage "file" {
-              path = "/vault/data"
-            }
+            # storage "file" {
+            #   path = "/vault/data"
+            # }
             storage "raft" {
               path = "/vault/data"
               retry_join {
