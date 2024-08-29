@@ -61,12 +61,15 @@ spec:
                 drop:
                   - ALL
               readOnlyRootFilesystem: true
+            ports:
+              - containerPort: &port 25565
+                protocol: TCP
 
             probes:
               readiness: &probes
                 enabled: true
                 type: TCP
-                port: &port 25565
+                port: *port
               liveness: *probes
               startup:
                 <<: *probes
@@ -83,8 +86,8 @@ spec:
       app:
         controller: waterfall
         type: LoadBalancer
-        loadBalancerIP: ${SETTING_CILIUM_MINECRAFT_PROXY_ADDR3}
-        externalTrafficPolicy: Local
+        annotations:
+          io.cilium/lb-ipam-ips: ${SETTING_CILIUM_MINECRAFT_PROXY_ADDR3}
         ports:
           waterfall-proxy:
             port: *port
