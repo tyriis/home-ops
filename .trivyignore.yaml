@@ -1,0 +1,13 @@
+---
+misconfigurations:
+  []
+  # # https://avd.aquasec.com/misconfig/kubernetes/general/avd-ksv-0048/
+  # # check if this can be improved
+  # - id: AVD-KSV-0048 # Deny Create Update Malicious Pod
+  #   paths:
+  #     - database/dragonfly/operator/rbac.yaml
+  # # https://avd.aquasec.com/misconfig/kubernetes/general/avd-ksv-0056/
+  # # check if this can be improved
+  # - id: AVD-KSV-0056 # No Manage Networking Resources
+  #   paths:
+  #     - database/dragonfly/operator/rbac.yaml
