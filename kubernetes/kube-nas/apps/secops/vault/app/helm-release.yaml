@@ -70,7 +70,7 @@ spec:
       enabled: true
 
     server:
-      updateStrategyType: "OnDelete"
+      # updateStrategyType: "OnDelete"
       logLevel: "info"
       logFormat: "json"
       extraLabels:
@@ -125,8 +125,8 @@ spec:
         enabled: true
         # Enable or disable the vault-active service, which selects Vault pods that
         # have labelled themselves as the cluster leader with `vault-active: "true"`
-        active:
-          enabled: true
+        # active:
+        #   enabled: true
         # Enable or disable the vault-standby service, which selects Vault pods that
         # have labelled themselves as a cluster follower with `vault-active: "false"`
         # standby:
