@@ -31,6 +31,7 @@ spec:
   #     name: vault-tokens
   #     optional: true
   #     valuesKey: vault_root_token
+  # https://artifacthub.io/packages/helm/hashicorp/vault/?modal=values
   values:
     global:
       enabled: true
@@ -61,8 +62,8 @@ spec:
     #       memory: 256Mi
     #       cpu: 250m
 
-    metrics:
-      enabled: true
+    # metrics:
+    #   enabled: true
     service:
       enabled: true
 
@@ -77,8 +78,8 @@ spec:
         ingressClassName: nginx
         # When HA mode is enabled and K8s service registration is being used,
         # configure the ingress to point to the Vault active service.
-        activeService: true
-        pathType: Prefix
+        # activeService: true
+        # pathType: Prefix
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/tls-acme: "true"
@@ -87,6 +88,7 @@ spec:
         hosts:
           - host: &host vault.tyriis.dev
             paths: []
+
         tls:
           - hosts:
               - *host
@@ -125,8 +127,8 @@ spec:
           enabled: true
         # Enable or disable the vault-standby service, which selects Vault pods that
         # have labelled themselves as a cluster follower with `vault-active: "false"`
-        standby:
-          enabled: true
+        # standby:
+        #   enabled: true
         # If enabled, the service selectors will include `app.kubernetes.io/instance: {{ .Release.Name }}`
         # When disabled, services may select Vault pods not deployed from the chart.
         # Does not affect the headless vault-internal service with `ClusterIP: None`
@@ -164,9 +166,9 @@ spec:
             # }
             storage "raft" {
               path = "/vault/data"
-              retry_join {
-                leader_api_addr = "https://vault-0.vault-internal:8200"
-              }
+              # retry_join {
+              #   leader_api_addr = "http://vault-0.vault-internal:8200"
+              # }
             }
             # service_registration "kubernetes" {}
 
