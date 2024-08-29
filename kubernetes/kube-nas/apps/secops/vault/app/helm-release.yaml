@@ -89,7 +89,13 @@ spec:
           nginx.ingress.kubernetes.io/ssl-redirect: "true"
         hosts:
           - host: &host vault.tyriis.dev
-            paths: []
+            paths:
+              - path: /
+                backend:
+                  service:
+                    name: vault-internal
+                    port:
+                      number: 8200
 
         tls:
           - hosts:
