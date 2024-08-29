@@ -8,9 +8,13 @@ permissions:
     - alert.trigger
     - slashserver.lobby
     - slashserver.survival
+    - slashserver.creative
+    - slashserver.playground
   admin:
     - bungeecord.command.alert
     - bungeecord.command.end
+    - bungeecord.command.find
+    - bungeecord.command.list
     - bungeecord.command.ip
     - bungeecord.command.reload
     - alert.receive
