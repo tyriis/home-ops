@@ -64,7 +64,11 @@ spec:
                   - ALL
               readOnlyRootFilesystem: true
             ports:
-              - containerPort: &port 25565
+              - name: waterfall
+                containerPort: &port 25565
+                protocol: TCP
+              - name: rcon
+                containerPort: &rconPort 25575
                 protocol: TCP
 
             probes:
@@ -85,7 +89,7 @@ spec:
                 memory: 250Mi
 
     service:
-      app:
+      waterfall:
         controller: waterfall
         type: LoadBalancer
         annotations:
@@ -94,6 +98,14 @@ spec:
           waterfall-proxy:
             port: *port
             protocol: TCP
+            targetPort: waterfall
+      rcon:
+        controller: waterfall
+        ports:
+          rcon:
+            port: *rconPort
+            protocol: TCP
+            targetPort: rcon
 
     persistence:
       tmp:
