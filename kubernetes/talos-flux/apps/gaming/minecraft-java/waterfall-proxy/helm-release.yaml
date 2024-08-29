@@ -5,6 +5,8 @@ kind: HelmRelease
 metadata:
   name: &app minecraft-waterfall-proxy
 spec:
+  driftDetection:
+    mode: enabled
   interval: 15m
   chart:
     spec:
@@ -87,7 +89,7 @@ spec:
         controller: waterfall
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: ${SETTING_CILIUM_MINECRAFT_PROXY_ADDR3}
+          io.cilium/lb-ipam-ips: ${SETTING_CILIUM_MINECRAFT_PROXY_ADDR}
         ports:
           waterfall-proxy:
             port: *port

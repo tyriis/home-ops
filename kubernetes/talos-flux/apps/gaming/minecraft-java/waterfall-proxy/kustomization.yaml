@@ -6,6 +6,7 @@ namespace: gaming
 resources:
   - ./persistent-volume-claim.yaml
   - ./helm-release.yaml
+  - ./external-secret.yaml
 commonLabels:
   app.kubernetes.io/name: minecraft-waterfall-proxy
   app.kubernetes.io/instance: minecraft-waterfall-proxy
