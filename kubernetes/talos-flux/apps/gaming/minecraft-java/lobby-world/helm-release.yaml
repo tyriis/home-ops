@@ -12,7 +12,7 @@ spec:
     spec:
       chart: minecraft
       interval: 15m
-      version: 4.22.2
+      version: 4.23.0
       sourceRef:
         kind: HelmRepository
         name: minecraft-server-charts
