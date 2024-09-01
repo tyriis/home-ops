@@ -12,6 +12,7 @@ configMapGenerator:
   - name: minecraft-playground-world-config
     files:
       - spigot.yml=config/spigot.yaml
+      - paper-global.yml=config/paper-global.yaml
 generatorOptions:
   disableNameSuffixHash: true
   annotations:

@@ -24,6 +24,7 @@ spec:
   upgrade:
     remediation:
       retries: 3
+  # https://artifacthub.io/packages/helm/minecraft-server-charts/minecraft
   values:
     image:
       repository: ghcr.io/itzg/minecraft-server
@@ -35,7 +36,7 @@ spec:
     minecraftServer:
       eula: "TRUE"
       version: "1.21"
-      type: SPIGOT
+      type: PAPER
       motd: techtales playground
       difficulty: peaceful
       ops: "tyriis,jazzlyin,ForscherAlex,ForscherDominik"
@@ -84,3 +85,9 @@ spec:
                   name: config
                   mountPath: /data/spigot.yml
                   subPath: spigot.yml
+              - op: add
+                path: /spec/template/spec/containers/0/volumeMounts/-
+                value:
+                  name: config
+                  mountPath: /data/paper-global.yml
+                  subPath: paper-global.yml

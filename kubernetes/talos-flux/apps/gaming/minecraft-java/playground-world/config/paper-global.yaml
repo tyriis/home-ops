@@ -1,0 +1,102 @@
+---
+block-updates:
+  disable-noteblock-updates: false
+  disable-tripwire-updates: false
+chunk-loading-advanced:
+  auto-config-send-distance: true
+  player-max-concurrent-chunk-generates: 0
+  player-max-concurrent-chunk-loads: 0
+chunk-loading-basic:
+  player-max-chunk-generate-rate: -1.0
+  player-max-chunk-load-rate: 100
+  player-max-chunk-send-rate: 75
+chunk-system:
+  gen-parallelism: default
+  io-threads: -1
+  worker-threads: -1
+collisions:
+  enable-player-collisions: true
+  send-full-pos-for-hard-colliding-entities: true
+commands:
+  fix-target-selector-tag-completion: true
+  suggest-player-names-when-null-tab-completions: true
+  time-command-affects-all-worlds: false
+console:
+  enable-brigadier-completions: true
+  enable-brigadier-highlighting: true
+  has-all-permissions: false
+item-validation:
+  display-name: 8192
+  lore-line: 8192
+  resolve-selectors-in-books: false
+  book:
+    author: 8192
+    page: 16384
+    title: 8192
+  book-size:
+    page-max: 2560
+    total-multiplier: 0.98
+logging:
+  deobfuscate-stacktraces: true
+messages:
+  no-permission: <red>I'm sorry, but you do not have permission to perform this command. Please contact the server administrators if you believe that this is in error.
+  use-display-name-in-quit-message: false
+  kick:
+    authentication-servers-down: <lang:multiplayer.disconnect.authservers_down>
+    connection-throttle: Connection throttled! Please wait before reconnecting.
+    flying-player: <lang:multiplayer.disconnect.flying>
+    flying-vehicle: <lang:multiplayer.disconnect.flying>
+misc:
+  fix-entity-position-desync: true
+  load-permissions-yml-before-plugins: true
+  max-joins-per-tick: 5
+  region-file-cache-size: 256
+  use-alternative-luck-formula: false
+  use-dimension-type-for-custom-spawners: false
+  strict-advancement-dimension-check: false
+  chat-threads:
+    chat-executor-core-size: -1
+    chat-executor-max-size: -1
+  client-interaction-leniency-distance: default
+  compression-level: default
+packet-limiter:
+  all-packets:
+    action: KICK
+    interval: 7.0
+    max-packet-rate: 500.0
+  kick-message: <red><lang:disconnect.exceeded_packet_rate>
+  overrides: ServerboundPlaceRecipePacket
+player-auto-save:
+  max-per-tick: -1
+  rate: -1
+proxies:
+  proxy-protocol: false
+  bungee-cord:
+    online-mode: true
+  velocity:
+    enabled: true
+    online-mode: true
+    secret: "TEST"
+scoreboards:
+  save-empty-scoreboard-teams: true
+  track-plugin-scoreboards: false
+spam-limiter:
+  incoming-packet-threshold: 300
+  recipe-spam-increment: 1
+  recipe-spam-limit: 20
+  tab-spam-increment: 1
+  tab-spam-limit: 500
+spark:
+  enabled: true
+  enable-immediately: false
+timings:
+  enabled: false
+  hidden-config-entries:
+    - database
+    - proxies.velocity.secret
+  history-interval: 300
+  history-length: 3600
+  server-name: Unknown Server
+  server-name-privacy: false
+  url: https://timings.aikar.co
+  verbose: true
