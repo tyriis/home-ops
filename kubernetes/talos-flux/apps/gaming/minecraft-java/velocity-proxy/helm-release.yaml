@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -10,12 +10,11 @@ spec:
     mode: enabled
   chart:
     spec:
-      chart: minecraft-proxy
-      interval: 15m
-      version: 3.8.2
+      chart: app-template
+      version: 3.4.0
       sourceRef:
         kind: HelmRepository
-        name: minecraft-server-charts
+        name: bjw-s-charts
         namespace: flux-system
   install:
     createNamespace: true
@@ -26,60 +25,105 @@ spec:
       retries: 3
   # https://artifacthub.io/packages/helm/minecraft-server-charts/minecraft-proxy?modal=values
   values:
-    extraEnv:
-      SPIGOT_PLUGIN: "78915"
-    podSecurityContext:
-      runAsUser: 1000
-      runAsGroup: 1000
-      fsGroup: 1000
-      runAsNonRoot: true
-    resources:
-      requests:
-        memory: 250Mi
-        cpu: 50m
-    podAnnotations:
-      reloader.stakater.com/auto: "true"
-    configFilePath: /config/velocity.toml
-    minecraftProxy:
-      type: VELOCITY
-      velocityVersion: 3.3.0-SNAPSHOT
-      plugins:
-        # - https://github.com/Army-py/SlashServer/releases/download/tested/SlashServer-4.0.jar
-        - https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/velocity
-      serviceType: LoadBalancer
-      loadBalancerIP: ${SETTING_CILIUM_MINECRAFT_PROXY_ADDR2}
-      externalTrafficPolicy: Local
-      extraPorts:
-        - name: bedrock
-          containerPort: 19132
-          protocol: UDP
-          service:
-            enabled: true
-            embedded: true
-            port: 19132
-          ingress:
-            enabled: false
+    controllers:
+      velocity:
+        replicas: 1
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            fsGroup: 1000
+            runAsGroup: 1000
+            runAsNonRoot: true
+            runAsUser: 1000
+            seccompProfile:
+              type: RuntimeDefault
+        containers:
+          app:
+            nameOverride: *app
+            envFrom:
+              - secretRef:
+                  name: bungeecord-rcon
+            env:
+              UID: "1000"
+              GID: "1000"
+              TYPE: "VELOCITY"
+              VELOCITY_VERSION: "latest"
+              VELOCITY_BUILD_ID: "latest"
+              PLUGINS: https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/velocity
+              MEMORY: 256M
+              # JVM_OPTS: "-Xms128M -Xmx256M"
+              ENABLE_RCON: "true"
+              SPIGOT_PLUGIN: "78915"
+              TZ: ${SETTING_TZ}
+
+            image:
+              repository: itzg/bungeecord
+              tag: latest@sha256:632218f9d5a966de5f69b4b735f85f1ad31fb2da6602a422412aee3258962845
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+              readOnlyRootFilesystem: true
+            ports:
+              - name: velocity
+                containerPort: &port 25565
+                protocol: TCP
+              - name: rcon
+                containerPort: &rconPort 25575
+                protocol: TCP
+
+            probes:
+              readiness: &probes
+                enabled: true
+                type: TCP
+                port: *port
+              liveness: *probes
+              startup:
+                <<: *probes
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+
+            resources:
+              requests:
+                cpu: 50m
+                memory: 250Mi
+
+    service:
+      velocity:
+        controller: velocity
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: ${SETTING_CILIUM_MINECRAFT_PROXY_ADDR2}
+        ports:
+          velocity-proxy:
+            port: *port
+            protocol: TCP
+            targetPort: velocity
       rcon:
-        enabled: true
-        existingSecret: bungeecord-rcon
-        secretKey: RCON_PASSWORD
-        serviceType: ClusterIP
-  postRenderers:
-    - kustomize:
-        patches:
-          - target:
-              kind: Deployment
-              name: minecraft-velocity-proxy-minecraft-proxy
-            patch: |-
-              - op: add
-                path: /spec/template/spec/volumes/-
-                value:
-                  name: config
-                  configMap:
-                    name: velocity-config
-              - op: add
-                path: /spec/template/spec/containers/0/volumeMounts/-
-                value:
-                  name: config
-                  mountPath: /config/velocity.toml
-                  subPath: velocity.toml
+        controller: velocity
+        ports:
+          rcon:
+            port: *rconPort
+            protocol: TCP
+            targetPort: rcon
+
+    persistence:
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+      data:
+        type: persistentVolumeClaim
+        existingClaim: minecraft-velocity-proxy-data
+        globalMounts:
+          - path: /server
+      config:
+        type: configMap
+        name: minecraft-velocity-proxy-config
+        globalMounts:
+          - path: /config/velocity.toml
+            subPath: velocity.toml
+            readOnly: true
