@@ -26,7 +26,7 @@ spec:
   # https://artifacthub.io/packages/helm/minecraft-server-charts/minecraft-proxy?modal=values
   values:
     controllers:
-      waterfall:
+      velocity:
         replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
