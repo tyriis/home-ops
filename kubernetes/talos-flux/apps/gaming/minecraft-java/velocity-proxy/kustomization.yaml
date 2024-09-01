@@ -13,6 +13,7 @@ configMapGenerator:
   - name: minecraft-velocity-proxy-config
     files:
       - velocity.toml=config/velocity.toml
+      - forwarding.secret=config/forwarding.secret
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
