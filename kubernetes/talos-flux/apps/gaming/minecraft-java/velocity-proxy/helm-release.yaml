@@ -70,6 +70,9 @@ spec:
               - name: velocity
                 containerPort: &port 25565
                 protocol: TCP
+              - name: bedrock
+                containerPort: &bedrockPort 19132
+                protocol: UDP
               - name: rcon
                 containerPort: &rconPort 25575
                 protocol: TCP
@@ -102,6 +105,10 @@ spec:
             port: *port
             protocol: TCP
             targetPort: velocity
+          bedrock-proxy:
+            port: *bedrockPort
+            protocol: UDP
+            targetPort: bedrock
       rcon:
         controller: velocity
         ports:
