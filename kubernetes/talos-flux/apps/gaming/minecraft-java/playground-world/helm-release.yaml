@@ -83,11 +83,11 @@ spec:
                 path: /spec/template/spec/containers/0/volumeMounts/-
                 value:
                   name: config
-                  mountPath: /data/spigot.yml
+                  mountPath: /data/config/spigot.yml
                   subPath: spigot.yml
               - op: add
                 path: /spec/template/spec/containers/0/volumeMounts/-
                 value:
                   name: config
-                  mountPath: /data/paper-global.yml
+                  mountPath: /data/config/paper-global.yml
                   subPath: paper-global.yml
