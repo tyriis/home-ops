@@ -23,7 +23,7 @@ spec:
   upgrade:
     remediation:
       retries: 3
-  # https://artifacthub.io/packages/helm/minecraft-server-charts/minecraft-proxy?modal=values
+  # https://github.com/bjw-s/helm-charts/blob/main/charts/library/common/values.yaml
   values:
     controllers:
       velocity:
@@ -126,4 +126,7 @@ spec:
         globalMounts:
           - path: /config/velocity.toml
             subPath: velocity.toml
+            readOnly: true
+          - path: /config/forwarding.secret
+            subPath: forwarding.secret
             readOnly: true

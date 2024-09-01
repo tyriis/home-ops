@@ -33,7 +33,5 @@ terraform = "1.9.5"
 terraform-docs = "0.18.0"
 # https://github.com/terraform-linters/tflint
 tflint = "0.53.0"
-# https://aquasecurity.github.io/tfsec/
-tfsec = "1.28.10"
 # https://trivy.dev/
 trivy = "0.54.1"
