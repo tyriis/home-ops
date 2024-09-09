@@ -5,7 +5,7 @@ kind: Kustomization
 namespace: home-automation
 resources:
   - ./helm-release.yaml
-  - ./secrets.sops.yaml
+  # - ./secrets.sops.yaml
   - ./replication-sources.yaml
 commonLabels:
   app.kubernetes.io/name: emqx

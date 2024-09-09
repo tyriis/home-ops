@@ -4,7 +4,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: home-automation
 resources:
-  - aircon-options.sops.yaml
+  # - aircon-options.sops.yaml
   - helm-release.yaml
 commonLabels:
   app.kubernetes.io/instance: hisense-aircon
