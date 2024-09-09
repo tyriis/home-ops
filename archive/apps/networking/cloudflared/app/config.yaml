@@ -1,5 +1,4 @@
 ---
-tunnel: ${SECRET_CLOUDFLARE_TUNNEL_ID}
 credentials-file: /etc/cloudflared/cred.json
 originRequest: # Top-level configuration
   connectTimeout: 30s

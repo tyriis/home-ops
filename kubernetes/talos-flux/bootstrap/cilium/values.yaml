@@ -90,5 +90,5 @@ cgroup:
   autoMount:
     enabled: true
   hostRoot: /sys/fs/cgroup
-k8sServiceHost: api.kluster.klingel.cloud
+k8sServiceHost: api.kluster."$(SECRET_DOMAIN)"
 k8sServicePort: "6443"

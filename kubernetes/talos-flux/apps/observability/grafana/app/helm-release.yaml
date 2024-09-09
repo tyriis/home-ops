@@ -97,7 +97,6 @@ spec:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-production
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        external-dns.alpha.kubernetes.io/target: "${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"
         external-dns/cloudflare: "true"
         hajimari.io/enable: "true"
         hajimari.io/icon: simple-icons:grafana
