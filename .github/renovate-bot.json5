@@ -1,8 +1,8 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
-  username: "tyriis-automation[bot]",
-  gitAuthor: "tyriis-automation <133711747+tyriis-automation[bot]@users.noreply.github.com>",
+  username: "icaruseffect-automation[bot]",
+  gitAuthor: "icaruseffect-automation <133711747+icaruseffect-automation[bot]@users.noreply.github.com>",
   platform: "github",
   platformCommit: "enabled",
-  repositories: ["tyriis/home-ops"],
+  repositories: ["icaruseffect/home-ops"],
 }
