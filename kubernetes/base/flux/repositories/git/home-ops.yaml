@@ -8,7 +8,7 @@ metadata:
 spec:
   # as we use webhooks, this does not need to be aggressive
   interval: 2h
-  url: https://github.com/tyriis/home-ops.git
+  url: https://github.com/icaruseffect/home-ops.git
   ref:
     branch: main
   ignore: |
