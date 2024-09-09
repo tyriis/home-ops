@@ -3,6 +3,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - flux-notifications-webhook-url.sops.yaml
+  # - flux-notifications-webhook-url.sops.yaml
   - alert.yaml
   - provider.yaml
