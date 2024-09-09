@@ -8,9 +8,8 @@ metadata:
     kustomize.toolkit.fluxcd.io/prune: disabled
 data:
   SETTING_CLUSTERNAME: talos-flux
-  SETTING_TZ: Europe/Vienna
+  SETTING_TZ: Europe/Berlin
   SETTING_GATEWAY: 192.168.1.1
-
   # SETTING_CILIUM_L2_POOL_START: 192.168.1.80
   # SETTING_CILIUM_L2_POOL_STOP: 192.168.1.89
   SETTING_CILIUM_TRAEFIK_ADDR: 192.168.1.80

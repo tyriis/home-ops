@@ -68,7 +68,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: web-check
         hosts:
-          - host: &host status.techtales.io
+          - host: &host status.klingel.cloud
             paths:
               - path: /
                 service:
