@@ -8,7 +8,7 @@ tasks:
     internal: true
     cmds:
       - task: push-artifact
-      - kubectl apply -f {{.DEVENV_DIR}}/oci/registry-config.yaml
+      # - kubectl apply -f {{.DEVENV_DIR}}/oci/registry-config.yaml
       - helm install flux-operator oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator -n flux-system --create-namespace
       - kubectl wait --for condition=established --timeout=60s crd/fluxinstances.fluxcd.controlplane.io
       - kubectl apply -k {{.DEVENV_DIR}}/oci/flux/instance/ -n flux-system

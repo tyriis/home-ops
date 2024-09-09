@@ -6,4 +6,4 @@ metadata:
   namespace: flux-system
 data:
   SETTING_CLUSTERNAME: home-ops-devenv
-  SETTING_TZ: Europe/Vienna
+  SETTING_TZ: Europe/Berlin
