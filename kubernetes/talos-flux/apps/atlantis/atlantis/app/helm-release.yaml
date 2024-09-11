@@ -129,7 +129,7 @@ spec:
         readOnly: true
 
     servicemonitor:
-      enabled: false
+      enabled: true
 
     resources:
       requests:

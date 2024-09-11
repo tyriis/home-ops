@@ -1,0 +1,29 @@
+---
+repos:
+  - id: /.*/
+    pre_workflow_hooks:
+      - run: sh /home/atlantis/scripts/allow_list.sh
+        description: Check Allow List
+    apply_requirements: []
+    allowed_overrides: []
+    allow_custom_workflows: true
+    workflow: custom
+    allowed_workflows: [custom]
+workflows:
+  custom:
+    plan:
+      steps:
+        - env:
+            name: SOPS_AGE_KEY_FILE
+            command: echo $HOME/.config/sops/age/$BASE_REPO_NAME.txt
+        - init
+        - plan
+    apply:
+      steps:
+        - env:
+            name: SOPS_AGE_KEY_FILE
+            command: echo $HOME/.config/sops/age/$BASE_REPO_NAME.txt
+        - apply
+metrics:
+  prometheus:
+    endpoint: /metrics
