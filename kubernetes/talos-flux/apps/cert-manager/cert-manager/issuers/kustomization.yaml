@@ -7,3 +7,10 @@ resources:
   - secret.sops.yaml
   - cluster-issuer-staging.yaml
   - cluster-issuer-production.yaml
+  - helm-release.yaml
+configMapGenerator:
+  - name: cluster-issuer-selfsigned
+    files:
+      - values.yaml=./cluster-issuer-selfsigned.yaml
+configurations:
+  - kustomize-config.yaml
