@@ -2,7 +2,6 @@
 {
   # services.xserver.enable = false;
   programs.hyprland.enable = true;
-  programs.hyprland.xwayland.enable = true;
 
   # Enable Display Manager
   services.greetd = {
@@ -23,6 +22,12 @@
   environment.sessionVariables.WLR_NO_HARDWARE_CURSORS = "1";
 
   environment.systemPackages = with pkgs; [
+
+    wayland
+    xdg-desktop-portal-hyprland
+    libsForQt5.qt5.qtwayland
+
+
     greetd.tuigreet
     pyprland # need evaluation
     hyprpicker # does not work currently
