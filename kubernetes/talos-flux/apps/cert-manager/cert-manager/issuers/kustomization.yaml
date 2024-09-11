@@ -5,8 +5,6 @@ kind: Kustomization
 namespace: cert-manager
 resources:
   - secret.sops.yaml
-  - cluster-issuer-production.yaml
-  - cluster-issuer-staging.yaml
   - helm-release.yaml
 configMapGenerator:
   - name: cluster-issuer-selfsigned
