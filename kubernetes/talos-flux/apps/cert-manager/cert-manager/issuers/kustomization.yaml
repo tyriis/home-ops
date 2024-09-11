@@ -5,13 +5,17 @@ kind: Kustomization
 namespace: cert-manager
 resources:
   - secret.sops.yaml
-  - cluster-issuer-staging.yaml
-  - cluster-issuer-production.yaml
   - helm-release.yaml
 configMapGenerator:
   - name: cluster-issuer-selfsigned
     files:
       - values.yaml=./cluster-issuer-selfsigned.yaml
+  - name: cluster-issuer-staging
+    files:
+      - values.yaml=./cluster-issuer-staging.yaml
+  - name: cluster-issuer-production
+    files:
+      - values.yaml=./cluster-issuer-production.yaml
 generatorOptions:
   disableNameSuffixHash: true
 configurations:
