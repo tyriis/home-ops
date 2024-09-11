@@ -12,5 +12,7 @@ configMapGenerator:
   - name: cluster-issuer-selfsigned
     files:
       - values.yaml=./cluster-issuer-selfsigned.yaml
+generatorOptions:
+  disableNameSuffixHash: true
 configurations:
   - kustomize-config.yaml
