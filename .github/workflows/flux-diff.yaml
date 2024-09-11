@@ -38,7 +38,9 @@ jobs:
         id: changed-clusters
         uses: tj-actions/changed-files@e9772d140489982e0e3704fea5ee93d536f1e275 # v45.0.1
         with:
-          files: kubernetes/**
+          files: |
+            kubernetes/talos-flux/**
+            kubernetes/kube-nas/**
           dir_names: true
           dir_names_max_depth: 2
           json: true
