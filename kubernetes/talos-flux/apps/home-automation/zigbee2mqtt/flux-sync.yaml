@@ -19,28 +19,28 @@ spec:
     - name: apps-rook-ceph-cluster
     - name: apps-volsync
     - name: apps-kube-prometheus-stack
----
+# ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: apps-zigbee2mqtt-basement
-  namespace: flux-system
-  annotations:
-    backstage.io/discovery: enabled
-    backstage.io/name: zigbee2mqtt-basement
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
-spec:
-  interval: 10m
-  path: ./kubernetes/talos-flux/apps/home-automation/zigbee2mqtt/basement
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-ops
-  wait: true
-  dependsOn:
-    - name: apps-zigbee2mqtt-basement-storage
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: apps-zigbee2mqtt-basement
+#   namespace: flux-system
+#   annotations:
+#     backstage.io/discovery: enabled
+#     backstage.io/name: zigbee2mqtt-basement
+#   labels:
+#     substitution.flux.home.arpa/enabled: "true"
+# spec:
+#   interval: 10m
+#   path: ./kubernetes/talos-flux/apps/home-automation/zigbee2mqtt/basement
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: home-ops
+#   wait: true
+#   dependsOn:
+#     - name: apps-zigbee2mqtt-basement-storage
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
