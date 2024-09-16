@@ -34,4 +34,4 @@ terraform-docs = "0.18.0"
 # https://github.com/terraform-linters/tflint
 tflint = "0.53.0"
 # https://trivy.dev/
-trivy = "0.55.0"
+trivy = "0.55.1"
