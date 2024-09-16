@@ -25,6 +25,13 @@ spec:
   values:
     controllers:
       zigbee2mqtt:
+        pod:
+          nodeSelector:
+            kubernetes.io/hostname: talos05
+          tolerations:
+            - key: zigbee2mqtt
+              value: reserved
+              effect: NoSchedule
         replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
@@ -45,6 +52,8 @@ spec:
               requests:
                 cpu: 50m
                 memory: 100Mi
+            securityContext:
+              privileged: true
             probes:
               liveness:
                 enabled: true
@@ -111,3 +120,10 @@ spec:
           zigbee2mqtt:
             app:
               - path: /config
+      usb:
+        enabled: true
+        type: hostPath
+        hostPathType: CharDevice
+        hostPath: /dev/serial/by-id/usb-Silicon_Labs_slae.sh_cc2652rb_stick_-_slaesh_s_iot_stuff_00_12_4B_00_23_93_30_E6-if00-port0
+        globalMounts:
+          - path: /dev/ttyUSB0
