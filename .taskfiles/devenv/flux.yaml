@@ -22,7 +22,8 @@ tasks:
         flux push artifact oci://localhost:5050/home-ops-devenv:local \
           --path="{{.PROJECT_DIR}}" \
           --source="local" \
-          --revision="latest"
+          --revision="latest" \
+          --ignore-paths=".git/,.gitignore,.gitmodules,.gitattributes,*.jpg,*.jpeg,*.gif,*.png,*.wmv,*.flv,*.tar.gz,*.zip,**/infra/"
 
   reconcile-oci:
     desc: reconcile local oci registry
