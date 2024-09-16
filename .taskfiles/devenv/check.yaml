@@ -16,8 +16,6 @@ tasks:
       - task: dependency
         vars: { DEPENDENCY: flux }
       - task: dependency
-        vars: { DEPENDENCY: go }
-      - task: dependency
         vars: { DEPENDENCY: kind }
       - task: dependency
         vars: { DEPENDENCY: kubectl }
