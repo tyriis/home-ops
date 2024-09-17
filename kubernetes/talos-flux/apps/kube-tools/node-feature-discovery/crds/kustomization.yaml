@@ -9,6 +9,9 @@ configMapGenerator:
   - name: node-feature-rule-intel-gpu
     files:
       - values.yaml=./node-feature-rules/intel-gpu.yaml
+  - name: node-feature-rule-zigbee-stick
+    files:
+      - values.yaml=./node-feature-rules/zigbee-stick.yaml
 generatorOptions:
   disableNameSuffixHash: true
 configurations:
