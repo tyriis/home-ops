@@ -26,9 +26,16 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    # https://artifacthub.io/packages/helm/node-feature-discovery/node-feature-discovery?modal=values
     master:
       extraLabelNs:
         - gpu.intel.com
+    worker:
+      tolerations:
+        - key: zigbee2mqtt
+          operator: Equal
+          value: reserved
+          effect: NoSchedule
     # worker:
     #   annotations:
     #     configmap.reloader.stakater.com/reload: node-feature-discovery-worker-conf
