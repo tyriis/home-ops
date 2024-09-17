@@ -26,35 +26,38 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    worker:
-      annotations:
-        configmap.reloader.stakater.com/reload: node-feature-discovery-worker-conf
-      config:
-        core:
-          sleepInterval: 60s
-          sources:
-            - custom
-            - pci
-            - usb
-            # - cpu
-            # - storage
-            # - system
-            - kernel
-            # - memory
-            # - network
-        sources:
-          usb:
-            deviceClassWhitelist: []
-            # lsusb -v | grep bInterfaceClass
-            # - "08"
-            # - "ff"
-            deviceLabelFields:
-              - "class"
-              - "vendor"
-              - "device"
-          custom:
-            - name: "intel-gpu"
-              matchOn:
-                - pciId:
-                    class: ["0300"]
-                    vendor: ["8086"]
+    master:
+      extraLabelNs:
+        - gpu.intel.com
+    # worker:
+    #   annotations:
+    #     configmap.reloader.stakater.com/reload: node-feature-discovery-worker-conf
+    #   config:
+    #     core:
+    #       sleepInterval: 60s
+    #       sources:
+    #         - custom
+    #         - pci
+    #         - usb
+    #         # - cpu
+    #         # - storage
+    #         # - system
+    #         - kernel
+    #         # - memory
+    #         # - network
+    #     sources:
+    #       usb:
+    #         deviceClassWhitelist: []
+    #         # lsusb -v | grep bInterfaceClass
+    #         # - "08"
+    #         # - "ff"
+    #         deviceLabelFields:
+    #           - "class"
+    #           - "vendor"
+    #           - "device"
+    #       custom:
+    #         - name: "intel-gpu"
+    #           matchOn:
+    #             - pciId:
+    #                 class: ["0300"]
+    #                 vendor: ["8086"]
