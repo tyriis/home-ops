@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/nfd.k8s-sigs.io/nodefeaturerule_v1alpha1.json
+apiVersion: nfd.k8s-sigs.io/v1alpha1
+kind: NodeFeatureRule
+metadata:
+  name: zigbee-stick
+spec:
+  rules:
+    - name: zigbee.usb
+      labels:
+        zigbee.feature.node.kubernetes.io/slae.sh": "true"
+      matchFeatures:
+        - feature: usb.device
+          matchExpressions:
+            vendor: { op: In, value: ["10c4"] }
+            device: { op: In, value: ["ea60"] }
