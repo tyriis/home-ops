@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: kube-tools
+resources:
+  - helm-release.yaml
+configMapGenerator:
+  - name: node-feature-rule-intel-gpu
+    files:
+      - values.yaml=./node-feature-rules/intel-gpu.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+configurations:
+  - kustomize-config.yaml
