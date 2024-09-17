@@ -7,6 +7,13 @@ resources:
   - helm-release.yaml
   - pod-monitor.yaml
   - replication-source.yaml
+  - external-secret.yaml
 commonLabels:
   app.kubernetes.io/name: zigbee2mqtt-basement
   app.kubernetes.io/instance: zigbee2mqtt-basement
+configMapGenerator:
+  - name: zigbee2mqtt-basement-assets
+    files:
+      - lumi.sensor_occupy.agl1.js=./assets/lumi.sensor_occupy.agl1.js
+generatorOptions:
+  disableNameSuffixHash: true
