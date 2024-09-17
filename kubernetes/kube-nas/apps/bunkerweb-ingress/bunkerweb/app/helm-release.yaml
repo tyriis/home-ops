@@ -99,7 +99,7 @@ spec:
           bunkerweb-scheduler:
             image:
               repository: bunkerity/bunkerweb-scheduler
-              tag: 1.5.9@sha256:f91442cc0dc0b41f3f7969ec9da14de16de0fcd94fb51cd344dba185bf1099c2
+              tag: 1.5.10@sha256:cdf4d30e29fe6beba23c93c47417fc7c48c1a3dced0d3b6e1a3e735a53e07df0
             env:
               KUBERNETES_MODE: "yes"
             envFrom:
