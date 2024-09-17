@@ -8,7 +8,7 @@ spec:
   rules:
     - name: zigbee.usb
       labels:
-        zigbee.feature.node.kubernetes.io/slae.sh": "true"
+        zigbee.feature.node.kubernetes.io/slae.sh: "true"
       matchFeatures:
         - feature: usb.device
           matchExpressions:
