@@ -30,7 +30,7 @@ task = "3.38.0"
 # https://www.terraform.io/
 terraform = "1.9.5"
 # https://terraform-docs.io/
-terraform-docs = "0.18.0"
+terraform-docs = "0.19.0"
 # https://github.com/terraform-linters/tflint
 tflint = "0.53.0"
 # https://trivy.dev/
