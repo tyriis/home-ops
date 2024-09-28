@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: atlantis
-      version: 5.5.1
+      version: 5.5.2
       sourceRef:
         kind: HelmRepository
         name: runatlantis-charts
