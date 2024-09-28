@@ -83,6 +83,25 @@ nodes:
     nodeLabels:
       node-role.kubernetes.io/worker: ""
 
+  #  i7-10710U / 32GB / SAMSUNG EVO 860 500GB SSD
+  - hostname: talos05
+    ipAddress: 192.168.1.55
+    installDisk: /dev/nvme0n1
+    controlPlane: false
+    disableSearchDomain: true
+    nameservers:
+      - 1.1.1.1
+      - 8.8.8.8
+      - 192.168.1.1
+    networkInterfaces:
+      - interface: eth0
+        mtu: 0
+        dhcp: true
+    nodeLabels:
+      node-role.kubernetes.io/worker: ""
+    nodeTaints:
+      zigbee2mqtt: reserved:NoSchedule
+
 controlPlane:
   schematic:
     customization:
