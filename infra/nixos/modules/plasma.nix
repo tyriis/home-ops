@@ -3,8 +3,7 @@
   # Enable KDE Plasma
   services.xserver = {
     enable = true;
-    layout = "de";  # Set the keyboard layout to German
-    # desktopManager.plasma5.enable = true;
+    xkb.layout = "de";
   };
 
   services.desktopManager.plasma6.enable = true;
@@ -19,5 +18,5 @@
   ];
 
   # Optional: If you want to use the same layout in the console
-  i18n.consoleUseXkbConfig = true;  # Use XKB settings for console
+  console.useXkbConfig = true;
 }

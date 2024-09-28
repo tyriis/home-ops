@@ -42,6 +42,7 @@
   nixpkgs.config.allowUnfree = true;
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelParams = [ "i915.enable_psr=0" ];
 
   boot.plymouth.enable = true;
 
@@ -78,7 +79,7 @@
     # https://www.if-not-true-then-false.com/2024/fedora-terminus-console-font/
     font = "${pkgs.terminus_font}/share/consolefonts/ter-116n.psf.gz";
     packages = with pkgs; [ terminus_font ];
-    keyMap = "de";
+    keyMap = lib.mkDefault "de";
     # useXkbConfig = true; # use xkbOptions in tty.
   };
 
