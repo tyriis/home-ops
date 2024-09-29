@@ -58,6 +58,10 @@ resource "kind_cluster" "flux_devenv" {
         container_port = 443
         host_port      = 443
       }
+      extra_mounts {
+        host_path      = var.media
+        container_path = "/media"
+      }
     }
 
     # # add 1 observability node
@@ -68,6 +72,10 @@ resource "kind_cluster" "flux_devenv" {
     # add 1 workload node
     node {
       role = "worker"
+      extra_mounts {
+        host_path      = var.media
+        container_path = "/media"
+      }
     }
   }
 }
