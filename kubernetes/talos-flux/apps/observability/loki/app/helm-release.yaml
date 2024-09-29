@@ -99,6 +99,10 @@ spec:
       replicas: 0
     gateway:
       enabled: false
+    chunksCache:
+      enabled: false
+    resultsCache:
+      enabled: false
     lokiCanary:
       enabled: false
     test:
@@ -114,7 +118,7 @@ spec:
       serviceMonitor:
         enabled: true
         metricsInstance:
-          enabled: false
+          enabled: true
 
   valuesFrom:
     - kind: Secret
