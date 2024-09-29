@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: atlantis
-      version: 5.4.2
+      version: 5.5.2
       sourceRef:
         kind: HelmRepository
         name: runatlantis-charts
@@ -25,65 +25,44 @@ spec:
   uninstall:
     keepHistory: false
   # https://artifacthub.io/packages/helm/atlantis/atlantis?modal=values
+  valuesFrom:
+    - kind: ConfigMap
+      name: atlantis-tyriis-config
+      valuesKey: repoConfig
+      targetPath: repoConfig
   values:
+    loadEnvFromSecrets:
+      - &secret atlantis-tyriis-env-secrets
+    commonLabels:
+      app.kubernetes.io/name: *app
+      app.kubernetes.io/instance: *app
+    podTemplate:
+      annotations:
+        secret.reloader.stakater.com/reload: *secret
+      labels:
+        app.kubernetes.io/name: *app
+        app.kubernetes.io/instance: *app
+
+    image:
+      repository: ghcr.io/runatlantis/atlantis
+      tag: v0.29.0@sha256:83c7c8ef53937648ff34b956b32f02b78b7dc56b53575f610689174198c5abc1
+
     atlantisUrl: https://atlantis-tyriis.techtales.io
 
     orgAllowlist: github.com/tyriis/*
     # logLevel: "debug"
 
-    # If managing secrets outside the chart for the webhook, use this variable to reference the secret name
-    # vcsSecretName: 'mysecret'
-
-    image:
-      repository: ghcr.io/runatlantis/atlantis
-      tag: v0.28.5@sha256:52ee7c47f37a56fa82c26d2931d5d1d67f9f2d16f81c65e46c02a7b10de9f642
-
-    ## Use Server Side Repo Config,
-    ## ref: https://www.runatlantis.io/docs/server-side-repo-config.html
-    ## Example default configuration
-    # repoConfig: |
-    #   ---
-    #   repos:
-    #     - id: /.*/
-    #       allowed_overrides:
-    #         - plan_requirements
-    #         - apply_requirements
-
-    # repoConfig: |
-    #   ---
-    #   repos:
-    #   - id: github.com/tyriis/terraform-github
-    #     apply_requirements: []
-    #     allowed_overrides: []
-    #     allow_custom_workflows: true
-    #     workflow: custom
-    #     allowed_workflows: [custom]
-    #   workflows:
-    #     custom:
-    #       plan:
-    #         steps:
-    #         - run: echo $USER_NAME
-    #         - run: if [ $USER_NAME != "tyriis" ]; then echo "NO!" && exit 1; fi
-    #         - init
-    #         - plan
-    #       apply:
-    #         steps:
-    #         - run: echo $USER_NAME
-    #         - run: if [ $USER_NAME != "tyriis" && $USER_NAME != "tyriis-automation[bot]" ]; then echo "NO!" && exit 1; fi
-    #         - apply
-
     # Use Diff Markdown Format for color coding diffs
     enableDiffMarkdownFormat: true
 
-    commonLabels:
-      app.kubernetes.io/name: *app
-      app.kubernetes.io/instance: *app
+    environment:
+      ATLANTIS_EMOJI_REACTION: eyes
+      ATLANTIS_FAIL_ON_PRE_WORKFLOW_HOOK_ERROR: "true"
+      ATLANTIS_WRITE_GIT_CREDS: "true"
 
     service:
       type: ClusterIP
-      # port: 80
       targetPort: 4141
-      # loadBalancerIP: null
 
     ingress:
       enabled: true
@@ -114,6 +93,41 @@ spec:
           hosts:
             - *host
 
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+
+    readinessProbe:
+      periodSeconds: 5
+      initialDelaySeconds: 10
+
+    volumeClaim:
+      enabled: true
+      dataStorage: 5Gi
+      storageClassName: ceph-block
+
+    extraVolumes:
+      - name: allow-list
+        configMap:
+          name: atlantis-tyriis-allow-list
+      - name: scripts
+        configMap:
+          name: atlantis-tyriis-scripts
+
+    extraVolumeMounts:
+      - name: allow-list
+        mountPath: /home/atlantis/.config/allowlist
+        readOnly: true
+      - name: scripts
+        mountPath: /home/atlantis/scripts
+        readOnly: true
+
+    servicemonitor:
+      # to enable a Prometheus servicemonitor, set enabled to true,
+      #   and enable the metrics in this file's repoConfig
+      #   by setting a value for metrics.prometheus.endpoint
+      enabled: true
+
     resources:
       requests:
         memory: 1Gi
@@ -121,37 +135,3 @@ spec:
       limits:
         memory: 1Gi
         cpu: 1000m
-
-    volumeClaim:
-      enabled: true
-      dataStorage: 5Gi
-      storageClassName: ceph-block
-
-    environment:
-      ATLANTIS_DEFAULT_TF_VERSION: v1.5.7
-      ATLANTIS_WRITE_GIT_CREDS: "true"
-      # ATLANTIS_GH_APP_KEY_FILE: /config/github.pem
-
-    loadEnvFromSecrets:
-      - &secret atlantis-tyriis-env-secrets
-
-    containerSecurityContext:
-      allowPrivilegeEscalation: false
-      readOnlyRootFilesystem: true
-
-    servicemonitor:
-      # to enable a Prometheus servicemonitor, set enabled to true,
-      #   and enable the metrics in this file's repoConfig
-      #   by setting a value for metrics.prometheus.endpoint
-      enabled: false
-
-    podTemplate:
-      annotations:
-        secret.reloader.stakater.com/reload: *secret
-      labels:
-        app.kubernetes.io/name: *app
-        app.kubernetes.io/instance: *app
-
-    readinessProbe:
-      periodSeconds: 5
-      initialDelaySeconds: 10

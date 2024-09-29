@@ -1,0 +1,69 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: nas-postgres16
+spec:
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.4-26
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 10Gi
+    storageClass: openebs-hostpath
+  superuserSecret:
+    name: postgres-superuser
+  monitoring:
+    # TODO: enable when observability stack is in place
+    enablePodMonitor: false
+  backup:
+    retentionPolicy: 30d
+    # https://cloudnative-pg.io/documentation/current/wal_archiving/
+    barmanObjectStore: &barmanObjectStore
+      data:
+        compression: bzip2
+      wal:
+        compression: bzip2
+        maxParallel: 8
+      destinationPath: s3://database-system-backup/
+      endpointURL: https://minio.tyriis.dev
+      serverName: &clustername nas-postgres16
+      s3Credentials:
+        accessKeyId:
+          name: postgres-minio
+          key: MINIO_ACCESS_KEY
+        secretAccessKey:
+          name: postgres-minio
+          key: MINIO_SECRET_KEY
+
+  # https://cloudnative-pg.io/documentation/current/recovery/#recovery-from-an-object-store
+  # bootstrap:
+  #   recovery:
+  #     source: *clustername
+  # externalClusters:
+  #   - name: *clustername
+  #     barmanObjectStore:
+  #       <<: *barmanObjectStore
+  #       serverName: *clustername
+
+  # bootstrap:
+  #   initdb:
+  #     import:
+  #       type: monolith
+  #       databases:
+  #         - "*"
+  #       roles:
+  #         - "*"
+  #       source:
+  #         externalCluster: postgres-v1
+
+  # externalClusters:
+  #   - name: postgres-v1
+  #     connectionParameters:
+  #       host: postgres-rw
+  #       user: postgres
+  #       dbname: postgres
+  #       sslmode: require
+  #     password:
+  #       name: postgres-superuser
+  #       key: password

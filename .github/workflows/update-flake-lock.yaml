@@ -18,7 +18,7 @@ jobs:
     steps:
       # https://github.com/marketplace/actions/create-github-app-token
       - name: Generate Token
-        uses: actions/create-github-app-token@31c86eb3b33c9b601a1f60f98dcbfd1d70f379b4 # v1.10.3
+        uses: actions/create-github-app-token@5d869da34e18e7287c1daad50e0b8ea0f506ce69 # v1.11.0
         # if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
         id: app-token
         with:
@@ -27,22 +27,22 @@ jobs:
 
       # https://github.com/marketplace/actions/checkout
       - name: Checkout
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
         with:
           token: "${{ steps.app-token.outputs.token }}"
 
       # https://github.com/marketplace/actions/the-determinate-nix-installer
       - name: Install nix
-        uses: DeterminateSystems/nix-installer-action@7993355175c2765e5733dae74f3e0786fe0e5c4f # v12
+        uses: DeterminateSystems/nix-installer-action@da36cb69b1c3247ad7a1f931ebfd954a1105ef14 # v14
 
       # https://github.com/marketplace/actions/magic-nix-cache
       - name: Use cache
-        uses: DeterminateSystems/magic-nix-cache-action@b46e247b898aa56e6d2d2e728dc6df6c84fdb738 # v7
+        uses: DeterminateSystems/magic-nix-cache-action@87b14cf437d03d37989d87f0fa5ce4f5dc1a330b # v8
 
       # https://github.com/marketplace/actions/update-nix-flake-lock
       - name: Update flake.lock
         id: update
-        uses: DeterminateSystems/update-flake-lock@db4ee38117a597ea8df8f7f75a187dd65093eade # v23
+        uses: DeterminateSystems/update-flake-lock@a2bbe0274e3a0c4194390a1e445f734c597ebc37 # v24
         with:
           path-to-flake-dir: infra/nixos
           token: ${{ steps.app-token.outputs.token }}

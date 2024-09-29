@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+helmCharts:
+  - name: openebs
+    repo: https://openebs.github.io/openebs/
+    version: 4.1.1
+    releaseName: openebs
+    namespace: openebs-system
+    valuesFile: values.yaml
+commonAnnotations:
+  meta.helm.sh/release-name: openebs
+  meta.helm.sh/release-namespace: openebs-system
+commonLabels:
+  app.kubernetes.io/managed-by: Helm

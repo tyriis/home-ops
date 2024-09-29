@@ -1,0 +1,35 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: flux-operator
+  namespace: flux-system
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: flux-operator
+      version: 0.9.0
+      sourceRef:
+        kind: HelmRepository
+        name: flux-operator-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    crds: Create
+    remediation:
+      retries: 3
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    serviceMonitor:
+      create: false
+    # resources:
+    #   requests:
+    #     cpu: 10m
+    #     memory: 100Mi

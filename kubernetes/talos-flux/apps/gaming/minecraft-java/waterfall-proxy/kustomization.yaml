@@ -1,0 +1,20 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: gaming
+resources:
+  - ./persistent-volume-claim.yaml
+  - ./helm-release.yaml
+  - ./external-secret.yaml
+commonLabels:
+  app.kubernetes.io/name: minecraft-waterfall-proxy
+  app.kubernetes.io/instance: minecraft-waterfall-proxy
+configMapGenerator:
+  - name: minecraft-waterfall-proxy-config
+    files:
+      - config.yml=config/config.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled

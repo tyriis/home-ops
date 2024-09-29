@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.2.1
+      version: 3.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -42,7 +42,7 @@ spec:
             env:
               EULA: "true"
               # renovate: depName=tyriis/bedrock-tags datasource=github-releases versioning=loose extractVersion=^(?<version>.*)$
-              VERSION: "1.21.3.01"
+              VERSION: "1.21.30.03"
               DIFFICULTY: normal
               SERVER_NAME: home
               WHITE_LIST: ""
@@ -69,7 +69,7 @@ spec:
 
             image:
               repository: itzg/minecraft-bedrock-server
-              tag: latest@sha256:a893702bcdd5408c4b16e51e3238b7e575c3d316068c4c5b20fe1b8c42435feb
+              tag: latest@sha256:9500d5c0e7ebaf449afea7f19654b51c573de28576c746123da2e4cccb8f2620
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:

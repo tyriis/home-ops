@@ -18,13 +18,13 @@ jobs:
     steps:
       # https://github.com/marketplace/actions/harden-runner
       - name: Harden Runner
-        uses: step-security/harden-runner@0d381219ddf674d61a7572ddd19d7941e271515c # v2.9.0
+        uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
         with:
           egress-policy: audit
 
       # https://github.com/marketplace/actions/create-github-app-token
       - name: Generate Token
-        uses: actions/create-github-app-token@31c86eb3b33c9b601a1f60f98dcbfd1d70f379b4 # v1.10.3
+        uses: actions/create-github-app-token@5d869da34e18e7287c1daad50e0b8ea0f506ce69 # v1.11.0
         id: app-token
         with:
           app-id: "${{ secrets.BOT_APP_ID }}"

@@ -37,10 +37,16 @@
     };
 
   # mount external disk
+  # fileSystems."/mnt/volume1" = {
+  #   device = "/dev/disk/by-uuid/a83e6a8d-2aed-4190-8962-8ee93a81bed1";
+  #   fsType = "btrfs";
+  #   options = [ "subvol=nfs" "compress=zstd" "noatime" ];
+  # };
+
   fileSystems."/mnt/volume1" = {
-    device = "/dev/disk/by-uuid/c9c6ada9-b4c7-4369-970c-2b60f0169528";
-    fsType = "btrfs";
-    options = [ "subvol=nfs" "compress=zstd" "noatime" ];
+    device = "/dev/disk/by-uuid/a83e6a8d-2aed-4190-8962-8ee93a81bed1";
+    fsType = "xfs";
+    options = [ "defaults" "nofail" ];
   };
 
   # mount nfs bind mount

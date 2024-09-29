@@ -57,7 +57,7 @@ metadata:
   name: techtales-io-terraform-discord
 spec:
   interval: 12h
-  approvePlan: auto
+  approvePlan: disable
   backendConfig:
     customConfiguration: |
       backend "s3" {
@@ -67,8 +67,9 @@ spec:
         skip_metadata_api_check     = true
         skip_region_validation      = true
         force_path_style            = true
-        skip_requesting_account_id  = true
-        skip_s3_checksum            = true
+        endpoint                    = "https://minio.techtales.io"
+        # skip_requesting_account_id  = true
+        # skip_s3_checksum            = true
       }
   path: ./
   sourceRef:
@@ -78,6 +79,8 @@ spec:
   runnerPodTemplate:
     spec:
       env:
+        - name: OPENTOFU_ENFORCE_GPG_VALIDATION
+          value: "false"
         - name: AWS_REGION
           value: home
         - name: VAULT_ADDR

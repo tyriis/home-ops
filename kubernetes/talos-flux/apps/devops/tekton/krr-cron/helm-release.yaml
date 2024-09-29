@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.2.1
+      version: 3.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -44,7 +44,7 @@ spec:
           cron:
             image:
               repository: curlimages/curl
-              tag: 8.8.0@sha256:73e4d532ea62d7505c5865b517d3704966ffe916609bedc22af6833dc9969bcd
+              tag: 8.10.1@sha256:d9b4541e214bcd85196d6e92e2753ac6d0ea699f0af5741f8c6cccbfcf00ef4b
             args:
               - curl
               - -X

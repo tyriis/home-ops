@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.2.1
+      version: 3.4.0
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -27,7 +27,7 @@ spec:
             nameOverride: *app
             image:
               repository: jacobalberty/unifi
-              tag: v8.2.93@sha256:fa496261a406e64ecc03360466e80522a1fa3315f67a1b29a2ad05620af2efe7
+              tag: v8.4.62@sha256:a107953e86227abd2fee4eff85c674337a0c08f704b14d7fe5c707f3ee4fd19e
             env:
               TZ: ${SETTING_TZ}
               RUNAS_UID0: "false"

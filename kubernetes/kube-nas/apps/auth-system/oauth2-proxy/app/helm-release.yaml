@@ -1,0 +1,121 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: oauth2-proxy
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      oauth2-proxy:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: quay.io/oauth2-proxy/oauth2-proxy
+              tag: v7.6.0@sha256:dcb6ff8dd21bf3058f6a22c6fa385fa5b897a9cd3914c88a2cc2bb0a85f8065d
+            envFrom:
+              - secretRef:
+                  name: oauth2-proxy-env-secrets
+            env:
+              OAUTH2_PROXY_PROVIDER: google
+              OAUTH2_PROXY_COOKIE_DOMAINS: tyriis.dev
+              OAUTH2_PROXY_COOKIE_SECURE: "true"
+              OAUTH2_PROXY_EMAIL_DOMAINS: "*"
+              OAUTH2_PROXY_SCOPE: openid profile email
+              OAUTH2_PROXY_HTTP_ADDRESS: 0.0.0.0:4180
+              OAUTH2_PROXY_METRICS_ADDRESS: 0.0.0.0:44180
+              OAUTH2_PROXY_PASS_AUTHORIZATION_HEADER: "true"
+              OAUTH2_PROXY_PASS_HOST_HEADER: "true"
+              OAUTH2_PROXY_PASS_ACCESS_TOKEN: "true"
+              OAUTH2_PROXY_PASS_USER_HEADERS: "true"
+              OAUTH2_PROXY_PREFER_EMAIL_TO_USER: "true"
+              OAUTH2_PROXY_SET_AUTHORIZATION-HEADER: "true"
+              OAUTH2_PROXY_SET_XAUTHREQUEST: "true"
+              OAUTH2_PROXY_REVERSE_PROXY: "true"
+              OAUTH2_PROXY_SILENCE_PING_LOGGING: "true"
+              OAUTH2_PROXY_OIDC_ISSUER_URL: https://accounts.google.com
+              OAUTH2_PROXY_LOGIN_URL: https://accounts.google.com/o/oauth2/v2/auth?access_type=offline
+              OAUTH2_PROXY_REDEEM_URL: https://oauth2.googleapis.com/token
+              OAUTH2_PROXY_SESSION_STORE_TYPE: redis
+              OAUTH2_PROXY_REDIS_CONNECTION_URL: redis://dragonfly.database-system.svc.cluster.local:6379
+
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: 4180
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ready
+                    port: 4180
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
+
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 1Gi
+
+    service:
+      app:
+        controller: oauth2-proxy
+        ports:
+          http:
+            port: 4180
+
+    ingress:
+      app:
+        className: nginx
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/tls-acme: "true"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+          nginx.ingress.kubernetes.io/ssl-redirect: "true"
+        hosts:
+          - host: &host auth.tyriis.dev
+            paths:
+              - path: /oauth2
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+            secretName: "{{ .Release.Name }}-tls"

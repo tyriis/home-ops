@@ -1,0 +1,31 @@
+---
+localpv-provisioner:
+  rbac:
+    create: true
+  localpv:
+    image:
+      registry: quay.io/
+      repository: openebs/provisioner-localpv
+  hostpathClass:
+    name: openebs-hostpath
+    isDefaultClass: true
+openebs-crds:
+  csi:
+    volumeSnapshots:
+      enabled: false
+      keep: false
+zfs-localpv:
+  enabled: false
+lvm-localpv:
+  enabled: false
+mayastor:
+  enabled: false
+engines:
+  local:
+    lvm:
+      enabled: false
+    zfs:
+      enabled: false
+  replicated:
+    mayastor:
+      enabled: false

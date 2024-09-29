@@ -56,18 +56,18 @@
         description: Hashicorp Vault Secrets Management
         # ping: vault.techtales.io
         siteMonitor: https://vault.techtales.io
-    - Harbor:
-        icon: harbor
-        href: https://harbor.techtales.io
-        description: Harbor Container Registry
-        # ping: harbor.techtales.io
-        siteMonitor: https://harbor.techtales.io
     - Cloudflare:
         icon: cloudflare
         href: https://dash.cloudflare.com
         description: Cloudflare DNS and CDN
         # ping: cloudflare.techtales.io
         # siteMonitor: https://dash.cloudflare.com
+    - HP LaserJet:
+        icon: hp
+        href: https://192.168.1.8/sws/index.html
+        description: HP LaserJet Printer Management
+        # ping: harbor.techtales.io
+        siteMonitor: https://192.168.1.8/
 - Storage:
     - Synology NAS:
         icon: synology-dsm
@@ -81,6 +81,12 @@
         description: Minio Object Storage
         # ping: minio.techtales.io
         siteMonitor: https://minio.techtales.io
+    - Harbor:
+        icon: harbor
+        href: https://harbor.techtales.io
+        description: Harbor Container Registry
+        # ping: harbor.techtales.io
+        siteMonitor: https://harbor.techtales.io
 - Observability:
     - Grafana Cloud:
         icon: grafana

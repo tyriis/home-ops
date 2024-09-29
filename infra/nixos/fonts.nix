@@ -11,9 +11,11 @@
       noto-fonts
       noto-fonts-color-emoji
       noto-fonts-extra
-      # twitter-color-emoji
+      noto-fonts-emoji
+      twitter-color-emoji
       inconsolata-nerdfont
       dejavu_fonts
+      fira-code-nerdfont
 
       # nerdfonts
       # https://github.com/NixOS/nixpkgs/blob/nixos-23.11/pkgs/data/fonts/nerdfonts/shas.nix

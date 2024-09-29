@@ -7,6 +7,20 @@ resources:
   - ./secret.sops.yaml
   - ./helm-release.yaml
   - ./ingress.yaml
+configMapGenerator:
+  - name: atlantis-tyriis-config
+    files:
+      - repoConfig=config/repos.yaml
+  - name: atlantis-tyriis-allow-list
+    files:
+      - allowlist.txt=config/allowlist.txt
+  - name: atlantis-tyriis-scripts
+    files:
+      - allow_list.sh=config/allow_list.sh
 commonLabels:
   app.kubernetes.io/name: atlantis-tyriis
   app.kubernetes.io/instance: atlantis-tyriis
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled

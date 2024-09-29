@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: cilium
-      version: 1.15.7
+      version: 1.16.2
       sourceRef:
         kind: HelmRepository
         name: cilium-charts
@@ -32,10 +32,6 @@ spec:
       id: 1
     k8sServiceHost: 192.168.1.50
     k8sServicePort: 6443
-    # tunnel: disabled
-    proxy:
-      prometheus:
-        enabled: true
 
     autoDirectNodeRoutes: true
     bandwidthManager:
@@ -46,8 +42,10 @@ spec:
       tproxy: true
     bgp:
       enabled: false
-    containerRuntime:
-      integration: containerd
+    cgroup:
+      autoMount:
+        enabled: false
+      hostRoot: /sys/fs/cgroup
     devices: eth0
     enableRuntimeDeviceDetection: true
     endpointRoutes:
@@ -108,7 +106,7 @@ spec:
     ipam:
       mode: kubernetes
     ipv4NativeRoutingCIDR: 10.244.0.0/16
-    kubeProxyReplacement: strict
+    kubeProxyReplacement: true
     kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
     l2announcements:
       enabled: true
@@ -120,8 +118,8 @@ spec:
       mode: dsr
     localRedirectPolicy: true
     operator:
-      rollOutPods: true
       replicas: 3
+      rollOutPods: true
       prometheus:
         enabled: true
         serviceMonitor:
@@ -140,6 +138,7 @@ spec:
       annotations:
         grafana_folder: cilium
     rollOutCiliumPods: true
+    routingMode: native
     securityContext:
       privileged: true
       capabilities:
@@ -159,8 +158,3 @@ spec:
           - NET_ADMIN
           - SYS_ADMIN
           - SYS_RESOURCE
-    cgroup:
-      autoMount:
-        enabled: false
-      hostRoot: /sys/fs/cgroup
-    routingMode: native

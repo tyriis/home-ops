@@ -1,0 +1,128 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app minecraft-waterfall-proxy
+spec:
+  driftDetection:
+    mode: enabled
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      waterfall:
+        replicas: 1
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            fsGroup: 1000
+            runAsGroup: 1000
+            runAsNonRoot: true
+            runAsUser: 1000
+            seccompProfile:
+              type: RuntimeDefault
+        containers:
+          app:
+            nameOverride: *app
+            envFrom:
+              - secretRef:
+                  name: bungeecord-rcon
+            env:
+              UID: "1000"
+              GID: "1000"
+              TYPE: "WATERFALL"
+              WATERFALL_VERSION: "latest"
+              WATERFALL_BUILD_ID: "latest"
+              PLUGINS: https://github.com/Army-py/SlashServer/releases/download/tested/SlashServer-4.0.jar
+              MEMORY: 256M
+              # JVM_OPTS: "-Xms128M -Xmx256M"
+              ENABLE_RCON: "true"
+              SPIGOT_PLUGIN: "78915"
+              TZ: ${SETTING_TZ}
+
+            image:
+              repository: itzg/bungeecord
+              tag: latest@sha256:a082174dc4ce15cef9f3b3615913d59b2a93f1caef609ac67f0b3a8670a45ae6
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+              readOnlyRootFilesystem: true
+            ports:
+              - name: waterfall
+                containerPort: &port 25565
+                protocol: TCP
+              - name: rcon
+                containerPort: &rconPort 25575
+                protocol: TCP
+
+            probes:
+              readiness: &probes
+                enabled: true
+                type: TCP
+                port: *port
+              liveness: *probes
+              startup:
+                <<: *probes
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+
+            resources:
+              requests:
+                cpu: 50m
+                memory: 250Mi
+
+    service:
+      waterfall:
+        controller: waterfall
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: ${SETTING_CILIUM_MINECRAFT_PROXY_ADDR}
+        ports:
+          waterfall-proxy:
+            port: *port
+            protocol: TCP
+            targetPort: waterfall
+      rcon:
+        controller: waterfall
+        ports:
+          rcon:
+            port: *rconPort
+            protocol: TCP
+            targetPort: rcon
+
+    persistence:
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+      data:
+        type: persistentVolumeClaim
+        existingClaim: minecraft-waterfall-proxy-data
+        globalMounts:
+          - path: /server
+      config:
+        type: configMap
+        name: minecraft-waterfall-proxy-config
+        globalMounts:
+          - path: /config/config.yml
+            subPath: config.yml
+            readOnly: true

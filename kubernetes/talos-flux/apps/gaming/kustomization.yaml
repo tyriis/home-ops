@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./minecraft-bedrock/flux-sync.yaml
+  - ./minecraft-java/flux-sync.yaml

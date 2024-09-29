@@ -14,11 +14,31 @@
     "github>tyriis/renovate-config//nix/default.json5",
     "security:openssf-scorecard",
   ],
+  ignorePaths: [
+    "archive/**",
+    "kubernetes/talos-flux/apps/home-automation/esphome/app/config/**",
+    "kubernetes/talos-flux/apps/default/homepage/app/config/**",
+  ],
   semanticCommits: "enabled",
   suppressNotifications: ["prIgnoreNotification"],
   rebaseWhen: "conflicted",
   customManagers: [],
   packageRules: [
+    {
+      description: "prevent pinDigest for managers that don't use digests",
+      matchManagers: ["flux"],
+      pinDigests: false,
+    },
+    {
+      description: "prevent pinDigest for unpinnable packages",
+      matchDepNames: [
+        "ghcr.io/cloudnative-pg/postgresql",
+        "ghcr.io/siderolabs/installer",
+        "ghcr.io/siderolabs/kubelet",
+        "flux-operator",
+      ],
+      pinDigests: false,
+    },
     {
       matchPackageNames: ["tyriis/bedrock-tags"],
       matchUpdateTypes: ["major", "minor", "patch"],
@@ -28,13 +48,7 @@
     {
       matchPackageNames: ["tyriis/bedrock-tags"],
       matchDatasources: ["github-releases"],
-      matchUpdateTypes: ["major"],
-      semanticCommitType: "feat",
-    },
-    {
-      matchPackageNames: ["tyriis/bedrock-tags"],
-      matchDatasources: ["github-releases"],
-      matchUpdateTypes: ["minor"],
+      matchUpdateTypes: ["major", "minor"],
       semanticCommitType: "feat",
     },
     {
@@ -50,11 +64,20 @@
       matchUpdateTypes: ["major", "minor", "patch"],
       automergeType: "pr",
     },
+    {
+      description: "Dragonfly operator",
+      groupName: "Dragonfly Operator",
+      matchDatasources: ["docker", "github-releases"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      separateMinorPatch: true,
+      matchPackageNames: ["/dragonfly(?:db)?.operator/"],
+    },
   ],
-  ignorePaths: [
-    "^archive/**",
-    "^kubernetes/talos-flux/apps/home-automation/esphome/app/config/**",
-  ],
+  ansible: {
+    enabled: false,
+  },
   lockFileMaintenance: {
     enabled: true,
     extends: ["schedule:weekly"],
@@ -62,7 +85,7 @@
   nix: {
     enabled: true,
   },
-  ansible: {
+  vulnerabilityAlerts: {
     enabled: false,
   },
 }

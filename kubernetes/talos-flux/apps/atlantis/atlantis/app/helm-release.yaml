@@ -3,13 +3,13 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: atlantis
+  name: &app atlantis
 spec:
   interval: 15m
   chart:
     spec:
       chart: atlantis
-      version: 5.4.2
+      version: 5.5.2
       sourceRef:
         kind: HelmRepository
         name: runatlantis-charts
@@ -31,51 +31,38 @@ spec:
       valuesKey: repoConfig
       targetPath: repoConfig
   values:
-    atlantisUrl: https://atlantis.techtales.io
-
-    orgAllowlist: github.com/techtales-io/*
-    # logLevel: "debug"
-
-    # If managing secrets outside the chart for the webhook, use this variable to reference the secret name
-    # vcsSecretName: 'mysecret'
+    loadEnvFromSecrets:
+      - &secret atlantis-env-secrets
+      - atlantis-github-token
+    commonLabels:
+      app.kubernetes.io/name: *app
+      app.kubernetes.io/instance: *app
+    podTemplate:
+      annotations:
+        secret.reloader.stakater.com/reload: *secret
+      labels:
+        app.kubernetes.io/name: *app
+        app.kubernetes.io/instance: *app
 
     image:
       repository: ghcr.io/runatlantis/atlantis
-      tag: v0.28.5@sha256:52ee7c47f37a56fa82c26d2931d5d1d67f9f2d16f81c65e46c02a7b10de9f642
+      tag: v0.29.0@sha256:83c7c8ef53937648ff34b956b32f02b78b7dc56b53575f610689174198c5abc1
 
-    ## Use Server Side Repo Config,
-    ## ref: https://www.runatlantis.io/docs/server-side-repo-config.html
-    ## Example default configuration
-    # repoConfig: |
-    #   ---
-    #   repos:
-    #   - id: /.*/
-    #     apply_requirements: []
-    #     workflow: default
-    #     allowed_overrides: []
-    #     allow_custom_workflows: true
-    #   workflows:
-    #     default:
-    #       plan:
-    #         steps: [init, plan]
-    #       apply:
-    #         steps: [apply]
-    #   metrics:
-    #     prometheus:
-    #       endpoint: /metrics
+    atlantisUrl: https://atlantis.techtales.io
+    orgAllowlist: github.com/techtales-io/*
+    # logLevel: "debug"
 
-    # Use Diff Markdown Format for color coding diffs
-    enableDiffMarkdownFormat: true
+    enableDiffMarkdownFormat: true # color diffs
 
-    commonLabels:
-      app.kubernetes.io/name: atlantis
-      app.kubernetes.io/instance: atlantis
+    environment:
+      # ATLANTIS_DEFAULT_TF_VERSION: v1.3.8
+      ATLANTIS_EMOJI_REACTION: eyes
+      ATLANTIS_FAIL_ON_PRE_WORKFLOW_HOOK_ERROR: "true"
+      ATLANTIS_WRITE_GIT_CREDS: "true"
 
     service:
       type: ClusterIP
-      # port: 80
       targetPort: 4141
-      # loadBalancerIP: null
 
     ingress:
       enabled: true
@@ -106,49 +93,18 @@ spec:
           hosts:
             - *host
 
-    resources:
-      requests:
-        memory: 1Gi
-        cpu: 100m
-      limits:
-        memory: 1Gi
-        cpu: 1000m
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+
+    readinessProbe:
+      periodSeconds: 5
+      initialDelaySeconds: 10
 
     volumeClaim:
       enabled: true
       dataStorage: 5Gi
       storageClassName: ceph-block
-
-    environment:
-      ATLANTIS_DEFAULT_TF_VERSION: v1.3.8
-      ATLANTIS_WRITE_GIT_CREDS: "true"
-      ATLANTIS_FAIL_ON_PRE_WORKFLOW_HOOK_ERROR: "true"
-      ATLANTIS_EMOJI_REACTION: eyes
-
-    loadEnvFromSecrets:
-      - &secret atlantis-env-secrets
-      - atlantis-github-token
-
-    containerSecurityContext:
-      allowPrivilegeEscalation: false
-      readOnlyRootFilesystem: true
-
-    servicemonitor:
-      # to enable a Prometheus servicemonitor, set enabled to true,
-      #   and enable the metrics in this file's repoConfig
-      #   by setting a value for metrics.prometheus.endpoint
-      enabled: false
-
-    podTemplate:
-      annotations:
-        secret.reloader.stakater.com/reload: *secret
-      labels:
-        app.kubernetes.io/name: atlantis
-        app.kubernetes.io/instance: atlantis
-
-    readinessProbe:
-      periodSeconds: 5
-      initialDelaySeconds: 10
 
     extraVolumes:
       - name: age-keys
@@ -171,3 +127,14 @@ spec:
       - name: scripts
         mountPath: /home/atlantis/scripts
         readOnly: true
+
+    servicemonitor:
+      enabled: true
+
+    resources:
+      requests:
+        memory: 1Gi
+        cpu: 100m
+      limits:
+        memory: 1Gi
+        cpu: 1000m

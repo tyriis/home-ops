@@ -8,11 +8,11 @@ tasks:
     internal: true
     cmds:
       - task: push-artifact
-      - kustomize build {{.DEVENV_DIR}}/oci --load-restrictor LoadRestrictionsNone | kubectl apply -f -
-      - kubectl wait --for condition=established --timeout=60s crd/ocirepositories.source.toolkit.fluxcd.io
-      - kubectl apply -f {{.DEVENV_DIR}}/oci/flux/repositories/oci/home-ops-devenv.yaml
-      - kubectl apply -f {{.DEVENV_DIR}}/oci/flux/flux-sync.yaml
-      - task: reconcile-oci
+      - kubectl apply -f {{.DEVENV_DIR}}/oci/registry-config.yaml
+      - helm install flux-operator oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator -n flux-system --create-namespace
+      - kubectl wait --for condition=established --timeout=60s crd/fluxinstances.fluxcd.controlplane.io
+      - kubectl apply -k {{.DEVENV_DIR}}/oci/flux/instance/ -n flux-system
+      - kubectl -n flux-system wait fluxinstance/flux --for=condition=ready --timeout=10m
 
   push-artifact:
     desc: push to local oci registry
@@ -22,7 +22,8 @@ tasks:
         flux push artifact oci://localhost:5050/home-ops-devenv:local \
           --path="{{.PROJECT_DIR}}" \
           --source="local" \
-          --revision="latest"
+          --revision="latest" \
+          --ignore-paths=".git/,.gitignore,.gitmodules,.gitattributes,*.jpg,*.jpeg,*.gif,*.png,*.wmv,*.flv,*.tar.gz,*.zip,**/infra/"
 
   reconcile-oci:
     desc: reconcile local oci registry
@@ -36,4 +37,3 @@ tasks:
     internal: true
     cmds:
       - kubectl -n flux-system wait kustomization/flux-sync --for=condition=ready --timeout=5m
-      - kubectl -n flux-system wait kustomization/apps-sync --for=condition=ready --timeout=5m

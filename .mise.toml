@@ -1,0 +1,37 @@
+[tools]
+# https://age-encryption.org/
+age = "1.2.0"
+# https://direnv.net/
+direnv = "2.34.0"
+# https://fluxcd.io/
+flux2 = "2.3.0"
+# https://gitleaks.io/
+gitleaks = "8.18.4"
+# https://helm.sh/
+helm = "3.16.1"
+# https://k9scli.io/
+k9s = "0.32.5"
+# https://kubernetes.io/docs/reference/kubectl/
+kubectl = "1.30.3"
+# https://kustomize.io/
+kustomize = "5.4.3"
+# https://nodejs.org/
+node = "22.9.0"
+# https://pre-commit.com/
+pre-commit = "3.8.0"
+# https://github.com/mozilla/sops
+sops = "3.9.0"
+# https://github.com/budimanjojo/talhelper
+talhelper = "3.0.5"
+# https://www.talos.dev/
+talosctl = "1.7.6"
+# https://taskfile.dev/
+task = "3.38.0"
+# https://www.terraform.io/
+terraform = "1.9.6"
+# https://terraform-docs.io/
+terraform-docs = "0.19.0"
+# https://github.com/terraform-linters/tflint
+tflint = "0.53.0"
+# https://trivy.dev/
+trivy = "0.55.2"

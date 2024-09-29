@@ -1,0 +1,165 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app bunkerweb
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    serviceAccount:
+      create: true
+      name: *app
+    controllers:
+      bunkerweb-controller:
+        replicas: 1
+        strategy: Recreate
+        containers:
+          bunkerweb-controller:
+            image:
+              repository: bunkerity/bunkerweb-autoconf
+              tag: 1.5.10@sha256:b28e19f1e46c85f2635f45a817f89df90be1c439e8beb6013f7643fd2a447840
+            env:
+              KUBERNETES_MODE: "yes"
+            envFrom:
+              - secretRef:
+                  name: bunkerweb-database
+      bunkerweb:
+        replicas: 2
+        annotations:
+          reloader.stakater.com/auto: "true"
+          bunkerweb.io/AUTOCONF: "yes"
+          bunkerweb.io/INSTANCE: "yes"
+        containers:
+          bunkerweb:
+            securityContext:
+              runAsUser: 101
+              runAsGroup: 101
+              allowPrivilegeEscalation: false
+              # readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            ports:
+              - containerPort: 8080
+                protocol: TCP
+                # hostPort: 80
+              - containerPort: 8443
+                # hostPort: 443
+                protocol: TCP
+            image:
+              repository: bunkerity/bunkerweb
+              tag: 1.5.10@sha256:1523d51e9ee63cca85ed76d04902641450dc6bf98e814199952e8cddbb1d7aed
+            env:
+              KUBERNETES_MODE: "yes"
+              DNS_RESOLVER: kube-dns.kube-system.svc.cluster.local
+              USE_API: "yes"
+              API_WHITELIST_IP: "127.0.0.0/8 10.0.0.0/8"
+              SERVER_NAME: ""
+              MULTISITE: "yes"
+              USE_UI: "yes"
+              USE_REDIS: "yes"
+              REDIS_HOST: dragonfly.database-system.svc.cluster.local
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - /usr/share/bunkerweb/helpers/healthcheck.sh
+                  initialDelaySeconds: 30
+                  periodSeconds: 1
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            # resources:
+            #   requests:
+            #     cpu: 100m
+            #   limits:
+            #     memory: 2Gi
+      bunkerweb-scheduler:
+        replicas: 1
+        strategy: Recreate
+        containers:
+          bunkerweb-scheduler:
+            image:
+              repository: bunkerity/bunkerweb-scheduler
+              tag: 1.5.10@sha256:cdf4d30e29fe6beba23c93c47417fc7c48c1a3dced0d3b6e1a3e735a53e07df0
+            env:
+              KUBERNETES_MODE: "yes"
+            envFrom:
+              - secretRef:
+                  name: bunkerweb-database
+      bunkerweb-ui:
+        replicas: 1
+        strategy: Recreate
+        containers:
+          app:
+            image:
+              repository: bunkerity/bunkerweb-ui
+              tag: 1.5.10@sha256:9caf73dd8e96efb57c0db3dbc3f294ad05ba0fd508defa758e33e23ca5664ef2
+            env:
+              ADMIN_USERNAME: "admin"
+              ADMIN_PASSWORD: "Admin1234$"
+            envFrom:
+              - secretRef:
+                  name: bunkerweb-database
+    # defaultPodOptions:
+    #   securityContext:
+    #     runAsNonRoot: true
+    #     runAsUser: 101
+    #     runAsGroup: 101
+    #     fsGroup: 568
+    #     fsGroupChangePolicy: OnRootMismatch
+    #     supplementalGroups: [10000]
+    #     seccompProfile: { type: RuntimeDefault }
+    service:
+      app:
+        controller: bunkerweb-ui
+        ports:
+          http:
+            port: 7000
+
+    # serviceMonitor:
+    #   app:
+    #     serviceName: minio
+    #     endpoints:
+    #       - port: s3
+    #         scheme: http
+    #         path: /minio/v2/metrics/cluster
+    #         interval: 1m
+    #         scrapeTimeout: 10s
+    ingress:
+      app:
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/tls-acme: "true"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+          nginx.ingress.kubernetes.io/ssl-redirect: "true"
+        className: nginx
+        hosts:
+          - host: &host "{{ .Release.Name }}.tyriis.dev"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+            secretName: "{{ .Release.Name }}-tls"

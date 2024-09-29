@@ -192,3 +192,28 @@ tasks:
       - test -f {{.TALOS_DIR}}/talconfig.yaml
       - talosctl --context {{.cluster}} config info >/dev/null 2>&1
       - talosctl --context {{.cluster}} --nodes {{.hostname}} get machineconfig >/dev/null 2>&1
+
+  kubelet:upgrade:
+    desc: Upgrade kubelet on a node
+    dir: infra/talos
+    prompt: do you want to upgrade kubelet to {{.KUBELET_VERSION}} on node {{.hostname}}?
+    cmds:
+      - task: config
+      - until kubectl --context {{.KUBE_CONTEXT}} wait --timeout=5m --for=jsonpath=.status.ceph.health=HEALTH_OK cephcluster --all --all-namespaces; do sleep 10; done
+      - talosctl apply --nodes {{.ip }} --file clusterconfig/talos-flux-{{.hostname }}.yaml
+      - talosctl --context {{.cluster}} --nodes {{.ip}} health --wait-timeout=10m --server=false
+      - until kubectl --context {{.KUBE_CONTEXT}} wait --timeout=5m --for=jsonpath=.status.ceph.health=HEALTH_OK cephcluster --all --all-namespaces; do sleep 10; done
+    vars:
+      KUBE_CONTEXT:
+        sh: echo admin@{{.cluster}}
+      KUBERNETES_VERSION:
+        sh: yq 'select(document_index == 0).kubernetesVersion' {{.TALOS_DIR}}/talconfig.yaml
+    requires:
+      vars:
+        - cluster
+        - hostname
+        - ip
+    preconditions:
+      - test -f {{.TALOS_DIR}}/talconfig.yaml
+      - talosctl --context {{.cluster}} config info >/dev/null 2>&1
+      - talosctl --context {{.cluster}} --nodes {{.ip}} get machineconfig >/dev/null 2>&1

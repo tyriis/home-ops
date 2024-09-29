@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.2.1
+      version: 3.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: syncthing/syncthing
-              tag: 1.27.9@sha256:9f16c4aaf678add90a85bd53e324bfbb57d1e704e6a07b54c446e4a67e590dbf
+              tag: 1.27.12@sha256:5fb5438b300a430f0636b60924939defb84f965b15ad7ae16acf5a2ac9c9e5c3
             resources:
               requests:
                 cpu: 15m

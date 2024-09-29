@@ -22,13 +22,13 @@ jobs:
     steps:
       # https://github.com/marketplace/actions/harden-runner
       - name: Harden Runner
-        uses: step-security/harden-runner@0d381219ddf674d61a7572ddd19d7941e271515c # v2.9.0
+        uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
         with:
           egress-policy: audit
 
       # https://github.com/marketplace/actions/checkout
       - name: Checkout Default Branch
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
         with:
           fetch-depth: 0
           repository: ${{ github.event.pull_request.head.repo.full_name }}
@@ -36,9 +36,11 @@ jobs:
       # https://github.com/marketplace/actions/changed-files
       - name: Get Changed Clusters
         id: changed-clusters
-        uses: tj-actions/changed-files@cc733854b1f224978ef800d29e4709d5ee2883e4 # v44.5.5
+        uses: tj-actions/changed-files@48d8f15b2aaa3d255ca5af3eba4870f807ce6b3c # v45.0.2
         with:
-          files: kubernetes/**
+          files: |
+            kubernetes/talos-flux/**
+            kubernetes/kube-nas/**
           dir_names: true
           dir_names_max_depth: 2
           json: true
@@ -65,7 +67,7 @@ jobs:
     steps:
       # https://github.com/marketplace/actions/create-github-app-token
       - name: Generate Token
-        uses: actions/create-github-app-token@31c86eb3b33c9b601a1f60f98dcbfd1d70f379b4 # v1.10.3
+        uses: actions/create-github-app-token@5d869da34e18e7287c1daad50e0b8ea0f506ce69 # v1.11.0
         if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
         id: app-token
         with:
@@ -74,21 +76,21 @@ jobs:
 
       # https://github.com/marketplace/actions/checkout
       - name: Checkout
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
         with:
           token: "${{ steps.app-token.outputs.token }}"
           path: pull
 
       # https://github.com/marketplace/actions/checkout
       - name: Checkout Default Branch
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
         with:
           token: "${{ steps.app-token.outputs.token }}"
           ref: "${{ github.event.repository.default_branch }}"
           path: default
 
       - name: Diff Resources
-        uses: docker://ghcr.io/allenporter/flux-local:v5.4.0@sha256:b1379b2013958fdb6c5ecbdca700132b814e56a2026ef61c84996af0be3ba2b4
+        uses: docker://ghcr.io/allenporter/flux-local:v5.5.1@sha256:86405ff852ffe4675d6029def7579f4b66fb4e2c0dbff3ca0f98166b76f17798
         with:
           args: >-
             diff ${{ matrix.resources }}

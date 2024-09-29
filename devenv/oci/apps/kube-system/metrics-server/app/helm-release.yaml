@@ -1,0 +1,24 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: metrics-server
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: metrics-server
+      version: 3.12.1
+      sourceRef:
+        kind: HelmRepository
+        name: metrics-server-charts
+        namespace: flux-system
+  # https://artifacthub.io/packages/helm/metrics-server/metrics-server?modal=values
+  values:
+    args:
+      - --kubelet-insecure-tls
+    metrics:
+      enabled: true
+    serviceMonitor:
+      enabled: false

@@ -1,4 +1,5 @@
 ---
+# only applied once during bootstrap
 apiVersion: v1
 kind: ConfigMap
 metadata:
