@@ -3,19 +3,19 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: nas-postgres16
+  name: postgres17
 spec:
-  instances: 1
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.4-26
+  instances: 3
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.0-6
   primaryUpdateStrategy: unsupervised
   storage:
-    size: 10Gi
-    storageClass: openebs-hostpath
+    size: 30Gi
+    storageClass: ceph-block
   superuserSecret:
     name: postgres-superuser
   monitoring:
-    # TODO: enable when observability stack is in place
-    enablePodMonitor: false
+    enablePodMonitor: true
+
   backup:
     retentionPolicy: 30d
     # https://cloudnative-pg.io/documentation/current/wal_archiving/
@@ -25,9 +25,9 @@ spec:
       wal:
         compression: bzip2
         maxParallel: 8
-      destinationPath: s3://database-system-backup/
-      endpointURL: https://minio.tyriis.dev
-      serverName: &clustername nas-postgres16
+      destinationPath: s3://cloudnative-pg-backups/
+      endpointURL: https://minio.techtales.io
+      serverName: &clustername postgres17
       s3Credentials:
         accessKeyId:
           name: postgres-minio
@@ -46,24 +46,24 @@ spec:
   #       <<: *barmanObjectStore
   #       serverName: *clustername
 
-  # bootstrap:
-  #   initdb:
-  #     import:
-  #       type: monolith
-  #       databases:
-  #         - "*"
-  #       roles:
-  #         - "*"
-  #       source:
-  #         externalCluster: postgres-v1
+  bootstrap:
+    initdb:
+      import:
+        type: monolith
+        databases:
+          - "*"
+        roles:
+          - "*"
+        source:
+          externalCluster: postgres16
 
-  # externalClusters:
-  #   - name: postgres-v1
-  #     connectionParameters:
-  #       host: postgres-rw
-  #       user: postgres
-  #       dbname: postgres
-  #       sslmode: require
-  #     password:
-  #       name: postgres-superuser
-  #       key: password
+  externalClusters:
+    - name: postgres16
+      connectionParameters:
+        host: postgres16-rw
+        user: postgres
+        dbname: postgres
+        sslmode: require
+      password:
+        name: postgres-superuser
+        key: password

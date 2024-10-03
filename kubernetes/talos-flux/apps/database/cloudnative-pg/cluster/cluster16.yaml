@@ -6,7 +6,7 @@ metadata:
   name: postgres16
 spec:
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:17.0-6
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.4-26
   primaryUpdateStrategy: unsupervised
   storage:
     size: 30Gi
@@ -46,24 +46,24 @@ spec:
   #       <<: *barmanObjectStore
   #       serverName: *clustername
 
-  bootstrap:
-    initdb:
-      import:
-        type: monolith
-        databases:
-          - "*"
-        roles:
-          - "*"
-        source:
-          externalCluster: postgres-v1
+  # bootstrap:
+  #   initdb:
+  #     import:
+  #       type: monolith
+  #       databases:
+  #         - "*"
+  #       roles:
+  #         - "*"
+  #       source:
+  #         externalCluster: postgres-v1
 
-  externalClusters:
-    - name: postgres-v1
-      connectionParameters:
-        host: postgres-rw
-        user: postgres
-        dbname: postgres
-        sslmode: require
-      password:
-        name: postgres-superuser
-        key: password
+  # externalClusters:
+  #   - name: postgres-v1
+  #     connectionParameters:
+  #       host: postgres-rw
+  #       user: postgres
+  #       dbname: postgres
+  #       sslmode: require
+  #     password:
+  #       name: postgres-superuser
+  #       key: password
