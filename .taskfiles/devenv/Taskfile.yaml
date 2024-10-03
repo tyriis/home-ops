@@ -4,8 +4,8 @@ version: "3"
 
 includes:
   check: check.yaml
-  flux: flux.yaml
   cluster: cluster.yaml
+  flux: flux.yaml
 
 tasks:
   sync:

@@ -46,7 +46,7 @@ spec:
 
     image:
       repository: ghcr.io/runatlantis/atlantis
-      tag: v0.29.0@sha256:83c7c8ef53937648ff34b956b32f02b78b7dc56b53575f610689174198c5abc1
+      tag: v0.30.0@sha256:5318d83dc11546c30ea2487108f465c7e000c8d190c66bf925fc3dba7a993d3f
 
     atlantisUrl: https://atlantis.techtales.io
     orgAllowlist: github.com/techtales-io/*

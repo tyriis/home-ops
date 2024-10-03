@@ -29,11 +29,11 @@ tasks:
     desc: reconcile local oci registry
     internal: true
     cmds:
-      - kubectl -n flux-system wait ocirepository/home-ops-devenv --for=condition=ready --timeout=5m
+      - kubectl -n flux-system wait ocirepository/home-ops-devenv --for=condition=ready --timeout=10m
       - flux reconcile source oci home-ops-devenv
 
   wait-sync-complete:
     desc: wait for flux system to be ready
     internal: true
     cmds:
-      - kubectl -n flux-system wait kustomization/flux-sync --for=condition=ready --timeout=5m
+      - kubectl -n flux-system wait kustomization/flux-sync --for=condition=ready --timeout=10m

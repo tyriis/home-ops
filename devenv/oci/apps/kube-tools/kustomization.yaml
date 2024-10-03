@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./i-see-dead-pods/flux-sync.yaml
+  - ./reloader/flux-sync.yaml
