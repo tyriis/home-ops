@@ -40,7 +40,7 @@ spec:
 
             image:
               repository: ghcr.io/gimlet-io/capacitor
-              tag: v0.4.3@sha256:9c87bdbd2389aadee1231fbc63b8426faa22354142f7527b10616310dfe5bfae
+              tag: v0.4.5@sha256:37a6a5a72214a467428eed75e5d54be641f596fdcb5567a2fcdb520e18e841a0
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
