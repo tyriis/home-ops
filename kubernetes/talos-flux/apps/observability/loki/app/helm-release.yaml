@@ -29,7 +29,7 @@ spec:
   # https://artifacthub.io/packages/helm/grafana/loki?modal=values
   # https://github.com/grafana/loki/blob/main/production/helm/loki/values.yaml
   values:
-    deploymentMode: SimpleScalable
+    deploymentMode: SingleBinary
     loki:
       podAnnotations:
         secret.reloader.stakater.com/reload: loki-s3
@@ -72,32 +72,12 @@ spec:
           insecure: false
           s3ForcePathStyle: true
 
-    gateway:
-      image:
-        registry: ghcr.io
+    singleBinary:
       replicas: 2
-      ingress:
-        # use dedicated ingress definition
-        enabled: false
-      service:
-        labels:
-          prometheus.io/service-monitor: "false"
-
-    write:
-      replicas: 2
-      persistence:
-        size: 20Gi
-        storageClass: openebs-hostpath
-
-    read:
-      replicas: 2
-      extraVolumes:
-        - name: loki-rules
-          configMap:
-            name: loki-alerting-rules
-
-    backend:
-      replicas: 2
+      resources:
+        requests:
+          cpu: 10m
+          memory: 100Mi
       extraVolumes:
         - name: loki-rules
           configMap:
@@ -111,6 +91,18 @@ spec:
         searchNamespace: ALL
         folder: /rules/fake
 
+    backend:
+      replicas: 0
+    read:
+      replicas: 0
+    write:
+      replicas: 0
+    gateway:
+      enabled: false
+    chunksCache:
+      enabled: false
+    resultsCache:
+      enabled: false
     lokiCanary:
       enabled: false
     test:
@@ -126,7 +118,7 @@ spec:
       serviceMonitor:
         enabled: true
         metricsInstance:
-          enabled: false
+          enabled: true
 
   valuesFrom:
     - kind: Secret
