@@ -6,7 +6,7 @@ kind: Kustomization
 helmCharts:
   - name: flux-operator
     repo: oci://ghcr.io/controlplaneio-fluxcd/charts
-    version: 0.9.0
+    version: 0.10.0
     releaseName: flux-operator
     namespace: flux-system
     valuesFile: values.yaml
