@@ -21,7 +21,7 @@ spec:
 
     config:
       clients:
-        - url: http://loki-gateway/loki/api/v1/push
+        - url: http://loki/loki/api/v1/push
         - url: "https://${SECRET_GRAFANA_CLOUD_INSTANCE_ID}:${SECRET_GRAFANA_CLOUD_API_KEY}@logs-prod-us-central1.grafana.net/loki/api/v1/push"
     serviceMonitor:
       enabled: true
