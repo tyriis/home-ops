@@ -14,6 +14,7 @@ spec:
         kind: HelmRepository
         name: grafana-charts
         namespace: flux-system
+  # https://artifacthub.io/packages/helm/grafana/promtail?modal=values
   values:
     extraArgs:
       - -client.external-labels=hostname=$(HOSTNAME),cluster=${SETTING_CLUSTERNAME}
@@ -21,7 +22,7 @@ spec:
 
     config:
       clients:
-        - url: http://loki/loki/api/v1/push
+        - url: http://loki-headless.observability.svc.cluster.local:3100/loki/api/v1/push #NOSONAR allow http
         - url: "https://${SECRET_GRAFANA_CLOUD_INSTANCE_ID}:${SECRET_GRAFANA_CLOUD_API_KEY}@logs-prod-us-central1.grafana.net/loki/api/v1/push"
     serviceMonitor:
       enabled: true
