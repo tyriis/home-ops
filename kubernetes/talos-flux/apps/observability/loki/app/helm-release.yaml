@@ -52,7 +52,8 @@ spec:
         alertmanager_url: http://prometheus-alertmanager.observability.svc.cluster.local:9093 #NOSONAR allow http
         rule_path: /rules/fake
         storage:
-          type: s3
+          local:
+            directory: /rules
       schemaConfig:
         configs:
           - from: "2024-04-01"
