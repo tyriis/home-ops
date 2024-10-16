@@ -18,7 +18,7 @@ kustomize = "5.5.0"
 # https://nodejs.org/
 node = "22.9.0"
 # https://pre-commit.com/
-pre-commit = "3.8.0"
+pre-commit = "4.0.1"
 # https://github.com/mozilla/sops
 sops = "3.9.1"
 # https://github.com/budimanjojo/talhelper
