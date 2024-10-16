@@ -17,6 +17,8 @@ generatorOptions:
   disableNameSuffixHash: true
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
+  labels:
+    loki_rule: "true"
 commonLabels:
   app.kubernetes.io/name: loki
   app.kubernetes.io/instance: loki
