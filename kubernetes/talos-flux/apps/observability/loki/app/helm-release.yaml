@@ -80,17 +80,15 @@ spec:
         requests:
           cpu: 10m
           memory: 100Mi
-      extraVolumes:
-        - name: loki-rules
-          configMap:
-            name: loki-alerting-rules
       persistence:
         size: 20Gi
         storageClass: openebs-hostpath
 
     sidecar:
       rules:
+        enabled: true
         searchNamespace: ALL
+        label: loki_rule
         folder: /rules/fake
 
     backend:
