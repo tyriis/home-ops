@@ -3,10 +3,10 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: postgres16
+  name: postgres17
 spec:
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.4-36
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.0-6
   primaryUpdateStrategy: unsupervised
   storage:
     size: 30Gi
@@ -27,7 +27,7 @@ spec:
         maxParallel: 8
       destinationPath: s3://cloudnative-pg-backups/
       endpointURL: https://minio.techtales.io
-      serverName: &clustername postgres16
+      serverName: &clustername postgres17
       s3Credentials:
         accessKeyId:
           name: postgres-minio
@@ -46,24 +46,24 @@ spec:
   #       <<: *barmanObjectStore
   #       serverName: *clustername
 
-  # bootstrap:
-  #   initdb:
-  #     import:
-  #       type: monolith
-  #       databases:
-  #         - "*"
-  #       roles:
-  #         - "*"
-  #       source:
-  #         externalCluster: postgres-v1
+  bootstrap:
+    initdb:
+      import:
+        type: monolith
+        databases:
+          - "*"
+        roles:
+          - "*"
+        source:
+          externalCluster: postgres16
 
-  # externalClusters:
-  #   - name: postgres-v1
-  #     connectionParameters:
-  #       host: postgres-rw
-  #       user: postgres
-  #       dbname: postgres
-  #       sslmode: require
-  #     password:
-  #       name: postgres-superuser
-  #       key: password
+  externalClusters:
+    - name: postgres16
+      connectionParameters:
+        host: postgres16-rw
+        user: postgres
+        dbname: postgres
+        sslmode: require
+      password:
+        name: postgres-superuser
+        key: password
