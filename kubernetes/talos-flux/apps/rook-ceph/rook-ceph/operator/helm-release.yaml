@@ -38,8 +38,8 @@ spec:
     # pspEnable: false
     resources:
       requests:
-        cpu: 150m
-        memory: 128Mi
+        cpu: 35m
+        memory: 150Mi
       limits:
         cpu: null
-        memory: 256Mi
+        memory: 300Mi
