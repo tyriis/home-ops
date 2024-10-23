@@ -22,6 +22,7 @@
   semanticCommits: "enabled",
   suppressNotifications: ["prIgnoreNotification"],
   rebaseWhen: "conflicted",
+  prConcurrentLimit: 25,
   customManagers: [],
   packageRules: [
     {
@@ -73,6 +74,11 @@
       },
       separateMinorPatch: true,
       matchPackageNames: ["/dragonfly(?:db)?.operator/"],
+    },
+    {
+      description: "Mise automerge",
+      matchManagers: ["mise"],
+      automerge: true,
     },
   ],
   ansible: {
