@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: cert-manager
-      version: v1.15.3
+      version: v1.16.1
       sourceRef:
         kind: HelmRepository
         name: jetstack-charts
@@ -50,7 +50,6 @@ spec:
         limits:
           memory: 223Mi
     webhook:
-      enabled: true
       resources:
         requests:
           cpu: 10m
