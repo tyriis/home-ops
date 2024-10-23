@@ -17,7 +17,7 @@ ENABLE_LINTERS:
   - SPELL_PROSELINT
 EXCLUDED_DIRECTORIES:
   - .terraform
-FILTER_REGEX_EXCLUDE: (\.envrc|\.terraform/.*|\.git/*|infra/talos/clusterconfig/*)
+FILTER_REGEX_EXCLUDE: (\.envrc|\.terraform/.*|\.git/*|infra/talos/clusterconfig/*|.*/gotk-components\.yaml)
 MARKDOWN_MARKDOWNLINT_CONFIG_FILE: .markdownlint.yaml
 YAML_YAMLLINT_CONFIG_FILE: .yamllint.yaml
 YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (.*\.sops\..*|gotk-components\.yaml)
