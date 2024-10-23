@@ -15,6 +15,16 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
+  maxHistory: 10
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
 
   values:
     controllers:
@@ -84,7 +94,7 @@ spec:
 
     service:
       app:
-        controller: unifi
+        controller: *app
         type: LoadBalancer
         loadBalancerIP: &ip ${SETTING_CILIUM_UNIFI_ADDR}
         externalTrafficPolicy: Local
