@@ -37,40 +37,20 @@ spec:
   values:
     global:
       enabled: true
-      # Enable integration with the Prometheus Operator
-      # See the top level serverTelemetry section below before enabling this feature.
-      # prometheusOperator: true
 
-    # inject valut sidecars via admission webhook
-    # injector:
-    #   replicas: 1
-    #   leaderElector:
-    #     enabled: true
-    #   metrics:
-    #     enabled: true
-    #   logLevel: "info"
-    #   logFormat: "json"
-    #   revokeOnShutdown: true
-    #   webhook:
-    #     failurePolicy: Ignore
-    #     matchPolicy: Exact
-    #     timeoutSeconds: 30
-    #   failurePolicy: Ignore
-    #   resources:
-    #     requests:
-    #       memory: 256Mi
-    #       cpu: 250m
-    #     limits:
-    #       memory: 256Mi
-    #       cpu: 250m
-
-    # metrics:
-    #   enabled: true
-    service:
-      enabled: true
+    injector:
+      metrics:
+        enabled: true
+      logFormat: "json"
+      revokeOnShutdown: true
+      resources: {} # TODO
 
     server:
-      # updateStrategyType: "OnDelete"
+      resources:
+        requests:
+          cpu: 250m
+          memory: 256Mi
+      updateStrategyType: "OnDelete"
       logLevel: "info"
       logFormat: "json"
       extraLabels:
@@ -78,10 +58,6 @@ spec:
       ingress:
         enabled: true
         ingressClassName: nginx
-        # When HA mode is enabled and K8s service registration is being used,
-        # configure the ingress to point to the Vault active service.
-        # activeService: true
-        # pathType: Prefix
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/tls-acme: "true"
@@ -107,40 +83,11 @@ spec:
       extraEnvironmentVars:
         # VAULT_TOKEN: ${SECRET_VAULT_TOKEN}
         TZ: ${SETTING_TZ}
-        # GOOGLE_APPLICATION_CREDENTIALS: /vault/userconfig/kms-vault-unseal/serviceaccount.json
-
-      # authDelegator enables a cluster role binding to be attached to the service
-      # account.  This cluster role binding can be used to setup Kubernetes auth
-      # method.  https://www.vaultproject.io/docs/auth/kubernetes.html
-      # authDelegator:
-      #   enabled: true
-
-      # extraVolumes:
-      #   - type: secret
-      #     name: kms-vault-unseal
-      #     path: /vault/userconfig
-
-      service:
-        enabled: true
-        # Enable or disable the vault-active service, which selects Vault pods that
-        # have labelled themselves as the cluster leader with `vault-active: "true"`
-        # active:
-        #   enabled: true
-        # Enable or disable the vault-standby service, which selects Vault pods that
-        # have labelled themselves as a cluster follower with `vault-active: "false"`
-        # standby:
-        #   enabled: true
-        # If enabled, the service selectors will include `app.kubernetes.io/instance: {{ .Release.Name }}`
-        # When disabled, services may select Vault pods not deployed from the chart.
-        # Does not affect the headless vault-internal service with `ClusterIP: None`
-        instanceSelector:
-          enabled: true
-      resources:
-        requests:
-          memory: 256Mi
-          cpu: 250m
-        limits:
-          memory: 256Mi
+        GOOGLE_APPLICATION_CREDENTIALS: /vault/userconfig/kms-vault-unseal/serviceaccount.json
+      extraVolumes:
+        - type: secret
+          name: kms-vault-unseal
+          path: /vault/userconfig
       ha:
         enabled: true
         replicas: 1
@@ -150,10 +97,15 @@ spec:
           config: |
             # api_addr = "http://127.0.0.1:8200"
             # cluster_addr = "https://127.0.0.1:8201"
-
             disable_mlock = true
             ui = true
-
+            seal "gcpckms" {
+              disabled    = "false"
+              project     = "${SECRET_GCP_PROJECT}"
+              region      = "europe-west3"
+              key_ring    = "home-infra"
+              crypto_key  = "vault-unseal"
+            }
             listener "tcp" {
               tls_disable = 1
               address = "[::]:8200"
@@ -191,6 +143,8 @@ spec:
     # https://www.vaultproject.io/docs/configuration/telemetry
     # https://www.vaultproject.io/docs/internals/telemetry
     # serverTelemetry:
+    #   # Enable integration with the Prometheus Operator
+    #   prometheusOperator: true
     #   # Enable support for the Prometheus Operator. Currently, this chart does not support
     #   serviceMonitor:
     #     # Enable deployment of the Vault Server ServiceMonitor CustomResource.
