@@ -14,7 +14,7 @@ esp32:
 
 # Enable logging
 logger:
-  level: INFO
+  level: DEBUG
   # logs:
   #   mqtt.component: INFO
   #   mqtt.client: INFO
@@ -251,7 +251,7 @@ sensor:
     internal: true
 
   - platform: dallas_temp
-    dallas_id: dallas_bus
+    one_wire_id: dallas_bus
     address: 0x900416C50360FF28
     name: "${friendly_name} Temperature Return Groundfloor"
     resolution: 12
@@ -259,7 +259,7 @@ sensor:
     accuracy_decimals: 1
 
   - platform: dallas_temp
-    dallas_id: dallas_bus
+    one_wire_id: dallas_bus
     address: 0x060416C4E395FF28
     name: "${friendly_name} Temperature Flow Upstairs"
     resolution: 12
@@ -269,7 +269,7 @@ sensor:
       - offset: 0.125
 
   - platform: dallas_temp
-    dallas_id: dallas_bus
+    one_wire_id: dallas_bus
     address: 0xE20516D07C0BFF28
     name: "${friendly_name} Temperature Flow Groundfloor"
     resolution: 12
@@ -279,7 +279,7 @@ sensor:
       - offset: 0.1875
 
   - platform: dallas_temp
-    dallas_id: dallas_bus
+    one_wire_id: dallas_bus
     address: 0xF1031701A437FF28
     name: "${friendly_name} Temperature Return Upstairs"
     resolution: 12
