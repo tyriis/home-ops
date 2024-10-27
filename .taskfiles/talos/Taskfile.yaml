@@ -194,9 +194,10 @@ tasks:
       - talosctl --context {{.cluster}} --nodes {{.hostname}} get machineconfig >/dev/null 2>&1
 
   kubelet:upgrade:
+    # usage: task talos:kubelet:upgrade hostname=talos01 ip=192.168.1.51 cluster=talos-flux
     desc: Upgrade kubelet on a node
     dir: infra/talos
-    prompt: do you want to upgrade kubelet to {{.KUBELET_VERSION}} on node {{.hostname}}?
+    prompt: do you want to upgrade kubelet to {{.KUBERNETES_VERSION}} on node {{.hostname}}?
     cmds:
       - task: config
       - until kubectl --context {{.KUBE_CONTEXT}} wait --timeout=5m --for=jsonpath=.status.ceph.health=HEALTH_OK cephcluster --all --all-namespaces; do sleep 10; done
