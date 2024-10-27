@@ -31,7 +31,7 @@
         ExecStart = ''
           ${pkgs.bash}/bin/bash -c '\
           ${pkgs.coreutils}/bin/mkdir -p /home/nils/.kube && \
-          ${pkgs.coreutils}/bin/chown nils:users /home/nils/.kube'
+          ${pkgs.coreutils}/bin/chown nils:users /home/nils/.kube && \
           ${pkgs.coreutils}/bin/cp /etc/rancher/k3s/k3s.yaml /home/nils/.kube/config && \
           ${pkgs.coreutils}/bin/chown nils:users /home/nils/.kube/config'
         '';
@@ -48,7 +48,7 @@
         ExecStart = ''
           ${pkgs.bash}/bin/bash -c '\
           ${pkgs.coreutils}/bin/mkdir -p /home/jasmin/.kube && \
-          ${pkgs.coreutils}/bin/chown jasmin:users /home/jasmin/.kube'
+          ${pkgs.coreutils}/bin/chown jasmin:users /home/jasmin/.kube && \
           ${pkgs.coreutils}/bin/cp /etc/rancher/k3s/k3s.yaml /home/jasmin/.kube/config && \
           ${pkgs.coreutils}/bin/chown -r jasmin:users /home/jasmin/.kube/config'
         '';
