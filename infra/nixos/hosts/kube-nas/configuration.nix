@@ -127,6 +127,9 @@
   # https://discourse.nixos.org/t/adding-folders-and-scripts/5114/4
   systemd.tmpfiles.rules = [
     "d /mnt/volume1/data 0777 root root"
+    "d /mnt/volume1/home 0770 root root"
+    "d /mnt/volume1/home/nils 0770 1000 100"
+    "d /mnt/volume1/home/jasmin 0777 root root"
     "d /mnt/volume1/minio 0755 568 568" # 568 is the minio user
   ];
 }
