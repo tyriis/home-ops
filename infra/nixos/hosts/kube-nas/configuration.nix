@@ -30,6 +30,12 @@
   # btrfs
   boot.supportedFilesystems = [ "btrfs" "xfs" ];
 
+  # enable ipv6 forwarding (mixed ip stack)
+  boot.kernel.sysctl = {
+    "net.ipv6.conf.all.forwarding" = 1;
+    "net.ipv6.conf.default.forwarding" = 1;
+  };
+
   nixpkgs.config.allowUnfree = true;
 
   networking.hostName = "kube-nas"; # Define your hostname.
