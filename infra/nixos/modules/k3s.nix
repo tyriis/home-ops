@@ -1,6 +1,9 @@
 { inputs, config, lib, pkgs, ... }:
 {
-  # Enable k3s
+  # install k3s package
+  environment.systemPackages = with pkgs; [ k3s ];
+
+  # enable k3s systemd service
   services.k3s = {
     enable = true;
     role = "server";
@@ -16,7 +19,4 @@
 
   # prevent deploymnet of local-storage
   environment.etc."rancher/k3s/server/manifests/local-storage.yaml.skip".text = "";
-  environment.systemPackages = with pkgs; [
-    k3s
-  ];
 }
