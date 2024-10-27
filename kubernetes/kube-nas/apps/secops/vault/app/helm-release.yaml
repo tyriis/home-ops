@@ -100,7 +100,7 @@ spec:
             ui = true
             seal "gcpckms" {
               disabled    = "false"
-              project     = "${SECRET_GCP_PROJECT}"
+              project     = "techtales"
               region      = "europe-west3"
               key_ring    = "home-infra"
               crypto_key  = "vault-unseal"
