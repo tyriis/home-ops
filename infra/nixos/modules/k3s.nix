@@ -1,3 +1,4 @@
+{ inputs, config, lib, pkgs, ... }:
 {
   # Enable k3s
   services.k3s = {
