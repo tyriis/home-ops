@@ -10,10 +10,12 @@
       "--disable-network-policy" # https://docs.k3s.io/networking#network-policy-controller
       "--disable=servicelb" # https://docs.k3s.io/networking#disabling-servicelb
       "--disable=metrics-server" # https://docs.k3s.io/installation/packaged-components?_highlight=metric#using-the---disable-flag
-      "--disable local-storage"
     ];
   };
 
   # prevent deploymnet of local-storage
   environment.etc."rancher/k3s/server/manifests/local-storage.yaml.skip".text = "";
+  environment.systemPackages = with pkgs; [
+    k3s
+  ];
 }
