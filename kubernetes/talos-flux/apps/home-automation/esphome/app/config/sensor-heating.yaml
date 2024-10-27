@@ -73,6 +73,7 @@ api:
             args: [id(max_temp)]
 
 ota:
+  platform: esphome
   password: !secret ota_password
 
 wifi:
