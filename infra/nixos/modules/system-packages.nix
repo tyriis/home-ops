@@ -29,5 +29,6 @@
   programs.zsh.enable = true;
 
   # Enable VSCode server.
+  # https://nixos.wiki/wiki/Visual_Studio_Code#nix-ld
   programs.nix-ld.enable = true;
 }
