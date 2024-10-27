@@ -42,7 +42,6 @@ spec:
       metrics:
         enabled: true
       logFormat: "json"
-      revokeOnShutdown: true
       resources: {} # TODO
 
     server:
