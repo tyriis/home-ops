@@ -250,7 +250,7 @@ sensor:
     update_interval: 30s
     internal: true
 
-  - platform: dallas
+  - platform: dallas_temp
     dallas_id: dallas_bus
     address: 0x900416C50360FF28
     name: "${friendly_name} Temperature Return Groundfloor"
@@ -258,7 +258,7 @@ sensor:
     unit_of_measurement: "°C"
     accuracy_decimals: 1
 
-  - platform: dallas
+  - platform: dallas_temp
     dallas_id: dallas_bus
     address: 0x060416C4E395FF28
     name: "${friendly_name} Temperature Flow Upstairs"
@@ -268,7 +268,7 @@ sensor:
     filters:
       - offset: 0.125
 
-  - platform: dallas
+  - platform: dallas_temp
     dallas_id: dallas_bus
     address: 0xE20516D07C0BFF28
     name: "${friendly_name} Temperature Flow Groundfloor"
@@ -278,7 +278,7 @@ sensor:
     filters:
       - offset: 0.1875
 
-  - platform: dallas
+  - platform: dallas_temp
     dallas_id: dallas_bus
     address: 0xF1031701A437FF28
     name: "${friendly_name} Temperature Return Upstairs"
