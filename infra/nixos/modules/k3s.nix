@@ -50,7 +50,7 @@
           ${pkgs.coreutils}/bin/mkdir -p /home/jasmin/.kube && \
           ${pkgs.coreutils}/bin/chown jasmin:users /home/jasmin/.kube && \
           ${pkgs.coreutils}/bin/cp /etc/rancher/k3s/k3s.yaml /home/jasmin/.kube/config && \
-          ${pkgs.coreutils}/bin/chown -r jasmin:users /home/jasmin/.kube/config'
+          ${pkgs.coreutils}/bin/chown jasmin:users /home/jasmin/.kube/config'
         '';
       };
     };
