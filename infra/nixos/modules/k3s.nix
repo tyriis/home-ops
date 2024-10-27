@@ -19,4 +19,41 @@
 
   # prevent deploymnet of local-storage
   environment.etc."rancher/k3s/server/manifests/local-storage.yaml.skip".text = "";
+
+  # copy /etc/rancher/k3s/k3s.yaml to /home/nils/.kube/config
+  systemd.services = {
+    k3s-post-restart-nils = {
+      description = "K3s post-restart actions for nils";
+      after = [ "k3s.service" ];
+      wants = [ "k3s.service" ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = ''
+          ${pkgs.bash}/bin/bash -c '\
+          ${pkgs.coreutils}/bin/mkdir -p /home/nils/.kube && \
+          ${pkgs.coreutils}/bin/chown nils:users /home/nils/.kube'
+          ${pkgs.coreutils}/bin/cp /etc/rancher/k3s/k3s.yaml /home/nils/.kube/config && \
+          ${pkgs.coreutils}/bin/chown nils:users /home/nils/.kube/config'
+        '';
+      };
+    };
+
+  # copy /etc/rancher/k3s/k3s.yaml to /home/jasmin/.kube/config
+    k3s-post-restart-jasmin = {
+      description = "K3s post-restart actions for jasmin";
+      after = [ "k3s.service" ];
+      wants = [ "k3s.service" ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = ''
+          ${pkgs.bash}/bin/bash -c '\
+          ${pkgs.coreutils}/bin/mkdir -p /home/jasmin/.kube && \
+          ${pkgs.coreutils}/bin/chown jasmin:users /home/jasmin/.kube'
+          ${pkgs.coreutils}/bin/cp /etc/rancher/k3s/k3s.yaml /home/jasmin/.kube/config && \
+          ${pkgs.coreutils}/bin/chown -r jasmin:users /home/jasmin/.kube/config'
+        '';
+      };
+    };
+  };
+
 }
