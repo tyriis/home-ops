@@ -42,7 +42,6 @@
   #   fsType = "btrfs";
   #   options = [ "subvol=nfs" "compress=zstd" "noatime" ];
   # };
-
   fileSystems."/mnt/volume1" = {
     device = "/dev/disk/by-uuid/a83e6a8d-2aed-4190-8962-8ee93a81bed1";
     fsType = "xfs";
@@ -54,6 +53,12 @@
     device = "/mnt/volume1/data";
     options = [ "bind" ];
   };
+
+  fileSystems."/export/home" = {
+    device = "/mnt/volume1/home";
+    options = [ "bind" ];
+  };
+
 
   swapDevices = [ ];
 
