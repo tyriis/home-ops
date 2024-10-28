@@ -24,7 +24,6 @@ provisioner: nfs.csi.k8s.io
 parameters:
   server: 192.168.1.60
   share: /export/data/csi
-  archiveOnDelete: "false"
 reclaimPolicy: Retain
 volumeBindingMode: WaitForFirstConsumer
 allowVolumeExpansion: true
