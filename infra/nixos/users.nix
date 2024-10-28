@@ -2,7 +2,7 @@
 
 {
 
-  users.defaultUserShell = pkgs.zsh;
+  users.defaultUserShell = pkgs.bash;
   # Give extra permissions with Nix
   # nix.settings.trusted-users = [ "nils" ];
 
@@ -29,6 +29,7 @@
   };
 
   users.users.jasmin = {
+    uid = 1001;
     isNormalUser = true;
     createHome = true;
     home = "/home/jasmin";
@@ -42,6 +43,24 @@
       in
       pkgs.lib.splitString "\n" (builtins.readFile
         authorizedKeys);
+  };
+
+  users.users.alex = {
+    uid = 1002;
+    isNormalUser = false;
+    createHome = false;
+  };
+
+  users.users.dominik = {
+    uid = 1003;
+    isNormalUser = false;
+    createHome = false;
+  };
+
+  users.users.home-cluster = {
+    uid = 1004;
+    isNormalUser = false;
+    createHome = false;
   };
 
   # allow of sudo without password

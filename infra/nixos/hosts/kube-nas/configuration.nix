@@ -12,6 +12,7 @@
       # Include nfs config.
       ./nfs.nix
       ../../users.nix
+      ../../nfs-users.nix
       ../../modules/neovim.nix
       ../../modules/k3s.nix
       ../../modules/openssh.nix
@@ -126,10 +127,22 @@
   # create folder
   # https://discourse.nixos.org/t/adding-folders-and-scripts/5114/4
   systemd.tmpfiles.rules = [
-    "d /mnt/volume1/data 0777 root root"
-    "d /mnt/volume1/home 0777 root root"
-    "d /mnt/volume1/home/nils 0777 nils users"
-    "d /mnt/volume1/home/jasmin 0750 jasmin users"
+    "d /mnt/volume1/backup 0700 root root"
+    "d /mnt/volume1/backup/nils 0770 nils users"
+    "d /mnt/volume1/backup/jasmin 0770 jasmin users"
+    "d /mnt/volume1/backup/alex 0770 alex users"
+    "d /mnt/volume1/backup/dominik 0770 dominik users"
+    "d /mnt/volume1/data 0700 root root"
+    "d /mnt/volume1/data/csi 0770 kube users"
+    "d /mnt/volume1/data/downloads 0770 root users"
+    "d /mnt/volume1/data/scans 0770 root users"
+    "d /mnt/volume1/data/syncthing 0770 root users"
+    "d /mnt/volume1/data/media 0770 root users"
+    "d /mnt/volume1/home 0700 root root"
+    "d /mnt/volume1/home/nils 0770 nils users"
+    "d /mnt/volume1/home/jasmin 0770 jasmin users"
+    "d /mnt/volume1/home/alex 0770 alex users"
+    "d /mnt/volume1/home/dominik 0770 dominik users"
     "d /mnt/volume1/minio 0755 568 568" # 568 is the minio user
   ];
 }

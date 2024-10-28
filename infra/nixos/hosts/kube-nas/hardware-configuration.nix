@@ -49,6 +49,11 @@
   };
 
   # mount nfs bind mount
+  fileSystems."/export/backup" = {
+    device = "/mnt/volume1/home";
+    options = [ "bind" ];
+  };
+
   fileSystems."/export/data" = {
     device = "/mnt/volume1/data";
     options = [ "bind" ];
