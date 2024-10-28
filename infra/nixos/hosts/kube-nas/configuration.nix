@@ -128,7 +128,7 @@
   systemd.tmpfiles.rules = [
     "d /mnt/volume1/data 0777 root root"
     "d /mnt/volume1/home 0777 root root"
-    "d /mnt/volume1/home/nils 0750 nils users"
+    "d /mnt/volume1/home/nils 0777 nils users"
     "d /mnt/volume1/home/jasmin 0750 jasmin users"
     "d /mnt/volume1/minio 0755 568 568" # 568 is the minio user
   ];
