@@ -2,8 +2,8 @@
 apiVersion: dbman.hef.sh/v1alpha2
 kind: DatabaseServer
 metadata:
-  name: nas-postgres16
+  name: nas-postgres17
 spec:
-  connString: "host=nas-postgres16-rw.database-system"
+  connString: "host=nas-postgres17-rw.database-system"
   credentials:
     basicAuthSecretRef: postgres-superuser
