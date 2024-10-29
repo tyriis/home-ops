@@ -155,6 +155,10 @@ controlPlane:
               endpoints:
                 - https://harbor.techtales.io/v2/proxy-ghcr.io
               overridePath: true
+        features:
+          hostDNS:
+            enabled: true
+            forwardKubeDNSToHost: false
       cluster:
         etcd:
           extraArgs:
@@ -221,3 +225,7 @@ worker:
               endpoints:
                 - https://harbor.techtales.io/v2/proxy-ghcr.io
               overridePath: true
+        features:
+          hostDNS:
+            enabled: true
+            forwardKubeDNSToHost: false
