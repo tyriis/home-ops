@@ -127,7 +127,7 @@ spec:
           controller:
             enabled: true
             port: 8080
-            protocol: TCP
+            protocol: HTTP
           proxy:
             enabled: true
             port: 8081
