@@ -95,7 +95,7 @@ spec:
             nameOverride: proxy
             image:
               repository: nginx
-              tag: 1.27.2-alpine-otel
+              tag: 1.27.2-alpine-otel@sha256:79cc1cf02666dee9aef980cefc5f3a5c4752781ea2b0f74e4989ce0372d283df
             env:
               TZ: ${SETTING_TZ}
               NGINX_PORT: "8081"
