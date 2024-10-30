@@ -42,14 +42,14 @@ spec:
       image:
         registry: quay.io
         repository: argoproj/argoexec
-        tag: v3.5.11@sha256:4a576a3fe37bf8351117d00be6febf2a93f70840736469be2eeb7c21a6b368e0
+        tag: v3.5.12@sha256:5ac89cc2ff347415d16f1f94b025a47806b1d2cbdd2dd5dec61e5e9c961e21a0
 
     server:
       enabled: true
       image:
         registry: quay.io
         repository: argoproj/argocli
-        tag: v3.5.11@sha256:a5ec2d37d9fe80e0144098f1cdcac4626113cb41e0c5a69e213480d4322782f8
+        tag: v3.5.12@sha256:fce45cfa547e9279bc15b0f3c55aa7eecac5a17edd9368a5e93239da139194fa
       resources:
         requests:
           cpu: 10m
