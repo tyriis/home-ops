@@ -107,7 +107,7 @@ spec:
           controller:
             enabled: true
             port: 8080
-            protocol: HTTP
+            protocol: TCP
           http:
             port: 8443
             protocol: HTTPS
