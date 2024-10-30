@@ -36,6 +36,7 @@ spec:
           name: postgres-minio
           key: MINIO_SECRET_KEY
 
+  # recover from a backup
   # https://cloudnative-pg.io/documentation/current/recovery/#recovery-from-an-object-store
   # bootstrap:
   #   recovery:
@@ -46,24 +47,26 @@ spec:
   #       <<: *barmanObjectStore
   #       serverName: *clustername
 
-  bootstrap:
-    initdb:
-      import:
-        type: monolith
-        databases:
-          - "*"
-        roles:
-          - "*"
-        source:
-          externalCluster: postgres16
+  # import databases to a new cluster - for major version upgrades
+  # https://cloudnative-pg.io/documentation/current/database_import/#the-monolith-type
+  # bootstrap:
+  #   initdb:
+  #     import:
+  #       type: monolith
+  #       databases:
+  #         - "*"
+  #       roles:
+  #         - "*"
+  #       source:
+  #         externalCluster: postgres16
 
-  externalClusters:
-    - name: postgres16
-      connectionParameters:
-        host: postgres16-rw
-        user: postgres
-        dbname: postgres
-        sslmode: require
-      password:
-        name: postgres-superuser
-        key: password
+  # externalClusters:
+  #   - name: postgres16
+  #     connectionParameters:
+  #       host: postgres16-rw
+  #       user: postgres
+  #       dbname: postgres
+  #       sslmode: require
+  #     password:
+  #       name: postgres-superuser
+  #       key: password
