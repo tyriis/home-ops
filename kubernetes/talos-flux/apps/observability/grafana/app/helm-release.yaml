@@ -27,6 +27,9 @@ spec:
   values:
     replicas: 1
 
+    annotations:
+      reloader.stakater.com/auto: "true"
+
     env:
       TZ: ${SETTING_TZ}
       GF_EXPLORE_ENABLED: "true"
