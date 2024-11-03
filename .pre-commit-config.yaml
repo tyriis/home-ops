@@ -3,8 +3,8 @@
 fail_fast: false
 
 default_stages:
-  - commit
-  - push
+  - pre-commit
+  - pre-push
 
 repos:
   - repo: https://github.com/thlorenz/doctoc
