@@ -150,5 +150,5 @@ spec:
               namespace: observability
             patch: |
               - op: add
-                path: /metadata/anottations/reloader.stakater.com~1auto
+                path: /metadata/annotations/reloader.stakater.com~1auto
                 value: "true"
