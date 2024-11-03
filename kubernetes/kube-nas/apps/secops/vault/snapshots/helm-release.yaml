@@ -1,0 +1,93 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app vault-snapshots
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  # https://github.com/bjw-s/helm-charts/blob/main/charts/library/common/values.yaml
+  values:
+    controllers:
+      vault-snapshots:
+        type: cronjob
+        cronjob:
+          concurrencyPolicy: Forbid
+          schedule: "0 6 * * *" # daily at 6am
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            runAsNonRoot: true
+        containers:
+          snapshot:
+            image:
+              repository: vault
+              tag: 1.13.3
+            command:
+              - /bin/sh
+              - -ec
+              - |
+                apk add curl jq
+                export VAULT_TOKEN=$(vault write auth/approle/login role_id=$APPROLE_ROLE_ID secret_id=$APPROLE_SECRET_ID -format=json | jq -r .auth.client_token);
+                vault operator raft snapshot save /data/snapshots/vault-raft.snap;
+            envFrom:
+              - secretRef:
+                  name: vault-snapshot-agent-credentials
+            env:
+              - name: VAULT_ADDR
+                value: http://vault-active.secops.svc.cluster.local:8200
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+            resources:
+              requests:
+                cpu: 10m
+                memory: 10Mi
+          upload:
+            image:
+              repository: google/cloud-sdk
+              tag: 499.0.0-alpine
+            command:
+              - /bin/sh
+              - -ec
+              - |
+                until [ -f /data/snapshots/vault-raft.snap ]; do sleep 5; done;
+                gcloud auth activate-service-account --key-file=/data/credentials/credentials.json;
+                gsutil cp /data/snapshots/vault-raft.snap gs://$BUCKET_NAME/vault_raft_$(date +"%Y%m%d_%H%M%S").snap;
+            envFrom:
+              - secretRef:
+                  name: vault-snapshots-gcs
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+            resources:
+              requests:
+                cpu: 10m
+                memory: 10Mi
+    persistence:
+      data:
+        type: emptyDir
+        globalMounts:
+          - path: /data
+      credentials:
+        type: secret
+        name: vault-snapshots-gcp-sa
+        advancedMounts:
+          vault-snapshots:
+            upload:
+              - path: /data/credentials/credentials.json
+                subPath: credentials.json
+                readOnly: true
