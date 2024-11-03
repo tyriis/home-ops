@@ -147,8 +147,8 @@ spec:
               version: v1
               kind: Deployment
               name: grafana
+              namespace: observability
             patch: |
               - op: add
                 path: /metadata/anottations/reloader.stakater.com~1auto
                 value: "true"
-
