@@ -46,7 +46,7 @@ spec:
                   name: vault-snapshot-agent-credentials
             env:
               - name: VAULT_ADDR
-                value: http://vault-active.secops.svc.cluster.local:8200
+                value: http://vault-active.secops.svc.cluster.local:8200 #NOSONAR allow http
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
