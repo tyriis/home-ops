@@ -33,7 +33,7 @@ jobs:
 
       # https://github.com/marketplace/actions/the-determinate-nix-installer
       - name: Install nix
-        uses: DeterminateSystems/nix-installer-action@da36cb69b1c3247ad7a1f931ebfd954a1105ef14 # v14
+        uses: DeterminateSystems/nix-installer-action@b92f66560d6f97d6576405a7bae901ab57e72b6a # v15
 
       # https://github.com/marketplace/actions/magic-nix-cache
       - name: Use cache
