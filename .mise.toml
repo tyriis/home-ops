@@ -1,3 +1,6 @@
+[env]
+TALOSCONFIG="{{config_root}}/infra/talos/clusterconfig/talosconfig"
+
 [tools]
 # https://age-encryption.org/
 age = "1.2.0"
