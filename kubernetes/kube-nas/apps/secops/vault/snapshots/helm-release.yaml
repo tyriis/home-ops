@@ -33,7 +33,7 @@ spec:
           snapshot:
             image:
               repository: vault
-              tag: 1.13.3
+              tag: 1.13.3@sha256:f98ac9dd97b0612746630033771bc7a8c86408a44a056f3f4be47fc576ec3744
             command:
               - /bin/sh
               - -ec
