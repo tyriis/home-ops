@@ -8,8 +8,10 @@ Thumbs.db
 # vscode-sops
 .decrypted~*.yaml
 *.agekey
-.env
-.envrc
+
+# Env files
+*.envrc
+*.env
 
 # Local .terraform directories
 **/.terraform/*
