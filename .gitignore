@@ -9,6 +9,7 @@ Thumbs.db
 .decrypted~*.yaml
 *.agekey
 .env
+.envrc
 
 # Local .terraform directories
 **/.terraform/*
