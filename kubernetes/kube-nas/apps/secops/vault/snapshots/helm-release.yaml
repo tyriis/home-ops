@@ -38,9 +38,10 @@ spec:
               - /bin/sh
               - -ec
               - |
-                apk add curl jq
-                export VAULT_TOKEN=$(vault write auth/approle/login role_id=$APPROLE_ROLE_ID secret_id=$APPROLE_SECRET_ID -format=json | jq -r .auth.client_token);
-                vault operator raft snapshot save /data/snapshots/vault-raft.snap;
+                mkdir -p /data/snapshots
+                export VAULT_TOKEN=$(vault write -format=json auth/approle/login role_id=$APPROLE_ROLE_ID secret_id=$APPROLE_SECRET_ID | awk -F'"' '/client_token/{print $4}')
+                vault operator raft snapshot save /data/snapshots/vault-raft.snap
+                ls -l /data/snapshots
             envFrom:
               - secretRef:
                   name: vault-snapshot-agent-credentials
@@ -63,9 +64,12 @@ spec:
               - /bin/sh
               - -ec
               - |
-                until [ -f /data/snapshots/vault-raft.snap ]; do sleep 5; done;
-                gcloud auth activate-service-account --key-file=/data/credentials/credentials.json;
-                gsutil cp /data/snapshots/vault-raft.snap gs://$BUCKET_NAME/vault_raft_$(date +"%Y%m%d_%H%M%S").snap;
+                until [ -f /data/snapshots/vault-raft.snap ]; do sleep 5; done
+                gcloud auth activate-service-account --key-file=/data/credentials/credentials.json
+                gsutil cp /data/snapshots/vault-raft.snap gs://$BUCKET_NAME/vault_raft_$(date +"%Y%m%d_%H%M%S").snap
+            env:
+              - name: HOME
+                value: /data/nobody
             envFrom:
               - secretRef:
                   name: vault-snapshots-gcs
