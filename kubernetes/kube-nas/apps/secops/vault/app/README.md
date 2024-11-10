@@ -2,16 +2,15 @@
 
 This cluster is using [autounseal-gcpkms][hashicorp-tutorial-unseal-gcpkms] to unseal the vault.
 
-## Setup auto-unseal
-
-### Prerequisites in GCP
+## Prerequisites in GCP
 
 - active keyring and key in KMS
 - Service account role `roles/cloudkms.cryptoKeyEncrypterDecrypter` and `roles/cloudkms.viewer`, preferably on crypto key level
 
-### Setup auto-unseal on fresh Vault
+## Init fresh Vault
 
-add seal definition to config.hcl.
+Vault can be initialized with the seal configuration in place. After initial start it will complain about not be able to unseal.
+Exec in Vault Pod and do the following:
 
 ```shell
 vault status          # running, should be recovery seal type: gcpckms, sealed: true)
@@ -19,7 +18,9 @@ vault operator init   # initialises with 5 key shares and a key treshold of 3
 vault status          # should be recovery seal type: shamir, sealed: false
 ```
 
-### Migrate existing vault to auto-unseal with gcpckms
+Save Recovery Keys and Root token for further recovery/restore operations.
+
+## Migrate existing vault to auto-unseal with gcpckms
 
 - prepare unseal keys
 - stop vault
@@ -32,8 +33,9 @@ vault status          # should be recovery seal type: shamir, sealed: false
 vault status # should be recovery seal type: shamir, sealed: false
 ```
 
-## Configure Vault
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-For configuration and README.md check terraform-vault Repository.
+<!-- Links -->
 
 [hashicorp-tutorial-unseal-gcpkms]: https://learn.hashicorp.com/tutorials/vault/autounseal-gcp-kms
