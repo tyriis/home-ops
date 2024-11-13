@@ -21,9 +21,7 @@
     },
     "home-manager": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": ["nixpkgs"]
       },
       "locked": {
         "lastModified": 1726989464,
@@ -42,10 +40,7 @@
     },
     "hyprlang": {
       "inputs": {
-        "nixpkgs": [
-          "rose-pine-hyprcursor",
-          "nixpkgs"
-        ],
+        "nixpkgs": ["rose-pine-hyprcursor", "nixpkgs"],
         "systems": "systems_2"
       },
       "locked": {

@@ -9,4 +9,3 @@ resources:
 commonLabels:
   app.kubernetes.io/name: unifi
   app.kubernetes.io/instance: unifi
-

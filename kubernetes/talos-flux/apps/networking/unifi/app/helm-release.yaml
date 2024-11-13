@@ -181,7 +181,6 @@ spec:
               - *controller
             secretName: unifi-controller-tls
 
-
     persistence:
       data:
         existingClaim: unifi-data
@@ -189,4 +188,3 @@ spec:
           unifi:
             app:
               - path: /unifi
-
