@@ -35,8 +35,8 @@ spec:
     minecraftServer:
       eula: "TRUE"
       version: "1.21.3"
-      type: SPIGOT
       spigotDownloadUrl: https://s3.mcjars.app/spigot/1.21.3/4380/server.jar
+      type: SPIGOT
       motd: techtales survival
       difficulty: hard
       ops: "tyriis,jazzlyin"
