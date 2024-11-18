@@ -1,0 +1,28 @@
+# yamllint disable
+apiVersion: v1
+kind: Secret
+metadata:
+    name: jazzlyn-registry-dockerhub
+type: kubernetes.io/dockerconfigjson
+data:
+    .dockerconfigjson: ENC[AES256_GCM,data:V8L4Xd5dnfDBvsxohmMwHzzI5PQFyatOSul16bZf/TWoFDfybLUqsxkYHX5c/r+K8nIdzTQBsYSxws3dvo8eW3B/2ReoSzJ9/sCY2VX9gK+qAa4fGptLvQpCyN95OfxHCE6qMknv26LTpIgTQGkFmcoPZGVHh6L6d8x2i+MUQN2k5AeOFYMRLMuQ3+oWsnOWOmKB3fYEracnZwP1dX6eF1sBeofrxa8VA3XsMfBUJT2i1ocdbDwnVZem3zw=,iv:zVBwk/nBQFScBVpUuJeIFwt+Su00UwQ3WLEyT1ZoIvA=,tag:UXUecyNbYy90UM6YRXlLgQ==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age16zqeqx5y6ay3flwz0d06rn83yjv9ckys3j8tpkysf9v6295fhc6sf4r0uj
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBuRjBkWE4wWEsyeWtmN0pW
+            RmFCUUwrN2tDT1huV01MQ21RRm4zbVJESW1jCjZQek1OaFJjRVk2VDZhMEVzQm9h
+            c1VKWWxacDBSS0JIK2dDa2kyMXJYdDgKLS0tIFdOMUF2MEN1djB3ZUl6VGFFNzVV
+            QjJzbGIxWkJTZlpTSEp6cUF6aXpBZVEKanFWd8wh41tgFGbOnmVa1gcVQtoG4vML
+            gN/7xg1Mhgnf6Ge9hJungaL8EXwXLMTCvrI5WgzHJFAMm9Knf042IQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-11-18T16:31:38Z"
+    mac: ENC[AES256_GCM,data:IjNe7JJYiKWUmk/Hn5RXziAtxA3WZKNfVIf4gYPbqeoeWukOZgPD5jYtbbv82a3s9Kj081kUuwKyfAVNU59xKQr6cUOKpG3cJBKjhCvpXquaNUlrY8POQ7zoADT//mWeewx8mVOinb5EvVWkBY1j+PsdtVwNBi142mvptQ2XiY0=,iv:oLpqvA+qxZxV2mhGkh+ez3z/PIHOHYDyITv0SYT7xF8=,tag:DiXxyHDSxb/xRjV6PMM+zw==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.9.1
