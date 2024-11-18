@@ -26,10 +26,40 @@ spec:
       type: dind
     template:
       spec:
+        imagePullSecrets:
+          - name: regcreds-docker
         containers:
           - name: runner
             image: ghcr.io/onedr0p/actions-runner:2.321.0@sha256:d968199e3772ef831c34eb8edd495ef9eb99339a2f7176d4f1774f252f7903fb
             command: ["/home/runner/run.sh"]
+            volumeMounts:
+              - name: regcreds-docker
+                mountPath: /home/runner/config.json
+                subPath: config.json
+              - name: docker-config
+                mountPath: /home/runner/.docker
+        initContainers:
+          - name: dockerconfigwriter
+            image: busybox
+            command:
+              - /bin/sh
+              - -ec
+              - cp /home/runner/config.json /home/runner/.docker/config.json
+            volumeMounts:
+              - name: regcreds-docker
+                mountPath: /home/runner/config.json
+                subPath: config.json
+              - name: docker-config
+                mountPath: /home/runner/.docker
+        volumes:
+          - name: regcreds-docker
+            secret:
+              secretName: regcreds-docker
+              items:
+                - key: .dockerconfigjson
+                  path: config.json
+          - name: docker-config
+            emptyDir: {}
     controllerServiceAccount:
       namespace: github
       name: gha-runner-scale-set-controller

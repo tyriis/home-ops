@@ -2,10 +2,10 @@
 apiVersion: v1
 kind: Secret
 metadata:
-    name: jazzlyn-registry-dockerhub
+    name: regcreds-docker
 type: kubernetes.io/dockerconfigjson
 data:
-    .dockerconfigjson: ENC[AES256_GCM,data:V8L4Xd5dnfDBvsxohmMwHzzI5PQFyatOSul16bZf/TWoFDfybLUqsxkYHX5c/r+K8nIdzTQBsYSxws3dvo8eW3B/2ReoSzJ9/sCY2VX9gK+qAa4fGptLvQpCyN95OfxHCE6qMknv26LTpIgTQGkFmcoPZGVHh6L6d8x2i+MUQN2k5AeOFYMRLMuQ3+oWsnOWOmKB3fYEracnZwP1dX6eF1sBeofrxa8VA3XsMfBUJT2i1ocdbDwnVZem3zw=,iv:zVBwk/nBQFScBVpUuJeIFwt+Su00UwQ3WLEyT1ZoIvA=,tag:UXUecyNbYy90UM6YRXlLgQ==,type:str]
+    .dockerconfigjson: ENC[AES256_GCM,data:DjnBvZJd3BEv5iW1GudKHgce+hW3Vh+cXkhprnYPkr4qgcDfWHlKsDZaHODE3AmPgK2Yz51XHexvBtPnBJKl01JwaD78aJ8DX4JPX1aPDQqr5KBXKw/uxoNxtpb7g6+BXP7FZmer9CPgF/nvc3l5pPAdnsgDmOu/RHh8XHghekhCl+HfqSfxktSL3IKsuGBuaKKCKhOLErsgpw9O0QXwwBz+Ot+LhCTnzmf+EnQYzNfDr+d0,iv:HWX+jPZ4QtwGq/UN4tY+FcRiTqGOuF3kvpRHHK+kOgI=,tag:7+oyO9belxotnI4CXpTakg==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -21,8 +21,8 @@ sops:
             QjJzbGIxWkJTZlpTSEp6cUF6aXpBZVEKanFWd8wh41tgFGbOnmVa1gcVQtoG4vML
             gN/7xg1Mhgnf6Ge9hJungaL8EXwXLMTCvrI5WgzHJFAMm9Knf042IQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-11-18T16:31:38Z"
-    mac: ENC[AES256_GCM,data:IjNe7JJYiKWUmk/Hn5RXziAtxA3WZKNfVIf4gYPbqeoeWukOZgPD5jYtbbv82a3s9Kj081kUuwKyfAVNU59xKQr6cUOKpG3cJBKjhCvpXquaNUlrY8POQ7zoADT//mWeewx8mVOinb5EvVWkBY1j+PsdtVwNBi142mvptQ2XiY0=,iv:oLpqvA+qxZxV2mhGkh+ez3z/PIHOHYDyITv0SYT7xF8=,tag:DiXxyHDSxb/xRjV6PMM+zw==,type:str]
+    lastmodified: "2024-11-18T19:20:33Z"
+    mac: ENC[AES256_GCM,data:HtdB3BmrDNLz+ie0TNwcG1Z6a+yRv/1Z1nRzV41P5W3WPhSxhg0TuXIZlYzBKABieAO2k85SRsAP1MPVoE3bGhy5+0d/rzPMgw4oBjtvHWnZa+Ec9ZuF2CLyjHivh19d9PfnZCN3VWmNpGYOySysyKP+rDeZu5Bp+8WEZMQurBo=,iv:3Gkg5PeysB2NnAKBgcXURy98PXFNNJcRK67vmqRxuMM=,tag:/q7dj+OUvWNhfChYSfUgSw==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.9.1
