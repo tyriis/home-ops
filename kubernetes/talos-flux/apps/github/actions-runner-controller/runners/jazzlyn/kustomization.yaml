@@ -5,6 +5,5 @@ kind: Kustomization
 namespace: github
 resources:
   - secrets.sops.yaml
-  - registry-dockerhub.sops.yaml
   - gh-actions-demo.yaml
   - kind-flux-demo.yaml
