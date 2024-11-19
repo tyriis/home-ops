@@ -22,17 +22,8 @@ spec:
     githubConfigUrl: https://github.com/jazzlyn/gh-actions-demo
     minRunners: 1
     maxRunners: 3
-    # containerMode:
-    #   type: dind
     containerMode:
-      type: kubernetes
-      kubernetesModeWorkVolumeClaim:
-        accessModes:
-          - ReadWriteOnce
-        storageClassName: openebs-hostpath
-        resources:
-          requests:
-            storage: 10Gi
+      type: dind
     template:
       spec:
         imagePullSecrets:
