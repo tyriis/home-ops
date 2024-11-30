@@ -13,7 +13,6 @@ configMapGenerator:
       - switch-alexroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-alexroom.yaml
       - switch-basement.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-basement.yaml
       - switch-domiroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-domiroom.yaml
-      # - switch-heating.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-heating.yaml
       - switch-livingroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-livingroom.yaml
       - switch-office.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-office.yaml
 generatorOptions:
