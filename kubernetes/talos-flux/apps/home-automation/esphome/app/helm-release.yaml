@@ -129,8 +129,6 @@ spec:
                 subPath: switch-alexroom.yaml
               - path: /config/switch-basement.yaml
                 subPath: switch-basement.yaml
-              - path: /config/switch-bedroom.yaml
-                subPath: switch-bedroom.yaml
               - path: /config/switch-domiroom.yaml
                 subPath: switch-domiroom.yaml
               - path: /config/switch-livingroom.yaml
