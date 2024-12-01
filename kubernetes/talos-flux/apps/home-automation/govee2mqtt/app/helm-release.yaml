@@ -47,20 +47,36 @@ spec:
             image:
               repository: ghcr.io/wez/govee2mqtt
               tag: latest@sha256:6471bf22613f20960591f57f4465592cf9eb79a4f14776d63e975f045b307c14
-            # ports:
-            #   - name: http
-            #     containerPort: 6052
-            #     protocol: TCP
-            # probes:
-            #   liveness:
-            #     enabled: true
-            #   readiness:
-            #     enabled: true
-            #   startup:
-            #     enabled: true
+            ports:
+              - name: http
+                containerPort: &port 8056
+                protocol: TCP
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
             envFrom:
               - secretRef:
                   name: govee2mqtt-env
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+        pod:
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            runAsNonRoot: true
 
     defaultPodOptions:
       hostNetwork: true
+
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
