@@ -45,7 +45,7 @@ spec:
               # RUST_LOG: govee=trace
               TZ: ${SETTING_TZ}
             image:
-              repository: docker pull ghcr.io/wez/govee2mqtt
+              repository: ghcr.io/wez/govee2mqtt
               tag: latest@sha256:6471bf22613f20960591f57f4465592cf9eb79a4f14776d63e975f045b307c14
             # ports:
             #   - name: http
