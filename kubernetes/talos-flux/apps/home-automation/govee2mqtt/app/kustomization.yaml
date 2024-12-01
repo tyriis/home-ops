@@ -1,0 +1,12 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: home-automation
+resources:
+  - secrets.sops.yaml
+  - helm-release.yaml
+commonLabels:
+  app.kubernetes.io/name: govee2mqtt
+  app.kubernetes.io/instance: govee2mqtt
+  app.kubernetes.io/managed-by: fluxcd.io

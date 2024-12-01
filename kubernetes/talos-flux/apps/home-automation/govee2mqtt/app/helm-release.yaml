@@ -1,0 +1,66 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app govee2mqtt
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.5.1
+      interval: 15m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  maxHistory: 15
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      govee2mqtt:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            env:
+              # GOVEE_LAN_NO_MULTICAST: "true"
+              # GOVEE_LAN_BROADCAST_ALL: "true"
+              # GOVEE_LAN_BROADCAST_GLOBAL: "true"
+              # GOVEE_LAN_SCAN: 10.0.0.1,10.0.0.2
+              GOVEE_MQTT_HOST: mqtt://mqtt.home
+              GOVEE_MQTT_PORT: 1883
+              GOVEE_TEMPERATURE_SCALE: C
+              # RUST_LOG_STYLE: always
+              # RUST_LOG: govee=trace
+              TZ: ${SETTING_TZ}
+            image:
+              repository: docker pull ghcr.io/wez/govee2mqtt
+              tag: latest@sha256:6471bf22613f20960591f57f4465592cf9eb79a4f14776d63e975f045b307c14
+            # ports:
+            #   - name: http
+            #     containerPort: 6052
+            #     protocol: TCP
+            # probes:
+            #   liveness:
+            #     enabled: true
+            #   readiness:
+            #     enabled: true
+            #   startup:
+            #     enabled: true
+            envFrom:
+              - secretRef:
+                  name: govee2mqtt-env
+
+    defaultPodOptions:
+      hostNetwork: true
