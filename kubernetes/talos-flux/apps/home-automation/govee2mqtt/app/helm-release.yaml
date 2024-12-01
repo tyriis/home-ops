@@ -38,7 +38,7 @@ spec:
               # GOVEE_LAN_BROADCAST_ALL: "true"
               # GOVEE_LAN_BROADCAST_GLOBAL: "true"
               # GOVEE_LAN_SCAN: 10.0.0.1,10.0.0.2
-              GOVEE_MQTT_HOST: mqtt://mqtt.home
+              GOVEE_MQTT_HOST: mqtt.home
               GOVEE_MQTT_PORT: 1883
               GOVEE_TEMPERATURE_SCALE: C
               # RUST_LOG_STYLE: always
