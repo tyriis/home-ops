@@ -80,3 +80,9 @@ spec:
         ports:
           http:
             port: *port
+
+    persistence:
+      data:
+        type: emptyDir
+        globalMounts:
+          - path: /data
