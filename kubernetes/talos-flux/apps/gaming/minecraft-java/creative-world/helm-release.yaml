@@ -27,7 +27,7 @@ spec:
   values:
     image:
       repository: ghcr.io/itzg/minecraft-server
-      tag: latest@sha256:a8133b969825ed30729421586d9199c4e8cfe2c021b1f5efa8c4b4ecd69c1aaa
+      tag: latest@sha256:b50dd4c57196e43a8c780a2aaa25b25460ed25d256561e2c5a423d71b5cad907
     resources:
       requests:
         memory: 8192Mi
