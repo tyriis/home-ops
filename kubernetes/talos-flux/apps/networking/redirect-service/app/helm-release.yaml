@@ -35,7 +35,7 @@ spec:
           app:
             image:
               repository: nginxinc/nginx-unprivileged
-              tag: 1.27.3-alpine3.20
+              tag: 1.27.3-alpine3.20@sha256:6097fa6666257aa3e991a2d4b48df07468ea3adb58acba3ab9c6de34c664d714
             ports:
               - name: http
                 containerPort: &port 8080
