@@ -88,3 +88,14 @@ spec:
           - hosts:
               - *host
             secretName: redirect-service-tls
+
+    persistence:
+      config:
+        type: configMap
+        name: redirect-service-config
+        advancedMounts:
+          redirect-service:
+            app:
+              - path: /etc/nginx/conf.d/default.conf
+                subPath: default.conf
+                readOnly: true
