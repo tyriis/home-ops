@@ -96,6 +96,12 @@ spec:
         advancedMounts:
           redirect-service:
             app:
+              - path: /etc/nginx/conf.d/01_real-ip.conf
+                subPath: 01_real-ip.conf
+                readOnly: true
+              - path: /etc/nginx/conf.d/02_log-format.conf
+                subPath: 02_log-format.conf
+                readOnly: true
               - path: /etc/nginx/conf.d/default.conf
                 subPath: default.conf
                 readOnly: true

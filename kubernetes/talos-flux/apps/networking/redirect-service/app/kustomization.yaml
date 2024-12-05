@@ -7,6 +7,8 @@ resources:
 configMapGenerator:
   - name: redirect-service-config
     files:
+      - 01_real-ip.conf=./config/01_real-ip.conf
+      - 02_log-format.conf=./config/02_log-format.conf
       - default.conf=./config/default.conf
 generatorOptions:
   disableNameSuffixHash: true
