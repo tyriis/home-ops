@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   - helm-release.yaml
 configMapGenerator:
-  - name: redirect-config
+  - name: redirect-service-config
     files:
       - default.conf=./config/default.conf
 generatorOptions:
