@@ -37,7 +37,7 @@ spec:
           app:
             image:
               repository: ghcr.io/tyriis/opnsense-exporter
-              tag: v0.1.5@sha256:102b8475397680e655e9b90b38f0cae13c5840d22cc3b1f87d0b357790fa85c3
+              tag: v0.1.6@sha256:aa6163713ba26d292de584c0fcffffdef093fb6eff34fe2700564337f0341ed9
             env:
               TZ: ${SETTING_TZ}
               NODE_ENV: production
