@@ -45,7 +45,7 @@ spec:
 
     image:
       repository: ghcr.io/runatlantis/atlantis
-      tag: v0.31.0@sha256:f9e0b6ff14b1313b169e4ca128a578fc719745f61114e468afab0d4cbcda575e
+      tag: v0.32.0@sha256:f95cdf8f42370abf68d9e095930de8812e3b2a0dd66c9ffc39a69c8f49727989
 
     atlantisUrl: https://atlantis-tyriis.techtales.io
 
