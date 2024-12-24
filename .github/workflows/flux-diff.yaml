@@ -67,7 +67,7 @@ jobs:
     steps:
       # https://github.com/marketplace/actions/create-github-app-token
       - name: Generate Token
-        uses: actions/create-github-app-token@5d869da34e18e7287c1daad50e0b8ea0f506ce69 # v1.11.0
+        uses: actions/create-github-app-token@c1a285145b9d317df6ced56c09f525b5c2b6f755 # v1.11.1
         if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
         id: app-token
         with:
@@ -90,7 +90,7 @@ jobs:
           path: default
 
       - name: Diff Resources
-        uses: docker://ghcr.io/allenporter/flux-local:v6.0.2@sha256:75724e414519d955027a7b2b9eb0c64aa7d41dc2b5cfd2607d46cdeff79f713c
+        uses: docker://ghcr.io/allenporter/flux-local:v6.1.0@sha256:8a2f3a9be04eab03754614313088588fd63761a1ad93081a5a2ad56f6f2e8e4f
         with:
           args: >-
             diff ${{ matrix.resources }}
