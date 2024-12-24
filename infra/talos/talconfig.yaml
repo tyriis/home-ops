@@ -110,7 +110,6 @@ controlPlane:
       systemExtensions:
         officialExtensions:
           - siderolabs/intel-ucode
-          - siderolabs/i915-ucode
   patches:
     - |-
       machine:
@@ -180,7 +179,6 @@ worker:
       systemExtensions:
         officialExtensions:
           - siderolabs/intel-ucode
-          - siderolabs/i915-ucode
   patches:
     - |-
       machine:
