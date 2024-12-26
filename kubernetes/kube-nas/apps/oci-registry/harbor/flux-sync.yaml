@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: harbor
+  namespace: oci-registry
+  labels:
+    substitution.flux.home.arpa/enabled: "true"
+spec:
+  dependsOn:
+    - name: nginx-ingres
+  interval: 10m
+  path: ./kubernetes/kube-nas/apps/oci-registry/harbor/app
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
