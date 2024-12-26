@@ -85,7 +85,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: resistor-nodes
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Low-code programming for event-driven applications
+          gethomepage.dev/description: Low-code for event-driven applications
           gethomepage.dev/group: Home Automation
           gethomepage.dev/icon: node-red
           gethomepage.dev/name: Node-RED
