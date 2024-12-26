@@ -79,7 +79,7 @@ spec:
           hajimari.io/icon: mdi:speedometer
           hajimari.io/group: network
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: HTML5 Network Performance Estimation Tool
+          gethomepage.dev/description: HTML5 Network Performance Tool
           gethomepage.dev/group: Networking
           gethomepage.dev/icon: openspeedtest
           gethomepage.dev/name: SpeedTest
