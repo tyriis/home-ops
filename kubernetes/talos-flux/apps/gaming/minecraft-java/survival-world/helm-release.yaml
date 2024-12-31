@@ -34,8 +34,9 @@ spec:
         memory: 4096Mi
     minecraftServer:
       eula: "TRUE"
-      version: "1.21.3"
-      spigotDownloadUrl: https://s3.mcjars.app/spigot/1.21.3/4380/server.jar
+      version: "1.21.4"
+      # https://mcjars.app/SPIGOT/versions
+      spigotDownloadUrl: https://s3.mcjars.app/spigot/1.21.4/4418/server.jar
       type: SPIGOT
       motd: techtales survival
       difficulty: hard
