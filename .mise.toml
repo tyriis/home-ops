@@ -23,7 +23,7 @@ node = "22.12.0"
 # https://pre-commit.com/
 pre-commit = "4.0.1"
 # https://github.com/mozilla/sops
-sops = "3.9.2"
+sops = "3.9.3"
 # https://github.com/budimanjojo/talhelper
 talhelper = "3.0.13"
 # https://www.talos.dev/
