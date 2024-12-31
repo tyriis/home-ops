@@ -57,7 +57,7 @@ spec:
       gameMode: survival
       pvp: false
       onlineMode: false
-      levelSeed: "-5719961998413710668"
+      # levelSeed: "-5719961998413710668"
       memory: 4096M
       rcon:
         enabled: true
@@ -67,7 +67,7 @@ spec:
     persistence:
       dataDir:
         enabled: true
-        existingClaim: minecraft-survival-world-data
+        existingClaim: minecraft-survival-world-data-2025
 
   postRenderers:
     - kustomize:
