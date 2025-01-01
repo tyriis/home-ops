@@ -103,6 +103,16 @@ spec:
           http:
             port: 8080
 
+    serviceMonitor:
+      app:
+        serviceName: zigbee2mqtt
+        endpoints:
+          - port: http-prom
+            scheme: http
+            path: /metrics
+            interval: 5m
+            scrapeTimeout: 15s
+
     ingress:
       app:
         className: traefik

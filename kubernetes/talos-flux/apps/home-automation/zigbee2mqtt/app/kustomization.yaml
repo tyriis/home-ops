@@ -7,8 +7,7 @@ resources:
   - external-secret.yaml
   - secret.sops.yaml
   - helm-release.yaml
-  - pod-monitor.yaml
-  - prometheus-rule.yaml
+  # - prometheus-rule.yaml currently part of downstairs
   - persisent-volume-claim.yaml
   - replication-source.yaml
   - replication-destination.yaml
