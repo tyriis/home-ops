@@ -58,7 +58,7 @@ spec:
 
             image:
               repository: itzg/bungeecord
-              tag: latest@sha256:320aca98262b37e48f360471da773e0b07523b759c4c8cd72a414cec29b2bbfe
+              tag: latest@sha256:3dcea1bfd67dd1d54c4ded8be1c3281f0d7c52c9b39d9bd287e5075274669bc3
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
