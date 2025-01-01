@@ -130,3 +130,34 @@ spec:
   wait: true
   dependsOn:
     - name: apps-zigbee2mqtt-upstairs-storage
+
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app zigbee2mqtt
+  namespace: flux-system
+  # annotations:
+  #   backstage.io/discovery: enabled
+  #   backstage.io/name: zigbee2mqtt-downstairs
+  labels:
+    substitution.flux.home.arpa/enabled: "true"
+spec:
+  targetNamespace: home-automation
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  interval: 10m
+  path: ./kubernetes/talos-flux/apps/home-automation/zigbee2mqtt/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+  wait: false
+  timeout: 5m
+  dependsOn:
+    - name: apps-rook-ceph-cluster
+    - name: apps-volsync
+    - name: apps-kube-prometheus-stack
+    - name: apps-external-secrets-stores
