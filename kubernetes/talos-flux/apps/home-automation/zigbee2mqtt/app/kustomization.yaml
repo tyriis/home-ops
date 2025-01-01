@@ -1,0 +1,13 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - external-secret.yaml
+  - secret.sops.yaml
+  - helm-release.yaml
+  - pod-monitor.yaml
+  - prometheus-rule.yaml
+  - persisent-volume-claim.yaml
+  - replication-source.yaml
+  - replication-destination.yaml
