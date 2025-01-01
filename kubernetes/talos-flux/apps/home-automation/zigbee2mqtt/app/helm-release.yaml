@@ -123,7 +123,7 @@ spec:
       app:
         className: traefik
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-staging
+          cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/tls-acme: "true"
           traefik.ingress.kubernetes.io/router.middlewares: traefik-ingress-sso@kubernetescrd
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
