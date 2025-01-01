@@ -8,6 +8,6 @@ resources:
   - secret.sops.yaml
   - helm-release.yaml
   # - prometheus-rule.yaml currently part of downstairs
-  - persisent-volume-claim.yaml
+  - persistent-volume-claim.yaml
   - replication-source.yaml
   - replication-destination.yaml
