@@ -9,10 +9,11 @@ metadata:
     substitution.flux.home.arpa/enabled: "true"
 spec:
   dependsOn:
-    - name: nginx-ingres
+    - name: nginx-ingress
   interval: 10m
   path: ./kubernetes/kube-nas/apps/oci-registry/harbor/app
   prune: true
+  targetNamespace: oci-registry
   wait: true
   sourceRef:
     kind: GitRepository
