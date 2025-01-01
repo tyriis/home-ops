@@ -37,9 +37,9 @@ spec:
             # required to open USB device
             securityContext:
               privileged: true
-            envFrom:
-              - secretRef:
-                  name: zigbee2mqtt-env
+            # envFrom:
+            #   - secretRef:
+            #       name: zigbee2mqtt-env
             env:
               TZ: ${SETTING_TZ}
               ZIGBEE2MQTT_DATA: /config
