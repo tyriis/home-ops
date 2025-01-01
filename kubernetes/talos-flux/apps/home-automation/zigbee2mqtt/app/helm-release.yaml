@@ -34,6 +34,9 @@ spec:
         containers:
           app:
             nameOverride: *app
+            # required to open USB device
+            securityContext:
+              privileged: true
             envFrom:
               - secretRef:
                   name: zigbee2mqtt-env
