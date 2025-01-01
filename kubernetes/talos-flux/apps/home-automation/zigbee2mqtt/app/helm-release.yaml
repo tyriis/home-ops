@@ -25,6 +25,9 @@ spec:
   values:
     controllers:
       zigbee2mqtt:
+        pod:
+          nodeSelector:
+            zigbee.feature.node.kubernetes.io/slae.sh: "true"
         replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
