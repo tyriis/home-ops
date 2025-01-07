@@ -11,7 +11,7 @@ spec:
   trigger:
     manual: restore-once
   restic:
-    repository: zigbee2mqtt-downstairs-volsync
+    repository: zigbee2mqtt-volsync
     copyMethod: Snapshot
     volumeSnapshotClassName: csi-ceph-blockpool
     cacheStorageClassName: ceph-block
