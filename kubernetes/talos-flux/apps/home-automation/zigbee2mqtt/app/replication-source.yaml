@@ -16,10 +16,10 @@ spec:
     cacheCapacity: 2Gi
     cacheStorageClassName: ceph-block
     cacheAccessModes:
-      - readWriteOnce
+      - ReadWriteOnce
     storageClassName: ceph-block
     accessModes:
-      - readWriteOnce
+      - ReadWriteOnce
     moverSecurityContext:
       runAsUser: 1000
       runAsGroup: 1000
