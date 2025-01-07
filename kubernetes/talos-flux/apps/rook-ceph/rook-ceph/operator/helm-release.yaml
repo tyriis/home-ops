@@ -6,7 +6,7 @@ metadata:
   name: rook-ceph-operator
 spec:
   interval: 30m
-  # releaseName: rook-ceph
+  timeout: 15m
   chart:
     spec:
       chart: rook-ceph
@@ -16,30 +16,27 @@ spec:
         name: rook-ceph-charts
         namespace: flux-system
   install:
-    # createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      strategy: rollback
+      retries: 3
+  dependsOn:
+    - name: snapshot-controller
+      namespace: kube-system
   values:
-    crds:
-      enabled: true
     csi:
-      kubeletDirPath: /var/lib/kubelet
-      enableCSIHostNetwork: true
-      # pluginTolerations:
-      #   - effect: "NoExecute"
-      #     operator: "Exists"
-      #   - effect: "NoSchedule"
-      #     operator: "Exists"
+      cephFSKernelMountOptions: ms_mode=prefer-crc
+      enableLiveness: true
+      serviceMonitor:
+        enabled: true
+    enableDiscoveryDaemon: true
     monitoring:
       enabled: true
-    # pspEnable: false
     resources:
       requests:
-        cpu: 35m
-        memory: 150Mi
-      limits:
-        cpu: null
-        memory: 300Mi
+        memory: 128Mi # unchangable
+        cpu: 100m # unchangable
+      limits: {}
