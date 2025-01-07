@@ -6,10 +6,10 @@ metadata:
 spec:
   credentials:
     usernameSecretRef:
-      name: harbor-database
+      name: harbor-postgres
       key: INIT_POSTGRES_USER
     passwordSecretRef:
-      name: harbor-database
+      name: harbor-postgres
       key: INIT_POSTGRES_PASS
   databaseName: registry
   databaseServerRef:

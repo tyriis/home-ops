@@ -51,6 +51,8 @@ spec:
   # https://cloudnative-pg.io/documentation/current/database_import/#the-monolith-type
   # bootstrap:
   #   initdb:
+  #     secret:
+  #       name: postgres-superuser
   #     import:
   #       type: monolith
   #       databases:
