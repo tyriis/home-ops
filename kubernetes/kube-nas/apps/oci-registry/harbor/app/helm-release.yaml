@@ -25,6 +25,7 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+  # https://github.com/goharbor/harbor-helm
   valuesFrom:
     - kind: Secret
       name: harbor-postgres
@@ -50,6 +51,12 @@ spec:
         secret:
           secretName: harbor-tls
       ingress:
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/tls-acme: "true"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+          nginx.ingress.kubernetes.io/ssl-redirect: "true"
+        className: nginx
         hosts:
           core: &external harbor.tyriis.dev
     externalURL: https://harbor.tyriis.dev
