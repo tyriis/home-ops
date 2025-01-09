@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: openspeedtest/latest
-              tag: v2.0.5@sha256:bbddd8eda80cc4deb2a5702efd0acd826137650ba0bfcc6720f896c74bca02ee
+              tag: v2.0.6@sha256:a6a7e3b3e9e93cfe7b9b2eb49c60b2a93644149a0a600845d4df57148b193ff6
             resources:
               requests:
                 cpu: 10m
