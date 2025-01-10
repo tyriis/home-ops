@@ -28,6 +28,9 @@ metadata:
   name: &appname openebs-volume-snapshot-class
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: openebs
+    - name: snapshot-controller
   targetNamespace: openebs-system
   commonMetadata:
     labels:
