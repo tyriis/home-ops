@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname snapshot-controller
+  name: &appname volsync
   namespace: flux-system
   labels:
     substitution.flux.home.arpa/enabled: "true"
@@ -11,11 +11,14 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  targetNamespace: kube-tools
+  targetNamespace: backup-system
+  dependsOn:
+    - name: snapshot-controller
   interval: 10m
-  path: ./kubernetes/kube-nas/apps/kube-tools/snapshot-controller/app
+  path: ./kubernetes/kube-nas/apps/backup-system/volsync/app
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: home-ops
-  wait: true
+  timeout: 3m
