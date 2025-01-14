@@ -17,7 +17,7 @@ k9s = "0.32.5"
 # https://kubernetes.io/docs/reference/kubectl/
 kubectl = "1.32.0"
 # https://kustomize.io/
-kustomize = "5.5.0"
+kustomize = "5.6.0"
 # https://nodejs.org/
 node = "22.13.0"
 # https://pre-commit.com/
