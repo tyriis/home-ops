@@ -98,7 +98,7 @@ spec:
         expose:
           default: true
       web:
-        redirectTo:
+        redirections:
           port: websecure
       websecure:
         tls:
