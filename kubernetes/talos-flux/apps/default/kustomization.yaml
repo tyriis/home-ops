@@ -7,4 +7,5 @@ resources:
   - ./echo-server/flux-sync.yaml
   - ./hajimari/flux-sync.yaml
   - ./homepage/flux-sync.yaml
+  - ./it-tools/flux-sync.yaml
   - ./openspeedtest/flux-sync.yaml
