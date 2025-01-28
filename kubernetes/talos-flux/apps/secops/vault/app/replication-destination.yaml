@@ -13,12 +13,12 @@ spec:
   restic:
     repository: vault-volsync
     copyMethod: Snapshot
-    volumeSnapshotClassName: csi-ceph-blockpool
-    cacheStorageClassName: ceph-block
+    volumeSnapshotClassName: nfs-csi-snapshot
+    cacheStorageClassName: nfs-csi
     cacheAccessModes:
       - ReadWriteOnce
     cacheCapacity: 1Gi
-    storageClassName: ceph-block
+    storageClassName: nfs-csi
     accessModes:
       - ReadWriteOnce
     capacity: 1Gi

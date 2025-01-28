@@ -12,12 +12,12 @@ spec:
     copyMethod: Snapshot
     pruneIntervalDays: 14
     repository: vault-volsync
-    volumeSnapshotClassName: csi-ceph-blockpool
+    volumeSnapshotClassName: nfs-csi-snapshot
     cacheCapacity: 1Gi
-    cacheStorageClassName: ceph-block
+    cacheStorageClassName: nfs-csi
     cacheAccessModes:
       - ReadWriteOnce
-    storageClassName: ceph-block
+    storageClassName: nfs-csi
     accessModes:
       - ReadWriteOnce
     moverSecurityContext:
