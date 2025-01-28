@@ -75,7 +75,7 @@ spec:
         enabled: true
         size: 1Gi
         mountPath: /vault/data
-        storageClass: ceph-block
+        storageClass: nfs-csi
       auditStorage:
         enabled: true
         size: 1Gi

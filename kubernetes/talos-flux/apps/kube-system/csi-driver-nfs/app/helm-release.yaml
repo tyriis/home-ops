@@ -26,5 +26,10 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    # https://artifacthub.io/packages/helm/csi-driver-nfs/csi-driver-nfs?modal=values
     externalSnapshotter:
       enabled: false
+    volumeSnapshotClass:
+      create: true
+      name: nfs-csi-snapshot
+      deletionPolicy: Delete
