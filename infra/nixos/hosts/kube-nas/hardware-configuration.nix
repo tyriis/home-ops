@@ -64,6 +64,11 @@
     options = [ "bind" ];
   };
 
+  fileSystems."/export/nfs-csi" = {
+    device = "/mnt/volume1/nfs-csi";
+    options = [ "bind" ];
+  };
+
 
   swapDevices = [ ];
 
