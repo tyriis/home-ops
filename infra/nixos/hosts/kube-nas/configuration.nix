@@ -144,5 +144,7 @@
     "d /mnt/volume1/home/alex 0770 alex users"
     "d /mnt/volume1/home/dominik 0770 dominik users"
     "d /mnt/volume1/minio 0755 568 568" # 568 is the minio user
+    "d /mnt/volume1/nfs-csi 0750 root users"
+    "d /mnt/volume1/nfs-csi/kube-nas 0770 kube users"
   ];
 }
