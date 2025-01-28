@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationdestination_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: data-vault-0
+  labels:
+    # https://fluxcd.io/flux/components/kustomize/kustomizations/#controlling-the-apply-behavior-of-resources
+    kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: vault-volsync
+    copyMethod: Snapshot
+    volumeSnapshotClassName: nfs-snapshot
+    cacheStorageClassName: nfs-local
+    cacheAccessModes:
+      - ReadWriteOnce
+    cacheCapacity: 1Gi
+    storageClassName: nfs-local
+    accessModes:
+      - ReadWriteOnce
+    capacity: 2Gi
+    moverSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+    enableFileDeletion: true
+    cleanupCachePVC: true
+    cleanupTempPVC: true

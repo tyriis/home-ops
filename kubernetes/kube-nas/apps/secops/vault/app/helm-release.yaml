@@ -72,14 +72,14 @@ spec:
             secretName: vault-tls
       dataStorage:
         enabled: true
-        size: 10Gi
+        size: 2Gi
         mountPath: /vault/data
-        storageClass: openebs-hostpath
+        storageClass: nfs-local
       auditStorage:
         enabled: true
-        size: 10Gi
+        size: 2Gi
         mountPath: /vault/audit
-        storageClass: openebs-hostpath
+        storageClass: nfs-local
       extraEnvironmentVars:
         # VAULT_TOKEN: ${SECRET_VAULT_TOKEN}
         TZ: ${SETTING_TZ}
