@@ -54,8 +54,7 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              # home-manager.users.nils = import ./home-manager/home.nix;
-              home-manager.users.nils = lib.mkIf (config.networking.hostName != "kube-nas") (import ./home-manager/home.nix);
+              home-manager.users.nils = import ./home-manager/home.nix;
               # pass flake inputs to home-manager
               home-manager.extraSpecialArgs = { inherit inputs; };
             }
