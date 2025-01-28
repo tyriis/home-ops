@@ -5,6 +5,6 @@ kind: Kustomization
 resources:
   - secret.sops.yaml
   - helm-release.yaml
-  # - persistent-volume-claim.yaml
+  - persistent-volume-claim.yaml
   - replication-source.yaml
-  # - replication-destination.yaml
+  - replication-destination.yaml
