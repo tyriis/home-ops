@@ -91,36 +91,41 @@ spec:
       ha:
         enabled: true
         replicas: 1
-        config: |
-          # api_addr = "http://127.0.0.1:8200"
-          # cluster_addr = "https://127.0.0.1:8201"
-          disable_mlock = true
-          ui = true
-          # seal "gcpckms" {
-          #   disabled    = "false"
-          #   project     = "techtales"
-          #   region      = "europe-west3"
-          #   key_ring    = "home-infra"
-          #   crypto_key  = "vault-unseal"
-          # }
-          listener "tcp" {
-            tls_disable = 1
-            address = "[::]:8200"
-            cluster_address = "[::]:8201"
-            telemetry {
-              unauthenticated_metrics_access = "true"
+        raft:
+          # Enables Raft integrated storage
+          enabled: true
+          # Set the Node Raft ID to the name of the pod
+          setNodeId: true
+          config: |
+            # api_addr = "http://127.0.0.1:8200"
+            # cluster_addr = "https://127.0.0.1:8201"
+            disable_mlock = true
+            ui = true
+            # seal "gcpckms" {
+            #   disabled    = "false"
+            #   project     = "techtales"
+            #   region      = "europe-west3"
+            #   key_ring    = "home-infra"
+            #   crypto_key  = "vault-unseal"
+            # }
+            listener "tcp" {
+              tls_disable = 1
+              address = "[::]:8200"
+              cluster_address = "[::]:8201"
+              telemetry {
+                unauthenticated_metrics_access = "true"
+              }
             }
-          }
-          storage "file" {
-            path = "/vault/data"
-          }
-          # storage "raft" {
-          #   path = "/vault/data"
-          #   # retry_join {
-          #   #   leader_api_addr = "http://vault-0.vault-internal:8200"
-          #   # }
-          # }
-          service_registration "kubernetes" {}
+            # storage "file" {
+            #   path = "/vault/data"
+            # }
+            storage "raft" {
+              path = "/vault/data"
+              # retry_join {
+              #   leader_api_addr = "http://vault-0.vault-internal:8200"
+              # }
+            }
+            service_registration "kubernetes" {}
 
     ui:
       enabled: true
