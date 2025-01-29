@@ -15,7 +15,7 @@ Exec in Vault Pod and do the following:
 ```shell
 vault status          # running, should be recovery seal type: gcpckms, sealed: true)
 vault operator init   # initialises with 5 key shares and a key treshold of 3
-vault operator unseal # do this 3 times
+vault operator unseal # do this 3 times if seal is not gcpckms
 vault status          # should be recovery seal type: shamir, initialized: true, sealed: false
 ```
 
