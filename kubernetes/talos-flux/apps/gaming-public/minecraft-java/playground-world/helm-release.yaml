@@ -54,7 +54,8 @@ spec:
       # maxBuildHeight: 256
       gameMode: creative
       pvp: false
-      onlineMode: true
+      # https://docs.papermc.io/velocity/player-information-forwarding#configuring-modern-forwarding
+      onlineMode: false
       memory: 1024M
       rcon:
         enabled: false
