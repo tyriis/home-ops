@@ -35,7 +35,7 @@ spec:
         memory: 1024Mi
     minecraftServer:
       eula: "TRUE"
-      version: "1.21"
+      version: "1.21.4"
       type: PAPER
       motd: techicraft playground
       difficulty: peaceful
