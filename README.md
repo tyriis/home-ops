@@ -38,6 +38,7 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
+- [Statistics](#statistics)
 - [About The Project](#about-the-project)
   - [🧰 Tools and Technologies](#%F0%9F%A7%B0-tools-and-technologies)
   - [📖 Overview](#-overview)
@@ -55,6 +56,10 @@
 </details>
 
 <!-- ABOUT THE PROJECT -->
+
+## Statistics
+
+![Alt](https://repobeats.axiom.co/api/embed/bcccc4d3f022bf36870bd9bcc2397eecaea695c7.svg "Repobeats analytics image")
 
 ## About The Project
 
