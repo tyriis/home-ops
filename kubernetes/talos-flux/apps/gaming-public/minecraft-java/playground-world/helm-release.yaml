@@ -1,0 +1,90 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: minecraft-public-playground-world
+spec:
+  interval: 15m
+  driftDetection:
+    mode: enabled
+  chart:
+    spec:
+      chart: minecraft
+      interval: 15m
+      version: 4.23.7
+      sourceRef:
+        kind: HelmRepository
+        name: minecraft-server-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  # https://artifacthub.io/packages/helm/minecraft-server-charts/minecraft
+  values:
+    image:
+      repository: ghcr.io/itzg/minecraft-server
+      tag: latest@sha256:6859bd9ff36447128df08826c3846bcfa66e7d6e27ccf2f6f4f2b9d262bf5ffd
+    resources:
+      requests:
+        cpu: 100m
+        memory: 1024Mi
+    minecraftServer:
+      eula: "TRUE"
+      version: "1.21"
+      type: PAPER
+      motd: techicraft playground
+      difficulty: peaceful
+      ops: ""
+      worldSaveName: playground
+      enableCommandBlock: true
+      maxPlayers: 20
+      spawnAnimals: false
+      spawnNPCs: false
+      spawnProtection: 0
+      spawnMonsters: false
+      allowNether: true
+      generateStructures: false
+      viewDistance: 14
+      levelType: FLAT
+      # maxBuildHeight: 256
+      gameMode: creative
+      pvp: false
+      onlineMode: true
+      memory: 1024M
+      rcon:
+        enabled: false
+    persistence:
+      dataDir:
+        enabled: true
+        existingClaim: minecraft-public-playground-world-data
+
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+              name: minecraft-public-playground-world-minecraft
+            patch: |-
+              - op: add
+                path: /spec/template/spec/volumes/-
+                value:
+                  name: config
+                  configMap:
+                    name: minecraft-public-playground-world-config
+              - op: add
+                path: /spec/template/spec/containers/0/volumeMounts/-
+                value:
+                  name: config
+                  mountPath: /config/spigot.yml
+                  subPath: spigot.yml
+              - op: add
+                path: /spec/template/spec/containers/0/volumeMounts/-
+                value:
+                  name: config
+                  mountPath: /config/paper-global.yml
+                  subPath: paper-global.yml
