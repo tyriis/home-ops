@@ -50,7 +50,7 @@ spec:
               TYPE: "VELOCITY"
               VELOCITY_VERSION: "latest"
               VELOCITY_BUILD_ID: "latest"
-              PLUGINS: https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/velocity,https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/velocity
+              PLUGINS: https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/velocity,https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/velocity,https://cdn.modrinth.com/data/9eGKb6K1/versions/yGTasgG4/voicechat-velocity-2.5.24.jar
               MEMORY: 256M
               # JVM_OPTS: "-Xms128M -Xmx256M"
               ENABLE_RCON: "false"
@@ -72,6 +72,9 @@ spec:
                 protocol: TCP
               - name: bedrock
                 containerPort: &bedrockPort 19132
+                protocol: UDP
+              - name: simplevoicechat
+                containerPort: &simplevoicechatPort 24454
                 protocol: UDP
               # - name: rcon
               #   containerPort: &rconPort 25575
@@ -109,6 +112,10 @@ spec:
             port: *bedrockPort
             protocol: UDP
             targetPort: bedrock
+          simplevoicechat-proxy:
+            port: *simplevoicechatPort
+            protocol: UDP
+            targetPort: simplevoicechat
       # rcon:
       #   controller: velocity
       #   ports:
