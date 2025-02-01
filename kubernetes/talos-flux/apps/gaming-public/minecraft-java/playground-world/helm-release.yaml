@@ -34,12 +34,13 @@ spec:
         cpu: 100m
         memory: 1024Mi
     minecraftServer:
+      resourcePackUrl: https://cdn.modrinth.com/data/Q1vvjJYV/versions/oGcsNfpD/BSL_v8.4.01.2.zip
       eula: "TRUE"
       version: "1.21.4"
       type: PAPER
       motd: techicraft playground
       difficulty: peaceful
-      ops: ""
+      ops: "tyriis,jazzlyin"
       worldSaveName: playground
       enableCommandBlock: true
       maxPlayers: 20
