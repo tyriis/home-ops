@@ -31,6 +31,21 @@ spec:
       ring-mqtt:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          copy-config:
+            image:
+              repository: busybox
+              tag: 1.33.1
+            command:
+              - sh
+              - -c
+              - |
+                if [ ! -f /data/config.json ]; then
+                  cp /config/config.json /data/config.json
+                fi
+                if [ ! -f /data/ring-state.json ]; then
+                  cp /config/ring-state.json /data/ring-state.json
+                fi
         containers:
           app:
             env:
@@ -97,16 +112,18 @@ spec:
 
     persistence:
       data:
-        type: emptyDir
+        existingClaim: ring-mqtt-data
         globalMounts:
           - path: /data
       credentials:
         type: secret
         name: ring-mqtt-config
-        globalMounts:
-          - path: /data/config.json
-            subPath: config.json
-            readOnly: true
-          - path: /data/ring-state.json
-            subPath: ring-state.json
-            readOnly: true
+        advancedMounts:
+          ring-mqtt:
+            copy-config:
+              - path: /config/config.json
+                subPath: config.json
+                readOnly: true
+              - path: /config/ring-state.json
+                subPath: ring-state.json
+                readOnly: true
