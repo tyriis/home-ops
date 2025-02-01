@@ -49,9 +49,6 @@ spec:
               readOnlyRootFilesystem: true
               capabilities:
                 drop: [ALL]
-            # envFrom:
-            #   - secretRef:
-            #       name: zigbee2mqtt-env
             env:
               TZ: ${SETTING_TZ}
             image:
@@ -65,8 +62,6 @@ spec:
               requests:
                 cpu: 10m
                 memory: 150Mi
-              limits:
-                memory: 300Mi
             probes:
               liveness:
                 enabled: false
