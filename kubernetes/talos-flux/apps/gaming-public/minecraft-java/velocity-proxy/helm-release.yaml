@@ -31,6 +31,8 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
+          labels:
+            ingress.home.arpa/playit: allow
           securityContext:
             fsGroup: 1000
             runAsGroup: 1000
