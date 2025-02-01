@@ -42,11 +42,11 @@ ingress:
     originRequest:
       httpHostHeader: kromgo.techtales.io
   - hostname: minecraft.techtales.io
-    service: "tcp://${SETTING_CILIUM_MINECRAFT_PROXY_ADDR3}:*"
+    service: "tcp://minecraft-public-velocity-proxy.gaming-public.svc.cluster.local:*"
     originRequest:
       proxyType: tcp
   - hostname: bedrock.techtales.io
-    service: "udp://${SETTING_CILIUM_MINECRAFT_PROXY_ADDR3}:*"
+    service: "udp://minecraft-public-velocity-proxy.gaming-public.svc.cluster.local:*"
     originRequest:
       proxyType: udp
     # originRequest:
