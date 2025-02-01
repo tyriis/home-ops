@@ -11,7 +11,7 @@ spec:
   trigger:
     manual: restore-once
   restic:
-    repository: vault-volsync
+    repository: minecraft-public-playground-world-volsync
     copyMethod: Snapshot
     volumeSnapshotClassName: csi-ceph-blockpool
     cacheStorageClassName: ceph-block
