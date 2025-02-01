@@ -40,7 +40,7 @@ spec:
       type: PAPER
       motd: techicraft playground
       difficulty: peaceful
-      ops: ""
+      ops: "tyriis,jazzlyin"
       worldSaveName: playground
       enableCommandBlock: true
       maxPlayers: 20
