@@ -46,7 +46,7 @@ ingress:
     originRequest:
       proxyType: tcp
   - hostname: bedrock.techtales.io
-    service: "udp://minecraft-public-velocity-proxy.gaming-public.svc.cluster.local"
+    service: "udp://minecraft-public-velocity-proxy.gaming-public.svc.cluster.local:19132"
     originRequest:
       proxyType: udp
     # originRequest:
