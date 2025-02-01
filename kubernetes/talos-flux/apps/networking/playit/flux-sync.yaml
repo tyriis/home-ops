@@ -8,12 +8,12 @@ metadata:
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
-  targetNamespace: network
+  targetNamespace: networking
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
   interval: 30m
-  path: ./kubernetes/talos-flux/apps/network/playit/app
+  path: ./kubernetes/talos-flux/apps/networking/playit/app
   prune: true
   sourceRef:
     kind: GitRepository
