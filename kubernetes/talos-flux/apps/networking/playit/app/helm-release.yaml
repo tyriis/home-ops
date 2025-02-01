@@ -49,6 +49,9 @@ spec:
               readOnlyRootFilesystem: true
               capabilities:
                 drop: [ALL]
+            envFrom:
+              - secretRef:
+                  name: playit-env
             env:
               TZ: ${SETTING_TZ}
             image:
