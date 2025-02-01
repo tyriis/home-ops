@@ -119,8 +119,8 @@ spec:
         type: secret
         name: ring-mqtt-config
         advancedMounts:
-          copy-config:
-            config:
+          ring-mqtt:
+            copy-config:
               - path: /config/config.json
                 subPath: config.json
                 readOnly: true
