@@ -103,12 +103,10 @@ spec:
       credentials:
         type: secret
         name: ring-mqtt-config
-        advancedMounts:
-          ring-mqtt:
-            config:
-              - path: /data/config.json
-                subPath: config.json
-                readOnly: true
-              - path: /data/ring-state.json
-                subPath: ring-state.json
-                readOnly: true
+        globalMounts:
+          - path: /data/config.json
+            subPath: config.json
+            readOnly: true
+          - path: /data/ring-state.json
+            subPath: ring-state.json
+            readOnly: true
