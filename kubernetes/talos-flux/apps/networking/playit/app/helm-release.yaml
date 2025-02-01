@@ -72,12 +72,3 @@ spec:
                 enabled: false
               startup:
                 enabled: false
-
-    persistence:
-      playit-toml:
-        type: secret
-        name: playit
-        globalMounts:
-          - path: /config/playit.toml
-            subPath: playit.toml
-            readOnly: false
