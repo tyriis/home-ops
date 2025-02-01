@@ -42,7 +42,7 @@ ingress:
     originRequest:
       httpHostHeader: kromgo.techtales.io
   - hostname: minecraft.techtales.io
-    service: "tcp://minecraft-public-velocity-proxy.gaming-public.svc.cluster.local:25565"
+    service: "tcp://did-imagination.gl.joinmc.link:25565"
     originRequest:
       proxyType: tcp
   - hostname: bedrock.techtales.io
