@@ -33,7 +33,7 @@ jobs:
 
       # https://github.com/marketplace/actions/megalinter
       - name: MegaLinter
-        uses: oxsecurity/megalinter/flavors/terraform@839e6d63c0423eb74ce2578225f8b8b4bed63ede # v8.4.1
+        uses: oxsecurity/megalinter/flavors/terraform@ec124f7998718d79379a3c5b39f5359952baf21d # v8.4.2
         env:
           VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'workflow_dispatch' }}
           GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
