@@ -6,6 +6,7 @@ metadata:
   name: openebs
 spec:
   interval: 30m
+  timeout: 5m
   chart:
     spec:
       chart: openebs
@@ -22,6 +23,8 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+  uninstall:
+    keepHistory: false
   values:
     localpv-provisioner:
       rbac:

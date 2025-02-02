@@ -6,6 +6,7 @@ metadata:
   name: &app nginx
 spec:
   interval: 30m
+  timeout: 5m
   chart:
     spec:
       chart: ingress-nginx
@@ -14,13 +15,13 @@ spec:
         kind: HelmRepository
         name: ingress-nginx-charts
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
   uninstall:
     keepHistory: false

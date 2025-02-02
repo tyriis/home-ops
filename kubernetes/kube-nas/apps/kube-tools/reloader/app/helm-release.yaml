@@ -5,7 +5,8 @@ kind: HelmRelease
 metadata:
   name: reloader
 spec:
-  interval: 15m
+  interval: 30m
+  timeout: 5m
   chart:
     spec:
       chart: reloader
@@ -14,9 +15,7 @@ spec:
         kind: HelmRepository
         name: stakater-charts
         namespace: flux-system
-  maxHistory: 15
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:

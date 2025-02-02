@@ -6,6 +6,7 @@ metadata:
   name: &app dbman
 spec:
   interval: 30m
+  timeout: 5m
   chart:
     spec:
       chart: dbman
@@ -15,13 +16,15 @@ spec:
         name: dbman-charts
         namespace: flux-system
   install:
-    createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
-  timeout: 15m
+      strategy: rollback
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     env:
       - name: RUST_LOG

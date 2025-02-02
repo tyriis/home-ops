@@ -8,7 +8,7 @@ spec:
   driftDetection:
     mode: enabled
   interval: 30m
-  timeout: 15m
+  timeout: 15m # TODO: check if still required
   chart:
     spec:
       chart: harbor
@@ -25,6 +25,8 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+  uninstall:
+    keepHistory: false
   # https://github.com/goharbor/harbor-helm
   valuesFrom:
     - kind: Secret

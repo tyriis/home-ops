@@ -7,6 +7,7 @@ metadata:
   namespace: kube-system
 spec:
   interval: 30m
+  timeout: 5m
   chart:
     spec:
       chart: coredns
@@ -15,13 +16,13 @@ spec:
         kind: HelmRepository
         name: coredns-charts
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
   uninstall:
     keepHistory: false
