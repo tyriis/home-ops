@@ -3,14 +3,16 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - external-secret.yaml
+  - secret.sops.yaml
+  - replication-destination.yaml
   - persistent-volume-claim.yaml
+  - replication-source.yaml
   - helm-release.yaml
 configMapGenerator:
-  - name: minecraft-public-velocity-proxy-config
+  - name: minecraft-public-survival-world-config
     files:
-      - velocity.toml=config/velocity.toml
-      - forwarding.secret=config/forwarding.secret
+      - spigot.yml=config/spigot.yaml
+      - paper-global.yml=config/paper-global.yaml
 generatorOptions:
   disableNameSuffixHash: true
   annotations:

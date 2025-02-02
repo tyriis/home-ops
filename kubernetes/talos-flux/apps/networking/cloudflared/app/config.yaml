@@ -41,16 +41,16 @@ ingress:
     service: https://kromgo.techtales.io
     originRequest:
       httpHostHeader: kromgo.techtales.io
-  - hostname: minecraft.techtales.io
-    service: "tcp://minecraft-public-velocity-proxy.gaming-public.svc.cluster.local:25565"
-    originRequest:
-      proxyType: tcp
-  - hostname: bedrock.techtales.io
-    service: "udp://minecraft-public-velocity-proxy.gaming-public.svc.cluster.local"
-    originRequest:
-      proxyType: udp
-    # originRequest:
-    #   httpHostHeader: minecraft.techtales.io
+  # - hostname: minecraft.techtales.io
+  #   service: "tcp://minecraft-public-velocity-proxy.gaming-public.svc.cluster.local:25565"
+  #   originRequest:
+  #     proxyType: tcp
+  # - hostname: bedrock.techtales.io
+  #   service: "udp://minecraft-public-velocity-proxy.gaming-public.svc.cluster.local:19132"
+  #   originRequest:
+  #     proxyType: udp
+  # originRequest:
+  #   httpHostHeader: minecraft.techtales.io
   # - hostname: example2.com
   #   service: localhost:8001
   # The localhost:8002 service overrides some root-level config.
