@@ -6,19 +6,19 @@ metadata:
   name: &appname cloudnative-pg
   namespace: flux-system
 spec:
+  targetNamespace: database-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 30m
   path: ./kubernetes/kube-nas/apps/database-system/cloudnative-pg/operator
   prune: true
-  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: home-ops
-  targetNamespace: database-system
-  timeout: 3m
   wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -28,21 +28,21 @@ metadata:
   name: &appname cloudnative-pg-cluster
   namespace: flux-system
 spec:
+  targetNamespace: database-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  path: ./kubernetes/kube-nas/apps/database-system/cloudnative-pg/cluster
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
   dependsOn:
     - name: cloudnative-pg
     - name: dbman
     - name: minio
     - name: openebs
-  interval: 30m
-  path: ./kubernetes/kube-nas/apps/database-system/cloudnative-pg/cluster
-  prune: true
-  retryInterval: 15s
-  sourceRef:
-    kind: GitRepository
-    name: home-ops
-  targetNamespace: database-system
-  timeout: 3m
-  wait: true

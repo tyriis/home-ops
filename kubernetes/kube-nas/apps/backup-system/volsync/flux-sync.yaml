@@ -8,17 +8,18 @@ metadata:
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
+  targetNamespace: backup-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  targetNamespace: backup-system
-  dependsOn:
-    - name: snapshot-controller
-  interval: 10m
   path: ./kubernetes/kube-nas/apps/backup-system/volsync/app
   prune: true
-  wait: true
   sourceRef:
     kind: GitRepository
     name: home-ops
-  timeout: 3m
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: snapshot-controller

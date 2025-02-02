@@ -6,6 +6,7 @@ metadata:
   name: metrics-server
 spec:
   interval: 30m
+  timeout: 5m
   chart:
     spec:
       chart: metrics-server
@@ -14,7 +15,16 @@ spec:
         kind: HelmRepository
         name: metrics-server-charts
         namespace: flux-system
-      interval: 30m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     metrics:
       enabled: true

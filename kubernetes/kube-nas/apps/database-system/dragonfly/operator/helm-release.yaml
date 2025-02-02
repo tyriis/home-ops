@@ -6,6 +6,7 @@ metadata:
   name: &app dragonfly-operator
 spec:
   interval: 30m
+  timeout: 5m
   chart:
     spec:
       chart: app-template
@@ -15,13 +16,17 @@ spec:
         name: bjw-s-charts
         namespace: flux-system
   install:
+    crds: CreateReplace
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
+    crds: CreateReplace
     remediation:
       strategy: rollback
       retries: 3
+  uninstall:
+    keepHistory: false
   values:
     controllers:
       dragonfly-operator:

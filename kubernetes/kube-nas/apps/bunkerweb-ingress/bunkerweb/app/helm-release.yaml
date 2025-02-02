@@ -6,6 +6,7 @@ metadata:
   name: &app bunkerweb
 spec:
   interval: 30m
+  timeout: 5m
   chart:
     spec:
       chart: app-template
@@ -22,6 +23,8 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+  uninstall:
+    keepHistory: false
   values:
     serviceAccount:
       create: true

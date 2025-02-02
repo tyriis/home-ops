@@ -5,7 +5,8 @@ kind: HelmRelease
 metadata:
   name: &app vault-snapshots
 spec:
-  interval: 15m
+  interval: 30m
+  timeout: 5m
   chart:
     spec:
       chart: app-template
@@ -14,6 +15,16 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  uninstall:
+    keepHistory: false
   # https://github.com/bjw-s/helm-charts/blob/main/charts/library/common/values.yaml
   values:
     controllers:

@@ -6,16 +6,16 @@ metadata:
   name: &appname dbman
   namespace: flux-system
 spec:
+  targetNamespace: database-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 30m
   path: ./kubernetes/kube-nas/apps/database-system/dbman/operator
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
-  targetNamespace: database-system
-  timeout: 3m
-  retryInterval: 1m
   wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m

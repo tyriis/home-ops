@@ -3,19 +3,21 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: oauth2-proxy
+  name: &appname oauth2-proxy
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: dragonfly-cluster
-  interval: 10m
+  targetNamespace: auth-system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   path: ./kubernetes/kube-nas/apps/auth-system/oauth2-proxy/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
-  targetNamespace: auth-system
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: oauth2-proxy
   wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: dragonfly-cluster

@@ -6,6 +6,7 @@ metadata:
   name: flux-iac-charts
   namespace: flux-system
 spec:
-  interval: 1h
   type: oci
+  interval: 1h
+  timeout: 3m
   url: oci://ghcr.io/flux-iac/charts

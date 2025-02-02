@@ -7,7 +7,8 @@ metadata:
 spec:
   driftDetection:
     mode: enabled
-  interval: 15m
+  interval: 30m
+  timeout: 5m
   chart:
     spec:
       chart: vault
@@ -16,17 +17,16 @@ spec:
         kind: HelmRepository
         name: hashicorp-charts
         namespace: flux-system
-  maxHistory: 5
   install:
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
   uninstall:
     keepHistory: false
-
   # valuesFrom:
   #   # Injected by init-job
   #   - targetPath: server.extraEnvironmentVars.VAULT_TOKEN
