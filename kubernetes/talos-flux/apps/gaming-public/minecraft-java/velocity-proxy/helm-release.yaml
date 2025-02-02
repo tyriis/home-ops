@@ -146,3 +146,12 @@ spec:
           - path: /config/forwarding.secret
             subPath: forwarding.secret
             readOnly: true
+      whitelist:
+        type: secret
+        name: minecraft-public-velocity-proxy-whitelist
+        advancedMounts:
+          velocity:
+            app:
+              - path: /server/plugins/simplewhitelist/whitelist.txt
+                subPath: whitelist.txt
+                readOnly: true
