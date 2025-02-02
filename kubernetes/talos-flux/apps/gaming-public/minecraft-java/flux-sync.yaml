@@ -51,3 +51,30 @@ spec:
   dependsOn:
     - name: minecraft-public-velocity-proxy
     - name: apps-rook-ceph-cluster
+
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname minecraft-public-survival-world
+  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/enabled: "true"
+spec:
+  targetNamespace: gaming-public
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  path: ./kubernetes/talos-flux/apps/gaming-public/minecraft-java/survival-world
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: minecraft-public-velocity-proxy
+    - name: apps-rook-ceph-cluster

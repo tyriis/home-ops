@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: minecraft-public-playground-world
+  name: minecraft-public-survival-world
 spec:
   interval: 15m
   driftDetection:
@@ -38,23 +38,24 @@ spec:
       eula: "TRUE"
       version: "1.21.4"
       type: PAPER
-      motd: techicraft playground
-      difficulty: peaceful
+      motd: welcome to techicraft, have fun!
+      difficulty: normal
       ops: "tyriis,jazzlyin"
-      worldSaveName: playground
-      enableCommandBlock: true
-      maxPlayers: 20
-      spawnAnimals: false
-      spawnNPCs: false
+      worldSaveName: survival
+      levelSeed: "8883383886528594252"
+      enableCommandBlock: false
+      maxPlayers: 50
+      spawnAnimals: true
+      spawnNPCs: true
       spawnProtection: 0
-      spawnMonsters: false
+      spawnMonsters: true
       allowNether: true
-      generateStructures: false
+      generateStructures: true
       viewDistance: 14
-      levelType: FLAT
+      levelType: DEFAULT
       # maxBuildHeight: 256
-      gameMode: creative
-      pvp: false
+      gameMode: survival
+      pvp: true
       # https://docs.papermc.io/velocity/player-information-forwarding#configuring-modern-forwarding
       onlineMode: false
       memory: 1024M
@@ -63,21 +64,20 @@ spec:
     persistence:
       dataDir:
         enabled: true
-        existingClaim: minecraft-public-playground-world-data
-
+        existingClaim: minecraft-public-survival-world-data
   postRenderers:
     - kustomize:
         patches:
           - target:
               kind: Deployment
-              name: minecraft-public-playground-world-minecraft
+              name: minecraft-public-survival-world-minecraft
             patch: |-
               - op: add
                 path: /spec/template/spec/volumes/-
                 value:
                   name: config
                   configMap:
-                    name: minecraft-public-playground-world-config
+                    name: minecraft-public-survival-world-config
               - op: add
                 path: /spec/template/spec/containers/0/volumeMounts/-
                 value:
