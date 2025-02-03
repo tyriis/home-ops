@@ -48,8 +48,8 @@ spec:
       motd: welcome to techicraft, have fun!
       difficulty: normal
       ops: "tyriis,jazzlyin"
-      worldSaveName: survival
-      levelSeed: "8883383886528594252"
+      worldSaveName: survival2
+      levelSeed: "4172997236519720604"
       enableCommandBlock: false
       maxPlayers: 50
       spawnAnimals: true
@@ -59,7 +59,7 @@ spec:
       allowNether: true
       generateStructures: true
       viewDistance: 14
-      levelType: DEFAULT
+      levelType: default
       # maxBuildHeight: 256
       gameMode: survival
       pvp: true
