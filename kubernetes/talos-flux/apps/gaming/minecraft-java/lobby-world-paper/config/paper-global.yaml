@@ -94,6 +94,7 @@ player-auto-save:
   rate: -1
 proxies:
   bungee-cord:
+    enabled: true
     online-mode: true
   proxy-protocol: false
   velocity:
