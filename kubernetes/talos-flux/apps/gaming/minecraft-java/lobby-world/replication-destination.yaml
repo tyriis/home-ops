@@ -11,7 +11,7 @@ spec:
   trigger:
     manual: restore-once
   restic:
-    repository: mminecraft-lobby-world-data-volsync
+    repository: minecraft-lobby-world-data-volsync
     copyMethod: Snapshot
     volumeSnapshotClassName: csi-ceph-blockpool
     cacheStorageClassName: ceph-block
