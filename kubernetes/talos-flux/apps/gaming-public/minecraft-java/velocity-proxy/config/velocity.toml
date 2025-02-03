@@ -72,7 +72,6 @@ enable-player-address-logging = true
 [servers]
 # Configure your servers here. Each key represents the server's name, and the value
 # represents the IP address of the server to connect to.
-lobby = "minecraft-lobby-world2-minecraft:25565"
 # creative = "minecraft-creative-world-minecraft:25565"
 playground = "minecraft-public-playground-world-minecraft:25565"
 survival = "minecraft-public-survival-world-minecraft:25565"
@@ -82,7 +81,6 @@ survival = "minecraft-public-survival-world-minecraft:25565"
 try = [
   "survival",
   "playground",
-  "lobby"
 ]
 
 [forced-hosts]
