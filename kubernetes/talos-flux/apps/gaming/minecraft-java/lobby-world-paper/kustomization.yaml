@@ -15,7 +15,7 @@ configMapGenerator:
   - name: minecraft-lobby-world-config2
     files:
       - spigot.yml=config/spigot.yaml
-      - paper.yml=config/paper.yaml
+      - paper-global.yml=config/paper-global.yaml
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
