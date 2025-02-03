@@ -51,7 +51,7 @@ spec:
               UID: "1000"
               GID: "1000"
               TYPE: "VELOCITY"
-              # VELOCITY_VERSION: "lstest"
+              # VELOCITY_VERSION: "latest"
               # TODO: hello renovate
               VELOCITY_VERSION: "3.4.0-SNAPSHOT"
               # VELOCITY_BUILD_ID: "latest"
@@ -69,9 +69,6 @@ spec:
               ENABLE_RCON: "true"
               # enable env variable replacement
               REPLACE_ENV_VARIABLES: "TRUE"
-              # REPLACE_ENV_VARIABLE_PREFIX: "CFG_"
-              # define an optional prefix for your env variables you want to replace
-              # ENV_VARIABLE_PREFIX: "CFG_"
               TZ: ${SETTING_TZ}
 
             image:
@@ -151,9 +148,13 @@ spec:
           - path: /config/velocity.toml
             subPath: velocity.toml
             readOnly: true
-          - path: /config/forwarding.secret
-            subPath: forwarding.secret
-            readOnly: true
           - path: /config/plugins.txt
             subPath: plugins.txt
+            readOnly: true
+      forwarding-secret:
+        type: secret
+        name: minecraft-proxy-forwarding
+        globalMounts:
+          - path: /config/forwarding.secret
+            subPath: forwarding.secret
             readOnly: true

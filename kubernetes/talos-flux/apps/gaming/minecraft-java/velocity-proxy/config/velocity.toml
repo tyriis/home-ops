@@ -39,8 +39,7 @@ player-info-forwarding-mode = "modern"
 
 # If you are using modern or BungeeGuard IP forwarding, configure a file that contains a unique secret here.
 # The file is expected to be UTF-8 encoded and not empty.
-# substitution only works with certain names https://github.com/itzg/docker-mc-proxy/blob/d7c44204f1ca510755f81f80c6e3b8f997a0dfc1/scripts/run-bungeecord.sh#L17
-forwarding-secret-file = "forwarding.properties"
+forwarding-secret-file = "forwarding.secret"
 
 # Announce whether or not your server supports Forge. If you run a modded server, we
 # suggest turning this on.
