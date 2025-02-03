@@ -38,9 +38,6 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
-  dependsOn:
-    - name: flux-system
-    - name: flux-repositories
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -63,8 +60,6 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
-  dependsOn:
-    - name: flux-operator
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json

@@ -34,8 +34,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-      app.kubernetes.io/instance: *appname
-      app.kubernetes.io/component: dragonfly
   path: ./kubernetes/kube-nas/apps/database-system/dragonfly/cluster
   prune: true
   sourceRef:
