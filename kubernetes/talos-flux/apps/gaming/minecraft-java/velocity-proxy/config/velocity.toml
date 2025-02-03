@@ -10,7 +10,7 @@ motd = "<#09add3>A Velocity Server"
 
 # What should we display for the maximum number of players? (Velocity does not support a cap
 # on the number of players online.)
-show-max-players = 500
+show-max-players = 25
 
 # Should we authenticate players with Mojang? By default, this is on.
 online-mode = true
@@ -118,7 +118,7 @@ read-timeout = 30000
 haproxy-protocol = false
 
 # Enables TCP fast open support on the proxy. Requires the proxy to run on Linux.
-tcp-fast-open = false
+tcp-fast-open = true
 
 # Enables BungeeCord plugin messaging channel support on Velocity.
 bungee-plugin-message-channel = true
@@ -136,7 +136,7 @@ failover-on-unexpected-server-disconnect = true
 announce-proxy-commands = true
 
 # Enables the logging of commands
-log-command-executions = false
+log-command-executions = true
 
 # Enables logging of player connections when connecting to the proxy, switching servers
 # and disconnecting from the proxy.

@@ -14,6 +14,7 @@ configMapGenerator:
     files:
       - velocity.toml=config/velocity.toml
       - forwarding.secret=config/forwarding.secret
+      - plugins.txt=config/plugins.txt
 generatorOptions:
   disableNameSuffixHash: true
   annotations:

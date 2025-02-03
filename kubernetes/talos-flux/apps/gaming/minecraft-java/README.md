@@ -1,0 +1,38 @@
+<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+<!-- markdownlint-disable MD051 -->
+
+# minecraft-java
+
+## Story
+
+As a user I want to play minecraft with my family members on the local network
+I want to joint with minecraft java aswel as minecraft bedrock clients
+
+## Velocity Proxy
+
+[Velocity](https://papermc.io/software/velocity)
+
+Velocity is the modern, high-performance proxy. Designed with performance and stability in mind, it's a full alternative to Waterfall with its own plugin ecosystem.
+
+## Geyser
+
+[Geyser Documentation](https://geysermc.org/)
+
+Geyser is a program that allows Minecraft: Bedrock Edition clients to join Minecraft: Java Edition servers, allowing for true crossplay between both editions of the game.
+The ultimate goal of this project is to allow Minecraft: Bedrock Edition users to join Minecraft: Java Edition servers as seamlessly as possible.
+
+## Floodgate
+
+[Floodgate Documentation](https://geysermc.org/wiki/floodgate/)
+
+Floodgate is a hybrid mode plugin. It introduces new features:
+
+- Ability to join Minecraft: Java Edition servers with Minecraft: Bedrock accounts without needing a paid Minecraft: Java Edition account.
+- Ability to see Bedrock player skins on Java edition.
+- Ability for plugins to send Bedrock forms.
+- Ability to query players through the Global Api,
+- Allowing Bedrock players to link to a Java account using Global Linking, or Local Linking.
+
+This is something you install in addition to Geyser.
+Unlike Geyser, Floodgate can only be installed as a plugin on Spigot (including Paper and forks), Bungeecord, Velocity, and as a mod on Fabric servers, and can only be utilized on servers that have it installed.

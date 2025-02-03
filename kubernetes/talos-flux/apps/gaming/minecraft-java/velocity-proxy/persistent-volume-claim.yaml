@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: minecraft-velocity-proxy-data
+  name: minecraft-velocity-proxy-data2
   labels:
     kustomize.toolkit.fluxcd.io/prune: disabled
 spec:
