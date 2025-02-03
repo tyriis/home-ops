@@ -51,7 +51,7 @@ spec:
               UID: "1000"
               GID: "1000"
               TYPE: "VELOCITY"
-              # VELOCITY_VERSION: "lstest"
+              # VELOCITY_VERSION: "latest"
               # TODO: hello renovate
               VELOCITY_VERSION: "3.4.0-SNAPSHOT"
               # VELOCITY_BUILD_ID: "latest"
@@ -67,11 +67,8 @@ spec:
               JVM_XX_OPTS: "-XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:+UnlockExperimentalVMOptions -XX:+ParallelRefProcEnabled -XX:+AlwaysPreTouch -XX:MaxInlineLevel=15"
               ICON: "https://storage.googleapis.com/techtales-public-images/server-icon.png"
               ENABLE_RCON: "true"
-              REPLACE_ENV_DURING_SYNC: "true"
               # enable env variable replacement
               REPLACE_ENV_VARIABLES: "TRUE"
-              # define an optional prefix for your env variables you want to replace
-              ENV_VARIABLE_PREFIX: "CFG_"
               TZ: ${SETTING_TZ}
 
             image:
@@ -151,9 +148,13 @@ spec:
           - path: /config/velocity.toml
             subPath: velocity.toml
             readOnly: true
-          - path: /config/forwarding.secret
-            subPath: forwarding.secret
-            readOnly: true
           - path: /config/plugins.txt
             subPath: plugins.txt
+            readOnly: true
+      forwarding-secret:
+        type: secret
+        name: minecraft-proxy-forwarding
+        globalMounts:
+          - path: /config/forwarding.secret
+            subPath: forwarding.secret
             readOnly: true
