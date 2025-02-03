@@ -70,7 +70,7 @@ spec:
         patches:
           - target:
               kind: Deployment
-              name: minecraft-lobby-world-minecraft2
+              name: minecraft-lobby-world2-minecraft
             patch: |-
               - op: add
                 path: /spec/template/spec/volumes/-
