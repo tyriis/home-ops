@@ -30,14 +30,14 @@ spec:
       tag: latest@sha256:9fcc91f052c47c5da7ae280b7cd1603ee7d657867c19fe4d6b5260edfd72db30
     resources:
       requests:
-        memory: 8192Mi
-        cpu: 600m
+        memory: 1024Mi
+        cpu: 100m
     minecraftServer:
       eula: "TRUE"
       version: "1.21.4"
       # https://mcjars.app/SPIGOT/versions
-      spigotDownloadUrl: https://s3.mcjars.app/spigot/1.21.4/4418/server.jar
-      type: SPIGOT
+      # spigotDownloadUrl: https://s3.mcjars.app/spigot/1.21.4/4418/server.jar
+      type: PAPER
       motd: "hello minecraft creative world"
       difficulty: normal
       ops: "tyriis,jazzlyin"
@@ -48,7 +48,7 @@ spec:
       gameMode: creative
       pvp: false
       onlineMode: false
-      memory: 8192M
+      memory: 1024M
       rcon:
         enabled: true
         existingSecret: bungeecord-rcon
@@ -76,5 +76,5 @@ spec:
                 path: /spec/template/spec/containers/0/volumeMounts/-
                 value:
                   name: config
-                  mountPath: /data/spigot.yml
-                  subPath: spigot.yml
+                  mountPath: /config/paper-global.yml
+                  subPath: paper-global.yml
