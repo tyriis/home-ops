@@ -6,5 +6,6 @@ metadata:
   name: openebs-charts
   namespace: flux-system
 spec:
-  interval: 2h
+  interval: 1h
+  timeout: 3m
   url: https://openebs.github.io/openebs

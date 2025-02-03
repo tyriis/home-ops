@@ -7,52 +7,59 @@ metadata:
   namespace: flux-system
 spec:
   targetNamespace: flux-system
-  interval: 30m
   path: ./kubernetes/base/flux/repositories/helm
   prune: false
-  wait: true
   sourceRef:
     kind: GitRepository
     name: home-ops
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: flux-operator
+  name: &appname flux-operator
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: flux-system
-    - name: flux-repositories
   targetNamespace: flux-system
-  interval: 30m
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   path: ./kubernetes/kube-nas/flux/operator
   prune: false
-  wait: false
   sourceRef:
     kind: GitRepository
     name: home-ops
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: flux-instance
+  name: &appname flux-instance
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: flux-operator
   targetNamespace: flux-system
-  interval: 30m
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   path: ./kubernetes/kube-nas/flux/instance
   prune: false
-  wait: false
   sourceRef:
     kind: GitRepository
     name: home-ops
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -62,15 +69,18 @@ metadata:
   name: flux-apps
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: flux-system
-    - name: flux-repositories
-  interval: 10m
   path: ./kubernetes/kube-nas/apps
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: flux-system
+    - name: flux-repositories
   decryption:
     provider: sops
     secretRef:
