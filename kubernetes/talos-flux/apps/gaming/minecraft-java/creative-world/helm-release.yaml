@@ -76,5 +76,11 @@ spec:
                 path: /spec/template/spec/containers/0/volumeMounts/-
                 value:
                   name: config
+                  mountPath: /config/spigot.yml
+                  subPath: spigot.yml
+              - op: add
+                path: /spec/template/spec/containers/0/volumeMounts/-
+                value:
+                  name: config
                   mountPath: /config/paper-global.yml
                   subPath: paper-global.yml
