@@ -44,8 +44,6 @@ spec:
             envFrom:
               - secretRef:
                   name: bungeecord-rcon
-              - secretRef:
-                  name: velocity-proxy-env
             env:
               # for a full list of ENV vars see: https://github.com/itzg/docker-mc-proxy#environment-settings
               UID: "1000"
