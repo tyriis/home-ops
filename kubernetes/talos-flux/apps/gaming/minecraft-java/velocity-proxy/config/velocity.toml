@@ -80,7 +80,7 @@ playground = "minecraft-playground-world-minecraft:25565"
 
 # In what order we should try servers when a player logs in or is kicked from a server.
 try = [
-    "playground"
+    "lobby"
 ]
 
 [forced-hosts]
