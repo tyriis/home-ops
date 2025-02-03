@@ -44,22 +44,39 @@ spec:
             envFrom:
               - secretRef:
                   name: bungeecord-rcon
+              - secretRef:
+                  name: velocity-proxy-env
             env:
+              # for a full list of ENV vars see: https://github.com/itzg/docker-mc-proxy#environment-settings
               UID: "1000"
               GID: "1000"
               TYPE: "VELOCITY"
-              VELOCITY_VERSION: "latest"
-              VELOCITY_BUILD_ID: "latest"
-              PLUGINS: https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/velocity,https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/velocity
-              MEMORY: 256M
-              # JVM_OPTS: "-Xms128M -Xmx256M"
+              # VELOCITY_VERSION: "lstest"
+              # TODO: hello renovate
+              VELOCITY_VERSION: "3.4.0-SNAPSHOT"
+              # VELOCITY_BUILD_ID: "latest"
+              # PLUGINS: >
+              #   https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/velocity,
+              #   https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/velocity
+              PLUGINS_FILE: /server/plugins.txt
+              INIT_MEMORY: 128M
+              MAX_MEMORY: 256M
+              # JVM_OPTS:: "-Xms1G -Xmx1G "
+              # https://docs.papermc.io/velocity/getting-started#launching-velocity-under-macos-or-linux
+              # JVM_XX_OPTS: "-XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:+UnlockExperimentalVMOptions -XX:+ParallelRefProcEnabled -XX:+AlwaysPreTouch"
+              JVM_XX_OPTS: "-XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:+UnlockExperimentalVMOptions -XX:+ParallelRefProcEnabled -XX:+AlwaysPreTouch -XX:MaxInlineLevel=15"
+              ICON: "https://storage.googleapis.com/techtales-public-images/server-icon.png"
               ENABLE_RCON: "true"
-              SPIGOT_PLUGIN: "78915"
+              REPLACE_ENV_DURING_SYNC: "true"
+              # enable env variable replacement
+              REPLACE_ENV_VARIABLES: "TRUE"
+              # define an optional prefix for your env variables you want to replace
+              ENV_VARIABLE_PREFIX: "CFG_"
               TZ: ${SETTING_TZ}
 
             image:
-              repository: itzg/bungeecord
-              tag: latest@sha256:82b6a7b7d9aefbee26ce2c95e399d5e8dde073f5e6e87e6462f4016fca9f52f3
+              repository: itzg/mc-proxy
+              tag: java21@sha256:82b6a7b7d9aefbee26ce2c95e399d5e8dde073f5e6e87e6462f4016fca9f52f3
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
@@ -91,7 +108,7 @@ spec:
 
             resources:
               requests:
-                cpu: 50m
+                cpu: 100m
                 memory: 250Mi
 
     service:
@@ -136,4 +153,7 @@ spec:
             readOnly: true
           - path: /config/forwarding.secret
             subPath: forwarding.secret
+            readOnly: true
+          - path: /config/plugins.txt
+            subPath: plugins.txt
             readOnly: true
