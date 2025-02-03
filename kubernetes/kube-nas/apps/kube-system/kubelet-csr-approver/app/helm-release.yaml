@@ -7,6 +7,7 @@ metadata:
   namespace: kube-system
 spec:
   interval: 30m
+  timeout: 5m
   chart:
     spec:
       chart: kubelet-csr-approver
@@ -15,7 +16,16 @@ spec:
         kind: HelmRepository
         name: postfinance-charts
         namespace: flux-system
-      interval: 30m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     providerRegex: |
       ^(kube-nas)$

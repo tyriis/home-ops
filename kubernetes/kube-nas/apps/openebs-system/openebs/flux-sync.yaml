@@ -10,12 +10,12 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 10m
   path: ./kubernetes/kube-nas/apps/openebs-system/openebs/app
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops
   wait: true
+  interval: 30m
   retryInterval: 1m
   timeout: 5m

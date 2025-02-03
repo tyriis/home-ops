@@ -5,7 +5,8 @@ kind: HelmRelease
 metadata:
   name: volsync
 spec:
-  interval: 15m
+  interval: 30m
+  timeout: 5m
   chart:
     spec:
       chart: volsync
@@ -14,14 +15,15 @@ spec:
         kind: HelmRepository
         name: backube-charts
         namespace: flux-system
-  maxHistory: 15
   install:
-    createNamespace: true
+    crds: CreateReplace
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
+    crds: CreateReplace
     remediation:
+      strategy: rollback
       retries: 3
   uninstall:
     keepHistory: false
