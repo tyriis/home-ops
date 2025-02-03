@@ -64,7 +64,7 @@ spec:
               # JVM_OPTS:: "-Xms1G -Xmx1G "
               # https://docs.papermc.io/velocity/getting-started#launching-velocity-under-macos-or-linux
               # JVM_XX_OPTS: "-XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:+UnlockExperimentalVMOptions -XX:+ParallelRefProcEnabled -XX:+AlwaysPreTouch"
-              JVM_XX_OPTS: "-XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:+UnlockExperimentalVMOptions -XX:+ParallelRefProcEnabled -XX:+AlwaysPreTouch XX:MaxRAMPercentage=50"
+              JVM_XX_OPTS: "-XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:+UnlockExperimentalVMOptions -XX:+ParallelRefProcEnabled -XX:+AlwaysPreTouch -XX:MaxInlineLevel=15"
               ICON: "https://storage.googleapis.com/techtales-public-images/server-icon.png"
               ENABLE_RCON: "true"
               REPLACE_ENV_DURING_SYNC: "true"
