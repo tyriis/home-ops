@@ -37,7 +37,7 @@ spec:
       ENABLE_ROLLING_LOGS: "true"
       LOG_TIMESTAMP: "true"
       JVM_XX_OPTS: -XX:MaxRAMPercentage=75
-      MAX_MEMORY: 8G
+      MAX_MEMORY: 12G
       USE_AIKAR_FLAGS: "true"
       SNOOPER_ENABLED: "false"
     minecraftServer:
