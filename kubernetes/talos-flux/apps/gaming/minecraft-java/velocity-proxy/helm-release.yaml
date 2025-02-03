@@ -67,11 +67,11 @@ spec:
               JVM_XX_OPTS: "-XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:+UnlockExperimentalVMOptions -XX:+ParallelRefProcEnabled -XX:+AlwaysPreTouch -XX:MaxInlineLevel=15"
               ICON: "https://storage.googleapis.com/techtales-public-images/server-icon.png"
               ENABLE_RCON: "true"
-              REPLACE_ENV_DURING_SYNC: "true"
               # enable env variable replacement
               REPLACE_ENV_VARIABLES: "TRUE"
+              # REPLACE_ENV_VARIABLE_PREFIX: "CFG_"
               # define an optional prefix for your env variables you want to replace
-              ENV_VARIABLE_PREFIX: "CFG_"
+              # ENV_VARIABLE_PREFIX: "CFG_"
               TZ: ${SETTING_TZ}
 
             image:
