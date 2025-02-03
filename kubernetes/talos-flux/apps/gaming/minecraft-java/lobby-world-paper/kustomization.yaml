@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - secret.sops.yaml
+  - replication-destination.yaml
+  - persistent-volume-claim.yaml
+  # - replication-source.yaml
+  - helm-release.yaml
+commonLabels:
+  app.kubernetes.io/name: minecraft-lobby-world2
+  app.kubernetes.io/instance: minecraft-lobby-world2
+configMapGenerator:
+  - name: minecraft-lobby-world-config2
+    files:
+      - spigot.yml=config/spigot.yaml
+      - paper.yml=config/paper.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled

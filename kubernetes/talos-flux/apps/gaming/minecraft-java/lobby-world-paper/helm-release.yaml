@@ -1,0 +1,92 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: minecraft-lobby-world2
+spec:
+  interval: 15m
+  driftDetection:
+    mode: enabled
+  chart:
+    spec:
+      chart: minecraft
+      interval: 15m
+      version: 4.23.7
+      sourceRef:
+        kind: HelmRepository
+        name: minecraft-server-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    image:
+      repository: ghcr.io/itzg/minecraft-server
+      tag: latest@sha256:9fcc91f052c47c5da7ae280b7cd1603ee7d657867c19fe4d6b5260edfd72db30
+    resources:
+      requests:
+        cpu: 100m
+        memory: 1024Mi
+    minecraftServer:
+      eula: "TRUE"
+      version: "1.21.4"
+      type: PAPER
+      motd: techtales lobby
+      difficulty: peaceful
+      ops: "tyriis,jazzlyin,ForscherAlex,ForscherDominik"
+      worldSaveName: lobby
+      enableCommandBlock: true
+      maxPlayers: 25
+      spawnAnimals: false
+      spawnNPCs: false
+      spawnProtection: 0
+      spawnMonsters: false
+      allowNether: false
+      generateStructures: false
+      viewDistance: 14
+      levelType: FLAT
+      # maxBuildHeight: 256
+      gameMode: creative
+      pvp: false
+      onlineMode: false
+      memory: 1024M
+      rcon:
+        enabled: true
+        existingSecret: bungeecord-rcon
+        secretKey: RCON_PASSWORD
+        serviceType: ClusterIP
+    persistence:
+      dataDir:
+        enabled: true
+        existingClaim: minecraft-lobby-world-data2
+
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+              name: minecraft-lobby-world-minecraft2
+            patch: |-
+              - op: add
+                path: /spec/template/spec/volumes/-
+                value:
+                  name: config
+                  configMap:
+                    name: minecraft-lobby-world-config2
+              - op: add
+                path: /spec/template/spec/containers/0/volumeMounts/-
+                value:
+                  name: config
+                  mountPath: /data/spigot.yml
+                  subPath: spigot.yml
+              - op: add
+                path: /spec/template/spec/containers/0/volumeMounts/-
+                value:
+                  name: config
+                  mountPath: /config/paper-global.yml
+                  subPath: paper-global.yml
