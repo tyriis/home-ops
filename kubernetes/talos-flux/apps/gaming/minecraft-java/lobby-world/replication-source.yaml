@@ -11,7 +11,7 @@ spec:
   restic:
     copyMethod: Snapshot
     pruneIntervalDays: 14
-    repository: mminecraft-lobby-world-data-volsync
+    repository: minecraft-lobby-world-data-volsync
     volumeSnapshotClassName: csi-ceph-blockpool
     cacheCapacity: 5Gi
     cacheStorageClassName: ceph-block
