@@ -13,7 +13,7 @@ configMapGenerator:
       - values.yaml=./external-secrets/minecraft-rcon.yaml
   - name: curseforge-api-key
     files:
-      - values.yaml=./external-secrets/curseforge-api-key.yaml
+      - values.yaml=./external-secrets/minecraft-curseforge-api-key.yaml
 generatorOptions:
   disableNameSuffixHash: true
 configurations:

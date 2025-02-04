@@ -5,7 +5,11 @@ kind: HelmRelease
 metadata:
   name: &app minecraft-lobby-world2
 spec:
-  interval: 15m
+  dependsOn:
+    - name: minecraft-proxy-forwarding
+    - name: minecraft-rcon
+    - name: curseforge-api-key
+  interval: 30m
   driftDetection:
     mode: enabled
   chart:
