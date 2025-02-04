@@ -126,7 +126,7 @@ spec:
 
     service:
       minecraft:
-        controller: *app
+        controller: minecraft
         type: ClusterIP
         ports:
           java:
