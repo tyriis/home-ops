@@ -54,13 +54,15 @@ spec:
                 enabled: true
                 custom: true
                 spec:
-                  periodSeconds: 60
+                  initialDelaySeconds: 30
+                  periodSeconds: 5
                   exec: &mc-health { command: ["mc-health"] }
+                  failureThreshold: 20
               readiness: *probes
               startup:
                 <<: *probes
                 spec:
-                  initialDelaySeconds: 60
+                  initialDelaySeconds: 30
                   periodSeconds: 1
                   failureThreshold: 300
                   exec: *mc-health
