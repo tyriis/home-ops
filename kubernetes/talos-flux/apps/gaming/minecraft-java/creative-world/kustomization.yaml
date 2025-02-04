@@ -8,7 +8,7 @@ commonLabels:
   app.kubernetes.io/name: minecraft-creative-world
   app.kubernetes.io/instance: minecraft-creative-world
 configMapGenerator:
-  - name: creative-world-config
+  - name: minecraft-creative-world-config
     files:
       - spigot.yml=config/spigot.yaml
       - paper-global.yml=config/paper-global.yaml
