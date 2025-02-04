@@ -33,7 +33,7 @@ spec:
         cpu: 100m
         memory: 1024Mi
     env:
-      PLUGINS_FILE: /config/plugins.txt
+      MODS_FILE: /config/plugins.txt
       TZ: ${SETTING_TZ}
     minecraftServer:
       eula: "TRUE"
