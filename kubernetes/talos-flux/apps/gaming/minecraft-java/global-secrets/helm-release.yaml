@@ -7,6 +7,7 @@ metadata:
 spec:
   dependsOn:
     - name: external-secrets
+      namespace: secops
   interval: 15m
   chart:
     spec:
@@ -39,6 +40,7 @@ metadata:
 spec:
   dependsOn:
     - name: external-secrets
+      namespace: secops
   interval: 15m
   chart:
     spec:
@@ -71,6 +73,7 @@ metadata:
 spec:
   dependsOn:
     - name: external-secrets
+      namespace: secops
   interval: 15m
   chart:
     spec:
