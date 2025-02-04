@@ -84,7 +84,7 @@ spec:
               SPAWN_ANIMALS: "false"
               SPAWN_MONSTERS: "false"
               SPAWN_NPCS: "false"
-              SPAWN_PROTECTION: "0"
+              # SPAWN_PROTECTION: "0"
               VIEW_DISTANCE: "14"
               HARDCORE: "false"
               MODE: creative
@@ -106,7 +106,7 @@ spec:
               ENABLE_WHITELIST: "false"
               ENABLE_ROLLING_LOGS: "true"
               LOG_TIMESTAMP: "true"
-              REMOVE_OLD_MODS: "true"
+              # REMOVE_OLD_MODS: "true"
               REPLACE_ENV_DURING_SYNC: "true"
               CFG_PROXY_SECRET:
                 valueFrom:
