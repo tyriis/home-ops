@@ -76,6 +76,7 @@ spec:
               TZ: ${SETTING_TZ}
               EULA: "true"
               TYPE: "PAPER"
+              # TODO renovate
               VERSION: "1.21.4"
               DIFFICULTY: peaceful
               OPS: "tyriis,jazzlyin"
@@ -121,6 +122,12 @@ spec:
               capabilities:
                 drop:
                   - ALL
+            ports:
+              - name: java
+                containerPort: 25565
+              - name: rcon
+                containerPort: 25575
+
             resources:
               requests:
                 cpu: 100m
@@ -134,10 +141,13 @@ spec:
           java:
             port: 25565
             protocol: TCP
-          map:
-            port: 8100
-          metrics:
-            port: 25585
+      rcon:
+        controller: minecraft
+        type: ClusterIP
+        ports:
+          rcon:
+            port: 25575
+            protocol: TCP
 
     serviceMonitor:
       metrics:

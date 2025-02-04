@@ -9,5 +9,5 @@ https://github.com/oddlama/vane/releases/download/v1.17.3/vane-regions-1.17.3.ja
 https://github.com/oddlama/vane/releases/download/v1.17.3/vane-trifles-1.17.3.jar
 # ProtocolLib https://ci.dmulloy2.net/job/ProtocolLib/
 https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/artifact/build/libs/ProtocolLib.jar
-# Spark https://spark.lucko.me/download
-https://ci.lucko.me/job/spark/472/artifact/spark-bukkit/build/libs/spark-1.10.124-bukkit.jar
+# UnifiedMetrics https://hangar.papermc.io/cubxity/UnifiedMetrics
+https://github.com/Cubxity/UnifiedMetrics/releases/download/v0.3.8/unifiedmetrics-platform-bukkit-0.3.8.jar
