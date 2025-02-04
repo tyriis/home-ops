@@ -1,0 +1,9 @@
+# vane https://oddlama.github.io/vane/
+https://github.com/oddlama/vane/releases/download/v1.17.3/vane-admin-1.17.3.jar
+https://github.com/oddlama/vane/releases/download/v1.17.3/vane-bedtime-1.17.3.jar
+https://github.com/oddlama/vane/releases/download/v1.17.3/vane-core-1.17.3.jar
+https://github.com/oddlama/vane/releases/download/v1.17.3/vane-enchantments-1.17.3.jar
+https://github.com/oddlama/vane/releases/download/v1.17.3/vane-permissions-1.17.3.jar
+https://github.com/oddlama/vane/releases/download/v1.17.3/vane-portals-1.17.3.jar
+https://github.com/oddlama/vane/releases/download/v1.17.3/vane-regions-1.17.3.jar
+https://github.com/oddlama/vane/releases/download/v1.17.3/vane-trifles-1.17.3.jar

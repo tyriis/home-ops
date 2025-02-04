@@ -16,6 +16,7 @@ configMapGenerator:
     files:
       - spigot.yml=config/spigot.yaml
       - paper-global.yml=config/paper-global.yaml
+      - plugins.txt=config/plugins.txt
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
