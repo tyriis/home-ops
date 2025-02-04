@@ -6,9 +6,9 @@ metadata:
   name: &app minecraft-lobby-world2
 spec:
   dependsOn:
-    - name: minecraft-proxy-forwarding
-    - name: minecraft-rcon
-    - name: curseforge-api-key
+    - name: external-secret-minecraft-proxy-forwarding
+    - name: external-secret-minecraft-rcon
+    - name: external-secret-minecraft-curseforge-api-key
   interval: 30m
   driftDetection:
     mode: enabled
