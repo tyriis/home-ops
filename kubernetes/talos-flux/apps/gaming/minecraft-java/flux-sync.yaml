@@ -3,6 +3,60 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: &appname minecraft-global-secrets
+  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/enabled: "true"
+spec:
+  targetNamespace: gaming
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  path: ./kubernetes/talos-flux/apps/gaming/minecraft-java/global-secrets
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: apps-external-secrets-stores
+
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname minecraft-velocity-proxy
+  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/enabled: "true"
+spec:
+  targetNamespace: gaming
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  path: ./kubernetes/talos-flux/apps/gaming/minecraft-java/velocity-proxy
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: minecraft-global-secrets
+    # required for the loadbalancer config (it is not a hard dependency)
+    - name: cilium-config
+
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: minecraft-waterfall-proxy
   namespace: flux-system
   labels:
@@ -13,28 +67,6 @@ spec:
     - name: apps-external-secrets-stores
   interval: 10m
   path: ./kubernetes/talos-flux/apps/gaming/minecraft-java/waterfall-proxy
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-ops
-  wait: true
-  targetNamespace: gaming
-
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: minecraft-velocity-proxy
-  namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
-spec:
-  dependsOn:
-    - name: cilium-config
-    - name: apps-external-secrets-stores
-  interval: 10m
-  path: ./kubernetes/talos-flux/apps/gaming/minecraft-java/velocity-proxy
   prune: true
   sourceRef:
     kind: GitRepository

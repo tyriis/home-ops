@@ -36,3 +36,9 @@ Floodgate is a hybrid mode plugin. It introduces new features:
 
 This is something you install in addition to Geyser.
 Unlike Geyser, Floodgate can only be installed as a plugin on Spigot (including Paper and forks), Bungeecord, Velocity, and as a mod on Fabric servers, and can only be utilized on servers that have it installed.
+
+## Findings
+
+### vane mod
+
+is not compatible with bedrock :(
