@@ -81,7 +81,6 @@ spec:
               VERSION: "1.21.4"
               MEMORY: "1024M"
               MODS_FILE: /config/plugins.txt
-              LOG_TIMESTAMP: "true"
               REPLACE_ENV_DURING_SYNC: "true"
               CFG_PROXY_SECRET:
                 valueFrom:

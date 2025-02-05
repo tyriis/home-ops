@@ -44,67 +44,67 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-    containers:
-      app:
-        image:
-          repository: ghcr.io/itzg/minecraft-server
-          tag: java21@sha256:9fcc91f052c47c5da7ae280b7cd1603ee7d657867c19fe4d6b5260edfd72db30
-        probes:
-          liveness: &probes
-            enabled: true
-            custom: true
-            spec:
-              initialDelaySeconds: 30
-              periodSeconds: 5
-              exec: &mc-health { command: ["mc-health"] }
-              failureThreshold: 20
-          readiness: *probes
-          startup:
-            <<: *probes
-            spec:
-              initialDelaySeconds: 30
-              periodSeconds: 1
-              failureThreshold: 300
-              exec: *mc-health
-        envFrom:
-          - secretRef:
-              name: minecraft-rcon
-          - secretRef:
-              name: curseforge-api-key
-          - configMapRef:
-              name: minecraft-survival-world-env
-        env:
-          # https://docker-minecraft-server.readthedocs.io/en/latest/variables
-          TZ: ${SETTING_TZ}
-          TYPE: "PAPER"
-          # TODO renovate
-          VERSION: "1.21.4"
-          MEMORY: "4096M"
-          MODS_FILE: /config/plugins.txt
-          REPLACE_ENV_DURING_SYNC: "true"
-          CFG_PROXY_SECRET:
-            valueFrom:
-              secretKeyRef:
-                name: minecraft-proxy-forwarding
-                key: forwarding.secret
-        securityContext:
-          allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: false
-          capabilities:
-            drop:
-              - ALL
-        ports:
-          - name: java
-            containerPort: 25565
-          - name: rcon
-            containerPort: 25575
-          - name: metrics
-            containerPort: 9100
+        containers:
+          app:
+            image:
+              repository: ghcr.io/itzg/minecraft-server
+              tag: java21@sha256:9fcc91f052c47c5da7ae280b7cd1603ee7d657867c19fe4d6b5260edfd72db30
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  initialDelaySeconds: 30
+                  periodSeconds: 5
+                  exec: &mc-health { command: ["mc-health"] }
+                  failureThreshold: 20
+              readiness: *probes
+              startup:
+                <<: *probes
+                spec:
+                  initialDelaySeconds: 30
+                  periodSeconds: 1
+                  failureThreshold: 300
+                  exec: *mc-health
+            envFrom:
+              - secretRef:
+                  name: minecraft-rcon
+              - secretRef:
+                  name: curseforge-api-key
+              - configMapRef:
+                  name: minecraft-survival-world-env
+            env:
+              # https://docker-minecraft-server.readthedocs.io/en/latest/variables
+              TZ: ${SETTING_TZ}
+              TYPE: "PAPER"
+              # TODO renovate
+              VERSION: "1.21.4"
+              MEMORY: "4096M"
+              MODS_FILE: /config/plugins.txt
+              REPLACE_ENV_DURING_SYNC: "true"
+              CFG_PROXY_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: minecraft-proxy-forwarding
+                    key: forwarding.secret
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities:
+                drop:
+                  - ALL
+            ports:
+              - name: java
+                containerPort: 25565
+              - name: rcon
+                containerPort: 25575
+              - name: metrics
+                containerPort: 9100
 
-        resources:
-          requests:
-            cpu: 500m
-            memory: 4Gi
+            resources:
+              requests:
+                cpu: 500m
+                memory: 4Gi
 
     service:
       minecraft:
