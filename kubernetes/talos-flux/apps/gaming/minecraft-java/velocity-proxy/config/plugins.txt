@@ -2,5 +2,8 @@
 https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/velocity
 # floodgate
 https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/velocity
+# UnifiedMetrics https://hangar.papermc.io/cubxity/UnifiedMetrics
+https://github.com/Cubxity/UnifiedMetrics/releases/download/v0.3.8/unifiedmetrics-platform-velocity-0.3.8.jar
+
 # vane https://github.com/oddlama/vane
 https://github.com/oddlama/vane/releases/download/v1.17.3/vane-velocity-1.17.3.jar
