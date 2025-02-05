@@ -95,11 +95,11 @@ spec:
                   - ALL
             ports:
               - name: java
-                containerPort: 25565
+                containerPort: &port 25565
               - name: rcon
-                containerPort: 25575
+                containerPort: &rconPort 25575
               - name: metrics
-                containerPort: 9100
+                containerPort: &metricsPort 9100
 
             resources:
               requests:
@@ -112,17 +112,17 @@ spec:
         type: ClusterIP
         ports:
           java:
-            port: 25565
+            port: *port
             protocol: TCP
           metrics:
-            port: 9100
+            port: *metricsPort
             protocol: TCP
       rcon:
         controller: minecraft
         type: ClusterIP
         ports:
           rcon:
-            port: 25575
+            port: *rconPort
             protocol: TCP
 
     serviceMonitor:

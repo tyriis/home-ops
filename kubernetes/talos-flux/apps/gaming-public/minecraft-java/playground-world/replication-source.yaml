@@ -3,11 +3,11 @@
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: minecraft-public-playground-world-data
+  name: minecraft-playground-world-data
 spec:
-  sourcePVC: minecraft-public-playground-world-data
+  sourcePVC: minecraft-playground-world-data
   trigger:
-    schedule: "0 * * * *"
+    schedule: "35 2 * * *"
   restic:
     copyMethod: Snapshot
     pruneIntervalDays: 14
