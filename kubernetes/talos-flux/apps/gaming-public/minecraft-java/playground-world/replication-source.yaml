@@ -5,7 +5,7 @@ kind: ReplicationSource
 metadata:
   name: minecraft-playground-world-data
 spec:
-  sourcePVC: minecraft-playground-world-data
+  sourcePVC: minecraft-public-playground-world-data
   trigger:
     schedule: "35 2 * * *"
   restic:

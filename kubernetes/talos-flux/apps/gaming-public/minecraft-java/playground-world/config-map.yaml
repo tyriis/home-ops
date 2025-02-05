@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: minecraft-playground-world-env
+  name: minecraft-public-playground-world-env
 data:
   EULA: "true"
   DIFFICULTY: peaceful

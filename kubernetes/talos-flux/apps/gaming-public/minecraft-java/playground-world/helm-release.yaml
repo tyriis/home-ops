@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app minecraft-playground-world
+  name: &app minecraft-public-playground-world
 spec:
   dependsOn:
     - name: external-secret-minecraft-proxy-forwarding
@@ -72,7 +72,7 @@ spec:
               - secretRef:
                   name: curseforge-api-key
               - configMapRef:
-                  name: minecraft-playground-world-env
+                  name: minecraft-public-playground-world-env
             env:
               # https://docker-minecraft-server.readthedocs.io/en/latest/variables
               TZ: ${SETTING_TZ}
@@ -128,7 +128,7 @@ spec:
     serviceMonitor:
       metrics:
         enabled: true
-        serviceName: minecraft-playground-world-minecraft
+        serviceName: minecraft-public-playground-world-minecraft
         endpoints:
           - port: metrics
             scheme: http
@@ -137,14 +137,14 @@ spec:
 
     persistence:
       data:
-        existingClaim: minecraft-playground-world-data
+        existingClaim: minecraft-public-playground-world-data
         advancedMounts:
           minecraft:
             app:
               - path: /data
       config:
         type: configMap
-        name: minecraft-playground-world-config
+        name: minecraft-public-playground-world-config
         globalMounts:
           - path: /config/spigot.yml
             subPath: spigot.yml

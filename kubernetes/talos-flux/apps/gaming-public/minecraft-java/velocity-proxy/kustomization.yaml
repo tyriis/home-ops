@@ -7,7 +7,7 @@ resources:
   - persistent-volume-claim.yaml
   - helm-release.yaml
 configMapGenerator:
-  - name: minecraft-velocity-proxy-config
+  - name: minecraft-public-velocity-proxy-config
     files:
       - velocity.toml=config/velocity.toml
       - plugins.txt=config/plugins.txt
