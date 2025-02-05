@@ -7,7 +7,7 @@ metadata:
 spec:
   sourcePVC: minecraft-creative-world-data
   trigger:
-    schedule: "0 * * * *"
+    schedule: "30 4 * * *"
   restic:
     copyMethod: Snapshot
     pruneIntervalDays: 14
