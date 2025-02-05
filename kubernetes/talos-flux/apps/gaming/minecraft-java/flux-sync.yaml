@@ -103,69 +103,85 @@ spec:
     - name: apps-rook-ceph-cluster
     - name: apps-kube-prometheus-stack
 
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: minecraft-lobby-world2
-  namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
-spec:
-  dependsOn:
-    - name: apps-volsync
-    - name: apps-rook-ceph-cluster
-  interval: 10m
-  path: ./kubernetes/talos-flux/apps/gaming/minecraft-java/lobby-world-paper
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-ops
-  wait: true
-  targetNamespace: gaming
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: minecraft-lobby-world2
+#   namespace: flux-system
+#   labels:
+#     substitution.flux.home.arpa/enabled: "true"
+# spec:
+#   dependsOn:
+#     - name: apps-volsync
+#     - name: apps-rook-ceph-cluster
+#   interval: 10m
+#   path: ./kubernetes/talos-flux/apps/gaming/minecraft-java/lobby-world-paper
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: home-ops
+#   wait: true
+#   targetNamespace: gaming
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: minecraft-creative-world
+  name: &appname minecraft-creative-world
   namespace: flux-system
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
-  dependsOn:
-    - name: minecraft-waterfall-proxy
-  interval: 10m
+  targetNamespace: gaming
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   path: ./kubernetes/talos-flux/apps/gaming/minecraft-java/creative-world
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
   wait: true
-  targetNamespace: gaming
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: minecraft-global-secrets
+    - name: apps-volsync
+    - name: apps-rook-ceph-cluster
+    - name: apps-kube-prometheus-stack
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: minecraft-playground-world
+  name: &appname minecraft-playground-world
   namespace: flux-system
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
-  dependsOn:
-    - name: minecraft-waterfall-proxy
-  interval: 10m
+  targetNamespace: gaming
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   path: ./kubernetes/talos-flux/apps/gaming/minecraft-java/playground-world
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
   wait: true
-  targetNamespace: gaming
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: minecraft-global-secrets
+    - name: apps-volsync
+    - name: apps-rook-ceph-cluster
+    - name: apps-kube-prometheus-stack
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
