@@ -5,6 +5,9 @@ kind: HelmRelease
 metadata:
   name: &app minecraft-velocity-proxy
 spec:
+  dependsOn:
+    - name: external-secret-minecraft-proxy-forwarding
+    - name: external-secret-minecraft-rcon
   interval: 15m
   driftDetection:
     mode: enabled
@@ -25,37 +28,40 @@ spec:
       retries: 3
   # https://github.com/bjw-s/helm-charts/blob/main/charts/library/common/values.yaml
   values:
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
     controllers:
       velocity:
         replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
-        pod:
-          securityContext:
-            fsGroup: 1000
-            runAsGroup: 1000
-            runAsNonRoot: true
-            runAsUser: 1000
-            seccompProfile:
-              type: RuntimeDefault
+
         containers:
           app:
             nameOverride: *app
+            image:
+              repository: itzg/mc-proxy
+              tag: java21@sha256:82b6a7b7d9aefbee26ce2c95e399d5e8dde073f5e6e87e6462f4016fca9f52f3
             envFrom:
               - secretRef:
-                  name: bungeecord-rcon
+                  name: minecraft-rcon
             env:
+              TZ: ${SETTING_TZ}
               # for a full list of ENV vars see: https://github.com/itzg/docker-mc-proxy#environment-settings
               UID: "1000"
               GID: "1000"
               TYPE: "VELOCITY"
-              # VELOCITY_VERSION: "latest"
-              # TODO: hello renovate
+              # TODO renovate
               VELOCITY_VERSION: "3.4.0-SNAPSHOT"
               # VELOCITY_BUILD_ID: "latest"
-              # PLUGINS: >
-              #   https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/velocity,
-              #   https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/velocity
               PLUGINS_FILE: /config/plugins.txt
               INIT_MEMORY: 128M
               MAX_MEMORY: 256M
@@ -67,11 +73,7 @@ spec:
               ENABLE_RCON: "true"
               # enable env variable replacement
               REPLACE_ENV_VARIABLES: "TRUE"
-              TZ: ${SETTING_TZ}
 
-            image:
-              repository: itzg/mc-proxy
-              tag: java21@sha256:82b6a7b7d9aefbee26ce2c95e399d5e8dde073f5e6e87e6462f4016fca9f52f3
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
@@ -88,6 +90,8 @@ spec:
               - name: rcon
                 containerPort: &rconPort 25575
                 protocol: TCP
+              - name: metrics
+                containerPort: &metricsPort 9100
 
             probes:
               readiness: &probes
@@ -111,7 +115,7 @@ spec:
         controller: velocity
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: ${SETTING_CILIUM_MINECRAFT_PROXY_ADDR2}
+          io.cilium/lb-ipam-ips: ${SETTING_CILIUM_MINECRAFT_PROXY_ADDR}
         ports:
           velocity-proxy:
             port: *port
@@ -128,6 +132,23 @@ spec:
             port: *rconPort
             protocol: TCP
             targetPort: rcon
+      metrics:
+        controller: velocity
+        ports:
+          metrics:
+            port: *metricsPort
+            protocol: TCP
+            targetPort: metrics
+
+    serviceMonitor:
+      metrics:
+        enabled: true
+        serviceName: minecraft-playground-world-minecraft
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /
+            interval: 1m
 
     persistence:
       tmp:
