@@ -8,6 +8,10 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: minecraft-lobby-world-data
   resources:
     requests:
       storage: 20Gi

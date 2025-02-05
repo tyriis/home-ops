@@ -3,15 +3,15 @@
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: minecraft-creative-world-data
+  name: minecraft-playground-world-data
 spec:
-  sourcePVC: minecraft-creative-world-data
+  sourcePVC: minecraft-playground-world-data
   trigger:
-    schedule: "30 4 * * *"
+    schedule: "20 4 * * *"
   restic:
     copyMethod: Snapshot
     pruneIntervalDays: 14
-    repository: minecraft-creative-world-data-volsync
+    repository: minecraft-playground-world-data-volsync
     volumeSnapshotClassName: csi-ceph-blockpool
     cacheCapacity: 5Gi
     cacheStorageClassName: ceph-block
