@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: minecraft-survival-world-env
+  name: minecraft-public-survival-world-env
 data:
   EULA: "true"
   DIFFICULTY: normal

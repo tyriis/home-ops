@@ -3,7 +3,7 @@
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
-  name: minecraft-playground-world-data
+  name: minecraft-public-playground-world-data
   labels:
     # https://fluxcd.io/flux/components/kustomize/kustomizations/#controlling-the-apply-behavior-of-resources
     kustomize.toolkit.fluxcd.io/ssa: IfNotPresent

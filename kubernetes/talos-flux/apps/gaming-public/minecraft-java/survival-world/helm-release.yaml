@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app minecraft-survival-world
+  name: &app minecraft-public-survival-world
 spec:
   dependsOn:
     - name: external-secret-minecraft-proxy-forwarding
@@ -72,7 +72,7 @@ spec:
               - secretRef:
                   name: curseforge-api-key
               - configMapRef:
-                  name: minecraft-survival-world-env
+                  name: minecraft-public-survival-world-env
             env:
               # https://docker-minecraft-server.readthedocs.io/en/latest/variables
               TZ: ${SETTING_TZ}
@@ -131,7 +131,7 @@ spec:
     serviceMonitor:
       metrics:
         enabled: true
-        serviceName: minecraft-survival-world-minecraft
+        serviceName: minecraft-public-survival-world-minecraft
         endpoints:
           - port: metrics
             scheme: http
@@ -147,7 +147,7 @@ spec:
               - path: /data
       config:
         type: configMap
-        name: minecraft-survival-world-config
+        name: minecraft-public-survival-world-config
         globalMounts:
           - path: /config/spigot.yml
             subPath: spigot.yml

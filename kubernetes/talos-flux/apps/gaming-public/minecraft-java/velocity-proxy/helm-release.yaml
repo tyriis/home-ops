@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app minecraft-velocity-proxy
+  name: &app minecraft-public-velocity-proxy
 spec:
   dependsOn:
     - name: external-secret-minecraft-proxy-forwarding
@@ -151,7 +151,7 @@ spec:
     serviceMonitor:
       metrics:
         enabled: true
-        serviceName: minecraft-velocity-proxy-metrics
+        serviceName: minecraft-public-velocity-proxy-metrics
         endpoints:
           - port: metrics
             scheme: http
@@ -170,7 +170,7 @@ spec:
           - path: /server
       config:
         type: configMap
-        name: minecraft-velocity-proxy-config
+        name: minecraft-public-velocity-proxy-config
         globalMounts:
           - path: /config/velocity.toml
             subPath: velocity.toml
