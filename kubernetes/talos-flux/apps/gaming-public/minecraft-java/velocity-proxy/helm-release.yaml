@@ -165,7 +165,7 @@ spec:
           - path: /tmp
       data:
         type: persistentVolumeClaim
-        existingClaim: minecraft-velocity-proxy-data
+        existingClaim: minecraft-public-velocity-proxy-data
         globalMounts:
           - path: /server
       config:

@@ -140,7 +140,7 @@ spec:
 
     persistence:
       data:
-        existingClaim: minecraft-survival-world-data
+        existingClaim: minecraft-public-survival-world-data
         advancedMounts:
           minecraft:
             app:
