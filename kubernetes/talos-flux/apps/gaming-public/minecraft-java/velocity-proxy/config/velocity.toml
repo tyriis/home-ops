@@ -10,13 +10,13 @@ motd = "<#09add3>A Velocity Server"
 
 # What should we display for the maximum number of players? (Velocity does not support a cap
 # on the number of players online.)
-show-max-players = 500
+show-max-players = 25
 
 # Should we authenticate players with Mojang? By default, this is on.
 online-mode = true
 
 # Should the proxy enforce the new public key security standard? By default, this is on.
-force-key-authentication = true
+force-key-authentication = false
 
 # If client's ISP/AS sent from this proxy is different from the one from Mojang's
 # authentication server, the player is kicked. This disallows some VPN and proxy
@@ -73,8 +73,8 @@ enable-player-address-logging = true
 # Configure your servers here. Each key represents the server's name, and the value
 # represents the IP address of the server to connect to.
 # creative = "minecraft-creative-world-minecraft:25565"
-playground = "minecraft-public-playground-world-minecraft:25565"
-survival = "minecraft-public-survival-world-minecraft:25565"
+playground = "minecraft-playground-world-minecraft:25565"
+survival = "minecraft-survival-world-minecraft:25565"
 # survival = "minecraft-survival-world-minecraft:25565"
 
 # In what order we should try servers when a player logs in or is kicked from a server.

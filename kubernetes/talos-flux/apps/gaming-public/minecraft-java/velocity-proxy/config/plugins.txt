@@ -1,0 +1,10 @@
+# geyser
+https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/velocity
+# floodgate
+https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/velocity
+# UnifiedMetrics https://hangar.papermc.io/cubxity/UnifiedMetrics
+https://github.com/Cubxity/UnifiedMetrics/releases/download/v0.3.8/unifiedmetrics-platform-velocity-0.3.8.jar
+# simple coice chat
+https://cdn.modrinth.com/data/9eGKb6K1/versions/yGTasgG4/voicechat-velocity-2.5.24.jar
+# simplewhitelist
+https://cdn.modrinth.com/data/mGVcEBwo/versions/fhsSOjSc/simplewhitelist-velocity-1.0.0.jar
