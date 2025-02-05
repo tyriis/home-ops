@@ -71,29 +71,16 @@ spec:
                   name: minecraft-rcon
               - secretRef:
                   name: curseforge-api-key
+              - configMapRef:
+                  name: minecraft-creative-world-env
             env:
               # https://docker-minecraft-server.readthedocs.io/en/latest/variables
               TZ: ${SETTING_TZ}
-              EULA: "true"
               TYPE: "PAPER"
               # TODO renovate
               VERSION: "1.21.4"
-              DIFFICULTY: normal
-              OPS: "tyriis,jazzlyin"
-              MAX_PLAYERS: "25"
-              VIEW_DISTANCE: "14"
-              MODE: creative
-              MOTD: "hello minecraft creative world"
-              PVP: "false"
-              LEVEL_TYPE: DEFAULT
-              ONLINE_MODE: "false"
               MEMORY: "1024M"
-              ENABLE_RCON: "true"
-              CF_PARALLEL_DOWNLOADS: "4"
               MODS_FILE: /config/plugins.txt
-              LEVEL: creative-world
-              STOP_SERVER_ANNOUNCE_DELAY: "30"
-              STOP_DURATION: "30"
               LOG_TIMESTAMP: "true"
               REPLACE_ENV_DURING_SYNC: "true"
               CFG_PROXY_SECRET:
@@ -150,6 +137,12 @@ spec:
             interval: 1m
 
     persistence:
+      data:
+        existingClaim: minecraft-creative-world-data
+        advancedMounts:
+          minecraft:
+            app:
+              - path: /data
       config:
         type: configMap
         name: minecraft-creative-world-config
