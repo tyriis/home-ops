@@ -28,7 +28,7 @@ spec:
     remediation:
       retries: 3
   # https://github.com/bjw-s/helm-charts/blob/main/charts/library/common/values.yaml
-values:
+  values:
   defaultPodOptions:
     automountServiceAccountToken: false
     securityContext:
