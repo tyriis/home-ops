@@ -3,16 +3,18 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./persistent-volume-claim.yaml
-  - ./helm-release.yaml
-commonLabels:
-  app.kubernetes.io/name: minecraft-playground-world
-  app.kubernetes.io/instance: minecraft-playground-world
+  - config-map.yaml
+  - secret.sops.yaml
+  - replication-destination.yaml
+  - persistent-volume-claim.yaml
+  - replication-source.yaml
+  - helm-release.yaml
 configMapGenerator:
   - name: minecraft-playground-world-config
     files:
       - spigot.yml=config/spigot.yaml
       - paper-global.yml=config/paper-global.yaml
+      - plugins.txt=config/plugins.txt
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
