@@ -48,3 +48,7 @@ UnifiedMetrics is a fully-featured free and open-source metrics collection plugi
 ### vane mod
 
 is not compatible with bedrock :(
+
+## Links
+
+[Keeping up with "Can't keep up!" - An Overloaded Guide to Java Vanilla Server Tick-Per-Second Lag-Busting -or- How I Learned To Stop Worrying and Love /debug](https://www.reddit.com/r/admincraft/comments/87i0hi/keeping_up_with_cant_keep_up_an_overloaded_guide/)
