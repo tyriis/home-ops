@@ -3,7 +3,7 @@
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
-  name: minecraft-survival-world-data-2025
+  name: minecraft-survival-world-data
   labels:
     # https://fluxcd.io/flux/components/kustomize/kustomizations/#controlling-the-apply-behavior-of-resources
     kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
@@ -11,7 +11,7 @@ spec:
   trigger:
     manual: restore-once
   restic:
-    repository: minecraft-survival-world-data-2025-volsync
+    repository: minecraft-survival-world-data-volsync
     copyMethod: Snapshot
     volumeSnapshotClassName: csi-ceph-blockpool
     cacheStorageClassName: ceph-block

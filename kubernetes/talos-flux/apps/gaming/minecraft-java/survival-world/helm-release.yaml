@@ -137,7 +137,7 @@ spec:
 
     persistence:
       data:
-        existingClaim: minecraft-survival-world-data-2025
+        existingClaim: minecraft-survival-world-data
         advancedMounts:
           minecraft:
             app:
