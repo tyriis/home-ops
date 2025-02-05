@@ -128,7 +128,7 @@ spec:
     serviceMonitor:
       metrics:
         enabled: true
-        serviceName: mminecraft-creative-world-minecraft
+        serviceName: minecraft-creative-world-minecraft
         endpoints:
           - port: metrics
             scheme: http
