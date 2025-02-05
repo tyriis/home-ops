@@ -37,6 +37,12 @@ Floodgate is a hybrid mode plugin. It introduces new features:
 This is something you install in addition to Geyser.
 Unlike Geyser, Floodgate can only be installed as a plugin on Spigot (including Paper and forks), Bungeecord, Velocity, and as a mod on Fabric servers, and can only be utilized on servers that have it installed.
 
+## UnifiedMetrics
+
+[UnifiedMetrics Documentation](https://docs.cubxity.dev/docs/unifiedmetrics/intro)
+
+UnifiedMetrics is a fully-featured free and open-source metrics collection plugin for Minecraft servers.
+
 ## Findings
 
 ### vane mod

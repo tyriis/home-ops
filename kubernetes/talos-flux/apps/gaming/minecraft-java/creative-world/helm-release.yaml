@@ -90,6 +90,7 @@ spec:
               MEMORY: "1024M"
               ENABLE_RCON: "true"
               CF_PARALLEL_DOWNLOADS: "4"
+              MODS_FILE: /config/plugins.txt
               LEVEL: creative-world
               STOP_SERVER_ANNOUNCE_DELAY: "30"
               STOP_DURATION: "30"
@@ -111,6 +112,8 @@ spec:
                 containerPort: 25565
               - name: rcon
                 containerPort: 25575
+              - name: metrics
+                containerPort: 9100
 
             resources:
               requests:
@@ -125,6 +128,9 @@ spec:
           java:
             port: 25565
             protocol: TCP
+          metrics:
+            port: 9100
+            protocol: TCP
       rcon:
         controller: minecraft
         type: ClusterIP
@@ -133,15 +139,15 @@ spec:
             port: 25575
             protocol: TCP
 
-    # serviceMonitor:
-    #   metrics:
-    #     enabled: true
-    #     serviceName: *app
-    #     endpoints:
-    #       - port: metrics
-    #         scheme: http
-    #         path: /
-    #         interval: 1m
+    serviceMonitor:
+      metrics:
+        enabled: true
+        serviceName: mminecraft-creative-world-minecraft
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /
+            interval: 1m
 
     persistence:
       config:
@@ -153,4 +159,7 @@ spec:
             readOnly: true
           - path: /config/paper-global.yml
             subPath: paper-global.yml
+            readOnly: true
+          - path: /config/plugins.txt
+            subPath: plugins.txt
             readOnly: true
