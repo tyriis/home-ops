@@ -5,6 +5,8 @@ metadata:
   name: minecraft-survival-world-data-2025
   labels:
     kustomize.toolkit.fluxcd.io/prune: disabled
+    # https://fluxcd.io/flux/components/kustomize/kustomizations/#controlling-the-apply-behavior-of-resources
+    kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
 spec:
   accessModes:
     - ReadWriteOnce

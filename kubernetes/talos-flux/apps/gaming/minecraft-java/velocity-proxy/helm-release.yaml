@@ -143,7 +143,7 @@ spec:
     serviceMonitor:
       metrics:
         enabled: true
-        serviceName: minecraft-playground-world-minecraft
+        serviceName: minecraft-playground-world-metrics
         endpoints:
           - port: metrics
             scheme: http
