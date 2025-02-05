@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: minecraft-lobby-world-env2
+  name: minecraft-lobby-world-env
 data:
   EULA: "true"
   DIFFICULTY: peaceful
