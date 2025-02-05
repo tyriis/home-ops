@@ -11,8 +11,8 @@ spec:
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube
-    name: minecraft-lobby-world-data
+    name: minecraft-playground-world-data
   resources:
     requests:
-      storage: 20Gi
+      storage: 10Gi
   storageClassName: ceph-block
