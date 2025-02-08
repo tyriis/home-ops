@@ -43,6 +43,13 @@ Unlike Geyser, Floodgate can only be installed as a plugin on Spigot (including 
 
 UnifiedMetrics is a fully-featured free and open-source metrics collection plugin for Minecraft servers.
 
+## Citizens2
+
+[Citizens2 Homepage](https://citizensnpcs.co/)
+
+Citizens is an NPC plugin for the Bukkit API (works with bedrock clients)
+used to execute commands when interactinc with npc (f.e. to /server survival)
+
 ## Findings
 
 ### vane mod
