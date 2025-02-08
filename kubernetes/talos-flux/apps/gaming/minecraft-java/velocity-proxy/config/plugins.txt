@@ -8,3 +8,5 @@ https://github.com/Cubxity/UnifiedMetrics/releases/download/v0.3.8/unifiedmetric
 https://github.com/oddlama/vane/releases/download/v1.17.3/vane-velocity-1.17.3.jar
 # MiniMOTD https://hangar.papermc.io/jmp/MiniMOTD
 https://hangarcdn.papermc.io/plugins/jmp/MiniMOTD/versions/2.1.5/VELOCITY/minimotd-velocity-2.1.5.jar
+# LuckPerms
+https://download.luckperms.net/1570/velocity/LuckPerms-Velocity-5.4.153.jar
