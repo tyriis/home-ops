@@ -139,7 +139,7 @@ failover-on-unexpected-server-disconnect = true
 announce-proxy-commands = true
 
 # Enables the logging of commands
-log-command-executions = false
+log-command-executions = true
 
 # Enables logging of player connections when connecting to the proxy, switching servers
 # and disconnecting from the proxy.

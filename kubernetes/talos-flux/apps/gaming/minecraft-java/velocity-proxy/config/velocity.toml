@@ -67,7 +67,7 @@ kick-existing-players = false
 #                  description and mod list.
 # - "all":         Uses the backend server's response as the proxy response. The Velocity
 #                  configuration is used if no servers could be contacted.
-ping-passthrough = "DISABLED"
+ping-passthrough = "all"
 
 # If not enabled (default is true) player IP addresses will be replaced by <ip address withheld> in logs
 enable-player-address-logging = true
@@ -82,8 +82,7 @@ survival = "minecraft-survival-world-minecraft:25565"
 
 # In what order we should try servers when a player logs in or is kicked from a server.
 try = [
-    "lobby",
-    "creative"
+    "lobby"
 ]
 
 [forced-hosts]
