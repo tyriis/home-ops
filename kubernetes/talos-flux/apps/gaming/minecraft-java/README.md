@@ -46,6 +46,7 @@ UnifiedMetrics is a fully-featured free and open-source metrics collection plugi
 ## Citizens2
 
 [Citizens2 Homepage](https://citizensnpcs.co/)
+[Citizens2 GitHub](https://github.com/CitizensDev/Citizens2)
 
 Citizens is an NPC plugin for the Bukkit API (works with bedrock clients)
 used to execute commands when interactinc with npc (f.e. to /server survival)
