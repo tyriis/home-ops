@@ -19,6 +19,7 @@ configMapGenerator:
     files:
       - bluemap_sql.conf=plugins/BlueMap/storage/sql.conf
       - bluemap_core.conf=plugins/BlueMap/core.conf
+      - bluemap_map_lobby.conf=plugins/BlueMap/maps/lobby.conf
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
