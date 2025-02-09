@@ -176,3 +176,6 @@ spec:
           - path: /plugins/BlueMap/core.conf
             subPath: bluemap_core.conf
             readOnly: true
+          - path: /plugins/BlueMap/maps/lobby.conf
+            subPath: bluemap_map_lobby.conf
+            readOnly: true
