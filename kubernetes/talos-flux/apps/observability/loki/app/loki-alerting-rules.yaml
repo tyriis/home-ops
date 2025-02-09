@@ -65,3 +65,16 @@ groups:
       #     category: logs
       #   annotations:
       #     summary: "Node-Red is testing"
+
+  - name: postgres-auth-alerts
+    rules:
+      - alert: PostgresAuthFailure
+        expr: |
+          count_over_time({app="dbman"} |= "error finalizing: Tokio Postgres Error: db error: FATAL: password authentication failed for user \"postgres\"" [5m]) > 0
+        for: 1m
+        labels:
+          severity: critical
+          category: logs
+        annotations:
+          summary: "Postgres Authentication Failure Detected"
+          description: "A password authentication failure occurred for user 'postgres'."
