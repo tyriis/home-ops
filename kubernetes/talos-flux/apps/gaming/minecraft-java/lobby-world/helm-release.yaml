@@ -9,6 +9,7 @@ spec:
     - name: external-secret-minecraft-proxy-forwarding
     - name: external-secret-minecraft-rcon
     - name: external-secret-minecraft-curseforge-api-key
+    - name: external-secret-minecraft-bluemap-postgres
   interval: 30m
   driftDetection:
     mode: enabled
@@ -87,6 +88,16 @@ spec:
                   secretKeyRef:
                     name: minecraft-proxy-forwarding
                     key: forwarding.secret
+              CFG_BLUEMAP_DATABASE_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: minecraft-bluemap-postgres
+                    key: INIT_POSTGRES_USER
+              CFG_BLUEMAP_DATABASE_PASS:
+                valueFrom:
+                  secretKeyRef:
+                    name: minecraft-bluemap-postgres
+                    key: INIT_POSTGRES_PASS
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
@@ -154,4 +165,14 @@ spec:
             readOnly: true
           - path: /config/plugins.txt
             subPath: plugins.txt
+            readOnly: true
+      plugins:
+        type: configMap
+        name: minecraft-lobby-world-plugins
+        globalMounts:
+          - path: /plugins/BlueMap/storage/sql.conf
+            subPath: bluemap_sql.conf
+            readOnly: true
+          - path: /plugins/BlueMap/core.conf
+            subPath: bluemap_core.conf
             readOnly: true
