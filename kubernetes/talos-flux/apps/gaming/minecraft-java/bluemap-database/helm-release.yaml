@@ -8,6 +8,8 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: database
+    - name: external-secret-minecraft-bluemap-postgres
+      namespace: gaming
   interval: 15m
   chart:
     spec:

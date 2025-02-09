@@ -15,6 +15,7 @@ configMapGenerator:
       - spigot.yml=config/spigot.yaml
       - paper-global.yml=config/paper-global.yaml
       - plugins.txt=config/plugins.txt
+      - bluemap_sql.conf=config/plugins/BlueMap/storage/sql.conf
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
