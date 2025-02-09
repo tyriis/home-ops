@@ -71,7 +71,7 @@ groups:
       - alert: PostgresAuthFailure
         expr: |
           count_over_time({app="dbman"} |= "error finalizing: Tokio Postgres Error: db error: FATAL: password authentication failed for user \"postgres\"" [5m]) > 0
-        for: 1m
+        for: 15m
         labels:
           severity: critical
           category: logs
