@@ -13,6 +13,7 @@ spec:
     storageClass: ceph-block
   superuserSecret:
     name: postgres-superuser
+  enableSuperuserAccess: true
   monitoring:
     enablePodMonitor: true
 
