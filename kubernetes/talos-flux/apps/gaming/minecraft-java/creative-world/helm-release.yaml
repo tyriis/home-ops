@@ -169,3 +169,6 @@ spec:
           - path: /config/plugins/BlueMap/storage/sql.conf
             subPath: bluemap_sql.conf
             readOnly: true
+          - path: /config/plugins/BlueMap/core.conf
+            subPath: bluemap_core.conf
+            readOnly: true

@@ -16,6 +16,7 @@ configMapGenerator:
       - paper-global.yml=config/paper-global.yaml
       - plugins.txt=config/plugins.txt
       - bluemap_sql.conf=config/plugins/BlueMap/storage/sql.conf
+      - bluemap_core.conf=config/plugins/BlueMap/core.conf
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
