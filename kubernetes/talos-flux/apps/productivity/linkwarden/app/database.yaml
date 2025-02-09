@@ -1,0 +1,18 @@
+---
+apiVersion: dbman.hef.sh/v1alpha3
+kind: Database
+metadata:
+  name: &name linkwarden
+spec:
+  credentials:
+    usernameSecretRef:
+      name: linkwarden-postgres
+      key: INIT_POSTGRES_USER
+    passwordSecretRef:
+      name: linkwarden-postgres
+      key: INIT_POSTGRES_PASS
+  databaseName: *name
+  databaseServerRef:
+    namespace: database
+    name: postgres17
+  prune: false
