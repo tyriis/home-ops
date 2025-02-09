@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   - helm-release.yaml
 configMapGenerator:
-  - name: cminecraft-bluemap-postgres
+  - name: minecraft-bluemap-postgres
     files:
       - values.yaml=./external-secrets/minecraft-bluemap-postgres.yaml
   - name: minecraft-proxy-forwarding
