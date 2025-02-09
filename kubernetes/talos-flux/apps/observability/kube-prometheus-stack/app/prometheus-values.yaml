@@ -96,12 +96,6 @@ prometheus:
 
     additionalScrapeConfigs:
       # ESPHome lights
-      - job_name: esphome-light-alexroom
-        static_configs:
-          - targets:
-              - esphome-light-alexroom.home
-            labels:
-              device: light-alexroom
       - job_name: esphome-light-stairs
         static_configs:
           - targets:
@@ -115,12 +109,6 @@ prometheus:
               - esphome-sensor-bathroom.home
             labels:
               device: sensor-bathroom
-      - job_name: esphome-sensor-domiroom
-        static_configs:
-          - targets:
-              - esphome-sensor-domiroom.home
-            labels:
-              device: sensor-domiroom
       - job_name: esphome-sensor-heating
         static_configs:
           - targets:
@@ -134,12 +122,6 @@ prometheus:
               - esphome-switch-alexroom.home
             labels:
               device: switch-alexroom
-      - job_name: esphome-switch-basement
-        static_configs:
-          - targets:
-              - esphome-switch-basement.home
-            labels:
-              device: switch-basement
       - job_name: esphome-switch-domiroom
         static_configs:
           - targets:
