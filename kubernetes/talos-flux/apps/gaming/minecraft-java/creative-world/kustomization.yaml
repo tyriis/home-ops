@@ -15,8 +15,10 @@ configMapGenerator:
       - spigot.yml=config/spigot.yaml
       - paper-global.yml=config/paper-global.yaml
       - plugins.txt=config/plugins.txt
-      - bluemap_sql.conf=config/plugins/BlueMap/storage/sql.conf
-      - bluemap_core.conf=config/plugins/BlueMap/core.conf
+  - name: minecraft-creative-world-plugins
+    files:
+      - bluemap_sql.conf=plugins/BlueMap/storage/sql.conf
+      - bluemap_core.conf=plugins/BlueMap/core.conf
 generatorOptions:
   disableNameSuffixHash: true
   annotations:

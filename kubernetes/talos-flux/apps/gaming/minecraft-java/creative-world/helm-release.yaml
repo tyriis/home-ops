@@ -166,9 +166,13 @@ spec:
           - path: /config/plugins.txt
             subPath: plugins.txt
             readOnly: true
-          - path: /config/plugins/BlueMap/storage/sql.conf
+      plugins:
+        type: configMap
+        name: minecraft-creative-world-plugins
+        globalMounts:
+          - path: /plugins/BlueMap/storage/sql.conf
             subPath: bluemap_sql.conf
             readOnly: true
-          - path: /config/plugins/BlueMap/core.conf
+          - path: /plugins/BlueMap/core.conf
             subPath: bluemap_core.conf
             readOnly: true
