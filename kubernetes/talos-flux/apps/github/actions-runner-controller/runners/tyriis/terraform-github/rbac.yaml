@@ -16,10 +16,10 @@ subjects:
   - kind: ServiceAccount
     name: tyriis-terraform-github-runner
     namespace: github
----
-apiVersion: talos.dev/v1alpha1
-kind: ServiceAccount
-metadata:
-  name: tyriis-terraform-github-runner
-spec:
-  roles: ["os:admin"]
+# ---
+# apiVersion: talos.dev/v1alpha1
+# kind: ServiceAccount
+# metadata:
+#   name: tyriis-terraform-github-runner
+# spec:
+#   roles: ["os:admin"]

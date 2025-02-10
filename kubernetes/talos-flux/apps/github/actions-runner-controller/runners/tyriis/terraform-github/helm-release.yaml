@@ -53,15 +53,15 @@ spec:
                 valueFrom:
                   fieldRef:
                     fieldPath: status.hostIP
-            volumeMounts:
-              - mountPath: /var/run/secrets/talos.dev
-                name: talos
-                readOnly: true
+            # volumeMounts:
+            #   - mountPath: /var/run/secrets/talos.dev
+            #     name: talos
+            #     readOnly: true
         serviceAccountName: *name
-        volumes:
-          - name: talos
-            secret:
-              secretName: *name
+        # volumes:
+        #   - name: talos
+        #     secret:
+        #       secretName: *name
   valuesFrom:
     - kind: Secret
       name: tyriis-runners
