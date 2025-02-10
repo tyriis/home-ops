@@ -30,13 +30,13 @@ spec:
     minRunners: 1
     maxRunners: 3
     containerMode:
-      type: kubernetes
-      kubernetesModeWorkVolumeClaim:
-        accessModes: ["ReadWriteOnce"]
-        storageClassName: openebs-hostpath
-        resources:
-          requests:
-            storage: 5Gi
+      type: dind
+      # kubernetesModeWorkVolumeClaim:
+      #   accessModes: ["ReadWriteOnce"]
+      #   storageClassName: openebs-hostpath
+      #   resources:
+      #     requests:
+      #       storage: 5Gi
     controllerServiceAccount:
       namespace: github
       name: gha-runner-scale-set-controller
@@ -47,9 +47,9 @@ spec:
             image: ghcr.io/onedr0p/actions-runner:2.322.0@sha256:34aa045b8b0b82469bcb5951e244fd2bd41b8abbd493f956092497fcdcd29209
             command:
               - /home/runner/run.sh
-            env:
-              - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
-                value: "false"
+            # env:
+            #   - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
+            #     value: "false"
   valuesFrom:
     - kind: Secret
       name: tyriis-runners
