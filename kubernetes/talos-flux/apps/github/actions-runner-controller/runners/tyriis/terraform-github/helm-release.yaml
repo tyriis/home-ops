@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: tyriis-terraform-github
+  name: &name tyriis-terraform-github-runner
 spec:
   interval: 30m
   driftDetection:
@@ -16,14 +16,30 @@ spec:
         kind: HelmRepository
         name: actions-runner-controller-charts
         namespace: flux-system
-      interval: 30m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
   values:
-    runnerScaleSetName: arc-runner-set-terraform-github
     githubConfigUrl: https://github.com/tyriis/terraform-github
+    runnerScaleSetName: *name
     minRunners: 1
     maxRunners: 3
     containerMode:
       type: kubernetes
+      kubernetesModeWorkVolumeClaim:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: openebs-hostpath
+        resources:
+          requests:
+            storage: 25Gi
+    controllerServiceAccount:
+      namespace: github
+      name: gha-runner-scale-set-controller
     template:
       spec:
         containers:
@@ -41,9 +57,11 @@ spec:
               - mountPath: /var/run/secrets/talos.dev
                 name: talos
                 readOnly: true
-    controllerServiceAccount:
-      namespace: github
-      name: gha-runner-scale-set-controller
+        serviceAccountName: *name
+        volumes:
+          - name: talos
+            secret:
+              secretName: *name
   valuesFrom:
     - kind: Secret
       name: tyriis-runners
