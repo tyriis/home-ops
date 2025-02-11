@@ -6,7 +6,6 @@ namespace: atlantis
 resources:
   - ./secret.sops.yaml
   - ./helm-release.yaml
-  - ./ingress.yaml
 configMapGenerator:
   - name: atlantis-tyriis-config
     files:
@@ -17,9 +16,6 @@ configMapGenerator:
   - name: atlantis-tyriis-scripts
     files:
       - allow_list.sh=config/allow_list.sh
-commonLabels:
-  app.kubernetes.io/name: atlantis-tyriis
-  app.kubernetes.io/instance: atlantis-tyriis
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
