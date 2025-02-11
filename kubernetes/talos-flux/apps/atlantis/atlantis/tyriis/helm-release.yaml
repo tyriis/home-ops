@@ -90,7 +90,6 @@ spec:
               ATLANTIS_DISABLE_AUTOPLAN_LABEL: "no-autoplan"
               ATLANTIS_WRITE_GIT_CREDS: "true"
               ATLANTIS_ENABLE_DIFF_MARKDOWN_FORMAT: "true"
-              ATLANTIS_DISABLE_MARKDOWN_FOLDING: "true"
               ATLANTIS_DEFAULT_TF_DISTRIBUTION: terraform
               ATLANTIS_TF_DISTRIBUTION: terraform
               ATLANTIS_REPO_ALLOWLIST: github.com/tyriis/terraform-github
