@@ -7,13 +7,13 @@ resources:
   - ./secret.sops.yaml
   - ./helm-release.yaml
 configMapGenerator:
-  - name: atlantis-tyriis-config
+  - name: atlantis-default-config
     files:
       - repoConfig=config/repos.yaml
-  - name: atlantis-tyriis-allow-list
+  - name: atlantis-tyriis-allowlist
     files:
       - allowlist.txt=config/allowlist.txt
-  - name: atlantis-tyriis-scripts
+  - name: atlantis-default-scripts
     files:
       - allow_list.sh=config/allow_list.sh
 generatorOptions:
