@@ -1,137 +1,220 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &app atlantis-tyriis
 spec:
-  interval: 15m
+  interval: 30m
+  driftDetection:
+    mode: enabled
   chart:
     spec:
-      chart: atlantis
-      version: 5.14.0
+      chart: app-template
+      version: 3.7.1
       sourceRef:
         kind: HelmRepository
-        name: runatlantis-charts
+        name: bjw-s-charts
         namespace: flux-system
-  maxHistory: 3
   install:
+    createNamespace: true
     remediation:
       retries: 3
   upgrade:
-    cleanupOnFail: true
     remediation:
       retries: 3
   uninstall:
     keepHistory: false
-  # https://artifacthub.io/packages/helm/atlantis/atlantis?modal=values
-  valuesFrom:
-    - kind: ConfigMap
-      name: atlantis-tyriis-config
-      valuesKey: repoConfig
-      targetPath: repoConfig
   values:
-    loadEnvFromSecrets:
-      - &secret atlantis-tyriis-env-secrets
-    commonLabels:
-      app.kubernetes.io/name: *app
-      app.kubernetes.io/instance: *app
-    podTemplate:
-      annotations:
-        secret.reloader.stakater.com/reload: *secret
-      labels:
-        app.kubernetes.io/name: *app
-        app.kubernetes.io/instance: *app
+    # https://bjw-s.github.io/helm-charts/docs/app-template/
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 100
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
 
-    image:
-      repository: ghcr.io/runatlantis/atlantis
-      tag: v0.33.0@sha256:9145babb08e8a3e80e6367af8bf8e443d75be622864ce80a0410a40de5e0f4ac
+        containers:
+          app:
+            image:
+              repository: ghcr.io/runatlantis/atlantis
+              tag: v0.33.0@sha256:9145babb08e8a3e80e6367af8bf8e443d75be622864ce80a0410a40de5e0f4ac
+            ports:
+              - name: http
+                containerPort: &port 4141
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  initialDelaySeconds: 5
+                  periodSeconds: 60
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+                  httpGet: &httpGet
+                    path: /healthz
+                    port: *port
+              readiness:
+                <<: *probes
+                spec:
+                  initialDelaySeconds: 10
+                  periodSeconds: 5
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+                  httpGet: *httpGet
+              startup:
+                <<: *probes
+                spec:
+                  initialDelaySeconds: 5
+                  periodSeconds: 1
+                  failureThreshold: 60
+                  httpGet: *httpGet
+            envFrom:
+              - secretRef:
+                  name: atlantis-tyriis-env-secrets
+            env:
+              # https://www.runatlantis.io/docs/server-configuration.html
+              ATLANTIS_ATLANTIS_URL: "https://{{ .Release.Name }}.techtales.io"
+              # ATLANTIS_AUTOMERGE: "true"
+              ATLANTIS_AUTOPLAN_MODULES: "true"
+              ATLANTIS_EMOJI_REACTION: eyes
+              ATLANTIS_FAIL_ON_PRE_WORKFLOW_HOOK_ERROR: "true"
+              ATLANTIS_DISABLE_AUTOPLAN_LABEL: "no-autoplan"
+              ATLANTIS_WRITE_GIT_CREDS: "true"
+              ATLANTIS_ENABLE_DIFF_MARKDOWN_FORMAT: "true"
+              ATLANTIS_DISABLE_MARKDOWN_FOLDING: "true"
+              ATLANTIS_DEFAULT_TF_DISTRIBUTION: terraform
+              ATLANTIS_TF_DISTRIBUTION: terraform
+              ATLANTIS_REPO_ALLOWLIST: github.com/tyriis/terraform-github
+              ATLANTIS_DISCARD_APPROVAL_ON_PLAN: "true"
+              ATLANTIS_PORT: *port
+              ATLANTIS_REPO_CONFIG: /etc/atlantis/repos.yaml
+              ATLANTIS_LOCKING_DB_TYPE: redis
+              ATLANTIS_LOG_LEVEL: info
+              # ATLANTIS_REDIS_DB: 0
+              ATLANTIS_REDIS_HOST: dragonfly.database.svc.cluster.local
+              # ATLANTIS_REDIS_PORT: 6379
+              ATLANTIS_SKIP_CLONE_NO_CHANGES: true
+              ATLANTIS_STATS_NAMESPACE: *app
 
-    atlantisUrl: https://atlantis-tyriis.techtales.io
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
 
-    orgAllowlist: github.com/tyriis/*
-    # logLevel: "debug"
-
-    # Use Diff Markdown Format for color coding diffs
-    enableDiffMarkdownFormat: true
-
-    environment:
-      ATLANTIS_EMOJI_REACTION: eyes
-      ATLANTIS_FAIL_ON_PRE_WORKFLOW_HOOK_ERROR: "true"
-      ATLANTIS_WRITE_GIT_CREDS: "true"
+            resources:
+              requests:
+                cpu: 100m
+                memory: 1Gi
 
     service:
-      type: ClusterIP
-      targetPort: 4141
+      main:
+        nameOverride: *app
+        controller: main
+        type: ClusterIP
+        ports:
+          http:
+            port: *port
+            protocol: TCP
+
+    serviceMonitor:
+      metrics:
+        enabled: true
+        serviceName: *app
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /
+            interval: 15m
 
     ingress:
-      enabled: true
-      ingressClassName: traefik
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-production
-        kubernetes.io/tls-acme: "true"
-        traefik.ingress.kubernetes.io/router.middlewares: traefik-ingress-sso@kubernetescrd
-        traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        traefik.ingress.kubernetes.io/affinity: "true"
-        traefik.ingress.kubernetes.io/router.tls: "true"
-        external-dns/opnsense: "true"
-        hajimari.io/icon: simple-icons:terraform
-        hajimari.io/enable: "true"
-        gethomepage.dev/enabled: "true"
-        gethomepage.dev/description: Terraform Pull Request Automation
-        gethomepage.dev/group: Development
-        gethomepage.dev/icon: terraform
-        gethomepage.dev/name: Atlantis (tyriis)
-        gethomepage.dev/weight: "10" # optional
-      pathType: Prefix
-      hosts:
-        - host: &host atlantis-tyriis.techtales.io
-          paths:
-            - /
-      tls:
-        - secretName: atlantis-tyriis-tls
-          hosts:
-            - *host
+      main:
+        className: traefik
+        annotations:
+          kubernetes.io/tls-acme: "true"
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          traefik.ingress.kubernetes.io/router.middlewares: traefik-ingress-sso@kubernetescrd
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/affinity: "true"
+          traefik.ingress.kubernetes.io/router.tls: "true"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Terraform Pull Request Automation
+          gethomepage.dev/group: Terraform
+          gethomepage.dev/icon: terraform
+          gethomepage.dev/name: *app
+        hosts:
+          - host: &host "{{ .Release.Name }}.techtales.io"
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: main
+                  port: http
+        tls:
+          - hosts:
+              - *host
+            secretName: "{{ .Release.Name }}-tls"
 
-    containerSecurityContext:
-      allowPrivilegeEscalation: false
-      readOnlyRootFilesystem: true
+      webhook:
+        enabled: true
+        className: traefik
+        annotations:
+          kubernetes.io/tls-acme: "true"
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/affinity: "true"
+          traefik.ingress.kubernetes.io/router.tls: "true"
+          external-dns.alpha.kubernetes.io/target: "${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"
+          external-dns/cloudflare: "true"
+        hosts:
+          - host: &hookhost "{{ .Release.Name }}-webhook.techtales.io"
+            paths:
+              - path: /events
+                pathType: Prefix
+                service:
+                  identifier: main
+                  port: http
+        tls:
+          - hosts:
+              - *hookhost
+            secretName: "{{ .Release.Name }}-webhook-tls"
 
-    readinessProbe:
-      periodSeconds: 5
-      initialDelaySeconds: 10
-
-    volumeClaim:
-      enabled: true
-      dataStorage: 5Gi
-      storageClassName: ceph-block
-
-    extraVolumes:
-      - name: allow-list
-        configMap:
-          name: atlantis-tyriis-allow-list
-      - name: scripts
-        configMap:
-          name: atlantis-tyriis-scripts
-
-    extraVolumeMounts:
-      - name: allow-list
-        mountPath: /home/atlantis/.config/allowlist
-        readOnly: true
-      - name: scripts
-        mountPath: /home/atlantis/scripts
-        readOnly: true
-
-    servicemonitor:
-      # to enable a Prometheus servicemonitor, set enabled to true,
-      #   and enable the metrics in this file's repoConfig
-      #   by setting a value for metrics.prometheus.endpoint
-      enabled: true
-
-    resources:
-      requests:
-        memory: 1Gi
-        cpu: 100m
-      limits:
-        memory: 1Gi
-        cpu: 1000m
+    persistence:
+      config:
+        type: configMap
+        name: atlantis-default-config
+        advancedMounts:
+          main:
+            app:
+              - path: /etc/atlantis/repos.yaml
+                subPath: repos.yaml
+                readOnly: true
+      scripts:
+        type: configMap
+        name: atlantis-default-scripts
+        advancedMounts:
+          main:
+            app:
+              - path: /home/atlantis/scripts
+                readOnly: true
+      allowlist:
+        type: configMap
+        name: atlantis-tyriis-allowlist
+        advancedMounts:
+          main:
+            app:
+              - path: /home/atlantis/.config/allowlist/allowlist.txt
+                subPath: allowlist.txt
+                readOnly: true
+      tmp:
+        type: emptyDir
