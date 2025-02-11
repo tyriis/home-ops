@@ -218,9 +218,9 @@ spec:
                 readOnly: true
       tmp:
         type: emptyDir
-      data:
+      home:
         type: emptyDir
         advancedMounts:
           main:
             app:
-              - path: /home/atlantis/.atlantis
+              - path: /home/atlantis
