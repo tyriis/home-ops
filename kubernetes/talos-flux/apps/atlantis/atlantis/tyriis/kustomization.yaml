@@ -9,7 +9,7 @@ resources:
 configMapGenerator:
   - name: atlantis-default-config
     files:
-      - repoConfig=config/repos.yaml
+      - repos.yaml=config/repos.yaml
   - name: atlantis-tyriis-allowlist
     files:
       - allowlist.txt=config/allowlist.txt
