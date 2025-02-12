@@ -38,7 +38,7 @@ spec:
         seccompProfile:
           type: RuntimeDefault
     controllers:
-      atlantis:
+      main:
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -117,8 +117,8 @@ spec:
                 memory: 1Gi
 
     service:
-      app:
-        controller: atlantis
+      main:
+        controller: main
         ports:
           http:
             port: *port
@@ -134,7 +134,7 @@ spec:
             interval: 15m
 
     ingress:
-      app:
+      main:
         nameOverride: *app
         className: traefik
         annotations:
@@ -155,7 +155,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  identifier: app
+                  identifier: main
                   port: http
         tls:
           - hosts:
@@ -179,7 +179,7 @@ spec:
               - path: /events
                 pathType: Prefix
                 service:
-                  identifier: app
+                  identifier: main
                   port: http
         tls:
           - hosts:
