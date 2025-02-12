@@ -38,7 +38,7 @@ spec:
         seccompProfile:
           type: RuntimeDefault
     controllers:
-      main:
+      atlantis:
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -118,12 +118,10 @@ spec:
 
     service:
       app:
-        controller: main
-        type: ClusterIP
+        controller: atlantis
         ports:
           http:
             port: *port
-            protocol: TCP
 
     serviceMonitor:
       metrics:
