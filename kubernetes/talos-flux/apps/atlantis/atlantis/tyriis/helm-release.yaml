@@ -117,8 +117,7 @@ spec:
                 memory: 1Gi
 
     service:
-      main:
-        nameOverride: *app
+      app:
         controller: main
         type: ClusterIP
         ports:
@@ -137,7 +136,7 @@ spec:
             interval: 15m
 
     ingress:
-      main:
+      app:
         className: traefik
         annotations:
           kubernetes.io/tls-acme: "true"
@@ -157,7 +156,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  identifier: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
@@ -181,7 +180,7 @@ spec:
               - path: /events
                 pathType: Prefix
                 service:
-                  identifier: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
