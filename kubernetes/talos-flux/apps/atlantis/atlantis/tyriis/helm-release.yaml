@@ -135,6 +135,7 @@ spec:
 
     ingress:
       app:
+        nameOverride: *app
         className: traefik
         annotations:
           kubernetes.io/tls-acme: "true"
