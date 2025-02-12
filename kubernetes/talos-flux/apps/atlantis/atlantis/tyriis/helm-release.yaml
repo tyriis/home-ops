@@ -131,7 +131,7 @@ spec:
           - port: metrics
             scheme: http
             path: /
-            interval: 15m
+            interval: 15s
 
     ingress:
       main:
