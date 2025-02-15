@@ -7,7 +7,7 @@ terraform {
   required_providers {
     kind = {
       source  = "tehcyx/kind"
-      version = "0.7.0"
+      version = "0.8.0"
     }
     docker = {
       source  = "kreuzwerker/docker"
