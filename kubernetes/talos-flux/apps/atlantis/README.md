@@ -35,3 +35,11 @@ With kustomize we are able to define a base layer on how our chart will look in 
 
 Well this is maybe a little hacky, as we need more then 1time our base chart and we want to have hem all in the atlantis namespace for now. And metadata.name must match for kustomize patch.
 We use a Flux Kustomization postRenderer substitution to replace ${APP} with with the current chart name 🧙.
+
+## Cloudflared
+
+Github Webhook is exposed via cloudflared. Currently config need to be added manual
+
+## local DNS (unbound on opnsense)
+
+Need to be configured manual.
