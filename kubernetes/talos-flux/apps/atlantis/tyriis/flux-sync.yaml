@@ -25,7 +25,6 @@ spec:
     - name: apps-cert-manager
     - name: apps-rook-ceph-cluster
     - name: apps-traefik-forward-auth
-    - name: atlantis-global-config
   postBuild:
     substitute:
       APP: *appname
