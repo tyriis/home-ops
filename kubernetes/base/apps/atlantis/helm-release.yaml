@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app atlantis-tyriis
+  name: &app atlantis
 spec:
   interval: 30m
   driftDetection:
@@ -77,9 +77,6 @@ spec:
                   periodSeconds: 1
                   failureThreshold: 60
                   httpGet: *httpGet
-            envFrom:
-              - secretRef:
-                  name: atlantis-tyriis-env-secrets
             env:
               # https://www.runatlantis.io/docs/server-configuration.html
               ATLANTIS_ATLANTIS_URL: "https://{{ .Release.Name }}.techtales.io"
@@ -92,7 +89,6 @@ spec:
               ATLANTIS_ENABLE_DIFF_MARKDOWN_FORMAT: "true"
               ATLANTIS_DEFAULT_TF_DISTRIBUTION: terraform
               ATLANTIS_TF_DISTRIBUTION: terraform
-              ATLANTIS_REPO_ALLOWLIST: github.com/tyriis/terraform-github
               ATLANTIS_DISCARD_APPROVAL_ON_PLAN: "true"
               ATLANTIS_PORT: *port
               ATLANTIS_REPO_CONFIG: /etc/atlantis/repos.yaml

@@ -5,18 +5,24 @@ kind: Kustomization
 namespace: atlantis
 resources:
   - ./secret.sops.yaml
-  - ./helm-release.yaml
+  # - ./helm-release.yaml
+  - ../../../../../base/apps/atlantis/helm-release.yaml
 configMapGenerator:
   - name: atlantis-default-config
     files:
-      - repos.yaml=config/repos.yaml
+      - repos.yaml=../../../../../base/apps/atlantis/config/repos.yaml
   - name: atlantis-tyriis-allowlist
     files:
       - allowlist.txt=config/allowlist.txt
   - name: atlantis-default-scripts
     files:
-      - allow_list.sh=config/allow_list.sh
+      - allow_list.sh=../../../../../base/apps/atlantis/scripts/allow_list.sh
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
+patches:
+  - path: helm-values.yaml
+    target:
+      kind: HelmRelease
+      name: atlantis
