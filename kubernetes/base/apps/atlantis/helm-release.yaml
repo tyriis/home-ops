@@ -200,15 +200,6 @@ spec:
             app:
               - path: /home/atlantis/scripts
                 readOnly: true
-      allowlist:
-        type: configMap
-        name: atlantis-tyriis-allowlist
-        advancedMounts:
-          main:
-            app:
-              - path: /etc/atlantis/allowlist.txt
-                subPath: allowlist.txt
-                readOnly: true
       tmp:
         type: emptyDir
       home:

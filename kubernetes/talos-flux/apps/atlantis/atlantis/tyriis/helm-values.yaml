@@ -7,24 +7,24 @@ spec:
   interval: 15m
   # https://artifacthub.io/packages/helm/cert-manager/cert-manager?modal=values
   values:
-    config:
-      type: configMap
-      name: atlantis-default-config
-      advancedMounts:
-        main:
-          app:
-            - path: /etc/atlantis/repos.yaml
-              subPath: repos.yaml
-              readOnly: true
     persistence:
-      scripts:
-        type: configMap
-        name: atlantis-default-scripts
-        advancedMounts:
-          main:
-            app:
-              - path: /home/atlantis/scripts
-                readOnly: true
+      # config:
+      #   type: configMap
+      #   name: atlantis-default-config
+      #   advancedMounts:
+      #     main:
+      #       app:
+      #         - path: /etc/atlantis/repos.yaml
+      #           subPath: repos.yaml
+      #           readOnly: true
+      # scripts:
+      #   type: configMap
+      #   name: atlantis-default-scripts
+      #   advancedMounts:
+      #     main:
+      #       app:
+      #         - path: /home/atlantis/scripts
+      #           readOnly: true
       allowlist:
         type: configMap
         name: atlantis-tyriis-allowlist
