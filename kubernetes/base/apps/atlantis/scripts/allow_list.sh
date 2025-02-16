@@ -1,6 +1,13 @@
 #!/bin/bash
 
-if grep -Fxq "$USER_NAME" /etc/atlantis/allowlist.txt
+ALLOWLIST_FILE="/etc/atlantis/allowlist.txt"
+
+if [ ! -f "$ALLOWLIST_FILE" ]; then
+  echo "Nobody is allowed to run atlantis (missing allowlist)."
+  exit 1
+fi
+
+if grep -Fxq "$USER_NAME" "$ALLOWLIST_FILE"
 then
   echo "$USER_NAME is allowed to run atlantis."
   exit 0
