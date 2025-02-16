@@ -14,6 +14,8 @@ spec:
             envFrom:
               - secretRef:
                   name: atlantis-tyriis-env-secrets
+            env:
+              ATLANTIS_REPO_ALLOWLIST: github.com/tyriis/terraform-github
     persistence:
       allowlist:
         type: configMap
