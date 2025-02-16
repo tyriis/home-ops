@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./atlantis/flux-sync.yaml
+  - ./tyriis/flux-sync.yaml

@@ -2,16 +2,14 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-resources:
-  - ./secret.sops.yaml
-  - ../../../../../base/apps/atlantis/app/helm-release.yaml
 configMapGenerator:
-  - name: atlantis-tyriis-allowlist
+  - name: atlantis-default-config
     files:
-      - allowlist.txt=config/allowlist.txt
+      - repos.yaml=../../../../../base/apps/atlantis/config/repos.yaml
+  - name: atlantis-default-scripts
+    files:
+      - allow_list.sh=../../../../../base/apps/atlantis/scripts/allow_list.sh
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
-patches:
-  - path: helm-values.yaml
