@@ -1,0 +1,28 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ${APP}
+spec:
+  interval: 15m
+  # https://artifacthub.io/packages/helm/cert-manager/cert-manager?modal=values
+  values:
+    controllers:
+      main:
+        containers:
+          app:
+            envFrom:
+              - secretRef:
+                  name: atlantis-tyriis-env-secrets
+            env:
+              ATLANTIS_REPO_ALLOWLIST: github.com/tyriis/terraform-github
+    persistence:
+      allowlist:
+        type: configMap
+        name: atlantis-tyriis-allowlist
+        advancedMounts:
+          main:
+            app:
+              - path: /etc/atlantis/allowlist.txt
+                subPath: allowlist.txt
+                readOnly: true

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if grep -Fxq "$USER_NAME" /home/atlantis/.config/allowlist/allowlist.txt
+if grep -Fxq "$USER_NAME" /etc/atlantis/allowlist.txt
 then
   echo "$USER_NAME is allowed to run atlantis."
   exit 0

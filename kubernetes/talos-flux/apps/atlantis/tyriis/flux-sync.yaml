@@ -3,21 +3,28 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-atlantis
+  name: &appname atlantis-tyriis-terraform-github
   namespace: flux-system
-  annotations:
-    backstage.io/discovery: enabled
-    backstage.io/name: atlantis
+  labels:
+    substitution.flux.home.arpa/enabled: "true"
 spec:
-  interval: 10m
-  path: ./kubernetes/talos-flux/apps/atlantis/atlantis/app
-  prune: true
+  targetNamespace: atlantis
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  path: ./kubernetes/talos-flux/apps/atlantis/tyriis/terraform-github
   sourceRef:
     kind: GitRepository
     name: home-ops
   wait: true
+  prune: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
   dependsOn:
     - name: apps-cert-manager
     - name: apps-rook-ceph-cluster
     - name: apps-traefik-forward-auth
-    - name: apps-external-secrets
+  postBuild:
+    substitute:
+      APP: *appname

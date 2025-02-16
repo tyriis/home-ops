@@ -3,5 +3,17 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./namespace.yaml
+  - namespace.yaml
   - ./atlantis/flux-sync.yaml
+  - ./tyriis/flux-sync.yaml
+configMapGenerator:
+  - name: atlantis-default-config
+    files:
+      - repos.yaml=../../../base/apps/atlantis/config/repos.yaml
+  - name: atlantis-default-scripts
+    files:
+      - allow_list.sh=../../../base/apps/atlantis/scripts/allow_list.sh
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
