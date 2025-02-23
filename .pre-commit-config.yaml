@@ -95,7 +95,7 @@ repos:
           - .markdownlint.yaml
 
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.5.0
+    rev: v3.5.2
     hooks:
       - id: prettier
         args:
@@ -116,8 +116,8 @@ repos:
             kubernetes/talos-flux/apps/devops/tekton/triggers/release.yaml
           )$()
 
-  - repo: https://github.com/zricethezav/gitleaks
-    rev: v8.23.3
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.24.0
     hooks:
       - id: gitleaks
 
@@ -131,5 +131,6 @@ repos:
             kubernetes/talos-flux/apps/home-automation/esphome/app/config/.+.yaml|
             kubernetes/talos-flux/apps/home-automation/home-assistant/app/patches/db-init.yaml|
             kubernetes/talos-flux/apps/github/actions-runner-controller/.+/helm-release.yaml|
-            kubernetes/talos-flux/apps/github/actions-runner-controller/.+/(jazzlyn|organization|tyriis)/.+.yaml
+            kubernetes/talos-flux/apps/github/actions-runner-controller/.+/(jazzlyn|organization|tyriis)/.+.yaml|
+            kubernetes/talos-flux/apps/atlantis/.+/helm-values.yaml
           )$()

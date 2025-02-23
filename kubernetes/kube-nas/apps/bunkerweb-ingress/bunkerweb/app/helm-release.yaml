@@ -37,7 +37,7 @@ spec:
           bunkerweb-controller:
             image:
               repository: bunkerity/bunkerweb-autoconf
-              tag: 1.5.12@sha256:31d2e42d8f3f35bfb8d55d9ff5d8948b660c3b70f608f01c1444982f5b8bbdf0
+              tag: 1.6.0@sha256:0e0d0fbbfa7485e2d9a8d80c7f8e9f8eb405c01c614c0c6f5817e35758989cbe
             env:
               KUBERNETES_MODE: "yes"
             envFrom:
@@ -66,7 +66,7 @@ spec:
                 protocol: TCP
             image:
               repository: bunkerity/bunkerweb
-              tag: 1.5.12@sha256:e38265d66aabd9828c9091803a642205ae07d77572907b82136f4617c34b0750
+              tag: 1.6.0@sha256:96418ca6d754da36d3b2361c89349e7f1a077845a05af78a14f4b78abb29480d
             env:
               KUBERNETES_MODE: "yes"
               DNS_RESOLVER: kube-dns.kube-system.svc.cluster.local
@@ -102,7 +102,7 @@ spec:
           bunkerweb-scheduler:
             image:
               repository: bunkerity/bunkerweb-scheduler
-              tag: 1.5.12@sha256:75760130f48960496497457f86676e54eebc4843b91d16313950e4bcd2c354c7
+              tag: 1.6.0@sha256:6bdf2d59e88cc5c39947242913bf19cdb3393a99a58c2a4f9ec904ca6f8da03e
             env:
               KUBERNETES_MODE: "yes"
             envFrom:
@@ -115,7 +115,7 @@ spec:
           app:
             image:
               repository: bunkerity/bunkerweb-ui
-              tag: 1.5.12@sha256:e4a1d48f72ddb83cf763ffb207902612772a3a5fdbe8473205ced1511bea32b4
+              tag: 1.6.0@sha256:02b02a444c8a9923fc716e39b122d77e146ac21be5d75d7ebecebaf0d1808b11
             env:
               ADMIN_USERNAME: "admin"
               ADMIN_PASSWORD: "Admin1234$"

@@ -7,9 +7,9 @@ age = "1.2.0"
 # https://direnv.net/
 direnv = "2.35.0"
 # https://fluxcd.io/
-flux2 = "2.4.0"
+flux2 = "2.5.0"
 # https://gitleaks.io/
-gitleaks = "8.23.3"
+gitleaks = "8.24.0"
 # https://helm.sh/
 helm = "3.17.1"
 # https://k9scli.io/
@@ -25,7 +25,7 @@ pre-commit = "4.1.0"
 # https://github.com/mozilla/sops
 sops = "3.9.4"
 # https://github.com/budimanjojo/talhelper
-talhelper = "3.0.13"
+talhelper = "3.0.19"
 # https://www.talos.dev/
 talosctl = "1.7.6"
 # https://taskfile.dev/
