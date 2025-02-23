@@ -6,4 +6,3 @@ resources:
   - ./namespace.yaml
   - ./vault-auth.yaml
   - ./external-secrets/flux-sync.yaml
-  # - ./vault/flux-sync.yaml
