@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./alertmanager-discord/flux-sync.yaml
+  - ./blackbox-exporter/flux-sync.yaml
   - ./botkube/flux-sync.yaml
   - ./grafana/flux-sync.yaml
   - ./kromgo/flux-sync.yaml
