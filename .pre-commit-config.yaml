@@ -116,7 +116,7 @@ repos:
             kubernetes/talos-flux/apps/devops/tekton/triggers/release.yaml
           )$()
 
-  - repo: https://github.com/zricethezav/gitleaks
+  - repo: https://github.com/gitleaks/gitleaks
     rev: v8.24.0
     hooks:
       - id: gitleaks
