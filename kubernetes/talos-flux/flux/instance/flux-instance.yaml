@@ -5,6 +5,7 @@ metadata:
   name: flux
 spec:
   distribution:
+    # renovate: datasource=github-tags depName=fluxcd/flux
     version: 2.5.0
     registry: ghcr.io/fluxcd
     artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests
