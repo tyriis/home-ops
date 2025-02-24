@@ -9,7 +9,7 @@ resources:
   - home-assistant-ssh.sops.yaml
   - home-assistant-secrets.sops.yaml
   - storage-class.yaml
-  - persistent-volume.yaml
   - replication-destination.yaml
   - persistent-volume-claim.yaml
   - helm-release.yaml
+  - replication-destination.yaml
