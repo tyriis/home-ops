@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-home-assistant
+  name: &appname apps-home-assistant
   namespace: flux-system
   annotations:
     backstage.io/discovery: enabled
@@ -11,10 +11,21 @@ metadata:
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
-  interval: 10m
+  targetNamespace: home-automation
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: home-assistant
   path: ./kubernetes/talos-flux/apps/home-automation/home-assistant/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
   wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    # - name: apps-external-secrets-stores
+    - name: apps-cloudnative-pg-cluster
+    - name: apps-volsync
+    - name: apps-rook-ceph-cluster
