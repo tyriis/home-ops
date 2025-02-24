@@ -3,9 +3,9 @@
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: home-assistant-config
+  name: home-assistant-data
 spec:
-  sourcePVC: home-assistant-config
+  sourcePVC: home-assistant-data
   trigger:
     schedule: "17 2 * * *" # 2:17 AM
   restic:
@@ -25,4 +25,6 @@ spec:
       runAsGroup: 1000
       fsGroup: 1000
     retain:
-      hourly: 24
+      daily: 7
+      weekly: 4
+      monthly: 3
