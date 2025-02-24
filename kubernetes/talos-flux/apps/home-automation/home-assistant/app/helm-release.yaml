@@ -88,7 +88,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: home-assistant-data
+        existingClaim: home-assistant-config
         advancedMounts:
           home-assistant:
             app:
@@ -104,9 +104,3 @@ spec:
               - path: /root/.ssh
                 subPath: .ssh
                 readOnly: true
-      data:
-        existingClaim: home-assistant-config
-        advancedMounts:
-          home-assistant:
-            app:
-              - path: /data
