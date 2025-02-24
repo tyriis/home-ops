@@ -104,3 +104,9 @@ spec:
               - path: /root/.ssh
                 subPath: .ssh
                 readOnly: true
+      data:
+        existingClaim: home-assistant-config
+        advancedMounts:
+          home-assistant:
+            app:
+              - path: /data
