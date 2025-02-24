@@ -80,6 +80,12 @@
       matchManagers: ["mise"],
       automerge: true,
     },
+    {
+      matchPackageNames: ["ghcr.io/itzg/minecraft-server"],
+      automerge: true,
+      automergeType: "pr",
+      automergeSchedule: ["0 2-7 * * *"], // only merge between 2am and 7am
+    },
   ],
   ansible: {
     enabled: false,
