@@ -11,4 +11,4 @@ resources:
   - replication-destination.yaml
   - persistent-volume-claim.yaml
   - helm-release.yaml
-  - replication-destination.yaml
+  - replication-source.yaml
