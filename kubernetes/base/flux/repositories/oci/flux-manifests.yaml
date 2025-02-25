@@ -10,5 +10,5 @@ spec:
   url: oci://ghcr.io/fluxcd/flux-manifests
   ref:
     # renovate: depName=fluxcd/flux2 datasource=github-releases
-    tag: v2.2.1
+    tag: v2.5.1
     digest: sha256:456f82fce9bce6dbfbca1ad9f21a4c6f33ee0a35c846de1fac4a1b9bcdea98a7
