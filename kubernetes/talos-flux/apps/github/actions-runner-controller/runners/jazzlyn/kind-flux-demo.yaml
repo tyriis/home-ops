@@ -30,7 +30,7 @@ spec:
           - name: regcreds-docker
         containers:
           - name: runner
-            image: ghcr.io/onedr0p/actions-runner:2.322.0@sha256:01162b8a1e1a562b5b29a5ee198b0bddb9eed85a6f22d6533e9cf08d42851b47
+            image: ghcr.io/onedr0p/actions-runner:2.322.0@sha256:9db27092b7caab08b1dc08d5e639a3340f6e0d6ae2f91aaf93e740bd28ad9306
             command: ["/home/runner/run.sh"]
             volumeMounts:
               - name: regcreds-docker
