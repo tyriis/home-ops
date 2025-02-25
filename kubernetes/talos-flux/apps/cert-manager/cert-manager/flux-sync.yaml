@@ -9,13 +9,22 @@ metadata:
     backstage.io/discovery: enabled
     backstage.io/name: cert-manager
 spec:
-  interval: 10m
+  targetNamespace: cert-manager
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: cert-manager
   path: ./kubernetes/talos-flux/apps/cert-manager/cert-manager/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
   wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: apps-kube-prometheus-stack
+
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -24,10 +33,18 @@ metadata:
   name: apps-cert-manager-issuers
   namespace: flux-system
 spec:
-  interval: 10m
+  targetNamespace: cert-manager
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: cert-manager-issuers
   path: ./kubernetes/talos-flux/apps/cert-manager/cert-manager/issuers
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops
   wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: apps-cert-manager

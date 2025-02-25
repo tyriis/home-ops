@@ -36,6 +36,9 @@ spec:
       nameservers:
         - "1.1.1.1"
         - "9.9.9.9"
+    prometheus:
+      servicemonitor:
+        enabled: true
     resources:
       requests:
         cpu: 10m
