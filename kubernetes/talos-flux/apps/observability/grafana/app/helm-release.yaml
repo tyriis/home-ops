@@ -58,10 +58,23 @@ spec:
         auth_url: https://accounts.google.com/o/oauth2/auth
         token_url: https://accounts.google.com/o/oauth2/token
 
+    dashboardProviders:
+      dashboardproviders.yaml:
+        apiVersion: 1
+        providers:
+          - name: test
+            disableDeletion: false
+            editable: true
+            folder: ""
+            options:
+              path: /var/lib/grafana/dashboards/test
+            orgId: 1
+            type: file
+
     dashboards:
-      default:
+      test:
         # Ref: https://grafana.com/grafana/dashboards/11074
-        "Node Exporter for Prometheus Dashboard":
+        node-exporter:
           gnetId: 11074
           revision: 9
           datasource: Prometheus
@@ -82,10 +95,12 @@ spec:
         label: grafana_dashboard
         folderAnnotation: grafana_folder
         provider:
+          disableDelete: true
           foldersFromFilesStructure: true
       datasources:
         enabled: true
         searchNamespace: ALL
+        labelValue: ""
     plugins:
       # - natel-discrete-panel
       # - pr0ps-trackmap-panel
