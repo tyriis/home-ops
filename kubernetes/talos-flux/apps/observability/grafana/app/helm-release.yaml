@@ -62,17 +62,17 @@ spec:
       dashboardproviders.yaml:
         apiVersion: 1
         providers:
-          - name: test
+          - name: default
             disableDeletion: false
             editable: true
             folder: ""
             options:
-              path: /var/lib/grafana/dashboards/test
+              path: /var/lib/grafana/dashboards/default
             orgId: 1
             type: file
 
     dashboards:
-      test:
+      default:
         # Ref: https://grafana.com/grafana/dashboards/11074
         node-exporter:
           gnetId: 11074
@@ -82,11 +82,44 @@ spec:
         #   url: https://raw.githubusercontent.com/dragonflydb/dragonfly/main/tools/local/monitoring/grafana/provisioning/dashboards/dashboard.json
         #   datasource: Prometheus
         # Ref: https://grafana.com/grafana/dashboards/20842
+
         cert-manager:
           # renovate: depName="Cert-manager-Kubernetes"
           gnetId: 20842
           revision: 2
           datasource: Prometheus
+
+        cloudflared:
+          # renovate: dashboardName="Cloudflare Tunnels (cloudflared)"
+          gnetId: 17457
+          revision: 6
+          datasource:
+            - name: DS_PROMETHEUS
+              value: Prometheus
+
+        node-exporter-full:
+          # renovate: dashboardName="Node Exporter Full"
+          gnetId: 1860
+          revision: 37
+          datasource: Prometheus
+
+        smartctl-exporter:
+          # renovate: depName="SMARTctl Exporter Dashboard"
+          gnetId: 22604
+          revision: 1
+          datasource:
+            - name: DS_PROMETHEUS
+              value: Prometheus
+
+        volsync:
+          # removate: dashboardName="VolSync Dashboard"
+          gnetId: 21356
+          revision: 2
+          datasource:
+            - name: DS_PROMETHEUS
+              value: Prometheus
+            - name: VAR_REPLICATIONDESTNAME
+              value: ".*-bootstrap"
 
     sidecar:
       dashboards:
