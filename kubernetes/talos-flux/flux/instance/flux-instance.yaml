@@ -6,7 +6,7 @@ metadata:
 spec:
   distribution:
     # renovate: depName=fluxcd/flux2 datasource=github-releases
-    version: 2.5.0
+    version: 2.5.1
     registry: ghcr.io/fluxcd
     artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests
   components:
