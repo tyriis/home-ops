@@ -130,14 +130,15 @@ spec:
         # dragonfly:
         #   url: https://raw.githubusercontent.com/dragonflydb/dragonfly/main/tools/local/monitoring/grafana/provisioning/dashboards/dashboard.json
         #   datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/20842
 
+        # Ref: https://grafana.com/grafana/dashboards/20842
         cert-manager:
           # renovate: dashboardName="Cert-manager-Kubernetes"
           gnetId: 20842
           revision: 2
           datasource: Prometheus
 
+        # Ref: https://grafana.com/grafana/dashboards/17457
         cloudflared:
           # renovate: dashboardName="Cloudflare Tunnels (cloudflared)"
           gnetId: 17457
@@ -146,6 +147,7 @@ spec:
             - name: DS_PROMETHEUS
               value: Prometheus
 
+        # Ref: https://grafana.com/grafana/dashboards/1860
         node-exporter-full:
           # renovate: dashboardName="Node Exporter Full"
           gnetId: 1860
@@ -153,6 +155,7 @@ spec:
           datasource: Prometheus
 
       storage:
+        # Ref: https://grafana.com/grafana/dashboards/22604
         smartctl-exporter:
           # renovate: dashboardName="SMARTctl Exporter Dashboard"
           gnetId: 22604
@@ -161,6 +164,7 @@ spec:
             - name: DS_PROMETHEUS
               value: Prometheus
 
+        # Ref: https://grafana.com/grafana/dashboards/21356
         volsync:
           # removate: dashboardName="VolSync Dashboard"
           gnetId: 21356
@@ -172,16 +176,19 @@ spec:
               value: ".*-bootstrap"
 
       ceph:
+        # Ref: https://grafana.com/grafana/dashboards/2842
         ceph-cluster:
           # renovate: dashboardName="Ceph Cluster"
           gnetId: 2842
           revision: 18
           datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/5336
         ceph-osd:
           # renovate: dashboardName="Ceph - OSD (Single)"
           gnetId: 5336
           revision: 9
           datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/5342
         ceph-pools:
           # renovate: dashboardName="Ceph - Pools"
           gnetId: 5342
@@ -200,31 +207,37 @@ spec:
           datasource: Prometheus
 
       kubernetes:
+        # Ref: https://grafana.com/grafana/dashboards/15761
         k8s-system-api-server:
           # renovate: dashboardName="Kubernetes / System / API Server"
           gnetId: 15761
           revision: 19
           datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/15757
         k8s-views-global:
           # renovate: dashboardName="Kubernetes / Views / Global"
           gnetId: 15757
           revision: 43
           datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/15759
         k8s-views-nodes:
           # renovate: dashboardName="Kubernetes / Views / Nodes"
           gnetId: 15759
           revision: 34
           datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/15758
         k8s-views-namespaces:
           # renovate: dashboardName="Kubernetes / Views / Namespaces"
           gnetId: 15758
           revision: 42
           datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/15760
         k8s-views-pods:
           # renovate: dashboardName="Kubernetes / Views / Pods"
           gnetId: 15760
           revision: 36
           datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/11454
         k8s-volumes:
           # renovate: dashboardName="K8s / Storage / Volumes / Cluster"
           gnetId: 11454
