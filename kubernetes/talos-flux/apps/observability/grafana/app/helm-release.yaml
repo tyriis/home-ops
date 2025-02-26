@@ -75,6 +75,7 @@ spec:
       default:
         # Ref: https://grafana.com/grafana/dashboards/11074
         node-exporter:
+          # renovate: dashboardName="Node Exporter Dashboard EN 20201010-StarsL.cn"
           gnetId: 11074
           revision: 9
           datasource: Prometheus
@@ -84,7 +85,7 @@ spec:
         # Ref: https://grafana.com/grafana/dashboards/20842
 
         cert-manager:
-          # renovate: depName="Cert-manager-Kubernetes"
+          # renovate: dashboardName="Cert-manager-Kubernetes"
           gnetId: 20842
           revision: 2
           datasource: Prometheus
@@ -103,8 +104,9 @@ spec:
           revision: 37
           datasource: Prometheus
 
+      storage:
         smartctl-exporter:
-          # renovate: depName="SMARTctl Exporter Dashboard"
+          # renovate: dashboardName="SMARTctl Exporter Dashboard"
           gnetId: 22604
           revision: 1
           datasource:
