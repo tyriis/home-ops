@@ -143,7 +143,7 @@ spec:
         cert-manager:
           # renovate: dashboardName="Cert-manager-Kubernetes"
           gnetId: 20842
-          revision: 2
+          revision: 3
           datasource: Prometheus
 
         # Ref: https://grafana.com/grafana/dashboards/17457
