@@ -136,7 +136,7 @@ spec:
           revision: 37
           datasource: Prometheus
 
-      storage:
+        # storage:
         smartctl-exporter:
           # renovate: dashboardName="SMARTctl Exporter Dashboard"
           gnetId: 22604
@@ -154,6 +154,7 @@ spec:
               value: Prometheus
             - name: VAR_REPLICATIONDESTNAME
               value: ".*-bootstrap"
+
       flux:
         flux-cluster:
           url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/cluster.json
