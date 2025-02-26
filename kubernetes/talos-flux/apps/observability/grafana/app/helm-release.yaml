@@ -136,7 +136,7 @@ spec:
           revision: 37
           datasource: Prometheus
 
-        # storage:
+      storage:
         smartctl-exporter:
           # renovate: dashboardName="SMARTctl Exporter Dashboard"
           gnetId: 22604
