@@ -93,7 +93,7 @@ operator:
   dashboards:
     enabled: true
     annotations:
-      grafana_folder: cilium
+      grafana_folder: Cilium
 # prometheus:
 #   enabled: true
 #   serviceMonitor:
@@ -102,7 +102,7 @@ operator:
 dashboards:
   enabled: true
   annotations:
-    grafana_folder: cilium
+    grafana_folder: Cilium
 rollOutCiliumPods: true
 securityContext:
   privileged: true
