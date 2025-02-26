@@ -129,7 +129,7 @@ spec:
       dashboards:
         enabled: true
         annotations:
-          grafana_folder: cilium
+          grafana_folder: Cilium
     prometheus:
       enabled: true
       serviceMonitor:
@@ -138,7 +138,7 @@ spec:
     dashboards:
       enabled: true
       annotations:
-        grafana_folder: cilium
+        grafana_folder: Cilium
     rollOutCiliumPods: true
     routingMode: native
     securityContext:
