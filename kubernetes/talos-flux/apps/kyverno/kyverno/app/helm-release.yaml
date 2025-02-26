@@ -32,7 +32,8 @@ spec:
     grafana:
       enabled: true
       annotations:
-        grafana_folder: System
+        grafana_dashboard: "true"
+        grafana_folder: Kyverno
     backgroundController:
       serviceMonitor:
         enabled: true
