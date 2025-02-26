@@ -115,6 +115,7 @@ spec:
           kustomize.toolkit.fluxcd.io/substitute: disabled
         labels:
           grafana_dashboard: "true"
+          grafana_folder: "Loki"
       serviceMonitor:
         enabled: true
         metricsInstance:
