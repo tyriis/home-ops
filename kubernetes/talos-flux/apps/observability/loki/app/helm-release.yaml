@@ -113,9 +113,9 @@ spec:
         enabled: true
         annotations:
           kustomize.toolkit.fluxcd.io/substitute: disabled
+          grafana_folder: Loki
         labels:
           grafana_dashboard: "true"
-          grafana_folder: "Loki"
       serviceMonitor:
         enabled: true
         metricsInstance:

@@ -16,6 +16,6 @@ generatorOptions:
   disableNameSuffixHash: true
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
-    grafana_folder: "Dragonfly"
+    grafana_folder: Dragonfly
   labels:
     grafana_dashboard: "true"
