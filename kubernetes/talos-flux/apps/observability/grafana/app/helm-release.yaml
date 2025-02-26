@@ -162,10 +162,19 @@ spec:
           revision: 37
           datasource: Prometheus
 
+        # Ref: https://grafana.com/grafana/dashboards/13665
+        speedtest-exporter:
+          # renovate: dashboardName="Speedtest-Exporter"
+          gnetId: 13665
+          revision: 1
+          datasource:
+            - name: DS_PROMETHEUS
+              value: Prometheus
+
       storage:
         # Ref: https://grafana.com/grafana/dashboards/22604
         smartctl-exporter:
-          # renovate: dashboardName="SMARTctl Exporter Dashboard"
+          # renovate: dashboardName="SMARTctl Exporter"
           gnetId: 22604
           revision: 1
           datasource:
