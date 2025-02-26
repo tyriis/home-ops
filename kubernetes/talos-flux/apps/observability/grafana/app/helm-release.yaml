@@ -118,6 +118,14 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/loki
+          - name: minecraft
+            orgId: 1
+            folder: Minecraft
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/minecraft
 
     dashboards:
       default:
@@ -242,6 +250,14 @@ spec:
           # renovate: dashboardName="K8s / Storage / Volumes / Cluster"
           gnetId: 11454
           revision: 14
+          datasource: Prometheus
+
+      minecraft:
+        # Ref: https://grafana.com/grafana/dashboards/14756
+        unifiedmetrics:
+          # renovate: dashboardName="UnifiedMetrics 0.3.x / Prometheus"
+          gnetId: 14756
+          revision: 11
           datasource: Prometheus
 
     sidecar:
