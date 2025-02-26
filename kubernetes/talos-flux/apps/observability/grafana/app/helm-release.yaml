@@ -269,6 +269,14 @@ spec:
           revision: 11
           datasource: Prometheus
 
+      loki:
+        # Ref: https://grafana.com/grafana/dashboards/13407
+        global-metrics:
+          # renovate: dashboardName="Loki2.0 Global Metrics"
+          gnetId: 13407
+          revision: 1
+          datasource: Prometheus
+
     sidecar:
       dashboards:
         enabled: true
