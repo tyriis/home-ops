@@ -166,7 +166,7 @@ spec:
         speedtest-exporter:
           # renovate: dashboardName="Speedtest-Exporter"
           gnetId: 13665
-          revision: 1
+          revision: 4
           datasource:
             - name: DS_PROMETHEUS
               value: Prometheus
