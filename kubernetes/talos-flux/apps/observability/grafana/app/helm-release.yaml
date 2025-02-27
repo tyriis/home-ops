@@ -176,7 +176,7 @@ spec:
         smartctl-exporter:
           # renovate: dashboardName="SMARTctl Exporter"
           gnetId: 22604
-          revision: 1
+          revision: 2
           datasource:
             - name: DS_PROMETHEUS
               value: Prometheus
