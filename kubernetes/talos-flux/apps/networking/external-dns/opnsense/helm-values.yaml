@@ -5,27 +5,30 @@ logLevel: info
 interval: 2m
 provider:
   name: webhook
+  managedRecordTypes:
+    - A
+    - AAAA
   webhook:
     image:
-      repository: ghcr.io/crutonjohn/external-dns-opnsense-webhook
-      tag: v0.1.0@sha256:72d4f5c79e515b8a70bb2e48f6472c746671a3ae3d8ad224aa686dd7192e1609
+      repository: ghcr.io/jobs62/opnsense_unbound_external-dns_webhook
+      tag: v0.4.5@sha256:22d3bd25bacaa0a8445a746d6541a8994bcb54e6047f5a079574adc792f88034
     env:
-      - name: OPNSENSE_API_SECRET
+      - name: OPNSENSE_SECRET
         valueFrom:
           secretKeyRef:
             name: &secret external-dns-opnsense-credentials
             key: OPNSENSE_API_SECRET
-      - name: OPNSENSE_API_KEY
+      - name: OPNSENSE_KEY
         valueFrom:
           secretKeyRef:
             name: *secret
             key: OPNSENSE_API_KEY
-      - name: OPNSENSE_HOST
+      - name: OPNSENSE_BASE
         value: http://opnsense.techtales.io
-      - name: OPNSENSE_SKIP_TLS_VERIFY
+      - name: OPNSENSE_ALLOW_INVALID_CERTS
         value: "false"
-      - name: LOG_LEVEL
-        value: debug
+      - name: OPNSENSE_DOMAIN_FILTERS
+        value: '[".techtales.io"]'
     livenessProbe:
       httpGet:
         path: /healthz
