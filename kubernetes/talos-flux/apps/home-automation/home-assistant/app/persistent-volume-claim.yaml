@@ -20,7 +20,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: home-assistant-ring-snapshot
+  name: home-assistant-ring-snapshots
 spec:
   accessModes:
     - ReadWriteOnce
