@@ -87,14 +87,18 @@ spec:
 
     persistence:
       config:
-        enabled: true
         existingClaim: home-assistant-config
         advancedMounts:
           home-assistant:
             app:
               - path: /config
+      ring-snapshots:
+        existingClaim: home-assistant-ring-snapshots
+        advancedMounts:
+          home-assistant:
+            app:
+              - path: /data/ring-snaphots
       ssh:
-        enabled: true
         type: secret
         name: home-assistant-ssh
         defaultMode: 0600
