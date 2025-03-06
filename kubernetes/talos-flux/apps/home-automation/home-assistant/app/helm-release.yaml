@@ -93,6 +93,13 @@ spec:
           home-assistant:
             app:
               - path: /config
+      ring-snapshots:
+        enabled: true
+        existingClaim: home-assistant-ring-snapshots
+        advancedMounts:
+          home-assistant:
+            app:
+              - path: /data/ring-snaphots
       ssh:
         enabled: true
         type: secret
