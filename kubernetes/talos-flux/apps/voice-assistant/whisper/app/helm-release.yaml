@@ -30,7 +30,7 @@ spec:
     keepHistory: false
   values:
     controllers:
-      piper:
+      whisper:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
