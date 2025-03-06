@@ -1,0 +1,83 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app whisper
+spec:
+  driftDetection:
+    mode: enabled
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.2
+      interval: 15m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  maxHistory: 15
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      whisper:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            env:
+              TZ: ${SETTING_TZ}
+            image:
+              repository: rhasspy/wyoming-whisper
+              tag: 2.4.0@sha256:2687f79715734606f856fc4478351ce91a76bdaf6899086bcb837eb9ac7cddb8
+            args:
+              - --model
+              - base
+              - --language
+              - en
+            ports:
+              - name: wyoming
+                containerPort: &port 10300
+                protocol: TCP
+            resources:
+              requests:
+                cpu: 200m
+                memory: 300Mi
+            probes:
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+            securityContext:
+              readOnlyRootFilesystem: true
+        pod:
+          terminationGracePeriodSeconds: 1
+
+    service:
+      app:
+        controller: *app
+        ports:
+          wyoming:
+            port: *port
+
+    persistence:
+      data:
+        retain: true
+        storageClass: ceph-block
+        accessMode: ReadWriteOnce
+        size: 10Gi
