@@ -81,3 +81,8 @@ spec:
         storageClass: ceph-block
         accessMode: ReadWriteOnce
         size: 10Gi
+
+      tmp:
+        enabled: true
+        type: emptyDir
+        medium: Memory
