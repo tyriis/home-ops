@@ -126,7 +126,7 @@ spec:
         advancedMounts:
           home-assistant:
             app:
-              - path: /data/ring-snaphots
+              - path: /data/ring-snapshots
       ssh:
         type: secret
         name: home-assistant-ssh
