@@ -27,7 +27,7 @@ sops = "3.9.4"
 # https://github.com/budimanjojo/talhelper
 talhelper = "3.0.20"
 # https://www.talos.dev/
-talosctl = "1.9.4"
+talosctl = "1.9.5"
 # https://taskfile.dev/
 task = "3.38.0"
 # https://www.terraform.io/
