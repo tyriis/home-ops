@@ -6,7 +6,7 @@ metadata:
   name: nas-postgres17
 spec:
   instances: 1
-  imageName: ghcr.io/cloudnative-pg/postgresql:17.4-5
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.4-6
   primaryUpdateStrategy: unsupervised
   storage:
     size: 10Gi
