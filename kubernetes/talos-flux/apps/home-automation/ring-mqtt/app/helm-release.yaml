@@ -35,7 +35,7 @@ spec:
           copy-config:
             image:
               repository: busybox
-              tag: 1.37.0@sha256:4ae7adf358c31ccde6c85bc5be961e7a3a734257d0f27040de2af4847c048993
+              tag: 1.37.0@sha256:29c2339e8727db1f58366f70f63063154c8230beb9ce1833380b71fa92bd0b89
             command:
               - sh
               - -c
