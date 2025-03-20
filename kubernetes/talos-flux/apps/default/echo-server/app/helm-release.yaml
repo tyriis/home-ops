@@ -73,7 +73,7 @@ spec:
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
           nginx.ingress.kubernetes.io/ssl-redirect: "true"
           nginx.ingress.kubernetes.io/auth-url: "https://oauth2-proxy.techtales.io/oauth2/auth"
-          nginx.ingress.kubernetes.io/auth-signin: "https://oauth2-proxy.techtales.io/oauth2/start?rd=$scheme://$host$request_uri"
+          nginx.ingress.kubernetes.io/auth-signin: "https://oauth2-proxy.techtales.io/oauth2/start?rd=$request_uri"
           nginx.ingress.kubernetes.io/auth-response-headers: x-auth-request-user, x-auth-request-email
           external-dns.alpha.kubernetes.io/target: "${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"
           external-dns/cloudflare: "true"
