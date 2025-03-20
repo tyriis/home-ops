@@ -91,7 +91,7 @@ spec:
           gethomepage.dev/icon: mdi-video-input-antenna
           gethomepage.dev/name: Echo Server
         hosts:
-          - host: &host "echo-server.techtales.io"
+          - host: &host "{{ .Release.Name }}.techtales.io"
             paths:
               - path: /
                 pathType: Prefix
