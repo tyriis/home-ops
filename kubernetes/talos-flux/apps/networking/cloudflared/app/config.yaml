@@ -41,6 +41,10 @@ ingress:
     service: https://kromgo.techtales.io
     originRequest:
       httpHostHeader: kromgo.techtales.io
+  - hostname: oauth2-proxy.techtales.io
+    service: https://oauth2-proxy.techtales.io
+    originRequest:
+      httpHostHeader: oauth2-proxy.techtales.io
   # - hostname: minecraft.techtales.io
   #   service: "tcp://minecraft-public-velocity-proxy.gaming-public.svc.cluster.local:25565"
   #   originRequest:
