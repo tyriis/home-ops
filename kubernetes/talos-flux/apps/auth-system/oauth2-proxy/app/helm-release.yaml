@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: oauth2-proxy
+  name: &app oauth2-proxy
 spec:
   interval: 30m
   driftDetection:
@@ -97,10 +97,21 @@ spec:
 
     service:
       app:
-        controller: oauth2-proxy
+        controller: *app
         ports:
           http:
             port: 4180
+          metrics:
+            port: 44180
+
+    serviceMonitor:
+      app:
+        serviceName: *app
+        endpoints:
+          - port: metrics
+            scheme: http
+            interval: 30s
+            scrapeTimeout: 5s
 
     ingress:
       app:
