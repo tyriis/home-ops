@@ -13,7 +13,7 @@ gitleaks = "8.24.0"
 # https://helm.sh/
 helm = "3.17.1"
 # https://k9scli.io/
-k9s = "0.40.5"
+k9s = "0.40.10"
 # https://kubernetes.io/docs/reference/kubectl/
 kubectl = "1.32.3"
 # https://kustomize.io/
@@ -25,7 +25,7 @@ pre-commit = "4.1.0"
 # https://github.com/mozilla/sops
 sops = "3.9.4"
 # https://github.com/budimanjojo/talhelper
-talhelper = "3.0.20"
+talhelper = "3.0.21"
 # https://www.talos.dev/
 talosctl = "1.9.4"
 # https://taskfile.dev/
