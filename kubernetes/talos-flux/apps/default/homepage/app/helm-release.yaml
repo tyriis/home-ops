@@ -42,6 +42,7 @@ spec:
           main:
             env:
               LOG_TARGETS: stdout
+              HOMEPAGE_ALLOWED_HOSTS: home.techtales.io
             envFrom:
               - secretRef:
                   name: homepage-env
