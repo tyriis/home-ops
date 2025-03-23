@@ -1,2 +1,4 @@
 ---
 mode: cluster
+ingress: true
+traefik: true # enable traefik ingressRoute
