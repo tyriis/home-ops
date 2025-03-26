@@ -77,12 +77,14 @@ enable-player-address-logging = true
 # creative = "minecraft-creative-world-minecraft:25565"
 playground = "minecraft-public-playground-world-minecraft:25565"
 survival = "minecraft-public-survival-world-minecraft:25565"
+pvp = "minecraft-public-pvp-world-minecraft:25565"
 # survival = "minecraft-survival-world-minecraft:25565"
 
 # In what order we should try servers when a player logs in or is kicked from a server.
 try = [
   "survival",
   "playground",
+  "pvp",
 ]
 
 [forced-hosts]
