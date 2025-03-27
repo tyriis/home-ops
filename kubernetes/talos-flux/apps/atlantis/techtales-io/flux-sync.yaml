@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname atlantis-techtales-io-terraform-discord
+  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/enabled: "true"
+spec:
+  targetNamespace: atlantis
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  path: ./kubernetes/talos-flux/apps/atlantis/techtales-io/terraform-discord
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+  wait: true
+  prune: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: apps-cert-manager
+    - name: apps-rook-ceph-cluster
+    - name: apps-traefik-forward-auth
+  postBuild:
+    substitute:
+      APP: *appname
+      REPO: github.com/techtales-io/terraform-discord
