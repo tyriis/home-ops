@@ -6,4 +6,5 @@ resources:
   - namespace.yaml
   - ./default-config
   - ./atlantis/flux-sync.yaml
+  - ./techtales-io/flux-sync.yaml
   - ./tyriis/flux-sync.yaml

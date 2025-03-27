@@ -1,5 +1,4 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -14,13 +13,13 @@ spec:
           app:
             envFrom:
               - secretRef:
-                  name: atlantis-tyriis-terraform-github-env
+                  name: ${APP}-env
             env:
-              ATLANTIS_REPO_ALLOWLIST: github.com/tyriis/terraform-github
+              ATLANTIS_REPO_ALLOWLIST: ${REPO}
     persistence:
       allowlist:
         type: configMap
-        name: atlantis-tyriis-allowlist
+        name: ${APP}-allowlist
         advancedMounts:
           main:
             app:
