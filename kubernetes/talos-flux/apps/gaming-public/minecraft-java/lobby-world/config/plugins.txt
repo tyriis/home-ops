@@ -1,0 +1,4 @@
+# UnifiedMetrics https://hangar.papermc.io/cubxity/UnifiedMetrics
+https://github.com/Cubxity/UnifiedMetrics/releases/download/v0.3.8/unifiedmetrics-platform-bukkit-0.3.8.jar
+# FancyNpcs https://hangar.papermc.io/Oliver/FancyNpcs
+https://hangarcdn.papermc.io/plugins/Oliver/FancyNpcs/versions/2.4.4/PAPER/FancyNpcs-2.4.4.jar
