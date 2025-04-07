@@ -10,6 +10,7 @@ configMapGenerator:
   - name: atlantis-default-scripts
     files:
       - allow_list.sh=../../../../base/apps/atlantis/scripts/allow_list.sh
+      - vault_config.sh=../../../../base/apps/atlantis/scripts/vault_config.sh
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
