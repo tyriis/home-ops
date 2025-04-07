@@ -3,7 +3,7 @@
 
 # Print directory contents for debugging
 echo "Current directory content:"
-ls -la
+cat terraform/provider.tf
 
 # Define the replacement text
 replacement='  auth_login {\n    path = "auth/kubernetes/login"\n    parameters = {\n      role = "talos-flux-atlantis"\n      jwt  = file("/var/run/secrets/kubernetes.io/serviceaccount/token")\n    }\n  }'
