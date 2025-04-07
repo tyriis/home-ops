@@ -1,6 +1,10 @@
 #!/bin/sh
 # This script replaces the ATLANTIS_INJECT_VAULT_CONFIG marker with vault auth_login configuration
 
+# Print directory contents for debugging
+echo "Current directory content:"
+ls -la
+
 # Define the replacement text
 replacement='  auth_login {\n    path = "auth/kubernetes/login"\n    parameters = {\n      role = "talos-flux-atlantis"\n      jwt  = file("/var/run/secrets/kubernetes.io/serviceaccount/token")\n    }\n  }'
 
