@@ -5,8 +5,12 @@ metadata:
   name: ${APP}
 spec:
   interval: 15m
-  # https://artifacthub.io/packages/helm/cert-manager/cert-manager?modal=values
+  # https://bjw-s.github.io/helm-charts/docs/app-template/
   values:
+    serviceAccount:
+      create: true
+    defaultPodOptions:
+      automountServiceAccountToken: true
     controllers:
       main:
         containers:
