@@ -9,6 +9,9 @@ configMapGenerator:
   - name: atlantis-techtales-io-terraform-discord-allowlist
     files:
       - allowlist.txt=config/allowlist.txt
+  - name: atlantis-techtales-io-terraform-discord-config
+    files:
+      - repos.yaml=config/repos.yaml
 generatorOptions:
   disableNameSuffixHash: true
   annotations:

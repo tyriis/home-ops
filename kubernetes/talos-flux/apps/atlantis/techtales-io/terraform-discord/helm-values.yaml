@@ -30,3 +30,12 @@ spec:
               - path: /etc/atlantis/allowlist.txt
                 subPath: allowlist.txt
                 readOnly: true
+      config:
+        type: configMap
+        name: atlantis-techtales-io-terraform-discord-config
+        advancedMounts:
+          main:
+            app:
+              - path: /etc/atlantis/repos.yaml
+                subPath: repos.yaml
+                readOnly: true
