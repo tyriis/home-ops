@@ -97,21 +97,20 @@ spec:
     serviceMonitor:
       metrics:
         enabled: true
-        serviceName: anhubis
+        serviceName: anubis
         endpoints:
           - port: metrics
             scheme: http
-            path: /
+            path: /metrics
             interval: 1m
 
     ingress:
       app:
-        className: nginx
+        className: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/tls-acme: "true"
-          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-          nginx.ingress.kubernetes.io/ssl-redirect: "true"
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
           # external-dns.alpha.kubernetes.io/target: "${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"
           # external-dns/cloudflare: "true"
         hosts:
