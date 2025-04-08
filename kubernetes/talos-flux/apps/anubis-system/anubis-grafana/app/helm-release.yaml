@@ -103,3 +103,25 @@ spec:
             scheme: http
             path: /
             interval: 1m
+
+    ingress:
+      app:
+        className: nginx
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/tls-acme: "true"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+          nginx.ingress.kubernetes.io/ssl-redirect: "true"
+          # external-dns.alpha.kubernetes.io/target: "${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"
+          # external-dns/cloudflare: "true"
+        hosts:
+          - host: &host anubis-grafana.techtales.io
+            paths:
+              - path: /
+                service:
+                  identifier: anubis
+                  port: http
+        tls:
+          - hosts:
+              - *host
+            secretName: "{{ .Release.Name }}-tls"
