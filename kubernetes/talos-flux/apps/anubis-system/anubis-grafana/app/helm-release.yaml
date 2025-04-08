@@ -97,7 +97,7 @@ spec:
     serviceMonitor:
       metrics:
         enabled: true
-        serviceName: anhubis
+        serviceName: anubis
         endpoints:
           - port: metrics
             scheme: http
