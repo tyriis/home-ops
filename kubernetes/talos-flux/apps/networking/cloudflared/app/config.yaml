@@ -11,8 +11,8 @@ ingress:
   # In other words, it will use a connectTimeout of 30 seconds.
   - hostname: grafana.techtales.io
     service: https://anubis-grafana.techtales.io
-    originRequest:
-      httpHostHeader: grafana.techtales.io
+    # originRequest:
+    #   httpHostHeader: grafana.techtales.io
   - hostname: auth.techtales.io
     service: https://auth.techtales.io
     originRequest:
