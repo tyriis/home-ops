@@ -126,6 +126,14 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/minecraft
+          - name: opnsense
+            orgId: 1
+            folder: OPNSense
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/opnsense
 
     dashboards:
       default:
@@ -274,6 +282,14 @@ spec:
         global-metrics:
           # renovate: dashboardName="Loki2.0 Global Metrics"
           gnetId: 13407
+          revision: 1
+          datasource: Prometheus
+
+      opnsense:
+        # Ref: https://grafana.com/grafana/dashboards/21113
+        opnsense-exporter:
+          # renovate: dashboardName="OPNSense Exporter"
+          gnetId: 21113
           revision: 1
           datasource: Prometheus
 
