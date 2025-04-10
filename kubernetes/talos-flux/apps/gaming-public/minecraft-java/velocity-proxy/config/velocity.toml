@@ -83,10 +83,10 @@ lobby = "minecraft-public-lobby-world-minecraft:25565"
 
 # In what order we should try servers when a player logs in or is kicked from a server.
 try = [
+  "lobby",
   "survival",
   "playground",
   "pvp",
-  "lobby",
 ]
 
 [forced-hosts]
