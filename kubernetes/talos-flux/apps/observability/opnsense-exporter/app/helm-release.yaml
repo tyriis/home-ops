@@ -29,29 +29,32 @@ spec:
           reloader.stakater.com/auto: "true"
         pod:
           securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
-            fsGroup: 1000
+            runAsNonRoot: true
+            runAsUser: 65534
             fsGroupChangePolicy: OnRootMismatch
         containers:
           app:
             image:
-              repository: ghcr.io/tyriis/opnsense-exporter
-              tag: v0.1.7@sha256:6625ec7a93346c51adb0fd8c0f93b21f5fc7f47bfcb2321c132be1a0328a2add
+              repository: ghcr.io/athennamind/opnsense-exporter
+              tag: 0.0.8@sha256:55906295277c42f2f35993cb1c3043338c66e32e6ce07cbc60e3bbdf0da5c563
+            args:
+              - --log.level=info
+              - --log.format=json
             env:
-              TZ: ${SETTING_TZ}
-              NODE_ENV: production
-              CONFIG_PATH: /config/configuration.yaml
-            envFrom:
-              - secretRef:
-                  name: opnsense-exporter-env
+              OPNSENSE_EXPORTER_INSTANCE_LABEL: opnsense
+              OPNSENSE_EXPORTER_OPS_API: opnsense.techtales.io
+              OPNSENSE_EXPORTER_OPS_PROTOCOL: https
+              OPS_API_KEY_FILE: /etc/opnsense-exporter/creds/OPNSENSE_API_KEY
+              OPS_API_SECRET_FILE: /etc/opnsense-exporter/creds/OPNSENSE_API_SECRET
             ports:
-              - name: http
-                containerPort: &port 3000
+              - name: metrics
+                containerPort: &port 8080
                 protocol: TCP
             resources:
               requests:
-                cpu: 10m
+                cpu: 100m
+                memory: 64Mi
+              limits:
                 memory: 128Mi
             probes:
               liveness: &probes
@@ -59,7 +62,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /health
+                    path: /
                     port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
@@ -94,11 +97,11 @@ spec:
 
     persistence:
       config:
-        type: configMap
-        name: opnsense-exporter-config
+        type: secret
+        name: opnsense-exporter-creds
         globalMounts:
-          - subPath: configuration.yaml
-            path: /config/configuration.yaml
+          - path: /etc/opnsense-exporter/creds
+
       cache:
         type: emptyDir
         globalMounts:
