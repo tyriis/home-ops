@@ -78,7 +78,7 @@ spec:
               TZ: ${SETTING_TZ}
               TYPE: "PAPER"
               # TODO renovate
-              VERSION: "1.21.5"
+              VERSION: "1.21.4"
               # try to fix memory issues and performance
               JVM_XX_OPTS: -XX:MaxRAMPercentage=75
               MAX_MEMORY: 4096M
