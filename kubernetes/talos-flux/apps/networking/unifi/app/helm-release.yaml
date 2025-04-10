@@ -98,11 +98,11 @@ spec:
       app:
         controller: *app
         type: LoadBalancer
-        loadBalancerIP: &ip ${SETTING_CILIUM_UNIFI_ADDR}
-        externalTrafficPolicy: Local
+        # loadBalancerIP: &ip ${SETTING_CILIUM_UNIFI_ADDR}
+        externalTrafficPolicy: Cluster
         annotations:
           traefik.ingress.kubernetes.io/service.serversscheme: https
-          io.cilium/lb-ipam-ips: *ip
+          io.cilium/lb-ipam-ips: ${SETTING_CILIUM_UNIFI_ADDR}
         ports:
           controller:
             enabled: true
