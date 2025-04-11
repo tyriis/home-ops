@@ -18,6 +18,8 @@ spec:
             envFrom:
               - secretRef:
                   name: ${APP}-env
+              - secretRef:
+                  name: ${APP}-vault
             env:
               ATLANTIS_REPO_ALLOWLIST: ${REPO}
     persistence:
@@ -32,7 +34,7 @@ spec:
                 readOnly: true
       config:
         type: configMap
-        name: atlantis-techtales-io-terraform-discord-config
+        name: ${APP}-config
         advancedMounts:
           main:
             app:
