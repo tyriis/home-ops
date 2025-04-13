@@ -55,7 +55,7 @@ spec:
               - --extensions-dir
               - /config/.code-server
               - --port
-              - "12321"
+              - "8080"
               - /config
 
             securityContext:
