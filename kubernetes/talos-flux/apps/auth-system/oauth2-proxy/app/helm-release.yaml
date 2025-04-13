@@ -59,6 +59,8 @@ spec:
               OAUTH2_PROXY_REDEEM_URL: https://oauth2.googleapis.com/token
               OAUTH2_PROXY_SESSION_STORE_TYPE: redis
               OAUTH2_PROXY_REDIS_CONNECTION_URL: redis://dragonfly.database.svc.cluster.local:6379
+              # hack https://github.com/oauth2-proxy/oauth2-proxy/issues/1297#issuecomment-1564124675
+              OAUTH2_PROXY_FOOTER: "<script>(function(){var rd=document.getElementsByName('rd');for(var i=0;i<rd.length;i++)rd[i].value=window.location.toString().split('/oauth2')[0]})()</script>"
 
             probes:
               liveness:
