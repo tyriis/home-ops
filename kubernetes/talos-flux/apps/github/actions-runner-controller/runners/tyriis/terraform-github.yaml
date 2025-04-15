@@ -24,6 +24,72 @@ spec:
     maxRunners: 3
     containerMode:
       type: kubernetes
+    listenerMetrics:
+      counters:
+        gha_started_jobs_total:
+          labels:
+            [
+              "repository",
+              "organization",
+              "enterprise",
+              "job_name",
+              "event_name",
+            ]
+        gha_completed_jobs_total:
+          labels:
+            [
+              "repository",
+              "organization",
+              "enterprise",
+              "job_name",
+              "event_name",
+              "job_result",
+            ]
+      gauges:
+        gha_assigned_jobs:
+          labels:
+            ["name", "namespace", "repository", "organization", "enterprise"]
+        gha_running_jobs:
+          labels:
+            ["name", "namespace", "repository", "organization", "enterprise"]
+        gha_registered_runners:
+          labels:
+            ["name", "namespace", "repository", "organization", "enterprise"]
+        gha_busy_runners:
+          labels:
+            ["name", "namespace", "repository", "organization", "enterprise"]
+        gha_min_runners:
+          labels:
+            ["name", "namespace", "repository", "organization", "enterprise"]
+        gha_max_runners:
+          labels:
+            ["name", "namespace", "repository", "organization", "enterprise"]
+        gha_desired_runners:
+          labels:
+            ["name", "namespace", "repository", "organization", "enterprise"]
+        gha_idle_runners:
+          labels:
+            ["name", "namespace", "repository", "organization", "enterprise"]
+      histograms:
+        gha_job_startup_duration_seconds:
+          labels:
+            [
+              "repository",
+              "organization",
+              "enterprise",
+              "job_name",
+              "event_name",
+            ]
+        gha_job_execution_duration_seconds:
+          labels:
+            [
+              "repository",
+              "organization",
+              "enterprise",
+              "job_name",
+              "event_name",
+              "job_result",
+            ]
     template:
       spec:
         containers:
