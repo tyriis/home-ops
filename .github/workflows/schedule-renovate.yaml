@@ -62,7 +62,7 @@ jobs:
 
       # https://github.com/marketplace/actions/renovate-bot-github-action
       - name: Renovate
-        uses: renovatebot/github-action@cf5954a2aac7999882d3de4e462499adde159d04 # v41.0.17
+        uses: renovatebot/github-action@19e3d87179488d6a0cd9da744d37123ea4b338e5 # v41.0.20
         with:
           configurationFile: "${{ env.RENOVATE_CONFIG_FILE }}"
           token: "${{ steps.app-token.outputs.token }}"
