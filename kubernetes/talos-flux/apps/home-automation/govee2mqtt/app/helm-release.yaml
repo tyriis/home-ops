@@ -46,7 +46,7 @@ spec:
               TZ: ${SETTING_TZ}
             image:
               repository: ghcr.io/wez/govee2mqtt
-              tag: latest@sha256:af2ef02e9dfb84f5d30139d34758f64e8e109bccc8c01a466ba96940f541bf0a
+              tag: latest@sha256:6970ea68b0c6ff4ef6d4e63424e46f38b8fa2ec29e9578f9d6136fefe08a08a7
             ports:
               - name: http
                 containerPort: &port 8056
