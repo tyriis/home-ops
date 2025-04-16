@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: syncthing/syncthing
-              tag: 1.29.3@sha256:59580c71260ea38d50247a0acebd6c608c6d59b78e651b0194943a8649841f82
+              tag: 1.29.5@sha256:1914deddb3be7808579f3ce0eb4a1c493daa2f01e8953c2d73ba52ee2b1b418a
             resources:
               requests:
                 cpu: 15m
