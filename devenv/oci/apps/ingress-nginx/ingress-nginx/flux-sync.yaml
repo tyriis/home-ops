@@ -12,13 +12,6 @@ spec:
   sourceRef:
     kind: OCIRepository
     name: home-ops-devenv
-  healthChecks:
-    - kind: HelmRelease
-      name: ingress-nginx
-      namespace: ingress-nginx
-    - kind: Deployment
-      name: ingress-nginx-controller
-      namespace: ingress-nginx
   wait: true
   interval: 15m
   retryInterval: 5s

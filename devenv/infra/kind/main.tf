@@ -3,7 +3,7 @@
 # --------------------------------------------------------------------------------
 
 terraform {
-  required_version = ">= 1.5.5, <= 1.11.4"
+  required_version = ">= 1.11.0, <= 1.11.4"
   required_providers {
     kind = {
       source  = "tehcyx/kind"
@@ -16,16 +16,9 @@ terraform {
   }
 }
 
-locals {
-  kubeconfig_path        = pathexpand("~/.kube/config")
-  registry_name          = "home-ops-kind-registry"
-  registry_port          = "5050"
-  registry_internal_port = "5000"
-  registry_docker_image  = "registry:2.8.1"
-}
-
+# https://registry.terraform.io/providers/tehcyx/kind/latest/docs/resources/cluster
 resource "kind_cluster" "flux_devenv" {
-  name            = "home-ops-devenv"
+  name            = local.devenv_name
   kubeconfig_path = local.kubeconfig_path
   wait_for_ready  = true
 
@@ -53,21 +46,38 @@ resource "kind_cluster" "flux_devenv" {
               node-labels: "ingress-ready=true"
           EOF
       ]
-
       extra_port_mappings {
         container_port = 443
         host_port      = 443
+        listen_address = "127.0.0.1"
       }
     }
 
-    # # add 1 observability node
+    # add 1 observability node
     # node {
     #   role = "worker"
+    #   labels = {
+    #     "application/role"              = "observability"
+    #   }
+    #   kubeadm_config_patches = [
+    #     # taint
+    #     <<EOF
+    #     kind: JoinConfiguration
+    #     nodeRegistration:
+    #       taints:
+    #         - key: observability
+    #           value: reserved
+    #           effect: NoSchedule
+    #     EOF
+    #   ]
     # }
 
     # add 1 workload node
     node {
       role = "worker"
+      labels = {
+        "application/role" = "workload"
+      }
     }
   }
 }
@@ -85,7 +95,7 @@ resource "docker_container" "kind_registry" {
   image   = docker_image.registry.image_id
   name    = local.registry_name
   attach  = false
-  restart = "unless-stopped"
+  restart = "no"
   ports {
     internal = local.registry_internal_port
     external = local.registry_port

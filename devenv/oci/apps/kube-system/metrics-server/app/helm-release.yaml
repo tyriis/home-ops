@@ -5,15 +5,22 @@ kind: HelmRelease
 metadata:
   name: metrics-server
 spec:
-  interval: 30m
   chart:
     spec:
       chart: metrics-server
-      version: 3.12.1
+      version: 3.12.2
       sourceRef:
         kind: HelmRepository
         name: metrics-server-charts
         namespace: flux-system
+  interval: 15m
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 5
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
   # https://artifacthub.io/packages/helm/metrics-server/metrics-server?modal=values
   values:
     args:
