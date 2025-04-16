@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: data-openbao-0
+spec:
+  sourcePVC: data-openbao-0
+  trigger:
+    schedule: "0 * * * *"
+  restic:
+    copyMethod: Snapshot
+    pruneIntervalDays: 14
+    repository: openbao-volsync
+    volumeSnapshotClassName: nfs-snapshot
+    cacheCapacity: 1Gi
+    cacheStorageClassName: nfs-local
+    cacheAccessModes:
+      - ReadWriteOnce
+    storageClassName: nfs-local
+    accessModes:
+      - ReadWriteOnce
+    moverSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+    retain:
+      hourly: 24
+      daily: 7
+      weekly: 4
+      monthly: 3
