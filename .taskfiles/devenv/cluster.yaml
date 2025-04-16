@@ -6,14 +6,14 @@ tasks:
   create:
     desc: create kind cluster with terraform
     internal: true
-    dir: "{{.DEVENV_DIR}}/infra"
+    dir: "{{.DEVENV_DIR}}/infra/kind"
     cmds:
       - terraform init
       - terraform apply -auto-approve
-      - docker update --restart=unless-stopped
-        home-ops-kind-registry
-        home-ops-devenv-control-plane
-        home-ops-devenv-worker
+      - docker update --restart=no
+        homeops-kind-registry
+        homeops-devenv-control-plane
+        homeops-devenv-worker
 
   delete-cluster:
     desc: delete kind cluster and remove associated containers
@@ -21,10 +21,10 @@ tasks:
     silent: true
     cmds:
       - |
-        if kind get clusters | grep home-ops-devenv >> /dev/null; then
-          kind delete cluster --name home-ops-devenv
+        if kind get clusters | grep homeops-devenv >> /dev/null; then
+          kind delete cluster --name homeops-devenv
         fi
-      - docker rm -f home-ops-kind-registry &> /dev/null
+      - docker rm -f homeops-kind-registry &> /dev/null
 
   delete-terraform:
     desc: delete terraform states
@@ -32,11 +32,12 @@ tasks:
     silent: true
     dir: "{{.DEVENV_DIR}}/infra"
     cmds:
-      - rm -rf terraform.tfstate* .terraform.lock.hcl .terraform
+      - rm -f kind/terraform.tfstate* kind/.terraform.lock.hcl
+      - rm -rf kind/.terraform
 
   upgrade-terraform:
-    desc: upgrade infra
+    desc: upgrade kind cluster
     internal: true
-    dir: "{{.DEVENV_DIR}}/infra"
+    dir: "{{.DEVENV_DIR}}/infra/kind"
     cmds:
       - terraform init -upgrade
