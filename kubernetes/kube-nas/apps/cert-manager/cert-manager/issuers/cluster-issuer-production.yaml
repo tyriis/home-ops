@@ -16,7 +16,7 @@ spec:
             email: "${SECRET_CLOUDFLARE_EMAIL}"
             apiKeySecretRef:
               name: cloudflare-api-key
-              key: tyriis-dev
+              key: tyriis.dev
         selector:
           dnsZones:
             - tyriis.dev
@@ -25,7 +25,7 @@ spec:
             email: "${SECRET_CLOUDFLARE_EMAIL}"
             apiKeySecretRef:
               name: cloudflare-api-key
-              key: techtales-io
+              key: techtales.io
         selector:
           dnsZones:
             - techtales.io
