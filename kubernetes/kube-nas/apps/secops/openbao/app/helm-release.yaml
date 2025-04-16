@@ -36,6 +36,7 @@ spec:
         registry: quay.io
         repository: openbao/openbao
         tag: 2.2.0
+      updateStrategy: RollingUpdate
       logLevel: "info"
       logFormat: "json"
       resources:
