@@ -28,6 +28,8 @@ spec:
     keepHistory: false
   # https://github.com/openbao/openbao-helm/blob/main/charts/openbao/values.yaml
   values:
+    injector:
+      enabled: false
     server:
       enabled: true
       image:
