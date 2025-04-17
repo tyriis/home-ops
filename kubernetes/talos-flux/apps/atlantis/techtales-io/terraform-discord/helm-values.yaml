@@ -20,7 +20,7 @@ spec:
                   name: ${APP}-env
             env:
               ATLANTIS_REPO_ALLOWLIST: ${REPO}
-              VAULT_ADDR: https://vault.tyriis.dev
+              VAULT_ADDR: https://secrets.techtales.io
     persistence:
       allowlist:
         type: configMap
