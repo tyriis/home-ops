@@ -7,7 +7,7 @@ metadata:
 spec:
   refreshInterval: 1m
   secretStoreRef:
-    name: vault-backend
+    name: openbao-backend
     kind: ClusterSecretStore
   target:
     name: *name
@@ -15,5 +15,5 @@ spec:
   data:
     - secretKey: RCON_PASSWORD
       remoteRef:
-        key: infra/techtales/gaming-public/minecraft
+        key: infra/talos-flux/gaming-public/minecraft-java
         property: RCON_PASSWORD
