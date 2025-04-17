@@ -10,7 +10,7 @@ spec:
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube
-    name: data-vault-0
+    name: data-openbao-0
   resources:
     requests:
       storage: 2Gi
