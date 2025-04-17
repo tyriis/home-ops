@@ -47,7 +47,7 @@ spec:
           app:
             image:
               repository: ghcr.io/techarohq/anubis
-              tag: v1.15.2@sha256:357258597868022676af5339558c5467e3c67c7708c8c7d363f9b9f52a6bd974
+              tag: v1.16.0@sha256:b8f59f4208b6639ea8c19e7c34eb26bcc7f1cc6b79e4f037cd99accf2c9de40b
             # envFrom:
             #   - configMapRef:
             #       name: anubis-grafana-env
