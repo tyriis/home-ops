@@ -18,10 +18,9 @@ spec:
             envFrom:
               - secretRef:
                   name: ${APP}-env
-              - secretRef:
-                  name: ${APP}-vault
             env:
               ATLANTIS_REPO_ALLOWLIST: ${REPO}
+              VAULT_ADDR: https://vault.tyriis.dev
     persistence:
       allowlist:
         type: configMap
