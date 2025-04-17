@@ -15,5 +15,5 @@ spec:
   data:
     - secretKey: RCON_PASSWORD
       remoteRef:
-        key: infra/techtales/gaming/minecraft
+        key: infra/talos-flux/gaming/minecraft-java
         property: RCON_PASSWORD
