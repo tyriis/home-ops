@@ -6,6 +6,9 @@ nav:
   - Overview: index.md
   - Installation: installation.md
   - User Manual: manual.md
+  - Upgrade: upgrade.md
+  - Runbooks:
+      - ETCD Database Fragmentation Troubleshooting: runbooks/etcd-database-fragmentation-troubleshooting.md
 
 theme:
   name: material
