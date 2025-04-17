@@ -37,7 +37,7 @@ spec:
               tag: v7.8.2@sha256:6f01695a729a2f88d7bc6e1158797d3cbdc0381c358ba86e1aa5da739586b3e0
             envFrom:
               - secretRef:
-                  name: oauth2-proxy-env-secrets
+                  name: oauth2-proxy-env
             env:
               OAUTH2_PROXY_PROVIDER: google
               OAUTH2_PROXY_COOKIE_DOMAINS: techtales.io
