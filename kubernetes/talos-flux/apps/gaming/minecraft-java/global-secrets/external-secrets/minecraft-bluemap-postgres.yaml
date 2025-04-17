@@ -19,4 +19,4 @@ spec:
         INIT_POSTGRES_PASS: "{{ .BLUEMAP_DATABASE_PASS }}"
   dataFrom:
     - extract:
-        key: infra/techtales/gaming/minecraft
+        key: infra/talos-flux/gaming/minecraft-java

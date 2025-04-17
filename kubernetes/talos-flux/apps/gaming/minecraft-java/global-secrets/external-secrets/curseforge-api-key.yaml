@@ -15,5 +15,5 @@ spec:
   data:
     - secretKey: CF_API_KEY
       remoteRef:
-        key: infra/techtales/gaming/minecraft
+        key: infra/talos-flux/gaming/minecraft-java
         property: CF_API_KEY

@@ -5,6 +5,8 @@ kind: HelmRelease
 metadata:
   name: external-secret-minecraft-curseforge-api-key
 spec:
+  driftDetection:
+    mode: enabled
   dependsOn:
     - name: external-secrets
       namespace: secops
@@ -38,6 +40,8 @@ kind: HelmRelease
 metadata:
   name: external-secret-minecraft-proxy-forwarding
 spec:
+  driftDetection:
+    mode: enabled
   dependsOn:
     - name: external-secrets
       namespace: secops
@@ -71,6 +75,8 @@ kind: HelmRelease
 metadata:
   name: external-secret-minecraft-rcon
 spec:
+  driftDetection:
+    mode: enabled
   dependsOn:
     - name: external-secrets
       namespace: secops
@@ -104,6 +110,8 @@ kind: HelmRelease
 metadata:
   name: external-secret-minecraft-bluemap-postgres
 spec:
+  driftDetection:
+    mode: enabled
   dependsOn:
     - name: external-secrets
       namespace: secops
