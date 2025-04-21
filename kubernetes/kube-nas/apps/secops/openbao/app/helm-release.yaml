@@ -73,10 +73,10 @@ spec:
       extraEnvironmentVars:
         # VAULT_TOKEN: ${SECRET_VAULT_TOKEN}
         TZ: ${SETTING_TZ}
-        GOOGLE_APPLICATION_CREDENTIALS: /openbao/userconfig/kms-vault-unseal/serviceaccount.json
+        GOOGLE_APPLICATION_CREDENTIALS: /openbao/userconfig/kms-openbo-unseal/serviceaccount.json
       extraVolumes:
         - type: secret
-          name: kms-vault-unseal
+          name: kms-openbao-unseal
           path: /openbao/userconfig
       ha:
         enabled: true
@@ -109,7 +109,7 @@ spec:
             }
 
             # storage "file" {
-            #   path = "/vault/data"
+            #   path = "/openbao/data"
             # }
             storage "raft" {
               path = "/openbao/data"
