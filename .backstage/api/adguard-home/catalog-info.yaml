@@ -3,11 +3,11 @@
 apiVersion: backstage.io/v1alpha1
 kind: API
 metadata:
-  name: locking-service
-  description: API for managing locks between resource reference and owner reference.
+  name: adguard-home
+  description: AdGuard Home is a network-wide software for blocking ads & trackers.
   tags:
-    - automation
-    - home-automation
+    - dns
+    - adblock
   links:
     - url: https://adguard.com/en/adguard-home/overview.html
       title: AdGuard Home
