@@ -1,0 +1,28 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: locking-service
+  description: API for managing locks between resource reference and owner reference.
+  tags:
+    - automation
+    - home-automation
+  links:
+    - url: https://adguard.com/en/adguard-home/overview.html
+      title: AdGuard Home
+      icon: docs
+      type: adguard-home
+    - url: https://github.com/AdguardTeam/AdGuardHome
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+    - url: https://github.com/AdguardTeam/AdGuardHome/blob/master/openapi/openapi.yaml
+      title: API Spec
+      icon: code
+spec:
+  type: openapi
+  lifecycle: production
+  owner: user:tyriis
+  definition:
+    $text: https://github.com/AdguardTeam/AdGuardHome/blob/master/openapi/openapi.yaml
