@@ -101,7 +101,7 @@ spec:
             }
 
             seal "gcpckms" {
-              disabled    = "false"
+              disabled    = "true"
               project     = "techtales"
               region      = "europe-west3"
               key_ring    = "home-infra"
