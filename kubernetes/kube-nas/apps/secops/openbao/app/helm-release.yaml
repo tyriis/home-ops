@@ -73,7 +73,7 @@ spec:
       extraEnvironmentVars:
         # VAULT_TOKEN: ${SECRET_VAULT_TOKEN}
         TZ: ${SETTING_TZ}
-        GOOGLE_APPLICATION_CREDENTIALS: /openbao/userconfig/kms-openbo-unseal/serviceaccount.json
+        GOOGLE_APPLICATION_CREDENTIALS: /openbao/userconfig/kms-openbao-unseal/serviceaccount.json
       extraVolumes:
         - type: secret
           name: kms-openbao-unseal
