@@ -34,6 +34,22 @@ Save Recovery Keys and Root token for further recovery/restore operations.
 vault status # should be recovery seal type: shamir, sealed: false
 ```
 
+## Recover vault from raft backup
+
+- download raft backup
+- copy to openbao pod
+- exec into openbao pod
+- init vault
+- export new VAULT_TOKEN to env
+- restore snapshot
+
+```shell
+kubectl cp raft.snap secops/openbao-0:/openbao
+vault operator init
+export VAULT_TOKEN="new init token"
+vault operator raft snapshot restore -force raft.snap
+```
+
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
