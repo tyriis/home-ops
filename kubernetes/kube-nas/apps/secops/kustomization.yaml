@@ -7,4 +7,3 @@ resources:
   - openbao-auth.yaml
   - ./external-secrets/flux-sync.yaml
   - ./openbao/flux-sync.yaml
-  # - ./vault/flux-sync.yaml
