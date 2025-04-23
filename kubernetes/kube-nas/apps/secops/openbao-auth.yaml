@@ -2,22 +2,24 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: vault-auth
+  name: openbao-auth
   namespace: secops
+
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: vault-auth
+  name: openbao-auth
   namespace: secops
   annotations:
-    kubernetes.io/service-account.name: vault-auth
+    kubernetes.io/service-account.name: openbao-auth
 type: kubernetes.io/service-account-token
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: vault-auth:system:auth-delegator
+  name: openbao-auth:system:auth-delegator
   namespace: secops
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -25,5 +27,5 @@ roleRef:
   name: system:auth-delegator
 subjects:
   - kind: ServiceAccount
-    name: vault-auth
+    name: openbao-auth
     namespace: secops
