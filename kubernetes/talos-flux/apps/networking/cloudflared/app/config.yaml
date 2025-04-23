@@ -11,8 +11,8 @@ ingress:
   # In other words, it will use a connectTimeout of 30 seconds.
   - hostname: grafana.techtales.io
     service: https://anubis-grafana.techtales.io
-    # originRequest:
-    #   httpHostHeader: grafana.techtales.io
+    originRequest:
+      httpHostHeader: anubis-grafana.techtales.io
   - hostname: auth.techtales.io
     service: https://auth.techtales.io
     originRequest:
@@ -37,6 +37,10 @@ ingress:
     service: https://atlantis-techtales-io-terraform-discord-webhook.techtales.io
     originRequest:
       httpHostHeader: atlantis-techtales-io-terraform-discord-webhook.techtales.io
+  - hostname: atlantis-techtales-io-terraform-github-webhook.techtales.io
+    service: https://atlantis-techtales-io-terraform-github-webhook.techtales.io
+    originRequest:
+      httpHostHeader: atlantis-techtales-io-terraform-github-webhook.techtales.io
   - hostname: arc-webhook.techtales.io
     service: https://arc-webhook.techtales.io
     originRequest:
