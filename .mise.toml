@@ -19,7 +19,7 @@ kubectl = "1.32.4"
 # https://kustomize.io/
 kustomize = "5.6.0"
 # https://nodejs.org/
-node = "22.14.0"
+node = "22.15.0"
 # https://pre-commit.com/
 pre-commit = "4.2.0"
 # https://github.com/mozilla/sops
