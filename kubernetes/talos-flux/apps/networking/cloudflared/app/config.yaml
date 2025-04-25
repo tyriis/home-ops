@@ -49,6 +49,10 @@ ingress:
     service: https://atlantis-techtales-io-terraform-minio-webhook.techtales.io
     originRequest:
       httpHostHeader: atlantis-techtales-io-terraform-minio-webhook.techtales.io
+  - hostname: atlantis-techtales-io-terraform-vault-webhook.techtales.io
+    service: https://atlantis-techtales-io-terraform-vault-webhook.techtales.io
+    originRequest:
+      httpHostHeader: atlantis-techtales-io-terraform-vault-webhook.techtales.io
   - hostname: arc-webhook.techtales.io
     service: https://arc-webhook.techtales.io
     originRequest:
