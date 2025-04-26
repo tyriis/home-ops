@@ -4,10 +4,18 @@
     "github>techtales-io/renovate-config:base.json5",
     "github>techtales-io/renovate-config:flux-infra.json5",
     "github>techtales-io/renovate-config:terraform-infra.json5",
-    "github>techtales-io/renovate-config//github-actions/silent-automerge.json5",
-    "github>techtales-io/renovate-config//mise/silent-automerge.json5",
-    "github>techtales-io/renovate-config//pre-commit/silent-automerge.json5",
-    "github>tyriis/home-ops//.renovate/default.json5",
+    "github>techtales-io/renovate-config//dependencies/cloudnative-pg.json5",
+    "github>techtales-io/renovate-config//dependencies/dragonfly.json5",
+    "github>techtales-io/renovate-config//dependencies/fluxcd.json5",
+    "github>techtales-io/renovate-config//dependencies/github-runners.json5",
+    "github>techtales-io/renovate-config//dependencies/google-cloud-sdk.json5",
+    "github>techtales-io/renovate-config//dependencies/grafana-dashboards.json5",
+    "github>techtales-io/renovate-config//dependencies/minecraft.json5",
+    "github>techtales-io/renovate-config//dependencies/minio.json5",
+    "github>techtales-io/renovate-config//dependencies/rook-ceph.json5",
+    "github>techtales-io/renovate-config//dependencies/talos.json5",
+    "github>techtales-io/renovate-config//dependencies/tektoncd.json5",
+    "github>techtales-io/renovate-config//nix/default.json5",
     "github>tyriis/renovate-config//generic-regex-manager.json5", //  TODO: reconfigure
   ],
   ignorePaths: [
@@ -15,13 +23,14 @@
     "kubernetes/talos-flux/apps/home-automation/esphome/app/config/**",
     "kubernetes/talos-flux/apps/default/homepage/app/config/**",
   ],
+  rebaseWhen: "conflicted",
+  ansible: {
+    enabled: false,
+  },
   lockFileMaintenance: {
     enabled: true,
     extends: ["schedule:weekly"],
     automerge: true,
-  },
-  nix: {
-    enabled: true,
   },
   vulnerabilityAlerts: {
     enabled: false,
