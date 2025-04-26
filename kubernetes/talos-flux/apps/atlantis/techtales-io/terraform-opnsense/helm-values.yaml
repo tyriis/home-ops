@@ -1,0 +1,42 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ${APP}
+spec:
+  interval: 15m
+  # https://bjw-s.github.io/helm-charts/docs/app-template/
+  values:
+    serviceAccount:
+      create: true
+    defaultPodOptions:
+      automountServiceAccountToken: true
+    controllers:
+      main:
+        containers:
+          app:
+            envFrom:
+              - secretRef:
+                  name: ${APP}-env
+            env:
+              ATLANTIS_REPO_ALLOWLIST: ${REPO}
+              VAULT_ADDR: https://secrets.techtales.io
+    persistence:
+      allowlist:
+        type: configMap
+        name: ${APP}-allowlist
+        advancedMounts:
+          main:
+            app:
+              - path: /etc/atlantis/allowlist.txt
+                subPath: allowlist.txt
+                readOnly: true
+      config:
+        type: configMap
+        name: ${APP}-config
+        advancedMounts:
+          main:
+            app:
+              - path: /etc/atlantis/repos.yaml
+                subPath: repos.yaml
+                readOnly: true
