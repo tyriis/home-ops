@@ -1,0 +1,12 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  description: "dependencies: google-cloud-sdk",
+  packageRules: [
+    {
+      description: "google-cloud-sdk: automerge",
+      matchDatasources: ["docker"],
+      matchDepNames: ["google/cloud-sdk"],
+      automerge: true,
+    },
+  ],
+}

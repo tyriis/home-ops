@@ -6,6 +6,7 @@
     "github>tyriis/home-ops//.renovate/dragonfly.json5",
     "github>tyriis/home-ops//.renovate/fluxcd.json5",
     "github>tyriis/home-ops//.renovate/github-runners.json5",
+    "github>tyriis/home-ops//.renovate/google-cloud-sdk.json5",
     "github>tyriis/home-ops//.renovate/grafana-dashboards.json5",
     "github>tyriis/home-ops//.renovate/minecraft.json5",
     "github>tyriis/home-ops//.renovate/minio.json5",
