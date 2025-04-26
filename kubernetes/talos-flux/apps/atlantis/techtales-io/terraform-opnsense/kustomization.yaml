@@ -6,10 +6,10 @@ resources:
   - secret.sops.yaml
   - ../../../../../base/apps/atlantis/app/helm-release.yaml
 configMapGenerator:
-  - name: ${APP}-allowlist
+  - name: atlantis-techtales-io-terraform-opnsense-allowlist
     files:
       - allowlist.txt=config/allowlist.txt
-  - name: ${APP}-config
+  - name: atlantis-techtales-io-terraform-opnsense-config
     files:
       - repos.yaml=config/repos.yaml
 generatorOptions:
