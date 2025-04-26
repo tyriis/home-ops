@@ -1,0 +1,12 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  description: "dependencies: tektoncd",
+  packageRules: [
+    {
+      description: "tektoncd: automerge",
+      matchDatasources: ["github-releases"],
+      matchDepNames: ["tektoncd/**"],
+      automerge: true,
+    },
+  ],
+}

@@ -12,5 +12,6 @@
     "github>tyriis/home-ops//.renovate/minio.json5",
     "github>tyriis/home-ops//.renovate/rook-ceph.json5",
     "github>tyriis/home-ops//.renovate/talos.json5",
+    "github>tyriis/home-ops//.renovate/tektoncd.json5",
   ],
 }
