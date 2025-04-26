@@ -1,0 +1,24 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  description: "dependencies: fluxcd",
+  packageRules: [
+    {
+      description: "group: fluxcd",
+      groupName: "fluxcd",
+      matchManagers: ["flux", "kustomize"],
+      matchDepNames: ["fluxcd/flux2", "ghcr.io/fluxcd/flux-manifests"],
+      semanticCommitScope: "{{groupName}}",
+      group: {
+        semanticCommitScope: "{{groupName}}",
+        commitMessageTopic: "group",
+      },
+      automerge: false,
+    },
+    {
+      description: "fluxcd: ignore image updates",
+      matchDatasources: ["docker"],
+      matchDepNames: ["ghcr.io/fluxcd/**"],
+      enabled: false,
+    },
+  ],
+}

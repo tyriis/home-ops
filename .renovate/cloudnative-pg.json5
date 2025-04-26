@@ -1,0 +1,11 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  description: "dependencies: cloudnative-pg",
+  packageRules: [
+    {
+      description: "cloudnative-pg: disable pinDigest",
+      matchDepNames: ["ghcr.io/cloudnative-pg/postgresql"],
+      pinDigests: false,
+    },
+  ],
+}

@@ -1,0 +1,17 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  description: "dependencies: dragonfly",
+  packageRules: [
+    {
+      description: "group: dragonfly",
+      groupName: "dragonfly",
+      matchDatasources: ["docker", "github-releases"],
+      matchPackageNames: ["/dragonfly(?:db)?.operator/"],
+      group: {
+        semanticCommitScope: "{{groupName}}",
+        commitMessageTopic: "group",
+      },
+      separateMinorPatch: true,
+    },
+  ],
+}

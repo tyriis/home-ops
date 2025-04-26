@@ -1,0 +1,31 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  description: "dependencies: github-runners",
+  packageRules: [
+    {
+      description: "group: github-runners",
+      groupName: "github-runners",
+      matchManagers: ["flux"],
+      matchDepNames: [
+        "gha-runner-scale-set",
+        "gha-runner-scale-set-controller",
+      ],
+      semanticCommitScope: "{{groupName}}",
+      group: {
+        semanticCommitScope: "{{groupName}}",
+        commitMessageTopic: "group",
+      },
+      separateMinorPatch: false,
+      automerge: false,
+    },
+    {
+      description: "github-runners: prevent pin of oci helmcharts",
+      matchDepNames: [
+        "gha-runner-scale-set",
+        "gha-runner-scale-set-controller",
+      ],
+      matchUpdateTypes: ["pin", "pinDigest"],
+      enabled: false,
+    },
+  ],
+}

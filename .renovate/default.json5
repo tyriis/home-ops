@@ -1,0 +1,15 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  description: "dependencies: home-ops",
+  extends: [
+    "github>tyriis/home-ops//.renovate/cloudnative-pg.json5",
+    "github>tyriis/home-ops//.renovate/dragonfly.json5",
+    "github>tyriis/home-ops//.renovate/fluxcd.json5",
+    "github>tyriis/home-ops//.renovate/github-runners.json5",
+    "github>tyriis/home-ops//.renovate/grafana-dashboards.json5",
+    "github>tyriis/home-ops//.renovate/minecraft.json5",
+    "github>tyriis/home-ops//.renovate/minio.json5",
+    "github>tyriis/home-ops//.renovate/rook-ceph.json5",
+    "github>tyriis/home-ops//.renovate/talos.json5",
+  ],
+}

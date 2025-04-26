@@ -1,0 +1,16 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  description: "dependencies: talos",
+  packageRules: [
+    {
+      description: "talos: disable automerge",
+      matchDepNames: [
+        "ghcr.io/siderolabs/kubelet",
+        "ghcr.io/siderolabs/installer",
+      ],
+      pinDigests: false,
+      separateMinorPatch: false,
+      automerge: false,
+    },
+  ],
+}
