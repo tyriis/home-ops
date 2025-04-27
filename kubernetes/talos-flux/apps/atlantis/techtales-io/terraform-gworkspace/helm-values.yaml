@@ -18,8 +18,6 @@ spec:
             envFrom:
               - secretRef:
                   name: ${APP}-env
-              - secretRef:
-                  name: ${APP}-github-token
             env:
               ATLANTIS_REPO_ALLOWLIST: ${REPO}
               VAULT_ADDR: https://secrets.techtales.io
