@@ -56,12 +56,18 @@
         description: Hashicorp Vault Secrets Management
         # ping: vault.techtales.io
         siteMonitor: https://vault.techtales.io
-    - Cloudflare:
-        icon: cloudflare
-        href: https://dash.cloudflare.com
-        description: Cloudflare DNS and CDN
-        # ping: cloudflare.techtales.io
-        # siteMonitor: https://dash.cloudflare.com
+    - OpenBAO:
+        icon: openbao
+        href: https://secrets.techtales.io
+        description: OpenBAO Secrest
+        # ping: openbao.techtales.io
+        siteMonitor: https://openbao.techtales.io
+    # - Cloudflare:
+    #     icon: cloudflare
+    #     href: https://dash.cloudflare.com
+    #     description: Cloudflare DNS and CDN
+    #     # ping: cloudflare.techtales.io
+    #     # siteMonitor: https://dash.cloudflare.com
     - HP LaserJet:
         icon: hp
         href: https://192.168.1.8/sws/index.html

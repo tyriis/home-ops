@@ -27,6 +27,9 @@ layout:
   Storage:
     style: columns
     # columns: 1
+  Terraform:
+    style: columns
+    # columns: 1
   Favorites:
     style: columns
     # columns: 1
