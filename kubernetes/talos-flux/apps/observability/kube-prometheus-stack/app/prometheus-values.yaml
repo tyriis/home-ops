@@ -34,33 +34,25 @@ prometheus:
         hosts:
           - *host
   prometheusSpec:
+    podMonitorSelectorNilUsesHelmValues: false
+    probeSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+    scrapeConfigSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+    scrapeInterval: 1m # Must match interval in Grafana Helm chart
+    enableAdminAPI: true
+    walCompression: true
+    enableFeatures:
+      - memory-snapshot-on-shutdown
+    retention: 14d
+    retentionSize: 8GB
     podMetadata:
       annotations:
         secret.reloader.stakater.com/reload: &secret thanos-objstore-secret
-    scrapeInterval: 1m # Must match interval in Grafana Helm chart
-    scrapeConfigSelectorNilUsesHelmValues: false
-    walCompression: true
-    enableFeatures:
-      - auto-gomemlimit
-      - memory-snapshot-on-shutdown
-      - new-service-discovery-manager
-    image:
-      registry: quay.io
-      repository: prometheus/prometheus
-      tag: v2.54.0-dedupelabels@sha256:6a6d95e3957a84e87967fe815c67f5410f7f8309567dc04a6e2a133aa2cccee2
     externalLabels:
       cluster: ${SETTING_CLUSTERNAME}
-
     replicas: 3
     replicaExternalLabelName: __replica__
-    ruleSelectorNilUsesHelmValues: false
-    serviceMonitorSelectorNilUsesHelmValues: false
-    podMonitorSelectorNilUsesHelmValues: false
-    probeSelectorNilUsesHelmValues: false
-    retentionSize: 8GB
-    retention: 14d
-    enableAdminAPI: true
-    # walCompression: true
     storageSpec:
       volumeClaimTemplate:
         spec:
@@ -69,12 +61,9 @@ prometheus:
             requests:
               storage: 10Gi
     resources:
-      # limits:
-      #   memory: 4Gi
-      #   cpu: 4000m
       requests:
         memory: 4Gi
-        cpu: 1000m
+        cpu: 100m
 
     thanos:
       image: quay.io/thanos/thanos:v0.38.0@sha256:365873d05a2f59dbaf3d40f526d3b8a2e66b9882dd6cab9396d16e8410aa46e6
