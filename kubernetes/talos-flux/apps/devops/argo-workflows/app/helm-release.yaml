@@ -42,7 +42,7 @@ spec:
       image:
         registry: quay.io
         repository: argoproj/argoexec
-        tag: v3.6.5@sha256:ef6200b5f7631248a4b4bd95a755badb25e69bc476456767fa40ce0964bf25f1
+        tag: v3.6.6@sha256:9905e3527d0938b9abc695554319e8dc38dc84f449894d9159047d8d9945d786
 
     server:
       enabled: true
