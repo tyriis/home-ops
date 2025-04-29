@@ -23,7 +23,7 @@ spec:
       image:
         registry: quay.io
         repository: argoproj/workflow-controller
-        tag: v3.6.6@sha256:4c58aaab3c6f7d8731e8f9a002434c842c377b8722fb18ae77b36eadd2915801
+        tag: v3.6.7@sha256:76e5d841ed73a8752a10b818779f7893ee540f3c1f5db7ccddb5f20e7b676347
       parallelism: 20
       resourceRateLimit:
         limit: 10
