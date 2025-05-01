@@ -32,7 +32,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: ./kubernetes/apps/system-upgrade/system-upgrade-controller/plans
+  path: ./kubernetes/talos-flux/apps/system-upgrade/system-upgrade-controller/plans
   prune: true
   sourceRef:
     kind: GitRepository
