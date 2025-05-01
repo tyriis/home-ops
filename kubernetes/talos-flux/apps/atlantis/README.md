@@ -18,7 +18,7 @@ The default atlantis helm chart is at this time a statefullset. Therefore we don
 
 ## bjw-s app-template Chart
 
-[bjw-s Helm Charts](https://bjw-s.github.io/helm-charts/docs/app-template/)
+[bjw-s Helm Charts](https://bjw-s-labs.github.io/helm-charts/docs/app-template/)
 
 @bjw-s thank you so much for your work this solves most of my problems and makes it really easy to create new HelmRelease without go templating pain ❤️. Standarized Helm made easy.
 
