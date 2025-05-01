@@ -36,7 +36,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: flux-system
+    name: home-ops
   wait: false
   interval: 30m
   retryInterval: 1m
