@@ -1,0 +1,24 @@
+---
+apiVersion: upgrade.cattle.io/v1
+kind: Plan
+metadata:
+  name: talos
+spec:
+  version: ${TALOS_VERSION}
+  concurrency: 1
+  postCompleteDelay: 2m
+  exclusive: true
+  nodeSelector:
+    matchExpressions:
+      - key: kubernetes.io/hostname
+        operator: Exists
+  secrets:
+    - name: system-upgrade
+      path: /var/run/secrets/talos.dev
+      ignoreUpdates: true
+  serviceAccountName: system-upgrade-controller
+  upgrade:
+    image: ghcr.io/jfroy/tnu:0.4.1
+    args:
+      - --node=$(SYSTEM_UPGRADE_NODE_NAME)
+      - --tag=$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
