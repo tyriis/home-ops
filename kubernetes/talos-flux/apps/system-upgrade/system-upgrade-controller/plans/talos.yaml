@@ -10,15 +10,35 @@ spec:
   exclusive: true
   nodeSelector:
     matchExpressions:
-      - key: kubernetes.io/hostname
-        operator: Exists
+      - key: feature.node.kubernetes.io/system-os_release.ID
+        operator: In
+        values: ["talos"]
+      - key: feature.node.kubernetes.io/system-os_release.VERSION_ID
+        operator: NotIn
+        values: ["${TALOS_VERSION}"]
   secrets:
     - name: system-upgrade
       path: /var/run/secrets/talos.dev
       ignoreUpdates: true
   serviceAccountName: system-upgrade-controller
+  prepare: &prepare
+    image: ghcr.io/siderolabs/talosctl:${TALOS_VERSION}
+    envs:
+      - name: NODE_IP
+        valueFrom:
+          fieldRef:
+            fieldPath: status.hostIP
+    args:
+      - --nodes=$(NODE_IP)
+      - health
+      - --server=false
   upgrade:
     image: ghcr.io/jfroy/tnu:0.4.1
+    envs:
+      - name: NODE_IP
+        valueFrom:
+          fieldRef:
+            fieldPath: status.hostIP
     args:
-      - --node=$(SYSTEM_UPGRADE_NODE_NAME)
+      - --node=$(NODE_IP)
       - --tag=$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
