@@ -29,7 +29,7 @@ spec:
     keepHistory: false
   values:
     csiDriver:
-      name: "local-hostpath.democratic-csi.${SETTING_CLUSTERNAME}.home.arpa"
+      name: local-hostpath.democratic-csi.${SETTING_CLUSTERNAME}.home.arpa
       storageCapacity: true # With storage capacity tracking, the scheduler filters out nodes which do not have enough capacity.
       fsGroupPolicy: File # fsGroupChangePolicy
 
@@ -45,7 +45,7 @@ spec:
       - name: local
         deletionPolicy: Delete
         parameters:
-          cluster: "${SETTING_CLUSTERNAME}"
+          cluster: ${SETTING_CLUSTERNAME}
 
     controller:
       enabled: true
@@ -88,8 +88,8 @@ spec:
         driver: local-hostpath
         instance_id: ${SETTING_CLUSTERNAME}-local-hostpath
         local-hostpath:
-          shareBasePath: "/var/lib/democratic-csi-local-hostpath"
-          controllerBasePath: "/var/lib/democratic-csi-local-hostpath"
+          shareBasePath: /var/lib/democratic-csi-local-hostpath
+          controllerBasePath: /var/lib/democratic-csi-local-hostpath
           dirPermissionsMode: "0770"
           dirPermissionsUser: 0
           dirPermissionsGroup: 0
