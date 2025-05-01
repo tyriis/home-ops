@@ -89,7 +89,7 @@ spec:
             - name: k8s-at-home search
               url: https://kubesearch.dev/
             - name: app-template
-              url: https://bjw-s.github.io/helm-charts/docs/
+              url: https://bjw-s-labs.github.io/helm-charts/docs/
             - name: talos
               url: https://www.talos.dev/v1.7/
         # - group: Cloud

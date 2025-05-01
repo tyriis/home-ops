@@ -5,7 +5,7 @@ metadata:
   name: ${APP}
 spec:
   interval: 15m
-  # https://bjw-s.github.io/helm-charts/docs/app-template/
+  # https://bjw-s-labs.github.io/helm-charts/docs/app-template/
   values:
     serviceAccount:
       create: true

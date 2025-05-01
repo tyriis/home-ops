@@ -26,7 +26,7 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    # https://bjw-s.github.io/helm-charts/docs/app-template/
+    # https://bjw-s-labs.github.io/helm-charts/docs/app-template/
     defaultPodOptions:
       automountServiceAccountToken: false
       securityContext:
