@@ -16,7 +16,7 @@ spec:
       - key: node-role.kubernetes.io/control-plane
         operator: Exists
   secrets:
-    - name: system-upgrade
+    - name: system-upgrade-controller
       path: /var/run/secrets/talos.dev
       ignoreUpdates: true
   serviceAccountName: system-upgrade-controller
