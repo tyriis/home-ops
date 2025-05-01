@@ -5,7 +5,7 @@
           href: https://kubesearch.dev/
     - bjw-s Helm Charts:
         - icon: si-github
-          href: https://bjw-s.github.io/helm-charts/docs/
+          href: https://bjw-s-labs.github.io/helm-charts/docs/
     - Talos:
         - icon: talos
           href: https://www.talos.dev/v1.7/
