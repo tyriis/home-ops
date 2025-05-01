@@ -8,10 +8,14 @@ spec:
   interval: 30m
   driftDetection:
     mode: enabled
-  chartRef:
-    kind: HelmChart
-    name: app-template
-    namespace: flux-system
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.3
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
   values:
     controllers:
       system-upgrade-controller:
