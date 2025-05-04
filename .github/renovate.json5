@@ -36,4 +36,11 @@
   vulnerabilityAlerts: {
     enabled: false,
   },
+  packageRules: [
+    {
+      matchPackageNames: ["quay.io/minio/minio"],
+      matchUpdateTypes: ["patch", "minor", "major"],
+      automerge: false,
+    },
+  ],
 }
