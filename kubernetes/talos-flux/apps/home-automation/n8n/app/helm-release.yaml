@@ -51,6 +51,7 @@ spec:
               N8N_HOST: &hostName n8n.techtales.io
               N8N_LOG_LEVEL: info
               N8N_LOG_OUTPUT: console
+              N8N_RUNNERS_ENABLED: "true"
 
             resources:
               requests:
