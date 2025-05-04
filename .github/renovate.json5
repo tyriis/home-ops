@@ -38,7 +38,8 @@
   },
   packageRules: [
     {
-      matchPackageNames: ["quay.io/minio/minio"],
+      description: "do not automerge minio",
+      matchDepNames: ["quay.io/minio/minio"],
       matchUpdateTypes: ["patch", "minor", "major"],
       automerge: false,
     },
