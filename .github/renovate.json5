@@ -22,6 +22,7 @@
     "archive/**",
     "kubernetes/talos-flux/apps/home-automation/esphome/app/config/**",
     "kubernetes/talos-flux/apps/default/homepage/app/config/**",
+    "kubernetes/talos-flux/apps/system-upgrade-controller/plans/**",
   ],
   rebaseWhen: "conflicted",
   ansible: {
