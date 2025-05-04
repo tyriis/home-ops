@@ -16,7 +16,7 @@ spec:
         name: bjw-s-charts
         namespace: flux-system
   dependsOn:
-    - name: apps-rook-ceph-cluster
+    - name: rook-ceph-cluster
       namespace: rook-ceph
   values:
     controllers:
