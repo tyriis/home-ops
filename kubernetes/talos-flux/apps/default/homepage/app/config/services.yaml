@@ -57,11 +57,11 @@
         # ping: vault.techtales.io
         siteMonitor: https://vault.techtales.io
     - OpenBAO:
-        icon: openbao
+        icon: https://raw.githubusercontent.com/openbao/artwork/refs/heads/main/color/openbao-vertical-text-color.svg
         href: https://secrets.techtales.io
-        description: OpenBAO Secrest
+        description: OpenBao Secrets Management
         # ping: openbao.techtales.io
-        siteMonitor: https://openbao.techtales.io
+        siteMonitor: https://secrets.techtales.io
     # - Cloudflare:
     #     icon: cloudflare
     #     href: https://dash.cloudflare.com
