@@ -177,6 +177,8 @@ controlPlane:
             bind-address: 0.0.0.0
         proxy:
           disabled: true
+        coreDNS:
+          disabled: true
 
 worker:
   schematic:
