@@ -22,7 +22,7 @@ spec:
       ignoreUpdates: true
   serviceAccountName: system-upgrade-controller
   prepare: &prepare
-    image: ghcr.io/siderolabs/talosctl@sha256:7688c8f1c0930d14fff2920b7b7078a70c7fc4cf0c3b8d358f29cfdbc2e6b1d0:${TALOS_VERSION}
+    image: ghcr.io/siderolabs/talosctl:${TALOS_VERSION}
     envs:
       - name: NODE_IP
         valueFrom:
