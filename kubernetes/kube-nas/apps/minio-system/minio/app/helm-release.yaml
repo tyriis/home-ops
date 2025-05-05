@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: quay.io/minio/minio
-              tag: RELEASE.2024-12-18T13-15-44Z@sha256:1dce27c494a16bae114774f1cec295493f3613142713130c2d22dd5696be6ad3
+              tag: RELEASE.2025-04-22T22-12-26Z@sha256:a1ea29fa28355559ef137d71fc570e508a214ec84ff8083e39bc5428980b015e
             env:
               MINIO_API_CORS_ALLOW_ORIGIN: https://minio.tyriis.dev,https://s3.tyriis.dev
               MINIO_BROWSER_REDIRECT_URL: https://minio.tyriis.dev
