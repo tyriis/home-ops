@@ -26,6 +26,8 @@ spec:
     keepHistory: false
   values:
     fullnameOverride: coredns
+    image:
+      repository: mirror.gcr.io/coredns/coredns
     replicaCount: 3
     k8sAppLabelOverride: kube-dns
     service:
@@ -75,9 +77,6 @@ spec:
       - key: CriticalAddonsOnly
         operator: Exists
       - key: node-role.kubernetes.io/control-plane
-        operator: Exists
-        effect: NoSchedule
-      - key: node-role.kubernetes.io/master
         operator: Exists
         effect: NoSchedule
     topologySpreadConstraints:
