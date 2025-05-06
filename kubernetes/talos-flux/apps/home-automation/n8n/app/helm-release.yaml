@@ -78,6 +78,7 @@ spec:
 
     ingress:
       app:
+        nameOverride: n8n
         enabled: true
         className: traefik
         annotations:
