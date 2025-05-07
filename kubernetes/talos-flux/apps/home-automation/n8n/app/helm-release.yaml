@@ -52,7 +52,7 @@ spec:
               N8N_LOG_LEVEL: info
               N8N_LOG_OUTPUT: console
               N8N_RUNNERS_ENABLED: "true"
-              WEBHOOK_URL: https://n8n.techtales.io/
+              WEBHOOK_URL: https://n8n-webhook.techtales.io/
 
             resources:
               requests:
@@ -117,6 +117,10 @@ spec:
           - host: &webhookHost n8n-webhook.techtales.io
             paths:
               - path: /webhook
+                service:
+                  identifier: app
+                  port: http
+              - path: /webhook-test
                 service:
                   identifier: app
                   port: http
