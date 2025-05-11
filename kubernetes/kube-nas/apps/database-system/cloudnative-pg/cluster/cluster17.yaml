@@ -25,8 +25,8 @@ spec:
       wal:
         compression: bzip2
         maxParallel: 8
-      destinationPath: s3://database-system-backup/
-      endpointURL: https://minio.tyriis.dev
+      destinationPath: s3://cnpg/
+      endpointURL: https://s3.nas.techtales.io
       serverName: &clustername nas-postgres17
       s3Credentials:
         accessKeyId:
