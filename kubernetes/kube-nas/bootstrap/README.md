@@ -28,8 +28,8 @@ kubectl kustomize --enable-helm kubernetes/kube-nas/bootstrap/kubelet-csr-approv
 ## OpenEBS Storage
 
 ```bash
-kubectl create namespace openebs-system
-kubectl kustomize --enable-helm kubernetes/kube-nas/bootstrap/openebs | kubectl apply -n openebs-system -f -
+kubectl create namespace democratic-csi
+kubectl kustomize --enable-helm kubernetes/kube-nas/bootstrap/democratic-csi | kubectl apply -n democratic-csi -f -
 ```
 
 ## Flux
@@ -51,5 +51,5 @@ sops --decrypt kubernetes/kube-nas/flux/config/sops-age.sops.yaml | kubectl appl
 when flux is up and running, we can apply our manifests
 
 ```bash
-kubectl apply --server-side -k kubernetes/kube-nas/flux/instance
+kubectl apply --server-side -k kubernetes/kube-nas/flux/instance -n flux-system
 ```
