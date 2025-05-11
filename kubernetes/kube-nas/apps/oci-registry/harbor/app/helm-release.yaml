@@ -79,16 +79,16 @@ spec:
           existingClaim: harbor-registry-0
         jobservice:
           jobLog:
-            storageClass: openebs-hostpath
+            storageClass: local
             size: 1Gi
         database:
-          storageClass: openebs-hostpath
+          storageClass: local
           size: 1Gi
         redis:
-          storageClass: openebs-hostpath
+          storageClass: local
           size: 1Gi
         trivy:
-          storageClass: openebs-hostpath
+          storageClass: local
           size: 5Gi
     cache:
       enabled: true
