@@ -38,22 +38,23 @@ spec:
 
   # recover from a backup
   # https://cloudnative-pg.io/documentation/current/recovery/#recovery-from-an-object-store
-  bootstrap:
-    recovery:
-      source: *clustername
-  externalClusters:
-    - name: *clustername
-      barmanObjectStore:
-        <<: *barmanObjectStore
-        serverName: *clustername
+  # bootstrap:
+  #   recovery:
+  #     source: *clustername
+  # externalClusters:
+  #   - name: *clustername
+  #     barmanObjectStore:
+  #       <<: *barmanObjectStore
+  #       serverName: *clustername
 
   # import databases to a new cluster - for major version upgrades
   # https://cloudnative-pg.io/documentation/current/database_import/#the-monolith-type
-  # bootstrap:
-  #   initdb:
-  #     secret:
-  #       name: postgres-superuser
+  bootstrap:
+    initdb:
+      secret:
+        name: postgres-superuser
   #     import:
+  #
   #       type: monolith
   #       databases:
   #         - "*"
