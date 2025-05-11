@@ -17,7 +17,7 @@ spec:
   cluster:
     type: kubernetes
   storage:
-    class: openebs-hostpath
+    class: local
     size: 10Gi
   kustomize:
     patches:
