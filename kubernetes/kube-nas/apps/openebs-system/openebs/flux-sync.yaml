@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   path: ./kubernetes/kube-nas/apps/openebs-system/openebs/app
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
