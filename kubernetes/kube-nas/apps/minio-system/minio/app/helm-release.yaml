@@ -48,7 +48,7 @@ spec:
             envFrom:
               - secretRef:
                   name: minio-env
-            args: ["server", "/data", "--console-address", ":9001"]
+            args: ["server", "/mnt/volume1/minio", "--console-address", ":9001"]
             probes:
               liveness: &probes
                 enabled: true
@@ -125,11 +125,6 @@ spec:
             secretName: "{{ .Release.Name }}-tls"
     persistence:
       data:
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 100Gi
-        storageClass: openebs-hostpath
-        advancedMounts:
-          minio:
-            app:
-              - path: /data
+        enabled: true
+        type: hostPath
+        hostPath: /mnt/volume1/minio
