@@ -105,6 +105,15 @@ spec:
               tag: 1.6.1@sha256:9614c0edd5a2f16401c449dfa98ff960a36f44259d3b81aa83ced57c3355bdaa
             env:
               KUBERNETES_MODE: "yes"
+              DNS_RESOLVER: kube-dns.kube-system.svc.cluster.local
+              USE_API: "yes"
+              API_WHITELIST_IP: "127.0.0.0/8 10.0.0.0/8"
+              BUNKERWEB_INSTANCES: ""
+              SERVER_NAME: ""
+              MULTISITE: "yes"
+              USE_UI: "yes"
+              USE_REDIS: "yes"
+              REDIS_HOST: dragonfly.database-system.svc.cluster.local
             envFrom:
               - secretRef:
                   name: bunkerweb-database

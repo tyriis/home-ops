@@ -7,3 +7,4 @@ resources:
   - bunkerweb-database-secret.sops.yaml
   - rbac.yaml
   - helm-release.yaml
+  - ingress-class.yaml
