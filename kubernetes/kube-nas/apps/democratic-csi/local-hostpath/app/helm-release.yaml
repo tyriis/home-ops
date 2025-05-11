@@ -74,13 +74,13 @@ spec:
       driver:
         extraVolumeMounts:
           - name: local-hostpath
-            mountPath: /var/lib/democratic-csi-local-hostpath
+            mountPath: /mnt/volume1/data/csi
             mountPropagation: Bidirectional
 
       extraVolumes:
         - name: local-hostpath
           hostPath:
-            path: /var/lib/democratic-csi-local-hostpath
+            path: /mnt/volume1/data/csi
             type: DirectoryOrCreate
 
     driver:
@@ -88,8 +88,8 @@ spec:
         driver: local-hostpath
         instance_id: ${SETTING_CLUSTERNAME}-local-hostpath
         local-hostpath:
-          shareBasePath: /var/lib/democratic-csi-local-hostpath
-          controllerBasePath: /var/lib/democratic-csi-local-hostpath
+          shareBasePath: /mnt/volume1/data/csi
+          controllerBasePath: /mnt/volume1/data/csi
           dirPermissionsMode: "0770"
           dirPermissionsUser: 0
           dirPermissionsGroup: 0
