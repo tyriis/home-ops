@@ -145,9 +145,18 @@ spec:
     service:
       app:
         controller: bunkerweb-ui
+        nameOverride: bunkerweb-ui
         ports:
           http:
             port: 7000
+      proxy:
+        controller: bunkerweb
+        nameOverride: bunkerweb-external
+        ports:
+          http:
+            port: 8080
+          https:
+            port: 8443
 
     # serviceMonitor:
     #   app:
