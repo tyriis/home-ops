@@ -40,6 +40,7 @@ spec:
               tag: 1.6.1@sha256:050385fdc9bc24d5b4e0581d12d0c5c5feed42aa07c5a758d734bcd26eb7a2f8
             env:
               KUBERNETES_MODE: "yes"
+              NAMESPACES: ""
             envFrom:
               - secretRef:
                   name: bunkerweb-database
@@ -114,6 +115,7 @@ spec:
               USE_UI: "yes"
               USE_REDIS: "yes"
               REDIS_HOST: dragonfly.database-system.svc.cluster.local
+              USE_REAL_IP: "yes"
             envFrom:
               - secretRef:
                   name: bunkerweb-database
@@ -143,9 +145,6 @@ spec:
     service:
       app:
         controller: bunkerweb-ui
-        type: LoadBalancer
-        annotations:
-          io.cilium/lb-ipam-ips: 192.168.1.91
         ports:
           http:
             port: 7000
@@ -166,7 +165,7 @@ spec:
           kubernetes.io/tls-acme: "true"
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
           nginx.ingress.kubernetes.io/ssl-redirect: "true"
-        className: bunkerweb
+        className: nginx
         hosts:
           - host: &host "{{ .Release.Name }}.tyriis.dev"
             paths:
