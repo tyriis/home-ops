@@ -8,3 +8,4 @@ resources:
   - rbac.yaml
   - helm-release.yaml
   - ingress-class.yaml
+  - ingress.yaml
