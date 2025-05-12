@@ -115,6 +115,7 @@ spec:
               USE_UI: "yes"
               USE_REDIS: "yes"
               REDIS_HOST: dragonfly.database-system.svc.cluster.local
+              USE_REAL_IP: "yes"
             envFrom:
               - secretRef:
                   name: bunkerweb-database
@@ -167,9 +168,7 @@ spec:
           kubernetes.io/tls-acme: "true"
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
           nginx.ingress.kubernetes.io/ssl-redirect: "true"
-          bunkerweb.io/AUTOCONF: "yes"
-          bunkerweb.io/USE_REDIS: "yes"
-        className: bunkerweb
+        className: nginx
         hosts:
           - host: &host "{{ .Release.Name }}.tyriis.dev"
             paths:
