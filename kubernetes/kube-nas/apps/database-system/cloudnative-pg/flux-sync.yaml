@@ -45,4 +45,3 @@ spec:
     - name: cloudnative-pg
     - name: dbman
     - name: minio
-    - name: openebs
