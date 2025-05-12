@@ -6,6 +6,8 @@ metadata:
   name: &app bunkerweb
 spec:
   interval: 30m
+  driftDetection:
+    mode: enabled
   timeout: 5m
   chart:
     spec:

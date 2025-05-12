@@ -11,7 +11,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: echo-server.bunker.tyriis.dev
+    - host: &host echo-server.bunker.tyriis.dev
       http:
         paths:
           - path: /
@@ -21,3 +21,7 @@ spec:
                 name: bunkerweb-external
                 port:
                   number: 8080
+  tls:
+    - hosts:
+        - *host
+      secretName: echo-server-tls
