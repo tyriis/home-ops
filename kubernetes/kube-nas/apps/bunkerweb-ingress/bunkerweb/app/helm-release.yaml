@@ -40,6 +40,7 @@ spec:
               tag: 1.6.1@sha256:050385fdc9bc24d5b4e0581d12d0c5c5feed42aa07c5a758d734bcd26eb7a2f8
             env:
               KUBERNETES_MODE: "yes"
+              NAMESPACES: ""
             envFrom:
               - secretRef:
                   name: bunkerweb-database
@@ -166,6 +167,8 @@ spec:
           kubernetes.io/tls-acme: "true"
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
           nginx.ingress.kubernetes.io/ssl-redirect: "true"
+          bunkerweb.io/AUTOCONF: "yes"
+          bunkerweb.io/USE_REDIS: "yes"
         className: bunkerweb
         hosts:
           - host: &host "{{ .Release.Name }}.tyriis.dev"
