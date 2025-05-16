@@ -52,6 +52,8 @@ spec:
           kubernetes.io/tls-acme: "true"
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
           nginx.ingress.kubernetes.io/ssl-redirect: "true"
+          external-dns.alpha.kubernetes.io/target: "${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"
+          external-dns/cloudflare: "true"
         hosts:
           - host: &host flux-webhook.kube-nas.techtales.io
             paths:
