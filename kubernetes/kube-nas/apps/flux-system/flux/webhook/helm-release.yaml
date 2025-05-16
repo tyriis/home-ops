@@ -28,6 +28,21 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    rawResources:
+      home-ops:
+        apiVersion: notification.toolkit.fluxcd.io/v1
+        kind: Receiver
+        spec:
+          spec:
+            type: github
+            events:
+              - ping
+              - push
+            secretRef:
+              name: webhook-token
+            resources:
+              - kind: GitRepository
+                name: home-ops
     ingress:
       app:
         className: nginx
