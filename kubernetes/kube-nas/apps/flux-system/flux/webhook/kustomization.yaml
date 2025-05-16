@@ -5,11 +5,3 @@ kind: Kustomization
 resources:
   - secrets.sops.yaml
   - helm-release.yaml
-configMapGenerator:
-  - name: home-ops-receiver
-    files:
-      - receiver.yaml=./receiver.yaml
-generatorOptions:
-  disableNameSuffixHash: true
-configurations:
-  - kustomize-config.yaml
