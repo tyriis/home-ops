@@ -5,3 +5,5 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./minecraft-java/flux-sync.yaml
+components:
+  - ../../../components/flux/alerts
