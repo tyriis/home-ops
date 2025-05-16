@@ -22,8 +22,7 @@ spec:
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: csi-driver-nfs
-    - name: volsync
+    - name: local-hostpath
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
