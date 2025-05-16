@@ -28,12 +28,10 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    rawRessources:
-      receiver:
+    rawResources:
+      home-ops:
         apiVersion: notification.toolkit.fluxcd.io/v1
         kind: Receiver
-        metadata:
-          name: home-ops
         spec:
           type: github
           events:
