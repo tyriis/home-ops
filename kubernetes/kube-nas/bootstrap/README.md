@@ -25,7 +25,7 @@ kubectl kustomize --enable-helm kubernetes/kube-nas/bootstrap/metrics-server | k
 kubectl kustomize --enable-helm kubernetes/kube-nas/bootstrap/kubelet-csr-approver | kubectl apply -n kube-system -f -
 ```
 
-## OpenEBS Storage
+## Local Storage
 
 ```bash
 kubectl create namespace democratic-csi
