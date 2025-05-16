@@ -45,9 +45,8 @@ vault status # should be recovery seal type: shamir, sealed: false
 
 ```shell
 kubectl cp raft.snap secops/openbao-0:/openbao
-vault operator init
-export VAULT_TOKEN="new init token"
-vault operator raft snapshot restore -force raft.snap
+export VAULT_TOKEN=$(vault operator init | grep "Initial Root Token" | awk '{print $NF}')
+vault operator raft snapshot restore -force openbao/raft.snap
 ```
 
 <!-- MARKDOWN LINKS & IMAGES -->
