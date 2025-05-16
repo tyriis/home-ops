@@ -28,7 +28,7 @@ spec:
   valuesFrom:
     - kind: ConfigMap
       name: home-ops-receiver
-      valuesKey: values.yaml
+      valuesKey: receiver.yaml
       targetPath: rawResources.receiver
   values:
     ingress:
