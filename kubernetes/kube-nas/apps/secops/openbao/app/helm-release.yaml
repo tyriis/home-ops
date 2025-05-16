@@ -64,12 +64,12 @@ spec:
         enabled: true
         size: 2Gi
         mountPath: /openbao/data
-        storageClass: nfs-local
+        storageClass: local
       auditStorage:
         enabled: true
         size: 2Gi
         mountPath: /openbao/audit
-        storageClass: nfs-local
+        storageClass: local
       extraEnvironmentVars:
         # VAULT_TOKEN: ${SECRET_VAULT_TOKEN}
         TZ: ${SETTING_TZ}
