@@ -11,7 +11,7 @@ spec:
   dependsOn:
     - name: snapshot-controller
     - name: apps-rook-ceph-cluster
-    - name: apps-kube-prometheus-stack
+    - name: kube-prometheus-stack
   interval: 10m
   path: ./kubernetes/talos-flux/apps/volsync/volsync/app
   prune: true

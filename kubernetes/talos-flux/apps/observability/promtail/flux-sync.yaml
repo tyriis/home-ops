@@ -16,5 +16,5 @@ spec:
     name: home-ops
   wait: true
   dependsOn:
-    - name: apps-kube-prometheus-stack
+    - name: kube-prometheus-stack
     - name: apps-loki
