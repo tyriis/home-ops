@@ -6,6 +6,3 @@ namespace: networking
 resources:
   - external-secret.yaml
   - helm-release.yaml
-commonLabels:
-  app.kubernetes.io/name: external-dns-cloudflare
-  app.kubernetes.io/instance: external-dns-cloudflare
