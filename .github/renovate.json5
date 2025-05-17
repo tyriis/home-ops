@@ -52,8 +52,8 @@
         "/^kubernetes/talos-flux/apps/gaming/minecraft-java/.*/config/plugins\\.txt$/",
       ],
       matchStrings: [
-        // "https://download\\.luckperms\\.net/\\d+/bukkit/loader/LuckPerms-Bukkit-(?<currentValue>[\\d.]+)\\.jar",
-        "(?<currentValue>https://download\\.luckperms\\.net/\\d+/bukkit/loader/LuckPerms-Bukkit-[\\d.]+\\.jar)",
+        "https://download\\.luckperms\\.net/\\d+/bukkit/loader/LuckPerms-Bukkit-(?<currentValue>[\\d.]+)\\.jar",
+        // "(?<currentValue>https://download\\.luckperms\\.net/\\d+/bukkit/loader/LuckPerms-Bukkit-[\\d.]+\\.jar)",
       ],
       datasourceTemplate: "custom.luckperms",
       depNameTemplate: "luckperms-bukkit",
