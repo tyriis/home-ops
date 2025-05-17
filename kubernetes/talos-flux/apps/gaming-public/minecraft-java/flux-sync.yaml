@@ -72,7 +72,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: minecraft-public-global-secrets
-    - name: apps-volsync
+    - name: volsync
     - name: rook-ceph-cluster
     - name: kube-prometheus-stack
 
@@ -99,7 +99,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: minecraft-public-global-secrets
-    - name: apps-volsync
+    - name: volsync
     - name: rook-ceph-cluster
     - name: kube-prometheus-stack
 
@@ -126,7 +126,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: minecraft-public-global-secrets
-    - name: apps-volsync
+    - name: volsync
     - name: rook-ceph-cluster
     - name: kube-prometheus-stack
 
@@ -153,6 +153,6 @@ spec:
   timeout: 5m
   dependsOn:
     - name: minecraft-public-global-secrets
-    - name: apps-volsync
+    - name: volsync
     - name: rook-ceph-cluster
     - name: kube-prometheus-stack
