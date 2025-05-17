@@ -3,37 +3,46 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-kube-prometheus-stack
+  name: kube-prometheus-stack
   namespace: flux-system
   annotations:
     backstage.io/discovery: enabled
     backstage.io/name: kube-prometheus-stack
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
-  interval: 10m
+  targetNamespace: observability
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: kube-prometheus-stack
   path: ./kubernetes/talos-flux/apps/observability/kube-prometheus-stack/app
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops
   wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-kube-prometheus-stack-rules
+  name: &appname kube-prometheus-stack-rules
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
-  interval: 10m
+  targetNamespace: observability
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   path: ./kubernetes/talos-flux/apps/observability/kube-prometheus-stack/rules
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
   wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
   dependsOn:
-    - name: apps-kube-prometheus-stack
+    - name: kube-prometheus-stack

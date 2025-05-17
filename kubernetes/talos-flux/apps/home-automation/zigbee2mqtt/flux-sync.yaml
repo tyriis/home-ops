@@ -25,5 +25,5 @@ spec:
   dependsOn:
     - name: apps-rook-ceph-cluster
     - name: apps-volsync
-    - name: apps-kube-prometheus-stack
+    - name: kube-prometheus-stack
     - name: apps-external-secrets-stores

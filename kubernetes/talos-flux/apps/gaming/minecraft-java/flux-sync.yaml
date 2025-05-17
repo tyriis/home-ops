@@ -98,7 +98,7 @@ spec:
     - name: minecraft-global-secrets
     - name: apps-volsync
     - name: apps-rook-ceph-cluster
-    - name: apps-kube-prometheus-stack
+    - name: kube-prometheus-stack
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -125,7 +125,7 @@ spec:
     - name: minecraft-global-secrets
     - name: apps-volsync
     - name: apps-rook-ceph-cluster
-    - name: apps-kube-prometheus-stack
+    - name: kube-prometheus-stack
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -152,7 +152,7 @@ spec:
     - name: minecraft-global-secrets
     - name: apps-volsync
     - name: apps-rook-ceph-cluster
-    - name: apps-kube-prometheus-stack
+    - name: kube-prometheus-stack
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -179,4 +179,4 @@ spec:
     - name: minecraft-global-secrets
     - name: apps-volsync
     - name: apps-rook-ceph-cluster
-    - name: apps-kube-prometheus-stack
+    - name: kube-prometheus-stack
