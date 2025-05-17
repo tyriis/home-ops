@@ -30,7 +30,7 @@ spec:
 
   values:
     controllers:
-      unifi:
+      unifi-controller:
         strategy: Recreate
         annotations:
           reloader.stakater.com/auto: "true"
@@ -185,6 +185,6 @@ spec:
       data:
         existingClaim: unifi-data
         advancedMounts:
-          unifi:
+          unifi-controller:
             app:
               - path: /unifi
