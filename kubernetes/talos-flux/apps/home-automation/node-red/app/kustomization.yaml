@@ -9,12 +9,9 @@ resources:
   - persistent-volume-claim.yaml
   - helm-release.yaml
   - service-monitor.yaml
-commonLabels:
-  app.kubernetes.io/name: node-red
-  app.kubernetes.io/instance: node-red
 configMapGenerator:
   - name: node-red-gitconfig
     files:
-      - .gitconfig=.gitconfig
+      - .gitconfig=./config/.gitconfig
 generatorOptions:
   disableNameSuffixHash: true
