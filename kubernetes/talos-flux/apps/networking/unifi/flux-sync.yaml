@@ -8,16 +8,21 @@ metadata:
   annotations:
     backstage.io/discovery: enabled
     backstage.io/name: unifi-controller
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
-  interval: 10m
+  targetNamespace: networking
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: unifi-controller
   path: ./kubernetes/talos-flux/apps/networking/unifi/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
   wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
   dependsOn:
     - name: apps-rook-ceph-cluster
-    - name: apps-traefik
+    - name: apps-volsync
+    - name: apps-cilium
