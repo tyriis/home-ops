@@ -3,11 +3,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname apps-backstage
+  name: &appname backstage
   namespace: flux-system
   annotations:
     backstage.io/discovery: enabled
-    backstage.io/name: backstage
+    backstage.io/name: *appname
 spec:
   targetNamespace: backstage
   commonMetadata:
@@ -19,6 +19,6 @@ spec:
     kind: GitRepository
     name: home-ops
   wait: true
-  interval: 15m
+  interval: 30m
   retryInterval: 1m
   timeout: 5m

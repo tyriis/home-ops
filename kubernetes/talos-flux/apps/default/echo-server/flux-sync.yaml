@@ -3,11 +3,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname apps-echo-server
+  name: &appname echo-server
   namespace: flux-system
   annotations:
     backstage.io/discovery: enabled
-    backstage.io/name: echo-server
+    backstage.io/name: *appname
 spec:
   targetNamespace: default
   commonMetadata:
@@ -19,6 +19,6 @@ spec:
     kind: GitRepository
     name: home-ops
   wait: true
-  interval: 15m
+  interval: 30m
   retryInterval: 1m
   timeout: 5m
