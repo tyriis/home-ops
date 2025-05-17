@@ -3,18 +3,22 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-backstage
+  name: &appname apps-backstage
   namespace: flux-system
   annotations:
     backstage.io/discovery: enabled
     backstage.io/name: backstage
 spec:
-  interval: 10m
+  targetNamespace: backstage
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   path: ./kubernetes/talos-flux/apps/backstage/backstage/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
   wait: true
-  dependsOn:
-    - name: apps-cert-manager
+  interval: 15m
+  retryInterval: 1m
+  timeout: 5m
