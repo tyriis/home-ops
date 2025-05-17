@@ -22,4 +22,4 @@ spec:
   dependsOn:
     - name: external-secrets-stores
     - name: rook-ceph-cluster
-    - name: apps-volsync
+    - name: volsync

@@ -24,5 +24,5 @@ spec:
   timeout: 5m
   dependsOn:
     - name: rook-ceph-cluster
-    - name: apps-volsync
+    - name: volsync
     - name: cilium

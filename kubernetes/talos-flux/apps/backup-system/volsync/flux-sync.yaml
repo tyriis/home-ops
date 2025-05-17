@@ -3,27 +3,21 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname zigbee2mqtt
+  name: &appname volsync
   namespace: flux-system
-  annotations:
-    backstage.io/discovery: enabled
-    backstage.io/name: *appname
 spec:
-  targetNamespace: home-automation
+  targetNamespace: backup-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: ./kubernetes/talos-flux/apps/home-automation/zigbee2mqtt/app
+  path: ./kubernetes/talos-flux/apps/backup-system/volsync/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
-  wait: false
+  wait: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: rook-ceph-cluster
-    - name: volsync
-    - name: kube-prometheus-stack
-    - name: external-secrets-stores
+    - name: snapshot-controller
