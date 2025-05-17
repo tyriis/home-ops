@@ -9,6 +9,10 @@ metadata:
     backstage.io/discovery: enabled
     backstage.io/name: dbman
 spec:
+  targetNamespace: database
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: dbman
   path: ./kubernetes/talos-flux/apps/database/dbman/operator
   prune: true
   sourceRef:
