@@ -5,20 +5,19 @@ kind: Kustomization
 metadata:
   name: &appname playit
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   targetNamespace: networking
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 30m
   path: ./kubernetes/talos-flux/apps/networking/playit/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
   wait: true
+  interval: 30m
+  retryInterval: 1m
   timeout: 5m
   dependsOn:
     - name: apps-external-secrets-stores
