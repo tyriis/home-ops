@@ -30,6 +30,7 @@ spec:
   values:
     rawResources:
       home-ops:
+        forceRename: home-ops
         apiVersion: notification.toolkit.fluxcd.io/v1
         kind: Receiver
         spec:
@@ -54,7 +55,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: "${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"
           external-dns/cloudflare: "true"
         hosts:
-          - host: &host flux-webhook.kube-nas.techtales.io
+          - host: &host flux-webhook-kube-nas.techtales.io
             paths:
               - path: /
                 service:
