@@ -23,7 +23,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: apps-cert-manager
-    - name: apps-rook-ceph-cluster
+    - name: rook-ceph-cluster
     - name: apps-traefik-forward-auth
   postBuild:
     substitute:

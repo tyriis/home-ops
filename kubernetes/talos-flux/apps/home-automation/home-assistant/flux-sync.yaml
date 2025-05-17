@@ -26,4 +26,4 @@ spec:
     # - name: apps-external-secrets-stores
     - name: apps-cloudnative-pg-cluster
     - name: apps-volsync
-    - name: apps-rook-ceph-cluster
+    - name: rook-ceph-cluster
