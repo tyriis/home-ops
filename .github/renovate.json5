@@ -50,6 +50,7 @@
       customType: "regex",
       managerFilePatterns: [
         "/^kubernetes/talos-flux/apps/gaming/minecraft-java/.*/config/plugins\\.txt$/",
+        "^kubernetes/talos-flux/apps/gaming/minecraft-java/.*/config/plugins\\.txt$",
       ],
       matchStrings: [
         "https://download\\.luckperms\\.net/\\d+/bukkit/loader/LuckPerms-Bukkit-(?<currentValue>[\\d.]+)\\.jar",
