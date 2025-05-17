@@ -5,8 +5,6 @@ kind: Kustomization
 metadata:
   name: apps-cilium
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   targetNamespace: kube-system
   commonMetadata:
@@ -27,15 +25,13 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cilium-config
+  name: &appname cilium-config
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   targetNamespace: kube-system
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
+      app.kubernetes.io/name: *appname
   path: ./kubernetes/talos-flux/apps/kube-system/cilium/config
   prune: false # do not remove our network stack by accident!
   sourceRef:
