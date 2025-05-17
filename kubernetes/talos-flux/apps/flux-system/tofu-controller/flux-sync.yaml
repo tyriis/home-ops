@@ -3,15 +3,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app tofu-controller
+  name: &appname tofu-controller
   namespace: flux-system
 spec:
   targetNamespace: flux-system
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
-  dependsOn:
-    - name: apps-external-secrets-stores
+      app.kubernetes.io/name: *appname
   path: ./kubernetes/talos-flux/apps/flux-system/tofu-controller/app
   prune: true
   sourceRef:
@@ -21,20 +19,20 @@ spec:
   interval: 15m
   retryInterval: 1m
   timeout: 5m
+  dependsOn:
+    - name: apps-external-secrets-stores
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app tofu-controller-terraform
+  name: &appname tofu-controller-terraform
   namespace: flux-system
 spec:
   targetNamespace: flux-system
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
-  dependsOn:
-    - name: tofu-controller
+      app.kubernetes.io/name: *appname
   path: ./kubernetes/talos-flux/apps/flux-system/tofu-controller/terraform
   prune: true
   sourceRef:
@@ -44,3 +42,5 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  dependsOn:
+    - name: tofu-controller

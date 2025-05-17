@@ -1,10 +1,10 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
+# https://fluxcd.io/flux/guides/webhook-receivers/
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: flux-system
 resources:
-  - ./pod-monitor.yaml
-  - ./prometheus-rule.yaml
-commonLabels:
-  app.kubernetes.io/part-of: flux
+  - secret.sops.yaml
+  - receiver.yaml
+  - ingress.yaml

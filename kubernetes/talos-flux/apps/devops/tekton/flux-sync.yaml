@@ -9,7 +9,7 @@ metadata:
     backstage.io/discovery: enabled
     backstage.io/name: *appname
 spec:
-  targetNamespace: devops
+  # targetNamespace: devops
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
