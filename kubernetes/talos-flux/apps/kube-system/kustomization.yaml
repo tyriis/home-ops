@@ -9,4 +9,3 @@ resources:
   - ./kubelet-csr-approver/flux-sync.yaml
   - ./csi-driver-nfs/flux-sync.yaml
   - ./metrics-server/flux-sync.yaml
-  - ./snapshot-controller/flux-sync.yaml
