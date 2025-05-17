@@ -5,23 +5,21 @@ kind: Kustomization
 metadata:
   name: &appname ring-mqtt
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   targetNamespace: home-automation
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 10m
   path: ./kubernetes/talos-flux/apps/home-automation/ring-mqtt/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
   wait: false
+  interval: 30m
+  retryInterval: 1m
   timeout: 5m
-  # dependsOn:
-  #   - name: apps-rook-ceph-cluster
-  #   - name: apps-volsync
-  #   - name: apps-kube-prometheus-stack
-  #   - name: apps-external-secrets-stores
+  dependsOn:
+    - name: apps-external-secrets-stores
+    - name: apps-rook-ceph-cluster
+    - name: apps-volsync

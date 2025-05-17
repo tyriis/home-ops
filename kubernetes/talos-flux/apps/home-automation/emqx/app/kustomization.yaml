@@ -2,11 +2,9 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: home-automation
 resources:
-  - ./helm-release.yaml
-  - ./secrets.sops.yaml
-  - ./replication-sources.yaml
-commonLabels:
-  app.kubernetes.io/name: emqx
-  app.kubernetes.io/instance: emqx
+  - secrets.sops.yaml
+  - replication-destination.yaml
+  - persistent-volume-claim.yaml
+  - helm-release.yaml
+  - replication-sources.yaml

@@ -2,7 +2,6 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: home-automation
 resources:
   - persistent-volume-claim.yaml
   - secrets.sops.yaml
@@ -24,8 +23,3 @@ generatorOptions:
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
   disableNameSuffixHash: true
-labels:
-  - includeSelectors: true
-    pairs:
-      app.kubernetes.io/instance: esphome
-      app.kubernetes.io/name: esphome
