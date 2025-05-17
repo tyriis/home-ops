@@ -10,7 +10,7 @@ metadata:
 spec:
   dependsOn:
     - name: snapshot-controller
-    - name: apps-rook-ceph-cluster
+    - name: rook-ceph-cluster
     - name: kube-prometheus-stack
   interval: 10m
   path: ./kubernetes/talos-flux/apps/volsync/volsync/app

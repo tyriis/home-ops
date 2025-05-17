@@ -97,7 +97,7 @@ spec:
   dependsOn:
     - name: minecraft-global-secrets
     - name: apps-volsync
-    - name: apps-rook-ceph-cluster
+    - name: rook-ceph-cluster
     - name: kube-prometheus-stack
 
 ---
@@ -124,7 +124,7 @@ spec:
   dependsOn:
     - name: minecraft-global-secrets
     - name: apps-volsync
-    - name: apps-rook-ceph-cluster
+    - name: rook-ceph-cluster
     - name: kube-prometheus-stack
 
 ---
@@ -151,7 +151,7 @@ spec:
   dependsOn:
     - name: minecraft-global-secrets
     - name: apps-volsync
-    - name: apps-rook-ceph-cluster
+    - name: rook-ceph-cluster
     - name: kube-prometheus-stack
 
 ---
@@ -178,5 +178,5 @@ spec:
   dependsOn:
     - name: minecraft-global-secrets
     - name: apps-volsync
-    - name: apps-rook-ceph-cluster
+    - name: rook-ceph-cluster
     - name: kube-prometheus-stack

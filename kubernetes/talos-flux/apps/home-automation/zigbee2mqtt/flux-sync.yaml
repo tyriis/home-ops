@@ -23,7 +23,7 @@ spec:
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: apps-rook-ceph-cluster
+    - name: rook-ceph-cluster
     - name: apps-volsync
     - name: kube-prometheus-stack
     - name: apps-external-secrets-stores
