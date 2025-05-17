@@ -3,17 +3,17 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-unifi
+  name: &appname unifi-controller
   namespace: flux-system
   annotations:
     backstage.io/discovery: enabled
-    backstage.io/name: unifi-controller
+    backstage.io/name: *appname
 spec:
   targetNamespace: networking
   commonMetadata:
     labels:
-      app.kubernetes.io/name: unifi-controller
-  path: ./kubernetes/talos-flux/apps/networking/unifi/app
+      app.kubernetes.io/name: *appname
+  path: ./kubernetes/talos-flux/apps/networking/unifi-controller/app
   prune: true
   sourceRef:
     kind: GitRepository
