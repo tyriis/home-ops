@@ -48,8 +48,8 @@
   customManagers: [
     {
       customType: "regex",
-      fileMatch: [
-        "^kubernetes/talos-flux/apps/gaming/minecraft-java/.*/config/plugins\\.txt$",
+      managerFilePatterns: [
+        "/^kubernetes/talos-flux/apps/gaming/minecraft-java/.*/config/plugins\\.txt$/",
       ],
       matchStrings: [
         "https://download\\.luckperms\\.net/\\d+/bukkit/loader/LuckPerms-Bukkit-(?<currentValue>[\\d.]+)\\.jar",
@@ -63,7 +63,7 @@
       defaultRegistryUrlTemplate: "https://metadata.luckperms.net/data/all",
       format: "json",
       transformTemplates: [
-        '{ "releases": [ { "version": "{{.version}}", "downloadUrl": "{{.downloads.bukkit}}" } ] }',
+        '{ "releases": [ { "version": version, "downloadUrl": downloads.bukkit } ] }',
       ],
     },
   },
