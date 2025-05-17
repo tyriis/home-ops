@@ -24,4 +24,4 @@ spec:
   dependsOn:
     - name: apps-external-secrets-stores
     - name: apps-cloudnative-pg-cluster
-    - name: apps-dbman
+    - name: dbman
