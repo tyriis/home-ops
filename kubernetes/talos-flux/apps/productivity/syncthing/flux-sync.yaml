@@ -3,17 +3,19 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-syncthing
+  name: &appname syncthing
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
-  interval: 30m
-  retryInterval: 15s
-  timeout: 3m
+  targetNamespace: productivity
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   path: ./kubernetes/talos-flux/apps/productivity/syncthing/app
   prune: true
-  wait: true
   sourceRef:
     kind: GitRepository
     name: home-ops
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
