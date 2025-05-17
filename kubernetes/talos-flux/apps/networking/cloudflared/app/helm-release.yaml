@@ -64,7 +64,6 @@ spec:
     service:
       app:
         controller: cloudflared
-        nameOverride: metrics
         ports:
           http:
             port: 9090

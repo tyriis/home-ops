@@ -11,7 +11,22 @@ resources:
   - volsync-secrets.sops.yaml
   # - volsync-replication-destination.yaml
   # - volsync-replication-source.yaml
-commonLabels:
-  app.kubernetes.io/name: esphome
-  app.kubernetes.io/instance: esphome
-  app.kubernetes.io/managed-by: fluxcd.io
+configMapGenerator:
+  - files:
+      - light-stairs.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/light-stairs.yaml
+      - sensor-bathroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/sensor-bathroom.yaml
+      - sensor-heating.yaml=./config/sensor-heating.yaml
+      - switch-alexroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-alexroom.yaml
+      - switch-basement.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-basement.yaml
+      - switch-domiroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-domiroom.yaml
+      - switch-livingroom.yaml=https://raw.githubusercontent.com/tyriis/esphome-config/main/switch-livingroom.yaml
+    name: esphome-config
+generatorOptions:
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+  disableNameSuffixHash: true
+labels:
+  - includeSelectors: true
+    pairs:
+      app.kubernetes.io/instance: esphome
+      app.kubernetes.io/name: esphome
