@@ -3,22 +3,24 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-kromgo
+  name: &appname kromgo
   namespace: flux-system
   annotations:
     backstage.io/discovery: enabled
-    backstage.io/name: kromgo
+    backstage.io/name: *appname
 spec:
-  interval: 10m
+  targetNamespace: observability
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   path: ./kubernetes/talos-flux/apps/observability/kromgo/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
-  targetNamespace: observability
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: kromgo
   wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
   dependsOn:
     - name: apps-kube-prometheus-stack
