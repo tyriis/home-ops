@@ -3,22 +3,26 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app adguard-home
+  name: &appname adguard-home
   namespace: flux-system
   annotations:
     backstage.io/discovery: enabled
-    backstage.io/name: *app
+    backstage.io/name: *appname
   labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
-  interval: 10m
   targetNamespace: networking
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   path: ./kubernetes/talos-flux/apps/networking/adguard-home/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
   wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
   dependsOn:
     - name: apps-traefik
     - name: apps-cilium
