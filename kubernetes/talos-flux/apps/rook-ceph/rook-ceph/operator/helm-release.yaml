@@ -25,7 +25,7 @@ spec:
       retries: 3
   dependsOn:
     - name: snapshot-controller
-      namespace: kube-system
+      namespace: backup-system
   values:
     csi:
       cephFSKernelMountOptions: ms_mode=prefer-crc

@@ -26,7 +26,7 @@ spec:
     - name: rook-ceph-operator
       namespace: rook-ceph
     - name: snapshot-controller
-      namespace: kube-system
+      namespace: backup-system
   values:
     # https://artifacthub.io/packages/helm/rook/rook-ceph-cluster?modal=values
     monitoring:
