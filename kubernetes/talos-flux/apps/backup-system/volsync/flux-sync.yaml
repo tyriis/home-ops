@@ -12,7 +12,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: ./kubernetes/kube-nas/apps/backup-system/volsync/app
+  path: ./kubernetes/talos-flux/apps/backup-system/volsync/app
   prune: true
   sourceRef:
     kind: GitRepository
