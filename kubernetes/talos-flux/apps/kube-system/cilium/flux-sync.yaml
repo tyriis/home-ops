@@ -21,6 +21,7 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -35,8 +36,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: apps-cilium
   path: ./kubernetes/talos-flux/apps/kube-system/cilium/config
   prune: false # do not remove our network stack by accident!
   sourceRef:
@@ -46,3 +45,5 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  dependsOn:
+    - name: apps-cilium
