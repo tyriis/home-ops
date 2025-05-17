@@ -57,7 +57,7 @@
       ],
       datasourceTemplate: "custom.luckperms",
       depNameTemplate: "luckperms-bukkit",
-      replaceStringTemplate: "{{{newValue.downloadUrl}}}",
+      autoReplaceStringTemplate: "{{{newValue.downloadUrl}}}",
     },
   ],
   customDatasources: {
