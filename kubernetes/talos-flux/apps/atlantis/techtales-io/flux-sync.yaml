@@ -23,7 +23,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: apps-cert-manager
-    - name: apps-traefik-forward-auth
+    - name: traefik-forward-auth
   postBuild:
     substitute:
       APP: *appname
@@ -54,7 +54,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: apps-cert-manager
-    - name: apps-traefik-forward-auth
+    - name: traefik-forward-auth
   postBuild:
     substitute:
       APP: *appname
@@ -85,7 +85,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: apps-cert-manager
-    - name: apps-traefik-forward-auth
+    - name: traefik-forward-auth
   postBuild:
     substitute:
       APP: *appname
@@ -116,7 +116,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: apps-cert-manager
-    - name: apps-traefik-forward-auth
+    - name: traefik-forward-auth
   postBuild:
     substitute:
       APP: *appname
@@ -147,7 +147,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: apps-cert-manager
-    - name: apps-traefik-forward-auth
+    - name: traefik-forward-auth
   postBuild:
     substitute:
       APP: *appname
@@ -178,7 +178,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: apps-cert-manager
-    - name: apps-traefik-forward-auth
+    - name: traefik-forward-auth
   postBuild:
     substitute:
       APP: *appname
@@ -209,7 +209,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: apps-cert-manager
-    - name: apps-traefik-forward-auth
+    - name: traefik-forward-auth
   postBuild:
     substitute:
       APP: *appname
