@@ -5,8 +5,6 @@ kind: Kustomization
 metadata:
   name: &appname opnsense-exporter
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   targetNamespace: observability
   commonMetadata:
