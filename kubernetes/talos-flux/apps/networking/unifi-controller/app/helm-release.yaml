@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app unifi
+  name: &app unifi-controller
 spec:
   driftDetection:
     mode: enabled

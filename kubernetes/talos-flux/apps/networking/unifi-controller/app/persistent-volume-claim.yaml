@@ -7,6 +7,10 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: unifi-data
   resources:
     requests:
       storage: 10Gi
