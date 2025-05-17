@@ -3,39 +3,43 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-external-secrets
+  name: &appname external-secrets
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
-  interval: 30m
-  retryInterval: 15s
-  timeout: 3m
+  targetNamespace: secops
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   path: ./kubernetes/talos-flux/apps/secops/external-secrets/app
   prune: true
-  wait: true
   sourceRef:
     kind: GitRepository
     name: home-ops
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 3m
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-external-secrets-stores
+  name: &appname external-secrets-stores
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
-  interval: 30m
-  retryInterval: 15s
-  timeout: 3m
+  targetNamespace: secops
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   path: ./kubernetes/talos-flux/apps/secops/external-secrets/stores
   prune: true
-  wait: true
   sourceRef:
     kind: GitRepository
     name: home-ops
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 3m
   dependsOn:
-    - name: apps-external-secrets
+    - name: external-secrets

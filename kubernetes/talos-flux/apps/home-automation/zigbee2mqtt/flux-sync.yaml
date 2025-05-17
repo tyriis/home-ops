@@ -26,4 +26,4 @@ spec:
     - name: rook-ceph-cluster
     - name: apps-volsync
     - name: kube-prometheus-stack
-    - name: apps-external-secrets-stores
+    - name: external-secrets-stores
