@@ -22,7 +22,7 @@ spec:
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: apps-cert-manager
+    - name: cert-manager
     - name: traefik-forward-auth
   postBuild:
     substitute:
@@ -53,7 +53,7 @@ spec:
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: apps-cert-manager
+    - name: cert-manager
     - name: traefik-forward-auth
   postBuild:
     substitute:
@@ -84,7 +84,7 @@ spec:
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: apps-cert-manager
+    - name: cert-manager
     - name: traefik-forward-auth
   postBuild:
     substitute:
@@ -115,7 +115,7 @@ spec:
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: apps-cert-manager
+    - name: cert-manager
     - name: traefik-forward-auth
   postBuild:
     substitute:
@@ -146,7 +146,7 @@ spec:
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: apps-cert-manager
+    - name: cert-manager
     - name: traefik-forward-auth
   postBuild:
     substitute:
@@ -177,7 +177,7 @@ spec:
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: apps-cert-manager
+    - name: cert-manager
     - name: traefik-forward-auth
   postBuild:
     substitute:
@@ -208,7 +208,7 @@ spec:
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: apps-cert-manager
+    - name: cert-manager
     - name: traefik-forward-auth
   postBuild:
     substitute:
