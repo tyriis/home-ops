@@ -15,7 +15,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops
-  wait: true
+  wait: false # TODO: is broken otherwise need investigation
   interval: 30m
   retryInterval: 1m
   timeout: 5m
