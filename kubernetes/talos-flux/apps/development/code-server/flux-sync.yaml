@@ -5,19 +5,17 @@ kind: Kustomization
 metadata:
   name: &appname code-server
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   targetNamespace: development
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
   path: ./kubernetes/talos-flux/apps/development/code-server/app
+  prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
   wait: true
-  prune: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m

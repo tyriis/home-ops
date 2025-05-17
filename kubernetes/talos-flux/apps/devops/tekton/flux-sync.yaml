@@ -3,110 +3,122 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-tekton
+  name: &appname tekton
   namespace: flux-system
   annotations:
     backstage.io/discovery: enabled
-    backstage.io/name: tekton
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
+    backstage.io/name: *appname
 spec:
-  interval: 15m
+  targetNamespace: devops
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   path: ./kubernetes/talos-flux/apps/devops/tekton/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
   wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-tekton-tasks
+  name: &appname tekton-tasks
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
-  interval: 15m
+  targetNamespace: devops
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   path: ./kubernetes/talos-flux/apps/devops/tekton/tasks
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
   wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
   dependsOn:
-    - name: apps-tekton
-      namespace: flux-system
+    - name: tekton
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-tekton-pipelines
+  name: &appname tekton-pipelines
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
-  interval: 15m
+  targetNamespace: devops
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   path: ./kubernetes/talos-flux/apps/devops/tekton/pipelines
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
   wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
   dependsOn:
-    - name: apps-tekton
-      namespace: flux-system
-    - name: apps-tekton-tasks
-      namespace: flux-system
+    - name: tekton
+    - name: tekton-tasks
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-tekton-triggers
+  name: &appname tekton-triggers
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
-  interval: 15m
+  targetNamespace: devops
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   path: ./kubernetes/talos-flux/apps/devops/tekton/triggers
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
   wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
   dependsOn:
-    - name: apps-tekton
-      namespace: flux-system
+    - name: tekton
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-krr-cron
+  name: &appname krr-cron
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
-  interval: 10m
+  targetNamespace: devops
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   path: ./kubernetes/talos-flux/apps/devops/tekton/krr-cron
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
   wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
   dependsOn:
-    - name: apps-tekton
-      namespace: flux-system
-    - name: apps-tekton-tasks
-      namespace: flux-system
-    - name: apps-tekton-pipelines
-      namespace: flux-system
-    - name: apps-tekton-triggers
-      namespace: flux-system
+    - name: tekton
+    - name: tekton-tasks
+    - name: tekton-pipelines
+    - name: tekton-triggers

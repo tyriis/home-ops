@@ -9,8 +9,11 @@ metadata:
     backstage.io/discovery: enabled
     backstage.io/name: cloudnative-pg
 spec:
-  dependsOn:
-    - name: apps-dbman
+  targetNamespace: database
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: cloudnative-pg
+      app.kubernetes.io/part-of: cloudnative-pg
   path: ./kubernetes/talos-flux/apps/database/cloudnative-pg/app
   prune: true
   sourceRef:
@@ -20,6 +23,9 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 3m
+  dependsOn:
+    - name: apps-dbman
+
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -28,8 +34,11 @@ metadata:
   name: apps-cloudnative-pg-cluster
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: apps-cloudnative-pg
+  targetNamespace: database
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: cloudnative-pg-cluster
+      app.kubernetes.io/part-of: cloudnative-pg
   path: ./kubernetes/talos-flux/apps/database/cloudnative-pg/cluster
   prune: true
   sourceRef:
@@ -37,8 +46,11 @@ spec:
     name: home-ops
   wait: true
   interval: 30m
-  retryInterval: 15s
+  retryInterval: 1m
   timeout: 3m
+  dependsOn:
+    - name: apps-cloudnative-pg
+
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -47,9 +59,11 @@ metadata:
   name: apps-cloudnative-pg-observability
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: apps-cloudnative-pg
-    - name: apps-kube-prometheus-stack
+  targetNamespace: database
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: cloudnative-pg-observability
+      app.kubernetes.io/part-of: cloudnative-pg
   path: ./kubernetes/talos-flux/apps/database/cloudnative-pg/observability
   prune: true
   sourceRef:
@@ -57,5 +71,8 @@ spec:
     name: home-ops
   wait: true
   interval: 30m
-  retryInterval: 15s
+  retryInterval: 1m
   timeout: 3m
+  dependsOn:
+    - name: apps-cloudnative-pg
+    - name: apps-kube-prometheus-stack
