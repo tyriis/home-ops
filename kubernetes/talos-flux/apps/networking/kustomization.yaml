@@ -9,4 +9,4 @@ resources:
   - ./external-dns/flux-sync.yaml
   - ./playit/flux-sync.yaml
   - ./redirect-service/flux-sync.yaml
-  - ./unifi/flux-sync.yaml
+  - ./unifi-controller/flux-sync.yaml
