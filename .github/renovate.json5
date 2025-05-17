@@ -16,7 +16,7 @@
     "github>techtales-io/renovate-config//dependencies/talos.json5",
     "github>techtales-io/renovate-config//dependencies/tektoncd.json5",
     "github>techtales-io/renovate-config//nix/default.json5",
-    "github>tyriis/renovate-config//generic-regex-manager.json5", //  TODO: reconfigure
+    "github>tyriis/renovate-config//generic-regex-manager.json5",
   ],
   ignorePaths: [
     "archive/**",
@@ -48,8 +48,8 @@
   customManagers: [
     {
       customType: "regex",
-      fileMatch: [
-        "^kubernetes/talos-flux/apps/gaming/minecraft-java/.*/config/plugins\\.txt$",
+      managerFilePatterns: [
+        "/^kubernetes/talos-flux/apps/gaming/minecraft-java/.*/config/plugins\\.txt$/",
       ],
       matchStrings: [
         "https://download\\.luckperms\\.net/\\d+/bukkit/loader/LuckPerms-Bukkit-(?<currentValue>[\\d.]+)\\.jar",
