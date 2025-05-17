@@ -5,8 +5,3 @@ kind: Kustomization
 namespace: database
 resources:
   - prometheus-rule.yaml
-labels:
-  - pairs:
-      app.kubernetes.io/name: cloudnative-pg-observability
-      app.kubernetes.io/instance: cloudnative-pg-observability
-      app.kubernetes.io/part-of: cloudnative-pg
