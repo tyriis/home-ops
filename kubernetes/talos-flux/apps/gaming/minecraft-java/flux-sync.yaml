@@ -5,8 +5,6 @@ kind: Kustomization
 metadata:
   name: &appname minecraft-global-secrets
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   targetNamespace: gaming
   commonMetadata:
@@ -31,8 +29,6 @@ kind: Kustomization
 metadata:
   name: &appname minecraft-bluemap-database
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   targetNamespace: gaming
   commonMetadata:
@@ -58,8 +54,6 @@ kind: Kustomization
 metadata:
   name: &appname minecraft-velocity-proxy
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   targetNamespace: gaming
   commonMetadata:
@@ -86,8 +80,6 @@ kind: Kustomization
 metadata:
   name: &appname minecraft-lobby-world
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   targetNamespace: gaming
   commonMetadata:
@@ -115,8 +107,6 @@ kind: Kustomization
 metadata:
   name: &appname minecraft-creative-world
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   targetNamespace: gaming
   commonMetadata:
@@ -144,8 +134,6 @@ kind: Kustomization
 metadata:
   name: &appname minecraft-playground-world
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   targetNamespace: gaming
   commonMetadata:
@@ -173,8 +161,6 @@ kind: Kustomization
 metadata:
   name: &appname minecraft-survival-world
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   targetNamespace: gaming
   commonMetadata:
