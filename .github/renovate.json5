@@ -44,6 +44,11 @@
       matchUpdateTypes: ["patch", "minor", "major"],
       automerge: false,
     },
+    {
+      matchDatasources: ["custom.luckpermsBukkit", "custom.luckpermsVelocity"],
+      semanticCommitScope: "minecraft",
+      commitMessageTopic: "update plugin {{depName}}",
+    },
   ],
   customManagers: [
     {
