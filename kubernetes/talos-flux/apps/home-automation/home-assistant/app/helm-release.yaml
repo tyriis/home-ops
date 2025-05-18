@@ -92,8 +92,6 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-production
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           external-dns/opnsense: "true"
-          hajimari.io/enable: "true"
-          hajimari.io/icon: *app
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Home Automation That Puts Local Control
           gethomepage.dev/group: Home Automation

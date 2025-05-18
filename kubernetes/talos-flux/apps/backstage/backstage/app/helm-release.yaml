@@ -80,8 +80,6 @@ spec:
           traefik.ingress.kubernetes.io/affinity: "true"
           traefik.ingress.kubernetes.io/router.tls: "true"
           external-dns/opnsense: "true"
-          hajimari.io/icon: simple-icons:backstage
-          hajimari.io/enable: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Internal Developer Portal
           gethomepage.dev/group: Development

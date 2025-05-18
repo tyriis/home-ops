@@ -75,9 +75,6 @@ spec:
           traefik.ingress.kubernetes.io/affinity: "true"
           traefik.ingress.kubernetes.io/router.tls: "true"
           external-dns/opnsense: "true"
-          hajimari.io/enable: "true"
-          hajimari.io/icon: mdi:speedometer
-          hajimari.io/group: network
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: HTML5 Network Performance Tool
           gethomepage.dev/group: Networking

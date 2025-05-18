@@ -90,9 +90,6 @@ spec:
             traefik.ingress.kubernetes.io/affinity: "true"
             traefik.ingress.kubernetes.io/router.tls: "true"
             external-dns/opnsense: "true"
-            hajimari.io/enable: "true"
-            hajimari.io/appName: hubble
-            hajimari.io/icon: simple-icons:cilium
             gethomepage.dev/enabled: "true"
             gethomepage.dev/description: Networking, Observability, and Security
             gethomepage.dev/group: Networking
