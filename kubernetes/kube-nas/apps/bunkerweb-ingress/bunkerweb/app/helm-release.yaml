@@ -46,6 +46,7 @@ spec:
               - secretRef:
                   name: bunkerweb-database
       bunkerweb:
+        forceRename: bunkerweb
         replicas: 2
         annotations:
           reloader.stakater.com/auto: "true"
@@ -146,13 +147,13 @@ spec:
     service:
       app:
         controller: bunkerweb-ui
-        forceRename: ui
+        forceRename: bunkerweb-ui
         ports:
           http:
             port: 7000
       proxy:
         controller: bunkerweb
-        forceRename: external
+        forceRename: bunkerweb-external
         ports:
           http:
             port: 8080
