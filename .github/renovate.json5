@@ -64,7 +64,7 @@
       defaultRegistryUrlTemplate: "https://metadata.luckperms.net/data/all",
       format: "json",
       transformTemplates: [
-        '{ "releases": [ { "version": version, "diggest": downloads.bukkit } ] }',
+        '{ "releases": [ { "version": version, "digest": downloads.bukkit } ] }',
       ],
     },
   },
