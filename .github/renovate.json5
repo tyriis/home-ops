@@ -56,7 +56,7 @@
       ],
       datasourceTemplate: "custom.luckperms",
       depNameTemplate: "luckperms-bukkit",
-      autoReplaceStringTemplate: "{{{newValue.downloadUrl}}}",
+      autoReplaceStringTemplate: "{{{sourceUrl}}}",
     },
   ],
   customDatasources: {
@@ -64,11 +64,11 @@
       defaultRegistryUrlTemplate: "https://metadata.luckperms.net/data/all",
       format: "json",
       transformTemplates: [
-        '{ "releases": [ { "version": version, "downloadUrl": downloads.bukkit } ] }',
+        '{ "releases": [ { "version": version, "sourceUrl": downloads.bukkit } ] }',
       ],
     },
   },
-  maven: {
+  jenkins: {
     enabled: false,
   },
   "jenkins-plugins": {
