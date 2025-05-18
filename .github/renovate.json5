@@ -17,6 +17,7 @@
     "github>techtales-io/renovate-config//dependencies/tektoncd.json5",
     "github>techtales-io/renovate-config//nix/default.json5",
     "github>tyriis/renovate-config//generic-regex-manager.json5", //  TODO: reconfigure
+    "github>techtales-io/renovate-config//dependencies/minecraft-luckperms-plugin.json5",
   ],
   ignorePaths: [
     "archive/**",
@@ -44,52 +45,7 @@
       matchUpdateTypes: ["patch", "minor", "major"],
       automerge: false,
     },
-    {
-      matchDatasources: ["custom.luckpermsBukkit", "custom.luckpermsVelocity"],
-      semanticCommitScope: "minecraft",
-      commitMessageTopic: "update plugin {{depName}}",
-    },
   ],
-  customManagers: [
-    {
-      customType: "regex",
-      managerFilePatterns: [
-        "/^kubernetes/talos-flux/apps/gaming/minecraft-java/.*/config/plugins\\.txt$/",
-      ],
-      matchStrings: [
-        "(?<currentDigest>https://download\\.luckperms\\.net/\\d+/bukkit/loader/LuckPerms-Bukkit-(?<currentValue>[\\d.]+)\\.jar)",
-      ],
-      datasourceTemplate: "custom.luckpermsBukkit",
-      depNameTemplate: "luckperms-bukkit",
-      autoReplaceStringTemplate: "{{{newDigest}}}",
-    },
-    {
-      customType: "regex",
-      managerFilePatterns: ["/^(kubernetes)/.+/plugins\\.txt$/"],
-      matchStrings: [
-        "(?<currentDigest>https://download\\.luckperms\\.net/\\d+/velocity/LuckPerms-Velocity-(?<currentValue>[\\d.]+)\\.jar)",
-      ],
-      datasourceTemplate: "custom.luckpermsVelocity",
-      depNameTemplate: "luckperms-velocity",
-      autoReplaceStringTemplate: "{{{newDigest}}}",
-    },
-  ],
-  customDatasources: {
-    luckpermsBukkit: {
-      defaultRegistryUrlTemplate: "https://metadata.luckperms.net/data/all",
-      format: "json",
-      transformTemplates: [
-        '{ "releases": [ { "version": version, "digest": downloads.bukkit } ] }',
-      ],
-    },
-    luckpermsVelocity: {
-      defaultRegistryUrlTemplate: "https://metadata.luckperms.net/data/all",
-      format: "json",
-      transformTemplates: [
-        '{ "releases": [ { "version": version, "digest": downloads.velocity, "url": "https://luckperms.net/" } ] }',
-      ],
-    },
-  },
   jenkins: {
     enabled: false,
   },
