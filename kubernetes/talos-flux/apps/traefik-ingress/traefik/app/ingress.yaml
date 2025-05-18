@@ -11,9 +11,6 @@ metadata:
     traefik.ingress.kubernetes.io/affinity: "true"
     traefik.ingress.kubernetes.io/router.tls: "true"
     external-dns/opnsense: "true"
-    hajimari.io/appName: *app
-    hajimari.io/enable: "true"
-    hajimari.io/icon: web
     gethomepage.dev/enabled: "true"
     gethomepage.dev/description: A modern HTTP reverse proxy
     gethomepage.dev/group: Networking

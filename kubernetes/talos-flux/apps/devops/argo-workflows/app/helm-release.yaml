@@ -71,8 +71,6 @@ spec:
           traefik.ingress.kubernetes.io/affinity: "true"
           traefik.ingress.kubernetes.io/router.tls: "true"
           external-dns/opnsense: "true"
-          hajimari.io/icon: simple-icons:argo
-          hajimari.io/enable: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Kubernetes-native Workflow Engine
           gethomepage.dev/group: Development

@@ -69,9 +69,6 @@ spec:
           traefik.ingress.kubernetes.io/affinity: "true"
           traefik.ingress.kubernetes.io/router.tls: "true"
           external-dns/opnsense: "true"
-          hajimari.io/appName: *app
-          hajimari.io/enable: "true"
-          hajimari.io/icon: simple-icons:esphome
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Reimagining DIY Home Automation
           gethomepage.dev/group: Home Automation

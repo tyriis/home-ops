@@ -60,9 +60,6 @@ endpointRoutes:
   #       traefik.ingress.kubernetes.io/router.entrypoints: websecure
   #       traefik.ingress.kubernetes.io/affinity: "true"
   #       traefik.ingress.kubernetes.io/router.tls: "true"
-  #       hajimari.io/enable: "true"
-  #       hajimari.io/appName: simple-icons:hubble
-  #       hajimari.io/icon: cilium
   #     hosts:
   #       - &host hubble.techtales.io
   #     tls:

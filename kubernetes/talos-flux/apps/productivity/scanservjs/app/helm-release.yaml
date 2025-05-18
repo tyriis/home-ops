@@ -74,9 +74,6 @@ spec:
           traefik.ingress.kubernetes.io/affinity: "true"
           traefik.ingress.kubernetes.io/router.tls: "true"
           external-dns/opnsense: "true"
-          hajimari.io/appName: scanner
-          hajimari.io/enable: "true"
-          hajimari.io/icon: scanner
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Web UI frontend for your scanner
           gethomepage.dev/group: Productivity
