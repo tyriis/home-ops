@@ -1,7 +1,7 @@
 # UnifiedMetrics https://hangar.papermc.io/cubxity/UnifiedMetrics
 https://github.com/Cubxity/UnifiedMetrics/releases/download/v0.3.8/unifiedmetrics-platform-bukkit-0.3.8.jar
 # LuckPerms https://luckperms.net/download
-https://download.luckperms.net/1570/bukkit/loader/LuckPerms-Bukkit-5.4.153.jar
+https://download.luckperms.net/1581/bukkit/loader/LuckPerms-Bukkit-5.4.164.jar
 # citizens2 https://ci.citizensnpcs.co/job/Citizens2/
 # https://ci.citizensnpcs.co/job/Citizens2/lastSuccessfulBuild/artifact/dist/target/Citizens-2.0.38-b3765.jar
 # Bluemap https://bluemap.bluecolored.de/wiki/getting-started/ServerNetworks.html
