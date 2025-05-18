@@ -65,9 +65,7 @@
     },
     {
       customType: "regex",
-      managerFilePatterns: [
-        "/^kubernetes/talos-flux/apps/.*/.*/.*/config/plugins\\.txt$/",
-      ],
+      managerFilePatterns: ["^(kubernetes)/.+\\plugins\\.txt$"],
       matchStrings: [
         "(?<currentDigest>https://download\\.luckperms\\.net/\\d+/velocity/loader/LuckPerms-Velocity-(?<currentValue>[\\d.]+)\\.jar)",
       ],
