@@ -65,7 +65,7 @@
     },
     {
       customType: "regex",
-      managerFilePatterns: ["/^(kubernetes)/.+\\plugins\\.txt$/"],
+      managerFilePatterns: ["/^(kubernetes)/.+/plugins\\.txt$/"],
       matchStrings: [
         "(?<currentDigest>https://download\\.luckperms\\.net/\\d+/velocity/LuckPerms-Velocity-(?<currentValue>[\\d.]+)\\.jar)",
       ],
