@@ -75,6 +75,7 @@ spec:
 
     persistence:
       data:
+        forceRename: piper-data
         retain: true
         storageClass: ceph-block
         accessMode: ReadWriteOnce

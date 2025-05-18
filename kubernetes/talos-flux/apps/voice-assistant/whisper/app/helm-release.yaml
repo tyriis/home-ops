@@ -77,6 +77,7 @@ spec:
 
     persistence:
       data:
+        forceRename: whisper-data
         retain: true
         storageClass: ceph-block
         accessMode: ReadWriteOnce

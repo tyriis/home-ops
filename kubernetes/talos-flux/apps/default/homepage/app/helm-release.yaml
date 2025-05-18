@@ -26,6 +26,8 @@ spec:
   values:
     controllers:
       homepage:
+        serviceAccount:
+          identifier: homepage
         replicas: 1
         strategy: RollingUpdate
         pod:

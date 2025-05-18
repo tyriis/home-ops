@@ -25,6 +25,8 @@ spec:
   values:
     controllers:
       dragonfly-operator:
+        serviceAccount:
+          identifier: dragonfly-operator
         replicas: 1
         strategy: RollingUpdate
         containers:

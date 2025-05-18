@@ -122,6 +122,7 @@ spec:
 
     persistence:
       config:
+        forceRename: syncthing-config
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
         size: 1Gi

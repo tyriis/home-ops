@@ -41,6 +41,8 @@ spec:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
+        serviceAccount:
+          identifier: *app
 
         containers:
           app:

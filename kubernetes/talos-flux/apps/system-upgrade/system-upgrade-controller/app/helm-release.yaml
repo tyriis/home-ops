@@ -19,6 +19,8 @@ spec:
   values:
     controllers:
       system-upgrade-controller:
+        serviceAccount:
+          identifier: system-upgrade-controller
         strategy: RollingUpdate
         replicas: 2
 
