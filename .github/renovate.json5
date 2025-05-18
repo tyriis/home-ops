@@ -71,5 +71,7 @@
   maven: {
     enabled: false,
   },
-  ignoreManagers: ["jenkins-plugins"],
+  "jenkins-plugins": {
+    enabled: false,
+  },
 }
