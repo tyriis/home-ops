@@ -67,7 +67,7 @@
       customType: "regex",
       managerFilePatterns: ["/^(kubernetes)/.+\\plugins\\.txt$/"],
       matchStrings: [
-        "(?<currentDigest>https://download\\.luckperms\\.net/\\d+/velocity/loader/LuckPerms-Velocity-(?<currentValue>[\\d.]+)\\.jar)",
+        "(?<currentDigest>https://download\\.luckperms\\.net/\\d+/velocity/LuckPerms-Velocity-(?<currentValue>[\\d.]+)\\.jar)",
       ],
       datasourceTemplate: "custom.luckpermsVelocity",
       depNameTemplate: "luckperms-velocity",
