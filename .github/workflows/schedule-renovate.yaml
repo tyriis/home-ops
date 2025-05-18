@@ -58,7 +58,7 @@ jobs:
       - name: Override default config from dispatch variables
         run: |
           echo "RENOVATE_DRY_RUN=${{ github.event.inputs.dryRun || env.RENOVATE_DRY_RUN }}" >> "${GITHUB_ENV}"
-          echo "LOG_LEVEL=${{ github.event.inputs.logLevel || env.LOG_LEVEL }}" >> "${GITHUB_ENV}""
+          echo "LOG_LEVEL=${{ github.event.inputs.logLevel || env.LOG_LEVEL }}" >> "${GITHUB_ENV}"
 
       # https://github.com/marketplace/actions/renovate-bot-github-action
       - name: Renovate
@@ -67,6 +67,7 @@ jobs:
           configurationFile: "${{ env.RENOVATE_CONFIG_FILE }}"
           token: "${{ steps.app-token.outputs.token }}"
         env:
+          RENOVATE_PRINT_CONFIG: "true"
           RENOVATE_HOST_RULES: |
             [
               {
@@ -76,4 +77,3 @@ jobs:
                 password: "${{ secrets.DOCKER_IO_TOKEN }}",
               },
             ]
-          RENOVATE_PRINT_CONFIG: "true"

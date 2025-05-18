@@ -71,7 +71,4 @@
   jenkins: {
     enabled: false,
   },
-  "jenkins-plugins": {
-    enabled: false,
-  },
 }
