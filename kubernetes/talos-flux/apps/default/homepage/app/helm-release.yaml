@@ -120,4 +120,4 @@ spec:
           - subPath: custom.js
             path: /app/config/custom.js
     serviceAccount:
-      create: true
+      homepage: {}

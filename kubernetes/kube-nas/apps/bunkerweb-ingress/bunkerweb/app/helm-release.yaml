@@ -29,8 +29,7 @@ spec:
     keepHistory: false
   values:
     serviceAccount:
-      create: true
-      name: *app
+      bunkerweb: {}
     controllers:
       bunkerweb-controller:
         replicas: 1
@@ -147,13 +146,13 @@ spec:
     service:
       app:
         controller: bunkerweb-ui
-        nameOverride: ui
+        forceRename: ui
         ports:
           http:
             port: 7000
       proxy:
         controller: bunkerweb
-        nameOverride: external
+        forceRename: external
         ports:
           http:
             port: 8080
