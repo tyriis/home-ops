@@ -78,8 +78,7 @@ spec:
 
     ingress:
       app:
-        # forceRename: n8n
-        nameOverride: n8n
+        forceRename: n8n
         enabled: true
         className: traefik
         annotations:
