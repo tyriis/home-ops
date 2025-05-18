@@ -64,7 +64,7 @@ spec:
 
     service:
       app:
-        nameOverride: "{{ .Release.Name }}"
+        forceRename: "{{ .Release.Name }}"
         controller: syncthing
         ports:
           http:
