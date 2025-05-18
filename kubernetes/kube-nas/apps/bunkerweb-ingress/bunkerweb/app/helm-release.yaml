@@ -31,7 +31,9 @@ spec:
     serviceAccount:
       bunkerweb: {}
     controllers:
-      bunkerweb-controller:
+      controller:
+        serviceAccount:
+          identifier: bunkerweb
         replicas: 1
         strategy: Recreate
         containers:
@@ -47,6 +49,8 @@ spec:
                   name: bunkerweb-database
       bunkerweb:
         forceRename: bunkerweb
+        serviceAccount:
+          identifier: bunkerweb
         replicas: 2
         annotations:
           reloader.stakater.com/auto: "true"
@@ -98,7 +102,9 @@ spec:
             #     cpu: 100m
             #   limits:
             #     memory: 2Gi
-      bunkerweb-scheduler:
+      scheduler:
+        serviceAccount:
+          identifier: bunkerweb
         replicas: 1
         strategy: Recreate
         containers:
