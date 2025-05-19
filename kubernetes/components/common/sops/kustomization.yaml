@@ -3,4 +3,4 @@
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 resources:
-  - ../../../kube-nas/flux/config/sops-age.sops.yaml
+  - ../../../${SETTING_CLUSTERNAME}/flux/config/sops-age.sops.yaml
