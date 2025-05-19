@@ -8,7 +8,7 @@ spec:
   # https://bjw-s-labs.github.io/helm-charts/docs/app-template/
   values:
     serviceAccount:
-      create: true
+      ${APP}: {}
     defaultPodOptions:
       automountServiceAccountToken: true
     controllers:

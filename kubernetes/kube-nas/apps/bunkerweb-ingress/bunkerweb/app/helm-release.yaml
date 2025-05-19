@@ -12,7 +12,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.7.3
+      version: 4.0.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -29,10 +29,11 @@ spec:
     keepHistory: false
   values:
     serviceAccount:
-      create: true
-      name: *app
+      bunkerweb: {}
     controllers:
-      bunkerweb-controller:
+      controller:
+        serviceAccount:
+          identifier: bunkerweb
         replicas: 1
         strategy: Recreate
         containers:
@@ -47,6 +48,9 @@ spec:
               - secretRef:
                   name: bunkerweb-database
       bunkerweb:
+        forceRename: bunkerweb
+        serviceAccount:
+          identifier: bunkerweb
         replicas: 2
         annotations:
           reloader.stakater.com/auto: "true"
@@ -98,7 +102,9 @@ spec:
             #     cpu: 100m
             #   limits:
             #     memory: 2Gi
-      bunkerweb-scheduler:
+      scheduler:
+        serviceAccount:
+          identifier: bunkerweb
         replicas: 1
         strategy: Recreate
         containers:
@@ -147,13 +153,13 @@ spec:
     service:
       app:
         controller: bunkerweb-ui
-        nameOverride: ui
+        forceRename: bunkerweb-ui
         ports:
           http:
             port: 7000
       proxy:
         controller: bunkerweb
-        nameOverride: external
+        forceRename: bunkerweb-external
         ports:
           http:
             port: 8080
