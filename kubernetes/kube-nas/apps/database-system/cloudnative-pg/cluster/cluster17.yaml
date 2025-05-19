@@ -13,6 +13,7 @@ spec:
     storageClass: local
   superuserSecret:
     name: postgres-superuser
+  enableSuperuserAccess: true
   monitoring:
     # TODO: enable when observability stack is in place
     enablePodMonitor: false
