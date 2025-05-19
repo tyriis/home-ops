@@ -5,6 +5,8 @@ kind: HelmRelease
 metadata:
   name: backstage
 spec:
+  driftDetection:
+    mode: enabled
   interval: 15m
   chart:
     spec:
