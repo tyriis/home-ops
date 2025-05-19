@@ -1,0 +1,17 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: dragonfly-operator
+  namespace: flux-system
+spec:
+  interval: 12h
+  url: https://github.com/dragonflydb/dragonfly-operator.git
+  ref:
+    # renovate: depName=dragonflydb/dragonfly-operator datasource=github-releases
+    tag: v1.1.10
+  ignore: |
+    # exclude all
+    /*
+    # include deploy crd file only
+    !/manifests/crd.yaml
