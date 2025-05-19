@@ -5,6 +5,7 @@ kind: Kustomization
 metadata:
   name: &appname echo-server
 spec:
+  targetNamespace: default
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
