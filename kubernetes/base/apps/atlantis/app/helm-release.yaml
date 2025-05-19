@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app ${APP}
+  name: ${APP}
 spec:
   interval: 30m
   driftDetection:
@@ -27,6 +27,8 @@ spec:
     keepHistory: false
   values:
     # https://bjw-s-labs.github.io/helm-charts/docs/app-template/
+    serviceAccount:
+      ${APP}: {}
     defaultPodOptions:
       automountServiceAccountToken: false
       securityContext:
@@ -42,8 +44,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         serviceAccount:
-          identifier: *app
-
+          identifier: ${APP}
         containers:
           app:
             image:
@@ -100,7 +101,7 @@ spec:
               ATLANTIS_REDIS_HOST: dragonfly.database.svc.cluster.local
               # ATLANTIS_REDIS_PORT: 6379
               ATLANTIS_SKIP_CLONE_NO_CHANGES: true
-              ATLANTIS_STATS_NAMESPACE: *app
+              ATLANTIS_STATS_NAMESPACE: ${APP}
 
             securityContext:
               allowPrivilegeEscalation: false
@@ -124,7 +125,7 @@ spec:
     serviceMonitor:
       metrics:
         enabled: true
-        serviceName: *app
+        serviceName: ${APP}
         endpoints:
           - port: metrics
             scheme: http
@@ -133,7 +134,7 @@ spec:
 
     ingress:
       main:
-        forceRename: *app
+        forceRename: ${APP}
         className: traefik
         annotations:
           kubernetes.io/tls-acme: "true"
@@ -146,7 +147,7 @@ spec:
           gethomepage.dev/description: Terraform Pull Request Automation
           gethomepage.dev/group: Terraform
           gethomepage.dev/icon: terraform
-          gethomepage.dev/name: *app
+          gethomepage.dev/name: ${APP}
         hosts:
           - host: &host "{{ .Release.Name }}.techtales.io"
             paths:
