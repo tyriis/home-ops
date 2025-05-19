@@ -28,8 +28,12 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    serviceAccount:
+      dragonfly-operator: {}
     controllers:
       dragonfly-operator:
+        serviceAccount:
+          identifier: dragonfly-operator
         replicas: 1
         strategy: RollingUpdate
         containers:
@@ -103,5 +107,3 @@ spec:
     #         path: /metrics
     #         interval: 1m
     #         scrapeTimeout: 10s
-    serviceAccount:
-      dragonfly-operator: {}
