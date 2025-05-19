@@ -3,4 +3,4 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ../../../${SETTINGS_CLUSTER_NAME}/flux/config/secret.sops.yaml
+  - ../../../${SETTING_CLUSTERNAME}/flux/config/secret.sops.yaml
