@@ -129,18 +129,18 @@ jobs:
             --path /github/workspace/kubernetes/${{ matrix.cluster }}/flux
             --verbose
 
-  diff:
-    if: ${{ needs.filter.outputs.changed-files != '[]' }}
-    needs: filter
-    name: Flux Local - Diff
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-    strategy:
-      matrix:
-        resource: ["helmrelease", "kustomization"]
-      fail-fast: false
+  # diff:
+  #   if: ${{ needs.filter.outputs.changed-files != '[]' }}
+  #   needs: filter
+  #   name: Flux Local - Diff
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: read
+  #     pull-requests: write
+  #   strategy:
+  #     matrix:
+  #       resource: ["helmrelease", "kustomization"]
+  #     fail-fast: false
 
   # flux-diff:
   #   name: Flux Diff
