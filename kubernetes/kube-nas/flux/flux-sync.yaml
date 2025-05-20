@@ -70,7 +70,7 @@ metadata:
   namespace: flux-system
 spec:
   path: ./kubernetes/kube-nas/apps
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
