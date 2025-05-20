@@ -139,7 +139,7 @@ jobs:
       - name: List Diff
         run: |
           if [ -f diff.patch ]; then
-            echo "${cat diff.patch}"
+            echo "$(cat diff.patch)"
           else
             echo "Diff file does not exist"
           fi
@@ -147,9 +147,15 @@ jobs:
       - name: Generate Diff
         id: diff
         run: |
-          echo 'diff<<EOF' >> $GITHUB_OUTPUT
-          cat diff.patch >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
+          if [ -f diff.patch ]; then
+            echo 'diff<<EOF' >> $GITHUB_OUTPUT
+            cat diff.patch >> $GITHUB_OUTPUT
+            echo 'EOF' >> $GITHUB_OUTPUT
+          else
+            echo 'diff<<EOF' >> $GITHUB_OUTPUT
+            echo 'no ${{ matrix.resource }} diff found in cluster ${{ matrix.cluster }}' >> $GITHUB_OUTPUT
+            echo 'EOF' >> $GITHUB_OUTPUT
+          fi
 
       # https://github.com/marketplace/actions/create-github-app-token
       - if: ${{ steps.diff.outputs.diff != '' && github.event.pull_request.head.repo.full_name == github.repository }}
@@ -168,6 +174,7 @@ jobs:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           header: ${{ github.event.pull_request.number }}/${{ matrix.cluster }}/${{ matrix.resource }}
           message: |
+            ${{ matrix.cluster }}:
             ```diff
             ${{ steps.diff.outputs.diff }}
             ```
