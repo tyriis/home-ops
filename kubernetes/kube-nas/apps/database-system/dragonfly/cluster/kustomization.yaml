@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   - helm-release.yaml
 configMapGenerator:
-  - name: dragonfly-cluster-observability-values
+  - name: dragonfly-cluster-helm-values
     files:
       - values.yaml=./crd/cluster.yaml
 generatorOptions:
