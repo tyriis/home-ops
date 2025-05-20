@@ -6,8 +6,8 @@ on:
   pull_request:
     branches:
       - main
-    # paths:
-    #  - kubernetes/**
+    paths:
+      - kubernetes/**
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
@@ -153,7 +153,7 @@ jobs:
             echo 'EOF' >> $GITHUB_OUTPUT
           else
             echo 'diff<<EOF' >> $GITHUB_OUTPUT
-            echo 'no ${{ matrix.resource }} diff found in cluster ${{ matrix.cluster }}' >> $GITHUB_OUTPUT
+            echo 'no ${{ matrix.resource }} objects found in cluster' >> $GITHUB_OUTPUT
             echo 'EOF' >> $GITHUB_OUTPUT
           fi
 
