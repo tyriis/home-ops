@@ -30,7 +30,7 @@ spec:
           cron:
             image:
               repository: bitnami/kubectl
-              tag: 1.33.1@sha256:35f792b0f0b8b3072bb01cd50a23d2dc1ba2488eed70a1a951a1789a8e3bc994
+              tag: 1.33.1@sha256:b5387695260549bf93c64c6056b0f1c996664d9a346ab2623f29a331db550d5e
             command:
               - /bin/sh
               - -ec
