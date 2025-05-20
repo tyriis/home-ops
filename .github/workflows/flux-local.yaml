@@ -37,7 +37,7 @@ jobs:
         id: changed-clusters
         run: |
           # Get changed files from previous step
-          CHANGED_FILES='${{ steps.changed-files.outputs.changed_file }}'
+          CHANGED_FILES='${{ steps.changed-files.outputs.changed_files }}'
 
           # Use jq to process the list and determine which clusters are affected
           CLUSTERS=$(echo "$CHANGED_FILES" | jq -c '
