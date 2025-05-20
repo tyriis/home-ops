@@ -4,6 +4,9 @@ apiVersion: dragonflydb.io/v1alpha1
 kind: Dragonfly
 metadata:
   name: dragonfly
+  labels:
+    app.kubernetes.io/name: dragonfly
+    app.kubernetes.io/component: dragonfly-cluster
 spec:
   image: ghcr.io/dragonflydb/dragonfly:v1.30.1@sha256:2a5c3606df45b8d171a9b46cec56a246b773e53def973c763d52b044534b76ed
   replicas: 2

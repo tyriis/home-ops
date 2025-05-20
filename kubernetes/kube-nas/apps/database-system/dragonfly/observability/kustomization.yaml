@@ -5,9 +5,9 @@ kind: Kustomization
 resources:
   - helm-release.yaml
 configMapGenerator:
-  - name: dragonfly-cluster-observability-values
+  - name: dragonfly-observability-helm-values
     files:
-      - values.yaml=./crd/cluster.yaml
+      - values.yaml=./crd/pod-monitor.yaml
 generatorOptions:
   disableNameSuffixHash: true
 configurations:
