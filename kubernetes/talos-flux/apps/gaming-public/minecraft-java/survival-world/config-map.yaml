@@ -26,8 +26,8 @@ data:
   ENABLE_ROLLING_LOGS: "true"
   LOG_TIMESTAMP: "true"
   SNOOPER_ENABLED: "true"
-  LEVEL: survival4
-  SERVER_NAME: survival4
+  LEVEL: survival3
+  SERVER_NAME: survival3
   STOP_SERVER_ANNOUNCE_DELAY: "30"
   STOP_DURATION: "30"
   USE_AIKAR_FLAGS: "true"
