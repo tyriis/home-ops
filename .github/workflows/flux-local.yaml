@@ -17,67 +17,27 @@ permissions:
   contents: read
 
 jobs:
-  changed-clusters:
-    name: Changed Clusters
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.changed-clusters.outputs.all_changed_and_modified_files }}
-    steps:
-      # https://github.com/marketplace/actions/harden-runner
-      - name: Harden Runner
-        uses: step-security/harden-runner@0634a2670c59f64b4a01f0f96f84700a4088b9f0 # v2.12.0
-        with:
-          egress-policy: audit
-
-      # https://github.com/marketplace/actions/checkout
-      - name: Checkout Default Branch
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          fetch-depth: 0
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-
-      # https://github.com/marketplace/actions/changed-files
-      - name: Get Changed Clusters
-        id: changed-clusters
-        uses: tj-actions/changed-files@ed68ef82c095e0d48ec87eccea555d944a631a4c # v46.0.5
-        with:
-          files: |
-            kubernetes/talos-flux/**
-            kubernetes/kube-nas/**
-          dir_names: true
-          dir_names_max_depth: 2
-          json: true
-          escape_json: false
-
-      - name: List All Changed Clusters
-        run: echo "${{ steps.changed-clusters.outputs.all_changed_and_modified_files }}"
-
   filter:
     name: Flux Local - Filter
     runs-on: ubuntu-latest
     outputs:
-      changed-files: ${{ steps.changed-files.outputs.changed_files }}
+      clusters: ${{ steps.changed-clusters.outputs.clusters }}
     steps:
+      # https://github.com/bjw-s-labs/action-changed-files
       - name: Get Changed Files
         id: changed-files
         uses: bjw-s-labs/action-changed-files@930cef8463348e168cab7235c47fe95a7a235f65 # v0.3.3
         with:
           patterns: kubernetes/**/*
 
-      - name: List All Changed Files
+      - name: List Changed Files
         run: echo "${{ steps.changed-files.outputs.changed_files }}"
 
-  test2:
-    if: ${{ needs.filter.outputs.changed-files != '[]' }}
-    needs: filter
-    name: Flux Local - Test2
-    runs-on: ubuntu-latest
-    steps:
-      - name: Determine affected clusters
-        id: affected-clusters
+      - name: Get Changed Clusters
+        id: changed-clusters
         run: |
           # Get changed files from previous step
-          CHANGED_FILES='${{ needs.filter.outputs.changed-files }}'
+          CHANGED_FILES='${{ steps.changed-files.outputs.changed_file }}'
 
           # Use jq to process the list and determine which clusters are affected
           CLUSTERS=$(echo "$CHANGED_FILES" | jq -c '
@@ -100,27 +60,28 @@ jobs:
           ')
 
           echo "clusters=$CLUSTERS" >> $GITHUB_OUTPUT
-      - name: List All Changed Clusters
-        run: echo "${{ steps.affected-clusters.outputs.clusters }}"
+
+      - name: List Changed Clusters
+        run: echo "${{ steps.changed-clusters.outputs.clusters }}"
 
   test:
-    if: ${{ needs.filter.outputs.changed-files != '[]' }}
+    if: ${{ needs.filter.outputs.clusters != '[]' }}
     needs: filter
     name: Flux Local - Test
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        cluster:
-          - talos-flux
-          - kube-nas
+        cluster: ${{ fromJSON(needs.filter.outputs.clusters) }}
+      fail-fast: false
     steps:
+      # https://github.com/marketplace/actions/checkout
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
 
       - name: Run flux-local test
-        uses: docker://ghcr.io/allenporter/flux-local@sha256:2111f5e96e65bfdb7cee71f3384cdfae0de1a6a2ce5b95d0fa6de8142c3314d1 # v7.5.0
+        uses: docker://ghcr.io/allenporter/flux-local:v7.5.0@sha256:2111f5e96e65bfdb7cee71f3384cdfae0de1a6a2ce5b95d0fa6de8142c3314d1
         with:
           args: >-
             test
@@ -129,108 +90,90 @@ jobs:
             --path /github/workspace/kubernetes/${{ matrix.cluster }}/flux
             --verbose
 
-  # diff:
-  #   if: ${{ needs.filter.outputs.changed-files != '[]' }}
-  #   needs: filter
-  #   name: Flux Local - Diff
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     contents: read
-  #     pull-requests: write
-  #   strategy:
-  #     matrix:
-  #       resource: ["helmrelease", "kustomization"]
-  #     fail-fast: false
+  diff:
+    if: ${{ needs.filter.outputs.clusters != '[]' }}
+    needs: filter
+    name: Flux Local - Diff
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    strategy:
+      matrix:
+        cluster: ${{ fromJSON(needs.filter.outputs.clusters) }}
+        resource:
+          - helmrelease
+          - kustomization
+      max-parallel: 4
+      fail-fast: false
+    steps:
+      # https://github.com/marketplace/actions/checkout
+      - name: Checkout Pull Request Branch
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          path: pull
+          persist-credentials: false
 
-  # flux-diff:
-  #   name: Flux Diff
-  #   runs-on: ubuntu-latest
-  #   needs:
-  #     - changed-clusters
-  #   permissions:
-  #     pull-requests: write
-  #   strategy:
-  #     matrix:
-  #       paths: ${{ fromJSON(needs.changed-clusters.outputs.matrix) }}
-  #       resources:
-  #         - helmrelease
-  #         - kustomization
-  #     max-parallel: 4
-  #     fail-fast: false
-  #   steps:
-  #     # https://github.com/marketplace/actions/create-github-app-token
-  #     - name: Generate Token
-  #       uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2.0.6
-  #       if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
-  #       id: app-token
-  #       with:
-  #         app-id: ${{ secrets.BOT_APP_ID }}
-  #         private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+      # https://github.com/marketplace/actions/checkout
+      - name: Checkout Default Branch
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          path: default
+          persist-credentials: false
+          ref: "${{ github.event.repository.default_branch }}"
 
-  #     # https://github.com/marketplace/actions/checkout
-  #     - name: Checkout
-  #       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-  #       with:
-  #         token: "${{ steps.app-token.outputs.token }}"
-  #         path: pull
+      - name: Run flux-local diff
+        uses: docker://ghcr.io/allenporter/flux-local:v7.5.0@sha256:2111f5e96e65bfdb7cee71f3384cdfae0de1a6a2ce5b95d0fa6de8142c3314d1
+        with:
+          args: >-
+            diff ${{ matrix.resource }}
+            --unified 6
+            --path /github/workspace/pull/kubernetes/${{ matrix.cluster }}/flux
+            --path-orig /github/workspace/default/kubernetes/${{ matrix.cluster }}/flux
+            --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart"
+            --limit-bytes 10000
+            --all-namespaces
+            --sources "flux-system"
+            --output-file diff.patch
 
-  #     # https://github.com/marketplace/actions/checkout
-  #     - name: Checkout Default Branch
-  #       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-  #       with:
-  #         token: "${{ steps.app-token.outputs.token }}"
-  #         ref: "${{ github.event.repository.default_branch }}"
-  #         path: default
+      - name: Generate Diff
+        id: diff
+        run: |
+          echo 'diff<<EOF' >> $GITHUB_OUTPUT
+          cat diff.patch >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
 
-  #     - name: Diff Resources
-  #       uses: docker://ghcr.io/allenporter/flux-local:v7.5.0@sha256:2111f5e96e65bfdb7cee71f3384cdfae0de1a6a2ce5b95d0fa6de8142c3314d1
-  #       with:
-  #         args: >-
-  #           diff ${{ matrix.resources }}
-  #           --unified 6
-  #           --path /github/workspace/pull/${{ matrix.paths }}/flux
-  #           --path-orig /github/workspace/default/${{ matrix.paths }}/flux
-  #           --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart"
-  #           --limit-bytes 10000
-  #           --all-namespaces
-  #           --sources "home-ops"
-  #           --output-file diff.patch
+      # https://github.com/marketplace/actions/create-github-app-token
+      - if: ${{ steps.diff.outputs.diff != '' && github.event.pull_request.head.repo.full_name == github.repository }}
+        name: Generate Token
+        uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2.0.6
+        id: app-token
+        with:
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
 
-  #     - name: Generate Diff
-  #       id: diff
-  #       run: |
-  #         cat diff.patch;
-  #         {
-  #           echo 'diff<<EOF'
-  #           cat diff.patch
-  #           echo EOF
-  #         } >> "$GITHUB_OUTPUT";
-  #         {
-  #           echo "### Diff"
-  #           echo '```diff'
-  #           cat diff.patch
-  #           echo '```'
-  #         } >> "$GITHUB_STEP_SUMMARY"
+      # https://github.com/marketplace/actions/sticky-pull-request-comment
+      - if: ${{ steps.diff.outputs.diff != '' }}
+        name: Add Comment
+        uses: marocchino/sticky-pull-request-comment@67d0dec7b07ed060a405f9b2a64b8ab319fdd7db # v2.9.2
+        with:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+          header: ${{ github.event.pull_request.number }}/${{ matrix.cluster }}/${{ matrix.resource }}
+          message: |
+            ```diff
+            ${{ steps.diff.outputs.diff }}
+            ```
 
-  #     # https://github.com/marketplace/actions/add-pr-comment
-  #     - if: ${{ steps.diff.outputs.diff != '' }}
-  #       name: Add comment
-  #       uses: mshick/add-pr-comment@b8f338c590a895d50bcbfa6c5859251edc8952fc # v2.8.2
-  #       with:
-  #         repo-token: "${{ steps.app-token.outputs.token }}"
-  #         message-id: "${{ github.event.pull_request.number }}/${{ matrix.paths }}/${{ matrix.resources }}"
-  #         message-failure: Diff was not successful
-  #         message: |
-  #           ```diff
-  #           ${{ steps.diff.outputs.diff }}
+  success:
+    if: ${{ !cancelled() }}
+    needs: ["test", "diff"]
+    name: Flux Local - Success
+    runs-on: ubuntu-latest
+    steps:
+      - name: Any jobs failed?
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1
 
-  # flux-diff-success:
-  #   needs:
-  #     - flux-diff
-  #   if: ${{ always() }}
-  #   name: Flux Diff successful
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Check matrix status
-  #       if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
-  #       run: exit 1
+      - name: All jobs passed or skipped?
+        if: ${{ !(contains(needs.*.result, 'failure')) }}
+        run: echo "All jobs passed or skipped" && echo "${{ toJSON(needs.*.result) }}"
