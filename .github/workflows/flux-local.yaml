@@ -107,6 +107,24 @@ jobs:
       max-parallel: 4
       fail-fast: false
     steps:
+      # https://github.com/marketplace/actions/create-github-app-token
+      - if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+        name: Generate Token
+        uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2.0.6
+        id: app-token
+        with:
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+
+      # https://github.com/marketplace/actions/sticky-pull-request-comment
+      - name: Clear Comment
+        uses: marocchino/sticky-pull-request-comment@67d0dec7b07ed060a405f9b2a64b8ab319fdd7db # v2.9.2
+        with:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+          header: ${{ github.event.pull_request.number }}/${{ matrix.cluster }}/${{ matrix.resource }}
+          message: |
+            ## ${{ matrix.cluster }} (${{ matrix.resource }}) - generating diff...
+
       # https://github.com/marketplace/actions/checkout
       - name: Checkout Pull Request Branch
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -152,19 +170,13 @@ jobs:
             cat diff.patch >> $GITHUB_OUTPUT
             echo 'EOF' >> $GITHUB_OUTPUT
           else
-            echo 'diff<<EOF' >> $GITHUB_OUTPUT
-            echo 'no ${{ matrix.resource }} objects found in cluster' >> $GITHUB_OUTPUT
-            echo 'EOF' >> $GITHUB_OUTPUT
+            echo 'no ${{ matrix.resource }} objects found in cluster' 1>&2
+            exit 1
           fi
 
-      # https://github.com/marketplace/actions/create-github-app-token
-      - if: ${{ steps.diff.outputs.diff != '' && github.event.pull_request.head.repo.full_name == github.repository }}
-        name: Generate Token
-        uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2.0.6
-        id: app-token
-        with:
-          app-id: ${{ secrets.BOT_APP_ID }}
-          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+      - name: Get current time
+        id: current-time
+        run: echo "time=$(date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_OUTPUT
 
       # https://github.com/marketplace/actions/sticky-pull-request-comment
       - if: ${{ steps.diff.outputs.diff != '' }}
@@ -174,7 +186,7 @@ jobs:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           header: ${{ github.event.pull_request.number }}/${{ matrix.cluster }}/${{ matrix.resource }}
           message: |
-            ${{ matrix.cluster }}:
+            ## ${{ matrix.cluster }} (${{ matrix.resource }}) - ${{ steps.current-time.outputs.time }}
             ```diff
             ${{ steps.diff.outputs.diff }}
             ```
