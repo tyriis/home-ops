@@ -30,7 +30,6 @@ spec:
       oauth2-proxy:
         annotations:
           reloader.stakater.com/auto: "true"
-          test.techtales.io/enabled: "false"
         containers:
           app:
             image:
