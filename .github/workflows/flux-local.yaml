@@ -123,7 +123,7 @@ jobs:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           header: ${{ github.event.pull_request.number }}/${{ matrix.cluster }}/${{ matrix.resource }}
           message: |
-            ## ${{ matrix.cluster }} (${{ matrix.resource }}) - generating diff...
+            ### ${{ matrix.cluster }} (${{ matrix.resource }}) - generating diff...
 
       # https://github.com/marketplace/actions/checkout
       - name: Checkout Pull Request Branch
@@ -165,7 +165,7 @@ jobs:
       - name: Generate Diff
         id: diff
         run: |
-          if [ -f diff.patch ]; then
+          if [ -f diff.patch ] && [ -s diff.patch ]; then
             echo 'diff<<EOF' >> $GITHUB_OUTPUT
             cat diff.patch >> $GITHUB_OUTPUT
             echo 'EOF' >> $GITHUB_OUTPUT
@@ -177,7 +177,7 @@ jobs:
 
       - name: Get current time
         id: current-time
-        run: echo "time=$(date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_OUTPUT
+        run: echo "time=$(date +'%Y-%m-%d %H:%M:%S %Z')" >> $GITHUB_OUTPUT
 
       # https://github.com/marketplace/actions/sticky-pull-request-comment
       - if: ${{ steps.diff.outputs.diff != '' }}
@@ -187,7 +187,7 @@ jobs:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           header: ${{ github.event.pull_request.number }}/${{ matrix.cluster }}/${{ matrix.resource }}
           message: |
-            ## ${{ matrix.cluster }} (${{ matrix.resource }}) - ${{ steps.current-time.outputs.time }}
+            ### ${{ matrix.cluster }} (${{ matrix.resource }}) - ${{ steps.current-time.outputs.time }}
             ```diff
             ${{ steps.diff.outputs.diff }}
             ```
