@@ -171,7 +171,7 @@ jobs:
             echo 'EOF' >> $GITHUB_OUTPUT
           else
             echo 'diff<<EOF' >> $GITHUB_OUTPUT
-            echo 'no ${{ matrix.resource }} objects found in cluster' >> $GITHUB_OUTPUT
+            echo 'no changes found' >> $GITHUB_OUTPUT
             echo 'EOF' >> $GITHUB_OUTPUT
           fi
 
