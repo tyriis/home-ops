@@ -21,7 +21,7 @@ spec:
     accessModes:
       - ReadWriteOnce
     moverSecurityContext:
-      runAsUser: 1024
+      runAsUser: 1000
       runAsGroup: 100
       fsGroup: 100
     retain:
