@@ -8,5 +8,5 @@ resources:
   - persistent-volume.yaml
   - persistent-volume-claim.yaml
   - replication-source.yaml
-  - replication-destination.yaml
+  # - replication-destination.yaml
   - helm-release.yaml

@@ -21,11 +21,11 @@ spec:
     accessModes:
       - ReadWriteOnce
     moverSecurityContext:
-      runAsUser: 1000
-      runAsGroup: 1000
-      fsGroup: 1000
+      runAsUser: 1024
+      runAsGroup: 100
+      fsGroup: 100
     retain:
-      hourly: 24
-      daily: 7
-      weekly: 4
-      monthly: 3
+      daily: 7 # Keep only the last 7 days
+      hourly: 0 # No hourly snapshots
+      weekly: 0 # No weekly snapshots
+      monthly: 0 # No monthly snapshots
