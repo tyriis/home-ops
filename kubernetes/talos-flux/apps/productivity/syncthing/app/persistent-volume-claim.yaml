@@ -12,3 +12,23 @@ spec:
       storage: 10Gi
   volumeName: syncthing-data
   storageClassName: syncthing-nfs
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.32.2-standalone-strict/persistentvolumeclaim-v1.json
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: &name syncthing-config
+  labels:
+    kustomize.toolkit.fluxcd.io/prune: disabled
+spec:
+  accessModes:
+    - ReadWriteOnce
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: *name
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-block

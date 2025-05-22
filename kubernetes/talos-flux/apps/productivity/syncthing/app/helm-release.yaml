@@ -30,7 +30,7 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 1024
+        runAsUser: 1000
         runAsGroup: 100
         fsGroup: 100
         fsGroupChangePolicy: OnRootMismatch
@@ -129,11 +129,7 @@ spec:
 
     persistence:
       config:
-        forceRename: syncthing-config
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
+        existingClaim: syncthing-config
         advancedMounts:
           syncthing:
             app:
