@@ -40,6 +40,12 @@ spec:
       syncthing:
         containers:
           app:
+            securityContext:
+              runAsUser: 1024
+              runAsGroup: 100
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             image:
               repository: syncthing/syncthing
               tag: 1.29.6@sha256:82e1abb0307008263b8287813a4367efee9db4f877759f8d41f0485ce2658e90
@@ -50,8 +56,8 @@ spec:
               limits:
                 memory: 265Mi
             env:
-              PUID: "1000"
-              PGID: "1000"
+              PUID: "1024"
+              PGID: "100"
             ports:
               - containerPort: 8384
                 name: http
