@@ -45,4 +45,4 @@ spec:
     - name: cloudnative-pg
     - name: dbman
     - name: minio
-      namespace: flux-system
+      namespace: minio-system
