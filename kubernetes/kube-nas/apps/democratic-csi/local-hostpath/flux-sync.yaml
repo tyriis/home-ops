@@ -4,21 +4,25 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname local-hostpath
-  namespace: flux-system
   labels:
-    substitution.flux.home.arpa/enabled: "true"
+    substitution.flux.home.arpa/enabled: "false"
+    sops.flux.home.arpa/enabled: "false"
 spec:
   targetNamespace: democratic-csi
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
   path: ./kubernetes/kube-nas/apps/democratic-csi/local-hostpath/app
-  prune: true
+  prune: false # lets not prune our local storage layer
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
   dependsOn: []
+  postBuild:
+    substitute:
+      SETTING_CLUSTERNAME: kube-nas
