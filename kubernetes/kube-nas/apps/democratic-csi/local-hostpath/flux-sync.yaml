@@ -13,7 +13,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   path: ./kubernetes/kube-nas/apps/democratic-csi/local-hostpath/app
-  prune: true
+  prune: false # lets not prune our local storage layer
   sourceRef:
     kind: GitRepository
     name: home-ops
