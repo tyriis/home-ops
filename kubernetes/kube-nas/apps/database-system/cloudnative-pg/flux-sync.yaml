@@ -4,7 +4,6 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname cloudnative-pg
-  namespace: flux-system
 spec:
   targetNamespace: database-system
   commonMetadata:
@@ -15,6 +14,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   interval: 30m
   retryInterval: 1m
@@ -26,7 +26,6 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname cloudnative-pg-cluster
-  namespace: flux-system
 spec:
   targetNamespace: database-system
   commonMetadata:
@@ -37,6 +36,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   interval: 30m
   retryInterval: 1m
@@ -45,3 +45,4 @@ spec:
     - name: cloudnative-pg
     - name: dbman
     - name: minio
+      namespace: flux-system
