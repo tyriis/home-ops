@@ -129,11 +129,7 @@ spec:
 
     persistence:
       config:
-        forceRename: syncthing-config
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
+        existingClaim: syncthing-config
         advancedMounts:
           syncthing:
             app:
