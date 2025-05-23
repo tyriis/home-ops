@@ -25,4 +25,4 @@ spec:
   dependsOn: []
   postBuild:
     substitute:
-      SETTING_CLUSTER_NAME: kube-nas
+      SETTING_CLUSTERNAME: kube-nas
