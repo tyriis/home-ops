@@ -64,7 +64,7 @@ spec:
         serviceMonitor:
           # TODO: enable me
           enabled: false
-          namespace: nginx-ingress
+          namespace: ingress-nginx
           namespaceSelector:
             any: true
       resources:
