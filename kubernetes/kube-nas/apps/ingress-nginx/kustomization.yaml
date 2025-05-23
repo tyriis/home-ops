@@ -6,4 +6,4 @@ namespace: ingress-nginx
 components:
   - ../../../components/common
 resources:
-  - ./nginx/flux-sync.yaml
+  - ./ingress-nginx/flux-sync.yaml
