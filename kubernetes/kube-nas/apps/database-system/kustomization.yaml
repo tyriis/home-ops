@@ -2,9 +2,12 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: database-system
+components:
+  - ../../../components/common
+  - ../../../components/kube-nas
 resources:
   - ../../../base/flux/repositories/git/dragonfly-operator.yaml
-  - namespace.yaml
   - ./cloudnative-pg/flux-sync.yaml
   - ./dbman/flux-sync.yaml
   - ./dragonfly/flux-sync.yaml

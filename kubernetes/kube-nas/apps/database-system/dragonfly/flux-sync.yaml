@@ -4,7 +4,6 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname dragonfly-crds
-  namespace: flux-system
 spec:
   prune: true
   sourceRef:
@@ -22,7 +21,6 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname dragonfly-operator
-  namespace: flux-system
 spec:
   targetNamespace: database-system
   commonMetadata:
@@ -41,7 +39,6 @@ spec:
   timeout: 5m
   dependsOn:
     - name: dragonfly-crds
-      namespace: flux-system
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -49,7 +46,6 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname dragonfly-cluster
-  namespace: flux-system
 spec:
   targetNamespace: database-system
   commonMetadata:
