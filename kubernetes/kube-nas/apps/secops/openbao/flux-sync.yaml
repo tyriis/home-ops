@@ -53,4 +53,3 @@ spec:
   dependsOn:
     - name: openbao
     - name: external-secrets-stores
-      namespace: external-secrets
