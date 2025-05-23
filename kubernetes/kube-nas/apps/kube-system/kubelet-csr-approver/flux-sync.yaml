@@ -6,7 +6,8 @@ metadata:
   name: &appname kubelet-csr-approver
   namespace: flux-system
   labels:
-    substitution.flux.home.arpa/enabled: "true"
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: kube-system
   commonMetadata:
