@@ -5,8 +5,8 @@ kind: Kustomization
 metadata:
   name: &appname local-hostpath
   labels:
-    substitution.flux.home.arpa/enabled: "false"
-    sops.flux.home.arpa/enabled: "false"
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: democratic-csi
   commonMetadata:
