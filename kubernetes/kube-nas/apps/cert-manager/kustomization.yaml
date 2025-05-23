@@ -5,6 +5,6 @@ kind: Kustomization
 namespace: cert-manager
 components:
   - ../../../components/common
-  # - ../../../components/kube-nas
+  - ../../../components/kube-nas
 resources:
   - ./cert-manager/flux-sync.yaml

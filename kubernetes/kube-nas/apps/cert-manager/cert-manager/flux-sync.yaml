@@ -31,7 +31,6 @@ metadata:
   name: &appname cert-manager-issuers
   labels:
     substitution.flux.home.arpa/disabled: "true"
-    sops.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: cert-manager
   commonMetadata:
