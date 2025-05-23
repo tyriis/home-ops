@@ -110,7 +110,7 @@ repos:
       - id: forbid-secrets
         exclude: |
           (?x)^(
-            kubernetes/kube-nas/apps/secops/openbao-auth.yaml|
+            kubernetes/kube-nas/apps/secops/rbac.yaml|
             kubernetes/talos-flux/apps/secops/vault-auth.yaml|
             kubernetes/talos-flux/apps/devops/tekton/triggers/interceptors.yaml|
             kubernetes/talos-flux/apps/devops/tekton/triggers/release.yaml
