@@ -9,7 +9,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: dragonfly-operator
-    namespace: flux-system
   wait: true
   interval: 30m
   retryInterval: 1m
