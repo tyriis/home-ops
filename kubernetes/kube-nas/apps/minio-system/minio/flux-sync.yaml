@@ -12,7 +12,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   path: ./kubernetes/kube-nas/apps/minio-system/minio/app
-  prune: true
+  prune: false # should never be deleted
   sourceRef:
     kind: GitRepository
     name: home-ops
