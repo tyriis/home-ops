@@ -4,9 +4,8 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname harbor
-  namespace: flux-system
   labels:
-    substitution.flux.home.arpa/enabled: "true"
+    substitution.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: oci-registry
   commonMetadata:
@@ -17,9 +16,13 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: nginx-ingress
+    - name: ingress-nginx
+      namespace: ingress-nginx
+    - name: local-hostpath
+      namespace: democratic-csi
