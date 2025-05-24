@@ -6,6 +6,5 @@ namespace: cert-manager
 components:
   - ../../../components/common
   - ../../../components/sops/kube-nas
-  - ../../../components/kube-nas
 resources:
   - ./cert-manager/flux-sync.yaml

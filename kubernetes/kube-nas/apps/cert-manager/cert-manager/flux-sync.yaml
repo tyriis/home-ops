@@ -45,3 +45,6 @@ spec:
   timeout: 5m
   dependsOn:
     - name: cert-manager
+  postBuild:
+    substitute:
+      SECRET_CLOUDFLARE_EMAIL: ${SECRET_CLOUDFLARE_EMAIL}
