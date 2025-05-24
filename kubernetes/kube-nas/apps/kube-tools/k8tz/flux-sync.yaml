@@ -12,7 +12,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: ./kubernetes/${SETTING_CLUSTERNAME}/apps/kube-tools/k8tz/app
+  path: ./kubernetes/kube-nas/apps/kube-tools/k8tz/app
   prune: true
   sourceRef:
     kind: GitRepository
