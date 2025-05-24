@@ -26,8 +26,9 @@ spec:
       retries: 5
   uninstall:
     keepHistory: false
+  # https://artifacthub.io/packages/helm/cert-manager/cert-manager?modal=values-schema
   values:
     crds:
       enabled: true
-    dns01RecursiveNameservers:
+    dns01RecursiveNameservers: https://1.1.1.1:443/dns-query,https://1.0.0.1:443/dns-query
     dns01RecursiveNameserversOnly: true
