@@ -5,5 +5,6 @@ kind: Kustomization
 namespace: ingress-nginx
 components:
   - ../../../components/common
+  - ../../../components/sops/kube-nas
 resources:
   - ./ingress-nginx/flux-sync.yaml

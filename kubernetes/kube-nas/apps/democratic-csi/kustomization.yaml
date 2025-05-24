@@ -5,6 +5,6 @@ kind: Kustomization
 namespace: democratic-csi
 components:
   - ../../../components/common
-  - ../../../components/kube-nas
+  - ../../../components/sops/kube-nas
 resources:
   - ./local-hostpath/flux-sync.yaml

@@ -5,6 +5,7 @@ kind: Kustomization
 namespace: bunkerweb-ingress
 components:
   - ../../../components/common
+  - ../../../components/sops/kube-nas
   - ../../../components/kube-nas
 resources:
   - ./bunkerweb/flux-sync.yaml
