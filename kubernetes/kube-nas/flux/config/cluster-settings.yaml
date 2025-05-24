@@ -8,4 +8,3 @@ metadata:
 data:
   SETTING_CLUSTERNAME: kube-nas
   SETTING_TZ: Europe/Vienna
-  SETTING_GATEWAY: 192.168.1.1
