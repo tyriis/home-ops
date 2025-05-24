@@ -8,7 +8,7 @@ metadata:
 spec:
   targetNamespace: flux-system
   path: ./kubernetes/base/flux/repositories/helm
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
@@ -86,6 +86,8 @@ spec:
     secretRef:
       name: sops-age
   postBuild:
+    substitute:
+      SETTING_CLUSTERNAME: kube-nas
     substituteFrom:
       - kind: ConfigMap
         name: cluster-settings
