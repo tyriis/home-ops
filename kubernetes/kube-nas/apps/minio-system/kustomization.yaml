@@ -5,6 +5,7 @@ kind: Kustomization
 namespace: minio-system
 components:
   - ../../../components/common
+  - ../../../components/sops/kube-nas
   - ../../../components/kube-nas
 resources:
   - ./minio/flux-sync.yaml

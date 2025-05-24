@@ -5,6 +5,7 @@ kind: Kustomization
 namespace: database-system
 components:
   - ../../../components/common
+  - ../../../components/sops/kube-nas
   - ../../../components/kube-nas
 resources:
   - ../../../base/flux/repositories/git/dragonfly-operator.yaml

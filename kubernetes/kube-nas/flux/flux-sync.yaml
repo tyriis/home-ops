@@ -107,7 +107,7 @@ spec:
         group: kustomize.toolkit.fluxcd.io
         version: v1
         kind: Kustomization
-        labelSelector: substitution.flux.home.arpa/disabled notin (true)
+        labelSelector: cluster-secrets.flux.home.arpa/enabled in (true)
     - patch: |-
         apiVersion: kustomize.toolkit.fluxcd.io/v1
         kind: Kustomization
