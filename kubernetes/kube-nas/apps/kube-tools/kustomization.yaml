@@ -5,6 +5,8 @@ kind: Kustomization
 namespace: kube-tools
 components:
   - ../../../components/common
+  - ../../../components/sops/kube-nas
   - ../../../components/kube-nas
 resources:
   - ./reloader/flux-sync.yaml
+  - ./k8tz/flux-sync.yaml

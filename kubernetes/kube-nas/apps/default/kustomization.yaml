@@ -5,6 +5,6 @@ kind: Kustomization
 namespace: default
 components:
   - ../../../components/common
-  - ../../../components/kube-nas
+  - ../../../components/sops/kube-nas
 resources:
   - ./echo-server/flux-sync.yaml
