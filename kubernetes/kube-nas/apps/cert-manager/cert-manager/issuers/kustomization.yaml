@@ -3,7 +3,19 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - cluster-issuer-self-signed.yaml
   - secret.sops.yaml
-  - cluster-issuer-staging.yaml
-  - cluster-issuer-production.yaml
+  - helm-release.yaml
+configMapGenerator:
+  - name: cluster-issuer-selfsigned
+    files:
+      - values.yaml=./cluster-issuer-selfsigned.yaml
+  - name: cluster-issuer-staging
+    files:
+      - values.yaml=./cluster-issuer-staging.yaml
+  - name: cluster-issuer-production
+    files:
+      - values.yaml=./cluster-issuer-production.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+configurations:
+  - kustomize-config.yaml

@@ -22,4 +22,4 @@ spec:
   dependsOn: []
   postBuild:
     substitute:
-      SETTING_CLUSTERNAME: ${SETTING_CLUSTERNAME}
+      FLUX_CLUSTER_NAME: ${FLUX_CLUSTER_NAME}
