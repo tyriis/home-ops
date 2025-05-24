@@ -6,6 +6,5 @@ namespace: oci-registry
 components:
   - ../../../components/common
   - ../../../components/sops/kube-nas
-  - ../../../components/kube-nas
 resources:
   - ./harbor/flux-sync.yaml

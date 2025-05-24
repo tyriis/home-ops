@@ -26,8 +26,6 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname cert-manager-issuers
-  labels:
-    cluster-secrets.flux.home.arpa/enabled: "true"
 spec:
   targetNamespace: cert-manager
   commonMetadata:
@@ -45,6 +43,3 @@ spec:
   timeout: 5m
   dependsOn:
     - name: cert-manager
-  postBuild:
-    substitute:
-      SECRET_CLOUDFLARE_EMAIL: ${SECRET_CLOUDFLARE_EMAIL}
