@@ -87,7 +87,7 @@ spec:
       name: sops-age
   postBuild:
     substitute:
-      SETTING_CLUSTERNAME: kube-nas
+      FLUX_CLUSTER_NAME: kube-nas
   patches:
     - patch: |-
         apiVersion: kustomize.toolkit.fluxcd.io/v1

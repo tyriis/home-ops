@@ -13,6 +13,7 @@ spec:
     solvers:
       - dns01:
           cloudflare:
+            email: placeholder@example.com
             apiKeySecretRef:
               name: cloudflare-api-key
               key: techtales.io
