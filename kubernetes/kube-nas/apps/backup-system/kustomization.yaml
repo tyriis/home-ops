@@ -6,7 +6,6 @@ namespace: backup-system
 components:
   - ../../../components/common
   - ../../../components/sops/kube-nas
-  # - ../../../components/kube-nas
 resources:
   - ./snapshot-controller/flux-sync.yaml
   - ./volsync/flux-sync.yaml

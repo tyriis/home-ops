@@ -6,7 +6,6 @@ namespace: secops
 components:
   - ../../../components/common
   - ../../../components/sops/kube-nas
-  - ../../../components/kube-nas
 resources:
   - ./rbac.yaml
   - ./external-secrets/flux-sync.yaml

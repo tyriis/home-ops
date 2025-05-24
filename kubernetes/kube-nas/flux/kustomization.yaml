@@ -5,5 +5,4 @@ kind: Kustomization
 namespace: flux-system
 resources:
   - flux-sync.yaml
-  - config/cluster-secrets.sops.yaml
   - config/sops-age.sops.yaml

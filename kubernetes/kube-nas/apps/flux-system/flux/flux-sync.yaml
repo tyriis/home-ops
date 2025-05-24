@@ -5,8 +5,6 @@ kind: Kustomization
 metadata:
   name: &appname flux-webhook
   namespace: flux-system
-  labels:
-    cluster-secrets.flux.home.arpa/enabled: "true"
 spec:
   targetNamespace: flux-system
   commonMetadata:
