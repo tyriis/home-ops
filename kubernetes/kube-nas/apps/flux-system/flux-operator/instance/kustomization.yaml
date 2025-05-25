@@ -5,3 +5,11 @@ kind: Kustomization
 resources:
   - ./oci-repository.yaml
   - ./helm-release.yaml
+configMapGenerator:
+  - name: flux-instance-crd
+    files:
+      - values.yaml=./flux-instance.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+configurations:
+  - kustomize-config.yaml
