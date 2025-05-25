@@ -8,7 +8,7 @@ resources:
   - replication-destination.yaml
   - persistent-volume-claim.yaml
   - replication-source.yaml
-  - helm-release.yaml
+  - ../../../../../base/apps/minecraft/paper-server/helm-release.yaml
 configMapGenerator:
   - name: minecraft-public-pvp-world-config
     files:
@@ -19,3 +19,5 @@ generatorOptions:
   disableNameSuffixHash: true
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
+patches:
+  - path: ./helm-values.yaml
