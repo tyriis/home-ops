@@ -10,4 +10,11 @@ spec:
     - name: external-secret-minecraft-curseforge-api-key
   interval: 30m
   # https://bjw-s-labs.github.io/helm-charts/docs/app-template/
-  # values: {}
+  values:
+    controllers:
+      minecraft:
+        containers:
+          app:
+            env:
+              PAPER_DOWNLOAD_URL: https://api.papermc.io/v2/projects/paper/versions/1.21.5/builds/92/downloads/paper-1.21.5-92.jar
+              MEMORY: 1024M
