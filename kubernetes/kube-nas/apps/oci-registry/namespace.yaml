@@ -4,5 +4,5 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: oci-registry
-  labels:
+  annotations:
     kustomize.toolkit.fluxcd.io/prune: disabled
