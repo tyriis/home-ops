@@ -7,6 +7,7 @@ resources:
   - ./alertmanager-discord/flux-sync.yaml
   - ./blackbox-exporter/flux-sync.yaml
   - ./botkube/flux-sync.yaml
+  - ./gatus/flux-sync.yaml
   - ./grafana/flux-sync.yaml
   - ./kromgo/flux-sync.yaml
   - ./kube-prometheus-stack/flux-sync.yaml
@@ -16,4 +17,3 @@ resources:
   - ./smartctl-exporter/flux-sync.yaml
   - ./speedtest-exporter/flux-sync.yaml
   - ./unpoller/flux-sync.yaml
-  - ./uptime-kuma/flux-sync.yaml

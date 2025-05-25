@@ -3,22 +3,23 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname uptime-kuma
+  name: &appname gatus
   namespace: flux-system
 spec:
   targetNamespace: observability
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: ./kubernetes/talos-flux/apps/observability/uptime-kuma/app
+  path: ./kubernetes/talos-flux/apps/observability/gatus/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
-  wait: true
+    namespace: flux-system
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  wait: false
   dependsOn:
     - name: rook-ceph-cluster
-    - name: traefik
+    - name: kube-prometheus-stack
