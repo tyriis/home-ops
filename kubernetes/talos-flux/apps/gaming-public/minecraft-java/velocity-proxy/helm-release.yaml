@@ -62,9 +62,8 @@ spec:
               UID: "1000"
               GID: "1000"
               TYPE: "VELOCITY"
-              # TODO renovate
+              # renovate: depName=minecraft/velocity datasource=custom.minecraft-velocity versioning=maven
               VELOCITY_VERSION: "3.4.0-SNAPSHOT"
-              # VELOCITY_BUILD_ID: "latest"
               PLUGINS_FILE: /config/plugins.txt
               INIT_MEMORY: 128M
               MAX_MEMORY: 256M
