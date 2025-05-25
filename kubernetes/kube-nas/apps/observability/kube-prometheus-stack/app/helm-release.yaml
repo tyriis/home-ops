@@ -25,6 +25,9 @@ spec:
     crds: CreateReplace
     remediation:
       retries: 3
+  dependsOn:
+    - name: local-hostpath
+      namespace: democratic-csi
   uninstall:
     keepHistory: false
   valuesFrom:
@@ -36,6 +39,8 @@ spec:
       name: prometheus-values
   # https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack?modal=values
   values:
+    crds:
+      enabled: true
     cleanPrometheusOperatorObjectNames: true
 
     fullnameOverride: prometheus
@@ -78,7 +83,7 @@ spec:
 
     grafana:
       enabled: false
-      forceDeployDashboards: true
+      forceDeployDashboards: false
       sidecar:
         dashboards:
           annotations:
@@ -91,12 +96,6 @@ spec:
       enabled: true
       serviceMonitor:
         metricRelabelings:
-          # lens ide config
-          # see https://github.com/lensapp/lens/blob/33c405bdcf86ff755069ce50a21efbf10985810e/troubleshooting/custom-prometheus.md
-          - action: replace
-            sourceLabels:
-              - node
-            targetLabel: instance
           # Drop high cardinality labels by onedr0p
           - action: labeldrop
             regex: (uid)
