@@ -3,13 +3,8 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app minecraft-lobby-world
+  name: ${APP}
 spec:
-  dependsOn:
-    - name: external-secret-minecraft-proxy-forwarding
-    - name: external-secret-minecraft-rcon
-    - name: external-secret-minecraft-curseforge-api-key
-    - name: external-secret-minecraft-bluemap-postgres
   interval: 30m
   driftDetection:
     mode: enabled
@@ -28,7 +23,9 @@ spec:
   upgrade:
     remediation:
       retries: 3
-  # https://github.com/bjw-s/helm-charts/blob/main/charts/library/common/values.yaml
+  uninstall:
+    keepHistory: false
+  # https://bjw-s-labs.github.io/helm-charts/docs/app-template/
   values:
     defaultPodOptions:
       automountServiceAccountToken: false
@@ -44,7 +41,6 @@ spec:
       minecraft:
         annotations:
           reloader.stakater.com/auto: "true"
-
         containers:
           app:
             image:
@@ -73,14 +69,14 @@ spec:
               - secretRef:
                   name: curseforge-api-key
               - configMapRef:
-                  name: minecraft-lobby-world-env
+                  name: ${APP}-env
             env:
               # https://docker-minecraft-server.readthedocs.io/en/latest/variables
               TZ: ${SETTING_TZ}
               TYPE: "PAPER"
-              # TODO renovate
-              VERSION: "1.21.4"
-              MEMORY: "1024M"
+              # renovate custom manager for 1.21.5 builds
+              PAPER_DOWNLOAD_URL: https://api.papermc.io/v2/projects/paper/versions/1.21.5/builds/92/downloads/paper-1.21.5-92.jar
+              MEMORY: 1024M
               MODS_FILE: /config/plugins.txt
               REPLACE_ENV_DURING_SYNC: "true"
               CFG_PROXY_SECRET:
@@ -88,16 +84,6 @@ spec:
                   secretKeyRef:
                     name: minecraft-proxy-forwarding
                     key: forwarding.secret
-              CFG_BLUEMAP_DATABASE_USER:
-                valueFrom:
-                  secretKeyRef:
-                    name: minecraft-bluemap-postgres
-                    key: INIT_POSTGRES_USER
-              CFG_BLUEMAP_DATABASE_PASS:
-                valueFrom:
-                  secretKeyRef:
-                    name: minecraft-bluemap-postgres
-                    key: INIT_POSTGRES_PASS
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
@@ -115,7 +101,7 @@ spec:
             resources:
               requests:
                 cpu: 100m
-                memory: 1Gi
+                memory: 1500Mi
 
     service:
       minecraft:
@@ -139,7 +125,7 @@ spec:
     serviceMonitor:
       metrics:
         enabled: true
-        serviceName: minecraft-lobby-world-minecraft
+        serviceName: ${APP}-minecraft
         endpoints:
           - port: metrics
             scheme: http
@@ -148,14 +134,14 @@ spec:
 
     persistence:
       data:
-        existingClaim: minecraft-lobby-world-data
+        existingClaim: ${APP}-data
         advancedMounts:
           minecraft:
             app:
               - path: /data
       config:
         type: configMap
-        name: minecraft-lobby-world-config
+        name: ${APP}-config
         globalMounts:
           - path: /config/spigot.yml
             subPath: spigot.yml
@@ -165,17 +151,4 @@ spec:
             readOnly: true
           - path: /config/plugins.txt
             subPath: plugins.txt
-            readOnly: true
-      plugins:
-        type: configMap
-        name: minecraft-lobby-world-plugins
-        globalMounts:
-          - path: /plugins/BlueMap/storages/sql.conf
-            subPath: bluemap_sql.conf
-            readOnly: true
-          - path: /plugins/BlueMap/core.conf
-            subPath: bluemap_core.conf
-            readOnly: true
-          - path: /plugins/BlueMap/maps/lobby.conf
-            subPath: bluemap_map_lobby.conf
             readOnly: true
