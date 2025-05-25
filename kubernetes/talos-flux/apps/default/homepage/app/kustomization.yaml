@@ -22,4 +22,4 @@ configMapGenerator:
       - custom.css=config/custom.css
       - custom.js=config/custom.js
 components:
-  - ../../../../../components/flux/generator-options.yaml
+  - ../../../../../components/flux/generator-options
