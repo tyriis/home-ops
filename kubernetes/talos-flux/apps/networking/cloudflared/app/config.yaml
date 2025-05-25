@@ -77,6 +77,10 @@ ingress:
     service: https://flux-webhook-kube-nas.techtales.io
     originRequest:
       httpHostHeader: flux-webhook-kube-nas.techtales.io
+  - hostname: status.techtales.io
+    service: https://status.techtales.io
+    originRequest:
+      httpHostHeader: status.techtales.io
   # - hostname: minecraft.techtales.io
   #   service: "tcp://minecraft-public-velocity-proxy.gaming-public.svc.cluster.local:25565"
   #   originRequest:
