@@ -6,5 +6,6 @@ namespace: bunkerweb-ingress
 components:
   - ../../../components/common
   - ../../../components/sops/kube-nas
+  - ../../../components/flux/alerts
 resources:
   - ./bunkerweb/flux-sync.yaml

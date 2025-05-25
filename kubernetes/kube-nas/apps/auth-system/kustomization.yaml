@@ -6,5 +6,6 @@ namespace: auth-system
 components:
   - ../../../components/common
   - ../../../components/sops/kube-nas
+  - ../../../components/flux/alerts
 resources:
   - ./oauth2-proxy/flux-sync.yaml

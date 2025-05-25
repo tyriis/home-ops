@@ -6,5 +6,6 @@ namespace: external-dns
 components:
   - ../../../components/common
   - ../../../components/sops/kube-nas
+  - ../../../components/flux/alerts
 resources:
   - ./external-dns/flux-sync.yaml

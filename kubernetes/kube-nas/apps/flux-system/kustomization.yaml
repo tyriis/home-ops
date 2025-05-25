@@ -6,6 +6,7 @@ namespace: flux-system
 components:
   - ../../../components/common
   - ../../../components/sops/kube-nas
+  - ../../../components/flux/alerts
 resources:
   - ./flux-operator/flux-sync.yaml
   - ./flux/flux-sync.yaml

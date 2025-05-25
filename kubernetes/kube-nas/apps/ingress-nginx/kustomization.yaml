@@ -6,5 +6,6 @@ namespace: ingress-nginx
 components:
   - ../../../components/common
   - ../../../components/sops/kube-nas
+  - ../../../components/flux/alerts
 resources:
   - ./ingress-nginx/flux-sync.yaml
