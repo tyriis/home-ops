@@ -18,6 +18,8 @@
     "github>techtales-io/renovate-config//nix/default.json5",
     "github>tyriis/renovate-config//generic-regex-manager.json5", //  TODO: reconfigure
     "github>techtales-io/renovate-config//dependencies/minecraft-luckperms-plugin.json5",
+    "github>techtales-io/renovate-config//dependencies/minecraft-paper-builds.json5",
+    "github>techtales-io/renovate-config//dependencies/minecraft-velocity.json5",
   ],
   ignorePaths: [
     "archive/**",
