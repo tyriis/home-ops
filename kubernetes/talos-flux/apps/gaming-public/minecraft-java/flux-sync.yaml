@@ -75,6 +75,9 @@ spec:
     - name: volsync
     - name: rook-ceph-cluster
     - name: kube-prometheus-stack
+  postBuild:
+    substitute:
+      APP: *appname
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -102,6 +105,9 @@ spec:
     - name: volsync
     - name: rook-ceph-cluster
     - name: kube-prometheus-stack
+  postBuild:
+    substitute:
+      APP: *appname
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -129,6 +135,9 @@ spec:
     - name: volsync
     - name: rook-ceph-cluster
     - name: kube-prometheus-stack
+  postBuild:
+    substitute:
+      APP: *appname
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -156,3 +165,6 @@ spec:
     - name: volsync
     - name: rook-ceph-cluster
     - name: kube-prometheus-stack
+  postBuild:
+    substitute:
+      APP: *appname
