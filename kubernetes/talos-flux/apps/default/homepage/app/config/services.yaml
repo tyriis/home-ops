@@ -103,12 +103,12 @@
         icon: prometheus
         href: https://prometheus.kube-nas.techtales.io
         description: Monitoring and Alerting Toolkit
-        ping: prometheus.kube-nas.techtales.io
+        siteMonitor: https://prometheus.kube-nas.techtales.io
     - Alertmanager kube-nas:
         icon: alertmanager
         href: https://alertmanager.kube-nas.techtales.io
         description: Alerting system that works with Prometheus
-        ping: alertmanager.kube-nas.techtales.io
+        siteMonitor: https://alertmanager.kube-nas.techtales.io
 - Productivity:
     - Gmail:
         icon: gmail
