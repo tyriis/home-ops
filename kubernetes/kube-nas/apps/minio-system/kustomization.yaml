@@ -6,5 +6,6 @@ namespace: minio-system
 components:
   - ../../../components/common
   - ../../../components/sops/kube-nas
+  - ../../../components/flux/alerts
 resources:
   - ./minio/flux-sync.yaml
