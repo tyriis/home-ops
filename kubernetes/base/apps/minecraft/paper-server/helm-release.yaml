@@ -38,7 +38,7 @@ spec:
         seccompProfile:
           type: RuntimeDefault
     controllers:
-      main:
+      minecraft:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -105,7 +105,7 @@ spec:
 
     service:
       minecraft:
-        controller: main
+        controller: minecraft
         type: ClusterIP
         ports:
           java:
@@ -115,7 +115,7 @@ spec:
             port: 9100
             protocol: TCP
       rcon:
-        controller: main
+        controller: minecraft
         type: ClusterIP
         ports:
           rcon:
