@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   - ./persistent-volume-claim.yaml
   - ./helm-release.yaml
-  - ./prometheu-srule.yaml
+  - ./prometheus-rule.yaml
 configMapGenerator:
   - name: gatus-config
     files:
