@@ -1,0 +1,21 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ${APP}
+spec:
+  dependsOn:
+    - name: external-secret-minecraft-proxy-forwarding
+    - name: external-secret-minecraft-rcon
+    - name: external-secret-minecraft-curseforge-api-key
+  interval: 30m
+  # https://bjw-s-labs.github.io/helm-charts/docs/app-template/
+  values:
+    controllers:
+      minecraft:
+        containers:
+          app:
+            resources:
+              requests:
+                cpu: 500m
+                memory: 4Gi
