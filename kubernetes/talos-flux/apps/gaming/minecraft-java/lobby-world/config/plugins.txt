@@ -4,7 +4,5 @@ https://github.com/Cubxity/UnifiedMetrics/releases/download/v0.3.8/unifiedmetric
 https://download.luckperms.net/1584/bukkit/loader/LuckPerms-Bukkit-5.5.0.jar
 # citizens2 https://ci.citizensnpcs.co/job/Citizens2/
 # https://ci.citizensnpcs.co/job/Citizens2/lastSuccessfulBuild/artifact/dist/target/Citizens-2.0.38-b3765.jar
-# Bluemap https://bluemap.bluecolored.de/wiki/getting-started/ServerNetworks.html
-# https://hangarcdn.papermc.io/plugins/Blue/BlueMap/versions/5.5/PAPER/bluemap-5.5-paper.jar
 # FancyNpcs
 https://hangarcdn.papermc.io/plugins/Oliver/FancyNpcs/versions/2.4.4/PAPER/FancyNpcs-2.4.4.jar

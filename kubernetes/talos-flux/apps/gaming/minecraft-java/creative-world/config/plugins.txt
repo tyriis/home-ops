@@ -11,5 +11,3 @@ https://github.com/oddlama/vane/releases/download/v1.17.3/vane-trifles-1.17.3.ja
 https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/artifact/build/libs/ProtocolLib.jar
 # UnifiedMetrics https://hangar.papermc.io/cubxity/UnifiedMetrics
 https://github.com/Cubxity/UnifiedMetrics/releases/download/v0.3.8/unifiedmetrics-platform-bukkit-0.3.8.jar
-# Bluemap https://bluemap.bluecolored.de/wiki/getting-started/ServerNetworks.html
-# https://hangarcdn.papermc.io/plugins/Blue/BlueMap/versions/5.5/PAPER/bluemap-5.5-paper.jar

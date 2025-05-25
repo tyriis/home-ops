@@ -32,3 +32,5 @@ data:
   STOP_SERVER_ANNOUNCE_DELAY: "30"
   STOP_DURATION: "30"
   USE_AIKAR_FLAGS: "true"
+  PAPER_DOWNLOAD_URL: https://api.papermc.io/v2/projects/paper/versions/1.21.5/builds/92/downloads/paper-1.21.5-92.jar
+  MEMORY: 1024M
