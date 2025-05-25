@@ -134,4 +134,5 @@ repos:
             kubernetes/talos-flux/apps/github/actions-runner-controller/.+/(jazzlyn|organization|tyriis)/.+.yaml|
             kubernetes/talos-flux/apps/atlantis/.+/helm-values.yaml|
             kubernetes/talos-flux/apps/gaming/.+/helm-values.yaml|
+            kubernetes/talos-flux/apps/gaming-public/.+/helm-values.yaml|
           )$()
