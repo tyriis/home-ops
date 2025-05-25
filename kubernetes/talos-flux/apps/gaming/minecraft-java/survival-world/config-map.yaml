@@ -33,3 +33,5 @@ data:
   STOP_DURATION: "30"
   USE_AIKAR_FLAGS: "true"
   SEED: "684058319496482712"
+  PAPER_DOWNLOAD_URL: https://api.papermc.io/v2/projects/paper/versions/1.21.5/builds/92/downloads/paper-1.21.5-92.jar
+  MEMORY: 4096M

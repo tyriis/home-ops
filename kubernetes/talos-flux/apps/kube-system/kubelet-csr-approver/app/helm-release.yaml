@@ -16,7 +16,6 @@ spec:
         namespace: flux-system
       interval: 30m
   values:
-    providerRegex: |
-      ^(talos01|talos02|talos03|talos04|talos05)$
-
+    replicas: 2
+    providerRegex: ^talos\d\d?$
     bypassDnsResolution: true
