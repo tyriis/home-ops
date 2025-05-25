@@ -1,0 +1,63 @@
+---
+prometheus:
+  thanosService:
+    enabled: true
+  thanosServiceMonitor:
+    enabled: true
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-production
+      kubernetes.io/tls-acme: "true"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    hosts:
+      - &host prometheus.kube-nas.techtales.io
+    tls:
+      - secretName: prometheus-tls
+        hosts:
+          - *host
+  prometheusSpec:
+    podMonitorSelectorNilUsesHelmValues: false
+    probeSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+    scrapeConfigSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+    scrapeInterval: 1m # Must match interval in Grafana Helm chart
+    enableAdminAPI: true
+    walCompression: true
+    enableFeatures:
+      - memory-snapshot-on-shutdown
+    retention: 14d
+    retentionSize: 2GB
+    podMetadata:
+      annotations:
+        reloader.stakater.com/auto: "true"
+    externalLabels:
+      cluster: ${FLUX_CLUSTER_NAME}
+    replicas: 1
+    replicaExternalLabelName: __replica__
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: local
+          resources:
+            requests:
+              storage: 10Gi
+    resources:
+      requests:
+        memory: 512Mi
+        cpu: 100m
+
+    thanos:
+      image: quay.io/thanos/thanos:v0.38.0@sha256:365873d05a2f59dbaf3d40f526d3b8a2e66b9882dd6cab9396d16e8410aa46e6
+      version: v0.28.0
+      objectStorageConfig:
+        name: thanos-object-storage-config
+        key: objstore.yml
+
+    podAnnotations:
+      reloader.stakater.com/auto: "true"
+
+    externalUrl: https://prometheus.kube-nas.techtales.io/
