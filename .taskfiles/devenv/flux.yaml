@@ -19,7 +19,7 @@ tasks:
     internal: true
     cmds:
       - |
-        flux push artifact oci://localhost:5050/home-ops-devenv:local \
+        flux push artifact oci://localhost:5050/homeops-devenv:local \
           --path="{{.PROJECT_DIR}}" \
           --source="local" \
           --revision="latest" \
@@ -29,8 +29,8 @@ tasks:
     desc: reconcile local oci registry
     internal: true
     cmds:
-      - kubectl -n flux-system wait ocirepository/home-ops-devenv --for=condition=ready --timeout=10m
-      - flux reconcile source oci home-ops-devenv
+      - kubectl -n flux-system wait ocirepository/homeops-devenv --for=condition=ready --timeout=10m
+      - flux reconcile source oci homeops-devenv
 
   wait-sync-complete:
     desc: wait for flux system to be ready

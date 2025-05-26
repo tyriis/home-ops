@@ -11,7 +11,7 @@ spec:
   prune: true
   sourceRef:
     kind: OCIRepository
-    name: home-ops-devenv
+    name: homeops-devenv
   wait: true
   interval: 15m
   retryInterval: 5s
@@ -29,7 +29,7 @@ spec:
   prune: true
   sourceRef:
     kind: OCIRepository
-    name: home-ops-devenv
+    name: homeops-devenv
   wait: true
   interval: 15m
   retryInterval: 5s
