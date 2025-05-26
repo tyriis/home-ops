@@ -1,9 +1,15 @@
 ---
 labels:
+  - name: area/devenv
+    description: ""
+    color: ededed
   - name: area/github
     description: ""
     color: ededed
   - name: area/kubernetes
+    description: ""
+    color: ededed
+  - name: area/taskfile
     description: ""
     color: ededed
   - name: area/terraform
