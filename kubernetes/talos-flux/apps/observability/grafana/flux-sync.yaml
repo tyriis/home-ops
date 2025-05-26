@@ -13,6 +13,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components:
+    - ../../../../../components/gatus/external
   path: ./kubernetes/talos-flux/apps/observability/grafana/app
   prune: true
   sourceRef:
@@ -24,3 +26,6 @@ spec:
   timeout: 5m
   dependsOn:
     - name: kube-prometheus-stack
+  postBuild:
+    substitute:
+      APP: *appname

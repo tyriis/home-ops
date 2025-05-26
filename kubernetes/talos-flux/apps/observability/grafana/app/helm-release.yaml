@@ -375,7 +375,7 @@ spec:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-production
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        external-dns.alpha.kubernetes.io/target: "${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"
+        external-dns.alpha.kubernetes.io/target: external.techtales.io
         external-dns/cloudflare: "true"
         gethomepage.dev/enabled: "true"
         gethomepage.dev/description: Metrics, logs, traces, and profiles, oh my!
