@@ -1,5 +1,8 @@
 ---
 # Area
+area/devenv:
+  - changed-files:
+      - any-glob-to-any-file: devenv/**/*
 area/github:
   - changed-files:
       - any-glob-to-any-file: .github/**/*
