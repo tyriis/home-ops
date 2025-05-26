@@ -23,9 +23,13 @@ endpoints:
       dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "[STATUS] == 404"
+  # infrastructure
   - name: FRITZ!Box
     group: infrastructure
     url: http://192.168.178.1
     interval: 1m
     conditions:
       - "[STATUS] == 200"
+    ui:
+      hide-hostname: true
+      hide-url: true
