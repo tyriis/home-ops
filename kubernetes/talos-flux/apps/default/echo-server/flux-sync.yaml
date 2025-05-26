@@ -13,6 +13,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components:
+    - ../../../../../components/gatus/external
   path: ./kubernetes/talos-flux/apps/default/echo-server/app
   prune: true
   sourceRef:
@@ -22,3 +24,6 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  postBuild:
+    substitute:
+      APP: *appname
