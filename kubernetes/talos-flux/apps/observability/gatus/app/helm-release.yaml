@@ -23,6 +23,8 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    serviceAccount:
+      gatus: {}
     controllers:
       gatus:
         annotations:
@@ -119,23 +121,6 @@ spec:
           - hosts:
               - *host
             secretName: "{{ .Release.Name }}-tls"
-    rbac:
-      roles:
-        gatus:
-          type: Role
-          rules:
-            - apiGroups: [""]
-              resources: ["configmaps", "secrets"]
-              verbs: ["get", "watch", "list"]
-      bindings:
-        gatus:
-          type: RoleBinding
-          roleRef:
-            identifier: gatus
-          subjects:
-            - identifier: gatus
-    serviceAccount:
-      gatus: {}
     persistence:
       config:
         existingClaim: gatus-data
