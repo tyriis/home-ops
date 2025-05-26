@@ -40,7 +40,7 @@ spec:
       - patch: |
           - op: replace
             path: /metadata/name
-            value: home-ops-devenv
+            value: homeops-devenv
           - op: add
             path: /spec/insecure
             value: true
@@ -53,12 +53,12 @@ spec:
             value: flux-sync
           - op: replace
             path: /spec/sourceRef/name
-            value: home-ops-devenv
+            value: homeops-devenv
         target:
           kind: Kustomization
           name: flux-system
   sync:
     kind: OCIRepository
-    url: oci://home-ops-kind-registry:5000/home-ops-devenv
+    url: oci://homeops-kind-registry:5000/homeops-devenv
     ref: local
     path: ./devenv/oci/flux

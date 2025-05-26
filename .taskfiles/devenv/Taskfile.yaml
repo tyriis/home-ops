@@ -39,23 +39,23 @@ tasks:
     silent: true
     ignore_error: true
     cmds:
-      - docker start home-ops-kind-registry
-      - docker start home-ops-devenv-control-plane
-      - docker start home-ops-devenv-worker
-      # - docker start home-ops-devenv-worker2
-      # - docker start home-ops-devenv-worker3
-      - kubectl config use-context kind-home-ops-devenv
+      - docker start homeops-kind-registry
+      - docker start homeops-devenv-control-plane
+      - docker start homeops-devenv-worker
+      # - docker start homeops-devenv-worker2
+      # - docker start homeops-devenv-worker3
+      - kubectl config use-context kind-homeops-devenv
 
   stop:
     desc: stop the devenv
     silent: true
     ignore_error: true
     cmds:
-      # - docker stop home-ops-devenv-worker3
-      # - docker stop home-ops-devenv-worker2
-      - docker stop home-ops-devenv-worker
-      - docker stop home-ops-devenv-control-plane
-      - docker stop home-ops-kind-registry
+      # - docker stop homeops-devenv-worker3
+      # - docker stop homeops-devenv-worker2
+      - docker stop homeops-devenv-worker
+      - docker stop homeops-devenv-control-plane
+      - docker stop homeops-kind-registry
 
   destroy:
     desc: destroy the devenv, will delete all resources!

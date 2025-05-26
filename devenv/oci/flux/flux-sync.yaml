@@ -10,7 +10,7 @@ spec:
   path: ./kubernetes/base/flux/repositories
   sourceRef:
     kind: OCIRepository
-    name: home-ops-devenv
+    name: homeops-devenv
   wait: true
   interval: 30m
   retryInterval: 5s
@@ -28,7 +28,7 @@ spec:
   path: ./devenv/oci/flux/operator
   sourceRef:
     kind: OCIRepository
-    name: home-ops-devenv
+    name: homeops-devenv
   wait: false
   interval: 30m
   retryInterval: 5s
@@ -48,7 +48,7 @@ spec:
   path: ./devenv/oci/flux/instance
   sourceRef:
     kind: OCIRepository
-    name: home-ops-devenv
+    name: homeops-devenv
   wait: false
   interval: 30m
   retryInterval: 5s
@@ -67,7 +67,7 @@ spec:
   path: ./devenv/oci/apps
   sourceRef:
     kind: OCIRepository
-    name: home-ops-devenv
+    name: homeops-devenv
   wait: false
   interval: 30m
   retryInterval: 5s

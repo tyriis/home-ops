@@ -8,6 +8,6 @@ metadata:
 data:
   localRegistryHosting.v1: |
     host: "localhost:5050"
-    hostFromContainerRuntime: "home-ops-kind-registry:5000"
-    hostFromClusterNetwork: "home-ops-kind-registry:5000"
+    hostFromContainerRuntime: "homeops-kind-registry:5000"
+    hostFromClusterNetwork: "homeops-kind-registry:5000"
     help: "https://kind.sigs.k8s.io/docs/user/local-registry/"
