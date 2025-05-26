@@ -2,7 +2,7 @@
 
 ## Copyright
 
-copyed this file from [here](https://raw.githubusercontent.com/Truxnell/home-cluster/2aeeeb3f9ab2fc8a60f7712cd3925b73526b5cfe/k8s/manifests/core/system-monitoring/thanos/readme.md). Thank you Truxnell <3
+copied this file from [truxnell home-cluster](https://raw.githubusercontent.com/Truxnell/home-cluster/2aeeeb3f9ab2fc8a60f7712cd3925b73526b5cfe/k8s/manifests/core/system-monitoring/thanos/readme.md). Thank you Truxnell <3
 
 ## thanos-objectstore-secret
 
