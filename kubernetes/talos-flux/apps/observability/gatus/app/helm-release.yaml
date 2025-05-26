@@ -121,6 +121,21 @@ spec:
           - hosts:
               - *host
             secretName: "{{ .Release.Name }}-tls"
+    rbac:
+      roles:
+        gatus:
+          type: ClusterRole
+          rules:
+            - apiGroups: [""]
+              resources: ["configmaps"]
+              verbs: ["get", "watch", "list"]
+      bindings:
+        gatus:
+          type: ClusterRoleBinding
+          roleRef:
+            identifier: gatus
+          subjects:
+            - identifier: gatus
     persistence:
       config:
         existingClaim: gatus-data
