@@ -38,3 +38,14 @@ spec:
         key: DATABASE_URL
     postgresql:
       enabled: false
+    ingress:
+      className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-production
+        kubernetes.io/tls-acme: "true"
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      tls:
+        - secretName: windmill-tls
+          hosts:
+            - windmill.techtales.io
