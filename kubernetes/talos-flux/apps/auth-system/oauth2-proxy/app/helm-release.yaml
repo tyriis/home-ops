@@ -60,6 +60,7 @@ spec:
               OAUTH2_PROXY_REDEEM_URL: https://oauth2.googleapis.com/token
               OAUTH2_PROXY_SESSION_STORE_TYPE: redis
               OAUTH2_PROXY_REDIS_CONNECTION_URL: redis://dragonfly.database.svc.cluster.local:6379
+              OAUTH2_PROXY_REDIRECT_URL: https://home.techtales.io
 
             probes:
               liveness:
