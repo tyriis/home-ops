@@ -24,3 +24,5 @@ spec:
       namespace: flux-system
     - name: dbman
       namespace: flux-system
+    - name: external-secrets-stores
+      namespace: flux-system
