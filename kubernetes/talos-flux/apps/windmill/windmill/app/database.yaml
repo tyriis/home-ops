@@ -1,0 +1,18 @@
+---
+apiVersion: dbman.hef.sh/v1alpha3
+kind: Database
+metadata:
+  name: &name windmill
+spec:
+  credentials:
+    usernameSecretRef:
+      name: windmill-database
+      key: DATABASE_USER
+    passwordSecretRef:
+      name: windmill-database
+      key: DATABASE_PASSWORD
+  databaseName: *name
+  databaseServerRef:
+    namespace: database
+    name: postgres17
+  prune: false
