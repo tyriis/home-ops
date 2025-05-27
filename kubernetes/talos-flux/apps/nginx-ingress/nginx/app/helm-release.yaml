@@ -36,8 +36,8 @@ spec:
           maxUnavailable: 1
       service:
         annotations:
-          io.cilium/lb-ipam-ips: ${SETTING_CILIUM_NGINX_ADDR}
-        externalTrafficPolicy: Local
+          lbipam.cilium.io/ips: ${SETTING_CILIUM_NGINX_ADDR}
+        externalTrafficPolicy: Cluster
       allowSnippetAnnotations: true
       config:
         client-body-buffer-size: 100M
