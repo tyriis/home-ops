@@ -17,7 +17,7 @@
 [![commits][commits-shield]][commits-url]
 [![talos][talos-shield]][talos-url]
 [![kubernetes][kubernetes-shield]][kubernetes-url]
-[![terraform][terraform-shield]][terraform-url]
+[![Flux][flux-shield]][flux-url]
 [![cloudflare][cloudflare-shield]][cloudflare-url]
 
 <!-- PROJECT LOGO -->
@@ -220,8 +220,8 @@ example:
 [talos-url]: https://www.talos.dev/
 [kubernetes-shield]: https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fkromgo.techtales.io%2Fquery%3Fformat%3Dendpoint%26metric%3Dkubernetes_version&query=%24.message&style=for-the-badge&logo=kubernetes&label=kubernetes&color=%23326CE5&cacheSeconds=600
 [kubernetes-url]: https://kubernetes.io/releases/
-[terraform-shield]: https://img.shields.io/badge/terraform-1.x-844fba?style=for-the-badge&logo=terraform
 [terraform-url]: https://github.com/hashicorp/terraform/releases
 [cloudflare-shield]: https://img.shields.io/badge/cloudflare-dns-F38020?style=for-the-badge&logo=cloudflare
 [cloudflare-url]: https://dash.cloudflare.com/
 [cloudflared-url]: https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/
+[flux-shield]: https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.techtales.io%2Fflux_version&style=for-the-badge&logo=flux&logoColor=326CE5&color=326CE5&label=flux&cacheSeconds=600
