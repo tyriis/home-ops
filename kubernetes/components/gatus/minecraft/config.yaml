@@ -2,7 +2,7 @@
 endpoints:
   - name: ${APP}
     group: minecraft
-    url: tcp://${APP}.{NAMESPACE}.svc.cluster.local:25565
+    url: tcp://${APP}.${NAMESPACE}.svc.cluster.local:25565
     interval: 1m
     ui:
       hide-hostname: true
