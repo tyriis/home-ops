@@ -22,7 +22,6 @@
     "github>techtales-io/renovate-config//dependencies/minecraft-velocity.json5",
   ],
   ignorePaths: [
-    "archive/**",
     "kubernetes/talos-flux/apps/home-automation/esphome/app/config/**",
     "kubernetes/talos-flux/apps/default/homepage/app/config/**",
     "kubernetes/talos-flux/apps/system-upgrade/system-upgrade-controller/plans/kubernetes.yaml",

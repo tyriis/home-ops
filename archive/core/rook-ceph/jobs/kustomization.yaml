@@ -1,9 +1,0 @@
----
-# yaml-language-server: $schema=https://json.schemastore.org/kustomization
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-namespace: rook-ceph
-resources:
-  - ceph-config-set-mgr-dashboard-ssl-false.yaml
-  - ceph-mgr-module-enable-rook.yaml
-  - ceph-orch-set-backend-rook.yaml
