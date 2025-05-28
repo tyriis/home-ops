@@ -2,10 +2,11 @@
 endpoints:
   - name: ${APP}
     group: minecraft
-    url: tcp:/${SERVICE}:25565
+    url: tcp://${SERVICE}:25565
     interval: 1m
     ui:
       hide-hostname: true
       hide-url: true
     conditions:
-      - "[CONNECTED] == true"
+      - "[CONNECTED] == true" # Validates TCP connection success
+      - "[RESPONSE_TIME] < 500" # Optional: Alert if latency exceeds 500ms
