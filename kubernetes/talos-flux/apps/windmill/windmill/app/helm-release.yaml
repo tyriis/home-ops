@@ -35,6 +35,7 @@ spec:
           runAsNonRoot: true
       databaseSecret: true
       databaseUrlSecretName: windmill-database
+      baseDomain: windmill.techtales.io
     postgresql:
       enabled: false
     ingress:
