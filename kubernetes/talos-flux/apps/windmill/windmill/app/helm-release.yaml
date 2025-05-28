@@ -33,9 +33,8 @@ spec:
         podSecurityContext:
           runAsUser: 1000
           runAsNonRoot: true
-      databaseSecret:
-        name: windmill-database
-        key: DATABASE_URL
+      databaseSecret: true
+      databaseUrlSecretName: windmill-database
     postgresql:
       enabled: false
     ingress:
