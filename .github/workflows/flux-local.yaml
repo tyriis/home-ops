@@ -149,7 +149,7 @@ jobs:
             --path /github/workspace/pull/kubernetes/${{ matrix.cluster }}/flux
             --path-orig /github/workspace/default/kubernetes/${{ matrix.cluster }}/flux
             --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart"
-            --limit-bytes 10000
+            --limit-bytes 9940
             --all-namespaces
             --sources "home-ops"
             --output-file diff.patch
