@@ -30,10 +30,12 @@ metadata:
   name: &appname minecraft-velocity-proxy
   namespace: flux-system
 spec:
-  targetNamespace: gaming
+  targetNamespace: &namespace gaming
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components:
+    - ../../../../../components/gatus/minecraft
   path: ./kubernetes/talos-flux/apps/gaming/minecraft-java/velocity-proxy
   prune: true
   sourceRef:
@@ -47,6 +49,10 @@ spec:
     - name: minecraft-global-secrets
     # required for the loadbalancer config (it is not a hard dependency)
     - name: cilium-config
+  postBuild:
+    substitute:
+      APP: *appname
+      NAMESPACE: *namespace
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
