@@ -199,6 +199,6 @@ spec:
         advancedMounts:
           velocity:
             app:
-              - path: /server/plugins/viaversion/config.yml
+              - path: /config/plugins/viaversion/config.yml
                 subPath: config.yml
                 readOnly: true
