@@ -193,3 +193,12 @@ spec:
               - path: /server/plugins/simplewhitelist/whitelist.txt
                 subPath: whitelist.txt
                 readOnly: true
+      viaversion:
+        type: configMap
+        name: minecraft-public-velocity-proxy-plugins-viaversion
+        advancedMounts:
+          velocity:
+            app:
+              - path: /server/plugins/viaversion/config.yml
+                subPath: config.yml
+                readOnly: true
