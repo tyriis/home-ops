@@ -1,4 +1,6 @@
-# UnifiedMetrics https://hangar.papermc.io/cubxity/UnifiedMetrics
-https://github.com/Cubxity/UnifiedMetrics/releases/download/v0.3.8/unifiedmetrics-platform-bukkit-0.3.8.jar
-# https://modrinth.com/plugin/viaversion?loader=paper&version=1.21.5
-https://cdn.modrinth.com/data/P1OZGk5p/versions/cdC9vQSF/ViaVersion-5.3.2.jar
+# UnifiedMetrics https://modrinth.com/plugin/unifiedmetrics
+https://cdn.modrinth.com/data/p1ewR5kV/versions/Ypqt7eH1/unifiedmetrics-platform-bukkit-0.3.8.jar
+# SimpleTPA https://modrinth.com/plugin/simpletpaplugin
+https://cdn.modrinth.com/data/6t5Ziqmz/versions/TGLW1WW0/SimpleTPA-1.0Experimentalv2.jar
+# https://modrinth.com/plugin/viaversion
+# https://cdn.modrinth.com/data/P1OZGk5p/versions/cdC9vQSF/ViaVersion-5.3.2.jar
