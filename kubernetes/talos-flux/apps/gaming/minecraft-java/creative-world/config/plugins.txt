@@ -1,13 +1,6 @@
-# vane https://oddlama.github.io/vane/
-https://github.com/oddlama/vane/releases/download/v1.17.3/vane-admin-1.17.3.jar
-https://github.com/oddlama/vane/releases/download/v1.17.3/vane-bedtime-1.17.3.jar
-https://github.com/oddlama/vane/releases/download/v1.17.3/vane-core-1.17.3.jar
-https://github.com/oddlama/vane/releases/download/v1.17.3/vane-enchantments-1.17.3.jar
-https://github.com/oddlama/vane/releases/download/v1.17.3/vane-permissions-1.17.3.jar
-https://github.com/oddlama/vane/releases/download/v1.17.3/vane-portals-1.17.3.jar
-https://github.com/oddlama/vane/releases/download/v1.17.3/vane-regions-1.17.3.jar
-https://github.com/oddlama/vane/releases/download/v1.17.3/vane-trifles-1.17.3.jar
-# ProtocolLib https://ci.dmulloy2.net/job/ProtocolLib/
+# UnifiedMetrics https://modrinth.com/plugin/unifiedmetrics
+https://cdn.modrinth.com/data/p1ewR5kV/versions/Ypqt7eH1/unifiedmetrics-platform-bukkit-0.3.8.jar
+# Vane https://modrinth.com/plugin/vane, https://oddlama.github.io/vane/
+https://cdn.modrinth.com/data/698NGGtb/versions/ohtoFZG2/all-plugins.zip
+# ProtocolLib https://ci.dmulloy2.net/job/ProtocolLib/ required by Vane
 https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/artifact/build/libs/ProtocolLib.jar
-# UnifiedMetrics https://hangar.papermc.io/cubxity/UnifiedMetrics
-https://github.com/Cubxity/UnifiedMetrics/releases/download/v0.3.8/unifiedmetrics-platform-bukkit-0.3.8.jar

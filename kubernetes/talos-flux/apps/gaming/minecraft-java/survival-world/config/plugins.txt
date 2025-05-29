@@ -1,2 +1,2 @@
-# UnifiedMetrics https://hangar.papermc.io/cubxity/UnifiedMetrics
-https://github.com/Cubxity/UnifiedMetrics/releases/download/v0.3.8/unifiedmetrics-platform-bukkit-0.3.8.jar
+# UnifiedMetrics https://modrinth.com/plugin/unifiedmetrics
+https://cdn.modrinth.com/data/p1ewR5kV/versions/Ypqt7eH1/unifiedmetrics-platform-bukkit-0.3.8.jar
