@@ -1,8 +1,6 @@
-# UnifiedMetrics https://hangar.papermc.io/cubxity/UnifiedMetrics
-https://github.com/Cubxity/UnifiedMetrics/releases/download/v0.3.8/unifiedmetrics-platform-bukkit-0.3.8.jar
+# UnifiedMetrics https://modrinth.com/plugin/unifiedmetrics
+https://cdn.modrinth.com/data/p1ewR5kV/versions/Ypqt7eH1/unifiedmetrics-platform-bukkit-0.3.8.jar
 # LuckPerms https://luckperms.net/download
 https://download.luckperms.net/1584/bukkit/loader/LuckPerms-Bukkit-5.5.0.jar
-# citizens2 https://ci.citizensnpcs.co/job/Citizens2/
-# https://ci.citizensnpcs.co/job/Citizens2/lastSuccessfulBuild/artifact/dist/target/Citizens-2.0.38-b3765.jar
-# FancyNpcs
-https://hangarcdn.papermc.io/plugins/Oliver/FancyNpcs/versions/2.4.4/PAPER/FancyNpcs-2.4.4.jar
+# FancyNpcs https://modrinth.com/plugin/fancynpcs
+https://cdn.modrinth.com/data/EeyAn23L/versions/Zhcyw48Q/FancyNpcs-2.5.0.jar
