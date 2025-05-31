@@ -54,7 +54,7 @@ spec:
     substitute:
       APP: *appname
       NAMESPACE: *namespace
-      SERVICE: minecraft-velocity-proxy-velocity
+      SERVICE: minecraft-public-velocity-proxy-velocity
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
