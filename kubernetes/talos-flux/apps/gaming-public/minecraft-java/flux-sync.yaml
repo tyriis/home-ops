@@ -30,10 +30,12 @@ metadata:
   name: &appname minecraft-public-velocity-proxy
   namespace: flux-system
 spec:
-  targetNamespace: gaming-public
+  targetNamespace: &namespace gaming-public
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components:
+    - ../../../../../components/gatus/minecraft
   path: ./kubernetes/talos-flux/apps/gaming-public/minecraft-java/velocity-proxy
   prune: true
   sourceRef:
@@ -48,6 +50,11 @@ spec:
     - name: external-secrets-stores
     # required for the loadbalancer config (it is not a hard dependency)
     - name: cilium-config
+  postBuild:
+    substitute:
+      APP: *appname
+      NAMESPACE: *namespace
+      SERVICE: minecraft-velocity-proxy-velocity
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -57,10 +64,12 @@ metadata:
   name: &appname minecraft-public-playground-world
   namespace: flux-system
 spec:
-  targetNamespace: gaming-public
+  targetNamespace: &namespace gaming-public
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components:
+    - ../../../../../components/gatus/minecraft
   path: ./kubernetes/talos-flux/apps/gaming-public/minecraft-java/playground-world
   prune: true
   sourceRef:
@@ -78,6 +87,8 @@ spec:
   postBuild:
     substitute:
       APP: *appname
+      NAMESPACE: *namespace
+      SERVICE: minecraft-public-playground-world-minecraft
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -87,10 +98,12 @@ metadata:
   name: &appname minecraft-public-survival-world
   namespace: flux-system
 spec:
-  targetNamespace: gaming-public
+  targetNamespace: &namespace gaming-public
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components:
+    - ../../../../../components/gatus/minecraft
   path: ./kubernetes/talos-flux/apps/gaming-public/minecraft-java/survival-world
   prune: true
   sourceRef:
@@ -108,6 +121,8 @@ spec:
   postBuild:
     substitute:
       APP: *appname
+      NAMESPACE: *namespace
+      SERVICE: minecraft-public-survival-world-minecraft
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -117,10 +132,12 @@ metadata:
   name: &appname minecraft-public-pvp-world
   namespace: flux-system
 spec:
-  targetNamespace: gaming-public
+  targetNamespace: &namespace gaming-public
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components:
+    - ../../../../../components/gatus/minecraft
   path: ./kubernetes/talos-flux/apps/gaming-public/minecraft-java/pvp-world
   prune: true
   sourceRef:
@@ -138,6 +155,8 @@ spec:
   postBuild:
     substitute:
       APP: *appname
+      NAMESPACE: *namespace
+      SERVICE: minecraft-public-pvp-world-minecraft
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -147,10 +166,12 @@ metadata:
   name: &appname minecraft-public-lobby-world
   namespace: flux-system
 spec:
-  targetNamespace: gaming-public
+  targetNamespace: &namespace gaming-public
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components:
+    - ../../../../../components/gatus/minecraft
   path: ./kubernetes/talos-flux/apps/gaming-public/minecraft-java/lobby-world
   prune: true
   sourceRef:
@@ -168,3 +189,5 @@ spec:
   postBuild:
     substitute:
       APP: *appname
+      NAMESPACE: *namespace
+      SERVICE: minecraft-public-lobby-world-minecraft
