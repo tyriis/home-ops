@@ -13,5 +13,3 @@ https://cdn.modrinth.com/data/P1OZGk5p/versions/cdC9vQSF/ViaVersion-5.3.2.jar
 # vane https://modrinth.com/plugin/vane, https://github.com/oddlama/vane
 # TODO: zip file does not aut unzip, need fix
 https://cdn.modrinth.com/data/698NGGtb/versions/ohtoFZG2/all-plugins.zip
-# DeadBodies https://hangar.papermc.io/DestenyLP/DeadBodies
-https://hangarcdn.papermc.io/plugins/DestenyLP/DeadBodies/versions/1.0/PAPER/DeadBodies-1.0.jar

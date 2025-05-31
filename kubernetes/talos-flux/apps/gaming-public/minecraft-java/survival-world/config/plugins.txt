@@ -6,3 +6,7 @@ https://cdn.modrinth.com/data/6t5Ziqmz/versions/TGLW1WW0/SimpleTPA-1.0Experiment
 # https://cdn.modrinth.com/data/P1OZGk5p/versions/cdC9vQSF/ViaVersion-5.3.2.jar
 # Vane https://modrinth.com/plugin/vane, https://oddlama.github.io/vane/
 https://cdn.modrinth.com/data/698NGGtb/versions/ohtoFZG2/all-plugins.zip
+# ProtocolLib https://ci.dmulloy2.net/job/ProtocolLib/ required by Vane
+https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/artifact/build/libs/ProtocolLib.jar
+# DeadBodies https://hangar.papermc.io/DestenyLP/DeadBodies
+https://hangarcdn.papermc.io/plugins/DestenyLP/DeadBodies/versions/1.0/PAPER/DeadBodies-1.0.jar
