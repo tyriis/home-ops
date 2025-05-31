@@ -17,7 +17,7 @@ configMapGenerator:
       - plugins.txt=config/plugins.txt
   - name: minecraft-public-survival-world-plugins-axgraves-config
     files:
-      - config.yml=config/plugins/AxGraves/config.yml
+      - config.yml=plugins/AxGraves/config.yml
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
