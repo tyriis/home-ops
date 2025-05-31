@@ -188,9 +188,9 @@ velocity-ping-save: true
 # It will fall back to the default option if none found.
 velocity-servers:
   default: 393
-  lobby: 768
-  playground: 768
-  survival: 768
-  pvp: 768
+  lobby: 770
+  playground: 770
+  survival: 770
+  pvp: 770
 # Vines that are not connected to blocks will be mapped to air, else 1.13+ would still be able to climb up on them.
 vine-climb-fix: false
