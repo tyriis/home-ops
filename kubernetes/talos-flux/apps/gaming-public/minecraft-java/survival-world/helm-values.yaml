@@ -32,6 +32,6 @@ spec:
         advancedMounts:
           minecraft:
             app:
-              - path: /config/plugins/AxGraves/config.yml
+              - path: /plugins/AxGraves/config.yml
                 subPath: config.yml
                 readOnly: true
