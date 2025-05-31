@@ -9,4 +9,5 @@ https://cdn.modrinth.com/data/698NGGtb/versions/ohtoFZG2/all-plugins.zip
 # ProtocolLib https://ci.dmulloy2.net/job/ProtocolLib/ required by Vane
 https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/artifact/build/libs/ProtocolLib.jar
 # DeadBodies https://hangar.papermc.io/DestenyLP/DeadBodies
-https://hangarcdn.papermc.io/plugins/DestenyLP/DeadBodies/versions/1.0/PAPER/DeadBodies-1.0.jar
+# this works but useless when falling in lava or void, do not use with keepInventory as it will duplicate items
+# https://hangarcdn.papermc.io/plugins/DestenyLP/DeadBodies/versions/1.0/PAPER/DeadBodies-1.0.jar
