@@ -52,7 +52,8 @@ spec:
   postBuild:
     substitute:
       APP: *appname
-      SERVICE: minecraft-velocity-proxy-velocity.gaming.svc.cluster.local
+      NAMESPACE: *namespace
+      SERVICE: minecraft-velocity-proxy-velocity
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -62,10 +63,12 @@ metadata:
   name: &appname minecraft-lobby-world
   namespace: flux-system
 spec:
-  targetNamespace: gaming
+  targetNamespace: &namespace gaming
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components:
+    - ../../../../../components/gatus/minecraft
   path: ./kubernetes/talos-flux/apps/gaming/minecraft-java/lobby-world
   prune: true
   sourceRef:
@@ -83,6 +86,8 @@ spec:
   postBuild:
     substitute:
       APP: *appname
+      NAMESPACE: *namespace
+      SERVICE: minecraft-lobby-world-minecraft
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -92,10 +97,12 @@ metadata:
   name: &appname minecraft-creative-world
   namespace: flux-system
 spec:
-  targetNamespace: gaming
+  targetNamespace: &namespace gaming
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components:
+    - ../../../../../components/gatus/minecraft
   path: ./kubernetes/talos-flux/apps/gaming/minecraft-java/creative-world
   prune: true
   sourceRef:
@@ -113,6 +120,8 @@ spec:
   postBuild:
     substitute:
       APP: *appname
+      NAMESPACE: *namespace
+      SERVICE: minecraft-creative-world-minecraft
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -122,10 +131,12 @@ metadata:
   name: &appname minecraft-playground-world
   namespace: flux-system
 spec:
-  targetNamespace: gaming
+  targetNamespace: &namespace gaming
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components:
+    - ../../../../../components/gatus/minecraft
   path: ./kubernetes/talos-flux/apps/gaming/minecraft-java/playground-world
   prune: true
   sourceRef:
@@ -143,6 +154,8 @@ spec:
   postBuild:
     substitute:
       APP: *appname
+      NAMESPACE: *namespace
+      SERVICE: minecraft-playground-world-minecraft
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -152,10 +165,12 @@ metadata:
   name: &appname minecraft-survival-world
   namespace: flux-system
 spec:
-  targetNamespace: gaming
+  targetNamespace: &namespace gaming
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components:
+    - ../../../../../components/gatus/minecraft
   path: ./kubernetes/talos-flux/apps/gaming/minecraft-java/survival-world
   prune: true
   sourceRef:
@@ -173,3 +188,5 @@ spec:
   postBuild:
     substitute:
       APP: *appname
+      NAMESPACE: *namespace
+      SERVICE: minecraft-survival-world-minecraft
