@@ -31,7 +31,7 @@ spec:
           barman-cloud:
             image:
               repository: ghcr.io/cloudnative-pg/plugin-barman-cloud
-              tag: v0.4.0
+              tag: v0.4.0@sha256:ef885bbb351602fbdf9927e951baee68683ed7f8eddb28f64cc4d03f3cdd4c39
             args:
               - operator
               - --server-cert=/server/tls.crt
@@ -41,7 +41,7 @@ spec:
               - --leader-elect
               - --log-level=debug
             env:
-              SIDECAR_IMAGE: ghcr.io/cloudnative-pg/plugin-barman-cloud-sidecar:v0.4.0
+              SIDECAR_IMAGE: ghcr.io/cloudnative-pg/plugin-barman-cloud-sidecar:v0.4.0@sha256:b667d8059cc2cecd4190a8a29c0e250c3088a22fc805bec21d1e085e6a5f831a
             probes:
               readiness:
                 enabled: true
