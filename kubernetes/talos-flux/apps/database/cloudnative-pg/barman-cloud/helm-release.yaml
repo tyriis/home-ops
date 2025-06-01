@@ -31,7 +31,7 @@ spec:
           barman-cloud:
             image:
               repository: ghcr.io/cloudnative-pg/plugin-barman-cloud
-              tag: v0.4.0@sha256:ef885bbb351602fbdf9927e951baee68683ed7f8eddb28f64cc4d03f3cdd4c39
+              tag: v0.4.1@sha256:6169cafd7b4c194b8887e73248bf0bddd04e8b1b27692c925e5331efcd823f89
             args:
               - operator
               - --server-cert=/server/tls.crt
