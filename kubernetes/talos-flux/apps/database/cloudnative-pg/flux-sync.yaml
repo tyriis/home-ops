@@ -128,3 +128,5 @@ spec:
   dependsOn:
     - name: cnpg-barman-cloud-crds
       namespace: database
+    - name: cert-manager-issuers
+      namespace: flux-system
