@@ -9,7 +9,7 @@ direnv = "2.36.0"
 # https://fluxcd.io/
 flux2 = "2.6.0"
 # https://gitleaks.io/
-gitleaks = "8.26.0"
+gitleaks = "8.27.0"
 # https://helm.sh/
 helm = "3.18.1"
 # https://k9scli.io/
