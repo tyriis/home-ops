@@ -76,3 +76,28 @@ spec:
   dependsOn:
     - name: apps-cloudnative-pg
     - name: kube-prometheus-stack
+
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cnpg-barman-cloud
+  namespace: flux-system
+spec:
+  targetNamespace: database
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: cnpg-barman-cloud
+      app.kubernetes.io/part-of: cnpg
+  path: ./kubernetes/talos-flux/apps/database/cloudnative-pg/barman-cloud
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 3m
+  dependsOn:
+    - name: apps-cloudnative-pg # TODO: check if this is needed
