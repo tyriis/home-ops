@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - postgres-superuser-secret.sops.yaml
   - postgres-minio-secret.sops.yaml
+  - objectstore.yaml
   - cluster17.yaml
   - database-server.yaml
   - scheduled-backup.yaml
