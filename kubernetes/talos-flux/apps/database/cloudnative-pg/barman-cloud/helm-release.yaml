@@ -82,12 +82,12 @@ spec:
     persistence:
       server:
         type: secret
-        name: &serverCert barman-cloud-server-tls
+        name: barman-cloud-server-tls
         globalMounts:
           - path: /server
       client:
         type: secret
-        name: &clientCert barman-cloud-client-tls
+        name: barman-cloud-client-tls
         globalMounts:
           - path: /client
 
@@ -274,31 +274,3 @@ spec:
             <<: *roleRef
             identifier: *app
           subjects: *subject
-    rawResources:
-      client: &cert
-        apiVersion: cert-manager.io/v1
-        kind: Certificate
-        spec:
-          spec: &certSpec
-            commonName: barman-cloud-client
-            duration: 2160h
-            isCA: false
-            issuerRef:
-              name: cluster-selfsigned-issuer
-              kind: ClusterIssuer
-              group: cert-manager.io
-            renewBefore: 360h
-            secretName: *clientCert
-            usages:
-              - client auth
-      server:
-        <<: *cert
-        spec:
-          spec:
-            <<: *certSpec
-            commonName: barman-cloud
-            dnsNames:
-              - barman-cloud
-            secretName: *serverCert
-            usages:
-              - server auth

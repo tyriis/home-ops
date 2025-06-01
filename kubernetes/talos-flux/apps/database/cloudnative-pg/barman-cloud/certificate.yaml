@@ -1,0 +1,37 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: &name barman-cloud-client
+spec:
+  commonName: *name
+  duration: 2160h
+  isCA: false
+  issuerRef:
+    name: selfsigned
+    kind: ClusterIssuer
+    group: cert-manager.io
+  renewBefore: 360h
+  secretName: barman-cloud-client-tls
+  usages:
+    - client auth
+
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: &name barman-cloud-sever
+spec:
+  commonName: *name
+  duration: 2160h
+  isCA: false
+  issuerRef:
+    name: selfsigned
+    kind: ClusterIssuer
+    group: cert-manager.io
+  renewBefore: 360h
+  secretName: barman-cloud-server-tls
+  usages:
+    - client auth
