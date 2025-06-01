@@ -84,6 +84,8 @@ kind: Kustomization
 metadata:
   name: &name cnpg-barman-cloud-crds
   namespace: &namespace database
+  labels:
+    substitution.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: *namespace
   commonMetadata:
