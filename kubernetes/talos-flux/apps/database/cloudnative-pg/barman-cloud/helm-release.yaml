@@ -69,9 +69,9 @@ spec:
       barman-cloud:
         forceRename: barman-cloud
         annotations:
-          cnpg.io/pluginClientSecret: barman-cloud-client-tls
+          cnpg.io/pluginClientSecret: &clientCert barman-cloud-client-tls
           cnpg.io/pluginPort: "9090"
-          cnpg.io/pluginServerSecret: barman-cloud-server-tls
+          cnpg.io/pluginServerSecret: &serverCert barman-cloud-server-tls
         labels:
           cnpg.io/pluginName: barman-cloud.cloudnative-pg.io
         controller: barman-cloud
@@ -82,12 +82,12 @@ spec:
     persistence:
       server:
         type: secret
-        name: &serverCert barman-cloud-server-tls
+        name: *serverCert
         globalMounts:
           - path: /server
       client:
         type: secret
-        name: &clientCert barman-cloud-client-tls
+        name: *clientCert
         globalMounts:
           - path: /client
 
@@ -284,7 +284,7 @@ spec:
             duration: 2160h
             isCA: false
             issuerRef:
-              name: cluster-selfsigned-issuer
+              name: selfsigned
               kind: ClusterIssuer
               group: cert-manager.io
             renewBefore: 360h

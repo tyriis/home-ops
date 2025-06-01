@@ -1,6 +1,5 @@
 ---
 # yaml-language-server: $schema=https://schemas.tholinka.dev/barmancloud.cnpg.io/objectstore_v1.json
-# technically we only need one of these per namespace...
 apiVersion: barmancloud.cnpg.io/v1
 kind: ObjectStore
 metadata:
