@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1beta2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
@@ -9,5 +9,6 @@ spec:
   interval: 1h
   url: oci://ghcr.io/stefanprodan/charts/podinfo
   ref:
+    # renovate: depName=stefanprodan/podinfo datasource=github-releases
     tag: 6.8.0
     digest: sha256:2360bdf32ddc50c05f8e128118173343b0a012a338daf145b16e0da9c80081a4
