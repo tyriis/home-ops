@@ -14,12 +14,12 @@ spec:
     data:
       compression: bzip2
       encryption: AES256
-    destinationPath: s3://cnpg/
-    endpointURL: https://s3.tyriis.dev
+    destinationPath: s3://cloudnative-pg-backups/
+    endpointURL: https://minio.techtales.io
     s3Credentials:
       accessKeyId:
         name: postgres-minio
-        key: AWS_ACCESS_KEY_ID
+        key: MINIO_ACCESS_KEY
       secretAccessKey:
         name: postgres-minio
-        key: AWS_SECRET_ACCESS_KEY
+        key: MINIO_SECRET_KEY
