@@ -199,6 +199,15 @@ spec:
         advancedMounts:
           velocity:
             app:
-              - path: /config/plugins/viaversion/config.yml
+              - path: /plugins/viaversion/config.yml
                 subPath: config.yml
+                readOnly: true
+      minimotd:
+        type: configMap
+        name: minecraft-public-velocity-proxy-plugins-minimotd
+        advancedMounts:
+          velocity:
+            app:
+              - path: /plugins/minimotd-velocity/main.conf
+                subPath: main.conf
                 readOnly: true

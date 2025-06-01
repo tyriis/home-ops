@@ -22,7 +22,7 @@ block-protocols: []
 # Easier to configure alternative to 'block-protocols'. Uses readable version strings with possible '<' and '>' prefixes.
 # An example to block 1.16.4, everything below 1.16, as well as everything above 1.17.1 would be: ["<1.16", "1.16.4", ">1.17.1"]
 # You can use both this and the block-protocols option at the same time as well.
-block-versions: []
+block-versions: ["<1.21"]
 # If your boss bar flickers on 1.9+, set this to 'true'. It will keep all boss bars on 100% (not recommended)
 bossbar-anti-flicker: false
 # Should we patch boss bars so they work? (Default: true, disable if you're having issues)
@@ -188,9 +188,9 @@ velocity-ping-save: true
 # It will fall back to the default option if none found.
 velocity-servers:
   default: 393
-  lobby: 768
-  playground: 768
-  survival: 768
-  pvp: 768
+  lobby: 770
+  playground: 770
+  survival: 770
+  pvp: 770
 # Vines that are not connected to blocks will be mapped to air, else 1.13+ would still be able to climb up on them.
 vine-climb-fix: false
