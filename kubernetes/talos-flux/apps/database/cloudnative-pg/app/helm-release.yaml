@@ -6,6 +6,8 @@ metadata:
   name: cloudnative-pg
 spec:
   interval: 15m
+  driftDetection:
+    mode: enabled
   chart:
     spec:
       chart: cloudnative-pg
