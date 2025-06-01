@@ -94,7 +94,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: *name
-  path: ./kubernetes/talos-flux/apps/database/cloudnative-pg/crds
   interval: 1h
   retryInterval: 2m
   timeout: 5m
