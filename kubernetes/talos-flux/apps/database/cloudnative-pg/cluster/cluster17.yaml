@@ -3,102 +3,12 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: &name postgres17
-  annotations:
-    cnpg.io/skipEmptyWalArchiveCheck: "enabled"
-spec:
-  instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:17.5-5
-  primaryUpdateMethod: switchover
-  primaryUpdateStrategy: unsupervised
-  # managed:
-  #   services:
-  #     disabledDefaultServices:
-  #       - ro
-  #       - r
-  storage:
-    size: 30Gi
-    storageClass: ceph-block
-  superuserSecret:
-    name: postgres-superuser
-  enableSuperuserAccess: true
-  monitoring:
-    enablePodMonitor: true
-
-  # plugins:
-  #   - name: barman-cloud.cloudnative-pg.io
-  #     isWALArchiver: true
-  #     parameters:
-  #       barmanObjectName: *name
-  #       serverName: *name
-
-  # backup:
-  #   retentionPolicy: 30d
-  #   # https://cloudnative-pg.io/documentation/current/wal_archiving/
-  #   barmanObjectStore: &barmanObjectStore
-  #     data:
-  #       compression: bzip2
-  #     wal:
-  #       compression: bzip2
-  #       maxParallel: 8
-  #     destinationPath: s3://cloudnative-pg-backups/
-  #     endpointURL: https://minio.techtales.io
-  #     serverName: &clustername postgres17
-  #     s3Credentials:
-  #       accessKeyId:
-  #         name: postgres-minio
-  #         key: MINIO_ACCESS_KEY
-  #       secretAccessKey:
-  #         name: postgres-minio
-  #         key: MINIO_SECRET_KEY
-
-  # recover from a backup
-  # https://cloudnative-pg.io/documentation/current/recovery/#recovery-from-an-object-store
-  # bootstrap:
-  #   recovery:
-  #     source: *clustername
-  # externalClusters:
-  #   - name: *clustername
-  #     barmanObjectStore:
-  #       <<: *barmanObjectStore
-  #       serverName: *clustername
-
-  # import databases to a new cluster - for major version upgrades
-  # https://cloudnative-pg.io/documentation/current/database_import/#the-monolith-type
-  # bootstrap:
-  #   initdb:
-  #     import:
-  #       type: monolith
-  #       databases:
-  #         - "*"
-  #       roles:
-  #         - "*"
-  #       source:
-  #         externalCluster: postgres16
-
-  # externalClusters:
-  #   - name: postgres16
-  #     connectionParameters:
-  #       host: postgres16-rw
-  #       user: postgres
-  #       dbname: postgres
-  #       sslmode: require
-  #     password:
-  #       name: postgres-superuser
-  #       key: password
----
-
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
-apiVersion: postgresql.cnpg.io/v1
-kind: Cluster
-metadata:
   name: &name main-postgres17
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:17.5-4
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.5-5
   primaryUpdateMethod: switchover
   primaryUpdateStrategy: unsupervised
   # managed:
