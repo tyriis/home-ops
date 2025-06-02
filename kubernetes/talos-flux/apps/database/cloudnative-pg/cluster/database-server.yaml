@@ -7,3 +7,13 @@ spec:
   connString: "host=postgres17-rw.database.svc.cluster.local"
   credentials:
     basicAuthSecretRef: postgres-superuser
+
+---
+apiVersion: dbman.hef.sh/v1alpha2
+kind: DatabaseServer
+metadata:
+  name: main-postgres17
+spec:
+  connString: "host=main-postgres17-rw.database.svc.cluster.local"
+  credentials:
+    basicAuthSecretRef: postgres-superuser
