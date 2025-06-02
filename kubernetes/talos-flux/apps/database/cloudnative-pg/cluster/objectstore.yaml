@@ -40,7 +40,7 @@ spec:
       compression: bzip2
       encryption: AES256
     destinationPath: s3://cnpg/
-    endpointURL: https://s3.nas.techtales.io
+    endpointURL: https://minio.nas.techtales.io
     s3Credentials:
       accessKeyId:
         name: postgres-minio
