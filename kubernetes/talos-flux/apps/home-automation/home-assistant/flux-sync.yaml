@@ -24,6 +24,6 @@ spec:
   timeout: 5m
   dependsOn:
     # - name: external-secrets-stores
-    - name: apps-cloudnative-pg-cluster
+    # - name: apps-cloudnative-pg-cluster
     - name: volsync
     - name: rook-ceph-cluster
