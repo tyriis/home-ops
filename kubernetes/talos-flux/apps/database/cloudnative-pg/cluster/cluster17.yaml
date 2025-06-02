@@ -25,12 +25,12 @@ spec:
   monitoring:
     enablePodMonitor: true
 
-  plugins:
-    - name: barman-cloud.cloudnative-pg.io
-      isWALArchiver: true
-      parameters:
-        barmanObjectName: *name
-        serverName: *name
+  # plugins:
+  #   - name: barman-cloud.cloudnative-pg.io
+  #     isWALArchiver: true
+  #     parameters:
+  #       barmanObjectName: *name
+  #       serverName: *name
 
   # backup:
   #   retentionPolicy: 30d
