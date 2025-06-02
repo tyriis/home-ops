@@ -7,11 +7,11 @@ age = "1.2.1"
 # https://direnv.net/
 direnv = "2.36.0"
 # https://fluxcd.io/
-flux2 = "2.6.0"
+flux2 = "2.6.1"
 # https://gitleaks.io/
 gitleaks = "8.27.0"
 # https://helm.sh/
-helm = "3.18.1"
+helm = "3.18.2"
 # https://k9scli.io/
 k9s = "0.40.10"
 # https://kubernetes.io/docs/reference/kubectl/
