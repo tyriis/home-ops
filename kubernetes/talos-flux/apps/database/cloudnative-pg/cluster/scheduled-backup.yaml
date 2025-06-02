@@ -3,14 +3,14 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: postgres17
+  name: main-postgres17
   namespace: database
 spec:
   schedule: "0 0 0 * * *"
   immediate: true
   backupOwnerReference: self
   cluster:
-    name: postgres17
+    name: main-postgres17
   method: plugin
   pluginConfiguration:
     name: barman-cloud.cloudnative-pg.io
