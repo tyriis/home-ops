@@ -32,15 +32,15 @@ metadata:
 spec:
   retentionPolicy: 30d
   configuration:
-    wal:
-      compression: bzip2
-      maxParallel: 8
-      encryption: AES256
-    data:
-      compression: bzip2
-      encryption: AES256
-    destinationPath: s3://cnpg/
-    endpointURL: https://minio.nas.techtales.io
+    # wal:
+    #   compression: bzip2
+    #   maxParallel: 8
+    #   encryption: AES256
+    # data:
+    #   compression: bzip2
+    #   encryption: AES256
+    destinationPath: s3://cnpg/talos-flux/
+    endpointURL: https://s3.nas.techtales.io
     s3Credentials:
       accessKeyId:
         name: postgres-minio
