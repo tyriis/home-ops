@@ -2,7 +2,13 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: flux-system
+components:
+  - ../../../components/sops/kube-nas
+  - ../../../components/flux/alerts
+  - ../../../components/flux/globals/talos-flux
 resources:
-  - namespace.yaml
+  - ./namespace.yaml
+  - ./flux-operator/flux-sync.yaml
   - ./flux/flux-sync.yaml
   # - ./tofu-controller/flux-sync.yaml # disable as it does not work properly currently

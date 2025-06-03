@@ -4,11 +4,11 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: flux-repositories
-  namespace: flux-system
+  namespace: &namespace flux-system
 spec:
-  targetNamespace: flux-system
+  targetNamespace: *namespace
   path: ./kubernetes/base/flux/repositories/helm
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
@@ -22,53 +22,10 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname flux-operator
-  namespace: flux-system
-spec:
-  targetNamespace: flux-system
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *appname
-  path: ./kubernetes/talos-flux/flux/operator
-  prune: false
-  sourceRef:
-    kind: GitRepository
-    name: home-ops
-  wait: false
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &appname flux-instance
-  namespace: flux-system
-spec:
-  targetNamespace: flux-system
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *appname
-  path: ./kubernetes/talos-flux/flux/instance
-  prune: false
-  sourceRef:
-    kind: GitRepository
-    name: home-ops
-  wait: false
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
   name: flux-apps
-  namespace: flux-system
+  namespace: &namespace flux-system
 spec:
+  targetNamespace: *namespace
   path: ./kubernetes/talos-flux/apps
   prune: true
   sourceRef:
@@ -79,18 +36,14 @@ spec:
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: flux-system
     - name: flux-repositories
   decryption:
     provider: sops
     secretRef:
       name: sops-age
   postBuild:
-    substituteFrom:
-      - kind: ConfigMap
-        name: cluster-settings
-      - kind: Secret
-        name: cluster-secrets
+    substitute:
+      FLUX_CLUSTER_NAME: kube-nas
   patches:
     - patch: |-
         apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -98,10 +51,6 @@ spec:
         metadata:
           name: not-used
         spec:
-          decryption:
-            provider: sops
-            secretRef:
-              name: sops-age
           postBuild:
             substituteFrom:
               - kind: ConfigMap
@@ -113,3 +62,18 @@ spec:
         version: v1
         kind: Kustomization
         labelSelector: substitution.flux.home.arpa/disabled notin (true)
+    - patch: |-
+        apiVersion: kustomize.toolkit.fluxcd.io/v1
+        kind: Kustomization
+        metadata:
+          name: not-used
+        spec:
+          decryption:
+            provider: sops
+            secretRef:
+              name: sops-age
+      target:
+        group: kustomize.toolkit.fluxcd.io
+        version: v1
+        kind: Kustomization
+        labelSelector: sops.flux.home.arpa/disabled notin (true)
