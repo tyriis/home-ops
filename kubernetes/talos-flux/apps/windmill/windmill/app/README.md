@@ -3,6 +3,8 @@
 after init we need to run
 
 ```sql
+CREATE ROLE windmill_user;
+
 GRANT ALL
 ON ALL TABLES IN SCHEMA public
 TO windmill_user;
