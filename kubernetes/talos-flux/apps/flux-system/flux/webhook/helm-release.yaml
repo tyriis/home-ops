@@ -46,7 +46,7 @@ spec:
                 name: home-ops
     ingress:
       app:
-        className: nginx
+        className: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/tls-acme: "true"
