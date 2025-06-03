@@ -86,6 +86,7 @@ metadata:
   namespace: &namespace database
   labels:
     substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: *namespace
   commonMetadata:

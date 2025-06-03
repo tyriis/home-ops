@@ -6,6 +6,7 @@ metadata:
   name: &appname windmill
   labels:
     substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: windmill
   commonMetadata:
