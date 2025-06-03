@@ -21,6 +21,8 @@ spec:
   upgrade:
     cleanupOnFail: true
     crds: CreateReplace
+  uninstall:
+    keepHistory: false
   # https://artifacthub.io/packages/helm/metrics-server/metrics-server?modal=values
   values:
     args:

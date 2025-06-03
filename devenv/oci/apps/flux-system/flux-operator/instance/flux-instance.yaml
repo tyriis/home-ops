@@ -22,7 +22,7 @@ spec:
     tenantDefaultServiceAccount: default
     type: kubernetes
   storage:
-    class: local
+    class: standard
     size: 10Gi
   kustomize:
     patches:
@@ -35,23 +35,30 @@ spec:
           kind: Namespace
           version: v1
           name: flux-system
-      # Add Sops decryption to 'flux-system' Kustomization
+      # configure repository
       - patch: |
+          - op: replace
+            path: /metadata/name
+            value: homeops-devenv
           - op: add
-            path: /spec/decryption
-            value:
-              provider: sops
-              secretRef:
-                name: sops-age
+            path: /spec/insecure
+            value: true
         target:
-          group: kustomize.toolkit.fluxcd.io
+          kind: OCIRepository
+          name: flux-system
+      - patch: |
+          - op: replace
+            path: /spec/sourceRef/name
+            value: homeops-devenv
+        target:
           kind: Kustomization
-      # Increase the number of reconciliations that can be performed in parallel and bump the resources limits
-      # https://fluxcd.io/flux/cheatsheets/bootstrap/#increase-the-number-of-workers
+          name: flux-system
+      # increase the number of workers
+      # https://fluxcd.io/flux/installation/configuration/vertical-scaling/#increase-the-number-of-workers-and-limits
       - patch: |
           - op: add
             path: /spec/template/spec/containers/0/args/-
-            value: --concurrent=10
+            value: --concurrent=20
           - op: add
             path: /spec/template/spec/containers/0/args/-
             value: --kube-api-qps=500
@@ -64,49 +71,8 @@ spec:
         target:
           kind: Deployment
           name: (kustomize-controller|helm-controller|source-controller)
-      # increase resource limits for the controllers
-      - patch: |
-          apiVersion: apps/v1
-          kind: Deployment
-          metadata:
-            name: not-used
-          spec:
-            template:
-              spec:
-                containers:
-                  - name: manager
-                    resources:
-                      limits:
-                        memory: 2Gi
-        target:
-          kind: Deployment
-          name: (kustomize-controller|helm-controller|source-controller)
-      # Configure home-ops GitRepository
-      - patch: |
-          - op: replace
-            path: /metadata/name
-            value: home-ops
-          - op: replace
-            path: /spec/interval
-            value: 2h
-          - op: add
-            path: /spec/ignore
-            value: |
-              # exclude all
-              /*
-              # include kubernetes directory only
-              !/kubernetes
-        target:
-          kind: GitRepository
-          name: flux-system
-      - patch: |
-          - op: replace
-            path: /spec/sourceRef/name
-            value: home-ops
-        target:
-          kind: Kustomization
-          name: flux-system
-      # Enable in-memory kustomize builds
+      # enable in-memory kustomize builds
+      # https://fluxcd.io/flux/installation/configuration/vertical-scaling/#enable-in-memory-kustomize-builds
       - patch: |
           - op: add
             path: /spec/template/spec/containers/0/args/-
@@ -120,7 +86,8 @@ spec:
         target:
           kind: Deployment
           name: kustomize-controller
-      # Enable Helm repositories caching
+      # enable helm repositories caching
+      # https://fluxcd.io/flux/installation/configuration/vertical-scaling/#enable-helm-repositories-caching
       - patch: |
           - op: add
             path: /spec/template/spec/containers/0/args/-
@@ -134,8 +101,8 @@ spec:
         target:
           kind: Deployment
           name: source-controller
-      # Flux near OOM detection for Helm
-      # https://fluxcd.io/flux/cheatsheets/bootstrap/#enable-helm-near-oom-detection
+      # flux near OOM detection for helm
+      # https://fluxcd.io/flux/installation/configuration/helm-oom-detection/
       - patch: |
           - op: add
             path: /spec/template/spec/containers/0/args/-
@@ -150,7 +117,7 @@ spec:
           kind: Deployment
           name: helm-controller
   sync:
-    kind: GitRepository
-    url: https://github.com/tyriis/home-ops.git
-    ref: refs/heads/main
-    path: ./kubernetes/kube-nas/flux
+    kind: OCIRepository
+    url: oci://homeops-kind-registry:5000/homeops-devenv
+    ref: local
+    path: ./devenv/oci/flux
