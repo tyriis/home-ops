@@ -5,4 +5,4 @@ kind: Component
 # This component is used to deploy the flux-config into the namespace
 resources:
   - ../../../../talos-flux/flux/config/cluster-secrets.sops.yaml
-  - ../../../../talos-flux/flux/config/cluster-secrets.sops.yaml
+  - ../../../../talos-flux/flux/config/cluster-settings.yaml
