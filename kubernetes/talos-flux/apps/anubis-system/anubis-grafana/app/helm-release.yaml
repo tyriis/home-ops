@@ -111,7 +111,7 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/tls-acme: "true"
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          # external-dns.alpha.kubernetes.io/target: "${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"
+          # external-dns.alpha.kubernetes.io/target: external.techtales.io
           # external-dns/cloudflare: "true"
         hosts:
           - host: &host anubis-grafana.techtales.io
