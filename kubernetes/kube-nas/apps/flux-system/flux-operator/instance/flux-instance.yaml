@@ -99,6 +99,13 @@ spec:
         target:
           kind: GitRepository
           name: flux-system
+      - patch: |
+          - op: replace
+            path: /spec/sourceRef/name
+            value: home-ops
+        target:
+          kind: Kustomization
+          name: flux-system
       # Enable in-memory kustomize builds
       - patch: |
           - op: add
