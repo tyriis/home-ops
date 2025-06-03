@@ -8,11 +8,11 @@ tasks:
     internal: true
     cmds:
       - task: push-artifact
-      - kubectl apply -f {{.DEVENV_DIR}}/oci/registry-config.yaml
-      - helm install flux-operator oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator -n flux-system --create-namespace
-      - kubectl wait --for condition=established --timeout=60s crd/fluxinstances.fluxcd.controlplane.io
-      - kubectl apply -k {{.DEVENV_DIR}}/oci/flux/instance/ -n flux-system
-      - kubectl -n flux-system wait fluxinstance/flux --for=condition=ready --timeout=10m
+      - kubectl apply --server-side -f {{.DEVENV_DIR}}/oci/registry-config.yaml
+      - helm install -n flux-system flux-operator oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator --create-namespace
+      - kubectl wait -n flux-system --for condition=established --timeout=60s crd/fluxinstances.fluxcd.controlplane.io
+      - kubectl apply --server-side -n flux-system -f {{.DEVENV_DIR}}/oci/apps/flux-system/flux-operator/instance/flux-instance.yaml
+      - kubectl wait -n flux-system fluxinstance/flux --for=condition=ready --timeout=10m
 
   push-artifact:
     desc: push to local oci registry
@@ -29,11 +29,11 @@ tasks:
     desc: reconcile local oci registry
     internal: true
     cmds:
-      - kubectl -n flux-system wait ocirepository/homeops-devenv --for=condition=ready --timeout=10m
+      - kubectl wait -n flux-system ocirepository/homeops-devenv --for=condition=ready --timeout=10m
       - flux reconcile source oci homeops-devenv
 
   wait-sync-complete:
     desc: wait for flux system to be ready
     internal: true
     cmds:
-      - kubectl -n flux-system wait kustomization/flux-sync --for=condition=ready --timeout=10m
+      - kubectl wait -n flux-system kustomization/flux-sync --for=condition=ready --timeout=10m

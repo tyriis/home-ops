@@ -21,6 +21,8 @@ spec:
   upgrade:
     cleanupOnFail: true
     crds: CreateReplace
+  uninstall:
+    keepHistory: false
   # https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx?modal=values
   values:
     controller:

@@ -9,6 +9,8 @@ spec:
   install:
     remediation:
       retries: 5
+  uninstall:
+    keepHistory: false
   # https://artifacthub.io/packages/helm/stakater/reloader?modal=values
   values:
     replicas: 1

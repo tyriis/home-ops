@@ -8,15 +8,11 @@ spec:
   interval: 30m
   driftDetection:
     mode: enabled
-  chart:
-    spec:
-      chart: flux-operator
-      version: 0.22.0
-      sourceRef:
-        kind: HelmRepository
-        name: flux-operator-charts
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: flux-operator
   install:
+    createNamespace: true
     crds: Create
     remediation:
       retries: 3
@@ -26,6 +22,8 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+  uninstall:
+    keepHistory: false
   values:
     serviceMonitor:
       create: false
