@@ -29,7 +29,7 @@ repos:
           - --notitle
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.99.2
+    rev: v1.99.3
     hooks:
       - id: terraform_docs
         args:
