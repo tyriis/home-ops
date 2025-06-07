@@ -2,7 +2,7 @@
 endpoints:
   - name: ${APP}
     group: internal
-    url: http://${GATUS_SUBDOMAIN:=${APP}}.${NAMESPACE}.${GATUS_DOMAIN:=svc.cluster.local}${GATUS_PATH:=/}
+    url: http://${GATUS_SUBDOMAIN:=${APP}}${GATUS_PORT:=80}.${NAMESPACE}.${GATUS_DOMAIN:=svc.cluster.local}${GATUS_PATH:=/}
     interval: 1m
     ui:
       hide-hostname: true
