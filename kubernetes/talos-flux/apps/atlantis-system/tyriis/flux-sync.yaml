@@ -12,7 +12,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: ./kubernetes/talos-flux/apps/atlantis/tyriis/terraform-github
+  path: ./kubernetes/talos-flux/apps/atlantis-system/tyriis/terraform-github
   sourceRef:
     kind: GitRepository
     name: home-ops
