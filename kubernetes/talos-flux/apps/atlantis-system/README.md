@@ -42,4 +42,4 @@ Github Webhook is exposed via cloudflared. Currently config need to be added man
 
 ## local DNS (unbound on opnsense)
 
-Need to be configured manual.
+Is managed via [techtales-io/terraform-opnsense](https://github.com/techtales-io/terraform-opnsense)
