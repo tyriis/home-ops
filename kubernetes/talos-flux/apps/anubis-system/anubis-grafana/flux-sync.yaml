@@ -6,7 +6,8 @@ metadata:
   name: &appname anubis-grafana
   namespace: flux-system
   labels:
-    substitution.flux.home.arpa/enabled: "true"
+    substitution.flux.home.arpa/enabled: "false"
+    sops.flux.home.arpa/enabled: "false"
 spec:
   targetNamespace: anubis-system
   commonMetadata:
@@ -21,3 +22,6 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  postBuild:
+    substitute:
+      SETTING_TZ: ${SETTING_TZ}
