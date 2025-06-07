@@ -3,10 +3,13 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: zigbee2mqtt-upstairs
-  description: A component managing Zigbee2mqtt upstairs, facilitating wireless device communication in smart homes.
+  name: zigbee2mqtt
+  description: A component managing Zigbee2mqtt, facilitating wireless device communication in smart homes.
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: tyriis/home-ops
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/home-automation/zigbee2mqtt/upstairs
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/home-automation/zigbee2mqtt
       title: Flux definition
       icon: github
       type: github-repository
@@ -14,7 +17,7 @@ metadata:
       title: Documentation
       icon: docs
       type: documentation
-    - url: https://zigbee2mqtt-upstairs.techtales.io/
+    - url: https://zigbee2mqtt.techtales.io/
       title: Zigbee2mqtt dashboard
       icon: dashboard
       type: dashboard

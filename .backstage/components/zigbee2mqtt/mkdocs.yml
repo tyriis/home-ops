@@ -1,0 +1,7 @@
+---
+site_name: zigbee2mqtt
+nav:
+  - Home: index.md
+
+plugins:
+  - techdocs-core
