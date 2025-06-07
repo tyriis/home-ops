@@ -12,6 +12,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components:
+    - ../../../../../components/gatus/internal
   path: ./kubernetes/talos-flux/apps/atlantis-system/techtales-io/terraform-discord
   sourceRef:
     kind: GitRepository
