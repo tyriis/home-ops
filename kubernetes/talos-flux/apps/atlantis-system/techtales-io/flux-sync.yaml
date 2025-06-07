@@ -38,7 +38,7 @@ metadata:
   name: &appname atlantis-techtales-io-terraform-gcloud
   labels:
     substitution.flux.home.arpa/disabled: "true"
-    sops.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "false"
 spec:
   targetNamespace: atlantis-system
   commonMetadata:
@@ -70,7 +70,7 @@ metadata:
   name: &appname atlantis-techtales-io-terraform-github
   labels:
     substitution.flux.home.arpa/disabled: "true"
-    sops.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "false"
 spec:
   targetNamespace: atlantis
   commonMetadata:
@@ -102,7 +102,7 @@ metadata:
   name: &appname atlantis-techtales-io-terraform-gworkspace
   labels:
     substitution.flux.home.arpa/disabled: "true"
-    sops.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "false"
 spec:
   targetNamespace: atlantis
   commonMetadata:
@@ -134,7 +134,7 @@ metadata:
   name: &appname atlantis-techtales-io-terraform-minio
   labels:
     substitution.flux.home.arpa/disabled: "true"
-    sops.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "false"
 spec:
   targetNamespace: atlantis
   commonMetadata:
@@ -166,7 +166,7 @@ metadata:
   name: &appname atlantis-techtales-io-terraform-opnsense
   labels:
     substitution.flux.home.arpa/disabled: "true"
-    sops.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "false"
 spec:
   targetNamespace: atlantis
   commonMetadata:
@@ -198,7 +198,7 @@ metadata:
   name: &appname atlantis-techtales-io-terraform-vault
   labels:
     substitution.flux.home.arpa/disabled: "true"
-    sops.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "false"
 spec:
   targetNamespace: atlantis-system
   commonMetadata:
