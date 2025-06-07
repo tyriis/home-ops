@@ -8,7 +8,7 @@ metadata:
     substitution.flux.home.arpa/disabled: "true"
     sops.flux.home.arpa/disabled: "true"
 spec:
-  targetNamespace: atlantis-system
+  targetNamespace: &namespace atlantis-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
@@ -30,7 +30,9 @@ spec:
   postBuild:
     substitute:
       APP: *appname
+      NAMESPACE: *namespace
       REPO: github.com/techtales-io/terraform-discord
+      GATUS_PORT: "4141"
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
