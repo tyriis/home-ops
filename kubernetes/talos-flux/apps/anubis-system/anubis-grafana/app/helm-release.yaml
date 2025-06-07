@@ -53,7 +53,7 @@ spec:
             #       name: anubis-grafana-env
             env:
               # https://anubis.techaro.lol/docs/admin/installation#environment-variables
-              TZ: ${SETTING_TZ}
+              TZ: ${FLUX_CLUSTER_TZ}
               BIND: ":8080"
               COOKIE_DOMAIN: techtales.io
               BIND_NETWORK: tcp
@@ -61,7 +61,7 @@ spec:
               METRICS_BIND: ":9090"
               METRICS_BIND_NETWORK: tcp
               SERVE_ROBOTS_TXT: "true"
-              TARGET: http://grafana.observability.svc.cluster.local
+              TARGET: http://grafana.observability.svc.cluster.local #NOSONAR allow http
               OG_PASSTHROUGH: "false"
               OG_EXPIRY_TIME: 24h
 
