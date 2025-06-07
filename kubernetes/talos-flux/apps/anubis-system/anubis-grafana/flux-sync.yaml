@@ -5,8 +5,8 @@ kind: Kustomization
 metadata:
   name: &appname anubis-grafana
   labels:
-    substitution.flux.home.arpa/enabled: "false"
-    sops.flux.home.arpa/enabled: "false"
+    substitution.flux.home.arpa/diabled: "true"
+    sops.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: anubis-system
   commonMetadata:
