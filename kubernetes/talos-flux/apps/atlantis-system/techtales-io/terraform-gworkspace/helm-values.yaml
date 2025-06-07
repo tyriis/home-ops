@@ -7,10 +7,6 @@ spec:
   interval: 15m
   # https://bjw-s-labs.github.io/helm-charts/docs/app-template/
   values:
-    serviceAccount:
-      ${APP}: {}
-    defaultPodOptions:
-      automountServiceAccountToken: true
     controllers:
       main:
         containers:
