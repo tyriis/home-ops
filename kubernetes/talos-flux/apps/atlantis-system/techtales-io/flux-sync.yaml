@@ -4,26 +4,27 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname atlantis-techtales-io-terraform-discord
-  namespace: flux-system
   labels:
-    substitution.flux.home.arpa/enabled: "true"
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "true"
 spec:
-  targetNamespace: atlantis
+  targetNamespace: atlantis-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: ./kubernetes/talos-flux/apps/atlantis/techtales-io/terraform-discord
+  path: ./kubernetes/talos-flux/apps/atlantis-system/techtales-io/terraform-discord
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   prune: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: cert-manager
-    - name: traefik-forward-auth
+    - name: external-secrets-stores
+      namespace: flux-system
   postBuild:
     substitute:
       APP: *appname
@@ -35,26 +36,27 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname atlantis-techtales-io-terraform-gcloud
-  namespace: flux-system
   labels:
-    substitution.flux.home.arpa/enabled: "true"
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "true"
 spec:
-  targetNamespace: atlantis
+  targetNamespace: atlantis-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: ./kubernetes/talos-flux/apps/atlantis/techtales-io/terraform-gcloud
+  path: ./kubernetes/talos-flux/apps/atlantis-system/techtales-io/terraform-gcloud
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   prune: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: cert-manager
-    - name: traefik-forward-auth
+    - name: external-secrets-stores
+      namespace: flux-system
   postBuild:
     substitute:
       APP: *appname
@@ -66,26 +68,27 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname atlantis-techtales-io-terraform-github
-  namespace: flux-system
   labels:
-    substitution.flux.home.arpa/enabled: "true"
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: atlantis
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: ./kubernetes/talos-flux/apps/atlantis/techtales-io/terraform-github
+  path: ./kubernetes/talos-flux/apps/atlantis-system/techtales-io/terraform-github
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   prune: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: cert-manager
-    - name: traefik-forward-auth
+    - name: external-secrets-stores
+      namespace: flux-system
   postBuild:
     substitute:
       APP: *appname
@@ -97,26 +100,27 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname atlantis-techtales-io-terraform-gworkspace
-  namespace: flux-system
   labels:
-    substitution.flux.home.arpa/enabled: "true"
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: atlantis
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: ./kubernetes/talos-flux/apps/atlantis/techtales-io/terraform-gworkspace
+  path: ./kubernetes/talos-flux/apps/atlantis-system/techtales-io/terraform-gworkspace
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   prune: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: cert-manager
-    - name: traefik-forward-auth
+    - name: external-secrets-stores
+      namespace: flux-system
   postBuild:
     substitute:
       APP: *appname
@@ -128,26 +132,27 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname atlantis-techtales-io-terraform-minio
-  namespace: flux-system
   labels:
-    substitution.flux.home.arpa/enabled: "true"
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: atlantis
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: ./kubernetes/talos-flux/apps/atlantis/techtales-io/terraform-minio
+  path: ./kubernetes/talos-flux/apps/atlantis-system/techtales-io/terraform-minio
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   prune: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: cert-manager
-    - name: traefik-forward-auth
+    - name: external-secrets-stores
+      namespace: flux-system
   postBuild:
     substitute:
       APP: *appname
@@ -159,26 +164,27 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname atlantis-techtales-io-terraform-opnsense
-  namespace: flux-system
   labels:
-    substitution.flux.home.arpa/enabled: "true"
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: atlantis
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: ./kubernetes/talos-flux/apps/atlantis/techtales-io/terraform-opnsense
+  path: ./kubernetes/talos-flux/apps/atlantis-system/techtales-io/terraform-opnsense
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   prune: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: cert-manager
-    - name: traefik-forward-auth
+    - name: external-secrets-stores
+      namespace: flux-system
   postBuild:
     substitute:
       APP: *appname
@@ -190,26 +196,27 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname atlantis-techtales-io-terraform-vault
-  namespace: flux-system
   labels:
-    substitution.flux.home.arpa/enabled: "true"
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "true"
 spec:
-  targetNamespace: atlantis
+  targetNamespace: atlantis-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: ./kubernetes/talos-flux/apps/atlantis/techtales-io/terraform-vault
+  path: ./kubernetes/talos-flux/apps/atlantis-system/techtales-io/terraform-vault
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   prune: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: cert-manager
-    - name: traefik-forward-auth
+    - name: external-secrets-stores
+      namespace: flux-system
   postBuild:
     substitute:
       APP: *appname
