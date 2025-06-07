@@ -2,13 +2,10 @@
 endpoints:
   - name: ${APP}
     group: internal
-    url: 1.1.1.1
+    url: http://${GATUS_SUBDOMAIN:=${APP}}.${NAMESPACE}.${GATUS_DOMAIN:=svc.cluster.local}${GATUS_PATH:=/}
     interval: 1m
     ui:
       hide-hostname: true
       hide-url: true
-    dns:
-      query-name: ${GATUS_SUBDOMAIN:=${APP}}.techtales.io
-      query-type: A
     conditions:
-      - "len([BODY]) == 0"
+      - "[STATUS] == ${GATUS_STATUS:=200}"
