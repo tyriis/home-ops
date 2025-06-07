@@ -5,10 +5,10 @@ kind: Kustomization
 components:
   - ../../../../../components/atlantis
 configMapGenerator:
-  - name: techtales-io-terraform-discord-allowlist
+  - name: atlantis-techtales-io-terraform-discord-allowlist
     files:
       - allowlist.txt=config/allowlist.txt
-  - name: techtales-io-terraform-discord-config
+  - name: atlantis-techtales-io-terraform-discord-config
     files:
       - repos.yaml=config/repos.yaml
 generatorOptions:
