@@ -6,7 +6,7 @@ metadata:
   name: &appname atlantis-tyriis-terraform-github
   labels:
     substitution.flux.home.arpa/disabled: "true"
-    sops.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "false"
 spec:
   targetNamespace: atlantis-system
   commonMetadata:
