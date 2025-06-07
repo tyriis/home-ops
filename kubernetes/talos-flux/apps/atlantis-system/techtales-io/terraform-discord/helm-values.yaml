@@ -13,7 +13,7 @@ spec:
           app:
             envFrom:
               - secretRef:
-                  name: techtales-io-env
+                  name: atlantis-techtales-io-env
             env:
               VAULT_ADDR: https://secrets.techtales.io
     persistence:
