@@ -76,7 +76,7 @@ metadata:
     substitution.flux.home.arpa/disabled: "true"
     sops.flux.home.arpa/disabled: "false"
 spec:
-  targetNamespace: atlantis
+  targetNamespace: atlantis-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
@@ -108,7 +108,7 @@ metadata:
     substitution.flux.home.arpa/disabled: "true"
     sops.flux.home.arpa/disabled: "false"
 spec:
-  targetNamespace: atlantis
+  targetNamespace: atlantis-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
@@ -140,7 +140,7 @@ metadata:
     substitution.flux.home.arpa/disabled: "true"
     sops.flux.home.arpa/disabled: "false"
 spec:
-  targetNamespace: atlantis
+  targetNamespace: atlantis-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
@@ -172,7 +172,7 @@ metadata:
     substitution.flux.home.arpa/disabled: "true"
     sops.flux.home.arpa/disabled: "false"
 spec:
-  targetNamespace: atlantis
+  targetNamespace: atlantis-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
