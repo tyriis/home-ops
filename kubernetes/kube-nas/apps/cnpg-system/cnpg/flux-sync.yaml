@@ -47,7 +47,7 @@ spec:
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: cnpg-oprerator
+    - name: cnpg-operator
       namespace: cnpg-system
     - name: dbman
       namespace: cnpg-system
