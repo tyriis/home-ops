@@ -4,7 +4,9 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname minecraft-public-global-secrets
-  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: gaming-public
   commonMetadata:
@@ -15,12 +17,14 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
   dependsOn:
     - name: external-secrets-stores
+      namespace: flux-system
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -28,7 +32,9 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname minecraft-public-velocity-proxy
-  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: &namespace gaming-public
   commonMetadata:
@@ -41,20 +47,24 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
   dependsOn:
     - name: minecraft-public-global-secrets
+      namespace: gaming-public
     - name: external-secrets-stores
-    # required for the loadbalancer config (it is not a hard dependency)
-    - name: cilium-config
+      namespace: flux-system
   postBuild:
     substitute:
       APP: *appname
       NAMESPACE: *namespace
       SERVICE: minecraft-public-velocity-proxy-velocity
+      # TODO: cleanup
+      SETTING_TZ: ${FLUX_CLUSTER_TZ}
+      CILIUM_LOADBALANCER_ADDR: 192.168.1.86
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -62,7 +72,9 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname minecraft-public-playground-world
-  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "false"
 spec:
   targetNamespace: &namespace gaming-public
   commonMetadata:
@@ -75,6 +87,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   interval: 30m
   retryInterval: 1m
@@ -97,7 +110,9 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname minecraft-public-survival-world
-  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "false"
 spec:
   targetNamespace: &namespace gaming-public
   commonMetadata:
@@ -110,16 +125,20 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
   dependsOn:
     - name: minecraft-public-global-secrets
+      namespace: gaming-public
     - name: volsync
       namespace: backup-system
     - name: rook-ceph-cluster
+      namespace: flux-system
     - name: kube-prometheus-stack
+      namespace: flux-system
   postBuild:
     substitute:
       APP: *appname
@@ -132,7 +151,9 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname minecraft-public-pvp-world
-  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "false"
 spec:
   targetNamespace: &namespace gaming-public
   commonMetadata:
@@ -145,16 +166,20 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
   dependsOn:
     - name: minecraft-public-global-secrets
+      namespace: gaming-public
     - name: volsync
       namespace: backup-system
     - name: rook-ceph-cluster
+      namespace: flux-system
     - name: kube-prometheus-stack
+      namespace: flux-system
   postBuild:
     substitute:
       APP: *appname
@@ -167,7 +192,9 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname minecraft-public-lobby-world
-  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "false"
 spec:
   targetNamespace: &namespace gaming-public
   commonMetadata:
@@ -180,16 +207,20 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
   dependsOn:
     - name: minecraft-public-global-secrets
+      namespace: gaming-public
     - name: volsync
       namespace: backup-system
     - name: rook-ceph-cluster
+      namespace: flux-system
     - name: kube-prometheus-stack
+      namespace: flux-system
   postBuild:
     substitute:
       APP: *appname
