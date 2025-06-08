@@ -150,7 +150,7 @@ metadata:
   name: &appname atlantis-techtales-io-terraform-minio
   labels:
     substitution.flux.home.arpa/disabled: "true"
-    sops.flux.home.arpa/disabled: "false"
+    sops.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: atlantis-system
   commonMetadata:
