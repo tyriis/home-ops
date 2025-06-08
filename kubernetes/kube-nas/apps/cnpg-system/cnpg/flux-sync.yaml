@@ -32,7 +32,7 @@ kind: Kustomization
 metadata:
   name: &appname cnpg-cluster
 spec:
-  targetNamespace: database-system
+  targetNamespace: cnpg-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
