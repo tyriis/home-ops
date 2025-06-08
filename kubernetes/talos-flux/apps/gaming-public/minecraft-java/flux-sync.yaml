@@ -82,6 +82,7 @@ spec:
   dependsOn:
     - name: minecraft-public-global-secrets
     - name: volsync
+      namespace: backup-system
     - name: rook-ceph-cluster
     - name: kube-prometheus-stack
   postBuild:
@@ -116,6 +117,7 @@ spec:
   dependsOn:
     - name: minecraft-public-global-secrets
     - name: volsync
+      namespace: backup-system
     - name: rook-ceph-cluster
     - name: kube-prometheus-stack
   postBuild:
@@ -150,6 +152,7 @@ spec:
   dependsOn:
     - name: minecraft-public-global-secrets
     - name: volsync
+      namespace: backup-system
     - name: rook-ceph-cluster
     - name: kube-prometheus-stack
   postBuild:
@@ -184,6 +187,7 @@ spec:
   dependsOn:
     - name: minecraft-public-global-secrets
     - name: volsync
+      namespace: backup-system
     - name: rook-ceph-cluster
     - name: kube-prometheus-stack
   postBuild:
