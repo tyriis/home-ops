@@ -63,6 +63,10 @@ spec:
   valuesFrom:
     - kind: ConfigMap
       name: cluster-issuer-staging
+    - kind: Secret
+      name: cloudflare-api-key
+      valuesKey: email
+      targetPath: spec.acme.solvers[0].dns01.cloudflare.email
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
@@ -96,3 +100,7 @@ spec:
   valuesFrom:
     - kind: ConfigMap
       name: cluster-issuer-production
+    - kind: Secret
+      name: cloudflare-api-key
+      valuesKey: email
+      targetPath: spec.acme.solvers[0].dns01.cloudflare.email
