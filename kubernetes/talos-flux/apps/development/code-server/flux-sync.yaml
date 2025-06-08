@@ -20,7 +20,6 @@ spec:
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: cert-manager
     - name: rook-ceph-cluster
     - name: traefik-forward-auth
   postBuild:
