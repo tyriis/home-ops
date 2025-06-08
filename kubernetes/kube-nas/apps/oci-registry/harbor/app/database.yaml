@@ -13,6 +13,6 @@ spec:
       key: INIT_POSTGRES_PASS
   databaseName: registry
   databaseServerRef:
-    namespace: database-system
+    namespace: cnpg-system
     name: nas-postgres17
   prune: false
