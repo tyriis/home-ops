@@ -65,7 +65,7 @@ spec:
     redis:
       type: external
       external:
-        addr: dragonfly.database-system.svc.cluster.local:6379
+        addr: dragonfly.dragonfly-system.svc.cluster.local:6379
     database:
       type: external
       external:

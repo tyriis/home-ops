@@ -21,12 +21,12 @@ kind: Kustomization
 metadata:
   name: &appname dragonfly-operator
 spec:
-  targetNamespace: database-system
+  targetNamespace: dragonfly-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: dragonfly
       app.kubernetes.io/component: *appname
-  path: ./kubernetes/kube-nas/apps/database-system/dragonfly/operator
+  path: ./kubernetes/kube-nas/apps/dragonfly-system/dragonfly/operator
   prune: true
   sourceRef:
     kind: GitRepository
@@ -46,12 +46,12 @@ kind: Kustomization
 metadata:
   name: &appname dragonfly-cluster
 spec:
-  targetNamespace: database-system
+  targetNamespace: dragonfly-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: dragonfly
       app.kubernetes.io/component: *appname
-  path: ./kubernetes/kube-nas/apps/database-system/dragonfly/cluster
+  path: ./kubernetes/kube-nas/apps/dragonfly-system/dragonfly/cluster
   prune: true
   sourceRef:
     kind: GitRepository
@@ -63,28 +63,29 @@ spec:
   timeout: 5m
   dependsOn:
     - name: dragonfly-operator
-# ---
-# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: &appname dragonfly-observability
-#   namespace: flux-system
-# spec:
-#   targetNamespace: database-system
-#   commonMetadata:
-#     labels:
-#       app.kubernetes.io/name: dragonfly
-#       app.kubernetes.io/component: *appname
-#   path: ./kubernetes/kube-nas/apps/database-system/dragonfly/observability
-#   prune: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: home-ops
-#   wait: true
-#   interval: 30m
-#   retryInterval: 1m
-#   timeout: 5m
-#   dependsOn:
-#     - name: dragonfly-cluster
-#     - name: kube-prometheus-stack
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname dragonfly-observability
+  namespace: flux-system
+spec:
+  targetNamespace: dragonfly-system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: dragonfly
+      app.kubernetes.io/component: *appname
+  path: ./kubernetes/kube-nas/apps/dragonfly-system/dragonfly/observability
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: dragonfly-cluster
+    - name: kube-prometheus-stack
+      namespace: observability

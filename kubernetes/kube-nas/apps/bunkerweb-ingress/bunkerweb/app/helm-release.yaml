@@ -83,7 +83,7 @@ spec:
               MULTISITE: "yes"
               USE_UI: "yes"
               USE_REDIS: "yes"
-              REDIS_HOST: dragonfly.database-system.svc.cluster.local
+              REDIS_HOST: dragonfly.dragonfly-system.svc.cluster.local
             probes:
               liveness: &probes
                 enabled: true
@@ -122,7 +122,7 @@ spec:
               MULTISITE: "yes"
               USE_UI: "yes"
               USE_REDIS: "yes"
-              REDIS_HOST: dragonfly.database-system.svc.cluster.local
+              REDIS_HOST: dragonfly.dragonfly-system.svc.cluster.local
               USE_REAL_IP: "yes"
             envFrom:
               - secretRef:
