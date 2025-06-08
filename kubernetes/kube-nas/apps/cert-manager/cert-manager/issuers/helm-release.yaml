@@ -5,6 +5,8 @@ kind: HelmRelease
 metadata:
   name: cert-manager-cluster-issuer-selfsigned
 spec:
+  driftDetection:
+    mode: enabled
   dependsOn:
     - name: cert-manager
   interval: 15m
@@ -38,6 +40,8 @@ kind: HelmRelease
 metadata:
   name: cert-manager-cluster-issuer-staging
 spec:
+  driftDetection:
+    mode: enabled
   dependsOn:
     - name: cert-manager
   interval: 15m
@@ -75,6 +79,8 @@ kind: HelmRelease
 metadata:
   name: cert-manager-cluster-issuer-production
 spec:
+  driftDetection:
+    mode: enabled
   dependsOn:
     - name: cert-manager
   interval: 15m
