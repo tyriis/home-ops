@@ -9,6 +9,4 @@ components:
 resources:
   - ./namespace.yaml
   - ../../../base/flux/repositories/git/dragonfly-operator.yaml
-  - ./cloudnative-pg/flux-sync.yaml
-  - ./dbman/flux-sync.yaml
   - ./dragonfly/flux-sync.yaml
