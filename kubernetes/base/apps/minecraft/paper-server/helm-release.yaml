@@ -72,7 +72,7 @@ spec:
                   name: ${APP}-env
             env:
               # https://docker-minecraft-server.readthedocs.io/en/latest/variables
-              TZ: ${SETTING_TZ:=Europe/Vienna}
+              TZ: ${SETTING_TZ}
               TYPE: "PAPER"
               # renovate custom manager for 1.21.5 builds
               PAPER_DOWNLOAD_URL: https://api.papermc.io/v2/projects/paper/versions/1.21.5/builds/109/downloads/paper-1.21.5-109.jar
