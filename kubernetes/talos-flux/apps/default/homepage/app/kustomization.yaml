@@ -7,9 +7,6 @@ resources:
   - rbac.yaml
   - helm-release.yaml
   - external-secret.yaml
-commonLabels:
-  app.kubernetes.io/name: homepage
-  app.kubernetes.io/instance: homepage
 configMapGenerator:
   - name: homepage-config
     files:
