@@ -62,7 +62,7 @@ spec:
       SERVICE: minecraft-velocity-proxy-velocity
       # TODO: cleanup
       SETTING_TZ: ${FLUX_CLUSTER_TZ}
-      CILIUM_LOADBALANCER_ADDR: "192.168.1.82"
+      CILIUM_LOADBALANCER_ADDR: 192.168.1.82
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json

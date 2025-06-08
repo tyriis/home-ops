@@ -114,7 +114,7 @@ spec:
         controller: velocity
         type: LoadBalancer
         annotations:
-          lbipam.cilium.io/ips: "${CILIUM_LOADBALANCER_ADDR}"
+          lbipam.cilium.io/ips: ${CILIUM_LOADBALANCER_ADDR}
         ports:
           velocity-proxy:
             port: *port
