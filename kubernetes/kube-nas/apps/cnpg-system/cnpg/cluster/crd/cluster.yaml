@@ -25,6 +25,9 @@ spec:
       parameters:
         barmanObjectName: *name
         serverName: *name
+  bootstrap: {} # prevent creation of app db
+
+
   # managed:
   #   roles:
   #     - name: harbor
