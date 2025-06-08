@@ -7,20 +7,20 @@ spec:
   interval: 15m
   # https://bjw-s-labs.github.io/helm-charts/docs/app-template/
   values:
-    serviceAccount:
-      ${APP}: {}
-    defaultPodOptions:
-      automountServiceAccountToken: true
     controllers:
       main:
         containers:
           app:
             envFrom:
               - secretRef:
+                  name: atlantis-techtales-io-env
+              - secretRef:
                   name: ${APP}-env
+              - secretRef:
+                  name: ${APP}-extra-env
             env:
-              ATLANTIS_REPO_ALLOWLIST: ${REPO}
               VAULT_ADDR: https://secrets.techtales.io
+              AWS_ENDPOINT_URL_S3: https://s3.tyriis.dev/
     persistence:
       allowlist:
         type: configMap
