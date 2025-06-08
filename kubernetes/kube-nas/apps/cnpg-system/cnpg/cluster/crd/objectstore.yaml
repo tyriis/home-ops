@@ -12,7 +12,7 @@ spec:
     s3Credentials:
       accessKeyId:
         name: postgres-minio
-        key: AWS_ACCESS_KEY_ID
+        key: MINIO_ACCESS_KEY
       secretAccessKey:
         name: postgres-minio
-        key: AWS_SECRET_ACCESS_KEY
+        key: MINIO_SECRET_KEY
