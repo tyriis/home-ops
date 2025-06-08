@@ -6,12 +6,14 @@ metadata:
   name: &appname atlantis-tyriis-terraform-github
   labels:
     substitution.flux.home.arpa/disabled: "true"
-    sops.flux.home.arpa/disabled: "false"
+    sops.flux.home.arpa/disabled: "true"
 spec:
-  targetNamespace: atlantis-system
+  targetNamespace: &namespace atlantis-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components:
+    - ../../../../../components/gatus/internal
   path: ./kubernetes/talos-flux/apps/atlantis-system/tyriis/terraform-github
   sourceRef:
     kind: GitRepository
@@ -28,3 +30,6 @@ spec:
   postBuild:
     substitute:
       APP: *appname
+      NAMESPACE: *namespace
+      REPO: github.com/tyriis/terraform-github
+      GATUS_PORT: "4141"
