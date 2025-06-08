@@ -102,7 +102,7 @@ spec:
         externalTrafficPolicy: Cluster
         annotations:
           traefik.ingress.kubernetes.io/service.serversscheme: https
-          io.cilium/lb-ipam-ips: ${SETTING_CILIUM_UNIFI_ADDR}
+          lbipam.cilium.io/ips: ${SETTING_CILIUM_UNIFI_ADDR}
         ports:
           controller:
             enabled: true

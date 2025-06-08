@@ -88,7 +88,7 @@ spec:
           - *ip
         externalTrafficPolicy: Local
         annotations:
-          io.cilium/lb-ipam-ips: *ip
+          lbipam.cilium.io/ips: *ip
         ports:
           discovery:
             enabled: true

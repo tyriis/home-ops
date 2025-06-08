@@ -77,7 +77,7 @@ spec:
         type: LoadBalancer
         externalTrafficPolicy: Cluster
         annotations:
-          io.cilium/lb-ipam-ips: &ip ${SETTING_CILIUM_ADGUARD_ADDR}
+          lbipam.cilium.io/ips: &ip ${SETTING_CILIUM_ADGUARD_ADDR}
         # externalIPs:
         #   - *ip
         ipFamilyPolicy: SingleStack
