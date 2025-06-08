@@ -8,7 +8,7 @@ resources:
 configMapGenerator:
   - name: cluster-issuer-selfsigned
     files:
-      - values.yaml=./cluster-issuer-self-signed.yaml
+      - values.yaml=./cluster-issuer-selfsigned.yaml
   - name: cluster-issuer-staging
     files:
       - values.yaml=./cluster-issuer-staging.yaml
