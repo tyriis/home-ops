@@ -25,5 +25,6 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync
+      namespace: backup-system
     - name: kube-prometheus-stack
     - name: external-secrets-stores
