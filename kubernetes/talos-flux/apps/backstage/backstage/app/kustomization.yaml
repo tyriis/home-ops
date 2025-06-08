@@ -8,7 +8,7 @@ resources:
 configMapGenerator:
   - name: app-config
     files:
-      - ./resources/app-config.production.yaml=app-config.production.yaml
+      - app-config.production.yaml=./resources/app-config.production.yaml
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
