@@ -3,31 +3,31 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app dbman
+  name: cnpg-operator
 spec:
   interval: 30m
   timeout: 5m
   chart:
     spec:
-      chart: dbman
-      version: 0.123.2
+      chart: cloudnative-pg
+      version: 0.24.0
       sourceRef:
         kind: HelmRepository
-        name: dbman-charts
-        namespace: flux-system
+        name: cnpg
   install:
-    crds: CreateReplace
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
-    crds: CreateReplace
     remediation:
       strategy: rollback
       retries: 3
   uninstall:
     keepHistory: false
   values:
-    env:
-      - name: RUST_LOG
-        value: info
+    crds:
+      create: true
+    monitoring:
+      grafanaDashboard:
+        create: true
+      podMonitorEnabled: true
