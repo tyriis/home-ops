@@ -118,7 +118,7 @@ spec:
         controller: velocity
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: ${SETTING_CILIUM_MINECRAFT_PROXY_ADDR3}
+          lbipam.cilium.io/ips: ${SETTING_CILIUM_MINECRAFT_PROXY_ADDR3}
         ports:
           velocity-proxy:
             port: *port

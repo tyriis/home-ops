@@ -50,7 +50,7 @@ spec:
       enabled: true
       type: LoadBalancer
       annotations:
-        io.cilium/lb-ipam-ips: ${SETTING_CILIUM_TRAEFIK_ADDR}
+        lbipam.cilium.io/ips: ${SETTING_CILIUM_TRAEFIK_ADDR}
       spec:
         externalTrafficPolicy: Local
     logs:
