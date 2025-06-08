@@ -94,10 +94,13 @@ spec:
   timeout: 5m
   dependsOn:
     - name: minecraft-public-global-secrets
+      namespace: gaming-public
     - name: volsync
       namespace: backup-system
     - name: rook-ceph-cluster
+      namespace: flux-system
     - name: kube-prometheus-stack
+      namespace: flux-system
   postBuild:
     substitute:
       APP: *appname
