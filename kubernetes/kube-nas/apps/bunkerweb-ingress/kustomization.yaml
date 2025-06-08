@@ -8,4 +8,4 @@ components:
   - ../../../components/flux/alerts
 resources:
   - ./namespace.yaml
-  - ./bunkerweb/flux-sync.yaml
+  # - ./bunkerweb/flux-sync.yaml
