@@ -4,8 +4,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 components:
   - ../../../../../components/atlantis
-resources:
-  - external-secret.yaml
 configMapGenerator:
   - name: atlantis-techtales-io-terraform-minio-allowlist
     files:
@@ -19,3 +17,4 @@ generatorOptions:
     kustomize.toolkit.fluxcd.io/substitute: disabled
 patches:
   - path: helm-values.yaml
+  - path: external-secret.yaml
