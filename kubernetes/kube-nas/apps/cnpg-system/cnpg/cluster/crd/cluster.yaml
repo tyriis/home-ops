@@ -25,12 +25,12 @@ spec:
       parameters:
         barmanObjectName: *name
         serverName: *name
-  managed:
-    roles:
-      - name: harbor
-        ensure: present
-        comment: "Harbor role"
-        login: true
-        superuser: false
-        passwordSecret:
-          name: nas-postgres17-role-harbor
+  # managed:
+  #   roles:
+  #     - name: harbor
+  #       ensure: present
+  #       comment: "Harbor role"
+  #       login: true
+  #       superuser: false
+  #       passwordSecret:
+  #         name: nas-postgres17-role-harbor
