@@ -5,8 +5,11 @@ kind: ScheduledBackup
 metadata:
   name: nas-postgres17
 spec:
-  schedule: "0 0 0 * * *"
+  schedule: "0 2 * * *"
   immediate: true
   backupOwnerReference: self
   cluster:
     name: nas-postgres17
+  method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io

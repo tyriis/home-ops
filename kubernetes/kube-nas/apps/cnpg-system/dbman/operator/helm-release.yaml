@@ -3,33 +3,30 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: cloudnative-pg
+  name: &app dbman
 spec:
   interval: 30m
   timeout: 5m
   chart:
     spec:
-      chart: cloudnative-pg
-      version: 0.24.0
+      chart: dbman
+      version: 0.123.2
       sourceRef:
         kind: HelmRepository
-        name: cloudnative-pg-charts
-        namespace: flux-system
+        name: dbman
   install:
+    crds: CreateReplace
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
+    crds: CreateReplace
     remediation:
       strategy: rollback
       retries: 3
   uninstall:
     keepHistory: false
   values:
-    crds:
-      create: true
-    monitoring:
-      grafanaDashboard:
-        create: true
-      # TODO: enable when monitoring is in place
-      podMonitorEnabled: false
+    env:
+      - name: RUST_LOG
+        value: info
