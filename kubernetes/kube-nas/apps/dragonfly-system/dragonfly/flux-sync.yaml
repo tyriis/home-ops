@@ -38,6 +38,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: dragonfly-crds
+      namespace: dragonfly-system
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -63,6 +64,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: dragonfly-operator
+      namespace: dragonfly-system
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -81,11 +83,13 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
   dependsOn:
     - name: dragonfly-cluster
+      namespace: dragonfly-system
     - name: kube-prometheus-stack
       namespace: observability
