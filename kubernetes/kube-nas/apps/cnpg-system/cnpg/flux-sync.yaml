@@ -103,7 +103,7 @@ spec:
   timeout: 3m
   dependsOn:
     - name: cnpg-barman-cloud-crds
-      namespace: database
+      namespace: cnpg-system
     - name: cert-manager-issuers
       namespace: cert-manager
 
