@@ -4,7 +4,9 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname code-server
-  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: development
   commonMetadata:
@@ -15,13 +17,14 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
-  dependsOn:
-    - name: rook-ceph-cluster
-    - name: traefik-forward-auth
-  postBuild:
-    substitute:
-      APP: *appname
+  # dependsOn:
+  #   - name: rook-ceph-cluster
+  #     namespace: flux-system
+  # postBuild:
+  #   substitute:
+  #     APP: *appname
