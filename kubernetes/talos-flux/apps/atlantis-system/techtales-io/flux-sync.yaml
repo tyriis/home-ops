@@ -152,10 +152,12 @@ metadata:
     substitution.flux.home.arpa/disabled: "true"
     sops.flux.home.arpa/disabled: "true"
 spec:
-  targetNamespace: atlantis-system
+  targetNamespace: &namespace atlantis-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components:
+    - ../../../../../components/gatus/internal
   path: ./kubernetes/talos-flux/apps/atlantis-system/techtales-io/terraform-minio
   sourceRef:
     kind: GitRepository
@@ -172,7 +174,9 @@ spec:
   postBuild:
     substitute:
       APP: *appname
+      NAMESPACE: *namespace
       REPO: github.com/techtales-io/terraform-minio
+      GATUS_PORT: "4141"
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
