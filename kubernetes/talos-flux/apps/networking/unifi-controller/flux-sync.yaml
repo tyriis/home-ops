@@ -25,4 +25,5 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync
+      namespace: backup-system
     - name: cilium
