@@ -190,7 +190,7 @@ spec:
         advancedMounts:
           velocity:
             app:
-              - path: /server/plugins/simplewhitelist/whitelist.txt
+              - path: /plugins/simplewhitelist/whitelist.txt
                 subPath: whitelist.txt
                 readOnly: true
       viaversion:
