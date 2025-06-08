@@ -4,21 +4,31 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname backstage
-  namespace: flux-system
   annotations:
     backstage.io/discovery: enabled
     backstage.io/name: *appname
+  labels:
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "false"
 spec:
-  targetNamespace: backstage
+  targetNamespace: &namespace backstage
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components:
+    - ../../../../../components/gatus/internal
   path: ./kubernetes/talos-flux/apps/backstage/backstage/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  postBuild:
+    substitute:
+      APP: *appname
+      NAMESPACE: *namespace
+      GATUS_PORT: "7007"
