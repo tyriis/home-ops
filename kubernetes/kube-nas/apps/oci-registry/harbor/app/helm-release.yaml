@@ -69,7 +69,7 @@ spec:
     database:
       type: external
       external:
-        host: nas-postgres17-rw.database-system.svc.cluster.local
+        host: nas-postgres17-rw.cnpg-system.svc.cluster.local
     trivy:
       enabled: true
     persistence:
