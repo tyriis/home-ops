@@ -72,7 +72,7 @@ metadata:
   name: &appname minecraft-lobby-world
   labels:
     substitution.flux.home.arpa/disabled: "true"
-    sops.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "false"
 spec:
   targetNamespace: &namespace gaming
   commonMetadata:
@@ -115,7 +115,7 @@ metadata:
   name: &appname minecraft-creative-world
   labels:
     substitution.flux.home.arpa/disabled: "true"
-    sops.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "false"
 spec:
   targetNamespace: &namespace gaming
   commonMetadata:
@@ -158,7 +158,7 @@ metadata:
   name: &appname minecraft-playground-world
   labels:
     substitution.flux.home.arpa/disabled: "true"
-    sops.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "false"
 spec:
   targetNamespace: &namespace gaming
   commonMetadata:
@@ -201,7 +201,7 @@ metadata:
   name: &appname minecraft-survival-world
   labels:
     substitution.flux.home.arpa/disabled: "true"
-    sops.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "false"
 spec:
   targetNamespace: &namespace gaming
   commonMetadata:
