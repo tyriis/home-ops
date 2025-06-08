@@ -5,6 +5,9 @@ kind: Kustomization
 metadata:
   name: &appname homepage
   namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: default
   commonMetadata:
@@ -15,9 +18,11 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
   dependsOn:
     - name: external-secrets-stores
+      namespace: flux-system
