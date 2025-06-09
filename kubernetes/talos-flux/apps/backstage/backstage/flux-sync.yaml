@@ -9,7 +9,7 @@ metadata:
     backstage.io/name: *appname
   labels:
     substitution.flux.home.arpa/disabled: "true"
-    sops.flux.home.arpa/disabled: "false"
+    sops.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: &namespace backstage
   commonMetadata:
@@ -27,6 +27,9 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  dependsOn:
+    - name: external-secrets-stores
+      namespace: flux-system
   postBuild:
     substitute:
       APP: *appname
