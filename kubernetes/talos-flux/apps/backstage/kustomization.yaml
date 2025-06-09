@@ -6,7 +6,6 @@ kind: Kustomization
 namespace: backstage
 components:
   - ../../../components/flux/alerts
-  - ../../../components/sops/talos-flux
 resources:
   - ./namespace.yaml
   - ./backstage/flux-sync.yaml
