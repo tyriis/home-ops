@@ -3,16 +3,16 @@
 apiVersion: barmancloud.cnpg.io/v1
 kind: ObjectStore
 metadata:
-  name: nas-postgres17
+  name: postgres17
 spec:
   retentionPolicy: 30d
   configuration:
-    destinationPath: s3://cnpg/kube-nas/
+    destinationPath: s3://cnpg/talos-flux/
     endpointURL: https://s3.nas.techtales.io
     s3Credentials:
       accessKeyId:
-        name: postgres-minio
-        key: MINIO_ACCESS_KEY
+        name: postgres17-s3
+        key: AWS_ACCESS_KEY_ID
       secretAccessKey:
-        name: postgres-minio
-        key: MINIO_SECRET_KEY
+        name: postgres17-s3
+        key: AWS_SECRET_ACCESS_KEY
