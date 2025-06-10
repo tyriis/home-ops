@@ -14,5 +14,5 @@ spec:
   databaseName: hass
   databaseServerRef:
     namespace: database
-    name: main-postgres17
+    name: postgres17
   prune: false
