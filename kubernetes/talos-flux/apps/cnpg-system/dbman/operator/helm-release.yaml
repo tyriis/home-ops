@@ -5,6 +5,8 @@ kind: HelmRelease
 metadata:
   name: &app dbman
 spec:
+  driftDetection:
+    mode: enabled
   interval: 30m
   timeout: 5m
   chart:
