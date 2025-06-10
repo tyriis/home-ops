@@ -51,11 +51,9 @@ spec:
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: cnpg-operator
+    - name: cnpg-crds
       namespace: cnpg-system
     - name: dbman
-      namespace: cnpg-system
-    - name: cnpg-barman-cloud-crds
       namespace: cnpg-system
 
 ---
@@ -140,7 +138,7 @@ spec:
   retryInterval: 1m
   timeout: 3m
   dependsOn:
-    - name: cnpg-barman-cloud-crds
+    - name: cnpg-crds
       namespace: cnpg-system
     - name: cert-manager-issuers
       namespace: cert-manager
