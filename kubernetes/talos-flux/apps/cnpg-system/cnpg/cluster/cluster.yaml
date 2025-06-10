@@ -1,21 +1,21 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
+# yaml-language-server: $schema=https://schemas.tholinka.dev/postgresql.cnpg.io/cluster_v1.json
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: &name nas-postgres17
+  name: &name postgres17
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
-  instances: 2
+  instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:17.5-6
   primaryUpdateMethod: switchover
   primaryUpdateStrategy: unsupervised
   storage:
-    size: 10Gi
-    storageClass: local
+    size: 35Gi
+    storageClass: ceph-block
   superuserSecret:
-    name: postgres-superuser
+    name: postgres17-superuser
   enableSuperuserAccess: true
   monitoring:
     enablePodMonitor: true
@@ -25,8 +25,16 @@ spec:
       parameters:
         barmanObjectName: *name
         serverName: *name
-  bootstrap: {} # prevent creation of app db
-
+  bootstrap:
+    recovery:
+      source: source
+  externalClusters:
+    - name: source
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: *name
+          serverName: main-postgres17
 
   # managed:
   #   roles:
