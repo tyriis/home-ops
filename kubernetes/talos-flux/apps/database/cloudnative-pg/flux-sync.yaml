@@ -1,30 +1,30 @@
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: apps-cloudnative-pg
-  namespace: flux-system
-  annotations:
-    backstage.io/discovery: enabled
-    backstage.io/name: cloudnative-pg
-spec:
-  targetNamespace: database
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: cloudnative-pg
-      app.kubernetes.io/part-of: cloudnative-pg
-  path: ./kubernetes/talos-flux/apps/database/cloudnative-pg/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-ops
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 3m
-  dependsOn:
-    - name: dbman
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: apps-cloudnative-pg
+#   namespace: flux-system
+#   annotations:
+#     backstage.io/discovery: enabled
+#     backstage.io/name: cloudnative-pg
+# spec:
+#   targetNamespace: database
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: cloudnative-pg
+#       app.kubernetes.io/part-of: cloudnative-pg
+#   path: ./kubernetes/talos-flux/apps/database/cloudnative-pg/app
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: home-ops
+#   wait: true
+#   interval: 30m
+#   retryInterval: 1m
+#   timeout: 3m
+#   dependsOn:
+#     - name: dbman
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -93,7 +93,7 @@ spec:
     labels:
       app.kubernetes.io/name: *name
       app.kubernetes.io/part-of: cnpg
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: *name
