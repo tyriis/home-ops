@@ -1,28 +1,28 @@
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: apps-dragonfly-operator
-  namespace: flux-system
-  annotations:
-    backstage.io/discovery: enabled
-    backstage.io/name: dragonfly
-spec:
-  targetNamespace: database
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: dragonfly-operator
-      app.kubernetes.io/component: dragonfly
-  path: ./kubernetes/talos-flux/apps/database/dragonfly/operator
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-ops
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: apps-dragonfly-operator
+#   namespace: flux-system
+#   annotations:
+#     backstage.io/discovery: enabled
+#     backstage.io/name: dragonfly
+# spec:
+#   targetNamespace: database
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: dragonfly-operator
+#       app.kubernetes.io/component: dragonfly
+#   path: ./kubernetes/talos-flux/apps/database/dragonfly/operator
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: home-ops
+#   wait: true
+#   interval: 30m
+#   retryInterval: 1m
+#   timeout: 5m
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
