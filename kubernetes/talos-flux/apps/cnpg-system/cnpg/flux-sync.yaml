@@ -53,8 +53,8 @@ spec:
   dependsOn:
     - name: cnpg-operator
       namespace: cnpg-system
-    # - name: dbman
-    #   namespace: cnpg-system
+    - name: dbman
+      namespace: cnpg-system
     - name: cnpg-barman-cloud-crds
       namespace: cnpg-system
 
