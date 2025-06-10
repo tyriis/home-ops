@@ -86,6 +86,36 @@ spec:
       name: objectstores.barmancloud.cnpg.io
 
 ---
+# yaml-language-server: $schema=https://schemas.tholinka.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cnpg-crds
+  labels:
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "true"
+spec:
+  targetNamespace: cnpg-system
+  path: ./kubernetes/talos-flux/apps/cnpg-system/cnpg/crds
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+    namespace: flux-system
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  healthChecks:
+    - &crds
+      apiVersion: apiextensions.k8s.io/v1
+      kind: CustomResourceDefinition
+      name: clusters.postgresql.cnpg.io
+    - <<: *crds
+      apiVersion: apiextensions.k8s.io/v1
+      name: objectstores.barmancloud.cnpg.io
+
+---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
