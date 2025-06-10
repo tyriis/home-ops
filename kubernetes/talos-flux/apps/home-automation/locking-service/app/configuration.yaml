@@ -4,7 +4,7 @@ app:
   host: 0.0.0.0
 
 redis:
-  host: dragonfly.database.svc.cluster.local
+  host: dragonfly.dragonfly-system.svc.cluster.local
   port: 6379
   keyPrefix: locking-service.
   # sentinels:

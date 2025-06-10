@@ -98,7 +98,7 @@ spec:
               ATLANTIS_LOCKING_DB_TYPE: redis
               ATLANTIS_LOG_LEVEL: info
               # ATLANTIS_REDIS_DB: 0
-              ATLANTIS_REDIS_HOST: dragonfly.database.svc.cluster.local
+              ATLANTIS_REDIS_HOST: dragonfly.dragonfly-system.svc.cluster.local
               # ATLANTIS_REDIS_PORT: 6379
               ATLANTIS_SKIP_CLONE_NO_CHANGES: true
               ATLANTIS_STATS_NAMESPACE: ${APP}

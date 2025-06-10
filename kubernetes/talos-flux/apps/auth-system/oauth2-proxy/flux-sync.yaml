@@ -25,8 +25,8 @@ spec:
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: apps-dragonfly-cluster
-      namespace: flux-system
+    - name: dragonfly-cluster
+      namespace: dragonfly-system
     - name: external-secrets-stores
       namespace: flux-system
   postBuild:
