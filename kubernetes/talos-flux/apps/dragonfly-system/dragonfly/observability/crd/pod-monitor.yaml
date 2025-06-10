@@ -10,7 +10,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: dragonfly
-  podTargetLabels: ["app"]
+      app.kubernetes.io/name: dragonfly
+  podTargetLabels: ["app.kubernetes.io/name"]
   podMetricsEndpoints:
     - port: admin
