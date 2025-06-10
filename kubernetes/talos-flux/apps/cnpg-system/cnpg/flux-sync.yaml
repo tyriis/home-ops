@@ -12,7 +12,7 @@
 #   commonMetadata:
 #     labels:
 #       app.kubernetes.io/name: *appname
-#   path: ./kubernetes/kube-nas/apps/cnpg-system/cnpg/operator
+#   path: ./kubernetes/talos-flux/apps/cnpg-system/cnpg/operator
 #   prune: true
 #   sourceRef:
 #     kind: GitRepository
@@ -40,7 +40,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: ./kubernetes/kube-nas/apps/cnpg-system/cnpg/cluster
+  path: ./kubernetes/talos-flux/apps/cnpg-system/cnpg/cluster
   prune: true
   sourceRef:
     kind: GitRepository
@@ -94,7 +94,7 @@ spec:
 #   commonMetadata:
 #     labels:
 #       app.kubernetes.io/name: *name
-#   path: ./kubernetes/kube-nas/apps/cnpg-system/cnpg/barman-cloud
+#   path: ./kubernetes/talos-flux/apps/cnpg-system/cnpg/barman-cloud
 #   prune: true
 #   sourceRef:
 #     kind: GitRepository
@@ -121,7 +121,7 @@ spec:
 #   commonMetadata:
 #     labels:
 #       app.kubernetes.io/name: *name
-#   path: ./kubernetes/kube-nas/apps/cnpg-system/cnpg/observability
+#   path: ./kubernetes/talos-flux/apps/cnpg-system/cnpg/observability
 #   prune: true
 #   sourceRef:
 #     kind: GitRepository
