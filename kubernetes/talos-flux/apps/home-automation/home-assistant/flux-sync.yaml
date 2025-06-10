@@ -25,4 +25,6 @@ spec:
   dependsOn:
     - name: volsync
       namespace: backup-system
+    - name: dbman
+      namespace: cnpg-system
     - name: rook-ceph-cluster
