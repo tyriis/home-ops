@@ -13,6 +13,6 @@ spec:
       key: INIT_POSTGRES_PASS
   databaseName: *name
   databaseServerRef:
-    namespace: database
     name: postgres17
+    namespace: cnpg-system
   prune: false
