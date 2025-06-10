@@ -26,6 +26,6 @@ spec:
     - name: apps-cloudnative-pg-cluster
       namespace: flux-system
     - name: dbman
-      namespace: flux-system
+      namespace: cnpg-system
     - name: external-secrets-stores
       namespace: flux-system

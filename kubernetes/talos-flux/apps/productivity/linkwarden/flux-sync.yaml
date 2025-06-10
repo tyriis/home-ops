@@ -24,3 +24,4 @@ spec:
     - name: cnpg-cluster
       namespace: cnpg-system
     - name: dbman
+      namespace: cnpg-system

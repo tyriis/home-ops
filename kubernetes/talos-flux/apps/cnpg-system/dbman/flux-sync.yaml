@@ -5,6 +5,7 @@ kind: Kustomization
 metadata:
   name: &appname dbman
   labels:
+    substitution.flux.home.arpa/disabled: "true"
     sops.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: cnpg-system
