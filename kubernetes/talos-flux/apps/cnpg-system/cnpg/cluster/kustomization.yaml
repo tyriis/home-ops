@@ -6,5 +6,5 @@ resources:
   - ./external-secret.yaml
   - ./objectstore.yaml
   - ./cluster.yaml
-  # - ./database-server.yaml
+  - ./database-server.yaml
   - ./scheduled-backup.yaml
