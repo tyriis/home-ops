@@ -21,5 +21,6 @@ spec:
   timeout: 5m
   dependsOn:
     - name: external-secrets-stores
+      namespace: secops
     - name: dbman
       namespace: cnpg-system

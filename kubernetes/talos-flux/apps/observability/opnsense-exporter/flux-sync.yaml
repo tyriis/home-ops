@@ -21,4 +21,6 @@ spec:
   timeout: 5m
   dependsOn:
     - name: kube-prometheus-stack
+      namespace: flux-system
     - name: external-secrets-stores
+      namespace: secops
