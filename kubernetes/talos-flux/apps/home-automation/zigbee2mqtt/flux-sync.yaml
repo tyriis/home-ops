@@ -33,4 +33,4 @@ spec:
     - name: kube-prometheus-stack
       namespace: flux-system
     - name: external-secrets-stores
-      namespace: flux-system
+      namespace: secops

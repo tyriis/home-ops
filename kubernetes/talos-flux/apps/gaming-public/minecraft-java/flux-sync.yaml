@@ -24,7 +24,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: external-secrets-stores
-      namespace: flux-system
+      namespace: secops
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -56,7 +56,7 @@ spec:
     - name: minecraft-public-global-secrets
       namespace: gaming-public
     - name: external-secrets-stores
-      namespace: flux-system
+      namespace: secops
   postBuild:
     substitute:
       APP: *appname

@@ -24,7 +24,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: external-secrets-stores
-      namespace: flux-system
+      namespace: secops
     - name: rook-ceph-cluster
       namespace: flux-system
     - name: volsync

@@ -26,4 +26,4 @@ spec:
     - name: dbman
       namespace: cnpg-system
     - name: external-secrets-stores
-      namespace: flux-system
+      namespace: secops

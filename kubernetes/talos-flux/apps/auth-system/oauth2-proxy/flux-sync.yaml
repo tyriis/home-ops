@@ -28,7 +28,7 @@ spec:
     - name: dragonfly-cluster
       namespace: dragonfly-system
     - name: external-secrets-stores
-      namespace: flux-system
+      namespace: secops
   postBuild:
     substitute:
       APP: *appname

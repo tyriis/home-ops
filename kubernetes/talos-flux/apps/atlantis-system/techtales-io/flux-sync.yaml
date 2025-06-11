@@ -26,7 +26,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: external-secrets-stores
-      namespace: flux-system
+      namespace: secops
   postBuild:
     substitute:
       APP: *appname
@@ -62,7 +62,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: external-secrets-stores
-      namespace: flux-system
+      namespace: secops
   postBuild:
     substitute:
       APP: *appname
@@ -98,7 +98,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: external-secrets-stores
-      namespace: flux-system
+      namespace: secops
   postBuild:
     substitute:
       APP: *appname
@@ -134,7 +134,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: external-secrets-stores
-      namespace: flux-system
+      namespace: secops
   postBuild:
     substitute:
       APP: *appname
@@ -170,7 +170,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: external-secrets-stores
-      namespace: flux-system
+      namespace: secops
   postBuild:
     substitute:
       APP: *appname
@@ -206,7 +206,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: external-secrets-stores
-      namespace: flux-system
+      namespace: secops
   postBuild:
     substitute:
       APP: *appname
@@ -242,7 +242,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: external-secrets-stores
-      namespace: flux-system
+      namespace: secops
   postBuild:
     substitute:
       APP: *appname
