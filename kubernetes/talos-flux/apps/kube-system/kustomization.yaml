@@ -5,7 +5,6 @@ kind: Kustomization
 namespace: kube-system
 components:
   - ../../../components/flux/alerts
-  - ../../../components/sops/talos-flux
 resources:
   - ./namespace.yaml
   - ./cilium/flux-sync.yaml
