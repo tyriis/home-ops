@@ -26,6 +26,6 @@ spec:
     - name: external-secrets-stores
       namespace: secops
     - name: rook-ceph-cluster
-      namespace: flux-system
+      namespace: rook-ceph
     - name: volsync
       namespace: backup-system
