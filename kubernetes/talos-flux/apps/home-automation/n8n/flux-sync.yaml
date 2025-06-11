@@ -4,7 +4,9 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname n8n
-  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: home-automation
   commonMetadata:
@@ -15,10 +17,13 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
   dependsOn:
     - name: external-secrets-stores
+      namespace: flux-system
     - name: rook-ceph-cluster
+      namespace: flux-system
