@@ -53,7 +53,7 @@ spec:
               - secretRef:
                   name: playit-env
             env:
-              TZ: ${SETTING_TZ}
+              TZ: Europe/Vienna
             image:
               repository: ghcr.io/playit-cloud/playit-agent
               tag: 0.15.26@sha256:3d08eb4a627a6d167f3cce497d8e2ec8f9e7d2df4e96f0599ca41e4b957c852c
