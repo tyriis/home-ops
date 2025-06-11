@@ -260,7 +260,7 @@ spec:
           subjects: &subject
             - kind: ServiceAccount
               identifier: *app
-              namespace: database
+              namespace: cnpg-system
         metrics-auth-rolebinding:
           type: ClusterRoleBinding
           roleRef: &roleRef
