@@ -34,7 +34,7 @@ spec:
         containers:
           app:
             env:
-              TZ: ${SETTING_TZ}
+              TZ: Europe/Vienna
             envFrom:
               - secretRef:
                   name: home-assistant-secrets

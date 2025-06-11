@@ -47,7 +47,7 @@ spec:
               repository: docker.io/nodered/node-red
               tag: 4.0.9@sha256:0b295b3a14c512548567ca99db631bc37b23bfc79fd009ee8248a610fafdb4b5
             env:
-              TZ: ${SETTING_TZ}
+              TZ: Europe/Vienna
               FLOWS: flows.json
               NODE_RED_ENABLE_PROJECTS: "true"
               NODE_RED_ENABLE_SAFE_MODE: "false"
