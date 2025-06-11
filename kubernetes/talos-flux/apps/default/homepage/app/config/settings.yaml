@@ -4,7 +4,7 @@ theme: dark
 color: slate
 headerStyle: clean
 iconStyle: theme
-target: _blank
+target: _self
 layout:
   Infrasructure:
     style: columns
