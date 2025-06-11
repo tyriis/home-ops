@@ -4,7 +4,9 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname linkwarden
-  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "false"
 spec:
   targetNamespace: productivity
   commonMetadata:
@@ -15,6 +17,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   interval: 30m
   retryInterval: 1m
