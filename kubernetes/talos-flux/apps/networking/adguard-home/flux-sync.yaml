@@ -25,4 +25,3 @@ spec:
   timeout: 5m
   dependsOn:
     - name: traefik
-    - name: cilium
