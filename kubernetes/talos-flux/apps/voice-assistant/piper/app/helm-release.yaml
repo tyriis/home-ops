@@ -36,7 +36,7 @@ spec:
         containers:
           app:
             env:
-              TZ: ${SETTING_TZ}
+              TZ: Europe/Vienna
             image:
               repository: rhasspy/wyoming-piper
               tag: 1.5.4@sha256:dbf926f5bc8895a7d0021dbb87df7622b00f91ff8299eeb62d027c7c353b0482
