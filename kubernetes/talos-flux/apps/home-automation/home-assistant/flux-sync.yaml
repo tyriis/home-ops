@@ -31,4 +31,4 @@ spec:
     - name: dbman
       namespace: cnpg-system
     - name: rook-ceph-cluster
-      namespace: flux-system
+      namespace: rook-ceph

@@ -24,7 +24,7 @@ spec:
   timeout: 5m
   # dependsOn:
   #   - name: rook-ceph-cluster
-  #     namespace: flux-system
+  #     namespace: rook-ceph
   # postBuild:
   #   substitute:
   #     APP: *appname

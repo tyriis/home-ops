@@ -22,4 +22,5 @@ spec:
   wait: false
   dependsOn:
     - name: rook-ceph-cluster
+      namespace: rook-ceph
     - name: kube-prometheus-stack

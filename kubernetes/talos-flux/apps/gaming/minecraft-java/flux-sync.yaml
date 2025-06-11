@@ -96,7 +96,7 @@ spec:
     - name: volsync
       namespace: backup-system
     - name: rook-ceph-cluster
-      namespace: flux-system
+      namespace: rook-ceph
     - name: kube-prometheus-stack
       namespace: flux-system
   postBuild:
@@ -139,7 +139,7 @@ spec:
     - name: volsync
       namespace: backup-system
     - name: rook-ceph-cluster
-      namespace: flux-system
+      namespace: rook-ceph
     - name: kube-prometheus-stack
       namespace: flux-system
   postBuild:
@@ -182,7 +182,7 @@ spec:
     - name: volsync
       namespace: backup-system
     - name: rook-ceph-cluster
-      namespace: flux-system
+      namespace: rook-ceph
     - name: kube-prometheus-stack
       namespace: flux-system
   postBuild:
@@ -225,7 +225,7 @@ spec:
     - name: volsync
       namespace: backup-system
     - name: rook-ceph-cluster
-      namespace: flux-system
+      namespace: rook-ceph
     - name: kube-prometheus-stack
       namespace: flux-system
   postBuild:
