@@ -124,7 +124,7 @@ repos:
         exclude: |
           (?x)^(
             kubernetes/kube-nas/apps/secops/rbac.yaml|
-            kubernetes/talos-flux/apps/secops/vault-auth.yaml|
+            kubernetes/talos-flux/apps/secops/external-secrets/stores/rbac.yaml|
             kubernetes/talos-flux/apps/devops/tekton/triggers/interceptors.yaml|
             kubernetes/talos-flux/apps/devops/tekton/triggers/release.yaml
           )$()
