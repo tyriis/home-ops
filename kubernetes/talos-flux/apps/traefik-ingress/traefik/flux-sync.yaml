@@ -4,7 +4,9 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname traefik
-  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: traefik-ingress
   commonMetadata:
@@ -15,13 +17,11 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
-  dependsOn:
-    - name: cert-manager-issuers
-      namespace: cert-manager
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -29,7 +29,9 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname traefik-forward-auth
-  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "false"
 spec:
   targetNamespace: traefik-ingress
   commonMetadata:
@@ -40,9 +42,11 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
   dependsOn:
     - name: traefik
+      namespace: traefik-ingress
