@@ -26,4 +26,4 @@ spec:
     - name: snapshot-controller
       namespace: *namespace
     - name: kube-prometheus-stack
-      namespace: flux-system
+      namespace: observability

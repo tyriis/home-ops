@@ -32,4 +32,4 @@ spec:
       APP: *appname
   dependsOn:
     - name: kube-prometheus-stack
-      namespace: flux-system
+      namespace: observability

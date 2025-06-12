@@ -100,7 +100,7 @@ spec:
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: kube-prometheus-stack
-      namespace: flux-system
+      namespace: observability
   postBuild:
     substitute:
       APP: *appname
@@ -141,7 +141,7 @@ spec:
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: kube-prometheus-stack
-      namespace: flux-system
+      namespace: observability
   postBuild:
     substitute:
       APP: *appname
@@ -182,7 +182,7 @@ spec:
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: kube-prometheus-stack
-      namespace: flux-system
+      namespace: observability
   postBuild:
     substitute:
       APP: *appname
@@ -223,7 +223,7 @@ spec:
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: kube-prometheus-stack
-      namespace: flux-system
+      namespace: observability
   postBuild:
     substitute:
       APP: *appname

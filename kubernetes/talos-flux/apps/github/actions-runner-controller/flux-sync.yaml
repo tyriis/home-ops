@@ -27,7 +27,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: kube-prometheus-stack
-      namespace: flux-system
+      namespace: observability
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -57,4 +57,4 @@ spec:
     - name: actions-runner-controller
       namespace: github
     - name: kube-prometheus-stack
-      namespace: flux-system
+      namespace: observability

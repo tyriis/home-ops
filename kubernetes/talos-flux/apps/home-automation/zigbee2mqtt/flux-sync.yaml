@@ -31,6 +31,6 @@ spec:
     - name: volsync
       namespace: backup-system
     - name: kube-prometheus-stack
-      namespace: flux-system
+      namespace: observability
     - name: external-secrets-stores
       namespace: secops
