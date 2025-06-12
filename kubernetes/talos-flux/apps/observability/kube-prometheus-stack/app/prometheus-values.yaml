@@ -47,7 +47,7 @@ prometheus:
       annotations:
         secret.reloader.stakater.com/reload: &secret thanos-objstore-secret
     externalLabels:
-      cluster: ${SETTING_CLUSTERNAME}
+      cluster: ${FLUX_CLUSTER_NAME}
     replicas: 3
     replicaExternalLabelName: __replica__
     storageSpec:

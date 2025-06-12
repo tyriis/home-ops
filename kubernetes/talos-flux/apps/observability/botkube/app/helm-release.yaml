@@ -52,7 +52,7 @@ spec:
   # https://artifacthub.io/packages/helm/infracloudio/botkube?modal=values
   values:
     settings:
-      clusterName: ${SETTING_CLUSTERNAME}
+      clusterName: ${FLUX_CLUSTER_NAME}
 
     communications:
       default-group:
