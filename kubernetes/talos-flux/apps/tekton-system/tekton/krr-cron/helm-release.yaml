@@ -51,7 +51,7 @@ spec:
               - POST
               - --data
               - "{}"
-              - el-krr-listener.devops.svc.cluster.local:8080
+              - el-krr-listener.tekton-system.svc.cluster.local:8080
             resources:
               requests:
                 cpu: 10m
