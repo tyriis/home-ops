@@ -78,7 +78,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: tekton-trigger-krr
-    namespace: devops
+    namespace: tekton-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
