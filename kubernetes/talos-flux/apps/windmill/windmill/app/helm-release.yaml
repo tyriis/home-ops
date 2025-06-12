@@ -7,6 +7,13 @@ metadata:
 spec:
   driftDetection:
     mode: enabled
+    ignore:
+      - target:
+          kind: Secret
+          name: windmill-database
+        paths:
+          - /metadata
+          - /data
   interval: 30m
   chart:
     spec:
