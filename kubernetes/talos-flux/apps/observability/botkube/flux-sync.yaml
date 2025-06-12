@@ -4,7 +4,9 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname botkube
-  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "false"
 spec:
   targetNamespace: observability
   commonMetadata:
@@ -15,9 +17,14 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: false # TODO: is broken otherwise need investigation
   interval: 30m
   retryInterval: 1m
   timeout: 5m
   dependsOn:
     - name: kube-prometheus-stack
+      namespace: observability
+  postBuild:
+    substitute:
+      FLUX_CLUSTER_NAME: ${FLUX_CLUSTER_NAME}

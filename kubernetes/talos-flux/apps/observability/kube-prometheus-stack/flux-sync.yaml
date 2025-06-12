@@ -4,7 +4,9 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: kube-prometheus-stack
-  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/disabled: "false"
+    sops.flux.home.arpa/disabled: "false"
   annotations:
     backstage.io/discovery: enabled
     backstage.io/name: kube-prometheus-stack
@@ -18,10 +20,14 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  postBuild:
+    substitute:
+      FLUX_CLUSTER_NAME: ${FLUX_CLUSTER_NAME}
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -29,7 +35,9 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname kube-prometheus-stack-rules
-  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: observability
   commonMetadata:
@@ -40,9 +48,11 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops
+    namespace: flux-system
   wait: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
   dependsOn:
     - name: kube-prometheus-stack
+      namespace: observability

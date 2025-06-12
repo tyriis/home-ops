@@ -17,7 +17,7 @@ spec:
   # https://artifacthub.io/packages/helm/grafana/promtail?modal=values
   values:
     extraArgs:
-      - -client.external-labels=hostname=$(HOSTNAME),cluster=${SETTING_CLUSTERNAME}
+      - -client.external-labels=hostname=$(HOSTNAME),cluster=${FLUX_CLUSTER_NAME}
       - -config.expand-env
 
     config:
