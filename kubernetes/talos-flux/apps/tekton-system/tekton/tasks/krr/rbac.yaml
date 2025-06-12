@@ -38,7 +38,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: tekton-task-krr
-    namespace: devops
+    namespace: tekton-system
 roleRef:
   kind: ClusterRole
   name: tekton-task-krr
