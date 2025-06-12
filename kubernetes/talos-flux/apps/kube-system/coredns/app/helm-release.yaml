@@ -88,8 +88,8 @@ spec:
             app.kubernetes.io/instance: coredns
     resources:
       requests:
-        cpu: 100m
+        cpu: 150m
         memory: 70Mi
       limits:
-        cpu: 200m
+        cpu: 500m
         memory: 128Mi
