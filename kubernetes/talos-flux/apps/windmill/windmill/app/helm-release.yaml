@@ -7,13 +7,6 @@ metadata:
 spec:
   driftDetection:
     mode: enabled
-    ignore:
-      - target:
-          kind: Secret
-          name: windmill-database
-        paths:
-          - /metadata
-          - /data
   interval: 30m
   chart:
     spec:
@@ -41,7 +34,7 @@ spec:
           runAsUser: 1000
           runAsNonRoot: true
       databaseSecret: true
-      databaseUrlSecretName: windmill-database
+      databaseUrlSecretName: windmill-database-settings
       baseDomain: windmill.techtales.io
     postgresql:
       enabled: false
