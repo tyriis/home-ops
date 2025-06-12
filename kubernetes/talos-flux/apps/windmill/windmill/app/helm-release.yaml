@@ -33,7 +33,7 @@ spec:
         podSecurityContext:
           runAsUser: 1000
           runAsNonRoot: true
-      databaseSecret: true
+      # databaseSecret: false
       databaseUrlSecretName: windmill-database
       baseDomain: windmill.techtales.io
     postgresql:
@@ -49,11 +49,3 @@ spec:
         - secretName: windmill-tls
           hosts:
             - windmill.techtales.io
-  postRenderers:
-    - kustomize:
-        patches:
-          - target:
-              kind: Secret
-              name: windmill-database
-            patch: |
-              $patch: delete
