@@ -11,13 +11,13 @@ metadata:
     substitution.flux.home.arpa/disabled: "true"
     sops.flux.home.arpa/disabled: "true"
 spec:
-  targetNamespace: &namespace backstage
+  targetNamespace: &namespace developer-hub
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
   components:
     - ../../../../../components/gatus/internal
-  path: ./kubernetes/talos-flux/apps/backstage/backstage/app
+  path: ./kubernetes/talos-flux/apps/developer-hub/backstage/app
   prune: true
   sourceRef:
     kind: GitRepository
