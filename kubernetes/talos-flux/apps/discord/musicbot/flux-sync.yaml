@@ -5,7 +5,7 @@ kind: Kustomization
 metadata:
   name: &appname discord-musicbot
   labels:
-    substitution.flux.home.arpa/disabled: "true"
+    substitution.flux.home.arpa/disabled: "false"
     sops.flux.home.arpa/disabled: "false"
   annotations:
     backstage.io/discovery: enabled
