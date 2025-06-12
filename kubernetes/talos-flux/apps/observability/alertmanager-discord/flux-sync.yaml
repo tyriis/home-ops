@@ -6,7 +6,7 @@ metadata:
   name: &appname alertmanager-discord
   labels:
     substitution.flux.home.arpa/disabled: "false"
-    sops.flux.home.arpa/disabled: true"
+    sops.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: observability
   commonMetadata:
