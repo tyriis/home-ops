@@ -5,6 +5,7 @@ kind: Kustomization
 namespace: discord
 components:
   - ../../../components/flux/alerts
+  - ../../../components/sops/talos-flux
   - ../../../components/flux/globals/talos-flux
 resources:
   - ./namespace.yaml
