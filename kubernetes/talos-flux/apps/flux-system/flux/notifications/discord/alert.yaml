@@ -24,4 +24,5 @@ spec:
   exclusionList:
     - "^Dependencies do not meet ready condition, retrying in.*"
     - "^Health check passed in.*"
+    - "*configured*"
   suspend: false
