@@ -2,8 +2,7 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-# TODO: rename ns to developer-portal
-namespace: backstage
+namespace: developer-hub
 components:
   - ../../../components/flux/alerts
 resources:
