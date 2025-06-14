@@ -36,4 +36,4 @@ tasks:
     desc: wait for flux system to be ready
     internal: true
     cmds:
-      - kubectl wait -n flux-system kustomization/flux-sync --for=condition=ready --timeout=10m
+      - kubectl wait -n flux-system kustomization/flux-system --for=condition=ready --timeout=10m
