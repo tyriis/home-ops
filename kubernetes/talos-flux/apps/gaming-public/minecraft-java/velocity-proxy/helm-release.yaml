@@ -52,7 +52,7 @@ spec:
             nameOverride: *app
             image:
               repository: itzg/mc-proxy
-              tag: java21@sha256:a122610c9bad1790121f9616b201880f19a8db37c438b7a591b545c9d8ff90d0
+              tag: java21@sha256:d30d0d806a9410388526bb51d54f6c04dbafefd9ae827b091936f88a3a058209
             env:
               TZ: Europe/Vienna
               # for a full list of ENV vars see: https://github.com/itzg/docker-mc-proxy#environment-settings
