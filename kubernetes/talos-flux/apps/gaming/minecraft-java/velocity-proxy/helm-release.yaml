@@ -81,13 +81,7 @@ spec:
 
               # Features
               ICON: "https://storage.googleapis.com/techtales-public-images/server-icon.png"
-              ENABLE_RCON: "false"
-
-              CFG_RCON_PASSWORD:
-                valueFrom:
-                  secretKeyRef:
-                    name: minecraft-rcon
-                    key: RCON_PASSWORD
+              ENABLE_RCON: "true"
 
             securityContext:
               allowPrivilegeEscalation: false
@@ -192,12 +186,3 @@ spec:
           - path: /config/forwarding.secret
             subPath: forwarding.secret
             readOnly: true
-      velocityrcon:
-        type: configMap
-        name: minecraft-velocity-proxy-plugins-velocityrcon
-        advancedMounts:
-          velocity:
-            app:
-              - path: /plugins/velocityrcon/rcon.toml
-                subPath: rcon.toml
-                readOnly: true
