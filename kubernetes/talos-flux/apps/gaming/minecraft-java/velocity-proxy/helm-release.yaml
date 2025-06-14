@@ -50,6 +50,9 @@ spec:
             image:
               repository: itzg/mc-proxy
               tag: java21@sha256:d30d0d806a9410388526bb51d54f6c04dbafefd9ae827b091936f88a3a058209
+            envFrom:
+              - secretRef:
+                  name: minecraft-rcon
             env:
               TZ: Europe/Vienna
               # for a full list of ENV vars see: https://github.com/itzg/docker-mc-proxy#environment-settings

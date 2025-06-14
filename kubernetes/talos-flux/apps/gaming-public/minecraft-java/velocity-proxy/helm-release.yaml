@@ -53,6 +53,9 @@ spec:
             image:
               repository: itzg/mc-proxy
               tag: java21@sha256:d30d0d806a9410388526bb51d54f6c04dbafefd9ae827b091936f88a3a058209
+            envFrom:
+              - secretRef:
+                  name: minecraft-rcon
             env:
               TZ: Europe/Vienna
               # for a full list of ENV vars see: https://github.com/itzg/docker-mc-proxy#environment-settings
@@ -61,21 +64,29 @@ spec:
               TYPE: "VELOCITY"
               # renovate: depName=minecraft/velocity datasource=custom.minecraft-velocity versioning=maven
               VELOCITY_VERSION: "3.4.0-SNAPSHOT"
-              PLUGINS_FILE: /config/plugins.txt
+
+              # Memory settings
               INIT_MEMORY: 128M
               MAX_MEMORY: 256M
-              # JVM_OPTS: "-Xms128M -Xmx256M"
+              # JVM_OPTS: >-
+              #   -Xms1G
+              #   -Xmx1G
               # https://docs.papermc.io/velocity/getting-started#launching-velocity-under-macos-or-linux
-              # JVM_XX_OPTS: "-XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:+UnlockExperimentalVMOptions -XX:+ParallelRefProcEnabled -XX:+AlwaysPreTouch"
-              JVM_XX_OPTS: "-XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:+UnlockExperimentalVMOptions -XX:+ParallelRefProcEnabled -XX:+AlwaysPreTouch -XX:MaxInlineLevel=15"
-              ICON: "https://storage.googleapis.com/techtales-public-images/lava-chicken-icon.png"
-              ENABLE_RCON: "false"
+              JVM_XX_OPTS: >-
+                -XX:+UseG1GC
+                -XX:G1HeapRegionSize=4M
+                -XX:+UnlockExperimentalVMOptions
+                -XX:+ParallelRefProcEnabled
+                -XX:+AlwaysPreTouch
+                -XX:MaxInlineLevel=15
+                -XX:+UseStringDeduplication
 
-              CFG_RCON_PASSWORD:
-                valueFrom:
-                  secretKeyRef:
-                    name: minecraft-rcon
-                    key: RCON_PASSWORD
+              # Plugin and config
+              PLUGINS_FILE: /config/plugins.txt
+              REPLACE_ENV_VARIABLES: "TRUE"
+
+              ICON: "https://storage.googleapis.com/techtales-public-images/lava-chicken-icon.png"
+              ENABLE_RCON: "true"
 
             securityContext:
               allowPrivilegeEscalation: false
@@ -213,13 +224,4 @@ spec:
             app:
               - path: /plugins/minimotd-velocity/main.conf
                 subPath: main.conf
-                readOnly: true
-      velocityrcon:
-        type: configMap
-        name: minecraft-public-velocity-proxy-plugins-velocityrcon
-        advancedMounts:
-          velocity:
-            app:
-              - path: /plugins/velocityrcon/rcon.toml
-                subPath: rcon.toml
                 readOnly: true

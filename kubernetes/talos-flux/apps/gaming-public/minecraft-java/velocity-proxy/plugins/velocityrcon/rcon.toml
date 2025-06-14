@@ -1,4 +1,0 @@
-rcon-host = "0.0.0.0"
-rcon-port = "25575"
-rcon-password = "${CFG_RCON_PASSWORD}"
-rcon-colored = false
