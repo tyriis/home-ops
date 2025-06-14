@@ -53,9 +53,6 @@ spec:
             image:
               repository: itzg/mc-proxy
               tag: java21@sha256:02a50a98bc75687180e40a708af35b47714f6dda701ec4780f1281c799b61753
-            envFrom:
-              - secretRef:
-                  name: minecraft-rcon
             env:
               TZ: Europe/Vienna
               # for a full list of ENV vars see: https://github.com/itzg/docker-mc-proxy#environment-settings
@@ -72,7 +69,13 @@ spec:
               # JVM_XX_OPTS: "-XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:+UnlockExperimentalVMOptions -XX:+ParallelRefProcEnabled -XX:+AlwaysPreTouch"
               JVM_XX_OPTS: "-XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:+UnlockExperimentalVMOptions -XX:+ParallelRefProcEnabled -XX:+AlwaysPreTouch -XX:MaxInlineLevel=15"
               ICON: "https://storage.googleapis.com/techtales-public-images/lava-chicken-icon.png"
-              ENABLE_RCON: "true"
+              ENABLE_RCON: "false"
+
+              CFG_RCON_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: minecraft-rcon
+                    key: RCON_PASSWORD
 
             securityContext:
               allowPrivilegeEscalation: false
@@ -210,4 +213,13 @@ spec:
             app:
               - path: /plugins/minimotd-velocity/main.conf
                 subPath: main.conf
+                readOnly: true
+      velocityrcon:
+        type: configMap
+        name: minecraft-public-velocity-proxy-plugins-velocityrcon
+        advancedMounts:
+          velocity:
+            app:
+              - path: /plugins/velocityrcon/rcon.toml
+                subPath: rcon.toml
                 readOnly: true

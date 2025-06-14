@@ -17,6 +17,9 @@ configMapGenerator:
   - name: minecraft-public-velocity-proxy-plugins-minimotd
     files:
       - main.conf=plugins/minimotd-velocity/main.conf
+  - name: minecraft-public-velocity-proxy-plugins-velocityrcon
+    files:
+      - rcon.toml=plugins/velocityrcon/rcon.toml
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
