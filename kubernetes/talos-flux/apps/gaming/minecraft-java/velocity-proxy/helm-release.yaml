@@ -50,9 +50,6 @@ spec:
             image:
               repository: itzg/mc-proxy
               tag: java21@sha256:02a50a98bc75687180e40a708af35b47714f6dda701ec4780f1281c799b61753
-            envFrom:
-              - secretRef:
-                  name: minecraft-rcon
             env:
               TZ: Europe/Vienna
               # for a full list of ENV vars see: https://github.com/itzg/docker-mc-proxy#environment-settings
@@ -84,7 +81,13 @@ spec:
 
               # Features
               ICON: "https://storage.googleapis.com/techtales-public-images/server-icon.png"
-              ENABLE_RCON: "true"
+              ENABLE_RCON: "false"
+
+              CFG_RCON_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: minecraft-rcon
+                    key: RCON_PASSWORD
 
             securityContext:
               allowPrivilegeEscalation: false
@@ -189,3 +192,12 @@ spec:
           - path: /config/forwarding.secret
             subPath: forwarding.secret
             readOnly: true
+      velocityrcon:
+        type: configMap
+        name: minecraft-velocity-proxy-plugins-velocityrcon
+        advancedMounts:
+          velocity:
+            app:
+              - path: /plugins/velocityrcon/rcon.toml
+                subPath: rcon.toml
+                readOnly: true
