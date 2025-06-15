@@ -15,7 +15,6 @@ spec:
         name: bjw-s-charts
         namespace: flux-system
   # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
-  #  Movie Library Manager: https://docs.linuxserver.io/images/docker-sonarr
   values:
     controllers:
       sonarr:
