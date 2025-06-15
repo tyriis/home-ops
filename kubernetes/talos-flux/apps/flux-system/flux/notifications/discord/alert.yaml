@@ -11,18 +11,9 @@ spec:
   eventSources:
     - kind: GitRepository
       name: "*"
-    - kind: Kustomization
-      name: "*"
-    - kind: HelmRelease
-      name: "*"
-    - kind: HelmRepository
-      name: "*"
-    - kind: HelmChart
-      name: "*"
     - kind: OCIRepository
       name: "*"
   exclusionList:
     - "^Dependencies do not meet ready condition, retrying in.*"
     - "^Health check passed in.*"
-    - "^Kustomization/flux-system/flux-repositories configured*"
   suspend: false
