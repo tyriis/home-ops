@@ -25,6 +25,8 @@ spec:
   dependsOn:
     - name: kube-prometheus-stack
       namespace: observability
+    - name: external-secrets-stores
+      namespace: secops
   postBuild:
     substitute:
       FLUX_CLUSTER_NAME: ${FLUX_CLUSTER_NAME}
