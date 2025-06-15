@@ -33,8 +33,6 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           app:
-            env:
-              TZ: Europe/Vienna
             envFrom:
               - secretRef:
                   name: home-assistant-secrets

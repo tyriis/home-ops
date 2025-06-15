@@ -30,7 +30,6 @@ spec:
         containers:
           app:
             env:
-              TZ: Europe/Vienna
               AIRSCAN_DEVICES: '"LASER" = "http://192.168.1.8/eSCL"'
             image:
               repository: sbs20/scanservjs

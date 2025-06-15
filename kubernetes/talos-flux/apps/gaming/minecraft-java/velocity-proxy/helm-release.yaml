@@ -54,7 +54,6 @@ spec:
               - secretRef:
                   name: minecraft-rcon
             env:
-              TZ: Europe/Vienna
               # for a full list of ENV vars see: https://github.com/itzg/docker-mc-proxy#environment-settings
               UID: "1000"
               GID: "1000"

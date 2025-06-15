@@ -63,7 +63,6 @@ spec:
       NAMESPACE: *namespace
       SERVICE: minecraft-public-velocity-proxy-velocity
       # TODO: cleanup
-      SETTING_TZ: ${FLUX_CLUSTER_TZ}
       CILIUM_LOADBALANCER_ADDR: 192.168.1.86
 
 ---

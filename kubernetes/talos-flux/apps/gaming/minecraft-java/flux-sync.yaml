@@ -61,7 +61,6 @@ spec:
       NAMESPACE: *namespace
       SERVICE: minecraft-velocity-proxy-velocity
       # TODO: cleanup
-      SETTING_TZ: ${FLUX_CLUSTER_TZ}
       CILIUM_LOADBALANCER_ADDR: 192.168.1.82
 
 ---
@@ -104,8 +103,6 @@ spec:
       APP: *appname
       NAMESPACE: *namespace
       SERVICE: minecraft-lobby-world-minecraft
-      # TODO: cleanup
-      SETTING_TZ: ${FLUX_CLUSTER_TZ}
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -195,8 +192,6 @@ spec:
       APP: *appname
       NAMESPACE: *namespace
       SERVICE: minecraft-playground-world-minecraft
-      # TODO: cleanup
-      SETTING_TZ: ${FLUX_CLUSTER_TZ}
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -238,5 +233,3 @@ spec:
       APP: *appname
       NAMESPACE: *namespace
       SERVICE: minecraft-survival-world-minecraft
-      # TODO: cleanup
-      SETTING_TZ: ${FLUX_CLUSTER_TZ}
