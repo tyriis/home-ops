@@ -3,7 +3,7 @@
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: &name ${VOLSYNC_PVC:=${APP}-${VOLSYNC_SUFFIX:=data}}
+  name: &name ${APP}-${VOLSYNC_SUFFIX:=data}
 spec:
   sourcePVC: *name
   trigger:
