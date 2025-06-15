@@ -115,7 +115,7 @@ metadata:
   name: &appname minecraft-creative-world
   labels:
     substitution.flux.home.arpa/disabled: "true"
-    sops.flux.home.arpa/disabled: "false"
+    sops.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: &namespace gaming
   commonMetadata:
@@ -123,6 +123,7 @@ spec:
       app.kubernetes.io/name: *appname
   components:
     - ../../../../../components/gatus/minecraft
+    - ../../../../../components/volsync
   path: ./kubernetes/talos-flux/apps/gaming/minecraft-java/creative-world
   prune: true
   sourceRef:
@@ -146,7 +147,11 @@ spec:
     substitute:
       APP: *appname
       NAMESPACE: *namespace
+      # GATUS
       SERVICE: minecraft-creative-world-minecraft
+      # VOLSYNC
+      VOLSYNC_CAPACITY: 10Gi
+      VOLSYNC_CACHE_CAPACITY: 5Gi
       # TODO: cleanup
       SETTING_TZ: ${FLUX_CLUSTER_TZ}
 
