@@ -149,33 +149,33 @@ kubectl logs -l app.kubernetes.io/name=volsync -f
 
 ### Common Issues
 
-1. **Repository Lock Errors**
+#### Repository Lock Errors
 
-   ```text
-   repo already locked, waiting up to 0s for the lock
-   ```
+```text
+repo already locked, waiting up to 0s for the lock
+```
 
-   **Solution**: The component includes automatic unlock handling. If issues persist, manually unlock:
+> **Solution**: The component includes automatic unlock handling. If issues persist, manually unlock:
 
-   ```bash
-   kubectl exec -it <volsync-pod> -- restic unlock -r $RESTIC_REPOSITORY
-   ```
+```bash
+kubectl exec -it <volsync-pod> -- restic unlock -r $RESTIC_REPOSITORY
+```
 
-2. **Permission Denied**
+#### Permission Denied
 
-   ```text
-   backup failed: permission denied
-   ```
+```text
+backup failed: permission denied
+```
 
-   **Solution**: Check and adjust `VOLSYNC_PUID` and `VOLSYNC_PGID` to match your application's user/group.
+> **Solution**: Check and adjust `VOLSYNC_PUID` and `VOLSYNC_PGID` to match your application's user/group.
 
-3. **MinIO Connection Issues**
+#### MinIO Connection Issues
 
-   ```text
-   s3: connection failed
-   ```
+```text
+s3: connection failed
+```
 
-   **Solution**: Verify MinIO credentials and endpoint in OpenBao secrets.
+> **Solution**: Verify MinIO credentials and endpoint in OpenBao secrets.
 
 ### Debug Commands
 
