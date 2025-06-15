@@ -43,7 +43,6 @@ spec:
               GOVEE_TEMPERATURE_SCALE: C
               # RUST_LOG_STYLE: always
               # RUST_LOG: govee=trace
-              TZ: Europe/Vienna
             image:
               repository: ghcr.io/wez/govee2mqtt
               tag: latest@sha256:6970ea68b0c6ff4ef6d4e63424e46f38b8fa2ec29e9578f9d6136fefe08a08a7

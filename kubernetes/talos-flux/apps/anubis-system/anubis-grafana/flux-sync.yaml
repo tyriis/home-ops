@@ -22,6 +22,3 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
-  postBuild:
-    substitute:
-      FLUX_CLUSTER_TZ: ${FLUX_CLUSTER_TZ}

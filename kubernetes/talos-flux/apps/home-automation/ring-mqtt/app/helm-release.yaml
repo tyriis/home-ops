@@ -49,7 +49,6 @@ spec:
         containers:
           app:
             env:
-              TZ: Europe/Vienna
               S6_READ_ONLY_ROOT: "true"
             image:
               repository: tsightler/ring-mqtt

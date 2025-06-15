@@ -28,7 +28,6 @@ spec:
     replicas: 1
 
     env:
-      TZ: Europe/Vienna
       GF_EXPLORE_ENABLED: "true"
       GF_PANELS_DISABLE_SANITIZE_HTML: "true"
       GF_DATE_FORMATS_USE_BROWSER_LOCALE: "true"

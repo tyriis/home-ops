@@ -35,8 +35,6 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           app:
-            env:
-              TZ: Europe/Vienna
             image:
               repository: rhasspy/wyoming-whisper
               tag: 2.4.0@sha256:2687f79715734606f856fc4478351ce91a76bdaf6899086bcb837eb9ac7cddb8

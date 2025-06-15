@@ -34,7 +34,6 @@ spec:
         containers:
           app:
             env:
-              TZ: Europe/Vienna
               ESPHOME_DASHBOARD_USE_PING: "true"
             image:
               repository: ghcr.io/esphome/esphome

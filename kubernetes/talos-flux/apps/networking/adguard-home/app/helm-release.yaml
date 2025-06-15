@@ -33,8 +33,6 @@ spec:
             image:
               repository: adguard/adguardhome
               tag: v0.107.62@sha256:b04764acecf1f663a23f55e95724a3c7ca0dc7f3a6f957d29005728b6bd036f2
-            env:
-              TZ: Europe/Vienna
             probes:
               liveness: &probes
                 enabled: true
