@@ -7,6 +7,6 @@ components:
   - ../../../components/flux/alerts
 resources:
   - ./namespace.yaml
-  - ./k8tz.yaml
+  - ./k8tz/flux-sync.yaml
   - ./node-feature-discovery/flux-sync.yaml
   - ./reloader/flux-sync.yaml
