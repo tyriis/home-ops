@@ -80,7 +80,6 @@ spec:
       app.kubernetes.io/name: *appname
   components:
     - ../../../../../components/gatus/minecraft
-    - ../../../../../components/volsync
   path: ./kubernetes/talos-flux/apps/gaming/minecraft-java/lobby-world
   prune: true
   sourceRef:
