@@ -3,11 +3,29 @@
 apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Alert
 metadata:
-  name: discord
+  name: discord-info
 spec:
   providerRef:
     name: discord
   eventSeverity: info
+  eventSources:
+    - kind: GitRepository
+      name: "*"
+    - kind: OCIRepository
+      name: "*"
+  exclusionList:
+    - "^Health check passed in.*"
+  suspend: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/notification.toolkit.fluxcd.io/alert_v1beta3.json
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Alert
+metadata:
+  name: discord-error
+spec:
+  providerRef:
+    name: discord
+  eventSeverity: error
   eventSources:
     - kind: GitRepository
       name: "*"
@@ -23,6 +41,4 @@ spec:
       name: "*"
   exclusionList:
     - "^Dependencies do not meet ready condition, retrying in.*"
-    - "^Health check passed in.*"
-    - "^Kustomization/flux-system/flux-repositories configured*"
   suspend: false
