@@ -149,8 +149,7 @@ spec:
       # VOLSYNC
       VOLSYNC_CAPACITY: 10Gi
       VOLSYNC_CACHE_CAPACITY: 5Gi
-      # TODO: cleanup
-      SETTING_TZ: ${FLUX_CLUSTER_TZ}
+
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
