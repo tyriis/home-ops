@@ -37,7 +37,7 @@ jobs:
 
       # https://github.com/marketplace/actions/magic-nix-cache
       - name: Use cache
-        uses: DeterminateSystems/magic-nix-cache-action@cb3030da0487efd312ad3c07fc4ad1960d35ec60 # v10
+        uses: DeterminateSystems/magic-nix-cache-action@def9f5a5c6a6b8751c0534e8813a5d0ad2635660 # v11
 
       # https://github.com/marketplace/actions/update-nix-flake-lock
       - name: Update flake.lock
