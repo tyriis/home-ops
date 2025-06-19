@@ -223,7 +223,7 @@ example:
 
 <!-- Badges -->
 
-[renovate-shield]: https://img.shields.io/badge/renovate-enabled-brightgreen?style=for-the-badge&logo=renovatebot
+[renovate-shield]: https://img.shields.io/badge/renovate-enabled-brightgreen?style=for-the-badge&logo=renovate
 [renovate-url]: https://www.whitesourcesoftware.com/free-developer-tools/renovate/
 [commits-shield]: https://img.shields.io/github/last-commit/tyriis/home-ops?style=for-the-badge&logo=github
 [commits-url]: https://github.com/tyriis/home-ops/commits/main
