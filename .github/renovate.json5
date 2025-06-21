@@ -47,6 +47,21 @@
       matchUpdateTypes: ["patch", "minor", "major"],
       automerge: false,
     },
+    {
+      matchDepNames: ["app-template"],
+      matchFileNames: ["**/base/**"],
+      additionalBranchPrefix: "base-",
+    },
+    {
+      matchDepNames: ["app-template"],
+      matchFileNames: ["**/kube-nas/**"],
+      additionalBranchPrefix: "kube-nas-",
+    },
+    {
+      matchDepNames: ["app-template"],
+      matchFileNames: ["**/talos-flux/**"],
+      additionalBranchPrefix: "talos-flux-",
+    },
   ],
   jenkins: {
     enabled: false,
