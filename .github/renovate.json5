@@ -1,9 +1,11 @@
 {
   enabled: true,
   extends: [
+    "github>tyriis/renovate-config//generic-regex-manager.json5", //  TODO: reconfigure
     "github>techtales-io/renovate-config:base.json5",
     "github>techtales-io/renovate-config:flux-infra.json5",
     "github>techtales-io/renovate-config:terraform-infra.json5",
+    "github>techtales-io/renovate-config//nix/default.json5",
     "github>techtales-io/renovate-config//dependencies/argo.json5",
     "github>techtales-io/renovate-config//dependencies/cloudnative-pg.json5",
     "github>techtales-io/renovate-config//dependencies/dragonfly.json5",
@@ -12,15 +14,13 @@
     "github>techtales-io/renovate-config//dependencies/google-cloud-sdk.json5",
     "github>techtales-io/renovate-config//dependencies/grafana-dashboards.json5",
     "github>techtales-io/renovate-config//dependencies/minecraft.json5",
+    "github>techtales-io/renovate-config//dependencies/minecraft-luckperms-plugin.json5",
+    "github>techtales-io/renovate-config//dependencies/minecraft-paper-builds.json5",
+    "github>techtales-io/renovate-config//dependencies/minecraft-velocity.json5",
     "github>techtales-io/renovate-config//dependencies/minio.json5",
     "github>techtales-io/renovate-config//dependencies/rook-ceph.json5",
     "github>techtales-io/renovate-config//dependencies/talos.json5",
     "github>techtales-io/renovate-config//dependencies/tektoncd.json5",
-    "github>techtales-io/renovate-config//nix/default.json5",
-    "github>tyriis/renovate-config//generic-regex-manager.json5", //  TODO: reconfigure
-    "github>techtales-io/renovate-config//dependencies/minecraft-luckperms-plugin.json5",
-    "github>techtales-io/renovate-config//dependencies/minecraft-paper-builds.json5",
-    "github>techtales-io/renovate-config//dependencies/minecraft-velocity.json5",
   ],
   ignorePaths: [
     "kubernetes/talos-flux/apps/home-automation/esphome/app/config/**",
