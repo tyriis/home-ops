@@ -38,7 +38,7 @@ spec:
                   name: home-assistant-secrets
             image:
               repository: ghcr.io/home-assistant/home-assistant
-              tag: 2025.6.2@sha256:0a982af44d1664c264d0ee72e1eaa8d2a7f39b6dc1fc7e804667910153cbc0fd
+              tag: 2025.6.3@sha256:e207929bdf5dc95db43c618b877364e99f7ad506ec5440aeef80d5c9c1cae668
             ports:
               - name: http
                 containerPort: 8123
