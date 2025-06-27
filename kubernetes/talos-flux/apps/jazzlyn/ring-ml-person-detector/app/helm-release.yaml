@@ -37,7 +37,7 @@ spec:
           type: RuntimeDefault
     controllers:
       ring-ml-person-detector:
-        strategy: Recreate
+        strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
 
