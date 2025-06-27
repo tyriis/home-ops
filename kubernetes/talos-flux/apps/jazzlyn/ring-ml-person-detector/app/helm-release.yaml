@@ -1,0 +1,105 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app ring-ml-person-detector
+spec:
+  interval: 30m
+  driftDetection:
+    mode: enabled
+  chart:
+    spec:
+      chart: app-template
+      version: 4.1.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: -1
+  upgrade:
+    remediation:
+      retries: 3
+  # https://github.com/bjw-s/helm-charts/blob/main/charts/library/common/values.yaml
+  values:
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+    controllers:
+      ring-ml-person-detector:
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/jazzlyn/ring-ml-person-detector
+              tag: 0.1.0@sha256:3baa6cc4ec5ce4b2d9f4f8969241cf69bdb32e85c3481eb557f80ab857b6f457
+            envFrom: []
+            #   - configMapRef:
+            #       name: ring-ml-person-detector-env
+            env: {}
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities:
+                drop:
+                  - ALL
+            ports:
+              - name: http
+                containerPort: &port 8000
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  initialDelaySeconds: 5
+                  periodSeconds: 60
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+                  httpGet:
+                    path: /livez
+                    port: *port
+              readiness:
+                <<: *probes
+                spec:
+                  initialDelaySeconds: 10
+                  periodSeconds: 5
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+                  httpGet: &httpGet
+                    path: /readyz
+                    port: *port
+              startup:
+                <<: *probes
+                spec:
+                  initialDelaySeconds: 10
+                  periodSeconds: 2
+                  failureThreshold: 60
+                  httpGet: *httpGet
+
+            resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
+
+    service:
+      ring-ml-person-detector:
+        controller: ring-ml-person-detector
+        type: ClusterIP
+        ports:
+          http:
+            port: *port
+            protocol: TCP
