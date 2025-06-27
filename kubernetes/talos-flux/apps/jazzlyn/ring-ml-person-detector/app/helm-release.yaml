@@ -36,7 +36,7 @@ spec:
         seccompProfile:
           type: RuntimeDefault
     controllers:
-      ring-ml-person-detector:
+      main:
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
@@ -96,8 +96,8 @@ spec:
                 memory: 128Mi
 
     service:
-      ring-ml-person-detector:
-        controller: ring-ml-person-detector
+      main:
+        controller: main
         type: ClusterIP
         ports:
           http:
