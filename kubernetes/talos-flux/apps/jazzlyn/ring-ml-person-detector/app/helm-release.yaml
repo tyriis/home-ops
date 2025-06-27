@@ -103,3 +103,17 @@ spec:
           http:
             port: *port
             protocol: TCP
+
+    persistence:
+      yolo:
+        type: emptyDir
+        advancedMounts:
+          main:
+            app:
+              - path: /app/yolo
+      models:
+        type: emptyDir
+        advancedMounts:
+          main:
+            app:
+              - path: /app/models
