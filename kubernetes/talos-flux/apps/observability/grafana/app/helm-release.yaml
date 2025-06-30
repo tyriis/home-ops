@@ -263,7 +263,7 @@ spec:
         k8s-views-nodes:
           # renovate: dashboardName="Kubernetes / Views / Nodes"
           gnetId: 15759
-          revision: 35
+          revision: 37
           datasource: Prometheus
         # Ref: https://grafana.com/grafana/dashboards/15758
         k8s-views-namespaces:
