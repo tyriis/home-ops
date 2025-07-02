@@ -1,5 +1,5 @@
 ---
-# Ring Camera Person Detector Configuration
+# ML Detector Configuration
 
 server:
   host: "0.0.0.0"
@@ -7,7 +7,7 @@ server:
   reload: false
 
 model:
-  size: nano
+  size: small
   device: cpu
   custom_model_path: null
   models_dir: /models
