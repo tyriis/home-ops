@@ -25,7 +25,7 @@ pre-commit = "4.2.0"
 # https://github.com/mozilla/sops
 sops = "3.10.2"
 # https://github.com/budimanjojo/talhelper
-talhelper = "3.0.29"
+talhelper = "3.0.30"
 # https://www.talos.dev/
 talosctl = "1.10.5"
 # https://taskfile.dev/
