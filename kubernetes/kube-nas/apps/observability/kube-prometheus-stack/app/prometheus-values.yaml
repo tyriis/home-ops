@@ -60,7 +60,7 @@ prometheus:
         cpu: 100m
 
     thanos:
-      image: quay.io/thanos/thanos:v0.39.0@sha256:cf5ec774f031046485790d6ad03fe1ed927345714b8a4681febc970e32c81aac
+      image: quay.io/thanos/thanos:v0.39.1@sha256:463e6f201f19fec31d93a2e5af6e0746479e5ff076254fd10012dec973bcf7ca
       version: v0.28.0
       objectStorageConfig:
         name: thanos-object-storage-config

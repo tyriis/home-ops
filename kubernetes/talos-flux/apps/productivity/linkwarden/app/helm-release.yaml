@@ -45,7 +45,7 @@ spec:
           app:
             image:
               repository: ghcr.io/linkwarden/linkwarden
-              tag: v2.11.2@sha256:ecf4f27b03741971cb8d68d25b4a772418d6ddf40947bdfbb8f9cda53a1faba2
+              tag: v2.11.3@sha256:1ad4225684bcd084d71d0ee5c6b3f118f3ba1e8468ff490d9e3429e30c6a8fd5
             resources:
               requests:
                 memory: 512Mi

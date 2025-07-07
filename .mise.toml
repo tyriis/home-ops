@@ -5,7 +5,7 @@ TALOSCONFIG="{{config_root}}/infra/talos/clusterconfig/talosconfig"
 # https://age-encryption.org/
 age = "1.2.1"
 # https://direnv.net/
-direnv = "2.36.0"
+direnv = "2.37.0"
 # https://fluxcd.io/
 flux2 = "2.6.3"
 # https://gitleaks.io/
@@ -25,9 +25,9 @@ pre-commit = "4.2.0"
 # https://github.com/mozilla/sops
 sops = "3.10.2"
 # https://github.com/budimanjojo/talhelper
-talhelper = "3.0.29"
+talhelper = "3.0.30"
 # https://www.talos.dev/
-talosctl = "1.10.4"
+talosctl = "1.10.5"
 # https://taskfile.dev/
 task = "3.43.3"
 # https://www.terraform.io/
@@ -37,4 +37,4 @@ terraform-docs = "0.20.0"
 # https://github.com/terraform-linters/tflint
 tflint = "0.58.0"
 # https://trivy.dev/
-trivy = "0.63.0"
+trivy = "0.64.1"
