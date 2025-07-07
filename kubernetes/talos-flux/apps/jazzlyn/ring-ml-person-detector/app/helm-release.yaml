@@ -40,20 +40,18 @@ spec:
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
-
         containers:
           app:
             image:
               repository: ghcr.io/jazzlyn/ring-ml-person-detector
-              tag: 0.1.0@sha256:3baa6cc4ec5ce4b2d9f4f8969241cf69bdb32e85c3481eb557f80ab857b6f457
-            envFrom: []
-            #   - configMapRef:
-            #       name: ring-ml-person-detector-env
-            env: {}
-
+              tag: 0.2.0@sha256:b17417e643886b876a4cdca542caf14d854c5db569fb2c7bf4a41c27a7e7f01a
+            env:
+              CONFIG_PATH: /config/configuration.yaml
+              YOLO_CACHE_DIR: /models/cache
+              YOLO_CONFIG_DIR: /models/config
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
+              readOnlyRootFilesystem: true
               capabilities:
                 drop:
                   - ALL
@@ -89,12 +87,10 @@ spec:
                   periodSeconds: 2
                   failureThreshold: 60
                   httpGet: *httpGet
-
             resources:
               requests:
                 cpu: 100m
                 memory: 128Mi
-
     service:
       main:
         controller: main
@@ -103,17 +99,15 @@ spec:
           http:
             port: *port
             protocol: TCP
-
     persistence:
-      yolo:
-        type: emptyDir
-        advancedMounts:
-          main:
-            app:
-              - path: /app/yolo
+      config:
+        type: configMap
+        name: ml-detector-config
+        globalMounts:
+          - path: /config
+            readOnly: true
       models:
         type: emptyDir
-        advancedMounts:
-          main:
-            app:
-              - path: /app/models
+        globalMounts:
+          - path: /models
+            readOnly: false
