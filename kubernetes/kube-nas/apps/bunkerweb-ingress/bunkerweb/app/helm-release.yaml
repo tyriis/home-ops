@@ -40,7 +40,7 @@ spec:
           bunkerweb-controller:
             image:
               repository: bunkerity/bunkerweb-autoconf
-              tag: 1.6.2@sha256:554119f844731b76d699a02467b94cd41bf4e39e3ac6c9d4b823b12757bc14f4
+              tag: 1.6.2@sha256:c9c7afde48c5f3f016677441b7637b80f2664d50eb78550c67eb208e901a1316
             env:
               KUBERNETES_MODE: "yes"
               NAMESPACES: ""
