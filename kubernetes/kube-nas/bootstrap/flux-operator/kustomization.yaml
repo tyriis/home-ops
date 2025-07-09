@@ -9,7 +9,7 @@ helmCharts:
     releaseName: flux-operator
     repo: oci://ghcr.io/controlplaneio-fluxcd/charts
     valuesFile: values.yaml
-    version: 0.24.0
+    version: 0.24.1
 commonAnnotations:
   meta.helm.sh/release-name: flux-operator
   meta.helm.sh/release-namespace: flux-system
