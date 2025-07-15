@@ -121,5 +121,7 @@ spec:
             path: /app/config/custom.css
           - subPath: custom.js
             path: /app/config/custom.js
+          - subPath: proxmox.yaml
+            path: /app/config/proxmox.yaml
     serviceAccount:
       homepage: {}
