@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: windmill
-      version: 2.0.442
+      version: 2.0.447
       interval: 15m
       sourceRef:
         kind: HelmRepository
