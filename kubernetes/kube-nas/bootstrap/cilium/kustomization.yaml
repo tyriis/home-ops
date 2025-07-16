@@ -8,7 +8,7 @@ helmCharts:
     releaseName: cilium
     repo: https://helm.cilium.io/
     valuesFile: values.yaml
-    version: 1.17.5
+    version: 1.17.6
 commonAnnotations:
   meta.helm.sh/release-name: cilium
   meta.helm.sh/release-namespace: kube-system
