@@ -10,10 +10,10 @@ spec:
     schedule: "0 * * * *"
   restic:
     copyMethod: Snapshot
-    pruneIntervalDays: 14
+    pruneIntervalDays: 1
     repository: minecraft-public-survival-world-volsync
     volumeSnapshotClassName: csi-ceph-blockpool
-    cacheCapacity: 5Gi
+    cacheCapacity: 10Gi
     cacheStorageClassName: ceph-block
     cacheAccessModes:
       - ReadWriteOnce
