@@ -13,7 +13,7 @@ spec:
     pruneIntervalDays: 14
     repository: minecraft-public-survival-world-volsync
     volumeSnapshotClassName: csi-ceph-blockpool
-    cacheCapacity: 5Gi
+    cacheCapacity: 10Gi
     cacheStorageClassName: ceph-block
     cacheAccessModes:
       - ReadWriteOnce
