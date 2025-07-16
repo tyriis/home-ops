@@ -1,0 +1,38 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  locks:
+    desc: Show locks for the restic repository
+    vars:
+      CLUSTER: '{{ .CLUSTER | default "talos-flux"}}'
+      SOPS_FILE: './kubernetes/{{ .CLUSTER }}/apps/{{ .NAMESPACE }}/{{ .APP }}/{{ .SUB_PATH | default "app" }}/secret.sops.yaml'
+    requires:
+      vars:
+        - APP
+        - NAMESPACE
+    cmds:
+      - |
+        RESTIC_REPOSITORY=$(sops decrypt "{{ .SOPS_FILE }}" | yq .stringData.RESTIC_REPOSITORY) \
+        RESTIC_PASSWORD=$(sops decrypt "{{ .SOPS_FILE }}" | yq .stringData.RESTIC_PASSWORD) \
+        AWS_ACCESS_KEY_ID=$(sops decrypt "{{ .SOPS_FILE }}" | yq .stringData.AWS_ACCESS_KEY_ID) \
+        AWS_SECRET_ACCESS_KEY=$(sops decrypt "{{ .SOPS_FILE }}" | yq .stringData.AWS_SECRET_ACCESS_KEY) \
+        restic list locks
+
+  unlock:
+    desc: Unlock the restic repository
+    vars:
+      CLUSTER: '{{ .CLUSTER | default "talos-flux"}}'
+      SOPS_FILE: './kubernetes/{{ .CLUSTER }}/apps/{{ .NAMESPACE }}/{{ .APP }}/{{ .SUB_PATH | default "app" }}/secret.sops.yaml'
+    requires:
+      vars:
+        - APP
+        - NAMESPACE
+    cmds:
+      - |
+        RESTIC_REPOSITORY=$(sops decrypt "{{ .SOPS_FILE }}" | yq .stringData.RESTIC_REPOSITORY) \
+        RESTIC_PASSWORD=$(sops decrypt "{{ .SOPS_FILE }}" | yq .stringData.RESTIC_PASSWORD) \
+        AWS_ACCESS_KEY_ID=$(sops decrypt "{{ .SOPS_FILE }}" | yq .stringData.AWS_ACCESS_KEY_ID) \
+        AWS_SECRET_ACCESS_KEY=$(sops decrypt "{{ .SOPS_FILE }}" | yq .stringData.AWS_SECRET_ACCESS_KEY) \
+        restic unlock
