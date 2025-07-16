@@ -4,13 +4,15 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 helmCharts:
   - name: metrics-server
-    repo: https://kubernetes-sigs.github.io/metrics-server
-    version: 3.12.2
-    releaseName: metrics-server
     namespace: kube-system
+    releaseName: metrics-server
+    repo: https://kubernetes-sigs.github.io/metrics-server
     valuesFile: values.yaml
+    version: 3.12.2
 commonAnnotations:
   meta.helm.sh/release-name: metrics-server
   meta.helm.sh/release-namespace: kube-system
-commonLabels:
-  app.kubernetes.io/managed-by: Helm
+labels:
+  - includeSelectors: true
+    pairs:
+      app.kubernetes.io/managed-by: Helm
