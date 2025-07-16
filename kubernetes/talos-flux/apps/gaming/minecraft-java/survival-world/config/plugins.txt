@@ -1,2 +1,6 @@
 # UnifiedMetrics https://modrinth.com/plugin/unifiedmetrics
 https://cdn.modrinth.com/data/p1ewR5kV/versions/Ypqt7eH1/unifiedmetrics-platform-bukkit-0.3.8.jar
+# AxGraves https://hangar.papermc.io/Artillex-Studios/AxGraves
+https://hangarcdn.papermc.io/plugins/Artillex-Studios/AxGraves/versions/1.22.3/PAPER/AxGraves-1.22.3.jar
+# Farmers Delight Refabricated https://modrinth.com/mod/farmers-delight-refabricated
+https://modrinth.com/mod/farmers-delight-refabricated/version/1.21.7-3.2.4
