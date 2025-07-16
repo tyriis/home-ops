@@ -22,3 +22,13 @@ spec:
               requests:
                 cpu: 500m
                 memory: 4Gi
+    persistence:
+      axgraves:
+        type: configMap
+        name: minecraft-survival-world-plugins-axgraves-config
+        advancedMounts:
+          minecraft:
+            app:
+              - path: /plugins/AxGraves/config.yml
+                subPath: config.yml
+                readOnly: true
