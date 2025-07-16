@@ -5,8 +5,8 @@ kind: ScheduledBackup
 metadata:
   name: &name postgres17
 spec:
-  schedule: "0 2 * * *"
-  immediate: true
+  schedule: "@daily"
+  immediate: false
   backupOwnerReference: self
   cluster:
     name: *name
