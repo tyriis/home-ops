@@ -54,7 +54,7 @@ spec:
                   name: playit-env
             image:
               repository: ghcr.io/playit-cloud/playit-agent
-              tag: 0.15.26@sha256:3d08eb4a627a6d167f3cce497d8e2ec8f9e7d2df4e96f0599ca41e4b957c852c
+              tag: 0.16.2@sha256:c41f027084ad9e194cf702b581b0359bf09c7b577b31be7f0adca41cd691ab29
             ports:
               - name: http
                 containerPort: 8080
