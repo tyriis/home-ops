@@ -21,7 +21,7 @@ spec:
     storageClassName: ceph-block
     accessModes:
       - ReadWriteOnce
-    capacity: 10Mi
+    capacity: 100Mi
     moverSecurityContext:
       runAsUser: 1000
       runAsGroup: 1000
