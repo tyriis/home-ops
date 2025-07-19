@@ -12,4 +12,4 @@ https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/artifact/build/libs/
 # this works but useless when falling in lava or void, do not use with keepInventory as it will duplicate items
 # https://hangarcdn.papermc.io/plugins/DestenyLP/DeadBodies/versions/1.0/PAPER/DeadBodies-1.0.jar
 # AxGraves https://hangar.papermc.io/Artillex-Studios/AxGraves
-https://hangarcdn.papermc.io/plugins/Artillex-Studios/AxGraves/versions/1.21.1/PAPER/AxGraves-1.21.1.jar
+https://hangarcdn.papermc.io/plugins/Artillex-Studios/AxGraves/versions/1.22.3/PAPER/AxGraves-1.22.3.jar
