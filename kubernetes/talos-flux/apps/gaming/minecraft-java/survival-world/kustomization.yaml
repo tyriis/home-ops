@@ -15,6 +15,9 @@ configMapGenerator:
       - spigot.yml=config/spigot.yaml
       - paper-global.yml=config/paper-global.yaml
       - plugins.txt=config/plugins.txt
+  - name: minecraft-survival-world-plugins-axgraves-config
+    files:
+      - config.yml=plugins/AxGraves/config.yml
 generatorOptions:
   disableNameSuffixHash: true
   annotations:

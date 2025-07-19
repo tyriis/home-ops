@@ -1,0 +1,128 @@
+---
+prefix: "&#FF00FF&lAxGraves &7» "
+
+# how fast should the graves disappear
+# set to -1 to make graves last until the next server restart
+# in seconds
+despawn-time-seconds: -1
+
+# should graves drop all items on the ground when they expire?
+# if false: items will be removed
+drop-items: true
+
+# if drop-items is true, should the dropped items have a velocity? (so should they fly around when dropped or stay in one block?)
+dropped-item-velocity: true
+
+# should players have the ability to take all items from a death chest by shift right clicking?
+enable-instant-pickup: true
+
+# only works if enable-instant-pickup is true
+# this makes it that only the owner of the grave will be able to instantly pick it up
+instant-pickup-only-own: true
+
+# you should disable this if you want keep-inventory to work
+override-keep-inventory: true
+
+# how high should grave holograms spawn?
+# only applies to new graves
+hologram-height: 0.75
+
+# how high should the player head be?
+# in some versions on some clients may see the heads glitched in the ground
+# use this option OR viaversion's hologram-y setting to correct it
+# only applies to new graves
+head-height: -1.2
+
+# worlds where graves won't spawn
+# this is case-sensitive
+disabled-worlds:
+  - blacklisted_world
+
+# true: the head can face in all the 360 degrees
+# false: the head can face in only 4 directions (north, east, south, west)
+rotate-head-360: true
+
+# should the head rotate
+auto-rotation:
+  enabled: false
+  speed: 10.0
+
+# true: only the person who died and people with axgraves.admin can open the grave
+# false: everyone can open the grave
+interact-only-own: false
+
+# should the player lose any xp on death?
+# this is a percentage, so 0.5 would be 50% xp
+xp-keep-percentage: 1.0
+
+# should the plugin store XP in graves?
+# if disabled, XP will be dropped on the ground
+store-xp: true
+
+# what order should items be put in the grave?
+# all the other items will be put AFTER these
+# values: ARMOR, HAND, OFFHAND
+grave-item-order:
+  - ARMOR
+  - HAND
+  - OFFHAND
+
+# should the armor parts be auto equipped?
+auto-equip-armor: true
+
+# how many graves can a single player have at the same time?
+# if the limit is reached, the first grave will be removed
+# set to -1 to disable
+# you can override this by giving players the axgraves.limit.<amount> permissions
+grave-limit: -1
+
+# by default every grave will use the player's skull
+# with this setting you can override it
+custom-grave-skull:
+  enabled: false
+  base64: ""
+
+# you can add any amount of worlds
+# if you don't define a world, the plugin will use the default world limits of the dimension
+spawn-height-limits:
+  world:
+    min: -64
+    max: 319
+  world_nether:
+    min: 0
+    max: 319
+  world_the_end:
+    min: 0
+    max: 319
+
+# if players die from any of the following, no graves will be spawned
+# list of valid values: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html
+# case sensitive
+blacklisted-death-causes:
+  - EXAMPLE_DEATH_CAUSE
+
+# should the grave disappear when all items get taken out of it?
+despawn-when-empty: true
+
+save-graves:
+  # should graves be saved if the server stops?
+  enabled: true
+  # how often should the graves be saved?
+  # set to -1 to make it only save on shutdown (it might not save if there is a crash)
+  auto-save-seconds: 30
+
+# items that will be removed on death and will not show up in graves
+blacklisted-items:
+  "1":
+    material: barrier
+    name-contains: Banned item's name
+
+# should be plugin notify you if there is a new update?
+update-notifier:
+  # if enabled, it will display the message in the console
+  enabled: true
+  # if enabled, it will broadcast the update message to all players who have the <plugin-name>.update-notify permission
+  on-join: true
+
+# do not edit
+version: 15
