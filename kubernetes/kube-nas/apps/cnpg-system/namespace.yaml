@@ -6,3 +6,4 @@ metadata:
   name: cnpg-system
   annotations:
     kustomize.toolkit.fluxcd.io/prune: disabled
+    k8tz.io/inject: "false"

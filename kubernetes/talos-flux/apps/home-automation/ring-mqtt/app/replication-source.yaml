@@ -13,7 +13,7 @@ spec:
     pruneIntervalDays: 1
     repository: ring-mqtt-volsync
     volumeSnapshotClassName: csi-ceph-blockpool
-    cacheCapacity: 10Mi
+    cacheCapacity: 100Mi
     cacheStorageClassName: ceph-block
     cacheAccessModes:
       - ReadWriteOnce

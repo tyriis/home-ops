@@ -17,7 +17,7 @@ spec:
     cacheStorageClassName: ceph-block
     cacheAccessModes:
       - ReadWriteOnce
-    cacheCapacity: 5Gi
+    cacheCapacity: 10Gi
     storageClassName: ceph-block
     accessModes:
       - ReadWriteOnce

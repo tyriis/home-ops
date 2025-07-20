@@ -17,11 +17,11 @@ spec:
     cacheStorageClassName: ceph-block
     cacheAccessModes:
       - ReadWriteOnce
-    cacheCapacity: 10Mi
+    cacheCapacity: 100Mi
     storageClassName: ceph-block
     accessModes:
       - ReadWriteOnce
-    capacity: 10Mi
+    capacity: 100Mi
     moverSecurityContext:
       runAsUser: 1000
       runAsGroup: 1000

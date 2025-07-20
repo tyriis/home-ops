@@ -4,7 +4,6 @@
 
 ```bash
 kubectl kustomize --enable-helm kubernetes/kube-nas/bootstrap/cilium | kubectl apply -n kube-system -f -
-kubectl apply -f kubernetes/kube-nas/bootstrap/cilium/l2.yaml
 ```
 
 ## Coredns
@@ -34,16 +33,15 @@ kubectl kustomize --enable-helm kubernetes/kube-nas/bootstrap/democratic-csi | k
 
 ## Flux
 
-> Currently it is not possible to load it with kubectl, kustomize and helm :(
-
 ```bash
-helm install flux-operator oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator -n flux-system --create-namespace
+kubectl create namespace flux-system
+kubectl kustomize --enable-helm kubernetes/kube-nas/bootstrap/flux-operator | kubectl apply -n flux-system -f -
 ```
 
 ### age key
 
 ```bash
-sops --decrypt kubernetes/kube-nas/flux/config/sops-age.sops.yaml | kubectl apply -f - -n flux-system
+sops --decrypt kubernetes/kube-nas/flux/config/sops-age.sops.yaml | kubectl apply -n flux-system -f -
 ```
 
 ### FluxInstance

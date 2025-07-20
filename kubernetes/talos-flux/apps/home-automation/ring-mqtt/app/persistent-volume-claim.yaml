@@ -13,5 +13,5 @@ spec:
     name: ring-mqtt-data
   resources:
     requests:
-      storage: 10Mi
+      storage: 100Mi
   storageClassName: ceph-block

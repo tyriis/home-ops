@@ -5,11 +5,11 @@ TALOSCONFIG="{{config_root}}/infra/talos/clusterconfig/talosconfig"
 # https://age-encryption.org/
 age = "1.2.1"
 # https://direnv.net/
-direnv = "2.37.0"
+direnv = "2.37.1"
 # https://fluxcd.io/
 flux2 = "2.6.4"
 # https://gitleaks.io/
-gitleaks = "8.27.2"
+gitleaks = "8.28.0"
 # https://helm.sh/
 helm = "3.18.4"
 # https://k9scli.io/

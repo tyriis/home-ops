@@ -20,3 +20,4 @@ includes:
   rook-ceph: .taskfiles/rook-ceph/Taskfile.yaml
   talos: .taskfiles/talos/Taskfile.yaml
   terraform: .taskfiles/terraform/Taskfile.yaml
+  restic: .taskfiles/restic/Taskfile.yaml
