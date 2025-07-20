@@ -16,9 +16,19 @@ spec:
         containers:
           app:
             env:
-              PAPER_DOWNLOAD_URL: https://api.papermc.io/v2/projects/paper/versions/1.21.7/builds/32/downloads/paper-1.21.7-32.jar
+              PAPER_DOWNLOAD_URL: https://api.papermc.io/v2/projects/paper/versions/1.21.8/builds/6/downloads/paper-1.21.8-6.jar
               MEMORY: 4096M
             resources:
               requests:
                 cpu: 500m
                 memory: 4Gi
+    persistence:
+      axgraves:
+        type: configMap
+        name: minecraft-survival-world-plugins-axgraves-config
+        advancedMounts:
+          minecraft:
+            app:
+              - path: /plugins/AxGraves/config.yml
+                subPath: config.yml
+                readOnly: true
