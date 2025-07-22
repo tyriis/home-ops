@@ -8,7 +8,7 @@ helmCharts:
     releaseName: metrics-server
     repo: https://kubernetes-sigs.github.io/metrics-server
     valuesFile: values.yaml
-    version: 3.12.2
+    version: 3.13.0
 commonAnnotations:
   meta.helm.sh/release-name: metrics-server
   meta.helm.sh/release-namespace: kube-system
