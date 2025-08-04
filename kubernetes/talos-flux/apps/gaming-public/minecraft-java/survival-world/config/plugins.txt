@@ -1,15 +1,10 @@
 # UnifiedMetrics https://modrinth.com/plugin/unifiedmetrics
 https://cdn.modrinth.com/data/p1ewR5kV/versions/Ypqt7eH1/unifiedmetrics-platform-bukkit-0.3.8.jar
+# AxGraves https://hangar.papermc.io/Artillex-Studios/AxGraves
+https://hangarcdn.papermc.io/plugins/Artillex-Studios/AxGraves/versions/1.22.3/PAPER/AxGraves-1.22.3.jar
 # SimpleTPA https://modrinth.com/plugin/simpletpaplugin
 https://cdn.modrinth.com/data/6t5Ziqmz/versions/TGLW1WW0/SimpleTPA-1.0Experimentalv2.jar
-# https://modrinth.com/plugin/viaversion
-# https://cdn.modrinth.com/data/P1OZGk5p/versions/cdC9vQSF/ViaVersion-5.3.2.jar
-# Vane https://modrinth.com/plugin/vane, https://oddlama.github.io/vane/
-https://cdn.modrinth.com/data/698NGGtb/versions/ohtoFZG2/all-plugins.zip
+# Vane https://modrinth.com/plugin/vane/versions?l=paper
+https://cdn.modrinth.com/data/698NGGtb/versions/Z9TLW1LC/all-plugins.zip
 # ProtocolLib https://ci.dmulloy2.net/job/ProtocolLib/ required by Vane
 https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/artifact/build/libs/ProtocolLib.jar
-# DeadBodies https://hangar.papermc.io/DestenyLP/DeadBodies
-# this works but useless when falling in lava or void, do not use with keepInventory as it will duplicate items
-# https://hangarcdn.papermc.io/plugins/DestenyLP/DeadBodies/versions/1.0/PAPER/DeadBodies-1.0.jar
-# AxGraves https://hangar.papermc.io/Artillex-Studios/AxGraves
-https://hangarcdn.papermc.io/plugins/Artillex-Studios/AxGraves/versions/1.21.1/PAPER/AxGraves-1.21.1.jar
