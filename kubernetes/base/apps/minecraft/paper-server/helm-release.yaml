@@ -23,6 +23,7 @@ spec:
   upgrade:
     remediation:
       retries: 3
+    timeout: 10m
   uninstall:
     keepHistory: false
   # https://bjw-s-labs.github.io/helm-charts/docs/app-template/
