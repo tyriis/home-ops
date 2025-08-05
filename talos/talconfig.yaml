@@ -1,0 +1,374 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
+
+# renovate: depName=ghcr.io/siderolabs/installer datasource=docker
+talosVersion: v1.10.5
+# renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
+kubernetesVersion: v1.33.3
+
+clusterName: kube-lab
+endpoint: https://192.168.100.100:6443
+domain: cluster.local
+allowSchedulingOnMasters: true
+allowSchedulingOnControlPlanes: true
+cniConfig:
+  name: none
+
+nodes:
+  # i9-13900H / 96GB / Samsung SSD 990 PRO 1TB / Samsung SSD 990 PRO 1TB
+  - hostname: talos01
+    ipAddress: 192.168.100.101
+    controlPlane: true
+    installDiskSelector:
+      # gen4 slot
+      # serial: S6Z1NU0XA67084J
+      # middle slot disk
+      serial: S6Z1NU0XC22535P
+
+    disableSearchDomain: true
+    nameservers:
+      - 1.1.1.1
+      - 8.8.8.8
+      - 192.168.100.1
+      - 192.168.1.1
+    networkInterfaces:
+      # 2.5GbE LAN
+      - interface: enp89s0
+        mtu: 1500
+        dhcp: true
+        vip:
+          ip: 192.168.100.100
+        # vlans:
+        #   # IOT
+        #   - vlanId: 10
+        #     dhcp: false
+        #     mtu: 1500
+      # 2.5GbE NAS
+      - interface: enp87s0
+        mtu: 1500
+        dhcp: true
+      # 10GbE LAN
+      - interface: bond0
+        bond:
+          deviceSelectors:
+            - hardwareAddr: 58:47:ca:77:*
+              driver: i40e
+          mode: 802.3ad
+          lacpRate: fast
+          xmitHashPolicy: layer3+4
+          miimon: 1000
+        mtu: 9000
+        dhcp: false
+        addresses:
+          - 192.168.101.101/24
+    nodeLabels:
+      topology.kubernetes.io/zone: home-lab
+      intel.feature.node.kubernetes.io/gpu: "true"
+
+  # i9-13900H / 96GB / Samsung SSD 990 PRO 1TB / Samsung SSD 990 PRO 1TB
+  - hostname: talos02
+    ipAddress: 192.168.100.102
+    controlPlane: true
+    installDiskSelector:
+      # gen4 slot
+      # serial: S6Z1NJ0W384033R
+      # middle slot disk
+      serial: S7HDNF0Y440119F
+    disableSearchDomain: true
+    nameservers:
+      - 1.1.1.1
+      - 8.8.8.8
+      - 192.168.100.1
+      - 192.168.1.1
+    networkInterfaces:
+      # 2.5GbE LAN
+      - interface: enp89s0
+        mtu: 1500
+        dhcp: true
+        vip:
+          ip: 192.168.100.100
+        # vlans:
+        #   # IOT
+        #   - vlanId: 10
+        #     dhcp: false
+        #     mtu: 1500
+      # 2.5GbE NAS
+      - interface: enp87s0
+        mtu: 1500
+        dhcp: true
+      # 10GbE LAN
+      - interface: bond0
+        bond:
+          deviceSelectors:
+            - hardwareAddr: 58:47:ca:76:*
+              driver: i40e
+          mode: 802.3ad
+          lacpRate: fast
+          xmitHashPolicy: layer3+4
+          miimon: 1000
+        mtu: 9000
+        dhcp: false
+        addresses:
+          - 192.168.101.102/24
+    nodeLabels:
+      topology.kubernetes.io/zone: home-lab
+      intel.feature.node.kubernetes.io/gpu: "true"
+
+  # i9-13900H / 96GB / Samsung SSD 990 PRO 1TB / Samsung SSD 990 PRO 1TB
+  - hostname: talos03
+    ipAddress: 192.168.100.103
+    controlPlane: true
+    installDiskSelector:
+      # gen4 slot
+      # serial: S6Z1NJ0Y301566D
+      # middle slot disk
+      serial: S6Z1NJ0W534350X
+    disableSearchDomain: true
+    nameservers:
+      - 1.1.1.1
+      - 8.8.8.8
+      - 192.168.100.1
+      - 192.168.1.1
+    networkInterfaces:
+      # 2.5GbE LAN
+      - interface: enp89s0
+        mtu: 1500
+        dhcp: true
+        vip:
+          ip: 192.168.100.100
+        # vlans:
+        #   # IOT
+        #   - vlanId: 10
+        #     dhcp: false
+        #     mtu: 1500
+      # 2.5GbE NAS
+      - interface: enp87s0
+        mtu: 1500
+        dhcp: true
+      # 10GbE LAN
+      - interface: bond0
+        bond:
+          deviceSelectors:
+            - hardwareAddr: 58:47:ca:76:*
+              driver: i40e
+          mode: 802.3ad
+          lacpRate: fast
+          xmitHashPolicy: layer3+4
+          miimon: 1000
+        mtu: 9000
+        dhcp: false
+        addresses:
+          - 192.168.101.103/24
+    nodeLabels:
+      topology.kubernetes.io/zone: home-lab
+      intel.feature.node.kubernetes.io/gpu: "true"
+
+controlPlane:
+  schematic:
+    customization:
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/i915
+          - siderolabs/intel-ucode
+          - siderolabs/thunderbolt
+
+  patches:
+    - |-
+      machine:
+        kubelet:
+          extraArgs:
+            rotate-server-certificates: "true"
+          extraMounts:
+            - destination: /var/mnt/extra
+              type: bind
+              source: /var/mnt/extra
+              options:
+                - rbind
+                - rw
+                - rshared
+          extraConfig:
+            allowedUnsafeSysctls:
+              - net.ipv6.conf.net1.*  # IPv6 syscalls for Matter/Thread
+            serializeImagePulls: false
+          defaultRuntimeSeccompProfileEnabled: true
+          nodeIP:
+            validSubnets: ["192.168.100.0/24", "192.168.101.0/24"]
+          disableManifestsDirectory: true
+        files:
+          - op: create
+            path: /etc/cri/conf.d/20-customization.part
+            content: |
+              [plugins]
+                [plugins."io.containerd.grpc.v1.cri"]
+                  enable_unprivileged_ports = true
+                  enable_unprivileged_icmp = true
+              [plugins."io.containerd.cri.v1.images"]
+                discard_unpacked_layers = false
+              [plugins."io.containerd.cri.v1.runtime"]
+                device_ownership_from_security_context = true
+          - op: overwrite
+            path: /etc/nfsmount.conf
+            permissions: 0o644
+            content: |
+              [ NFSMount_Global_Options ]
+              nfsvers=4.2
+              hard=True
+              nconnect=8
+              noatime=True
+              rsize=1048576
+              wsize=1048576
+
+        sysctls:
+          fs.inotify.max_user_watches: "1048576"     # Watchdog
+          fs.inotify.max_user_instances: "8192"      # Watchdog
+          fs.inotify.max_queued_events: "65536"
+          net.core.default_qdisc: fq                 # 10Gb/s
+          net.core.rmem_max: "67108864"              # 10Gb/s | Cloudflared / QUIC
+          net.core.wmem_max: "67108864"              # 10Gb/s | Cloudflared / QUIC
+          net.ipv4.neigh.default.gc_thresh1: "4096"  # Prevent ARP cache overflows
+          net.ipv4.neigh.default.gc_thresh2: "8192"  # Prevent ARP cache overflows
+          net.ipv4.neigh.default.gc_thresh3: "16384" # Prevent ARP cache overflows
+          net.ipv4.tcp_congestion_control: bbr       # 10Gb/s
+          net.ipv4.tcp_fastopen: "3"                 # Send and accept data in the opening SYN packet
+          net.ipv4.tcp_mtu_probing: "1"              # 10Gb/s | Jumbo frames
+          net.ipv4.tcp_rmem: 4096 87380 33554432     # 10Gb/s
+          net.ipv4.tcp_wmem: 4096 65536 33554432     # 10Gb/s
+          net.ipv4.tcp_window_scaling: "1"           # 10Gb/s
+          sunrpc.tcp_slot_table_entries: "128"       # 10Gb/s | NFS
+          sunrpc.tcp_max_slot_table_entries: "128"   # 10Gb/s | NFS
+          user.max_user_namespaces: "11255"          # User Namespaces
+          vm.nr_hugepages: "1024"                    # PostgreSQL
+        time:
+          disabled: false
+          servers:
+            - 192.168.1.1
+            - time.cloudflare.com
+        registries:
+          mirrors:
+            docker.io:
+              endpoints:
+                - https://harbor.techtales.io/v2/proxy-docker.io
+              overridePath: true
+            ghcr.io:
+              endpoints:
+                - https://harbor.techtales.io/v2/proxy-ghcr.io
+              overridePath: true
+        features:
+          rbac: true
+          stableHostname: true
+          kubernetesTalosAPIAccess:
+            enabled: true
+            allowedRoles:
+              - os:admin
+            allowedKubernetesNamespaces:
+              - system-upgrade
+          apidCheckExtKeyUsage: true
+          diskQuotaSupport: true
+          kubePrism:
+            enabled: true
+            port: 7445
+          hostDNS:
+            enabled: true
+            resolveMemberNames: true
+            forwardKubeDNSToHost: false
+
+      cluster:
+        etcd:
+          extraArgs:
+            listen-metrics-urls: http://0.0.0.0:2381
+        controllerManager:
+          extraArgs:
+            bind-address: 0.0.0.0
+        proxy:
+          disabled: true
+        coreDNS:
+          disabled: true
+        discovery:
+          enabled: true
+          registries:
+            kubernetes:
+              disabled: true
+            service:
+              disabled: false
+        apiServer:
+          extraArgs:
+            runtime-config: admissionregistration.k8s.io/v1alpha1=true
+            feature-gates: MutatingAdmissionPolicy=true
+        scheduler:
+          extraArgs:
+            bind-address: 0.0.0.0
+          config:
+            apiVersion: kubescheduler.config.k8s.io/v1
+            kind: KubeSchedulerConfiguration
+            profiles:
+              - schedulerName: default-scheduler
+                plugins:
+                  score:
+                    disabled:
+                      - name: ImageLocality
+                pluginConfig:
+                  - name: PodTopologySpread
+                    args:
+                      defaultingType: List
+                      defaultConstraints:
+                        - maxSkew: 1
+                          topologyKey: kubernetes.io/hostname
+                          whenUnsatisfiable: ScheduleAnyway
+
+# worker:
+#   schematic:
+#     customization:
+#       systemExtensions:
+#         officialExtensions:
+#           - siderolabs/gasket-driver
+#           - siderolabs/i915
+#           - siderolabs/intel-ucode
+#           - siderolabs/thunderbolt
+#   patches:
+#     - |-
+#       machine:
+#         kubelet:
+#           extraArgs:
+#             rotate-server-certificates: "true"
+#             feature-gates: GracefulNodeShutdown=true
+#           extraMounts:
+#             - destination: /var/openebs/local
+#               type: bind
+#               source: /var/openebs/local
+#               options:
+#                 - bind
+#                 - rw
+#                 - rshared
+#         files:
+#           - op: create
+#             path: /etc/cri/conf.d/20-customization.part
+#             content: |
+#               [plugins]
+#                 [plugins."io.containerd.grpc.v1.cri"]
+#                   enable_unprivileged_ports = true
+#                   enable_unprivileged_icmp = true
+#         sysctls:
+#           fs.inotify.max_queued_events: "65536"
+#           fs.inotify.max_user_instances: "8192"
+#           fs.inotify.max_user_watches: "524288"
+#           net.core.rmem_max: "2500000"
+#           net.core.wmem_max: "2500000"
+#         time:
+#           disabled: false
+#           servers:
+#             - 192.168.1.1
+#             - time.cloudflare.com
+#         registries:
+#           mirrors:
+#             docker.io:
+#               endpoints:
+#                 - https://harbor.techtales.io/v2/proxy-docker.io
+#               overridePath: true
+#             ghcr.io:
+#               endpoints:
+#                 - https://harbor.techtales.io/v2/proxy-ghcr.io
+#               overridePath: true
+#         features:
+#           hostDNS:
+#             enabled: true
+#             forwardKubeDNSToHost: false
