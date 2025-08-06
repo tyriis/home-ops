@@ -27,9 +27,9 @@ nodes:
 
     disableSearchDomain: true
     nameservers:
-      - 1.1.1.1
-      - 8.8.8.8
-      - 192.168.100.1
+      # - 1.1.1.1
+      # - 8.8.8.8
+      # - 192.168.100.1
       - 192.168.1.1
     networkInterfaces:
       # 2.5GbE LAN
@@ -95,9 +95,9 @@ nodes:
       serial: S7HDNF0Y440119F
     disableSearchDomain: true
     nameservers:
-      - 1.1.1.1
-      - 8.8.8.8
-      - 192.168.100.1
+      # - 1.1.1.1
+      # - 8.8.8.8
+      # - 192.168.100.1
       - 192.168.1.1
     networkInterfaces:
       # 2.5GbE LAN
@@ -163,9 +163,9 @@ nodes:
       serial: S6Z1NJ0W534350X
     disableSearchDomain: true
     nameservers:
-      - 1.1.1.1
-      - 8.8.8.8
-      - 192.168.100.1
+      # - 1.1.1.1
+      # - 8.8.8.8
+      # - 192.168.100.1
       - 192.168.1.1
     networkInterfaces:
       # 2.5GbE LAN
