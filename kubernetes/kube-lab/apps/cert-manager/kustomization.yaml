@@ -5,7 +5,6 @@ kind: Kustomization
 namespace: cert-manager
 components:
   - ../../../components/flux/alerts
-  - ../../../components/sops/talos-flux
 resources:
   - ./namespace.yaml
   - ./cert-manager/flux-sync.yaml
