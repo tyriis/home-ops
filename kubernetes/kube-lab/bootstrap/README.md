@@ -24,17 +24,19 @@ kubectl kustomize --enable-helm kubernetes/kube-lab/bootstrap/metrics-server | k
 kubectl kustomize --enable-helm kubernetes/kube-lab/bootstrap/kubelet-csr-approver | kubectl apply -n kube-system -f -
 ```
 
+## Local Storage
+
+```bash
+kubectl create namespace democratic-csi
+kubectl label --overwrite namespace democratic-csi pod-security.kubernetes.io/enforce=privileged
+kubectl kustomize --enable-helm kubernetes/kube-lab/bootstrap/democratic-csi | kubectl apply -n democratic-csi -f -
+```
+
 ## Flux
 
 ```bash
 kubectl create namespace flux-system
 kubectl kustomize --enable-helm kubernetes/kube-lab/bootstrap/flux-operator | kubectl apply -n flux-system -f -
-```
-
-### age key
-
-```bash
-sops --decrypt kubernetes/kube-lab/flux/config/sops-age.sops.yaml | kubectl apply -n flux-system -f -
 ```
 
 ### FluxInstance
