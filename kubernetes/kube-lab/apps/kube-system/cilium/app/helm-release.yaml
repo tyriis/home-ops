@@ -45,7 +45,7 @@ spec:
       autoMount:
         enabled: false
       hostRoot: /sys/fs/cgroup
-    devices: bond+
+    # devices: bond+
     enableRuntimeDeviceDetection: true
     endpointRoutes:
       enabled: true
