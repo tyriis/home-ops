@@ -22,7 +22,7 @@ prometheus:
     image:
       registry: docker.io
       repository: prompp/prompp
-      tag: 2.53.2-0.2.3@sha256:51194ad9d9ab03feea9adcf16ccdce708ae7dc23e6c76f2bc53d660eb91a9f89
+      tag: 2.53.2-0.3.4@sha256:e0212e571c1bbed88f546ed0336f70e82144693c2b2394bf40eaa56ea653ddbd
     securityContext:
       runAsNonRoot: true
       runAsUser: 64535
