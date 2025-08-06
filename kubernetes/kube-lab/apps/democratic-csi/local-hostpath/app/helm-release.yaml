@@ -40,11 +40,11 @@ spec:
         # distributed support is not yet ready for expansion
         allowVolumeExpansion: false
 
-    # volumeSnapshotClasses:
-    #   - name: local
-    #     deletionPolicy: Delete
-    #     parameters:
-    #       cluster: ${FLUX_CLUSTER_NAME}
+    volumeSnapshotClasses:
+      - name: local-nvme
+        deletionPolicy: Delete
+        parameters:
+          cluster: ${FLUX_CLUSTER_NAME}
 
     controller:
       enabled: true
@@ -63,11 +63,11 @@ spec:
       externalResizer:
         enabled: false
 
-      # externalSnapshotter:
-      #   enabled: true
-      #   extraArgs:
-      #     - --leader-election=false
-      #     - --node-deployment=true
+      externalSnapshotter:
+        enabled: true
+        extraArgs:
+          - --leader-election=false
+          - --node-deployment=true
 
     node:
       driver:
