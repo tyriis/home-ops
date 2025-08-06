@@ -1,0 +1,76 @@
+---
+alertmanager:
+  config:
+    global:
+      resolve_timeout: 5m
+    route:
+      group_by: ["alertname", "job"]
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 3h
+      receiver: "null"
+      # receiver: "discord" # FIXME
+      routes:
+        - receiver: "null"
+          match:
+            alertname: Watchdog
+        - receiver: "null"
+          match:
+            alertname: InfoInhibitor
+        # - receiver: discord
+        #   match_re:
+        #     severity: critical
+        #   continue: true
+    inhibit_rules:
+      - source_match:
+          severity: critical
+        target_match:
+          severity: warning
+        equal: ["alertname", "namespace"]
+
+    receivers:
+      - name: "null"
+      # - name: "discord"
+      #   webhook_configs:
+      #     - url: "http://alertmanager-discord.observability.svc.cluster.local:9094"
+      # - name: "discord"
+      #   slack_configs:
+      #     - channel: "#flux-system"
+      #       icon_url: https://avatars3.githubusercontent.com/u/3380462
+      #       username: "Prometheus"
+      #       send_resolved: true
+      #       title: |-
+      #         [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ if ne .CommonAnnotations.summary ""}}{{ .CommonAnnotations.summary }}{{ else }}{{ .CommonLabels.alertname }}{{ end }}
+      #       text: >-
+      #         {{ range .Alerts -}}
+      #           **Alert:** {{ .Annotations.title }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
+      #         **Description:** {{ if ne .Annotations.description ""}}{{ .Annotations.description }}{{else}}N/A{{ end }}
+      #         **Details:**
+      #           {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+      #           {{ end }}
+      #         {{ end }}
+
+  # ingress:
+  #   enabled: true
+  #   ingressClassName: nginx
+  #   annotations:
+  #     cert-manager.io/cluster-issuer: letsencrypt-production
+  #     kubernetes.io/tls-acme: "true"
+  #     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  #     nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  #   hosts:
+  #     - &host alertmanager.kube-nas.techtales.io
+  #   tls:
+  #     - secretName: alertmanager-tls
+  #       hosts:
+  #         - *host
+  alertmanagerSpec:
+    externalUrl: https://alertmanager.techtales.io/
+    storage:
+      volumeClaimTemplate:
+        spec:
+          # FIXME: rook-ceph
+          storageClassName: nfs-nas
+          resources:
+            requests:
+              storage: 1Gi

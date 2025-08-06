@@ -1,0 +1,72 @@
+---
+prometheus:
+  thanosService:
+    enabled: false
+  thanosServiceMonitor:
+    enabled: false
+  # ingress:
+  #   enabled: true
+  #   ingressClassName: nginx
+  #   annotations:
+  #     cert-manager.io/cluster-issuer: letsencrypt-production
+  #     kubernetes.io/tls-acme: "true"
+  #     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  #     nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  #   hosts:
+  #     - &host prometheus.kube-nas.techtales.io
+  #   tls:
+  #     - secretName: prometheus-tls
+  #       hosts:
+  #         - *host
+  prometheusSpec:
+    image:
+      registry: docker.io
+      repository: prompp/prompp
+      tag: 2.53.2-0.2.3@sha256:51194ad9d9ab03feea9adcf16ccdce708ae7dc23e6c76f2bc53d660eb91a9f89
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 64535
+      runAsGroup: 64535
+      fsGroup: 64535
+    podMonitorSelectorNilUsesHelmValues: false
+    probeSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+    scrapeConfigSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+    scrapeInterval: 1m # Must match interval in Grafana Helm chart
+    enableAdminAPI: true
+    walCompression: true
+    enableFeatures:
+      - memory-snapshot-on-shutdown
+    retention: 14d
+    retentionSize: 8GB
+    podMetadata:
+      annotations:
+        reloader.stakater.com/auto: "true"
+    externalLabels:
+      cluster: ${FLUX_CLUSTER_NAME}
+    replicas: 3
+    replicaExternalLabelName: __replica__
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: local-nvme
+          resources:
+            requests:
+              storage: 20Gi
+    resources:
+      requests:
+        cpu: 100m
+        memory: 4Gi
+
+    # thanos:
+    #   image: quay.io/thanos/thanos:v0.39.1@sha256:463e6f201f19fec31d93a2e5af6e0746479e5ff076254fd10012dec973bcf7ca
+    #   version: v0.28.0
+    #   objectStorageConfig:
+    #     name: thanos-object-storage-config
+    #     key: objstore.yml
+
+    podAnnotations:
+      reloader.stakater.com/auto: "true"
+
+    externalUrl: https://prometheus.techtales.io/

@@ -1,0 +1,157 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kube-prometheus-stack
+spec:
+  interval: 30m
+  timeout: 15m
+  chart:
+    spec:
+      chart: kube-prometheus-stack
+      version: 75.15.1
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community
+  install:
+    createNamespace: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  dependsOn:
+    - name: local-hostpath
+      namespace: democratic-csi
+  uninstall:
+    keepHistory: false
+  valuesFrom:
+    - kind: ConfigMap
+      name: alertmanager-values
+    - kind: ConfigMap
+      name: kube-state-metrics-values
+    - kind: ConfigMap
+      name: prometheus-values
+  # https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack?modal=values
+  values:
+    crds:
+      enabled: true
+    cleanPrometheusOperatorObjectNames: true
+
+    fullnameOverride: prometheus
+
+    nodeExporter:
+      enabled: true
+
+    prometheus-node-exporter:
+      fullnameOverride: node-exporter
+      extraArgs:
+        - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var)($|/)
+        - --collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs|tmpfs)$
+      prometheus:
+        monitor:
+          enabled: true
+          # lens ide config
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels: [__meta_kubernetes_pod_node_name]
+              targetLabel: kubernetes_node
+            # should be removed when https://github.com/lensapp/lens/issues/4851 is fixed
+            - sourceLabels: [__meta_kubernetes_namespace]
+              action: replace
+              regex: (.*)
+              replacement: $1
+              targetLabel: kubernetes_namespace
+            - sourceLabels: [__meta_kubernetes_service_name]
+              action: replace
+              regex: (.*)
+              replacement: $1
+              targetLabel: kubernetes_name
+
+      tolerations:
+        - effect: "NoExecute"
+          operator: "Exists"
+        - effect: "NoSchedule"
+          operator: "Exists"
+
+    grafana:
+      enabled: false
+      forceDeployDashboards: false
+      sidecar:
+        dashboards:
+          annotations:
+            grafana_folder: Kubernetes
+          multicluster:
+            etcd:
+              enabled: true
+
+    kubelet:
+      enabled: true
+      serviceMonitor:
+        metricRelabelings:
+          # Drop high cardinality labels by onedr0p
+          - action: labeldrop
+            regex: (uid)
+          - action: labeldrop
+            regex: (id|name)
+          - action: drop
+            sourceLabels: ["__name__"]
+            regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
+
+    kubeApiServer:
+      enabled: true
+      serviceMonitor:
+        metricRelabelings:
+          # Drop high cardinality labels by onedr0p
+          - action: drop
+            sourceLabels: ["__name__"]
+            regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
+          - action: drop
+            sourceLabels: ["__name__"]
+            regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
+
+    kubeControllerManager:
+      enabled: true
+      endpoints: &cp
+        - 192.168.100.101
+        - 192.168.100.102
+        - 192.168.100.103
+
+    kubeEtcd:
+      enabled: true
+      endpoints: *cp
+
+    kubeScheduler:
+      enabled: true
+      endpoints: *cp
+
+    kubeProxy:
+      enabled: false
+
+    coreDns:
+      enabled: true
+
+    kubeStateMetrics:
+      enabled: true
+
+    kube-state-metrics:
+      fullnameOverride: kube-state-metrics
+      metricLabelsAllowlist:
+        - pods=[*]
+        - deployments=[*]
+        - persistentvolumeclaims=[*]
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels: ["__meta_kubernetes_pod_node_name"]
+              targetLabel: kubernetes_node
