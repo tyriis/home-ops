@@ -31,7 +31,6 @@ spec:
       id: 1
     k8sServiceHost: localhost
     k8sServicePort: 7445
-
     autoDirectNodeRoutes: true
     bandwidthManager:
       enabled: true
@@ -46,13 +45,11 @@ spec:
         enabled: false
       hostRoot: /sys/fs/cgroup
     # devices: bond+
-    enableRuntimeDeviceDetection: true
     endpointRoutes:
       enabled: true
-    envoy:
-      enabled: false
     hubble:
-      enabled: true
+      # FIXME
+      enabled: false
       metrics:
         enabled:
           - dns:query;ignoreAAAA
@@ -69,7 +66,8 @@ spec:
           annotations:
             grafana_folder: Cilium
       relay:
-        enabled: true
+        # FIXME
+        enabled: false
         rollOutPods: true
         prometheus:
           serviceMonitor:
