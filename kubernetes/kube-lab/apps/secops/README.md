@@ -28,3 +28,13 @@ export KUBERNETES_CA=$(kubectl get secret openbao-auth -n secops \
 export KUBERNETES_URL=$(kubectl config view --minify \
   -o jsonpath='{.clusters[0].cluster.server}')
 ```
+
+## deploy the external-secerts operator
+
+## deploy secret store
+
+## deploy external secret
+
+## test
+
+test if the secret store is working and the secret is created
