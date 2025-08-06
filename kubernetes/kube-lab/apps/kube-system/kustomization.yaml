@@ -8,3 +8,4 @@ components:
 resources:
   - ./namespace.yaml
   - ./coredns/flux-sync.yaml
+  - ./kubelet-csr-approver/flux-sync.yaml
