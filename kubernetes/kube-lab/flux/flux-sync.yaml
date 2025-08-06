@@ -26,7 +26,7 @@ metadata:
   name: flux-apps
   namespace: flux-system
 spec:
-  path: ./kubernetes/home-lab/apps
+  path: ./kubernetes/kube-lab/apps
   prune: true
   sourceRef:
     kind: GitRepository
@@ -39,4 +39,4 @@ spec:
     - name: flux-repositories
   postBuild:
     substitute:
-      FLUX_CLUSTER_NAME: home-lab
+      FLUX_CLUSTER_NAME: kube-lab
