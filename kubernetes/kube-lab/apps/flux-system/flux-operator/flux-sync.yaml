@@ -14,8 +14,8 @@ spec:
   prune: false # should never be deleted
   sourceRef:
     kind: GitRepository
-    name: flux-instance
-    namespace: flux-system
+    name: flux-system
+    namespace: *namespace
   wait: true
   interval: 30m
   retryInterval: 1m
@@ -37,7 +37,8 @@ spec:
   prune: false # should never be deleted
   sourceRef:
     kind: GitRepository
-    name: flux-instance
+    name: flux-system
+    namespace: *namespace
   wait: false
   interval: 30m
   retryInterval: 1m
