@@ -1,9 +1,9 @@
 ---
 prometheus:
-  thanosService:
-    enabled: false
-  thanosServiceMonitor:
-    enabled: false
+  # thanosService:
+  #   enabled: false
+  # thanosServiceMonitor:
+  #   enabled: false
   # ingress:
   #   enabled: true
   #   ingressClassName: nginx
