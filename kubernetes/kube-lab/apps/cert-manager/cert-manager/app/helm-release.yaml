@@ -1,0 +1,59 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cert-manager
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: cert-manager
+      version: v1.18.2
+      sourceRef:
+        kind: HelmRepository
+        name: jetstack
+      interval: 30m
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 5
+  upgrade:
+    crds: CreateReplace
+    remediation:
+      retries: 5
+  values:
+    # https://artifacthub.io/packages/helm/cert-manager/cert-manager?modal=values
+    installCRDs: true
+    extraArgs:
+      - --dns01-recursive-nameservers=1.1.1.1:53
+      - --dns01-recursive-nameservers-only
+      - --enable-certificate-owner-ref
+    replicaCount: 1
+    podDnsPolicy: "None"
+    podDnsConfig:
+      nameservers:
+        - "1.1.1.1"
+    prometheus:
+      servicemonitor:
+        enabled: true
+    resources:
+      requests:
+        cpu: 10m
+        memory: 100Mi
+      limits:
+        memory: 100Mi
+    cainjector:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 223Mi
+        limits:
+          memory: 223Mi
+    webhook:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 100Mi
+        limits:
+          memory: 100Mi
