@@ -73,6 +73,10 @@ spec:
               regex: (.*)
               replacement: $1
               targetLabel: kubernetes_name
+            # drop useless ms-01 temperature sensors in chip="platform_nct6775_2592", sensor=~"(temp1|temp3|temp4|temp5|temp6|temp8|temp9|temp10|temp11|temp12)"
+            - action: drop
+              sourceLabels: [chip, sensor]
+              regex: platform_nct6775_2592;(temp1|temp3|temp4|temp5|temp6|temp8|temp9|temp10|temp11|temp12)
 
       tolerations:
         - effect: "NoExecute"
