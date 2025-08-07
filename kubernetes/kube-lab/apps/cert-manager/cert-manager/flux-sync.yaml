@@ -47,5 +47,5 @@ spec:
   dependsOn:
     - name: cert-manager
       namespace: *namespace
-    - name: external-secrets
+    - name: external-secrets-stores
       namespace: secops
