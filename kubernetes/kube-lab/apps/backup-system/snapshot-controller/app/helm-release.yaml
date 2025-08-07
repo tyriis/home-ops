@@ -16,7 +16,7 @@ spec:
   install:
     crds: CreateReplace
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     crds: CreateReplace
@@ -25,6 +25,5 @@ spec:
       retries: 3
   values:
     controller:
-      replicaCount: 1
       serviceMonitor:
         create: true
