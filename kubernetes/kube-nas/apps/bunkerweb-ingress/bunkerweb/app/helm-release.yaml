@@ -111,7 +111,7 @@ spec:
           bunkerweb-scheduler:
             image:
               repository: bunkerity/bunkerweb-scheduler
-              tag: 1.6.3@sha256:f109e1c2367b69fe7ebf2bd776106709a263911b0f6d60f4d6ea141c990ccd5c
+              tag: 1.6.3@sha256:575c7c3e827b01422fa314fabab3c47ee1c9ffb4dc168e147062874a0f2e8f72
             env:
               KUBERNETES_MODE: "yes"
               DNS_RESOLVER: kube-dns.kube-system.svc.cluster.local
