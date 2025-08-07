@@ -47,6 +47,10 @@ spec:
     # devices: bond+
     endpointRoutes:
       enabled: true
+    gatewayAPI:
+      enabled: true
+      enableAlpn: true
+      xffNumTrustedHops: 1
     hubble:
       # FIXME
       enabled: false
