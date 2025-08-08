@@ -43,7 +43,7 @@ spec:
   retryInterval: 1m
   timeout: 15m
   dependsOn:
-    - name: rook-ceph-operator
+    - name: rook-ceph
       namespace: rook-ceph
     - name: snapshot-controller
       namespace: backup-system
