@@ -7,7 +7,7 @@ metadata:
 spec:
   dependsOn:
     - name: cert-manager
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: k8s-resource
@@ -16,11 +16,9 @@ spec:
         kind: HelmRepository
         name: mirceanton-charts
         namespace: flux-system
-  maxHistory: 15
   install:
-    createNamespace: true
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
@@ -38,9 +36,7 @@ kind: HelmRelease
 metadata:
   name: cert-manager-cluster-issuer-staging
 spec:
-  dependsOn:
-    - name: cert-manager
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: k8s-resource
@@ -49,11 +45,9 @@ spec:
         kind: HelmRepository
         name: mirceanton-charts
         namespace: flux-system
-  maxHistory: 15
   install:
-    createNamespace: true
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
@@ -75,9 +69,7 @@ kind: HelmRelease
 metadata:
   name: cert-manager-cluster-issuer-production
 spec:
-  dependsOn:
-    - name: cert-manager
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: k8s-resource
@@ -86,11 +78,9 @@ spec:
         kind: HelmRepository
         name: mirceanton-charts
         namespace: flux-system
-  maxHistory: 15
   install:
-    createNamespace: true
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:

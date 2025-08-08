@@ -13,7 +13,15 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: postfinance
-      interval: 30m
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     bypassDnsResolution: true
     providerRegex: ^talos\d\d?$

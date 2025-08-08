@@ -6,20 +6,17 @@ metadata:
   name: flux-operator
 spec:
   interval: 30m
-  timeout: 5m
   chartRef:
     kind: OCIRepository
     name: flux-operator
   install:
-    createNamespace: true
-    crds: Create
+    crds: CreateReplace
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     crds: CreateReplace
     remediation:
-      strategy: rollback
       retries: 3
   uninstall:
     keepHistory: false

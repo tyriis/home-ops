@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: reloader
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: reloader
@@ -13,11 +13,9 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: stakater
-  maxHistory: 15
   install:
-    createNamespace: true
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:

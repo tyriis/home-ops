@@ -6,22 +6,19 @@ metadata:
   name: k8tz
 spec:
   interval: 30m
-  timeout: 5m
   chart:
     spec:
       chart: k8tz
       version: 0.18.0
-      interval: 30m
       sourceRef:
         kind: HelmRepository
         name: k8tz
   install:
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
   uninstall:
     keepHistory: false

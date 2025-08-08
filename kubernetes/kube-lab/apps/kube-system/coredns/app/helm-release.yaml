@@ -6,7 +6,6 @@ metadata:
   name: coredns
 spec:
   interval: 30m
-  timeout: 5m
   chart:
     spec:
       chart: coredns
@@ -16,11 +15,10 @@ spec:
         name: coredns
   install:
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
   uninstall:
     keepHistory: false

@@ -5,8 +5,10 @@ kind: HelmRelease
 metadata:
   name: kube-prometheus-stack
 spec:
+  dependsOn:
+    - name: local-hostpath
+      namespace: democratic-csi
   interval: 30m
-  timeout: 15m
   chart:
     spec:
       chart: kube-prometheus-stack
@@ -15,18 +17,14 @@ spec:
         kind: HelmRepository
         name: prometheus-community
   install:
-    createNamespace: true
     crds: CreateReplace
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     crds: CreateReplace
     remediation:
       retries: 3
-  dependsOn:
-    - name: local-hostpath
-      namespace: democratic-csi
   uninstall:
     keepHistory: false
   valuesFrom:

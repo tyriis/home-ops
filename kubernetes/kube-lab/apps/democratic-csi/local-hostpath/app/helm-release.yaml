@@ -7,8 +7,7 @@ metadata:
 spec:
   driftDetection:
     mode: enabled
-  dependsOn: []
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: democratic-csi
@@ -17,9 +16,8 @@ spec:
         kind: HelmRepository
         name: democratic-csi
   install:
-    createNamespace: true
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:

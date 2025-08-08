@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: volsync
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: volsync
@@ -13,7 +13,6 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: backube
-  maxHistory: 15
   install:
     remediation:
       retries: -1

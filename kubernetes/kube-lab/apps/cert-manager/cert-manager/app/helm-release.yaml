@@ -13,15 +13,17 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: jetstack
-      interval: 30m
   install:
     crds: CreateReplace
     remediation:
-      retries: 5
+      retries: -1
   upgrade:
+    cleanupOnFail: true
     crds: CreateReplace
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     # https://artifacthub.io/packages/helm/cert-manager/cert-manager?modal=values
     installCRDs: true
