@@ -59,7 +59,7 @@
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
 - [Usage](#usage)
-  - [Configure SOPS](#configure-sops)
+  - [Configure SOPS (optional)](#configure-sops-optional)
   - [Configure kubectl](#configure-kubectl)
 - [Roadmap](#roadmap)
 - [🕵️ Troubleshooting](#%EF%B8%8F-troubleshooting)
@@ -141,7 +141,7 @@ Here is the list of tools and technologies I am using in this project.
 
 ## Usage
 
-### Configure SOPS
+### Configure SOPS (optional)
 
 Provide key in path defined in `.envrc`.
 

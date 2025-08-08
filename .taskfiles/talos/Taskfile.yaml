@@ -9,7 +9,7 @@ tasks:
 
   init:
     desc: Initialize talos configuration
-    dir: infra/talos
+    dir: "{{.TALOS_DIR}}"
     cmds:
       # https://github.com/budimanjojo/talhelper
       - "talhelper gensecret > talsecret.sops.yaml"
@@ -17,100 +17,82 @@ tasks:
 
   config:
     desc: Let talhelper generate the configuration files
-    dir: infra/talos
+    dir: "{{.TALOS_DIR}}"
     cmds:
       - "talhelper genconfig"
 
   install:talos01:
     desc: Install talos01
-    dir: infra/talos
+    dir: "{{.TALOS_DIR}}"
     cmds:
       - |
         talosctl apply-config --insecure \
-          --nodes 192.168.1.51 \
+          --nodes 192.168.100.101 \
           --file clusterconfig/talos-flux-talos01.yaml
 
   install:talos02:
     desc: Install talos02
-    dir: infra/talos
+    dir: "{{.TALOS_DIR}}"
     cmds:
       - |
         talosctl apply-config --insecure \
-          --nodes 192.168.1.52 \
+          --nodes 192.168.100.102 \
           --file clusterconfig/talos-flux-talos02.yaml
 
   install:talos03:
     desc: Install talos03
-    dir: infra/talos
+    dir: "{{.TALOS_DIR}}"
     cmds:
       - |
         talosctl apply-config --insecure \
-          --nodes 192.168.1.53 \
+          --nodes 192.168.100.103 \
           --file clusterconfig/talos-flux-talos03.yaml
-
-  install:talos04:
-    desc: Install talos04
-    dir: infra/talos
-    cmds:
-      - |
-        talosctl apply-config --insecure \
-          --nodes 192.168.1.54 \
-          --file clusterconfig/talos-flux-talos04.yaml
 
   update:talos01:
     desc: Update talos01
-    dir: infra/talos
+    dir: "{{.TALOS_DIR}}"
     cmds:
       - |
         talosctl apply-config \
-          --nodes 192.168.1.51 \
+          --nodes 192.168.100.101 \
           --file clusterconfig/talos-flux-talos01.yaml
 
   update:talos02:
     desc: Update talos02
-    dir: infra/talos
+    dir: "{{.TALOS_DIR}}"
     cmds:
       - |
         talosctl apply-config \
-          --nodes 192.168.1.52 \
+          --nodes 192.168.100.102 \
           --file clusterconfig/talos-flux-talos02.yaml
 
   update:talos03:
     desc: Update talos03
-    dir: infra/talos
+    dir: "{{.TALOS_DIR}}"
     cmds:
       - |
         talosctl apply-config \
-          --nodes 192.168.1.53 \
+          --nodes 192.168.100.103 \
           --file clusterconfig/talos-flux-talos03.yaml
-
-  update:talos04:
-    desc: Update talos04
-    dir: infra/talos
-    cmds:
-      - |
-        talosctl apply-config \
-          --nodes 192.168.1.54 \
-          --file clusterconfig/talos-flux-talos04.yaml
 
   bootstrap:
     desc: Bootstrap talos etcd on 1st node
-    dir: infra/talos
+    dir: "{{.TALOS_DIR}}"
     cmds:
       - |
         talosctl bootstrap \
           --talosconfig=clusterconfig/talosconfig \
-          --nodes 192.168.1.51
+          --nodes 192.168.100.101
 
   kubeconfig:
     desc: write kube config
-    dir: infra/talos
+    dir: "{{.TALOS_DIR}}"
     cmds:
       - |
         talosctl kubeconfig \
           --talosconfig=clusterconfig/talosconfig \
-          --nodes 192.168.1.50 \
-          --endpoints 192.168.1.50 \
+          --nodes 192.168.100.100 \
+          --endpoints 192.168.100.100 \
           --force
 
   # dashboard:
@@ -120,13 +102,13 @@ tasks:
 
   # https://www.talos.dev/v1.2/advanced/disaster-recovery/
   backup:etcd:
-    desc: backup etcd from ip 192.168.1.51
+    desc: backup etcd from ip 192.168.100.101
     cmds:
-      - talosctl -n 192.168.1.51 etcd snapshot db.snapshot
+      - talosctl -n 192.168.100.101 etcd snapshot db.snapshot
 
   dashboard:
     desc: Dashboard talos01
-    dir: infra/talos
+    dir: "{{.TALOS_DIR}}"
     cmds:
       - talosctl dashboard --nodes {{.hostname}}
     requires:
@@ -135,40 +117,32 @@ tasks:
 
   dashboard:talos01:
     desc: Dashboard talos01
-    dir: infra/talos
+    dir: "{{.TALOS_DIR}}"
     cmds:
       - |
         talosctl dashboard \
-          --nodes 192.168.1.51
+          --nodes 192.168.100.101
 
   dashboard:talos02:
     desc: Dashboard talos02
-    dir: infra/talos
+    dir: "{{.TALOS_DIR}}"
     cmds:
       - |
         talosctl dashboard \
-          --nodes 192.168.1.52
+          --nodes 192.168.100.102
 
   dashboard:talos03:
     desc: Dashboard talos03
-    dir: infra/talos
+    dir: "{{.TALOS_DIR}}"
     cmds:
       - |
         talosctl dashboard \
-          --nodes 192.168.1.53
-
-  dashboard:talos04:
-    desc: Dashboard talos04
-    dir: infra/talos
-    cmds:
-      - |
-        talosctl dashboard \
-          --nodes 192.168.1.54
+          --nodes 192.168.100.103
 
   upgrade:
-    # usage: task talos:upgrade hostname=192.168.1.51 cluster=talos-flux
+    # usage: task talos:upgrade hostname=192.168.100.101 cluster=talos-flux
     desc: Upgrade talos on a node
-    dir: infra/talos
+    dir: "{{.TALOS_DIR}}"
     prompt: do you want to upgrade talos to {{.TALOS_VERSION}} on node {{.hostname}}?
     cmds:
       - until kubectl --context {{.KUBE_CONTEXT}} wait --timeout=5m --for=condition=Complete jobs --all --all-namespaces; do sleep 10; done
@@ -194,9 +168,9 @@ tasks:
       - talosctl --context {{.cluster}} --nodes {{.hostname}} get machineconfig >/dev/null 2>&1
 
   kubelet:upgrade:
-    # usage: task talos:kubelet:upgrade hostname=talos01 ip=192.168.1.51 cluster=talos-flux
+    # usage: task talos:kubelet:upgrade hostname=talos01 ip=192.168.100.101 cluster=talos-flux
     desc: Upgrade kubelet on a node
-    dir: infra/talos
+    dir: "{{.TALOS_DIR}}"
     prompt: do you want to upgrade kubelet to {{.KUBERNETES_VERSION}} on node {{.hostname}}?
     cmds:
       - task: config
