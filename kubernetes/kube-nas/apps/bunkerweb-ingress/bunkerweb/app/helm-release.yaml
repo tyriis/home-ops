@@ -73,7 +73,7 @@ spec:
                 protocol: TCP
             image:
               repository: bunkerity/bunkerweb
-              tag: 1.6.3@sha256:162a6b77a99d56eaee971fedb34ab2043de06e65802617090357e617fea34e43
+              tag: 1.6.3@sha256:887f5cfffd893e341243e42963af8cd24e630023b5acfb7d750973f91144a97e
             env:
               KUBERNETES_MODE: "yes"
               DNS_RESOLVER: kube-dns.kube-system.svc.cluster.local
