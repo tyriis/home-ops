@@ -6,8 +6,8 @@ metadata:
   name: kube-prometheus-stack
 spec:
   dependsOn:
-    - name: local-hostpath
-      namespace: democratic-csi
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   interval: 30m
   chart:
     spec:
@@ -27,23 +27,107 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  valuesFrom:
-    - kind: ConfigMap
-      name: alertmanager-values
-    - kind: ConfigMap
-      name: kube-state-metrics-values
-    - kind: ConfigMap
-      name: prometheus-values
   # https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack?modal=values
   values:
-    crds:
-      enabled: true
     cleanPrometheusOperatorObjectNames: true
+    alertmanager:
+      route:
+        main:
+          enabled: true
+          hostnames:
+            - alertmanager.techtales.io
+          parentRefs:
+            - name: internal
+              namespace: kube-system
+              sectionName: https
+      alertmanagerSpec:
+        alertmanagerConfiguration:
+          name: alertmanager
+          global:
+            resolveTimeout: 5m
+        externalUrl: https://alertmanager.techtales.io
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: ceph-block
+              resources:
+                requests:
+                  storage: 1Gi
 
-    fullnameOverride: prometheus
+    grafana:
+      enabled: false
+      forceDeployDashboards: false
+      sidecar:
+        dashboards:
+          annotations:
+            grafana_folder: Kubernetes
+          multicluster:
+            etcd:
+              enabled: true
 
-    nodeExporter:
+    kubeApiServer:
       enabled: true
+      serviceMonitor:
+        metricRelabelings:
+          # Drop high cardinality labels by onedr0p
+          - action: drop
+            sourceLabels: ["__name__"]
+            regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
+          - action: drop
+            sourceLabels: ["__name__"]
+            regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
+
+    kubeControllerManager:
+      enabled: true
+      endpoints: &cp
+        - 192.168.100.101
+        - 192.168.100.102
+        - 192.168.100.103
+
+    kubeEtcd:
+      enabled: true
+      endpoints: *cp
+
+    kubelet:
+      enabled: true
+      serviceMonitor:
+        metricRelabelings:
+          # Drop high cardinality labels by onedr0p
+          - action: labeldrop
+            regex: (uid)
+          - action: labeldrop
+            regex: (id|name)
+          - action: drop
+            sourceLabels: ["__name__"]
+            regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
+
+    kubeProxy:
+      enabled: false
+
+    kubeScheduler:
+      enabled: true
+      endpoints: *cp
+
+    kubeStateMetrics:
+      enabled: true
+
+    kube-state-metrics:
+      fullnameOverride: kube-state-metrics
+      selfMonitor:
+        enabled: true
+      metricLabelsAllowlist:
+        - pods=[*]
+        - deployments=[*]
+        - persistentvolumeclaims=[*]
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels: ["__meta_kubernetes_pod_node_name"]
+              targetLabel: kubernetes_node
 
     prometheus-node-exporter:
       fullnameOverride: node-exporter
@@ -77,84 +161,65 @@ spec:
               sourceLabels: [chip, sensor]
               regex: platform_nct6775_2592;(temp1|temp3|temp4|temp5|temp6|temp8|temp9|temp10|temp11|temp12)
 
-      tolerations:
-        - effect: "NoExecute"
-          operator: "Exists"
-        - effect: "NoSchedule"
-          operator: "Exists"
+    prometheusOperator:
+      podAnnotations:
+        reloader.stakater.com/auto: "true"
+      resources:
+        requests:
+          cpu: 10m
+          memory: 100Mi
+      prometheusConfigReloader:
+        resources:
+          requests:
+            cpu: 10m
+            memory: 100Mi
 
-    grafana:
-      enabled: false
-      forceDeployDashboards: false
-      sidecar:
-        dashboards:
+    prometheus:
+      prometheusSpec:
+        enableAdminAPI: true
+        enableFeatures:
+          - memory-snapshot-on-shutdown
+        externalLabels:
+          cluster: ${FLUX_CLUSTER_NAME}
+        externalUrl: https://prometheus.techtales.io
+        image:
+          registry: docker.io
+          repository: prompp/prompp
+          tag: 2.53.2-0.3.4
+        podMetadata:
           annotations:
-            grafana_folder: Kubernetes
-          multicluster:
-            etcd:
-              enabled: true
-
-    kubelet:
-      enabled: true
-      serviceMonitor:
-        metricRelabelings:
-          # Drop high cardinality labels by onedr0p
-          - action: labeldrop
-            regex: (uid)
-          - action: labeldrop
-            regex: (id|name)
-          - action: drop
-            sourceLabels: ["__name__"]
-            regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
-
-    kubeApiServer:
-      enabled: true
-      serviceMonitor:
-        metricRelabelings:
-          # Drop high cardinality labels by onedr0p
-          - action: drop
-            sourceLabels: ["__name__"]
-            regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
-          - action: drop
-            sourceLabels: ["__name__"]
-            regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
-
-    kubeControllerManager:
-      enabled: true
-      endpoints: &cp
-        - 192.168.100.101
-        - 192.168.100.102
-        - 192.168.100.103
-
-    kubeEtcd:
-      enabled: true
-      endpoints: *cp
-
-    kubeScheduler:
-      enabled: true
-      endpoints: *cp
-
-    kubeProxy:
-      enabled: false
-
-    coreDns:
-      enabled: true
-
-    kubeStateMetrics:
-      enabled: true
-
-    kube-state-metrics:
-      fullnameOverride: kube-state-metrics
-      metricLabelsAllowlist:
-        - pods=[*]
-        - deployments=[*]
-        - persistentvolumeclaims=[*]
-      prometheus:
-        monitor:
+            reloader.stakater.com/auto: "true"
+        podMonitorSelectorNilUsesHelmValues: false
+        probeSelectorNilUsesHelmValues: false
+        resources:
+          requests:
+            cpu: 100m
+            memory: 4Gi
+        replicas: 3
+        retention: 14d
+        retentionSize: 50GB
+        ruleSelectorNilUsesHelmValues: false
+        scrapeConfigSelectorNilUsesHelmValues: false
+        scrapeInterval: 1m # Must match interval in Grafana Helm chart
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 64535
+          runAsGroup: 64535
+          fsGroup: 64535
+        serviceMonitorSelectorNilUsesHelmValues: false
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: ceph-block
+              resources:
+                requests:
+                  storage: 20Gi
+      route:
+        main:
           enabled: true
-          relabelings:
-            - action: replace
-              regex: (.*)
-              replacement: $1
-              sourceLabels: ["__meta_kubernetes_pod_node_name"]
-              targetLabel: kubernetes_node
+          hostnames:
+            - prometheus.techtales.io
+          parentRefs:
+            - name: internal
+              namespace: kube-system
+              sectionName: https
