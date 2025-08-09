@@ -87,7 +87,7 @@ spec:
           roleRef:
             apiGroup: rbac.authorization.k8s.io
             kind: ClusterRole
-            identifier: i-see-dead-pods
+            identifier: *app
           subjects:
             - kind: ServiceAccount
               identifier: *app
