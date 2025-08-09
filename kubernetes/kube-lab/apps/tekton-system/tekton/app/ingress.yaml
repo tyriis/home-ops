@@ -33,7 +33,7 @@ spec:
                 port:
                   number: 9097
             path: /
-            pathType: Prefix
+            pathType: ImplementationSpecific
   tls:
     - hosts:
         - *host
