@@ -5,6 +5,8 @@ kind: HelmRelease
 metadata:
   name: argo-workflows
 spec:
+  driftDetection:
+    mode: enabled
   interval: 30m
   chart:
     spec:
@@ -14,9 +16,11 @@ spec:
         kind: HelmRepository
         name: argo
   install:
+    crds: CreateReplace
     remediation:
       retries: -1
   upgrade:
+    crds: CreateReplace
     cleanupOnFail: true
     remediation:
       retries: 3
@@ -24,8 +28,6 @@ spec:
     keepHistory: false
   values:
     # https://artifacthub.io/packages/helm/argo/argo-workflows?modal=values
-    crds:
-      install: false
     singleNamespace: true
 
     controller:

@@ -3,44 +3,6 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app argo-workflows-crds
-spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: argo-workflows
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-  healthChecks:
-    - &crds
-      apiVersion: apiextensions.k8s.io/v1
-      kind: CustomResourceDefinition
-      name: clusterworkflowtemplates.argoproj.io
-    - <<: *crds
-      name: cronworkflows.argoproj.io
-    - <<: *crds
-      name: workflowartifactgctasks.argoproj.io
-    - <<: *crds
-      name: workfloweventbindings.argoproj.io
-    - <<: *crds
-      name: workflows.argoproj.io
-    - <<: *crds
-      name: workflowtaskresults.argoproj.io
-    - <<: *crds
-      name: workflowtasksets.argoproj.io
-    - <<: *crds
-      name: workflowtemplates.argoproj.io
-
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
   name: &app argo-workflows
   annotations:
     backstage.io/discovery: enabled
@@ -60,6 +22,3 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
-  dependsOn:
-    - name: argo-workflows-crds
-      namespace: argo-system
