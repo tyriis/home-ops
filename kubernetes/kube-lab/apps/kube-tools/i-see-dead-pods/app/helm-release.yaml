@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: &app i-see-dead-pods
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: app-template
@@ -46,10 +46,7 @@ spec:
           i-see-dead-pods:
             image:
               repository: bitnami/kubectl
-              tag: latest
-              # FIXME
-              # repository: registry.k8s.io/kubectl
-              # tag: v1.33.3
+              tag: 1.33.3@sha256:046830545ea21599c27342b7c55bcd0509cdea10d29bd19c098ef618fc14646d
             command:
               - /bin/sh
               - -ec
