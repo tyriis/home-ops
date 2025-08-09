@@ -73,3 +73,7 @@ spec:
         name: argo-workflow
       rbac:
         create: true
+    metricsConfig:
+      enabled: false
+    serviceMonitor:
+      enabled: true
