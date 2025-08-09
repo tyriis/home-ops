@@ -24,6 +24,8 @@ spec:
     keepHistory: false
   values:
     # https://artifacthub.io/packages/helm/argo/argo-workflows?modal=values
+    crds:
+      install: false
     singleNamespace: true
 
     controller:
