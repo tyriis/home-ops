@@ -19,6 +19,8 @@ spec:
           name: efivars
         - mountPath: /run/containerd
           name: containerd
+        - mountPath: /dev
+          name: dev
   dnsPolicy: ClusterFirstWithHostNet
   hostIPC: true
   hostNetwork: true
@@ -35,3 +37,6 @@ spec:
     - name: containerd
       hostPath:
         path: /run/containerd
+    - name: dev
+      hostPath:
+        path: /dev
