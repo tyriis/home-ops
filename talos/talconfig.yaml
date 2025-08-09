@@ -60,7 +60,9 @@ nodes:
         mtu: 9000
         dhcp: false
         addresses:
-          - 192.168.101.101/24
+          - 192.168.101.101/32
+        routes:
+          - network: 192.168.101.0/24
       # Thunderbolt
       - deviceSelector:
           busPath: 0-1.0 # talos03
@@ -128,7 +130,9 @@ nodes:
         mtu: 9000
         dhcp: false
         addresses:
-          - 192.168.101.102/24
+          - 192.168.101.102/32
+        routes:
+          - network: 192.168.101.0/24
       # Thunderbolt
       - deviceSelector:
           busPath: 0-1.0 # talos03
@@ -196,7 +200,9 @@ nodes:
         mtu: 9000
         dhcp: false
         addresses:
-          - 192.168.101.103/24
+          - 192.168.101.103/32
+        routes:
+          - network: 192.168.101.0/24
       # Thunderbolt
       - deviceSelector:
           busPath: 0-1.0 # talos02
