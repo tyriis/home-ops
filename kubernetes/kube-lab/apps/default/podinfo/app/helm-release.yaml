@@ -20,7 +20,7 @@ spec:
     keepHistory: false
 
   values:
-    replicaCount: 1
+    replicaCount: 2
 
     # failure conditions
     faults:
