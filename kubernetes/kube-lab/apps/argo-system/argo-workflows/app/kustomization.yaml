@@ -6,3 +6,4 @@ resources:
   - ./helm-release.yaml
   - ./helm-repository.yaml
   - ./http-route.yaml
+  - ./rbac.yaml

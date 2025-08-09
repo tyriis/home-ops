@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/clusterrole.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: argo-workflows-server-cluster-template
+rules:
+  - apiGroups:
+      - argoproj.io
+    resources:
+      - clusterworkflowtemplates
+    verbs:
+      - get
+      - list
+      - watch
