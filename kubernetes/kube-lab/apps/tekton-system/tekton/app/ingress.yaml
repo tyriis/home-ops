@@ -1,0 +1,41 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    kubernetes.io/tls-acme: "true"
+    traefik.ingress.kubernetes.io/affinity: "true"
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-ingress-sso@kubernetescrd
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    external-dns/opnsense: "true"
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/description: CloudNative CI/CD
+    gethomepage.dev/group: Development
+    gethomepage.dev/icon: si-tekton
+    gethomepage.dev/name: Tekton
+    gethomepage.dev/weight: "10" # optional
+    gethomepage.dev/pod-selector: app.kubernetes.io/name=dashboard
+  labels:
+    app.kubernetes.io/instance: tekton-dashboard
+    app.kubernetes.io/name: tekton-dashboard
+  name: tekton-dashboard
+  namespace: tekton-pipelines
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: &host tekton.techtales.io
+      http:
+        paths:
+          - backend:
+              service:
+                name: tekton-dashboard
+                port:
+                  number: 9097
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - *host
+      secretName: tekton-dashboard-tls
