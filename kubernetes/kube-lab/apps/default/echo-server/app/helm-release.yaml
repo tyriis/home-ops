@@ -76,6 +76,12 @@ spec:
           - port: http
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Simple HTTP Echo Server
+          gethomepage.dev/group: Networking
+          gethomepage.dev/icon: mdi-video-input-antenna
+          gethomepage.dev/name: Echo Server
         hostnames: ["{{ .Release.Name }}.techtales.io"]
         parentRefs:
           - name: internal
