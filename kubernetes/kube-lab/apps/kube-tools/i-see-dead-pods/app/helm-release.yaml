@@ -46,6 +46,7 @@ spec:
           i-see-dead-pods:
             image:
               repository: bitnami/kubectl
+              tag: latest
               # FIXME
               # repository: registry.k8s.io/kubectl
               # tag: v1.33.3
