@@ -21,7 +21,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: dragonfly-cluster
-      namespace: *namespace
+      namespace: dragonfly-system
     - name: external-secrets-stores
       namespace: secops
   postBuild:
