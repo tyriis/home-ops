@@ -22,7 +22,7 @@ spec:
     tenantDefaultServiceAccount: default
     type: kubernetes
   storage:
-    class: local-nvme
+    class: ceph-block
     size: 10Gi
   kustomize:
     patches:
