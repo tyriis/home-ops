@@ -64,6 +64,7 @@ spec:
               OAUTH2_PROXY_SESSION_STORE_TYPE: redis
               OAUTH2_PROXY_REDIS_CONNECTION_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
               # OAUTH2_PROXY_REDIRECT_URL: https://home.techtales.io
+              OAUTH2_PROXY_WHITELIST_DOMAINS: techtales.io,*.techtales.io
 
             probes:
               liveness:
