@@ -2,8 +2,3 @@
 https://cdn.modrinth.com/data/p1ewR5kV/versions/Ypqt7eH1/unifiedmetrics-platform-bukkit-0.3.8.jar
 # AxGraves https://hangar.papermc.io/Artillex-Studios/AxGraves
 https://hangarcdn.papermc.io/plugins/Artillex-Studios/AxGraves/versions/1.22.3/PAPER/AxGraves-1.22.3.jar
-# only works with 1.21.5
-# # Nova modding framework https://hangar.papermc.io/xenondevs/Nova
-# https://github.com/xenondevs/Nova/releases/download/0.19/Nova-0.19%2BMC-1.21.5.jar
-# # FarmersDelight https://hangar.papermc.io/Katalijst/Nova-FarmersDelight
-# https://hangarcdn.papermc.io/plugins/Katalijst/Nova-FarmersDelight/versions/1.1.0/PAPER/FarmersDelight-1.1.0%2BNova-0.19.jar

@@ -23,6 +23,7 @@ spec:
   upgrade:
     remediation:
       retries: 3
+    timeout: 10m
   uninstall:
     keepHistory: false
   # https://bjw-s-labs.github.io/helm-charts/docs/app-template/
@@ -45,7 +46,7 @@ spec:
           app:
             image:
               repository: ghcr.io/itzg/minecraft-server
-              tag: java21@sha256:9c7fdc7fadb9d40ad1febcceb3cb528b9dd0a41051077dfe1e52b97b5b678089
+              tag: java21@sha256:25cf396b18be5f9ac02925d1d26daf6e7f299f5596d78afad75025a2ae512980
             probes:
               liveness: &probes
                 enabled: true
