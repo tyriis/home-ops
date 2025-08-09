@@ -1,0 +1,130 @@
+---
+- Favorites:
+    - tyriis GitHub:
+        icon: si-github
+        href: https://github.com/tyriis
+        description: https://github.com/tyriis
+    - jazzlyn Github:
+        icon: si-github
+        href: https://github.com/jazzlyn
+        description: https://github.com/jazzlyn
+    - techtales GitHub:
+        icon: si-github
+        href: https://github.com/techtales-io
+        description: https://github.com/techtales-io
+    - onedr0p home-ops:
+        icon: si-github
+        href: https://github.com/onedr0p/home-ops
+        description: https://github.com/onedr0p/home-ops
+    - bjw-s home-ops:
+        icon: si-github
+        href: https://github.com/bjw-s/home-ops
+        description: https://github.com/bjw-s/home-ops
+    - NixOS Search:
+        icon: si-nixos
+        href: https://search.nixos.org
+        description: Search NixOS Packages and Options
+- Infrasructure:
+    - FRITZ!Box:
+        icon: avm-fritzbox
+        href: http://192.168.178.1
+        description: FRITZ!Box Router Management
+        # ping: 192.168.178.
+        siteMonitor: http://192.168.178.1
+        # widget:
+        #   type: fritzbox
+        #   url: http://192.168.178.1
+        #   fields:
+        #     - externalIPAddress
+        #     - uptime
+        #     - received
+        #     - sent
+    - OPNSense Firewall:
+        icon: opnsense
+        href: https://opnsense.techtales.io
+        description: OPNSense Firewall Management
+        # ping: opnsense.techtales.io
+        siteMonitor: https://opnsense.techtales.io
+        # widget:
+        #   type: opnsense
+        #   url: https://opnsense.techtales.io
+        #   username: "{{HOMEPAGE_VAR_OPNSENSE_API_KEY}}"
+        #   password: "{{HOMEPAGE_VAR_OPNSENSE_SECRET}}"
+    - Hashicorp Vault:
+        icon: vault
+        href: https://vault.techtales.io
+        description: Hashicorp Vault Secrets Management
+        # ping: vault.techtales.io
+        siteMonitor: https://vault.techtales.io
+    - OpenBAO:
+        icon: https://raw.githubusercontent.com/openbao/artwork/main/color/openbao-color.svg
+        href: https://secrets.techtales.io
+        description: OpenBao Secrets Management
+        # ping: openbao.techtales.io
+        siteMonitor: https://secrets.techtales.io
+    # - Cloudflare:
+    #     icon: cloudflare
+    #     href: https://dash.cloudflare.com
+    #     description: Cloudflare DNS and CDN
+    #     # ping: cloudflare.techtales.io
+    #     # siteMonitor: https://dash.cloudflare.com
+    - HP LaserJet:
+        icon: hp
+        href: https://192.168.1.8/sws/index.html
+        description: HP LaserJet Printer Management
+        # ping: harbor.techtales.io
+        siteMonitor: https://192.168.1.8/
+- Storage:
+    - Synology NAS:
+        icon: synology-dsm
+        href: https://nas.techtales.io
+        description: Synology Disk Station Manager
+        # ping: nas.techtales.io
+        siteMonitor: https://nas.techtales.io
+    - Minio:
+        icon: minio-light
+        href: https://minio.techtales.io
+        description: Minio Object Storage
+        # ping: minio.techtales.io
+        siteMonitor: https://minio.techtales.io
+    - Harbor:
+        icon: harbor
+        href: https://harbor.techtales.io
+        description: Harbor Container Registry
+        # ping: harbor.techtales.io
+        siteMonitor: https://harbor.techtales.io
+- Observability:
+    - Grafana Cloud:
+        icon: grafana
+        href: https://homecluster.grafana.net
+        description: Grafana Cloud Monitoring
+        ping: homecluster.grafana.net
+    - Prometheus kube-nas:
+        icon: prometheus
+        href: https://prometheus.kube-nas.techtales.io
+        description: Monitoring and Alerting Toolkit
+        siteMonitor: https://prometheus.kube-nas.techtales.io
+    - Alertmanager kube-nas:
+        icon: alertmanager
+        href: https://alertmanager.kube-nas.techtales.io
+        description: Alerting system that works with Prometheus
+        siteMonitor: https://alertmanager.kube-nas.techtales.io
+- Productivity:
+    - Gmail:
+        icon: gmail
+        href: https://mail.google.com
+        description: Google Mail
+        ping: mail.google.com
+        # siteMonitor: https://mail.google.com
+    - Discord:
+        icon: discord
+        href: https://discord.com
+        description: Discord Chat
+        ping: discord.com
+        # siteMonitor: https://discord.com
+    - Google Drive:
+        icon: google-drive
+        href: https://drive.google.com
+        description: Google Drive
+        ping: drive.google.com
+        # siteMonitor: https://drive.google.com

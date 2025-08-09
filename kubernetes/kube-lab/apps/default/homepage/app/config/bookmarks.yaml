@@ -1,0 +1,70 @@
+---
+- Kubernetes:
+    - kubesearch.dev:
+        - icon: kubernetes
+          href: https://kubesearch.dev/
+    - bjw-s Helm Charts:
+        - icon: si-github
+          href: https://bjw-s-labs.github.io/helm-charts/docs/
+    - Talos:
+        - icon: talos
+          href: https://www.talos.dev/v1.7/
+    - kubernetes.io:
+        - icon: kubernetes
+          href: https://kubernetes.io/
+
+- Dev:
+    - gitmoji:
+        - icon: mdi-sticker-emoji
+          href: https://gitmoji.dev/
+    - devhints.io:
+        - icon: mdi-code-block-tags
+          href: https://devhints.io/
+    - labs4grabs:
+        - icon: kubernetes
+          href: https://labs4grabs.io
+    - stackoverflow:
+        - icon: si-stackoverflow
+          href: https://stackoverflow.com/
+
+- Badges:
+    - shields.io:
+        - icon: https://shields.io/img/logo.png
+          href: https://shields.io/
+    - Awesome Badges:
+        - icon: si-github
+          href: https://github.com/Envoy-VC/awesome-badges
+    - Aleen42 Badges:
+        - icon: https://badges.aleen42.com/badges.svg
+          href: https://badges.aleen42.com/
+    - Badges 4 README:
+        - icon: si-github
+          href: https://github.com/alexandresanlim/Badges4-README.md-Profile
+
+- Icons:
+    - Simple Icons:
+        - icon: si-simpleicons
+          href: https://simpleicons.org/
+    - MDI:
+        - icon: https://pictogrammers.com/images/libraries/mdi.svg
+          href: https://materialdesignicons.com/
+    - Heroicons:
+        - icon: mdi-shield-outline
+          href: https://heroicons.com/
+    - Dashboard Icons:
+        - icon: si-github
+          href: https://github.com/walkxcode/dashboard-icons/blob/main/ICONS.md
+
+- Entertainment:
+    - YouTube:
+        - icon: youtube
+          href: https://www.youtube.com/
+    - Netflix:
+        - icon: netflix
+          href: https://www.netflix.com/
+    - Spotify:
+        - icon: spotify
+          href: https://open.spotify.com/
+    - Disney+:
+        - icon: disney-plus-light
+          href: https://www.disneyplus.com/
