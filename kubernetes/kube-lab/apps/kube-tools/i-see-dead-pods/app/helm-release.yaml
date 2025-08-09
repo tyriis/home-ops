@@ -45,8 +45,10 @@ spec:
         containers:
           i-see-dead-pods:
             image:
-              repository: registry.k8s.io/kubectl
-              tag: v1.33.0
+              repository: bitnami/kubectl
+              # FIXME
+              # repository: registry.k8s.io/kubectl
+              # tag: v1.33.3
             command:
               - /bin/sh
               - -ec
