@@ -2,10 +2,10 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: default
+namespace: voice-assistant
 components:
   - ../../../components/flux/alerts
 resources:
   - ./namespace.yaml
-  - ./podinfo/flux-sync.yaml
-  - ./echo-server/flux-sync.yaml
+  - ./piper/flux-sync.yaml
+  - ./whisper/flux-sync.yaml
