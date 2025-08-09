@@ -5,17 +5,16 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
     kubernetes.io/tls-acme: "true"
-    traefik.ingress.kubernetes.io/affinity: "true"
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.middlewares: traefik-ingress-sso@kubernetescrd
-    traefik.ingress.kubernetes.io/router.tls: "true"
-    external-dns/opnsense: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/auth-url: "https://oauth2-proxy.techtales.io/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "https://oauth2-proxy.techtales.io/oauth2/start?rd=$request_uri"
+    nginx.ingress.kubernetes.io/auth-response-headers: x-auth-request-user, x-auth-request-email
     gethomepage.dev/enabled: "true"
     gethomepage.dev/description: CloudNative CI/CD
     gethomepage.dev/group: Development
     gethomepage.dev/icon: si-tekton
     gethomepage.dev/name: Tekton
-    gethomepage.dev/weight: "10" # optional
     gethomepage.dev/pod-selector: app.kubernetes.io/name=dashboard
   labels:
     app.kubernetes.io/instance: tekton-dashboard
@@ -23,7 +22,7 @@ metadata:
   name: tekton-dashboard
   namespace: tekton-pipelines
 spec:
-  ingressClassName: traefik
+  ingressClassName: nginx
   rules:
     - host: &host tekton.techtales.io
       http:
