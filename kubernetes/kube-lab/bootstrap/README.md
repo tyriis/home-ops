@@ -3,7 +3,7 @@
 ## Cilium
 
 ```bash
-kubectl kustomize --enable-helm kubernetes/kube-lab/bootstrap/cilium | kubectl apply -n kube-system -f -
+kubectl kustomize --enable-helm kubernetes/kube-lab/bootstrap/cilium | kubectl apply -f -
 ```
 
 ## Coredns
