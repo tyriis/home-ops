@@ -8,3 +8,4 @@ components:
 resources:
   - ./namespace.yaml
   - ./argo-workflows/flux-sync.yaml
+  - ./argo-workflows/git-repository.yaml
