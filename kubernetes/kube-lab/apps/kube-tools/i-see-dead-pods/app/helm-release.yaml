@@ -70,7 +70,7 @@ spec:
                   - ALL
     rbac:
       roles:
-        system:i-see-dead-pods:
+        i-see-dead-pods:
           type: ClusterRole
           rules:
             - apiGroups:
@@ -82,12 +82,12 @@ spec:
                 - list
                 - delete
       bindings:
-        system:i-see-dead-pods:
+        i-see-dead-pods:
           type: ClusterRoleBinding
           roleRef:
             apiGroup: rbac.authorization.k8s.io
             kind: ClusterRole
-            identifier: system:i-see-dead-pods
+            identifier: i-see-dead-pods
           subjects:
             - kind: ServiceAccount
               identifier: *app
