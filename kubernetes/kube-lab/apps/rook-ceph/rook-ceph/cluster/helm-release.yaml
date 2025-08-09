@@ -78,13 +78,13 @@ spec:
         nodes:
           - name: talos01
             devices:
-              - name: /dev/disk/by-path/pci-0000:01:00.0-nvme-1
+              - path: /dev/disk/by-path/pci-0000:01:00.0-nvme-1
           - name: talos02
             devices:
-              - name: /dev/disk/by-path/pci-0000:01:00.0-nvme-1
+              - path: /dev/disk/by-path/pci-0000:01:00.0-nvme-1
           - name: talos03
             devices:
-              - name: /dev/disk/by-path/pci-0000:01:00.0-nvme-1
+              - path: /dev/disk/by-path/pci-0000:01:00.0-nvme-1
         config:
           osdsPerDevice: "1"
     cephBlockPools:
