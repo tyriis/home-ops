@@ -192,3 +192,17 @@ tasks:
       - test -f {{.TALOS_DIR}}/talconfig.yaml
       - talosctl --context {{.cluster}} config info >/dev/null 2>&1
       - talosctl --context {{.cluster}} --nodes {{.ip}} get machineconfig >/dev/null 2>&1
+
+  init:kube-lab:
+    desc: Bootstrap kubernetes cluster
+    dir: "{{.PROJECT_DIR}}"
+    cmds:
+      - kubectl kustomize --enable-helm kubernetes/kube-lab/bootstrap/cilium | kubectl apply -f -
+      - kubectl kustomize --enable-helm kubernetes/kube-lab/bootstrap/coredns | kubectl apply -n kube-system -f -
+      - kubectl kustomize --enable-helm kubernetes/kube-lab/bootstrap/kubelet-csr-approver | kubectl apply -n kube-system -f -
+      - kubectl kustomize --enable-helm kubernetes/kube-lab/bootstrap/metrics-server | kubectl apply -n kube-system -f -
+      - kubectl create namespace democratic-csi
+      - kubectl label --overwrite namespace democratic-csi pod-security.kubernetes.io/enforce=privileged
+      - kubectl kustomize --enable-helm kubernetes/kube-lab/bootstrap/democratic-csi | kubectl apply -n democratic-csi -f -
+      - kubectl create namespace flux-system
+      - kubectl kustomize --enable-helm kubernetes/kube-lab/bootstrap/flux-operator | kubectl apply -n flux-system -f -
