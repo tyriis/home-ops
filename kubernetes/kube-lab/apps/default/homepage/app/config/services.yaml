@@ -72,8 +72,8 @@
         icon: hp
         href: https://192.168.1.8/sws/index.html
         description: HP LaserJet Printer Management
-        # ping: harbor.techtales.io
-        siteMonitor: https://192.168.1.8/
+        ping: 192.168.1.8
+        # siteMonitor: https://192.168.1.8/
 - Storage:
     - Synology NAS:
         icon: synology-dsm
