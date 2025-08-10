@@ -69,10 +69,14 @@ spec:
                   httpGet: &httpGet
                     path: /ready
                     port: *port
-              readiness: *probes
+              readiness:
+                <<: *probes
+                spec:
+                  httpGet: *httpGet
               startup:
                 <<: *probes
                 spec:
+                  httpGet: *httpGet
                   periodSeconds: 1
                   failureThreshold: 300
 
