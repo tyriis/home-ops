@@ -14,9 +14,11 @@ spec:
         kind: HelmRepository
         name: external-dns
   install:
+    crds: CreateReplace
     remediation:
       retries: -1
   upgrade:
+    crds: CreateReplace
     cleanupOnFail: true
     remediation:
       strategy: rollback
