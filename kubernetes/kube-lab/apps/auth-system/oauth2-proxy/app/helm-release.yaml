@@ -30,7 +30,7 @@ spec:
     controllers:
       oauth2-proxy:
         strategy: RollingUpdate
-        replicas: 3
+        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -64,7 +64,7 @@ spec:
               OAUTH2_PROXY_SESSION_STORE_TYPE: redis
               OAUTH2_PROXY_REDIS_CONNECTION_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
               # OAUTH2_PROXY_REDIRECT_URL: https://home.techtales.io
-              OAUTH2_PROXY_WHITELIST_DOMAINS: techtales.io,*.techtales.io
+              # OAUTH2_PROXY_WHITELIST_DOMAINS: techtales.io,*.techtales.io
 
             probes:
               liveness:
@@ -130,7 +130,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: external.techtales.io
           external-dns/cloudflare: "true"
         hosts:
-          - host: &host oauth2-proxy.techtales.io
+          - host: &host "{{ .Release.Name }}.techtales.io"
             paths:
               - path: /oauth2
                 service:

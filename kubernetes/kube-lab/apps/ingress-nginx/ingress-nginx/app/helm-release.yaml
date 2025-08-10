@@ -26,7 +26,7 @@ spec:
     # https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx?modal=values
     fullnameOverride: *app
     controller:
-      replicaCount: 3
+      replicaCount: 1
       updateStrategy:
         type: "RollingUpdate"
         rollingUpdate:
