@@ -39,7 +39,8 @@ spec:
             envFrom:
               - secretRef:
                   name: cloudflared-env
-            args:
+            command:
+              - cloudflared
               - tunnel
               - --no-autoupdate
               - loglevel
