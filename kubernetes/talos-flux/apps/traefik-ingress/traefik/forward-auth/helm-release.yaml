@@ -84,8 +84,8 @@ spec:
           kubernetes.io/tls-acme: "true"
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: traefik-ingress-sso@kubernetescrd
-          external-dns.alpha.kubernetes.io/target: external.techtales.io
-          external-dns/cloudflare: "true"
+          # external-dns.alpha.kubernetes.io/target: external.techtales.io
+          # external-dns/cloudflare: "true"
         hosts:
           - host: *host
             paths:
