@@ -48,7 +48,7 @@ spec:
     policy: sync
     sources:
       - ingress
-      - httproutes
+      - gateway-httproute
     txtPrefix: kube-lab.
     txtOwnerId: default
     domainFilters:
