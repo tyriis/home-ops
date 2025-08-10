@@ -87,7 +87,7 @@ spec:
       app:
         enabled: true
         endpoints:
-          - port: *port
+          - port: metrics
             scheme: http
             interval: 30s
             scrapeTimeout: 5s
