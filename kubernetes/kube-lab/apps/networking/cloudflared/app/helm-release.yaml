@@ -69,10 +69,7 @@ spec:
                   httpGet: &httpGet
                     path: /ready
                     port: *port
-              readiness:
-                <<: *probes
-                spec:
-                  httpGet: *httpGet
+              readiness: *probes
               startup:
                 <<: *probes
                 spec:
