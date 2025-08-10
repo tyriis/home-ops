@@ -84,7 +84,8 @@ spec:
           gethomepage.dev/group: Networking
           gethomepage.dev/icon: mdi-video-input-antenna
           gethomepage.dev/name: Echo Server
-        hostnames: ["{{ .Release.Name }}.techtales.io"]
+        hostnames:
+          - &host echo.techtales.io
         parentRefs:
           - name: internal
             namespace: kube-system
@@ -102,7 +103,7 @@ spec:
           nginx.ingress.kubernetes.io/auth-signin: https://auth.techtales.io/oauth2/start?rd=https://$host$request_uri
           nginx.ingress.kubernetes.io/auth-response-headers: x-auth-request-user, x-auth-request-email
         hosts:
-          - host: &host "{{ .Release.Name }}.techtales.io"
+          - host: *host
             paths:
               - path: /
                 pathType: Prefix
