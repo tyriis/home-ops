@@ -15,7 +15,7 @@ helm = "3.18.4"
 # https://k9scli.io/
 k9s = "0.40.10"
 # https://kubernetes.io/docs/reference/kubectl/
-kubectl = "1.33.3"
+kubectl = "1.33.4"
 # https://kustomize.io/
 kustomize = "5.7.1"
 # https://nodejs.org/
