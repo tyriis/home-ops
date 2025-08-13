@@ -16,7 +16,7 @@ check [vault documentation](https://developer.hashicorp.com/validated-patterns/v
 
 ```terminal
 export SA_TOKEN=$(kubectl get secret openbao-auth -n secops \
-  -o jsonpath="{.data.token}" | base64 --decode)
+  -o jsonpath="{.data.token}")
 ```
 
 ```terminal
