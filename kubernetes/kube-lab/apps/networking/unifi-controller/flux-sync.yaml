@@ -12,7 +12,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: ./kubernetes/talos-flux/apps/networking/unifi-controller/app
+  path: ./kubernetes/kube-lab/apps/networking/unifi-controller/app
   prune: true
   sourceRef:
     kind: GitRepository
