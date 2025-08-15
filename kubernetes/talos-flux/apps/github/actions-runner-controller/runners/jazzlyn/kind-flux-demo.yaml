@@ -90,7 +90,7 @@ spec:
           - name: regcreds-docker
         containers:
           - name: runner
-            image: ghcr.io/home-operations/actions-runner:2.327.1@sha256:f44ed890fd0672a2371ce3f03d25851b64e7236e94512a6e159659ac35ac45c5
+            image: ghcr.io/home-operations/actions-runner:2.328.0@sha256:c43873ef6800697dfa181582f6bb02366a9a0afb52026bde7bad7c71b21b1052
             command: ["/home/runner/run.sh"]
             volumeMounts:
               - name: regcreds-docker
@@ -100,7 +100,7 @@ spec:
                 mountPath: /home/runner/.docker
         initContainers:
           - name: dockerconfigwriter
-            image: busybox@sha256:f9a104fddb33220ec80fc45a4e606c74aadf1ef7a3832eb0b05be9e90cd61f5f
+            image: busybox@sha256:ab33eacc8251e3807b85bb6dba570e4698c3998eca6f0fc2ccb60575a563ea74
             command:
               - /bin/sh
               - -ec

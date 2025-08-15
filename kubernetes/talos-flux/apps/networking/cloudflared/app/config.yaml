@@ -13,10 +13,10 @@ ingress:
     service: https://anubis-grafana.techtales.io
     originRequest:
       httpHostHeader: anubis-grafana.techtales.io
-  - hostname: auth.techtales.io
-    service: https://auth.techtales.io
-    originRequest:
-      httpHostHeader: auth.techtales.io
+  # - hostname: auth.techtales.io
+  #   service: https://auth.techtales.io
+  #   originRequest:
+  #     httpHostHeader: auth.techtales.io
   - hostname: echo-server.techtales.io
     service: https://echo-server.techtales.io
     originRequest:
