@@ -206,3 +206,11 @@ tasks:
       - kubectl kustomize --enable-helm kubernetes/kube-lab/bootstrap/democratic-csi | kubectl apply -n democratic-csi -f -
       - kubectl create namespace flux-system
       - kubectl kustomize --enable-helm kubernetes/kube-lab/bootstrap/flux-operator | kubectl apply -n flux-system -f -
+
+  wipe:
+    desc: Wipe talos cluster
+    dir: "{{.TALOS_DIR}}"
+    cmds:
+      - talosctl reset --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL --graceful=false -n 192.168.100.101
+      - talosctl reset --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL --graceful=false -n 192.168.100.102
+      - talosctl reset --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL --graceful=false -n 192.168.100.103
