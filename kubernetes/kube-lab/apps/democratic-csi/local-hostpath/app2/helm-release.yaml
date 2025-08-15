@@ -1,0 +1,92 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: local-hostpath2
+spec:
+  driftDetection:
+    mode: enabled
+  interval: 30m
+  chart:
+    spec:
+      chart: democratic-csi
+      version: 0.15.0
+      sourceRef:
+        kind: HelmRepository
+        name: democratic-csi
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    csiDriver:
+      name: local-hostpath2.democratic-csi.home.arpa
+      storageCapacity: true # With storage capacity tracking, the scheduler filters out nodes which do not have enough capacity.
+      fsGroupPolicy: File # fsGroupChangePolicy
+
+    storageClasses:
+      - name: local-nvme2
+        defaultClass: false
+        reclaimPolicy: Delete
+        volumeBindingMode: WaitForFirstConsumer
+        # distributed support is not yet ready for expansion
+        allowVolumeExpansion: false
+
+    volumeSnapshotClasses:
+      - name: local-nvme2
+        deletionPolicy: Delete
+        parameters:
+          cluster: ${FLUX_CLUSTER_NAME}
+
+    controller:
+      enabled: true
+      strategy: node
+      externalProvisioner:
+        extraArgs:
+          - --leader-election=false
+          - --node-deployment=true
+          - --node-deployment-immediate-binding=false
+          - --feature-gates=Topology=true
+          - --strict-topology=true
+          - --enable-capacity=true
+          - --capacity-ownerref-level=1
+
+      # distributed support is not yet ready
+      externalResizer:
+        enabled: false
+
+      externalSnapshotter:
+        enabled: true
+        extraArgs:
+          - --leader-election=false
+          - --node-deployment=true
+
+    node:
+      driver:
+        extraVolumeMounts:
+          - name: local-hostpath2
+            mountPath: /var/mnt/gen4
+            mountPropagation: Bidirectional
+
+      extraVolumes:
+        - name: local-hostpath2
+          hostPath:
+            path: /var/mnt/gen4
+            type: DirectoryOrCreate
+
+    driver:
+      config:
+        driver: local-hostpath2
+        instance_id: ${FLUX_CLUSTER_NAME}-local-hostpath2
+        local-hostpath:
+          shareBasePath: /var/mnt/gen4
+          controllerBasePath: /var/mnt/gen4
+          dirPermissionsMode: "0770"
+          dirPermissionsUser: 0
+          dirPermissionsGroup: 0
