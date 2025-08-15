@@ -37,14 +37,6 @@ spec:
             sectionName: https
 
     cephClusterSpec:
-      cephConfig:
-        global:
-          bdev_enable_discard: "true" # quote
-          bdev_async_discard_threads: "1" # quote
-          osd_class_update_on_start: "false" # quote
-          device_failure_prediction_mode: local # requires mgr module
-      cleanupPolicy:
-        wipeDevicesFromOtherClusters: true
       crashCollector:
         disable: false
       csi:
@@ -57,14 +49,14 @@ spec:
         prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090
       mgr:
         modules:
-          - name: diskprediction_local
-            enabled: true
-          - name: insights
-            enabled: true
+          # - name: diskprediction_local
+          #   enabled: true
+          # - name: insights
+          #   enabled: true
           - name: pg_autoscaler
             enabled: true
-          - name: rook
-            enabled: true
+          # - name: rook
+          #   enabled: true
       network:
         provider: host
         addressRanges:
@@ -76,8 +68,14 @@ spec:
         useAllNodes: true
         useAllDevices: false
         devicePathFilter: /dev/disk/by-path/pci-0000:01:00.0-nvme-1
-        config:
-          osdsPerDevice: "1"
+      cephConfig:
+        global:
+          bdev_enable_discard: "true" # quote
+          bdev_async_discard_threads: "1" # quote
+          osd_class_update_on_start: "false" # quote
+          device_failure_prediction_mode: local # requires mgr module
+      cleanupPolicy:
+        wipeDevicesFromOtherClusters: true
     cephBlockPools:
       - name: ceph-blockpool
         spec:
@@ -90,9 +88,9 @@ spec:
           isDefault: true
           reclaimPolicy: Delete
           allowVolumeExpansion: true
-          volumeBindingMode: Immediate
-          mountOptions:
-            - discard
+          #volumeBindingMode: Immediate
+          # mountOptions:
+          #   - discard
           parameters:
             imageFormat: "2"
             imageFeatures: layering,fast-diff,object-map,deep-flatten,exclusive-lock
@@ -103,11 +101,10 @@ spec:
             csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
             csi.storage.k8s.io/node-stage-secret-namespace: "{{ .Release.Namespace }}"
             csi.storage.k8s.io/fstype: ext4
-
     cephBlockPoolsVolumeSnapshotClass:
       enabled: true
       name: ceph-block
-      isDefault: false
+      isDefault: true
       deletionPolicy: Delete
     cephFileSystems: []
     cephObjectStores: []
