@@ -7,5 +7,5 @@ components:
   - ../../../components/flux/alerts
 resources:
   - ./namespace.yaml
-  - ./piper/flux-sync.yaml
-  - ./whisper/flux-sync.yaml
+  # - ./piper/flux-sync.yaml
+  # - ./whisper/flux-sync.yaml
