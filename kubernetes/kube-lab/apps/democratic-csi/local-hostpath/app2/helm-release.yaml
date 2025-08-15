@@ -71,13 +71,13 @@ spec:
       driver:
         extraVolumeMounts:
           - name: local-hostpath2
-            mountPath: /var/mnt/gen4
+            mountPath: /var/mnt/rook
             mountPropagation: Bidirectional
 
       extraVolumes:
         - name: local-hostpath2
           hostPath:
-            path: /var/mnt/gen4
+            path: /var/mnt/rook
             type: DirectoryOrCreate
 
     driver:
@@ -85,8 +85,8 @@ spec:
         driver: local-hostpath2
         instance_id: ${FLUX_CLUSTER_NAME}-local-hostpath2
         local-hostpath:
-          shareBasePath: /var/mnt/gen4
-          controllerBasePath: /var/mnt/gen4
+          shareBasePath: /var/mnt/rook
+          controllerBasePath: /var/mnt/rook
           dirPermissionsMode: "0770"
           dirPermissionsUser: 0
           dirPermissionsGroup: 0
