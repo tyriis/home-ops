@@ -68,7 +68,7 @@ tasks:
   privileged:
     desc: Run a privileged pod
     cmd: |
-      kubectl run privileged-{{.node}} -i --rm --image=null -n rook-ceph \
+      kubectl run privileged-{{.node}} -i --rm --image=null -n default \
         --overrides="$(yq {{.ROOT_DIR}}/.taskfiles/debug-tasks/privileged-pod.tmpl.yaml -o=json | envsubst)"
     env:
       node: "{{.node}}"
