@@ -61,16 +61,13 @@ nodes:
           mode: 802.3ad
           lacpRate: fast
           xmitHashPolicy: layer3+4
-          miimon: 1000
         mtu: 9000
         dhcp: false
         addresses:
-          - 192.168.101.101/32
+          - 192.168.101.101/24
         routes:
-          - network: 192.168.101.102/32
-            metric: 1024
-          - network: 192.168.101.103/32
-            metric: 1024
+          - network: 192.168.101.0/24
+            gateway: 192.168.101.1
       # Thunderbolt
       - deviceSelector:
           busPath: 0-1.0 # talos02
@@ -139,16 +136,13 @@ nodes:
           mode: 802.3ad
           lacpRate: fast
           xmitHashPolicy: layer3+4
-          miimon: 1000
         mtu: 9000
         dhcp: false
         addresses:
-          - 192.168.101.102/32
+          - 192.168.101.102/24
         routes:
-          - network: 192.168.101.101/32
-            metric: 1024
-          - network: 192.168.101.103/32
-            metric: 1024
+          - network: 192.168.101.0/24
+            gateway: 192.168.101.1
       # Thunderbolt
       - deviceSelector:
           busPath: 0-1.0 # talos01
@@ -221,12 +215,10 @@ nodes:
         mtu: 9000
         dhcp: false
         addresses:
-          - 192.168.101.103/32
+          - 192.168.101.103/24
         routes:
-          - network: 192.168.101.101/32
-            metric: 1024
-          - network: 192.168.101.102/32
-            metric: 1024
+          - network: 192.168.101.0/24
+            gateway: 192.168.101.1
       # Thunderbolt
       - deviceSelector:
           busPath: 0-1.0 # talos01
