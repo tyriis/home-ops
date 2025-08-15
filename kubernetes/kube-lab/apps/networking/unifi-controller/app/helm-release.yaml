@@ -33,6 +33,9 @@ spec:
       hostNetwork: true
     controllers:
       unifi-controller:
+        pod:
+          nodeSelector:
+            kubernetes.io/hostname: talos03
         strategy: Recreate
         annotations:
           reloader.stakater.com/auto: "true"
