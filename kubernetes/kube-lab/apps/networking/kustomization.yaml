@@ -9,4 +9,4 @@ resources:
   - ./namespace.yaml
   - ./cloudflared/flux-sync.yaml
   - ./external-dns/flux-sync.yaml
-  - ./unifi-controller/flux-sync.yaml
+  # - ./unifi-controller/flux-sync.yaml
