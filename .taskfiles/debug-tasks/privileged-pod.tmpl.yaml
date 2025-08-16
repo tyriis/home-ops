@@ -25,6 +25,8 @@ spec:
           name: mnt
         - mountPath: /node/var/lib
           name: lib
+        - mountPath: /node/sys
+          name: sys
   dnsPolicy: ClusterFirstWithHostNet
   hostIPC: true
   hostNetwork: true
@@ -50,3 +52,6 @@ spec:
     - name: lib
       hostPath:
         path: /var/lib
+    - name: sys
+      hostPath:
+        path: /sys
