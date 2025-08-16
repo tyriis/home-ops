@@ -73,14 +73,6 @@ spec:
           bdev_enable_discard: "true" # quote
           bdev_async_discard_threads: "1" # quote
           osd_class_update_on_start: "false" # quote
-          osd_memory_target: "2147483648"
-          osd_max_write_size: "512"
-          bluestore_slow_ops_warn_lifetime: "600"
-          osd_client_message_size_cap: "2147483648"
-          osd_deep_scrub_interval: "1209600.000000"
-          osd_op_threads: "8"
-          osd_disk_threads: "4"
-          osd_recovery_op_priority: "4"
           device_failure_prediction_mode: local # requires mgr module
       cleanupPolicy:
         wipeDevicesFromOtherClusters: true
@@ -101,8 +93,8 @@ spec:
           #   - discard
           parameters:
             imageFormat: "2"
-            # imageFeatures: layering
-            imageFeatures: layering,fast-diff,object-map,deep-flatten,exclusive-lock
+            imageFeatures: layering
+            # imageFeatures: layering,fast-diff,object-map,deep-flatten,exclusive-lock
             csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
             csi.storage.k8s.io/provisioner-secret-namespace: "{{ .Release.Namespace }}"
             csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner
