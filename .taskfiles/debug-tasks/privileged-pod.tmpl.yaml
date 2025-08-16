@@ -21,6 +21,10 @@ spec:
           name: containerd
         - mountPath: /dev
           name: dev
+        - mountPath: /var/mnt
+          name: mnt
+        - mountPath: /node/var/lib
+          name: lib
   dnsPolicy: ClusterFirstWithHostNet
   hostIPC: true
   hostNetwork: true
@@ -40,3 +44,9 @@ spec:
     - name: dev
       hostPath:
         path: /dev
+    - name: mnt
+      hostPath:
+        path: /var/mnt
+    - name: lib
+      hostPath:
+        path: /var/lib
