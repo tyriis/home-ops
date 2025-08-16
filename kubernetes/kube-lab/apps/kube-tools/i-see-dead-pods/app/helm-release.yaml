@@ -58,6 +58,23 @@ spec:
                   | grep "Pod was terminated in response to imminent node shutdown." \
                   | awk '{print $1, $2}' \
                   | xargs -r -n2 kubectl delete pod -n || true
+                # kubectl get pods \
+                #   --all-namespaces \
+                #   -o go-template \
+                #   --template='{{range .items}}{{printf "%s %s %s\n" .metadata.namespace .metadata.name .status.message}}{{end}}' \
+                #   | grep "Pod was rejected: Pod was rejected as the node is shutting down." \
+                #   | awk '{print $1, $2}' \
+                #   | xargs -r -n2 kubectl delete pod -n || true
+            #
+            #
+            # kubectl get pods \
+            #  --all-namespaces \
+            #  -o go-template \
+            #  --template='{{range .items}}{{printf "%s %s %s\n" .metadata.namespace .metadata.name .status.conditions}}{{end}}' \
+            #  | grep "Pod was terminated in response to imminent node shutdown." \
+            #  | awk '{print $1, $2}' \
+            #  | xargs -r -n2 kubectl delete pod -n
+
             resources:
               requests:
                 cpu: 10m
