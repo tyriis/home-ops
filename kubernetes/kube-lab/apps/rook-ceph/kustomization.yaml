@@ -7,4 +7,4 @@ components:
   - ../../../components/flux/alerts
 resources:
   - ./namespace.yaml
-  - ./rook-ceph/flux-sync.yaml
+  # - ./rook-ceph/flux-sync.yaml
