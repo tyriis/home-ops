@@ -98,6 +98,8 @@ spec:
             csi.storage.k8s.io/fstype: ext4
           mountOptions:
             - discard
+            - noatime # Don't update access times (better performance)
+            - nodiratime # Don't update directory access times
     cephBlockPoolsVolumeSnapshotClass:
       enabled: true
       name: ceph-block
