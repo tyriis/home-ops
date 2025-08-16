@@ -58,8 +58,8 @@ spec:
       network:
         provider: host
         addressRanges:
-          public: ["169.254.255.0/24", "192.168.101.0/24"]
-          cluster: ["169.254.255.0/24"]
+          public: ["192.168.101.0/24"] # 10GB NICs
+          cluster: ["169.254.255.0/24"] # Thunderbolt ring
         connections:
           requireMsgr2: true
       storage:
