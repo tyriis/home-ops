@@ -85,11 +85,12 @@ spec:
     ingress:
       app:
         enabled: true
-        className: traefik
+        className: nginx
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          external-dns/opnsense: "true"
+          kubernetes.io/tls-acme: "true"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+          nginx.ingress.kubernetes.io/ssl-redirect: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Home Automation That Puts Local Control
           gethomepage.dev/group: Home Automation
