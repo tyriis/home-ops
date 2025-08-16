@@ -7,4 +7,4 @@ components:
   - ../../../components/flux/alerts
 resources:
   - ./namespace.yaml
-  # - ./kube-prometheus-stack/flux-sync.yaml
+  - ./kube-prometheus-stack/flux-sync.yaml
