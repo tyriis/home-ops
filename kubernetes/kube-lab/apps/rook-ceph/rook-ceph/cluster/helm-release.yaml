@@ -51,18 +51,15 @@ spec:
         modules:
           - name: diskprediction_local
             enabled: true
-          # - name: insights
-          #   enabled: true
           - name: pg_autoscaler
             enabled: true
-          # - name: rook
-          #   enabled: true
+          - name: rook
+            enabled: true
       network:
         provider: host
         addressRanges:
-          public: ["192.168.100.0/24"]
+          public: ["192.168.101.0/24"]
           cluster: ["169.254.255.0/24"]
-          # cluster: ["192.168.101.0/24"]
         connections:
           requireMsgr2: true
       storage:
@@ -89,9 +86,6 @@ spec:
           isDefault: true
           reclaimPolicy: Delete
           allowVolumeExpansion: true
-          #volumeBindingMode: Immediate
-          # mountOptions:
-          #   - discard
           parameters:
             imageFormat: "2"
             imageFeatures: layering,fast-diff,object-map,deep-flatten,exclusive-lock
