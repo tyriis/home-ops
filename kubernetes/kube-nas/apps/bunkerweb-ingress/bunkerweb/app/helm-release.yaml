@@ -134,7 +134,7 @@ spec:
           app:
             image:
               repository: bunkerity/bunkerweb-ui
-              tag: 1.6.3@sha256:65b3f5a48fa7dfdda9d591f86979e7d6f0d50be93616155acaf2c0dddf2223a3
+              tag: 1.6.4@sha256:fe863a81f26715fc80f797d1172c80cbf5ec0653df9a6b81671e0e3d5f611c3c
             env:
               ADMIN_USERNAME: "admin"
               ADMIN_PASSWORD: "Admin1234$"
