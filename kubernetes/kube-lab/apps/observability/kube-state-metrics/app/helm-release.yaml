@@ -41,5 +41,9 @@ spec:
               replacement: $1
               sourceLabels: ["__meta_kubernetes_pod_node_name"]
               targetLabel: kubernetes_node
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
     selfMonitor:
       enabled: true
