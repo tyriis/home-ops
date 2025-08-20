@@ -343,11 +343,15 @@ controlPlane:
           mirrors:
             docker.io:
               endpoints:
-                - https://harbor.techtales.io/v2/proxy-docker.io
+                - https://harbor.tyriis.dev/v2/proxy-docker.io
               overridePath: true
             ghcr.io:
               endpoints:
-                - https://harbor.techtales.io/v2/proxy-ghcr.io
+                - https://harbor.tyriis.dev/v2/proxy-ghcr.io
+              overridePath: true
+            quay.io:
+              endpoints:
+                - https://harbor.tyriis.dev/v2/proxy-quay.io
               overridePath: true
         features:
           rbac: true
