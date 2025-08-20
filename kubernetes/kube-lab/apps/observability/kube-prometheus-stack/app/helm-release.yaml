@@ -115,6 +115,7 @@ spec:
       enabled: false
 
     prometheusOperator:
+      kubeletEndpointsEnabled: false
       kubeletEndpointSliceEnabled: true
       podAnnotations:
         reloader.stakater.com/auto: "true"
