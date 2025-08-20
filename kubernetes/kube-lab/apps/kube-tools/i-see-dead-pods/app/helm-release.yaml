@@ -41,12 +41,11 @@ spec:
             runAsGroup: 65534
             fsGroup: 65534
             runAsNonRoot: true
-
         containers:
           i-see-dead-pods:
             image:
-              repository: bitnami/kubectl
-              tag: 1.33.3@sha256:046830545ea21599c27342b7c55bcd0509cdea10d29bd19c098ef618fc14646d
+              repository: alpine/kubectl
+              tag: 1.33.4
             command:
               - /bin/sh
               - -ec
@@ -58,13 +57,14 @@ spec:
                   | grep "Pod was terminated in response to imminent node shutdown." \
                   | awk '{print $1, $2}' \
                   | xargs -r -n2 kubectl delete pod -n || true
-                # kubectl get pods \
-                #   --all-namespaces \
-                #   -o go-template \
-                #   --template='{{range .items}}{{printf "%s %s %s\n" .metadata.namespace .metadata.name .status.message}}{{end}}' \
-                #   | grep "Pod was rejected: Pod was rejected as the node is shutting down." \
-                #   | awk '{print $1, $2}' \
-                #   | xargs -r -n2 kubectl delete pod -n || true
+            #
+            # kubectl get pods \
+            #   --all-namespaces \
+            #   -o go-template \
+            #   --template='{{range .items}}{{printf "%s %s %s\n" .metadata.namespace .metadata.name .status.message}}{{end}}' \
+            #   | grep "Pod was rejected: Pod was rejected as the node is shutting down." \
+            #   | awk '{print $1, $2}' \
+            #   | xargs -r -n2 kubectl delete pod -n || true
             #
             #
             # kubectl get pods \
@@ -74,7 +74,6 @@ spec:
             #  | grep "Pod was terminated in response to imminent node shutdown." \
             #  | awk '{print $1, $2}' \
             #  | xargs -r -n2 kubectl delete pod -n
-
             resources:
               requests:
                 cpu: 10m
