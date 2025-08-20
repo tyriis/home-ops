@@ -113,7 +113,9 @@ spec:
 
     nodeExporter:
       enabled: false
+
     prometheusOperator:
+      kubeletEndpointSliceEnabled: true
       podAnnotations:
         reloader.stakater.com/auto: "true"
       resources:
@@ -158,6 +160,7 @@ spec:
           runAsUser: 64535
           runAsGroup: 64535
           fsGroup: 64535
+        serviceDiscoveryRole: EndpointSlice
         serviceMonitorSelectorNilUsesHelmValues: false
         storageSpec:
           volumeClaimTemplate:
