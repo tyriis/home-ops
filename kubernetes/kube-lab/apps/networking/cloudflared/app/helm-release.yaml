@@ -39,18 +39,19 @@ spec:
             envFrom:
               - secretRef:
                   name: cloudflared-env
-            command:
-              - cloudflared
+            args:
               - tunnel
-              - --no-autoupdate
-              - loglevel
+              - --loglevel
               - info
               - --metrics
-              - 0.0.0.0:2000
+              - 0.0.0.0:9090
+              - --no-autoupdate
               - run
+              - --token
+              - "$(TUNNEL_TOKEN)"
             ports:
               - name: metrics
-                containerPort: &port 2000
+                containerPort: &port 9090
                 protocol: TCP
             resources:
               requests:
