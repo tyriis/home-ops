@@ -9,7 +9,7 @@ spec:
   interval: 1h
   url: https://github.com/cloudnative-pg/plugin-barman-cloud.git
   ref:
-    tag: v0.5.0
+    tag: v0.6.0
   ignore: |
     # exclude
     /*
