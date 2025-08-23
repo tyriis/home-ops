@@ -5,7 +5,7 @@ https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/lates
 # UnifiedMetrics https://modrinth.com/plugin/unifiedmetrics, https://hangar.papermc.io/cubxity/UnifiedMetrics
 https://cdn.modrinth.com/data/p1ewR5kV/versions/Dubg3nLw/unifiedmetrics-platform-velocity-0.3.8.jar
 # LuckPerms https://luckperms.net/download
-https://download.luckperms.net/1595/velocity/LuckPerms-Velocity-5.5.10.jar
+https://download.luckperms.net/1596/velocity/LuckPerms-Velocity-5.5.11.jar
 # MiniMOTD https://modrinth.com/plugin/minimotd/versions?l=velocity
 https://cdn.modrinth.com/data/16vhQOQN/versions/4ceIMQUi/minimotd-velocity-2.1.8.jar
 # Vane https://modrinth.com/plugin/vane/versions?l=velocity
