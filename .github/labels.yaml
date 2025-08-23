@@ -24,6 +24,9 @@ labels:
   - name: cluster/talos-flux
     description: ""
     color: ededed
+  - name: cluster/kube-lab
+    description: ""
+    color: ededed
   - name: documentation
     description: Improvements or additions to documentation
     color: 0075ca
@@ -122,6 +125,7 @@ repos:
       - area/terraform
       - bug
       - cluster/kube-nas
+      - cluster/kube-lab
       - cluster/talos-flux
       - documentation
       - duplicate
