@@ -14,42 +14,42 @@ tasks:
 
   init:
     desc: Terraform initialize IaC
-    dir: infra/terraform
+    dir: "{{.TERRAFORM_DIR}}"
     cmds:
       - "terraform init"
 
   plan:cloudflare:
     desc: Terraform plan module.cloudflare
-    dir: infra/terraform
+    dir: "{{.TERRAFORM_DIR}}"
     cmds:
       - "terraform plan -target=module.cloudflare"
 
   apply:cloudflare:
     desc: Terraform apply module.cloudflare
-    dir: infra/terraform
+    dir: "{{.TERRAFORM_DIR}}"
     cmds:
       - "terraform apply -target=module.cloudflare"
 
   plan:
     desc: Terraform plan IaC
-    dir: infra/terraform
+    dir: "{{.TERRAFORM_DIR}}"
     cmds:
       - "terraform plan"
 
   apply:
     desc: Terraform apply IaC
-    dir: infra/terraform
+    dir: "{{.TERRAFORM_DIR}}"
     cmds:
       - "terraform apply"
 
   refresh:
     desc: Terraform refresh IaC
-    dir: infra/terraform
+    dir: "{{.TERRAFORM_DIR}}"
     cmds:
       - "terraform apply -refresh-only"
 
   upgrade:
     desc: Terraform upgrade IaC
-    dir: infra/terraform
+    dir: "{{.TERRAFORM_DIR}}"
     cmds:
       - "terraform init -upgrade"

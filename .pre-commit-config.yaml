@@ -124,6 +124,7 @@ repos:
         exclude: |
           (?x)^(
             kubernetes/kube-nas/apps/secops/rbac.yaml|
+            kubernetes/kube-lab/apps/secops/rbac.yaml|
             kubernetes/talos-flux/apps/secops/rbac.yaml|
             kubernetes/talos-flux/apps/devops/tekton/triggers/interceptors.yaml|
             kubernetes/talos-flux/apps/devops/tekton/triggers/release.yaml

@@ -1,0 +1,39 @@
+---
+title: Home Dashboard
+theme: dark
+color: slate
+headerStyle: clean
+iconStyle: theme
+target: _self
+layout:
+  Infrasructure:
+    style: columns
+    # columns: 1
+  Observability:
+    style: columns
+    # columns: 1
+  Development:
+    style: columns
+    # columns: 1
+  Productivity:
+    style: columns
+    # columns: 1
+  Networking:
+    style: columns
+    # columns: 1
+  Home Automation:
+    style: columns
+    # columns: 1
+  Storage:
+    style: columns
+    # columns: 1
+  Terraform:
+    style: columns
+    columns: 2
+  Favorites:
+    style: columns
+    columns: 1
+quicklaunch:
+  searchDescription: true
+  hideInternetSearch: true
+  hideVisitURL: true
