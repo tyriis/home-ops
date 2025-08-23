@@ -140,7 +140,7 @@ spec:
         image:
           registry: docker.io
           repository: prompp/prompp
-          tag: 2.53.2-0.3.4
+          tag: 2.53.2-0.3.4@sha256:e0212e571c1bbed88f546ed0336f70e82144693c2b2394bf40eaa56ea653ddbd
         podMetadata:
           annotations:
             reloader.stakater.com/auto: "true"
