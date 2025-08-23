@@ -34,6 +34,12 @@ spec:
     prometheus:
       monitor:
         enabled: true
+        relabelings:
+          - action: replace
+            regex: (.*)
+            replacement: $1
+            sourceLabels: [__meta_kubernetes_pod_node_name]
+            targetLabel: kubernetes_node
         metricRelabelings:
           # drop useless ms-01 temperature sensors in chip="platform_nct6775_2592", sensor=~"(temp1|temp3|temp4|temp5|temp6|temp8|temp9|temp10|temp11|temp12)"
           - action: drop
