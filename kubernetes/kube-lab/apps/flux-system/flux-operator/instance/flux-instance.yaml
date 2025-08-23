@@ -149,5 +149,5 @@ spec:
   sync:
     kind: GitRepository
     url: https://github.com/tyriis/home-ops.git
-    ref: refs/heads/feature/kube-lab
+    ref: refs/heads/main
     path: ./kubernetes/kube-lab/flux
