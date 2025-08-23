@@ -39,20 +39,32 @@ jobs:
           # Get changed files from previous step
           CHANGED_FILES='${{ steps.changed-files.outputs.changed_files }}'
 
-          # Use jq to process the list and determine which clusters are affected
+          # Determine affected clusters based on changed files
           CLUSTERS=$(echo "$CHANGED_FILES" | jq -c '
             if length > 0 then
-              (map(select(startswith("kubernetes/talos-flux/"))) | length > 0) as $talos_changed |
-              (map(select(startswith("kubernetes/kube-nas/"))) | length > 0) as $kubenas_changed |
-              if $talos_changed and $kubenas_changed then
-                ["talos-flux", "kube-nas"]
-              elif $talos_changed then
-                ["talos-flux"]
-              elif $kubenas_changed then
-                ["kube-nas"]
+              # Define cluster mappings
+              [
+                {path: "kubernetes/talos-flux/", name: "talos-flux"},
+                {path: "kubernetes/kube-nas/", name: "kube-nas"},
+                {path: "kubernetes/kube-lab/", name: "kube-lab"}
+              ] as $cluster_mappings |
+
+              # Get the input array for reference
+              . as $changed_files |
+
+              # Build array of affected clusters
+              [
+                $cluster_mappings[] as $cluster |
+                select(any($changed_files[]; startswith($cluster.path))) |
+                $cluster.name
+              ] as $affected_clusters |
+
+              # Return affected clusters or all clusters if none match
+              if ($affected_clusters | length) > 0 then
+                $affected_clusters
               else
-                # Files changed but no clusters matched - return both
-                ["talos-flux", "kube-nas"]
+                # Files changed but no clusters matched - return all clusters
+                [$cluster_mappings[].name]
               end
             else
               []
