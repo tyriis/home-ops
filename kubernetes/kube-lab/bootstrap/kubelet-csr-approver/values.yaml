@@ -1,0 +1,4 @@
+---
+bypassDnsResolution: true
+providerRegex: ^talos\d\d?$
+replicas: 2

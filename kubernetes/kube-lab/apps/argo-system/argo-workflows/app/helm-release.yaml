@@ -1,0 +1,83 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: argo-workflows
+spec:
+  driftDetection:
+    mode: enabled
+  interval: 30m
+  chart:
+    spec:
+      chart: argo-workflows
+      version: 0.45.21
+      sourceRef:
+        kind: HelmRepository
+        name: argo
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: -1
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    # https://artifacthub.io/packages/helm/argo/argo-workflows?modal=values
+    singleNamespace: true
+
+    controller:
+      image:
+        registry: quay.io
+        repository: argoproj/workflow-controller
+        tag: v3.7.0@sha256:5f8594752d0f5a88cbd4c2dfc7b47097691f43605a93883f2bfb214484d035cb
+      parallelism: 20
+      resourceRateLimit:
+        limit: 10
+        burst: 1
+
+      namespaceParallelism: 10
+
+      resources:
+        requests:
+          cpu: 10m
+          memory: 100Mi
+        limits:
+          memory: 100Mi
+
+    executor:
+      image:
+        registry: quay.io
+        repository: argoproj/argoexec
+        tag: v3.7.0@sha256:075d0745ef9390117d06cb02fe620acd3a5f239590398c51fa920abffda0d4ab
+
+    server:
+      enabled: true
+      image:
+        registry: quay.io
+        repository: argoproj/argocli
+        tag: v3.7.0@sha256:c555c0ddc87b1661bbca3b63c1009a4ba93bb3b8eb09810177359704f47b3f54
+      resources:
+        requests:
+          cpu: 10m
+          memory: 100Mi
+        limits:
+          memory: 100Mi
+
+      extraArgs:
+        - --auth-mode=server
+
+    workflow:
+      serviceAccount:
+        create: true
+        name: argo-workflow
+      rbac:
+        create: true
+    metricsConfig:
+      enabled: false
+    serviceMonitor:
+      enabled: true

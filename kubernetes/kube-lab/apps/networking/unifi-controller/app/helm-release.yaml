@@ -1,0 +1,190 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app unifi-controller
+spec:
+  driftDetection:
+    mode: enabled
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.2.0
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  maxHistory: 10
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+
+  values:
+    defaultPodOptions:
+      hostNetwork: true
+    controllers:
+      unifi-controller:
+        pod:
+          nodeSelector:
+            kubernetes.io/hostname: talos03
+        strategy: Recreate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            nameOverride: *app
+            image:
+              repository: jacobalberty/unifi
+              tag: v8.1.113@sha256:483b7f294845c9e32eeb84ad2cda20ff90e996bcb6fa3107cba35ef36e578fb6
+            env:
+              RUNAS_UID0: "false"
+              UNIFI_UID: "999"
+              UNIFI_GID: "999"
+              UNIFI_STDOUT: "true"
+              # JVM_INIT_HEAP_SIZE: null
+              JVM_MAX_HEAP_SIZE: 1024M
+              # CERTNAME: tls.crt
+              # CERT_PRIVATE_NAME: tls.key
+              # CERT_IS_CHAIN: "true"
+              PORTAL_HTTPS_PORT: "443"
+            ports:
+              - name: controller
+                containerPort: 8080
+                protocol: TCP
+              - name: discovery
+                containerPort: 10001
+                protocol: UDP
+              - name: http
+                containerPort: 8443
+                protocol: TCP
+              - name: portal-http
+                containerPort: 8880
+                protocol: TCP
+              - name: portal-https
+                containerPort: 443
+                protocol: TCP
+              - name: speedtest
+                containerPort: 6789
+                protocol: TCP
+              - name: stun
+                containerPort: 3478
+                protocol: UDP
+              - name: syslog
+                containerPort: 5514
+                protocol: UDP
+            resources:
+              requests:
+                cpu: 23m
+                memory: 1390M
+              limits:
+                memory: 1390M
+            probes:
+              liveness:
+                enabled: true
+                port: 8080
+              readiness:
+                enabled: true
+                port: 8080
+              startup:
+                enabled: true
+                port: 8080
+
+    service:
+      app:
+        controller: *app
+        type: LoadBalancer
+        externalTrafficPolicy: Cluster
+        annotations:
+          lbipam.cilium.io/ips: 192.168.100.210
+        ports:
+          controller:
+            enabled: true
+            port: 8080
+            protocol: TCP
+          http:
+            port: 8443
+            protocol: HTTPS
+          portal-http:
+            enabled: true
+            port: 8880
+            protocol: HTTP
+          portal-https:
+            enabled: true
+            port: 443
+            protocol: HTTPS
+          speedtest:
+            enabled: true
+            port: 6789
+            protocol: TCP
+          stun:
+            enabled: true
+            port: 3478
+            protocol: UDP
+          syslog:
+            enabled: true
+            port: 5514
+            protocol: UDP
+          discovery:
+            enabled: true
+            port: 10001
+            protocol: UDP
+    ingress:
+      app:
+        className: nginx
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/tls-acme: "true"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+          nginx.ingress.kubernetes.io/ssl-redirect: "true"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Ubiquiti Unifi Controller
+          gethomepage.dev/group: Networking
+          gethomepage.dev/icon: unifi
+          gethomepage.dev/name: Unifi Controller
+          gethomepage.dev/weight: "10" # optional
+        hosts:
+          - host: &host unifi.techtales.io
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+          - host: &hotspot hotspot.techtales.io
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: portal-https
+          - host: &controller unifi-controller.techtales.io
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: controller
+        tls:
+          - hosts:
+              - *host
+            secretName: unifi-tls
+          - hosts:
+              - *hotspot
+            secretName: hotspot-tls
+          - hosts:
+              - *controller
+            secretName: unifi-controller-tls
+
+    persistence:
+      data:
+        existingClaim: unifi-data
+        advancedMounts:
+          unifi-controller:
+            app:
+              - path: /unifi

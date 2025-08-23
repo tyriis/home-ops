@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/gitrepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: dragonfly-operator
+spec:
+  interval: 12h
+  url: https://github.com/dragonflydb/dragonfly-operator.git
+  ref:
+    tag: v1.1.11
+  ignore: |
+    # exclude all
+    /*
+    # include deploy crd file only
+    !/manifests/crd.yaml

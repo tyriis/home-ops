@@ -1,5 +1,5 @@
 [env]
-TALOSCONFIG="{{config_root}}/infra/talos/clusterconfig/talosconfig"
+TALOSCONFIG="{{config_root}}/talos/clusterconfig/talosconfig"
 
 [tools]
 # https://age-encryption.org/
