@@ -7,4 +7,5 @@ https://cdn.modrinth.com/data/6t5Ziqmz/versions/TGLW1WW0/SimpleTPA-1.0Experiment
 # Vane https://modrinth.com/plugin/vane/versions?l=paper
 https://cdn.modrinth.com/data/698NGGtb/versions/Z9TLW1LC/all-plugins.zip
 # ProtocolLib https://ci.dmulloy2.net/job/ProtocolLib/ required by Vane
-https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/artifact/build/libs/ProtocolLib.jar
+# https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/artifact/build/libs/ProtocolLib.jar
+https://github.com/dmulloy2/ProtocolLib/releases/download/5.4.0/ProtocolLib.jar

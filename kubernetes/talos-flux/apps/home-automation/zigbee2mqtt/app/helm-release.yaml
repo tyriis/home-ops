@@ -119,14 +119,15 @@ spec:
 
     ingress:
       app:
-        className: traefik
+        className: nginx
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/tls-acme: "true"
-          traefik.ingress.kubernetes.io/router.middlewares: traefik-ingress-sso@kubernetescrd
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/affinity: "true"
-          traefik.ingress.kubernetes.io/router.tls: "true"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+          nginx.ingress.kubernetes.io/ssl-redirect: "true"
+          nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.techtales.io/oauth2/auth
+          nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.techtales.io/oauth2/start?rd=https://$host$request_uri
+          nginx.ingress.kubernetes.io/auth-response-headers: x-auth-request-user, x-auth-request-email
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Get rid of your proprietary Zigbee bridges
           gethomepage.dev/group: Home Automation

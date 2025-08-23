@@ -49,7 +49,7 @@ spec:
             nameOverride: *app
             image:
               repository: itzg/mc-proxy
-              tag: java21@sha256:c56e7df8bb3c24e8a79b8da37b99aa5129c48b888bec53daf985552c7d4ac0fd
+              tag: java21@sha256:f79c958dfc4ba71b96a3e959941280ad7136e0eae86fde443e7b7bde729b22f7
             envFrom:
               - secretRef:
                   name: minecraft-rcon

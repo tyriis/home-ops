@@ -59,6 +59,11 @@
     },
     {
       matchDepNames: ["app-template"],
+      matchFileNames: ["**/kube-lab/**"],
+      additionalBranchPrefix: "kube-lab-",
+    },
+    {
+      matchDepNames: ["app-template"],
       matchFileNames: ["**/talos-flux/**"],
       additionalBranchPrefix: "talos-flux-",
     },
