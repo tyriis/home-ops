@@ -46,7 +46,7 @@ spec:
         enabled: true
         urlPrefix: /
         ssl: false
-        prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090
+        prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090 #NOSONAR allow http
       mgr:
         modules:
           - name: diskprediction_local # required for device_failure_prediction_mode
