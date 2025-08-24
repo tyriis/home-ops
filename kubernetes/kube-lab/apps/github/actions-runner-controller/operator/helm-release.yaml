@@ -22,6 +22,7 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  # https://github.com/actions/actions-runner-controller/blob/master/charts/gha-runner-scale-set-controller/values.yaml
   values:
     fullnameOverride: *app
     metrics:
