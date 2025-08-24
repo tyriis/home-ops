@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/issuer_v1.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/cert-manager.io/issuer_v1.json
 # Create a selfsigned Issuer, in order to create a root CA certificate for
 # signing webhook serving certificates
 apiVersion: cert-manager.io/v1
@@ -9,7 +9,7 @@ metadata:
 spec:
   selfSigned: {}
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/certificate_v1.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/cert-manager.io/certificate_v1.json
 # Generate a CA Certificate used to sign certificates for the webhook
 apiVersion: cert-manager.io/v1
 kind: Certificate
@@ -24,7 +24,7 @@ spec:
   commonName: ca.k8tz.cert-manager
   isCA: true
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/issuer_v1.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/cert-manager.io/issuer_v1.json
 # Create an Issuer that uses the above generated CA certificate to issue certs
 apiVersion: cert-manager.io/v1
 kind: Issuer
