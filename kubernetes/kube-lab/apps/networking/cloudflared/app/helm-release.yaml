@@ -38,11 +38,13 @@ spec:
               tag: 2025.8.1-amd64@sha256:e7d598c81b1890dd3438206f5403fa6389d0d50833d12bc94c87d8b1e27cfde7
             envFrom:
               - secretRef:
-                  name: cloudflared-env
+                  name: "{{ .Release.Name }}-env"
             args:
               - tunnel
               - --loglevel
               - info
+              - --config
+              - /config/config.yaml
               - --metrics
               - 0.0.0.0:9090
               - --no-autoupdate
@@ -94,3 +96,14 @@ spec:
             scheme: http
             interval: 30s
             scrapeTimeout: 5s
+
+    persistence:
+      config:
+        type: configMap
+        name: "{{ .Release.Name }}-config"
+        advancedMounts:
+          cloudflared:
+            app:
+              - path: /config/config.yaml
+                subPath: config.yaml
+                readOnly: true
