@@ -9,4 +9,5 @@ resources:
   - ./namespace.yaml
   - ./echo-server/flux-sync.yaml
   - ./homepage/flux-sync.yaml
+  - ./it-tools/flux-sync.yaml
   - ./podinfo/flux-sync.yaml
