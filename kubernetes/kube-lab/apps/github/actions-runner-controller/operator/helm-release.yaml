@@ -1,0 +1,34 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app actions-runner-controller
+spec:
+  driftDetection:
+    mode: enabled
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: gha-runner-scale-set-controller
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    fullnameOverride: *app
+    metrics:
+      controllerManagerAddr: ":8080"
+      listenerAddr: ":8080"
+      listenerEndpoint: /metrics
+    resources:
+      requests:
+        cpu: 10m
+        memory: 70Mi
