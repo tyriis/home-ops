@@ -50,7 +50,7 @@ spec:
       - ingress
       - gateway-httproute
     txtPrefix: kube-lab.
-    txtOwnerId: default
+    txtOwnerId: kube-lab
     domainFilters:
       - techtales.io
     serviceMonitor:
