@@ -1,0 +1,23 @@
+---
+tunnel: ca7cdad4-1f7a-4027-8aa9-4d8c45a84631
+originRequest:
+  connectTimeout: 30s
+warp-routing:
+  enabled: false
+
+ingress:
+  - hostname: echo.techtales.io
+    service: https://192.168.100.200
+    originRequest:
+      httpHostHeader: echo.techtales.io
+  # Example of a request over TCP:
+  # - hostname: example.com
+  #   service: tcp://localhost:8000
+  # Example of an HTTP request over a Unix socket:
+  # - hostname: staging.example.com
+  #   service: unix:/home/production/echo.sock
+  # Example of a request mapping to the Hello World test server:
+  # - hostname: test.example.com
+  #   service: hello_world
+  # Example of a rule responding to traffic with an HTTP status:
+  - service: http_status:404
