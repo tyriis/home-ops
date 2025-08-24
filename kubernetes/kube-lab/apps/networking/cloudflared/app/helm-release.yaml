@@ -44,7 +44,7 @@ spec:
               - --loglevel
               - info
               - --config
-              - /config/config.yaml
+              - /etc/cloudflared/config.yaml
               - --metrics
               - 0.0.0.0:9090
               - --no-autoupdate
@@ -104,6 +104,6 @@ spec:
         advancedMounts:
           cloudflared:
             app:
-              - path: /config/config.yaml
+              - path: /etc/cloudflared/config.yaml
                 subPath: config.yaml
                 readOnly: true
