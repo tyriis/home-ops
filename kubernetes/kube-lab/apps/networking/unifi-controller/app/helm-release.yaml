@@ -44,7 +44,7 @@ spec:
             nameOverride: *app
             image:
               repository: jacobalberty/unifi
-              tag: v8.6.9@sha256:b8eb551cc0aa61666357aab0078bba15fec557c81ba83284c2c9bfc217d6a529
+              tag: v9.3.45@sha256:6f1cc8eeda6a2303a3939f8f6565d4e4ca963b18b2d5dfae7e1ed4799d102eeb
             env:
               RUNAS_UID0: "false"
               UNIFI_UID: "999"
