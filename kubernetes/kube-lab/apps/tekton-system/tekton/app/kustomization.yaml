@@ -8,9 +8,9 @@ resources:
   - https://github.com/tektoncd/pipeline/releases/download/v1.3.1/release.yaml
   # https://github.com/tektoncd/triggers/releases
   # renovate: depName=tektoncd/triggers datasource=github-releases
-  - https://github.com/tektoncd/triggers/releases/download/v0.32.0/release.yaml
+  - https://github.com/tektoncd/triggers/releases/download/v0.33.0/release.yaml
   # renovate: depName=tektoncd/triggers datasource=github-releases
-  - https://github.com/tektoncd/triggers/releases/download/v0.32.0/interceptors.yaml
+  - https://github.com/tektoncd/triggers/releases/download/v0.33.0/interceptors.yaml
   # https://github.com/tektoncd/dashboard/releases
   # renovate: depName=tektoncd/dashboard datasource=github-releases
   - https://github.com/tektoncd/dashboard/releases/download/v0.60.0/release.yaml
