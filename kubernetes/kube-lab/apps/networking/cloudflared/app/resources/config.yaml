@@ -8,9 +8,11 @@ warp-routing:
 
 ingress:
   - hostname: echo.techtales.io
-    service: https://192.168.100.200
+    service: https://echo.techtales.io
     originRequest:
       httpHostHeader: echo.techtales.io
+  - hostname: auth.techtales.io
+    service: https://auth.techtales.io
   # Example of a request over TCP:
   # - hostname: example.com
   #   service: tcp://localhost:8000
