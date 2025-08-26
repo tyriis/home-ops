@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app jazzlyn-gh-actions-demo
+  name: &app jazzlyn-gh-actions-demo-runner
 spec:
   driftDetection:
     mode: enabled
@@ -229,7 +229,7 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: &app jazzlyn-gh-actions-demo
+  name: &app jazzlyn-gh-actions-demo-runner
 spec:
   selector:
     matchLabels:
