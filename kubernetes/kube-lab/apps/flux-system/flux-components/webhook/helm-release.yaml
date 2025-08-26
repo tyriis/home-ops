@@ -49,7 +49,7 @@ spec:
         annotations:
           external-dns/cloudflare: "true"
         hostnames:
-          - flux-webhook-kube-lab.techtales.io
+          - &host flux-webhook-kube-lab.techtales.io
         parentRefs:
           - name: external
             namespace: kube-system
@@ -63,3 +63,22 @@ spec:
               - path:
                   type: PathPrefix
                   value: /hook/
+    ingress:
+      app:
+        className: nginx
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/tls-acme: "true"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+          nginx.ingress.kubernetes.io/ssl-redirect: "true"
+        hosts:
+          - host: *host
+            paths:
+              - path: /
+                service:
+                  name: webhook-receiver
+                  port: 80
+        tls:
+          - hosts:
+              - *host
+            secretName: "{{ .Release.Name }}-tls"
