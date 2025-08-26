@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mendhak/http-https-echo
-              tag: 37
+              tag: 37@sha256:f55000d9196bd3c853d384af7315f509d21ffb85de315c26e9874033b9f83e15
             env:
               HTTP_PORT: &port 80
               LOG_WITHOUT_NEWLINE: true
@@ -95,6 +95,8 @@ spec:
         enabled: true
         className: nginx
         annotations:
+          external-dns.alpha.kubernetes.io/target: kube-lab-ext.techtales.io
+          external-dns/cloudflare: "true"
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/tls-acme: "true"
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"

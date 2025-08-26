@@ -12,7 +12,7 @@ spec:
   chart:
     spec:
       chart: kube-prometheus-stack
-      version: 77.0.0
+      version: 77.0.1
       sourceRef:
         kind: HelmRepository
         name: prometheus-community
@@ -140,7 +140,7 @@ spec:
         image:
           registry: docker.io
           repository: prompp/prompp
-          tag: 2.53.2-0.3.4
+          tag: 2.53.2-0.3.4@sha256:e0212e571c1bbed88f546ed0336f70e82144693c2b2394bf40eaa56ea653ddbd
         podMetadata:
           annotations:
             reloader.stakater.com/auto: "true"

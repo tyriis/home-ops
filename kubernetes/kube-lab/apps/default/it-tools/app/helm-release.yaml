@@ -5,6 +5,8 @@ kind: HelmRelease
 metadata:
   name: it-tools
 spec:
+  driftDetection:
+    mode: enabled
   interval: 30m
   chart:
     spec:
@@ -16,28 +18,28 @@ spec:
         namespace: flux-system
   install:
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
       strategy: rollback
       retries: 3
-
+  uninstall:
+    keepHistory: false
   values:
+    # https://github.com/bjw-s/helm-charts/tree/main/charts/other/app-template
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
     controllers:
       it-tools:
         replicas: 1
         strategy: RollingUpdate
-
-        annotations:
-          reloader.stakater.com/auto: "true"
-
-        pod:
-          securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
-            fsGroup: 1000
-            fsGroupChangePolicy: "OnRootMismatch"
 
         containers:
           app:
@@ -64,33 +66,20 @@ spec:
           http:
             port: 8080
 
-    ingress:
+    route:
       app:
-        className: traefik
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          kubernetes.io/tls-acme: "true"
-          traefik.ingress.kubernetes.io/router.middlewares: traefik-ingress-sso@kubernetescrd
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/affinity: "true"
-          traefik.ingress.kubernetes.io/router.tls: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Handy developer online tools
           gethomepage.dev/group: Development
           gethomepage.dev/icon: it-tools-light
           gethomepage.dev/name: IT-Tools
-          gethomepage.dev/weight: "10" # optional
-        hosts:
-          - host: &host it-tools.techtales.io
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
-            secretName: "{{ .Release.Name }}-tls"
+        hostnames:
+          - &host it-tools.techtales.io
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
 
     persistence:
       tmp:

@@ -23,7 +23,9 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  # https://kubernetes-sigs.github.io/external-dns/v0.14.2/
+  uninstall:
+    keepHistory: false
+  # https://kubernetes-sigs.github.io/external-dns/latest/
   values:
     # https://artifacthub.io/packages/helm/external-dns/external-dns?modal=values
     fullnameOverride: *app
@@ -43,6 +45,7 @@ spec:
             name: *secret
             key: CF_API_KEY
     extraArgs:
+      - --cloudflare-dns-records-per-page=1000
       - --cloudflare-proxied
       - --annotation-filter=external-dns/cloudflare in (true)
     policy: sync
@@ -50,7 +53,7 @@ spec:
       - ingress
       - gateway-httproute
     txtPrefix: kube-lab.
-    txtOwnerId: default
+    txtOwnerId: kube-lab
     domainFilters:
       - techtales.io
     serviceMonitor:

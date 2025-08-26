@@ -36,19 +36,15 @@ spec:
             image:
               repository: cloudflare/cloudflared
               tag: 2025.8.1-amd64@sha256:e7d598c81b1890dd3438206f5403fa6389d0d50833d12bc94c87d8b1e27cfde7
-            envFrom:
-              - secretRef:
-                  name: cloudflared-env
             args:
               - tunnel
               - --loglevel
               - info
+              - --config
+              - /etc/cloudflared/config.yaml
               - --metrics
               - 0.0.0.0:9090
-              - --no-autoupdate
               - run
-              - --token
-              - "$(TUNNEL_TOKEN)"
             ports:
               - name: metrics
                 containerPort: &port 9090
@@ -94,3 +90,23 @@ spec:
             scheme: http
             interval: 30s
             scrapeTimeout: 5s
+
+    persistence:
+      config:
+        type: configMap
+        name: "{{ .Release.Name }}-config"
+        advancedMounts:
+          cloudflared:
+            app:
+              - path: /etc/cloudflared/config.yaml
+                subPath: config.yaml
+                readOnly: true
+      credentials:
+        type: secret
+        name: "{{ .Release.Name }}-credentials"
+        advancedMounts:
+          cloudflared:
+            app:
+              - path: /etc/cloudflared/1d1865c6-c0dd-4236-8d7d-79722940886f.json
+                subPath: 1d1865c6-c0dd-4236-8d7d-79722940886f.json
+                readOnly: true
