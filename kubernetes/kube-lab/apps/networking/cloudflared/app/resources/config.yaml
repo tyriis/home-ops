@@ -1,5 +1,6 @@
 ---
-tunnel: ca7cdad4-1f7a-4027-8aa9-4d8c45a84631
+tunnel: 1d1865c6-c0dd-4236-8d7d-79722940886f
+credentials-file: /etc/cloudflared/1d1865c6-c0dd-4236-8d7d-79722940886f.json
 originRequest:
   connectTimeout: 30s
 warp-routing:
