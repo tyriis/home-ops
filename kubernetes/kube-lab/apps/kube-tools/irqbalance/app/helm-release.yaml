@@ -24,6 +24,7 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
     controllers:
       irqbalance:
         type: daemonset

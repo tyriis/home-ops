@@ -13,6 +13,9 @@ ingress:
       httpHostHeader: echo.techtales.io
   - hostname: auth.techtales.io
     service: https://auth.techtales.io
+  - hostname: flux-webhook-kube-lab.techtales.io
+    service: https://flux-webhook-kube-lab.techtales.io
+
   # Example of a request over TCP:
   # - hostname: example.com
   #   service: tcp://localhost:8000
