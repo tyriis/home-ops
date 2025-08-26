@@ -40,8 +40,7 @@ spec:
       crashCollector:
         disable: false
       csi:
-        readAffinity:
-          enabled: true
+        rookUseCsiOperator: true
       dashboard:
         enabled: true
         urlPrefix: /
