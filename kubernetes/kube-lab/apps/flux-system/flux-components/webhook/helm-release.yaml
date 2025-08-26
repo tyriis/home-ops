@@ -29,8 +29,8 @@ spec:
     keepHistory: false
   values:
     rawResources:
-      home-ops:
-        forceRename: home-ops
+      flux-system:
+        forceRename: flux-system
         apiVersion: notification.toolkit.fluxcd.io/v1
         kind: Receiver
         spec:
@@ -43,7 +43,8 @@ spec:
               name: webhook-token
             resources:
               - kind: GitRepository
-                name: home-ops
+                name: flux-system
+                namespace: flux-system
     route:
       app:
         annotations:
