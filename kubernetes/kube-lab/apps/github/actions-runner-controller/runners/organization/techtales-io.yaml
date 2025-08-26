@@ -1,0 +1,241 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app techtales-io
+spec:
+  driftDetection:
+    mode: enabled
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: gha-runner-scale-set
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  # https://github.com/actions/actions-runner-controller/blob/master/charts/gha-runner-scale-set/values.yaml
+  values:
+    runnerScaleSetName: *app
+    githubConfigUrl: https://github.com/techtales-io
+    githubConfigSecret: techtales-actions-runner
+    minRunners: 1
+    maxRunners: 3
+    containerMode:
+      type: dind
+    controllerServiceAccount:
+      name: actions-runner-controller
+      namespace: github
+    template:
+      spec:
+        imagePullSecrets:
+          - name: techtales-dockerconfig
+        containers:
+          - name: runner
+            image: ghcr.io/home-operations/actions-runner:2.328.0@sha256:c43873ef6800697dfa181582f6bb02366a9a0afb52026bde7bad7c71b21b1052
+            command: ["/home/runner/run.sh"]
+            volumeMounts:
+              - name: techtales-dockerconfig
+                mountPath: /home/runner/config.json
+                subPath: config.json
+              - name: docker-config
+                mountPath: /home/runner/.docker
+        initContainers:
+          - name: dockerconfigwriter
+            image: busybox@sha256:ab33eacc8251e3807b85bb6dba570e4698c3998eca6f0fc2ccb60575a563ea74
+            command:
+              - /bin/sh
+              - -ec
+              - cp /home/runner/config.json /home/runner/.docker/config.json
+            volumeMounts:
+              - name: techtales-dockerconfig
+                mountPath: /home/runner/config.json
+                subPath: config.json
+              - name: docker-config
+                mountPath: /home/runner/.docker
+        volumes:
+          - name: techtales-dockerconfig
+            secret:
+              secretName: techtales-dockerconfig
+              items:
+                - key: .dockerconfigjson
+                  path: config.json
+          - name: docker-config
+            emptyDir: {}
+    listenerMetrics:
+      counters:
+        gha_started_jobs_total:
+          labels:
+            [
+              "repository",
+              "organization",
+              "job_name",
+              "event_name",
+              "job_workflow_ref",
+            ]
+        gha_completed_jobs_total:
+          labels:
+            [
+              "repository",
+              "organization",
+              "job_name",
+              "event_name",
+              "job_result",
+              "job_workflow_ref",
+            ]
+      gauges:
+        gha_assigned_jobs:
+          labels: ["name", "namespace", "repository", "organization"]
+        gha_running_jobs:
+          labels: ["name", "namespace", "repository", "organization"]
+        gha_registered_runners:
+          labels: ["name", "namespace", "repository", "organization"]
+        gha_busy_runners:
+          labels: ["name", "namespace", "repository", "organization"]
+        gha_min_runners:
+          labels: ["name", "namespace", "repository", "organization"]
+        gha_max_runners:
+          labels: ["name", "namespace", "repository", "organization"]
+        gha_desired_runners:
+          labels: ["name", "namespace", "repository", "organization"]
+        gha_idle_runners:
+          labels: ["name", "namespace", "repository", "organization"]
+      histograms:
+        gha_job_startup_duration_seconds:
+          labels:
+            [
+              "repository",
+              "organization",
+              "job_name",
+              "event_name",
+              "job_workflow_ref",
+            ]
+          buckets:
+            [
+              0.01,
+              0.05,
+              0.1,
+              0.5,
+              1.0,
+              2.0,
+              3.0,
+              4.0,
+              5.0,
+              6.0,
+              7.0,
+              8.0,
+              9.0,
+              10.0,
+              12.0,
+              15.0,
+              18.0,
+              20.0,
+              25.0,
+              30.0,
+              40.0,
+              50.0,
+              60.0,
+              70.0,
+              80.0,
+              90.0,
+              100.0,
+              110.0,
+              120.0,
+              150.0,
+              180.0,
+              210.0,
+              240.0,
+              300.0,
+              360.0,
+              420.0,
+              480.0,
+              540.0,
+              600.0,
+              900.0,
+              1200.0,
+              1800.0,
+              2400.0,
+              3000.0,
+              3600.0,
+            ]
+        gha_job_execution_duration_seconds:
+          labels:
+            [
+              "repository",
+              "organization",
+              "job_name",
+              "event_name",
+              "job_result",
+              "job_workflow_ref",
+            ]
+          buckets:
+            [
+              0.01,
+              0.05,
+              0.1,
+              0.5,
+              1.0,
+              2.0,
+              3.0,
+              4.0,
+              5.0,
+              6.0,
+              7.0,
+              8.0,
+              9.0,
+              10.0,
+              12.0,
+              15.0,
+              18.0,
+              20.0,
+              25.0,
+              30.0,
+              40.0,
+              50.0,
+              60.0,
+              70.0,
+              80.0,
+              90.0,
+              100.0,
+              110.0,
+              120.0,
+              150.0,
+              180.0,
+              210.0,
+              240.0,
+              300.0,
+              360.0,
+              420.0,
+              480.0,
+              540.0,
+              600.0,
+              900.0,
+              1200.0,
+              1800.0,
+              2400.0,
+              3000.0,
+              3600.0,
+            ]
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: &app techtales-io
+spec:
+  selector:
+    matchLabels:
+      helm.toolkit.fluxcd.io/name: *app
+  podMetricsEndpoints:
+    - port: metrics
+      path: /metrics
+      interval: 15s
+      scrapeTimeout: 5s
