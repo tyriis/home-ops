@@ -137,10 +137,10 @@ spec:
         externalLabels:
           cluster: ${FLUX_CLUSTER_NAME}
         externalUrl: https://prometheus.techtales.io
-        image:
-          registry: docker.io
-          repository: prompp/prompp
-          tag: 2.53.2-0.3.4@sha256:e0212e571c1bbed88f546ed0336f70e82144693c2b2394bf40eaa56ea653ddbd
+        # image:
+          # registry: docker.io
+          # repository: prompp/prompp
+          # tag: 2.53.2-0.3.4@sha256:e0212e571c1bbed88f546ed0336f70e82144693c2b2394bf40eaa56ea653ddbd
         podMetadata:
           annotations:
             reloader.stakater.com/auto: "true"
