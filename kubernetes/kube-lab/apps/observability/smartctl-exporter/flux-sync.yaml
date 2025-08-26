@@ -1,15 +1,15 @@
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app kube-prometheus-stack
+  name: &app smartctl-exporter
 spec:
   targetNamespace: observability
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/kube-lab/apps/observability/kube-prometheus-stack/app
+  path: ./kubernetes/kube-lab/apps/observability/smartctl-exporter/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -19,6 +19,3 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
-  postBuild:
-    substitute:
-      FLUX_CLUSTER_NAME: ${FLUX_CLUSTER_NAME}
