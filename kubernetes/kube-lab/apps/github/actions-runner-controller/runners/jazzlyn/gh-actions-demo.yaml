@@ -26,7 +26,7 @@ spec:
   values:
     runnerScaleSetName: *app
     githubConfigUrl: https://github.com/jazzlyn/gh-actions-demo
-    githubConfigSecret: actions-runner-jazzlyn
+    githubConfigSecret: jazzlyn-actions-runner
     minRunners: 1
     maxRunners: 3
     containerMode:
