@@ -151,7 +151,7 @@ repos:
             kubernetes/talos-flux/apps/home-automation/home-assistant/app/patches/db-init.yaml|
             kubernetes/talos-flux/apps/github/actions-runner-controller/.+/helm-release.yaml|
             kubernetes/talos-flux/apps/github/actions-runner-controller/.+/(jazzlyn|organization|tyriis)/.+.yaml|
-            kubernetes/talos-flux/apps/atlantis/.+/helm-values.yaml|
+            kubernetes/kube.lab/apps/atlantis-system/.+/helm-release.patch.yaml|
             kubernetes/talos-flux/apps/gaming/.+/helm-values.yaml|
             kubernetes/talos-flux/apps/gaming-public/.+/helm-values.yaml|
           )$()
