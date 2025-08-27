@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -14,15 +14,15 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: grafana-charts
-        namespace: flux-system
   install:
-    createNamespace: false
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
+    cleanupOnFail: true
     remediation:
       retries: 3
-
+  uninstall:
+    keepHistory: false
   # https://artifacthub.io/packages/helm/grafana/grafana?modal=values
   values:
     replicas: 1
@@ -158,9 +158,6 @@ spec:
           gnetId: 11074
           revision: 9
           datasource: Prometheus
-        # dragonfly:
-        #   url: https://raw.githubusercontent.com/dragonflydb/dragonfly/main/tools/local/monitoring/grafana/provisioning/dashboards/dashboard.json
-        #   datasource: Prometheus
 
         # Ref: https://grafana.com/grafana/dashboards/20842
         cert-manager:
@@ -358,37 +355,29 @@ spec:
         searchNamespace: ALL
         labelValue: ""
     plugins:
-      # - natel-discrete-panel
-      # - pr0ps-trackmap-panel
       - grafana-piechart-panel
-      # - vonage-status-panel
       - grafana-worldmap-panel
       - grafana-clock-panel
       - grafana-github-datasource
     serviceMonitor:
       enabled: true
 
-    ingress:
-      enabled: true
-      ingressClassName: traefik
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-production
-        traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        external-dns.alpha.kubernetes.io/target: external.techtales.io
-        external-dns/cloudflare: "true"
-        gethomepage.dev/enabled: "true"
-        gethomepage.dev/description: Metrics, logs, traces, and profiles, oh my!
-        gethomepage.dev/group: Observability
-        gethomepage.dev/icon: grafana
-        gethomepage.dev/name: Grafana Dashboard
-        gethomepage.dev/weight: "10" # optional
-      hosts:
-        - &host grafana.techtales.io
-      path: /
-      tls:
-        - secretName: grafana-tls
-          hosts:
-            - *host
+    route:
+      main:
+        enabled: true
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Metrics, logs, traces, and profiles, oh my!
+          gethomepage.dev/group: Observability
+          gethomepage.dev/icon: grafana
+          gethomepage.dev/name: Grafana Dashboard
+          external-dns/cloudflare: "true"
+        hostnames:
+          - grafana.techtales.io
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
 
     serviceAccount:
       create: true
