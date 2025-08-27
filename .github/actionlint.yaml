@@ -1,4 +1,4 @@
 ---
 self-hosted-runner:
   labels:
-    - arc-runner-set-home-ops
+    - tyriis-home-ops-runner
