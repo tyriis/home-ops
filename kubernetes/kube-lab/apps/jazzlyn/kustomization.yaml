@@ -7,4 +7,4 @@ components:
   - ../../../components/flux/alerts
 resources:
   - ./namespace.yaml
-  - ./ring-ml-person-detector/flux-sync.yaml
+  - ./ml-detector/flux-sync.yaml

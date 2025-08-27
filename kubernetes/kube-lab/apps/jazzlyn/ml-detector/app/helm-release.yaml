@@ -1,13 +1,11 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app ring-ml-person-detector
+  name: &app ml-detector
 spec:
   interval: 30m
-  driftDetection:
-    mode: enabled
   chart:
     spec:
       chart: app-template
@@ -17,14 +15,16 @@ spec:
         name: bjw-s-charts
         namespace: flux-system
   install:
-    createNamespace: true
     remediation:
       retries: -1
   upgrade:
+    cleanupOnFail: true
     remediation:
       retries: 3
-  # https://github.com/bjw-s/helm-charts/blob/main/charts/library/common/values.yaml
+  uninstall:
+    keepHistory: false
   values:
+    # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
     defaultPodOptions:
       automountServiceAccountToken: false
       securityContext:
@@ -36,25 +36,20 @@ spec:
         seccompProfile:
           type: RuntimeDefault
     controllers:
-      main:
-        strategy: RollingUpdate
+      ml-detector:
         annotations:
           reloader.stakater.com/auto: "true"
+        replicas: 1
+        strategy: RollingUpdate
         containers:
           app:
-            image:
-              repository: ghcr.io/jazzlyn/ring-ml-person-detector
-              tag: 0.2.0@sha256:b17417e643886b876a4cdca542caf14d854c5db569fb2c7bf4a41c27a7e7f01a
             env:
               CONFIG_PATH: /config/configuration.yaml
               YOLO_CACHE_DIR: /models/cache
               YOLO_CONFIG_DIR: /models/config
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
+            image:
+              repository: ghcr.io/jazzlyn/ring-ml-person-detector
+              tag: 0.2.0@sha256:b17417e643886b876a4cdca542caf14d854c5db569fb2c7bf4a41c27a7e7f01a
             ports:
               - name: http
                 containerPort: &port 8000
@@ -91,10 +86,25 @@ spec:
               requests:
                 cpu: 100m
                 memory: 128Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+        pod:
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            runAsNonRoot: true
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: *app
     service:
-      main:
-        controller: main
-        type: ClusterIP
+      app:
+        controller: *app
         ports:
           http:
             port: *port
