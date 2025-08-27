@@ -18,4 +18,4 @@ generatorOptions:
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
 patches:
-  - path: helm-releaase.patch.yaml
+  - path: helm-release.patch.yaml
