@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -26,7 +26,7 @@ spec:
   upgrade:
     remediation:
       retries: 3
-  # https://github.com/bjw-s/helm-charts/blob/main/charts/library/common/values.yaml
+  # https://bjw-s-labs.github.io/helm-charts/docs/app-template/
   values:
     defaultPodOptions:
       automountServiceAccountToken: false
@@ -103,23 +103,15 @@ spec:
             path: /metrics
             interval: 1m
 
-    ingress:
+    routes:
       app:
-        className: traefik
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          kubernetes.io/tls-acme: "true"
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          # external-dns.alpha.kubernetes.io/target: external.techtales.io
-          # external-dns/cloudflare: "true"
-        hosts:
-          - host: &host anubis-grafana.techtales.io
-            paths:
-              - path: /
-                service:
-                  identifier: anubis
-                  port: http
-        tls:
-          - hosts:
-              - *host
-            secretName: "{{ .Release.Name }}-tls"
+        hostnames:
+          - "{{ .Release.Name }}.techtales.io"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: anubis
+                port: *httpPort
