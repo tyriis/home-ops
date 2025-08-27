@@ -46,7 +46,7 @@ spec:
           app:
             image:
               repository: ghcr.io/itzg/minecraft-server
-              tag: java21@sha256:ae3f5ef505ff60ec134e43faa54b41b8efbb05bbd602b6f2ba989f54ff756596
+              tag: java21@sha256:b66be465081bf16f2f171d3688b0eb2fb0975b39db818f676e4dd363d0aa1411
             probes:
               liveness: &probes
                 enabled: true
