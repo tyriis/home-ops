@@ -3,8 +3,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./oci-repository.yaml
-  - regcreds-docker.sops.yaml
-  - ./jazzlyn
-  - ./organization
-  - ./tyriis
+  - ./external-secret.yaml
+  - ./gh-actions-demo.yaml
+  - ./kind-flux-demo.yaml

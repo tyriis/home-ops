@@ -33,7 +33,7 @@ jobs:
   renovate:
     name: Renovate
     #runs-on: ubuntu-latest
-    runs-on: arc-runner-set-home-ops
+    runs-on: tyriis-home-ops-runner
     steps:
       # # https://github.com/marketplace/actions/github-app-token
       # - name: Harden Runner

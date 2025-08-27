@@ -1,13 +1,13 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/podmonitor_v1.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/monitoring.coreos.com/podmonitor_v1.json
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: actions-runner-controller
+  name: &app actions-runner-controller
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/part-of: gha-rs-controller
+      app.kubernetes.io/instance: *app
   podMetricsEndpoints:
     - port: metrics
       path: /metrics

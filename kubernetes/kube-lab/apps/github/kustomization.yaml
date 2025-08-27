@@ -2,7 +2,9 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: github
+components:
+  - ../../../components/flux/alerts
 resources:
-  - secrets.sops.yaml
-  - gh-actions-demo.yaml
-  - kind-flux-demo.yaml
+  - ./namespace.yaml
+  - ./actions-runner-controller/flux-sync.yaml

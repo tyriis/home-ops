@@ -7,7 +7,7 @@ resources:
   - ./helm-release.yaml
   - ./pod-monitor.yaml
 configMapGenerator:
-  # Ref: https://github.com/actions/actions-runner-controller/blob/master/docs/gha-runner-scale-set-controller/samples/grafana-dashboard/ARC-Autoscaling-Runner-Set-Monitoring_1692627561838.json
+  # Ref: https://github.com/actions/actions-runner-controller/blob/master/docs/gha-runner-scale-set-controller/samples/grafana-dashboard/ARC-Autoscaling-Runner-Set-Monitoring.json
   - name: arc-dashboard
     files:
       - arc-dashboard.json
