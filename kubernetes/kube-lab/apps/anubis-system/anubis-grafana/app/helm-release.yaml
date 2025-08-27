@@ -20,14 +20,16 @@ spec:
         name: bjw-s-charts
         namespace: flux-system
   install:
-    createNamespace: true
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
+    cleanupOnFail: true
     remediation:
       retries: 3
-  # https://bjw-s-labs.github.io/helm-charts/docs/app-template/
+  uninstall:
+    keepHistory: false
   values:
+    # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
     defaultPodOptions:
       automountServiceAccountToken: false
       securityContext:
