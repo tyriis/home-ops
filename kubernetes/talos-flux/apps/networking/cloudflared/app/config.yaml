@@ -9,14 +9,6 @@ warp-routing:
 ingress:
   # The localhost:8000 service inherits all root-level configuration.
   # In other words, it will use a connectTimeout of 30 seconds.
-  - hostname: grafana.techtales.io
-    service: https://anubis-grafana.techtales.io
-    originRequest:
-      httpHostHeader: anubis-grafana.techtales.io
-  # - hostname: auth.techtales.io
-  #   service: https://auth.techtales.io
-  #   originRequest:
-  #     httpHostHeader: auth.techtales.io
   - hostname: echo-server.techtales.io
     service: https://echo-server.techtales.io
     originRequest:
@@ -25,10 +17,6 @@ ingress:
     service: https://flux-webhook.techtales.io
     originRequest:
       httpHostHeader: flux-webhook.techtales.io
-  - hostname: arc-webhook.techtales.io
-    service: https://arc-webhook.techtales.io
-    originRequest:
-      httpHostHeader: arc-webhook.techtales.io
   - hostname: kromgo.techtales.io
     service: https://kromgo.techtales.io
     originRequest:
