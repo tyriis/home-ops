@@ -1,22 +1,19 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname system-upgrade-controller
-  labels:
-    substitution.flux.home.arpa/disabled: "true"
-    sops.flux.home.arpa/disabled: "true"
+  name: &app system-upgrade-controller
 spec:
   targetNamespace: system-upgrade
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *appname
-  path: ./kubernetes/talos-flux/apps/system-upgrade/system-upgrade-controller/app
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/kube-lab/apps/system-upgrade/system-upgrade-controller/app
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-ops
+    name: flux-system
     namespace: flux-system
   wait: true
   interval: 30m
@@ -24,24 +21,21 @@ spec:
   timeout: 5m
 
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname system-upgrade-plans
-  labels:
-    substitution.flux.home.arpa/disabled: "true"
-    sops.flux.home.arpa/disabled: "true"
+  name: &app system-upgrade-plans
 spec:
   targetNamespace: system-upgrade
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *appname
-  path: ./kubernetes/talos-flux/apps/system-upgrade/system-upgrade-controller/plans
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/kube-lab/apps/system-upgrade/system-upgrade-controller/plans
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-ops
+    name: flux-system
     namespace: flux-system
   wait: false
   interval: 30m
@@ -52,6 +46,6 @@ spec:
   postBuild:
     substitute:
       # renovate: depName=ghcr.io/siderolabs/installer datasource=docker
-      TALOS_VERSION: v1.10.6
+      TALOS_VERSION: v1.10.5
       # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
       KUBERNETES_VERSION: v1.33.3

@@ -2,10 +2,9 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: default
+namespace: system-upgrade
 components:
   - ../../../components/flux/alerts
 resources:
   - ./namespace.yaml
-  - ./echo-server/flux-sync.yaml
-  - ./homepage/flux-sync.yaml
+  - ./system-upgrade-controller/flux-sync.yaml
