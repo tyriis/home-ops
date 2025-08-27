@@ -31,6 +31,10 @@ ingress:
     service: https://atlantis-techtales-io-terraform-opnsense-webhook.techtales.io
   - hostname: atlantis-techtales-io-terraform-vault-webhook.techtales.io
     service: https://atlantis-techtales-io-terraform-vault-webhook.techtales.io
+  - hostname: grafana.techtales.io
+    service: https://anubis-grafana.techtales.io
+    originRequest:
+      httpHostHeader: anubis-grafana.techtales.io
 
   # Example of a request over TCP:
   # - hostname: example.com
