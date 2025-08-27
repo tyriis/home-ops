@@ -15,6 +15,22 @@ ingress:
     service: https://auth.techtales.io
   - hostname: flux-webhook-kube-lab.techtales.io
     service: https://flux-webhook-kube-lab.techtales.io
+  - hostname: atlantis-tyriis-terraform-github-webhook.techtales.io
+    service: https://atlantis-tyriis-terraform-github-webhook.techtales.io
+  - hostname: atlantis-techtales-io-terraform-discord-webhook.techtales.io
+    service: https://atlantis-techtales-io-terraform-discord-webhook.techtales.io
+  - hostname: atlantis-techtales-io-terraform-github-webhook.techtales.io
+    service: https://atlantis-techtales-io-terraform-github-webhook.techtales.io
+  - hostname: atlantis-techtales-io-terraform-gworkspace-webhook.techtales.io
+    service: https://atlantis-techtales-io-terraform-gworkspace-webhook.techtales.io
+  - hostname: atlantis-techtales-io-terraform-gcloud-webhook.techtales.io
+    service: https://atlantis-techtales-io-terraform-gcloud-webhook.techtales.io
+  - hostname: atlantis-techtales-io-terraform-minio-webhook.techtales.io
+    service: https://atlantis-techtales-io-terraform-minio-webhook.techtales.io
+  - hostname: atlantis-techtales-io-terraform-opnsense-webhook.techtales.io
+    service: https://atlantis-techtales-io-terraform-opnsense-webhook.techtales.io
+  - hostname: atlantis-techtales-io-terraform-vault-webhook.techtales.io
+    service: https://atlantis-techtales-io-terraform-vault-webhook.techtales.io
 
   # Example of a request over TCP:
   # - hostname: example.com
