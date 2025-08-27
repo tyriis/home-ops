@@ -31,7 +31,7 @@ talosctl = "1.10.7"
 # https://taskfile.dev/
 task = "3.43.3"
 # https://www.terraform.io/
-terraform = "1.11.4"
+terraform = "1.13.0"
 # https://terraform-docs.io/
 terraform-docs = "0.20.0"
 # https://github.com/terraform-linters/tflint
