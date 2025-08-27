@@ -9,4 +9,3 @@ resources:
   - ./namespace.yaml
   - ./echo-server/flux-sync.yaml
   - ./homepage/flux-sync.yaml
-  - ./openspeedtest/flux-sync.yaml
