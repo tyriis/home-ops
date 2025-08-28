@@ -5,8 +5,6 @@ kind: HelmRelease
 metadata:
   name: flux-instance
 spec:
-  dependsOn:
-    - name: flux-operator
   interval: 30m
   chart:
     spec:
