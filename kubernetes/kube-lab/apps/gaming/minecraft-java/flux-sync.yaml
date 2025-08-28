@@ -4,7 +4,6 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app minecraft-velocity-proxy
-
 spec:
   targetNamespace: &namespace gaming
   commonMetadata:
@@ -38,9 +37,6 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app minecraft-lobby-world
-  labels:
-    substitution.flux.home.arpa/disabled: "true"
-    sops.flux.home.arpa/disabled: "false"
 spec:
   targetNamespace: &namespace gaming
   commonMetadata:
@@ -78,7 +74,6 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app minecraft-creative-world
-
 spec:
   targetNamespace: &namespace gaming
   commonMetadata:
@@ -154,9 +149,6 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app minecraft-survival-world
-  labels:
-    substitution.flux.home.arpa/disabled: "true"
-    sops.flux.home.arpa/disabled: "false"
 spec:
   targetNamespace: &namespace gaming
   commonMetadata:
