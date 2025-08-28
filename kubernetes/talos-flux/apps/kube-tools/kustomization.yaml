@@ -7,7 +7,6 @@ components:
   - ../../../components/flux/alerts
 resources:
   - ./namespace.yaml
-  - ./intel-device-plugins/flux-sync.yaml
   - ./k8tz/flux-sync.yaml
   - ./node-feature-discovery/flux-sync.yaml
   - ./reloader/flux-sync.yaml

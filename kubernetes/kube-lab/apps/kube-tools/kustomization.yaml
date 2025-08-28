@@ -9,8 +9,7 @@ resources:
   - ./namespace.yaml
   - ./i-see-dead-pods/flux-sync.yaml
   - ./irqbalance/flux-sync.yaml
-  # FIXME: implement
-  # - ./intel-device-plugins/flux-sync.yaml
+  - ./intel-device-plugins/flux-sync.yaml
   - ./k8tz/flux-sync.yaml
   # FIXME: implement
   # - ./node-feature-discovery/flux-sync.yaml
