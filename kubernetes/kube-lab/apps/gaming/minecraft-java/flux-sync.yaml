@@ -11,6 +11,7 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../../components/gatus/minecraft
+    - ../../../../../components/volsync
   path: ./kubernetes/kube-lab/apps/gaming/minecraft-java/velocity-proxy
   prune: true
   sourceRef:
