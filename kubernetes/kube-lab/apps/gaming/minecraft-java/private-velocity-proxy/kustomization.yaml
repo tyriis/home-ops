@@ -3,20 +3,13 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - external-secret.yaml
-  - persistent-volume-claim.yaml
-  - helm-release.yaml
+  - ./external-secret.yaml
+  - ./helm-release.yaml
 configMapGenerator:
-  - name: minecraft-public-velocity-proxy-config
+  - name: minecraft-velocity-proxy-config
     files:
       - velocity.toml=config/velocity.toml
       - plugins.txt=config/plugins.txt
-  - name: minecraft-public-velocity-proxy-plugins-viaversion
-    files:
-      - config.yml=plugins/viaversion/config.yml
-  - name: minecraft-public-velocity-proxy-plugins-minimotd
-    files:
-      - main.conf=plugins/minimotd-velocity/main.conf
 generatorOptions:
   disableNameSuffixHash: true
   annotations:

@@ -1,9 +1,9 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app minecraft-velocity-proxy
+  name: &app minecraft-public-velocity-proxy
 spec:
   interval: 15m
   driftDetection:
@@ -19,11 +19,11 @@ spec:
   install:
     createNamespace: true
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     remediation:
       retries: 3
-  # https://github.com/bjw-s/helm-charts/blob/main/charts/library/common/values.yaml
+  # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
   values:
     defaultPodOptions:
       automountServiceAccountToken: false
@@ -49,7 +49,7 @@ spec:
               tag: java21@sha256:f79c958dfc4ba71b96a3e959941280ad7136e0eae86fde443e7b7bde729b22f7
             envFrom:
               - secretRef:
-                  name: minecraft-velocity-proxy-rcon
+                  name: minecraft-public-velocity-proxy-rcon
             env:
               # for a full list of ENV vars see: https://github.com/itzg/docker-mc-proxy#environment-settings
               UID: "1000"
@@ -78,8 +78,7 @@ spec:
               PLUGINS_FILE: /config/plugins.txt
               REPLACE_ENV_VARIABLES: "TRUE"
 
-              # Features
-              ICON: "https://storage.googleapis.com/techtales-public-images/server-icon.png"
+              ICON: "https://storage.googleapis.com/techtales-public-images/lava-chicken-icon.png"
               ENABLE_RCON: "true"
 
             securityContext:
@@ -94,6 +93,9 @@ spec:
                 protocol: TCP
               - name: bedrock
                 containerPort: &bedrockPort 19132
+                protocol: UDP
+              - name: simplevoicechat
+                containerPort: &simplevoicechatPort 24454
                 protocol: UDP
               - name: rcon
                 containerPort: &rconPort 25575
@@ -133,6 +135,10 @@ spec:
             port: *bedrockPort
             protocol: UDP
             targetPort: bedrock
+          simplevoicechat-proxy:
+            port: *simplevoicechatPort
+            protocol: UDP
+            targetPort: simplevoicechat
       rcon:
         controller: velocity
         ports:
@@ -151,7 +157,7 @@ spec:
     serviceMonitor:
       metrics:
         enabled: true
-        serviceName: minecraft-velocity-proxy-metrics
+        serviceName: minecraft-public-velocity-proxy-metrics
         endpoints:
           - port: metrics
             scheme: http
@@ -165,12 +171,12 @@ spec:
           - path: /tmp
       data:
         type: persistentVolumeClaim
-        existingClaim: minecraft-velocity-proxy-data
+        existingClaim: minecraft-public-velocity-proxy-data
         globalMounts:
           - path: /server
       config:
         type: configMap
-        name: minecraft-velocity-proxy-config
+        name: minecraft-public-velocity-proxy-config
         globalMounts:
           - path: /config/velocity.toml
             subPath: velocity.toml
@@ -180,8 +186,35 @@ spec:
             readOnly: true
       forwarding-secret:
         type: secret
-        name: minecraft-velocity-proxy-proxy-forwarding
+        name: minecraft-public-velocity-proxy-proxy-forwarding
         globalMounts:
           - path: /config/forwarding.secret
             subPath: forwarding.secret
             readOnly: true
+      whitelist:
+        type: secret
+        name: minecraft-public-velocity-proxy-whitelist
+        advancedMounts:
+          velocity:
+            app:
+              - path: /plugins/simplewhitelist/whitelist.txt
+                subPath: whitelist.txt
+                readOnly: true
+      viaversion:
+        type: configMap
+        name: minecraft-public-velocity-proxy-plugins-viaversion
+        advancedMounts:
+          velocity:
+            app:
+              - path: /plugins/viaversion/config.yml
+                subPath: config.yml
+                readOnly: true
+      minimotd:
+        type: configMap
+        name: minecraft-public-velocity-proxy-plugins-minimotd
+        advancedMounts:
+          velocity:
+            app:
+              - path: /plugins/minimotd-velocity/main.conf
+                subPath: main.conf
+                readOnly: true
