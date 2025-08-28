@@ -4,6 +4,8 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: &name ${APP}-${VOLSYNC_SUFFIX:=data}
+  labels:
+    kustomize.toolkit.fluxcd.io/prune: disabled
 spec:
   accessModes:
     - ReadWriteOnce
