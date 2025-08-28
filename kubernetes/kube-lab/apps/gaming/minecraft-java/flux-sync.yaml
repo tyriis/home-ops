@@ -160,6 +160,7 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../../components/gatus/minecraft
+    - ../../../../../components/volsync
   path: ./kubernetes/kube-lab/apps/gaming/minecraft-java/survival-world
   prune: true
   sourceRef:
@@ -182,3 +183,5 @@ spec:
       APP: *app
       NAMESPACE: *namespace
       SERVICE: minecraft-survival-world-minecraft
+      VOLSYNC_CAPACITY: 10Gi
+      VOLSYNC_CACHE_CAPACITY: 10Gi
