@@ -25,8 +25,8 @@ spec:
   dependsOn:
     - name: external-secrets-stores
       namespace: secops
-    # - name: volsync
-    #   namespace: backup-system
+    - name: volsync
+      namespace: backup-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
   postBuild:
