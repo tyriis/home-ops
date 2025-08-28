@@ -13,7 +13,7 @@ spec:
   restic:
     repository: ${APP}-${VOLSYNC_SUFFIX:=data}-volsync-minio
     copyMethod: Snapshot
-    volumeSnapshotClassName: ${VOLSYNC_SNAPSHOTCLASS:=csi-ceph-blockpool}
+    volumeSnapshotClassName: ${VOLSYNC_SNAPSHOTCLASS:=ceph-block}
     cacheStorageClassName: ${VOLSYNC_CACHE_SNAPSHOTCLASS:=ceph-block}
     cacheAccessModes:
       - ReadWriteOnce

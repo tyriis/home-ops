@@ -3,24 +3,18 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - config-map.yaml
-  - secret.sops.yaml
-  - replication-destination.yaml
-  - persistent-volume-claim.yaml
-  - replication-source.yaml
-  - ../../../../../base/apps/minecraft/paper-server/helm-release.yaml
+  - ./config-map.yaml
+components:
+  - ../../../../../components/minecraft
 configMapGenerator:
-  - name: minecraft-survival-world-config
+  - name: minecraft-lobby-world-config
     files:
       - spigot.yml=config/spigot.yaml
       - paper-global.yml=config/paper-global.yaml
       - plugins.txt=config/plugins.txt
-  - name: minecraft-survival-world-plugins-axgraves-config
-    files:
-      - config.yml=plugins/AxGraves/config.yml
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
 patches:
-  - path: ./helm-values.yaml
+  - path: ./helm-release.patch.yaml

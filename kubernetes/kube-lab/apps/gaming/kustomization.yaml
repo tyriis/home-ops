@@ -5,7 +5,6 @@ kind: Kustomization
 namespace: gaming
 components:
   - ../../../components/flux/alerts
-  - ../../../components/sops/talos-flux
 resources:
   - ./namespace.yaml
   - ./minecraft-java/flux-sync.yaml
