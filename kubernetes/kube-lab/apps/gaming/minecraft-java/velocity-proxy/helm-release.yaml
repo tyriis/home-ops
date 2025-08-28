@@ -5,9 +5,6 @@ kind: HelmRelease
 metadata:
   name: &app minecraft-velocity-proxy
 spec:
-  dependsOn:
-    - name: external-secret-minecraft-proxy-forwarding
-    - name: external-secret-minecraft-rcon
   interval: 15m
   driftDetection:
     mode: enabled
@@ -52,7 +49,7 @@ spec:
               tag: java21@sha256:f79c958dfc4ba71b96a3e959941280ad7136e0eae86fde443e7b7bde729b22f7
             envFrom:
               - secretRef:
-                  name: minecraft-rcon
+                  name: minecraft-velocity-proxy-rcon
             env:
               # for a full list of ENV vars see: https://github.com/itzg/docker-mc-proxy#environment-settings
               UID: "1000"
@@ -183,7 +180,7 @@ spec:
             readOnly: true
       forwarding-secret:
         type: secret
-        name: minecraft-proxy-forwarding
+        name: minecraft-velocity-proxy-proxy-forwarding
         globalMounts:
           - path: /config/forwarding.secret
             subPath: forwarding.secret
