@@ -12,7 +12,7 @@ spec:
   components:
     - ../../../../../components/gatus/minecraft
     - ../../../../../components/volsync
-  path: ./kubernetes/kube-lab/apps/gaming/minecraft-java/velocity-proxy
+  path: ./kubernetes/kube-lab/apps/gaming/minecraft-java/private-velocity-proxy
   prune: true
   sourceRef:
     kind: GitRepository
@@ -50,7 +50,7 @@ spec:
   components:
     - ../../../../../components/gatus/minecraft
     - ../../../../../components/volsync
-  path: ./kubernetes/kube-lab/apps/gaming/minecraft-java/lobby-world
+  path: ./kubernetes/kube-lab/apps/gaming/minecraft-java/private-lobby-world
   prune: true
   sourceRef:
     kind: GitRepository
@@ -87,7 +87,7 @@ spec:
   components:
     - ../../../../../components/gatus/minecraft
     - ../../../../../components/volsync
-  path: ./kubernetes/kube-lab/apps/gaming/minecraft-java/creative-world
+  path: ./kubernetes/kube-lab/apps/gaming/minecraft-java/private-creative-world
   prune: true
   sourceRef:
     kind: GitRepository
@@ -125,7 +125,7 @@ spec:
   components:
     - ../../../../../components/volsync
     - ../../../../../components/gatus/minecraft
-  path: ./kubernetes/kube-lab/apps/gaming/minecraft-java/playground-world
+  path: ./kubernetes/kube-lab/apps/gaming/minecraft-java/private-playground-world
   prune: true
   sourceRef:
     kind: GitRepository
@@ -161,7 +161,7 @@ spec:
   components:
     - ../../../../../components/gatus/minecraft
     - ../../../../../components/volsync
-  path: ./kubernetes/kube-lab/apps/gaming/minecraft-java/survival-world
+  path: ./kubernetes/kube-lab/apps/gaming/minecraft-java/private-survival-world
   prune: true
   sourceRef:
     kind: GitRepository
@@ -185,3 +185,191 @@ spec:
       SERVICE: minecraft-survival-world-minecraft
       VOLSYNC_CAPACITY: 10Gi
       VOLSYNC_CACHE_CAPACITY: 10Gi
+
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app minecraft-public-lobby-world
+spec:
+  targetNamespace: &namespace gaming
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../../components/gatus/minecraft
+    - ../../../../../components/volsync
+  path: ./kubernetes/kube-lab/apps/gaming/minecraft-java/public-lobby-world
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: external-secrets-stores
+      namespace: secops
+    - name: volsync
+      namespace: backup-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace
+      SERVICE: minecraft-public-lobby-world-minecraft
+
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app minecraft-public-playground-world
+spec:
+  targetNamespace: &namespace gaming
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../../components/gatus/minecraft
+    - ../../../../../components/volsync
+  path: ./kubernetes/kube-lab/apps/gaming/minecraft-java/public-playground-world
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: external-secrets-stores
+      namespace: secops
+    - name: volsync
+      namespace: backup-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace
+      SERVICE: minecraft-public-playground-world-minecraft
+
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app minecraft-public-pvp-world
+spec:
+  targetNamespace: &namespace gaming
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../../components/gatus/minecraft
+    - ../../../../../components/volsync
+  path: ./kubernetes/kube-lab/apps/gaming/minecraft-java/public-pvp-world
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: external-secrets-stores
+      namespace: secops
+    - name: volsync
+      namespace: backup-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace
+      SERVICE: minecraft-public-pvp-world-minecraft
+
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app minecraft-public-survival-world
+spec:
+  targetNamespace: &namespace gaming
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../../components/gatus/minecraft
+    - ../../../../../components/volsync
+  path: ./kubernetes/kube-lab/apps/gaming/minecraft-java/public-survival-world
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: external-secrets-stores
+      namespace: secops
+    - name: volsync
+      namespace: backup-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace
+      SERVICE: minecraft-public-survival-world-minecraft
+      VOLSYNC_CAPACITY: 10Gi
+      VOLSYNC_CACHE_CAPACITY: 10Gi
+
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app minecraft-public-velocity-proxy
+spec:
+  targetNamespace: &namespace gaming
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../../components/gatus/minecraft
+    - ../../../../../components/volsync
+  path: ./kubernetes/kube-lab/apps/gaming/minecraft-java/public-velocity-proxy
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: external-secrets-stores
+      namespace: secops
+    - name: volsync
+      namespace: backup-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace
+      SERVICE: minecraft-public-velocity-proxy-velocity
+      CILIUM_LB_IPS: 192.168.100.212
