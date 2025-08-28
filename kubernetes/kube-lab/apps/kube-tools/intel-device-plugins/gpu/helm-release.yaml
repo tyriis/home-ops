@@ -26,4 +26,5 @@ spec:
   values:
     # https://artifacthub.io/packages/helm/intel/intel-device-plugins-gpu?modal=values
     name: i915
+    nodeFeatureRule: false
     sharedDevNum: 1 # setting greater than 1 enables sharing, allowing multiple pods to use the same GPU concurrently
