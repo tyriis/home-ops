@@ -27,6 +27,8 @@
     "kubernetes/talos-flux/apps/default/homepage/app/config/**",
     "kubernetes/talos-flux/apps/system-upgrade/system-upgrade-controller/plans/kubernetes.yaml",
     "kubernetes/talos-flux/apps/system-upgrade/system-upgrade-controller/plans/talos.yaml",
+    "kubernetes/kube-lab/apps/system-upgrade/system-upgrade-controller/plans/kubernetes.yaml",
+    "kubernetes/kube-lab/apps/system-upgrade/system-upgrade-controller/plans/talos.yaml",
   ],
   rebaseWhen: "conflicted",
   ansible: {
