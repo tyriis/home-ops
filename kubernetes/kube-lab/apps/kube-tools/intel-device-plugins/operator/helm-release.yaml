@@ -1,11 +1,11 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: intel-device-plugins-operator
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: intel-device-plugins-operator
@@ -14,19 +14,17 @@ spec:
         kind: HelmRepository
         name: intel-device-plugins-charts
         namespace: flux-system
-  maxHistory: 15
   install:
-    createNamespace: true
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
   uninstall:
     keepHistory: false
-  # https://artifacthub.io/packages/helm/intel/intel-device-plugins-operator?modal=values
   values:
+    # https://artifacthub.io/packages/helm/intel/intel-device-plugins-operator?modal=values
     manager:
       devices:
         gpu: true
