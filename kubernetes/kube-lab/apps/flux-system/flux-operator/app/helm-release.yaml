@@ -21,9 +21,10 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    # https://artifacthub.io/packages/helm/flux-operator/flux-operator?modal=values
     serviceMonitor:
-      create: false
-    # resources:
-    #   requests:
-    #     cpu: 10m
-    #     memory: 100Mi
+      create: true
+    resources:
+      requests:
+        cpu: 10m
+        memory: 150Mi
