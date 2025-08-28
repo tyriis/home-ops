@@ -33,7 +33,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: /kubernetes/kube-lab/apps/flux-system/flux-operator/instance
+  path: ./kubernetes/kube-lab/apps/flux-system/flux-operator/instance
   prune: false # should never be deleted
   sourceRef:
     kind: GitRepository
@@ -58,7 +58,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: /kubernetes/kube-lab/apps/flux-system/flux-operator/observability
+  path: ./kubernetes/kube-lab/apps/flux-system/flux-operator/observability
   prune: true
   sourceRef:
     kind: GitRepository
