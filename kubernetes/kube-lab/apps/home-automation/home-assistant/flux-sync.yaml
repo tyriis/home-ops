@@ -23,6 +23,6 @@ spec:
   timeout: 5m
   postBuild:
     substitute:
-      APP_NAME: *app
+      APP: *app
       NAMESPACE: *namespace
       VOLSYNC_SUFFIX: config
