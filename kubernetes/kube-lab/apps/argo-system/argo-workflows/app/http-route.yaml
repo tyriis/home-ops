@@ -14,18 +14,13 @@ spec:
   hostnames:
     - argo-workflows.techtales.io
   parentRefs:
-    - group: gateway.networking.k8s.io
-      kind: Gateway
-      name: internal
+    - name: internal
       namespace: kube-system
       sectionName: https
   rules:
     - backendRefs:
-        - group: ""
-          kind: Service
-          name: argo-workflows-server
+        - name: argo-workflows-server
           port: 2746
-          weight: 1
       matches:
         - path:
             type: PathPrefix
