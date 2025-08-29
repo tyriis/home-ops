@@ -100,6 +100,14 @@ spec:
           - name: external
             namespace: kube-system
             sectionName: https
+        rules:
+          - backendRefs:
+              - name: kromgo
+                port: 8080
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /
 
     persistence:
       config-file:
