@@ -10,7 +10,6 @@ components:
 resources:
   - ./namespace.yaml
   - ./alertmanager-discord/flux-sync.yaml
-  - ./blackbox-exporter/flux-sync.yaml
   - ./botkube/flux-sync.yaml
   - ./gatus/flux-sync.yaml
   - ./kube-prometheus-stack/flux-sync.yaml
