@@ -26,6 +26,7 @@ spec:
     keepHistory: false
   values:
     # https://artifacthub.io/packages/helm/prometheus-community/prometheus-blackbox-exporter?modal=values
+    fullnameOverride: blackbox-exporter
     podSecurityContext:
       sysctls:
         - name: net.ipv4.ping_group_range
