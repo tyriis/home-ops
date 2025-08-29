@@ -99,8 +99,8 @@ spec:
     persistence:
       config-file:
         type: configMap
-        name: kromgo
+        name: kromgo-config
         globalMounts:
           - path: /kromgo/config.yaml
-            subPath: configuration.yaml
+            subPath: config.yaml
             readOnly: true

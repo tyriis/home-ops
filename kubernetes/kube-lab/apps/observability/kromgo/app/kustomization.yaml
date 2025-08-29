@@ -5,8 +5,8 @@ kind: Kustomization
 resources:
   - ./helm-release.yaml
 configMapGenerator:
-  - name: kromgo
+  - name: kromgo-config
     files:
-      - config.yaml=./configuration.yaml
+      - config.yaml=./resources/config.yaml
 generatorOptions:
   disableNameSuffixHash: true
