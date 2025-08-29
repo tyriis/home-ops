@@ -96,7 +96,6 @@ machine:
       - 192.168.1.1
     disableSearchDomain: true
   nodeLabels:
-    intel.feature.node.kubernetes.io/gpu: "true"
     topology.kubernetes.io/region: k8s
   sysctls:
     fs.inotify.max_user_watches: "1048576" # Watchdog

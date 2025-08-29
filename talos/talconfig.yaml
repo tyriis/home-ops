@@ -89,7 +89,6 @@ nodes:
             metric: 2048
     nodeLabels:
       topology.kubernetes.io/zone: home-lab
-      intel.feature.node.kubernetes.io/gpu: "true"
 
   # i9-13900H / 96GB / Samsung SSD 990 PRO 1TB / Samsung SSD 990 PRO 1TB
   - hostname: talos02
@@ -164,7 +163,6 @@ nodes:
             metric: 2048
     nodeLabels:
       topology.kubernetes.io/zone: home-lab
-      intel.feature.node.kubernetes.io/gpu: "true"
 
   # i9-13900H / 96GB / Samsung SSD 990 PRO 1TB / Samsung SSD 990 PRO 1TB
   - hostname: talos03
@@ -240,7 +238,6 @@ nodes:
             metric: 2048
     nodeLabels:
       topology.kubernetes.io/zone: home-lab
-      intel.feature.node.kubernetes.io/gpu: "true"
 
 controlPlane:
   schematic:
