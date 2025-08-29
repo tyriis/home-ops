@@ -9,6 +9,7 @@ resources:
   - ./namespace.yaml
   - ./blackbox-exporter/flux-sync.yaml
   - ./grafana/flux-sync.yaml
+  - ./kromgo/flux-sync.yaml
   - ./kube-prometheus-stack/flux-sync.yaml
   - ./kube-state-metrics/flux-sync.yaml
   - ./node-exporter/flux-sync.yaml

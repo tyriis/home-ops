@@ -3,13 +3,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - helm-release.yaml
+  - ./helm-release.yaml
 configMapGenerator:
-  - name: kromgo-configmap
+  - name: kromgo
     files:
-      - config.yaml=./resources/config.yaml
+      - config.yaml=./configuration.yaml
 generatorOptions:
   disableNameSuffixHash: true
-  labels:
-    app.kubernetes.io/name: kromgo
-    app.kubernetes.io/managed-by: kustomize
