@@ -126,7 +126,7 @@ spec:
 
     persistence:
       config:
-        existingClaim: home-assistant-config
+        existingClaim: "{{ .Release.Name }}-config"
         advancedMounts:
           home-assistant:
             app:
@@ -150,7 +150,7 @@ spec:
       #           subPath: .ssh
       #           readOnly: true
       hass-cache:
-        existingClaim: hass-cache
+        existingClaim: "{{ .Release.Name }}-cache"
         advancedMounts:
           home-assistant:
             app:
@@ -194,6 +194,16 @@ spec:
                   path:
                     type: ReplacePrefixMatch
                     replacePrefixMatch: /
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /code
+            filters:
+              - type: URLRewrite
+                urlRewrite:
+                  path:
+                    type: ReplacePrefixMatch
+                    replacePrefixMatch: ""
             backendRefs:
               - identifier: code-server
                 port: 12321
