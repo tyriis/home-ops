@@ -35,6 +35,8 @@ ingress:
     service: https://anubis-grafana.techtales.io
     originRequest:
       httpHostHeader: anubis-grafana.techtales.io
+  - hostname: kromgo.techtales.io
+    service: https://kromgo.techtales.io
 
   # Example of a request over TCP:
   # - hostname: example.com
