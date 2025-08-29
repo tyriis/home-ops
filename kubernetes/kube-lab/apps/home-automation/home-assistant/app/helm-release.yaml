@@ -87,12 +87,13 @@ spec:
 
     service:
       app:
-        controller: *app
         ports:
           http:
             port: 8123
             primary: true
             appProtocol: kubernetes.io/wss
+      code-server:
+        ports:
           code-server:
             port: 12321
 
