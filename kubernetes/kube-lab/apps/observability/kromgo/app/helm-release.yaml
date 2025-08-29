@@ -34,7 +34,7 @@ spec:
         containers:
           app:
             env:
-              PROMETHEUS_URL: http://prometheus-operated.observability.svc.cluster.local:9090
+              PROMETHEUS_URL: http://prometheus-operated.observability.svc.cluster.local:9090 #NOSONAR allow http
               SERVER_HOST: 0.0.0.0
               SERVER_PORT: &port 8080
               HEALTH_HOST: 0.0.0.0
