@@ -7,4 +7,5 @@ components:
   - ../../../components/flux/alerts
 resources:
   - ./namespace.yaml
+  - ./govee2mqtt/flux-sync.yaml
   - ./home-assistant/flux-sync.yaml
