@@ -5,21 +5,18 @@ kind: HelmRelease
 metadata:
   name: &app hisense-aircon
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: app-template
       version: 4.2.0
-      interval: 15m
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
-  maxHistory: 15
   install:
-    createNamespace: true
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
@@ -38,7 +35,7 @@ spec:
               tag: 0.3.17@sha256:f7b2f819be19924a05193f03370964816694760871c6da242311591c8d246b8b
             ports:
               - name: http
-                containerPort: 8888
+                containerPort: &port 8888
                 protocol: TCP
             probes:
               liveness:
@@ -51,23 +48,21 @@ spec:
               requests:
                 cpu: 100m
                 memory: 300Mi
-              limits:
-                memory: 2048Mi
 
     defaultPodOptions:
-      hostNetwork: true
+      hostNetwork: true # we need this to reach the aircon on the local network
 
     service:
       app:
         controller: aircon
         ports:
           http:
-            port: 8888
+            port: *port
 
     persistence:
       options:
         type: secret
-        name: aircon-options
+        name: hisense-aircon-conf
         globalMounts:
           - path: /data/options.json
             subPath: options.json
