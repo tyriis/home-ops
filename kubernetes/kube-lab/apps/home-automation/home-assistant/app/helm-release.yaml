@@ -188,7 +188,6 @@ spec:
               - path:
                   type: PathPrefix
                   value: /code/
-
             filters:
               - type: URLRewrite
                 urlRewrite:
