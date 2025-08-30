@@ -3,6 +3,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./external-secret.yaml
+  # - ./external-secret.yaml not in use currently
   - ./helm-release.yaml
   - ./prometheus-rule.yaml
