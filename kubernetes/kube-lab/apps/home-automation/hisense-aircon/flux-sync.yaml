@@ -3,23 +3,17 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname hisense-aircon
-  labels:
-    substitution.flux.home.arpa/disabled: "true"
-    sops.flux.home.arpa/disabled: "false"
-  annotations:
-    backstage.io/discovery: enabled
-    backstage.io/name: *appname
+  name: &app hisense-aircon
 spec:
   targetNamespace: home-automation
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *appname
-  path: ./kubernetes/talos-flux/apps/home-automation/hisense-aircon/app
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/kube-lab/apps/home-automation/hisense-aircon/app
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-ops
+    name: flux-system
     namespace: flux-system
   wait: true
   interval: 30m
