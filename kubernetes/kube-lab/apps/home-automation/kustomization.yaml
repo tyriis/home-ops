@@ -9,3 +9,4 @@ resources:
   - ./namespace.yaml
   - ./govee2mqtt/flux-sync.yaml
   - ./home-assistant/flux-sync.yaml
+  - ./zigbee2mqtt/flux-sync.yaml
