@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: &app zigbee2mqtt
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: app-template
@@ -14,14 +14,15 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
-      interval: 15m
   install:
-    createNamespace: false
     remediation:
-      retries: 5
+      retries: -1
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     controllers:
       zigbee2mqtt:
@@ -63,7 +64,7 @@ spec:
               ZIGBEE2MQTT_CONFIG_MQTT_INCLUDE_DEVICE_INFORMATION: "true"
               ZIGBEE2MQTT_CONFIG_MQTT_KEEPALIVE: 60
               ZIGBEE2MQTT_CONFIG_MQTT_REJECT_UNAUTHORIZED: "true"
-              ZIGBEE2MQTT_CONFIG_MQTT_SERVER: mqtt://mqtt.home
+              ZIGBEE2MQTT_CONFIG_MQTT_SERVER: mqtt://mqtt.techtales.io
               # ZIGBEE2MQTT_CONFIG_MQTT_VERSION: 5
               ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: "false"
               # ZIGBEE2MQTT_CONFIG_SERIAL_BAUDRATE: 115200
@@ -133,7 +134,6 @@ spec:
           gethomepage.dev/group: Home Automation
           gethomepage.dev/icon: zigbee2mqtt
           gethomepage.dev/name: Zigbee2MQTT
-          gethomepage.dev/weight: "5" # optional
         hosts:
           - host: &host "{{ .Release.Name }}.techtales.io"
             paths:
@@ -148,7 +148,7 @@ spec:
 
     persistence:
       config:
-        existingClaim: zigbee2mqtt-data
+        existingClaim: "{{ .Release.Name }}-data"
         advancedMounts:
           zigbee2mqtt:
             app:

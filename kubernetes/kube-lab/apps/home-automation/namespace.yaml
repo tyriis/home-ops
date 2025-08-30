@@ -6,4 +6,4 @@ metadata:
   name: home-automation
   labels:
     kustomize.toolkit.fluxcd.io/prune: disabled
-    pod-security.kubernetes.io/enforce: privileged # required for govee2mqtt to allow hostNetwork
+    pod-security.kubernetes.io/enforce: privileged # required for govee2mqtt to allow hostNetwork and zigbee2mqtt to connect to usb
