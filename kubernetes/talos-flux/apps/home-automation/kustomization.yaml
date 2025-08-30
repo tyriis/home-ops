@@ -16,4 +16,4 @@ resources:
   - ./n8n/flux-sync.yaml
   - ./node-red/flux-sync.yaml
   - ./ring-mqtt/flux-sync.yaml
-  - ./zigbee2mqtt/flux-sync.yaml
+  # - ./zigbee2mqtt/flux-sync.yaml
