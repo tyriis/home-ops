@@ -14,7 +14,6 @@ resources:
   - ./gatus/flux-sync.yaml
   - ./kube-prometheus-stack/flux-sync.yaml
   - ./opnsense-exporter/flux-sync.yaml
-  - ./promtail/flux-sync.yaml
   - ./smartctl-exporter/flux-sync.yaml
   - ./speedtest-exporter/flux-sync.yaml
   - ./unpoller/flux-sync.yaml
