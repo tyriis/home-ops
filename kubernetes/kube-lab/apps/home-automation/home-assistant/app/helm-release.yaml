@@ -187,23 +187,17 @@ spec:
           - matches:
               - path:
                   type: PathPrefix
+                  value: /code
+              - path:
+                  type: PathPrefix
                   value: /code/
+
             filters:
               - type: URLRewrite
                 urlRewrite:
                   path:
                     type: ReplacePrefixMatch
                     replacePrefixMatch: /
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /code
-            filters:
-              - type: URLRewrite
-                urlRewrite:
-                  path:
-                    type: ReplacePrefixMatch
-                    replacePrefixMatch: ""
             backendRefs:
               - identifier: code-server
                 port: 12321
