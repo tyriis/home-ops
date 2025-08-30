@@ -14,4 +14,5 @@ resources:
   - ./kube-state-metrics/flux-sync.yaml
   - ./loki/flux-sync.yaml
   - ./node-exporter/flux-sync.yaml
+  - ./promtail/flux-sync.yaml
   - ./smartctl-exporter/flux-sync.yaml
