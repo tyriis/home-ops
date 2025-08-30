@@ -69,8 +69,8 @@ spec:
             runAsGroup: 65534
             runAsNonRoot: true
 
-    # defaultPodOptions:
-    #   hostNetwork: true
+    defaultPodOptions:
+      hostNetwork: true
 
     service:
       app:
