@@ -3,10 +3,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - secret.sops.yaml
-  - helm-release.yaml
-  - prometheus-rule.yaml
-  - ingress.yaml
+  - ./external-secret.yaml
+  - ./helm-release.yaml
+  - ./helm-repository.yaml
+  - ./prometheus-rule.yaml
 configMapGenerator:
   - name: loki-alerting-rules
     files:

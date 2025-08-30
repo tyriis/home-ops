@@ -1,11 +1,10 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: loki
 spec:
-  timeout: 5m
   interval: 30m
   chart:
     spec:
@@ -13,18 +12,16 @@ spec:
       version: 6.38.0
       sourceRef:
         kind: HelmRepository
-        name: grafana-charts
-        namespace: flux-system
-      interval: 30m
-  maxHistory: 10
+        name: grafana
   install:
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
+    cleanupOnFail: true
     remediation:
       retries: 3
-      remediateLastFailure: true
-    cleanupOnFail: true
+  uninstall:
+    keepHistory: false
   # https://grafana.com/docs/loki/latest/configuration/
   # https://artifacthub.io/packages/helm/grafana/loki?modal=values
   # https://github.com/grafana/loki/blob/main/production/helm/loki/values.yaml
@@ -32,15 +29,13 @@ spec:
     deploymentMode: SingleBinary
     loki:
       podAnnotations:
-        secret.reloader.stakater.com/reload: loki-s3
+        reloader.stakater.com/auto: "true"
       analytics:
         reporting_enabled: false
       auth_enabled: false
       compactor:
         delete_request_store: s3
         retention_enabled: true
-        retention_delete_delay: 2h
-        retention_delete_worker_count: 150
         working_directory: /var/loki/compactor/retention
       ingester:
         chunk_encoding: snappy
@@ -49,7 +44,7 @@ spec:
       rulerConfig:
         enable_api: true
         enable_alertmanager_v2: true
-        alertmanager_url: http://prometheus-alertmanager.observability.svc.cluster.local:9093 #NOSONAR allow http
+        alertmanager_url: http://alertmanager-operated.observability.svc.cluster.local:9093 #NOSONAR allow http
         rule_path: /rules/fake
         storage:
           type: local
@@ -76,17 +71,17 @@ spec:
 
     singleBinary:
       replicas: 2
+      persistence:
+        size: 20Gi
+        storageClass: ceph-block
       resources:
         requests:
           cpu: 10m
           memory: 100Mi
-      persistence:
-        size: 20Gi
-        storageClass: openebs-hostpath
 
     sidecar:
+      enableUniqueFilenames: true
       rules:
-        enabled: true
         searchNamespace: ALL
         label: loki_rule
         folder: /rules/fake
