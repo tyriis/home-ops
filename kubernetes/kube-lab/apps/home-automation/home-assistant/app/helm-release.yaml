@@ -187,9 +187,6 @@ spec:
           - matches:
               - path:
                   type: PathPrefix
-                  value: /code
-              - path:
-                  type: PathPrefix
                   value: /code/
 
             filters:
