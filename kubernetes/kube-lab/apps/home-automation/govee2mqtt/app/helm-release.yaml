@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: &app govee2mqtt
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: app-template
@@ -15,11 +15,10 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
-  maxHistory: 15
   install:
     createNamespace: true
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
@@ -37,11 +36,11 @@ spec:
               # GOVEE_LAN_NO_MULTICAST: "true"
               # GOVEE_LAN_BROADCAST_ALL: "true"
               # GOVEE_LAN_BROADCAST_GLOBAL: "true"
-              # GOVEE_LAN_SCAN: 10.0.0.1,10.0.0.2
-              GOVEE_MQTT_HOST: mqtt.home
+              GOVEE_LAN_SCAN: 192.168.10.30,192.168.10.31
+              GOVEE_MQTT_HOST: mqtt.techtales.io
               GOVEE_MQTT_PORT: 1883
               GOVEE_TEMPERATURE_SCALE: C
-              # RUST_LOG_STYLE: always
+              RUST_LOG_STYLE: always
               # RUST_LOG: govee=trace
             image:
               repository: ghcr.io/wez/govee2mqtt
@@ -80,33 +79,20 @@ spec:
           http:
             port: *port
 
-    ingress:
+    route:
       app:
-        enabled: true
-        className: traefik
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          traefik.ingress.kubernetes.io/router.middlewares: traefik-ingress-sso@kubernetescrd
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/affinity: "true"
-          traefik.ingress.kubernetes.io/router.tls: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Govee to MQTT bridge for Home Assistant
           gethomepage.dev/group: Home Automation
           gethomepage.dev/icon: mqtt
           gethomepage.dev/name: govee2mqtt
-          gethomepage.dev/weight: "3" # optional
-        hosts:
-          - host: &host govee2mqtt.techtales.io
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
-            secretName: govee2mqtt-tls
+        hostnames:
+          - govee2mqtt.techtales.io
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
 
     persistence:
       data:

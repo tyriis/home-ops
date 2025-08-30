@@ -9,7 +9,7 @@ components:
 resources:
   - ./namespace.yaml
   # - ./esphome/flux-sync.yaml
-  - ./govee2mqtt/flux-sync.yaml
+  # - ./govee2mqtt/flux-sync.yaml
   - ./hisense-aircon/flux-sync.yaml
   - ./home-assistant/flux-sync.yaml
   - ./locking-service/flux-sync.yaml
