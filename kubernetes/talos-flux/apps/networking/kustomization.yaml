@@ -11,6 +11,6 @@ resources:
   - ./adguard-home/flux-sync.yaml
   - ./cloudflared/flux-sync.yaml
   - ./external-dns/flux-sync.yaml
-  - ./playit/flux-sync.yaml
-  - ./redirect-service/flux-sync.yaml
-  - ./unifi-controller/flux-sync.yaml
+  # - ./playit/flux-sync.yaml
+  # - ./redirect-service/flux-sync.yaml
+  # - ./unifi-controller/flux-sync.yaml
