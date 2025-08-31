@@ -138,9 +138,9 @@ spec:
           cluster: ${FLUX_CLUSTER_NAME}
         externalUrl: https://prometheus.techtales.io
         # image:
-          # registry: docker.io
-          # repository: prompp/prompp
-          # tag: 2.53.2-0.3.4@sha256:e0212e571c1bbed88f546ed0336f70e82144693c2b2394bf40eaa56ea653ddbd
+        # registry: docker.io
+        # repository: prompp/prompp
+        # tag: 2.53.2-0.3.4@sha256:e0212e571c1bbed88f546ed0336f70e82144693c2b2394bf40eaa56ea653ddbd
         podMetadata:
           annotations:
             reloader.stakater.com/auto: "true"
@@ -177,7 +177,7 @@ spec:
             gethomepage.dev/description: Kubernetes Monitoring
             gethomepage.dev/group: Observability
             gethomepage.dev/icon: prometheus
-            gethomepage.dev/name: Prometheus
+            gethomepage.dev/name: Prometheus kube-lab
           hostnames:
             - prometheus.techtales.io
           parentRefs:
