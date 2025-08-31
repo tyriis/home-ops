@@ -101,28 +101,23 @@ spec:
         serviceName: gatus
         endpoints:
           - port: http
-    ingress:
+
+    route:
       app:
-        className: traefik
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          kubernetes.io/tls-acme: "true"
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/affinity: "true"
-          traefik.ingress.kubernetes.io/router.tls: "true"
-          external-dns.alpha.kubernetes.io/target: external.techtales.io
           external-dns/cloudflare: "true"
-        hosts:
-          - host: &host status.techtales.io
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
-            secretName: "{{ .Release.Name }}-tls"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Uptime Monitoring
+          gethomepage.dev/group: Observability
+          gethomepage.dev/icon: *app
+          gethomepage.dev/name: Gatus
+        hostnames:
+          - status.techtales.io
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+
     rbac:
       roles:
         gatus:
