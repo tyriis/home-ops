@@ -34,6 +34,13 @@ spec:
       route:
         main:
           enabled: true
+          annotations:
+            gethomepage.dev/enabled: "true"
+            gethomepage.dev/description: Kubernetes Alerting
+            gethomepage.dev/group: Observability
+            gethomepage.dev/icon: alertmanager
+            gethomepage.dev/name: Alertmanager kube-lab
+            gethomepage.dev/pod-selector: app.kubernetes.io/name=alertmanager
           hostnames:
             - alertmanager.techtales.io
           parentRefs:
