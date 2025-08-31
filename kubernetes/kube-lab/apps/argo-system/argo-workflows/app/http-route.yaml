@@ -10,6 +10,7 @@ metadata:
     gethomepage.dev/group: Development
     gethomepage.dev/icon: argo-cd
     gethomepage.dev/name: Argo Workflows
+    gethomepage.dev/pod-selector: app.kubernetes.io/name={APP}-server
 spec:
   hostnames:
     - argo-workflows.techtales.io
