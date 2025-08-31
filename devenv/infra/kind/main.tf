@@ -51,11 +51,6 @@ resource "kind_cluster" "flux_devenv" {
         host_port      = 443
         listen_address = "127.0.0.1"
       }
-      # TODO: remove when arr gets deployed
-      extra_mounts {
-        host_path      = abspath("${path.cwd}/../../media")
-        container_path = "/media"
-      }
     }
 
     # add 1 observability node
@@ -82,11 +77,6 @@ resource "kind_cluster" "flux_devenv" {
       role = "worker"
       labels = {
         "application/role" = "workload"
-      }
-      # TODO: remove when arr gets deployed
-      extra_mounts {
-        host_path      = abspath("${path.cwd}/../../media")
-        container_path = "/media"
       }
     }
   }
