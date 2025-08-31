@@ -8,6 +8,7 @@ components:
 resources:
   - ./namespace.yaml
   - ./blackbox-exporter/flux-sync.yaml
+  - ./gatus/flux-sync.yaml
   - ./grafana/flux-sync.yaml
   - ./kromgo/flux-sync.yaml
   - ./kube-prometheus-stack/flux-sync.yaml

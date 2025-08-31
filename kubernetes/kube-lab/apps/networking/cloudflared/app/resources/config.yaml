@@ -41,6 +41,8 @@ ingress:
     service: https://kromgo.techtales.io
   - hostname: n8n-webhook.techtales.io
     service: https://n8n-webhook.techtales.io
+  - hostname: status.techtales.io
+    service: https://status.techtales.io
 
   # Example of a request over TCP:
   # - hostname: example.com
