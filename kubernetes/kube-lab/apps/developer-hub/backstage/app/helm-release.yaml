@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -7,7 +7,7 @@ metadata:
 spec:
   driftDetection:
     mode: enabled
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: app-template
@@ -16,11 +16,9 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
-  maxHistory: 15
   install:
-    createNamespace: true
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
@@ -28,7 +26,7 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    # https://github.com/bjw-s/helm-charts/tree/main/charts/other/app-template
+    # https://github.com/bjw-s-labs/helm-charts/tree/main/charts/other/app-template
     controllers:
       backstage:
         annotations:
@@ -70,36 +68,20 @@ spec:
           http:
             port: *port
 
-    ingress:
+    route:
       app:
-        enabled: true
-        className: traefik
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          kubernetes.io/tls-acme: "true"
-          # traefik.ingress.kubernetes.io/router.middlewares: traefik-ingress-sso@kubernetescrd
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/affinity: "true"
-          traefik.ingress.kubernetes.io/router.tls: "true"
-          external-dns/opnsense: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Internal Developer Portal
           gethomepage.dev/group: Development
           gethomepage.dev/icon: si-backstage
           gethomepage.dev/name: Backstage
-          gethomepage.dev/weight: "10" # optional
-        hosts:
-          - host: &host "{{ .Release.Name }}.techtales.io"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
-            secretName: "{{ .Release.Name }}-tls"
+        hostnames:
+          - "{{ .Release.Name }}.techtales.io"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
 
     persistence:
       config:

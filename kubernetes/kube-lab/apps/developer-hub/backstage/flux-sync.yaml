@@ -1,27 +1,21 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname backstage
-  annotations:
-    backstage.io/discovery: enabled
-    backstage.io/name: *appname
-  labels:
-    substitution.flux.home.arpa/disabled: "true"
-    sops.flux.home.arpa/disabled: "true"
+  name: &app backstage
 spec:
   targetNamespace: &namespace developer-hub
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *appname
+      app.kubernetes.io/name: *app
   components:
     - ../../../../../components/gatus/internal
-  path: ./kubernetes/talos-flux/apps/developer-hub/backstage/app
+  path: ./kubernetes/kube-lab/apps/developer-hub/backstage/app
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-ops
+    name: flux-system
     namespace: flux-system
   wait: true
   interval: 30m
@@ -32,6 +26,6 @@ spec:
       namespace: secops
   postBuild:
     substitute:
-      APP: *appname
+      APP: *app
       NAMESPACE: *namespace
       GATUS_PORT: "7007"
