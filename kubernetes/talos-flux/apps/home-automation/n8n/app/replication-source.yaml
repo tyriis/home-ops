@@ -12,9 +12,9 @@ spec:
     copyMethod: Snapshot
     pruneIntervalDays: 14
     repository: n8n-data-volsync-minio
-    volumeSnapshotClassName: ceph-block
+    volumeSnapshotClassName: csi-ceph-blockpool
     cacheCapacity: 2Gi
-    cacheStorageClassName: csi-ceph-blockpool
+    cacheStorageClassName: ceph-block
     cacheAccessModes:
       - ReadWriteOnce
     storageClassName: ceph-block
