@@ -147,6 +147,7 @@ spec:
           gethomepage.dev/group: Terraform
           gethomepage.dev/icon: terraform
           gethomepage.dev/name: ${APP}
+          gethomepage.dev/pod-selector: app.kubernetes.io/name=${APP}
         hostnames:
           - "{{ .Release.Name }}.techtales.io"
         parentRefs:
