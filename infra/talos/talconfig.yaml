@@ -66,23 +66,6 @@ nodes:
         vip:
           ip: 192.168.1.50
 
-  #  i7-10710U / 32GB / SAMSUNG EVO 860 500GB SSD
-  - hostname: talos04
-    ipAddress: 192.168.1.54
-    installDisk: /dev/sda
-    controlPlane: false
-    disableSearchDomain: true
-    nameservers:
-      - 1.1.1.1
-      - 8.8.8.8
-      - 192.168.1.1
-    networkInterfaces:
-      - interface: eth0
-        mtu: 0
-        dhcp: true
-    nodeLabels:
-      node-role.kubernetes.io/worker: ""
-
 controlPlane:
   schematic:
     customization:
