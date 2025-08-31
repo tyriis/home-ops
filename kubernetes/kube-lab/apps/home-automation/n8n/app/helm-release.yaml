@@ -49,6 +49,10 @@ spec:
               N8N_LOG_OUTPUT: console
               N8N_RUNNERS_ENABLED: "true"
               WEBHOOK_URL: https://n8n-webhook.techtales.io/
+            ports:
+              - name: http
+                containerPort: *port
+                protocol: TCP
 
             resources:
               requests:
