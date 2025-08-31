@@ -172,7 +172,12 @@ spec:
                   storage: 20Gi
       route:
         main:
-          enabled: true
+          annotations:
+            gethomepage.dev/enabled: "true"
+            gethomepage.dev/description: Kubernetes Monitoring
+            gethomepage.dev/group: Observability
+            gethomepage.dev/icon: prometheus
+            gethomepage.dev/name: Prometheus
           hostnames:
             - prometheus.techtales.io
           parentRefs:
