@@ -37,6 +37,10 @@ ingress:
       httpHostHeader: anubis-grafana.techtales.io
   - hostname: kromgo.techtales.io
     service: https://kromgo.techtales.io
+  - hostname: kromgo.techtales.io
+    service: https://kromgo.techtales.io
+  - hostname: n8n-webhook.techtales.io
+    service: https://n8n-webhook.techtales.io
 
   # Example of a request over TCP:
   # - hostname: example.com
