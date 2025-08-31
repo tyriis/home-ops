@@ -9,4 +9,4 @@ components:
   - ../../../components/flux/globals/talos-flux
 resources:
   - ./namespace.yaml
-  - ./musicbot/flux-sync.yaml
+  # - ./musicbot/flux-sync.yaml
