@@ -172,6 +172,7 @@ spec:
                   storage: 20Gi
       route:
         main:
+          enabled: true
           annotations:
             gethomepage.dev/enabled: "true"
             gethomepage.dev/description: Kubernetes Monitoring
