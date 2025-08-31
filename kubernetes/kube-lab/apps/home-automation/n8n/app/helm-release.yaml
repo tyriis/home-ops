@@ -1,0 +1,101 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app n8n
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.2.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  values:
+    controllers:
+      n8n:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: "OnRootMismatch"
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/n8n-io/n8n
+              tag: 1.109.1@sha256:0257f3f0a5aef5edbe137972afc1915152d7e25fd5f596a28fd32d2622381156
+            envFrom:
+              - secretRef:
+                  name: n8n-env
+            env:
+              DB_SQLITE_VACUUM_ON_STARTUP: true
+              EXECUTIONS_DATA_PRUNE: true
+              EXECUTIONS_DATA_MAX_AGE: 7
+              EXECUTIONS_DATA_PRUNE_MAX_COUNT: 50000
+              GENERIC_TIMEZONE: "Europe/Vienna"
+              N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: false
+              N8N_PROTOCOL: "https"
+              N8N_PORT: &port 8080
+              N8N_HOST: &host n8n.techtales.io
+              N8N_LOG_LEVEL: info
+              N8N_LOG_OUTPUT: console
+              N8N_RUNNERS_ENABLED: "true"
+              WEBHOOK_URL: https://n8n-webhook.techtales.io/
+
+            resources:
+              requests:
+                cpu: 5m
+                memory: 128Mi
+              limits:
+                memory: 2Gi
+
+    service:
+      app:
+        controller: n8n
+        ports:
+          http:
+            port: *port
+
+    route:
+      app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Flexible AI workflow automation
+          gethomepage.dev/group: Home Automation
+          gethomepage.dev/icon: *app
+          gethomepage.dev/name: *app
+        hostnames:
+          - *host
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+
+      webhooks:
+        hostnames:
+          - n8n-webhook.techtales.io
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - matches:
+              - path:
+                  value: /webhook
+            backendRefs: [{}]
+
+    persistence:
+      data:
+        existingClaim: n8n-data
+        advancedMounts:
+          n8n:
+            app:
+              - path: /home/node/.n8n

@@ -1,22 +1,21 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname n8n
-  labels:
-    substitution.flux.home.arpa/disabled: "true"
-    sops.flux.home.arpa/disabled: "true"
+  name: &app n8n
 spec:
   targetNamespace: home-automation
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *appname
-  path: ./kubernetes/talos-flux/apps/home-automation/n8n/app
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../../components/volsync
+  path: ./kubernetes/kube-lab/apps/home-automation/n8n/app
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-ops
+    name: flux-system
     namespace: flux-system
   wait: true
   interval: 30m
@@ -25,5 +24,10 @@ spec:
   dependsOn:
     - name: external-secrets-stores
       namespace: secops
+    - name: volsync
+      namespace: backup-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
+  postBuild:
+    substitute:
+      APP: *app
