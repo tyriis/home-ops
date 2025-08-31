@@ -14,7 +14,7 @@ resources:
   # https://github.com/tektoncd/dashboard/releases
   # renovate: depName=tektoncd/dashboard datasource=github-releases
   - https://github.com/tektoncd/dashboard/releases/download/v0.60.0/release.yaml
-  - ./http-route.yaml
+  # - ./http-route.yaml
   - ./ingress.yaml
 
 patches:
