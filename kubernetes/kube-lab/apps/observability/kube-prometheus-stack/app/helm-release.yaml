@@ -179,6 +179,7 @@ spec:
             gethomepage.dev/group: Observability
             gethomepage.dev/icon: prometheus
             gethomepage.dev/name: Prometheus kube-lab
+            gethomepage.dev/pod-selector: app.kubernetes.io/name=prometheus
           hostnames:
             - prometheus.techtales.io
           parentRefs:
