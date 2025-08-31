@@ -11,5 +11,6 @@ resources:
   - ./hisense-aircon/flux-sync.yaml
   - ./home-assistant/flux-sync.yaml
   - ./locking-service/flux-sync.yaml
+  - ./n8n/flux-sync.yaml
   - ./ring-mqtt/flux-sync.yaml
   - ./zigbee2mqtt/flux-sync.yaml
