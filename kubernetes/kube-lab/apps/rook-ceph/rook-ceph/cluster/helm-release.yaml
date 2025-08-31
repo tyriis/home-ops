@@ -27,6 +27,13 @@ spec:
       enabled: true
     route:
       dashboard:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Cloud-Native Storage
+          gethomepage.dev/group: Storage
+          gethomepage.dev/icon: rook
+          gethomepage.dev/name: Rook
+          gethomepage.dev/pod-selector: app=rook-ceph-mgr
         host:
           name: rook.techtales.io
           path: /
