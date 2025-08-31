@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -11,16 +11,16 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.1.1
+      version: 4.2.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
   install:
-    createNamespace: true
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
+    cleanupOnFail: true
     remediation:
       retries: 3
   uninstall:
@@ -49,7 +49,7 @@ spec:
           app:
             image:
               repository: ghcr.io/runatlantis/atlantis
-              tag: v0.34.0@sha256:79c1f1a6d07aa68475ede39e41810b6dd842ec5a5313dd3088d8d4741e74964d
+              tag: v0.35.1@sha256:b434c2f20e8deae2fa4d097cf20af76b9cae50956eca9d959c7d03a9452a97b4
             ports:
               - name: http
                 containerPort: &port 4141
@@ -139,58 +139,91 @@ spec:
             path: /
             interval: 15s
 
-    ingress:
+    route:
       main:
-        forceRename: ${APP}
-        className: traefik
         annotations:
-          kubernetes.io/tls-acme: "true"
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          traefik.ingress.kubernetes.io/router.middlewares: traefik-ingress-sso@kubernetescrd
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/affinity: "true"
-          traefik.ingress.kubernetes.io/router.tls: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Terraform Pull Request Automation
           gethomepage.dev/group: Terraform
           gethomepage.dev/icon: terraform
           gethomepage.dev/name: ${APP}
-        hosts:
-          - host: &host "{{ .Release.Name }}.techtales.io"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: main
-                  port: http
-        tls:
-          - hosts:
-              - *host
-            secretName: "{{ .Release.Name }}-tls"
-
+          gethomepage.dev/pod-selector: app.kubernetes.io/name=${APP}
+        hostnames:
+          - "{{ .Release.Name }}.techtales.io"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
       webhook:
-        enabled: true
-        className: traefik
         annotations:
-          kubernetes.io/tls-acme: "true"
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/affinity: "true"
-          traefik.ingress.kubernetes.io/router.tls: "true"
-          external-dns.alpha.kubernetes.io/target: external.techtales.io
           external-dns/cloudflare: "true"
-        hosts:
-          - host: &hookhost "{{ .Release.Name }}-webhook.techtales.io"
-            paths:
-              - path: /events
-                pathType: Prefix
-                service:
-                  identifier: main
-                  port: http
-        tls:
-          - hosts:
-              - *hookhost
-            secretName: "{{ .Release.Name }}-webhook-tls"
+        hostnames:
+          - "{{ .Release.Name }}-webhook.techtales.io"
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: *port
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /events
+
+    # ingress:
+    #   main:
+    #     forceRename: ${APP}
+    #     className: traefik
+    #     annotations:
+    #       kubernetes.io/tls-acme: "true"
+    #       cert-manager.io/cluster-issuer: letsencrypt-production
+    #       traefik.ingress.kubernetes.io/router.middlewares: traefik-ingress-sso@kubernetescrd
+    #       traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    #       traefik.ingress.kubernetes.io/affinity: "true"
+    #       traefik.ingress.kubernetes.io/router.tls: "true"
+    #       gethomepage.dev/enabled: "true"
+    #       gethomepage.dev/description: Terraform Pull Request Automation
+    #       gethomepage.dev/group: Terraform
+    #       gethomepage.dev/icon: terraform
+    #       gethomepage.dev/name: ${APP}
+    #     hosts:
+    #       - host: &host "{{ .Release.Name }}.techtales.io"
+    #         paths:
+    #           - path: /
+    #             pathType: Prefix
+    #             service:
+    #               identifier: main
+    #               port: http
+    #     tls:
+    #       - hosts:
+    #           - *host
+    #         secretName: "{{ .Release.Name }}-tls"
+
+    #   webhook:
+    #     enabled: true
+    #     className: traefik
+    #     annotations:
+    #       kubernetes.io/tls-acme: "true"
+    #       cert-manager.io/cluster-issuer: letsencrypt-production
+    #       traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    #       traefik.ingress.kubernetes.io/affinity: "true"
+    #       traefik.ingress.kubernetes.io/router.tls: "true"
+    #       external-dns.alpha.kubernetes.io/target: external.techtales.io
+    #       external-dns/cloudflare: "true"
+    #     hosts:
+    #       - host: &hookhost "{{ .Release.Name }}-webhook.techtales.io"
+    #         paths:
+    #           - path: /events
+    #             pathType: Prefix
+    #             service:
+    #               identifier: main
+    #               port: http
+    #     tls:
+    #       - hosts:
+    #           - *hookhost
+    #         secretName: "{{ .Release.Name }}-webhook-tls"
 
     persistence:
       config:

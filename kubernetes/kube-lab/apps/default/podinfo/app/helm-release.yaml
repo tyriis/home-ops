@@ -1,0 +1,58 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app podinfo
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: *app
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+
+  values:
+    replicaCount: 2
+
+    # failure conditions
+    faults:
+      delay: false
+      error: false
+      unhealthy: false
+      unready: false
+      testFail: false
+      testTimeout: false
+
+    # set container security context
+    securityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      capabilities:
+        drop:
+          - ALL
+
+    # set pod security context
+    podSecurityContext:
+      runAsUser: 65534
+      runAsGroup: 65534
+      fsGroup: 65534
+      runAsNonRoot: true
+
+    # create Prometheus Operator monitor
+    serviceMonitor:
+      enabled: true
+
+    resources:
+      limits:
+        memory: 256Mi
+      requests:
+        cpu: 100m
+        memory: 64Mi

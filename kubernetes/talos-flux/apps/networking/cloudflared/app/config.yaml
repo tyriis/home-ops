@@ -9,14 +9,6 @@ warp-routing:
 ingress:
   # The localhost:8000 service inherits all root-level configuration.
   # In other words, it will use a connectTimeout of 30 seconds.
-  - hostname: grafana.techtales.io
-    service: https://anubis-grafana.techtales.io
-    originRequest:
-      httpHostHeader: anubis-grafana.techtales.io
-  - hostname: auth.techtales.io
-    service: https://auth.techtales.io
-    originRequest:
-      httpHostHeader: auth.techtales.io
   - hostname: echo-server.techtales.io
     service: https://echo-server.techtales.io
     originRequest:
@@ -25,42 +17,6 @@ ingress:
     service: https://flux-webhook.techtales.io
     originRequest:
       httpHostHeader: flux-webhook.techtales.io
-  - hostname: atlantis-tyriis-terraform-github-webhook.techtales.io
-    service: https://atlantis-tyriis-terraform-github-webhook.techtales.io
-    originRequest:
-      httpHostHeader: atlantis-tyriis-terraform-github-webhook.techtales.io
-  - hostname: atlantis-techtales-io-terraform-discord-webhook.techtales.io
-    service: https://atlantis-techtales-io-terraform-discord-webhook.techtales.io
-    originRequest:
-      httpHostHeader: atlantis-techtales-io-terraform-discord-webhook.techtales.io
-  - hostname: atlantis-techtales-io-terraform-github-webhook.techtales.io
-    service: https://atlantis-techtales-io-terraform-github-webhook.techtales.io
-    originRequest:
-      httpHostHeader: atlantis-techtales-io-terraform-github-webhook.techtales.io
-  - hostname: atlantis-techtales-io-terraform-gworkspace-webhook.techtales.io
-    service: https://atlantis-techtales-io-terraform-gworkspace-webhook.techtales.io
-    originRequest:
-      httpHostHeader: atlantis-techtales-io-terraform-gworkspace-webhook.techtales.io
-  - hostname: atlantis-techtales-io-terraform-gcloud-webhook.techtales.io
-    service: https://atlantis-techtales-io-terraform-gcloud-webhook.techtales.io
-    originRequest:
-      httpHostHeader: atlantis-techtales-io-terraform-gcloud-webhook.techtales.io
-  - hostname: atlantis-techtales-io-terraform-minio-webhook.techtales.io
-    service: https://atlantis-techtales-io-terraform-minio-webhook.techtales.io
-    originRequest:
-      httpHostHeader: atlantis-techtales-io-terraform-minio-webhook.techtales.io
-  - hostname: atlantis-techtales-io-terraform-opnsense-webhook.techtales.io
-    service: https://atlantis-techtales-io-terraform-opnsense-webhook.techtales.io
-    originRequest:
-      httpHostHeader: atlantis-techtales-io-terraform-opnsense-webhook.techtales.io
-  - hostname: atlantis-techtales-io-terraform-vault-webhook.techtales.io
-    service: https://atlantis-techtales-io-terraform-vault-webhook.techtales.io
-    originRequest:
-      httpHostHeader: atlantis-techtales-io-terraform-vault-webhook.techtales.io
-  - hostname: arc-webhook.techtales.io
-    service: https://arc-webhook.techtales.io
-    originRequest:
-      httpHostHeader: arc-webhook.techtales.io
   - hostname: kromgo.techtales.io
     service: https://kromgo.techtales.io
     originRequest:

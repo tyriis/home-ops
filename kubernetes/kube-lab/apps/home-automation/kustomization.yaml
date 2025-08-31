@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: home-automation
+components:
+  - ../../../components/flux/alerts
+resources:
+  - ./namespace.yaml
+  - ./govee2mqtt/flux-sync.yaml
+  - ./hisense-aircon/flux-sync.yaml
+  - ./home-assistant/flux-sync.yaml
+  - ./locking-service/flux-sync.yaml
+  - ./ring-mqtt/flux-sync.yaml
+  - ./zigbee2mqtt/flux-sync.yaml

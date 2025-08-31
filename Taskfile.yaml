@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://json.schemastore.org/taskfile.json
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
 vars:
@@ -8,7 +8,7 @@ vars:
   DEVENV_DIR: "{{.PROJECT_DIR}}/devenv"
   FLUX_DIR: "{{.PROJECT_DIR}}/kubernetes"
   TERRAFORM_DIR: "{{.PROJECT_DIR}}/infra/terraform"
-  TALOS_DIR: "{{.ROOT_DIR}}/infra/talos"
+  TALOS_DIR: "{{.ROOT_DIR}}/talos"
   KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
 
 includes:
@@ -20,3 +20,4 @@ includes:
   rook-ceph: .taskfiles/rook-ceph/Taskfile.yaml
   talos: .taskfiles/talos/Taskfile.yaml
   terraform: .taskfiles/terraform/Taskfile.yaml
+  restic: .taskfiles/restic/Taskfile.yaml

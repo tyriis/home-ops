@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/fluxcd.controlplane.io/fluxinstance_v1.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/fluxcd.controlplane.io/fluxinstance_v1.json
 apiVersion: fluxcd.controlplane.io/v1
 kind: FluxInstance
 metadata:
@@ -7,7 +7,7 @@ metadata:
 spec:
   distribution:
     # renovate: depName=controlplaneio-fluxcd/distribution datasource=github-releases
-    version: 2.6.1
+    version: 2.6.4
     registry: ghcr.io/fluxcd
     artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests
   components:

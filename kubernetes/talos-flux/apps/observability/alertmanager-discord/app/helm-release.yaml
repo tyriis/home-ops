@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.1.1
+      version: 4.2.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -31,8 +31,10 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           app:
+            envFrom:
+              - secretRef:
+                  name: alertmanager-discord-env
             env:
-              DISCORD_WEBHOOK: ${SECRET_PROMETHEUS_DISCORD_WEBHOOK}
               DISCORD_USERNAME: alertmanager ${FLUX_CLUSTER_NAME}
               DISCORD_AVATAR_URL: https://avatars3.githubusercontent.com/u/3380462
             image:

@@ -1,0 +1,118 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: echo-server
+spec:
+  driftDetection:
+    mode: enabled
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.2.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
+    controllers:
+      echo:
+        strategy: RollingUpdate
+        containers:
+          app:
+            image:
+              repository: ghcr.io/mendhak/http-https-echo
+              tag: 37@sha256:f55000d9196bd3c853d384af7315f509d21ffb85de315c26e9874033b9f83e15
+            env:
+              HTTP_PORT: &port 80
+              LOG_WITHOUT_NEWLINE: true
+              LOG_IGNORE_PATH: /healthz
+              PROMETHEUS_ENABLED: true
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 64Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    serviceMonitor:
+      app:
+        endpoints:
+          - port: http
+    route:
+      app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Simple HTTP Echo Server
+          gethomepage.dev/group: Networking
+          gethomepage.dev/icon: mdi-video-input-antenna
+          gethomepage.dev/name: Echo Server
+        hostnames:
+          - &host echo.techtales.io
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+    ingress:
+      app:
+        enabled: true
+        className: nginx
+        annotations:
+          external-dns.alpha.kubernetes.io/target: kube-lab-ext.techtales.io
+          external-dns/cloudflare: "true"
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/tls-acme: "true"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+          nginx.ingress.kubernetes.io/ssl-redirect: "true"
+          nginx.ingress.kubernetes.io/auth-url: https://auth.techtales.io/oauth2/auth
+          nginx.ingress.kubernetes.io/auth-signin: https://auth.techtales.io/oauth2/start?rd=https://$host$request_uri
+          nginx.ingress.kubernetes.io/auth-response-headers: x-auth-request-user, x-auth-request-email
+        hosts:
+          - host: *host
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+            secretName: "{{ .Release.Name }}-tls"

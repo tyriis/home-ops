@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.1.1
+      version: 4.2.0
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -39,9 +39,8 @@ spec:
             nameOverride: *app
             image:
               repository: jacobalberty/unifi
-              tag: v9.1.120@sha256:150af8f7bd96f597e7441f4598bd82435c2ee73b03b833179d30e6e2666be12b
+              tag: v9.3.45@sha256:6f1cc8eeda6a2303a3939f8f6565d4e4ca963b18b2d5dfae7e1ed4799d102eeb
             env:
-              TZ: Europe/Vienna
               RUNAS_UID0: "false"
               UNIFI_UID: "999"
               UNIFI_GID: "999"

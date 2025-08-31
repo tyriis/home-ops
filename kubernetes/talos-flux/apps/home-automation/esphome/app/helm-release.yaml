@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.1.1
+      version: 4.2.0
       interval: 15m
       sourceRef:
         kind: HelmRepository
@@ -34,11 +34,10 @@ spec:
         containers:
           app:
             env:
-              TZ: Europe/Vienna
               ESPHOME_DASHBOARD_USE_PING: "true"
             image:
               repository: ghcr.io/esphome/esphome
-              tag: 2025.5.2@sha256:04258d0d520d4755e92f9eb550bd94cb2487ceca8b02f30fae9c939e54969903
+              tag: 2025.8.2@sha256:e2a591dbd83c1dd6b2d4000abc024591cd22e4be662472486e688e7726975706
             ports:
               - name: http
                 containerPort: 6052

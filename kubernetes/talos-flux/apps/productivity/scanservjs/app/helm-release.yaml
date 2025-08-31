@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.1.1
+      version: 4.2.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -30,7 +30,6 @@ spec:
         containers:
           app:
             env:
-              TZ: Europe/Vienna
               AIRSCAN_DEVICES: '"LASER" = "http://192.168.1.8/eSCL"'
             image:
               repository: sbs20/scanservjs

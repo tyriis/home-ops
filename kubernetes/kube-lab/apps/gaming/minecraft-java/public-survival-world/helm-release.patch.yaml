@@ -1,0 +1,34 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ${APP}
+spec:
+  interval: 30m
+  # https://bjw-s-labs.github.io/helm-charts/docs/app-template/
+  values:
+    controllers:
+      minecraft:
+        containers:
+          app:
+            env:
+              PAPER_DOWNLOAD_URL: https://api.papermc.io/v2/projects/paper/versions/1.21.7/builds/32/downloads/paper-1.21.7-32.jar
+              MAX_MEMORY: 4096M
+              MEMORY: 2048M
+              # try to fix memory issues and performance
+              JVM_XX_OPTS: -XX:MaxRAMPercentage=75
+            resources:
+              requests:
+                cpu: 500m
+                memory: 4Gi
+    persistence:
+      axgraves:
+        type: configMap
+        name: minecraft-public-survival-world-plugins-axgraves-config
+        advancedMounts:
+          minecraft:
+            app:
+              - path: /plugins/AxGraves/config.yml
+                subPath: config.yml
+                readOnly: true

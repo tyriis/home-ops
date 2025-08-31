@@ -1,0 +1,29 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: intel-device-plugins-operator
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: intel-device-plugins-operator
+      version: 0.32.1
+      sourceRef:
+        kind: HelmRepository
+        name: intel-device-plugins
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    # https://artifacthub.io/packages/helm/intel/intel-device-plugins-operator?modal=values
+    manager:
+      devices:
+        gpu: true

@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.1.1
+      version: 4.2.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -32,9 +32,7 @@ spec:
           app:
             image:
               repository: adguard/adguardhome
-              tag: v0.107.62@sha256:b04764acecf1f663a23f55e95724a3c7ca0dc7f3a6f957d29005728b6bd036f2
-            env:
-              TZ: Europe/Vienna
+              tag: v0.107.65@sha256:d765078d2140b464ce837128a4f536f80b4c9ab7fd5b6833ae690b72fae40897
             probes:
               liveness: &probes
                 enabled: true

@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://schemas.tholinka.dev/volsync.backube/replicationdestination_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: &name ${APP}-${VOLSYNC_SUFFIX:=data}
+  labels:
+    # https://fluxcd.io/flux/components/kustomize/kustomizations/#controlling-the-apply-behavior-of-resources
+    kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: ${APP}-${VOLSYNC_SUFFIX:=data}-volsync-minio
+    copyMethod: Snapshot
+    volumeSnapshotClassName: ${VOLSYNC_SNAPSHOTCLASS:=ceph-block}
+    cacheStorageClassName: ${VOLSYNC_CACHE_SNAPSHOTCLASS:=ceph-block}
+    cacheAccessModes:
+      - ReadWriteOnce
+    cacheCapacity: ${VOLSYNC_CACHE_CAPACITY:=2Gi}
+    storageClassName: ${VOLSYNC_STORAGECLASS:=ceph-block}
+    accessModes:
+      - ReadWriteOnce
+    capacity: ${VOLSYNC_CAPACITY:=5Gi}
+    moverSecurityContext:
+      runAsUser: ${VOLSYNC_PUID:=1000}
+      runAsGroup: ${VOLSYNC_PGID:=1000}
+      fsGroup: ${VOLSYNC_PGID:=1000}
+    enableFileDeletion: true
+    cleanupCachePVC: true
+    cleanupTempPVC: true

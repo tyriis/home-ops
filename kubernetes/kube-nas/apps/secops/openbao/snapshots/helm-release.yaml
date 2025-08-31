@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.1.1
+      version: 4.2.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -71,7 +71,7 @@ spec:
           upload:
             image:
               repository: google/cloud-sdk
-              tag: 526.0.1-alpine@sha256:1ad6e8ae5235566adaf15c9045f02e4cfedbab7628906b6be92ed2ba649df689
+              tag: 536.0.1-alpine@sha256:253042fdbc296fb29b6013c376c0403083e71a090b6541c88f1fd289be97707d
             command:
               - /bin/sh
               - -ec

@@ -1,0 +1,109 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app blackbox-exporter
+spec:
+  interval: 30m
+  driftDetection:
+    mode: enabled
+  chart:
+    spec:
+      chart: prometheus-blackbox-exporter
+      version: 11.3.1
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    # https://artifacthub.io/packages/helm/prometheus-community/prometheus-blackbox-exporter?modal=values
+    fullnameOverride: blackbox-exporter
+    podSecurityContext:
+      sysctls:
+        - name: net.ipv4.ping_group_range
+          value: "0 2147483647"
+    config:
+      modules:
+        http_2xx:
+          prober: http
+          timeout: 5s
+          http:
+            valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+            follow_redirects: true
+            preferred_ip_protocol: "ip4"
+        icmp:
+          prober: icmp
+          timeout: 30s
+          icmp:
+            preferred_ip_protocol: "ip4"
+
+    prometheusRule:
+      enabled: true
+      rules:
+        - alert: BlackboxSslCertificateWillExpireSoon
+          expr: probe_ssl_earliest_cert_expiry - time() < 86400 * 7
+          for: 15m
+          labels:
+            severity: critical
+          annotations:
+            summary: |-
+              The SSL certificate for {{ $labels.target }} will expire in less than 7 days
+        - alert: BlackboxSslCertificateExpired
+          expr: probe_ssl_earliest_cert_expiry - time() <= 0
+          for: 15m
+          labels:
+            severity: critical
+          annotations:
+            summary: |-
+              The SSL certificate for {{ $labels.target }} has expired
+        - alert: BlackboxProbeFailed
+          expr: probe_success == 0
+          for: 15m
+          labels:
+            severity: critical
+          annotations:
+            summary: |-
+              The host {{ $labels.instance }} is currently unreachable
+
+    securityContext:
+      readOnlyRootFilesystem: true
+      allowPrivilegeEscalation: false
+      capabilities:
+        add: ["NET_RAW"]
+
+    serviceMonitor:
+      enabled: true
+      defaults:
+        labels:
+          release: prometheus
+        interval: 1m
+        scrapeTimeout: 30s
+      targets:
+        # Vacuum robot downstairs
+        - module: icmp
+          name: roborock-vacuum-a135-icmp
+          url: roborock-vacuum-a135.home
+
+        # Vacuum robot basement
+        - module: icmp
+          name: neato-basement-icmp
+          url: neato-basement.home
+
+        - module: icmp
+          name: ping-cloudflare
+          url: 1.1.1.1
+          scrape_interval: 30s
+
+        - module: http_2xx
+          name: nas.techtales.io
+          url: https://nas.techtales.io
+          scrape_interval: 1m

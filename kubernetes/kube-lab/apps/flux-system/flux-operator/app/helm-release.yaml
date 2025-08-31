@@ -1,0 +1,30 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: flux-operator
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: flux-operator
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    # https://artifacthub.io/packages/helm/flux-operator/flux-operator?modal=values
+    serviceMonitor:
+      create: true
+    resources:
+      requests:
+        cpu: 10m
+        memory: 150Mi

@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.1.1
+      version: 4.2.0
       interval: 15m
       sourceRef:
         kind: HelmRepository
@@ -35,7 +35,7 @@ spec:
           app:
             image:
               repository: ghcr.io/n8n-io/n8n
-              tag: 1.98.1@sha256:1d35d503d0ec6586d55ab7d0eb34d9bafdf9a908e3c5127020ad851ad3b0e629
+              tag: 1.109.1@sha256:0257f3f0a5aef5edbe137972afc1915152d7e25fd5f596a28fd32d2622381156
             envFrom:
               - secretRef:
                   name: n8n-env

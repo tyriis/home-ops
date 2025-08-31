@@ -1,0 +1,119 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app kromgo
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.2.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
+    controllers:
+      kromgo:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        replicas: 2
+        strategy: RollingUpdate
+        containers:
+          app:
+            env:
+              PROMETHEUS_URL: http://prometheus-operated.observability.svc.cluster.local:9090 #NOSONAR allow http
+              SERVER_HOST: 0.0.0.0
+              SERVER_PORT: &port 8080
+              HEALTH_HOST: 0.0.0.0
+              HEALTH_PORT: &healthPort 8888
+            image:
+              repository: ghcr.io/kashalls/kromgo
+              tag: v0.7.1@sha256:d8fca4ff9b696abc4ca019c76fa629c39e844e4d9435f4afac87a97b1eeae152
+            ports:
+              - name: http
+                containerPort: *port
+              - name: health
+                containerPort: *healthPort
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /readyz
+                    port: *healthPort
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 10m
+                memory: 20Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: *app
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+          health:
+            port: *healthPort
+    route:
+      app:
+        annotations:
+          external-dns/cloudflare: "true"
+        hostnames:
+          - &host "{{ .Release.Name }}.techtales.io"
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: kromgo
+                port: 8080
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /
+
+    persistence:
+      config-file:
+        type: configMap
+        name: kromgo-config
+        globalMounts:
+          - path: /kromgo/config.yaml
+            subPath: config.yaml
+            readOnly: true

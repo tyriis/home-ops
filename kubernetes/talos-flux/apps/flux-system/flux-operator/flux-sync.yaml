@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: ./kubernetes/kube-nas/apps/flux-system/flux-operator/app
+  path: ./kubernetes/talos-flux/apps/flux-system/flux-operator/app
   prune: false # should never be deleted
   sourceRef:
     kind: GitRepository
@@ -33,7 +33,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: /kubernetes/kube-nas/apps/flux-system/flux-operator/instance
+  path: /kubernetes/talos-flux/apps/flux-system/flux-operator/instance
   prune: false # should never be deleted
   sourceRef:
     kind: GitRepository

@@ -1,0 +1,38 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: rook-ceph
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: rook-ceph
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    csi:
+      cephFSKernelMountOptions: ms_mode=prefer-crc
+      enableCephfsDriver: false
+      enableCephfsSnapshotter: false
+      enableLiveness: true
+      serviceMonitor:
+        enabled: true
+    # enableDiscoveryDaemon: true
+    image:
+      repository: ghcr.io/rook/ceph
+    monitoring:
+      enabled: true
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits: {}

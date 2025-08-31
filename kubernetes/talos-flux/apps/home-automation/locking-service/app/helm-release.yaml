@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.1.1
+      version: 4.2.0
       interval: 15m
       sourceRef:
         kind: HelmRepository
@@ -52,7 +52,6 @@ spec:
               repository: ghcr.io/tyriis/locking-service
               tag: v0.1.1@sha256:869e311ba7c46027bafdce0fc4f31c0fd03a9af6f2d8bdb2ede265b88eaa5e29
             env:
-              TZ: Europe/Vienna
               NODE_ENV: production
               CONFIG_PATH: /config/configuration.yaml
             ports:

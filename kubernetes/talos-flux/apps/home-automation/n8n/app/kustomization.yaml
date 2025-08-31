@@ -6,3 +6,4 @@ resources:
   - helm-release.yaml
   - persistent-volume-claim.yaml
   - external-secret.yaml
+  - replication-source.yaml

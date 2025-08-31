@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/serviceaccount.json
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: openbao-auth
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/secret.json
+apiVersion: v1
+kind: Secret
+metadata:
+  name: openbao-auth
+  annotations:
+    kubernetes.io/service-account.name: openbao-auth
+type: kubernetes.io/service-account-token
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/clusterrolebinding.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: openbao-auth:system:auth-delegator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:auth-delegator
+subjects:
+  - kind: ServiceAccount
+    name: openbao-auth
+    namespace: secops

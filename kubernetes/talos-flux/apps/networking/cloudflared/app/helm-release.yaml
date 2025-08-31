@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.1.1
+      version: 4.2.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -35,7 +35,7 @@ spec:
           app:
             image:
               repository: cloudflare/cloudflared
-              tag: 2025.6.0-amd64@sha256:f7ef8ac4220feb667c89772d504808194adcead828aa762701da1c7fc687ca2c
+              tag: 2025.8.1-amd64@sha256:e7d598c81b1890dd3438206f5403fa6389d0d50833d12bc94c87d8b1e27cfde7
             args:
               - tunnel
               - --config

@@ -25,3 +25,7 @@ cluster/kube-nas:
   - changed-files:
       - any-glob-to-any-file: kubernetes/kube-nas/**/*
       - any-glob-to-any-file: infra/nix/kube-nas/**/*
+cluster/kube-lab:
+  - changed-files:
+      - any-glob-to-any-file: kubernetes/kube-lab/**/*
+      - any-glob-to-any-file: talos/*

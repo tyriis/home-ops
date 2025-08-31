@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.1.1
+      version: 4.2.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: quay.io/oauth2-proxy/oauth2-proxy
-              tag: v7.9.0@sha256:37c1570c0427e02fc7c947ef2c04e8995b8347b7abc9fcf1dbb4e376a4b221a7
+              tag: v7.12.0@sha256:786bed0f000c0f8a7b31619244ebab02406a8856a4faf3f5fb1df61fbd6c30ed
             envFrom:
               - secretRef:
                   name: oauth2-proxy-env-secrets

@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/name: dragonfly
     app.kubernetes.io/component: dragonfly-cluster
 spec:
-  image: ghcr.io/dragonflydb/dragonfly:v1.30.3@sha256:29d44a25a9e6937672f1c12e28c9f481f3d3c0441001ee56ed274a72f50593b7
+  image: ghcr.io/dragonflydb/dragonfly:v1.33.1@sha256:de1a932e51bf50d96bb8bee1b5bde96b429de38e3cab369238aeec3a93f5fdba
   replicas: 2
   env:
     - name: MAX_MEMORY

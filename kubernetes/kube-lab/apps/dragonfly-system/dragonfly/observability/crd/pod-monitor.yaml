@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/monitoring.coreos.com/podmonitor_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: dragonfly
+  labels:
+    app.kubernetes.io/name: dragonfly
+    app.kubernetes.io/component: dragonfly-observability
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dragonfly
+  podTargetLabels: ["app.kubernetes.io/name"]
+  podMetricsEndpoints:
+    - port: admin

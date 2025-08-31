@@ -1,0 +1,101 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app govee2mqtt
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.2.0
+      interval: 15m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      govee2mqtt:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            env:
+              # GOVEE_LAN_NO_MULTICAST: "true"
+              # GOVEE_LAN_BROADCAST_ALL: "false"
+              # GOVEE_LAN_BROADCAST_GLOBAL: "false"
+              GOVEE_LAN_SCAN: 192.168.10.30,192.168.10.31,192.168.10.255
+              GOVEE_MQTT_HOST: mqtt.techtales.io
+              GOVEE_MQTT_PORT: 1883
+              GOVEE_TEMPERATURE_SCALE: C
+              RUST_LOG_STYLE: always
+              # RUST_LOG: govee=trace
+            image:
+              repository: ghcr.io/wez/govee2mqtt
+              tag: latest@sha256:6970ea68b0c6ff4ef6d4e63424e46f38b8fa2ec29e9578f9d6136fefe08a08a7
+            ports:
+              - name: http
+                containerPort: &port 8056
+                protocol: TCP
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+            envFrom:
+              - secretRef:
+                  name: govee2mqtt-env
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+        pod:
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            runAsNonRoot: true
+
+    defaultPodOptions:
+      hostNetwork: true
+
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+
+    route:
+      app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Govee to MQTT bridge for Home Assistant
+          gethomepage.dev/group: Home Automation
+          gethomepage.dev/icon: mqtt
+          gethomepage.dev/name: govee2mqtt
+        hostnames:
+          - govee2mqtt.techtales.io
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+
+    persistence:
+      data:
+        type: emptyDir
+        globalMounts:
+          - path: /data

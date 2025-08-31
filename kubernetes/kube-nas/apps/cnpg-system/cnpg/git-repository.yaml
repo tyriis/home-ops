@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/gitrepository_v1.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/source.toolkit.fluxcd.io/gitrepository_v1.json
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
@@ -9,7 +9,7 @@ spec:
   interval: 1h
   url: https://github.com/cloudnative-pg/plugin-barman-cloud.git
   ref:
-    tag: v0.5.0
+    tag: v0.6.0
   ignore: |
     # exclude
     /*

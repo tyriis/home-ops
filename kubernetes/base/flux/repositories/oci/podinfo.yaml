@@ -9,6 +9,5 @@ spec:
   interval: 1h
   url: oci://ghcr.io/stefanprodan/charts/podinfo
   ref:
-    # renovate: depName=stefanprodan/podinfo datasource=github-releases
     tag: 6.8.0
     digest: sha256:2360bdf32ddc50c05f8e128118173343b0a012a338daf145b16e0da9c80081a4

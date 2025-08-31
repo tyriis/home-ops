@@ -29,7 +29,7 @@ repos:
           - --notitle
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.99.4
+    rev: v1.100.0
     hooks:
       - id: terraform_docs
         args:
@@ -44,7 +44,7 @@ repos:
       #     - --args=--config-file=__GIT_WORKING_DIR__/.tfsec.yaml
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: check-added-large-files
       - id: check-builtin-literals
@@ -93,7 +93,7 @@ repos:
       - id: remove-tabs
 
   - repo: https://github.com/sirosen/texthooks
-    rev: 0.6.8
+    rev: 0.7.1
     hooks:
       - id: fix-smartquotes
       - id: fix-ligatures
@@ -108,7 +108,7 @@ repos:
           - .markdownlint.yaml
 
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.5.3
+    rev: v3.6.2
     hooks:
       - id: prettier
         args:
@@ -124,13 +124,14 @@ repos:
         exclude: |
           (?x)^(
             kubernetes/kube-nas/apps/secops/rbac.yaml|
+            kubernetes/kube-lab/apps/secops/rbac.yaml|
             kubernetes/talos-flux/apps/secops/rbac.yaml|
             kubernetes/talos-flux/apps/devops/tekton/triggers/interceptors.yaml|
             kubernetes/talos-flux/apps/devops/tekton/triggers/release.yaml
           )$()
 
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.27.2
+    rev: v8.28.0
     hooks:
       - id: gitleaks
 
@@ -150,7 +151,7 @@ repos:
             kubernetes/talos-flux/apps/home-automation/home-assistant/app/patches/db-init.yaml|
             kubernetes/talos-flux/apps/github/actions-runner-controller/.+/helm-release.yaml|
             kubernetes/talos-flux/apps/github/actions-runner-controller/.+/(jazzlyn|organization|tyriis)/.+.yaml|
-            kubernetes/talos-flux/apps/atlantis/.+/helm-values.yaml|
+            kubernetes/kube.lab/apps/atlantis-system/.+/helm-release.patch.yaml|
             kubernetes/talos-flux/apps/gaming/.+/helm-values.yaml|
             kubernetes/talos-flux/apps/gaming-public/.+/helm-values.yaml|
           )$()

@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.1.1
+      version: 4.2.0
       interval: 15m
       sourceRef:
         kind: HelmRepository
@@ -35,11 +35,9 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           app:
-            env:
-              TZ: Europe/Vienna
             image:
               repository: rhasspy/wyoming-whisper
-              tag: 2.4.0@sha256:2687f79715734606f856fc4478351ce91a76bdaf6899086bcb837eb9ac7cddb8
+              tag: 2.5.0@sha256:0d78ad506e450fb113616650b7328233385905e2f2ed07fa59221012144500e3
             args:
               - --model
               - base

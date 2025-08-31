@@ -8,4 +8,3 @@ metadata:
     kustomize.toolkit.fluxcd.io/prune: disabled
 data:
   SETTING_CLUSTERNAME: talos-flux
-  SETTING_TZ: Europe/Vienna

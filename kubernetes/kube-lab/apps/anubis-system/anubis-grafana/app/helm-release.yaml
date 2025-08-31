@@ -1,0 +1,119 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app anubis-grafana
+spec:
+  dependsOn:
+    - name: grafana
+      namespace: observability
+  interval: 30m
+  driftDetection:
+    mode: enabled
+  chart:
+    spec:
+      chart: app-template
+      version: 4.2.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+    controllers:
+      anubis:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/techarohq/anubis
+              tag: v1.21.3@sha256:940ac71ef6fc5a90884a33cece2ebca41110909582624ad73b8c76b8cfcd0d35
+            # envFrom:
+            #   - configMapRef:
+            #       name: anubis-grafana-env
+            env:
+              # https://anubis.techaro.lol/docs/admin/installation#environment-variables
+              BIND: ":8080"
+              COOKIE_DOMAIN: techtales.io
+              BIND_NETWORK: tcp
+              DIFFICULTY: "5"
+              METRICS_BIND: ":9090"
+              METRICS_BIND_NETWORK: tcp
+              SERVE_ROBOTS_TXT: "true"
+              TARGET: http://grafana.observability.svc.cluster.local #NOSONAR allow http
+              OG_PASSTHROUGH: "false"
+              OG_EXPIRY_TIME: 24h
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities:
+                drop:
+                  - ALL
+            ports:
+              - name: http
+                containerPort: &httpPort 8080
+              - name: metrics
+                containerPort: &metricsPort 9090
+
+            resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
+
+    service:
+      anubis:
+        controller: anubis
+        type: ClusterIP
+        ports:
+          http:
+            port: *httpPort
+            protocol: TCP
+          metrics:
+            port: *metricsPort
+            protocol: TCP
+
+    serviceMonitor:
+      metrics:
+        enabled: true
+        serviceName: anubis
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 1m
+
+    routes:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.techtales.io"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: anubis
+                port: *httpPort

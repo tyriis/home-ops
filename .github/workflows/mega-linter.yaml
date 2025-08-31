@@ -13,19 +13,19 @@ jobs:
     steps:
       # https://github.com/marketplace/actions/harden-runner
       - name: Harden Runner
-        uses: step-security/harden-runner@002fdce3c6a235733a90a27c80493a3241e56863 # v2.12.1
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
         with:
           egress-policy: audit
 
       # https://github.com/marketplace/actions/checkout
       - name: Checkout Repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0
 
       # https://github.com/marketplace/actions/create-github-app-token
       - name: Generate Token
-        uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2.0.6
+        uses: actions/create-github-app-token@a8d616148505b5069dccd32f177bb87d7f39123b # v2.1.1
         id: app-token
         with:
           app-id: "${{ secrets.BOT_APP_ID }}"
@@ -33,7 +33,7 @@ jobs:
 
       # https://github.com/marketplace/actions/megalinter
       - name: MegaLinter
-        uses: oxsecurity/megalinter/flavors/terraform@5a91fb06c83d0e69fbd23756d47438aa723b4a5a # v8.7.0
+        uses: oxsecurity/megalinter/flavors/terraform@e08c2b05e3dbc40af4c23f41172ef1e068a7d651 # v8.8.0
         env:
           VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'workflow_dispatch' }}
           GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"

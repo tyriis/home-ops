@@ -1,0 +1,20 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+components:
+  - ../../../../../components/atlantis
+configMapGenerator:
+  - name: atlantis-techtales-io-terraform-minio-allowlist
+    files:
+      - allowlist.txt=config/allowlist.txt
+  - name: atlantis-techtales-io-terraform-minio-config
+    files:
+      - repos.yaml=config/repos.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+patches:
+  - path: helm-release.patch.yaml
+  - path: external-secret.patch.yaml

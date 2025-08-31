@@ -1,2 +1,0 @@
-# UnifiedMetrics https://modrinth.com/plugin/unifiedmetrics
-https://cdn.modrinth.com/data/p1ewR5kV/versions/Ypqt7eH1/unifiedmetrics-platform-bukkit-0.3.8.jar

@@ -1,0 +1,25 @@
+---
+# ML Detector Configuration
+
+server:
+  host: "0.0.0.0"
+  port: 8000
+  reload: false
+
+model:
+  size: small
+  device: cpu
+  custom_model_path: null
+  models_dir: /models
+  download_on_startup: true
+
+inference:
+  conf_threshold: 0.25
+  iou_threshold: 0.45
+  max_detections: 300
+  img_size: 640
+  half_precision: false
+  retina_masks: true
+  verbose: false
+
+classes_to_detect: [0]

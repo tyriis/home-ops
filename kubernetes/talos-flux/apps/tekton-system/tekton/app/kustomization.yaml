@@ -5,25 +5,26 @@ kind: Kustomization
 resources:
   # https://github.com/tektoncd/pipeline/releases
   # renovate: depName=tektoncd/pipeline datasource=github-releases
-  - https://github.com/tektoncd/pipeline/releases/download/v1.1.0/release.yaml
+  - https://github.com/tektoncd/pipeline/releases/download/v1.3.1/release.yaml
   # https://github.com/tektoncd/triggers/releases
   # renovate: depName=tektoncd/triggers datasource=github-releases
-  - https://github.com/tektoncd/triggers/releases/download/v0.32.0/release.yaml
+  - https://github.com/tektoncd/triggers/releases/download/v0.33.0/release.yaml
   # renovate: depName=tektoncd/triggers datasource=github-releases
-  - https://github.com/tektoncd/triggers/releases/download/v0.32.0/interceptors.yaml
+  - https://github.com/tektoncd/triggers/releases/download/v0.33.0/interceptors.yaml
   # https://github.com/tektoncd/dashboard/releases
   # renovate: depName=tektoncd/dashboard datasource=github-releases
-  - https://github.com/tektoncd/dashboard/releases/download/v0.58.0/release.yaml
+  - https://github.com/tektoncd/dashboard/releases/download/v0.60.0/release.yaml
   - ./ingress.yaml
-# patches:
-#   # Remove namesapce tekton-pipelines
-#   - patch: |
-#       $patch: delete
-#       apiVersion: v1
-#       kind: Namespace
-#       metadata:
-#         name: tekton-pipelines
-#     target:
-#       version: v1
-#       kind: Namespace
-#       name: tekton-pipelines
+
+patches:
+  # Disable k8tz injection for the entire tekton-pipelines and tekton-pipelines-resolvers namespaces
+  - target:
+      group: ""
+      version: v1
+      kind: Namespace
+      name: (tekton-pipelines|tekton-pipelines-resolvers)
+    patch: |-
+      - op: add
+        path: /metadata/annotations
+        value:
+          k8tz.io/inject: "false"

@@ -1,0 +1,4 @@
+# UnifiedMetrics https://modrinth.com/plugin/unifiedmetrics
+https://cdn.modrinth.com/data/p1ewR5kV/versions/Ypqt7eH1/unifiedmetrics-platform-bukkit-0.3.8.jar
+# AxGraves https://hangar.papermc.io/Artillex-Studios/AxGraves
+https://hangarcdn.papermc.io/plugins/Artillex-Studios/AxGraves/versions/1.22.3/PAPER/AxGraves-1.22.3.jar

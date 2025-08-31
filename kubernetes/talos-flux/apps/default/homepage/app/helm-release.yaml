@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.1.1
+      version: 4.2.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -50,7 +50,7 @@ spec:
                   name: homepage-env
             image:
               repository: ghcr.io/gethomepage/homepage
-              tag: v1.3.2@sha256:4f923bf0e9391b3a8bc5527e539b022e92dcc8a3a13e6ab66122ea9ed030e196
+              tag: v1.4.6@sha256:a1a578fdcfc72754985c3b3b26e4f398a6a782e354d10cf2b156ecbf06d252e9
             probes:
               startup:
                 enabled: true
@@ -121,5 +121,7 @@ spec:
             path: /app/config/custom.css
           - subPath: custom.js
             path: /app/config/custom.js
+          - subPath: proxmox.yaml
+            path: /app/config/proxmox.yaml
     serviceAccount:
       homepage: {}
