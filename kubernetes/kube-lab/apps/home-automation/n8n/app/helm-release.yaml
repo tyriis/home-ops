@@ -84,6 +84,8 @@ spec:
             sectionName: https
 
       webhooks:
+        annotations:
+          external-dns/cloudflare: "true"
         hostnames:
           - n8n-webhook.techtales.io
         parentRefs:
