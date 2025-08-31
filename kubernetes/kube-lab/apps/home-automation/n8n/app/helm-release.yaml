@@ -97,6 +97,10 @@ spec:
               - path:
                   value: /webhook
             backendRefs: [{}]
+          - matches:
+              - path:
+                  value: /webhook-test
+            backendRefs: [{}]
 
     persistence:
       data:
