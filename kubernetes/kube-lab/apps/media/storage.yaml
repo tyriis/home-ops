@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/storageclass.json
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-nas-media
+provisioner: techtales.io/nfs-nas-media
+reclaimPolicy: Retain
+allowVolumeExpansion: true
+volumeBindingMode: Immediate
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/persistentvolume.json
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-nas-media
+spec:
+  capacity:
+    storage: 500Gi
+  nfs:
+    server: nas.techtales.io
+    path: /volume1/media
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-nas-media
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/persistentvolumeclaim.json
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Gi
+  volumeName: nfs-nas-media
+  storageClassName: nfs-nas-media
