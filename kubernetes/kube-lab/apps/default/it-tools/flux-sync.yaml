@@ -9,6 +9,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../../components/gatus/internal
   path: ./kubernetes/kube-lab/apps/default/it-tools/app
   prune: true
   sourceRef:
@@ -19,3 +21,8 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace
+      GATUS_PORT: "8080"
