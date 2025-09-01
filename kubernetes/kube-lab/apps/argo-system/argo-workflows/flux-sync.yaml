@@ -29,5 +29,5 @@ spec:
       APP: *app
       NAMESPACE: *namespace
       GATUS_PORT: "2746"
-      GATUS_SUBDOMAIN: argo-worflows-server
+      GATUS_SUBDOMAIN: argo-workflows-server
       GATUS_PATH: /workflows
