@@ -42,3 +42,12 @@ endpoints:
     ui:
       hide-hostname: false
       hide-url: false
+  - name: OpenBAO
+    group: infrastructure
+    url: https://secrets.techtales.io/ui/
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+    ui:
+      hide-hostname: false
+      hide-url: false
