@@ -30,4 +30,4 @@ spec:
     substitute:
       APP: *app
       GATUS_PATH: /oauth2/sign_in
-      GATUS_SUBDOMAIN: status
+      GATUS_SUBDOMAIN: auth
