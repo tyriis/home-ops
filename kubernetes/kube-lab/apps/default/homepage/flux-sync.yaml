@@ -29,4 +29,3 @@ spec:
       APP: *app
       NAMESPACE: *namespace
       GATUS_PORT: "3000"
-      GATUS_SUBDOMAIN: home
