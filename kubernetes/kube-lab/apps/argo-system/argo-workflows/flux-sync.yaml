@@ -8,10 +8,12 @@ metadata:
     backstage.io/discovery: enabled
     backstage.io/name: *app
 spec:
-  targetNamespace: argo-system
+  targetNamespace: &namespace argo-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../../components/gatus/internal
   path: ./kubernetes/kube-lab/apps/argo-system/argo-workflows/app
   prune: true
   sourceRef:
@@ -22,3 +24,8 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace
+      GATUS_PORT: "2746"
