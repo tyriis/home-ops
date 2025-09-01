@@ -29,3 +29,4 @@ spec:
       APP: *app
       NAMESPACE: *namespace
       GATUS_PORT: "2746"
+      GATUS_PATH: /workflows
