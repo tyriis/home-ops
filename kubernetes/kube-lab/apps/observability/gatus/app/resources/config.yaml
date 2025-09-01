@@ -33,3 +33,12 @@ endpoints:
     ui:
       hide-hostname: true
       hide-url: true
+  - name: NAS
+    group: infrastructure
+    url: https://nas.techtales.io
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+    ui:
+      hide-hostname: false
+      hide-url: false
