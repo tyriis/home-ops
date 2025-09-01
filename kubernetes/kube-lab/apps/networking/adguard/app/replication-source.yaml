@@ -7,12 +7,12 @@ metadata:
 spec:
   sourcePVC: *name
   trigger:
-    schedule: 0 * * * *
+    schedule: 0 */2 * * *
   restic:
     copyMethod: Snapshot
     pruneIntervalDays: 14
     repository: adguard-data-volsync-minio
-    volumeSnapshotClassName: csi-ceph-blockpool
+    volumeSnapshotClassName: ceph-block
     cacheCapacity: 2Gi
     cacheStorageClassName: ceph-block
     cacheAccessModes:
@@ -22,9 +22,9 @@ spec:
       - ReadWriteOnce
     capacity: 2Gi
     moverSecurityContext:
-      runAsUser: 1000
-      runAsGroup: 1000
-      fsGroup: 1000
+      runAsUser: 0
+      runAsGroup: 0
+      fsGroup: 0
     retain:
       hourly: 12
       daily: 7
@@ -40,12 +40,12 @@ metadata:
 spec:
   sourcePVC: *name
   trigger:
-    schedule: 0 * * * *
+    schedule: 0 */2 * * *
   restic:
     copyMethod: Snapshot
     pruneIntervalDays: 14
     repository: adguard-conf-volsync-minio
-    volumeSnapshotClassName: csi-ceph-blockpool
+    volumeSnapshotClassName: ceph-block
     cacheCapacity: 2Gi
     cacheStorageClassName: ceph-block
     cacheAccessModes:
@@ -55,9 +55,9 @@ spec:
       - ReadWriteOnce
     capacity: 2Gi
     moverSecurityContext:
-      runAsUser: 1000
-      runAsGroup: 1000
-      fsGroup: 1000
+      runAsUser: 0
+      runAsGroup: 0
+      fsGroup: 0
     retain:
       hourly: 12
       daily: 7
@@ -73,12 +73,12 @@ metadata:
 spec:
   sourcePVC: *name
   trigger:
-    schedule: 0 * * * *
+    schedule: 0 */2 * * *
   restic:
     copyMethod: Snapshot
     pruneIntervalDays: 14
     repository: adguard-work-volsync-minio
-    volumeSnapshotClassName: csi-ceph-blockpool
+    volumeSnapshotClassName: ceph-block
     cacheCapacity: 2Gi
     cacheStorageClassName: ceph-block
     cacheAccessModes:
@@ -88,9 +88,9 @@ spec:
       - ReadWriteOnce
     capacity: 2Gi
     moverSecurityContext:
-      runAsUser: 1000
-      runAsGroup: 1000
-      fsGroup: 1000
+      runAsUser: 0
+      runAsGroup: 0
+      fsGroup: 0
     retain:
       hourly: 12
       daily: 7
