@@ -102,9 +102,8 @@ spec:
           gethomepage.dev/group: Networking
           gethomepage.dev/icon: adguard-home
           gethomepage.dev/name: AdGuard Home
-          # gethomepage.dev/pod-selector: app.kubernetes.io/name=adguard-home
         hostnames:
-          - "{{ .Release.Name }}.techtales.io"
+          - adguard.techtales.io
         parentRefs:
           - name: internal
             namespace: kube-system
