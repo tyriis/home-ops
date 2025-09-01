@@ -52,6 +52,7 @@ spec:
     sources:
       - ingress
       - gateway-httproute
+      - crd
     txtPrefix: kube-lab.
     txtOwnerId: kube-lab
     domainFilters:
