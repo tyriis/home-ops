@@ -9,6 +9,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../../components/gatus/external
   path: ./kubernetes/kube-lab/apps/auth-system/oauth2-proxy/app
   prune: true
   sourceRef:
@@ -28,3 +30,4 @@ spec:
     substitute:
       APP: *app
       GATUS_PATH: /oauth2/sign_in
+      GATUS_SUBDOMAIN: status
