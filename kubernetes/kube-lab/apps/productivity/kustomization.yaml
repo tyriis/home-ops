@@ -2,8 +2,9 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: productivity
+components:
+  - ../../../components/flux/alerts
 resources:
-  - storage-class.yaml
-  - persistent-volume.yaml
-  - persistent-volume-claim.yaml
-  - helm-release.yaml
+  - ./namespace.yaml
+  - ./scanservjs/flux-sync.yaml
