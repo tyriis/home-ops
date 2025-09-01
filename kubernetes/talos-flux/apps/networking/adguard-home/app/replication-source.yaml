@@ -1,0 +1,98 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: &name adguard-data
+spec:
+  sourcePVC: *name
+  trigger:
+    schedule: 0 * * * *
+  restic:
+    copyMethod: Snapshot
+    pruneIntervalDays: 14
+    repository: adguard-data-volsync-minio
+    volumeSnapshotClassName: csi-ceph-blockpool
+    cacheCapacity: 2Gi
+    cacheStorageClassName: ceph-block
+    cacheAccessModes:
+      - ReadWriteOnce
+    storageClassName: ceph-block
+    accessModes:
+      - ReadWriteOnce
+    capacity: 2Gi
+    moverSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+    retain:
+      hourly: 12
+      daily: 7
+      weekly: 4
+      monthly: 3
+
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: &name adguard-conf
+spec:
+  sourcePVC: *name
+  trigger:
+    schedule: 0 * * * *
+  restic:
+    copyMethod: Snapshot
+    pruneIntervalDays: 14
+    repository: adguard-conf-volsync-minio
+    volumeSnapshotClassName: csi-ceph-blockpool
+    cacheCapacity: 2Gi
+    cacheStorageClassName: ceph-block
+    cacheAccessModes:
+      - ReadWriteOnce
+    storageClassName: ceph-block
+    accessModes:
+      - ReadWriteOnce
+    capacity: 2Gi
+    moverSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+    retain:
+      hourly: 12
+      daily: 7
+      weekly: 4
+      monthly: 3
+
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: &name adguard-work
+spec:
+  sourcePVC: *name
+  trigger:
+    schedule: 0 * * * *
+  restic:
+    copyMethod: Snapshot
+    pruneIntervalDays: 14
+    repository: adguard-work-volsync-minio
+    volumeSnapshotClassName: csi-ceph-blockpool
+    cacheCapacity: 2Gi
+    cacheStorageClassName: ceph-block
+    cacheAccessModes:
+      - ReadWriteOnce
+    storageClassName: ceph-block
+    accessModes:
+      - ReadWriteOnce
+    capacity: 2Gi
+    moverSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+    retain:
+      hourly: 12
+      daily: 7
+      weekly: 4
+      monthly: 3
