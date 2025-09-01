@@ -5,10 +5,12 @@ kind: Kustomization
 metadata:
   name: &app homepage
 spec:
-  targetNamespace: default
+  targetNamespace: &namespace default
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../../components/gatus/internal
   path: ./kubernetes/kube-lab/apps/default/homepage/app
   prune: true
   sourceRef:
@@ -22,3 +24,9 @@ spec:
   dependsOn:
     - name: external-secrets-stores
       namespace: secops
+  postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace
+      GATUS_PORT: "3000"
+      GATUS_SUBDOMAIN: home
