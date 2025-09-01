@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/api.kubernetes.io/namespace_v1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/namespace.json
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -8,3 +8,5 @@ metadata:
     kustomize.toolkit.fluxcd.io/prune: disabled
     pod-security.kubernetes.io/enforce: privileged
     pod-security.kubernetes.io/enforce-version: latest
+  annotations:
+    volsync.backube/privileged-movers: "true"
