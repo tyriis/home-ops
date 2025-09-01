@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -16,16 +16,16 @@ spec:
         namespace: flux-system
   install:
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: uninstall
+      strategy: uninstall # no idea if this is a good idea
       retries: 3
   values:
     controllers:
       adguard-home:
-        # strategy: RollingUpdate
+        # strategy: RollingUpdate # need to be createReplace
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -65,6 +65,7 @@ spec:
 
     service:
       app:
+        forceRename: *app
         controller: adguard-home
         ports:
           http:
@@ -75,16 +76,11 @@ spec:
         type: LoadBalancer
         externalTrafficPolicy: Cluster
         annotations:
-          lbipam.cilium.io/ips: &ip 192.168.1.85
-        # externalIPs:
-        #   - *ip
+          lbipam.cilium.io/ips: &ip ${CILIUM_LB_IPS}
         ipFamilyPolicy: SingleStack
         ipFamilies:
           - IPv4
         ports:
-          # http:
-          #   primary: true
-          #   port: 80
           dns-tcp:
             port: 53
             protocol: TCP
@@ -98,40 +94,32 @@ spec:
     #     endpoints:
     #       - port: http
 
-    ingress:
+    route:
       app:
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          external-dns/opnsense: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Software for blocking ads & tracking
           gethomepage.dev/group: Networking
           gethomepage.dev/icon: adguard-home
           gethomepage.dev/name: AdGuard Home
-          gethomepage.dev/weight: "10" # optional
-        className: traefik
-        hosts:
-          - host: &host adguard.techtales.io
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
-            secretName: adguard-tls
+          # gethomepage.dev/pod-selector: app.kubernetes.io/name=adguard-home
+        hostnames:
+          - "{{ .Release.Name }}.techtales.io"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+
     persistence:
       data:
-        existingClaim: adguard-data
+        existingClaim: "{{ .Release.Name }}-data"
         globalMounts:
           - path: /opt/adguardhome/data
       conf:
-        existingClaim: adguard-conf
+        existingClaim: "{{ .Release.Name }}-conf"
         globalMounts:
           - path: /opt/adguardhome/conf
       work:
-        existingClaim: adguard-work
+        existingClaim: "{{ .Release.Name }}-work"
         globalMounts:
           - path: /opt/adguardhome/work
