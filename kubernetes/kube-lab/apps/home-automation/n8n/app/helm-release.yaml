@@ -76,6 +76,7 @@ spec:
           gethomepage.dev/group: Home Automation
           gethomepage.dev/icon: *app
           gethomepage.dev/name: *app
+          gethomepage.dev/pod-selector: app.kubernetes.io/name=n8n
         hostnames:
           - *host
         parentRefs:
