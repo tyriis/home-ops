@@ -2,6 +2,7 @@
 TALOSCONFIG="{{config_root}}/talos/clusterconfig/talosconfig"
 
 [tools]
+vcluster = "0.27.0"
 # https://age-encryption.org/
 age = "1.2.1"
 # https://direnv.net/

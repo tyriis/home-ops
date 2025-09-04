@@ -159,6 +159,8 @@ spec:
         storageClass:
           enabled: true
           name: ceph-block
+          labels:
+            kubernetes.io/storage.class: ceph-block
           isDefault: true
           reclaimPolicy: Delete
           allowVolumeExpansion: true
