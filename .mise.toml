@@ -26,7 +26,7 @@ pre-commit = "4.3.0"
 # https://github.com/mozilla/sops
 sops = "3.10.2"
 # https://github.com/budimanjojo/talhelper
-talhelper = "3.0.33"
+talhelper = "3.0.34"
 # https://www.talos.dev/
 talosctl = "1.11.0"
 # https://taskfile.dev/
@@ -38,4 +38,4 @@ terraform-docs = "0.20.0"
 # https://github.com/terraform-linters/tflint
 tflint = "0.59.1"
 # https://trivy.dev/
-trivy = "0.65.0"
+trivy = "0.66.0"
