@@ -3,7 +3,7 @@
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: &name adguard-data
+  name: &name adguard-home-data
 spec:
   sourcePVC: *name
   trigger:
@@ -11,7 +11,7 @@ spec:
   restic:
     copyMethod: Snapshot
     pruneIntervalDays: 14
-    repository: adguard-data-volsync-minio
+    repository: adguard-home-data-volsync-minio
     volumeSnapshotClassName: ceph-block
     cacheCapacity: 2Gi
     cacheStorageClassName: ceph-block
@@ -36,7 +36,7 @@ spec:
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: &name adguard-conf
+  name: &name adguard-home-conf
 spec:
   sourcePVC: *name
   trigger:
@@ -44,7 +44,7 @@ spec:
   restic:
     copyMethod: Snapshot
     pruneIntervalDays: 14
-    repository: adguard-conf-volsync-minio
+    repository: adguard-home-conf-volsync-minio
     volumeSnapshotClassName: ceph-block
     cacheCapacity: 2Gi
     cacheStorageClassName: ceph-block
@@ -69,7 +69,7 @@ spec:
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: &name adguard-work
+  name: &name adguard-home-work
 spec:
   sourcePVC: *name
   trigger:
@@ -77,7 +77,7 @@ spec:
   restic:
     copyMethod: Snapshot
     pruneIntervalDays: 14
-    repository: adguard-work-volsync-minio
+    repository: adguard-home-work-volsync-minio
     volumeSnapshotClassName: ceph-block
     cacheCapacity: 2Gi
     cacheStorageClassName: ceph-block
