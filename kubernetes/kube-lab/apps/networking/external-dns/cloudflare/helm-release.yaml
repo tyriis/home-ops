@@ -48,6 +48,7 @@ spec:
       - --cloudflare-dns-records-per-page=1000
       - --cloudflare-proxied
       - --annotation-filter=external-dns/cloudflare in (true)
+      - --gateway-name=external
     policy: sync
     sources:
       - ingress
