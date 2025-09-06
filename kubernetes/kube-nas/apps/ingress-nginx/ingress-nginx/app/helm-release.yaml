@@ -36,7 +36,7 @@ spec:
           maxUnavailable: 1
       service:
         annotations:
-          lbipam.cilium.io/ips: 192.168.100.90
+          lbipam.cilium.io/ips: 192.168.100.91
         externalTrafficPolicy: Cluster
       allowSnippetAnnotations: true
       config:
