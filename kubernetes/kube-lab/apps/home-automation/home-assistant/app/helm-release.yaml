@@ -178,7 +178,7 @@ spec:
           gethomepage.dev/icon: home-assistant
           gethomepage.dev/name: Home Assistant
         hostnames:
-          - hass.techtales.io
+          - hass2.techtales.io
         parentRefs:
           - name: internal
             namespace: kube-system
