@@ -54,7 +54,7 @@ spec:
           timeoutSeconds: 5
     triggerLoopOnEvent: true
     extraArgs:
-      - --annotation-filter=external-dns/unifi in (true)
+      - --gateway-name=internal
     policy: sync
     sources:
       - ingress
