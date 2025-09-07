@@ -2,7 +2,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
 
 # renovate: depName=ghcr.io/siderolabs/installer datasource=docker
-talosVersion: v1.11.0
+talosVersion: v1.10.7
 # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
 kubernetesVersion: v1.33.4
 
@@ -248,8 +248,6 @@ controlPlane:
           - siderolabs/intel-ucode
           - siderolabs/thunderbolt
       extraKernelArgs:
-        # - iommu=pt
-        # - intel_iommu=on
         - apparmor=0 # Less security, faster puter
         - init_on_alloc=0 # Less security, faster puter
         - init_on_free=0 # Less security, faster puter
