@@ -8,6 +8,5 @@ components:
   - ../../../components/sops/talos-flux
 resources:
   - ./namespace.yaml
-  - ./cloudflared/flux-sync.yaml
   - ./external-dns/flux-sync.yaml
   # - ./redirect-service/flux-sync.yaml
