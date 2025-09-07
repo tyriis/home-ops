@@ -77,3 +77,9 @@ Aknowledge/archive the message with the command:
 ```console
 ceph crash archive <id>
 ```
+
+Aknowledge/archive all messages with the command:
+
+```console
+ceph crash archive-all
+```
