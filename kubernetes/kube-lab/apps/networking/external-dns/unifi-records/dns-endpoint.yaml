@@ -3,29 +3,36 @@
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
-  name: lab-extern
-  annotations:
-    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
-    external-dns/cloudflare: "true"
+  name: lab-extern-unifi
 spec:
   endpoints:
     - dnsName: lab-extern.techtales.io
-      recordType: CNAME
+      recordType: A
       targets:
-        - 241df466-7231-4ce1-a346-81a1022f16aa.cfargotunnel.com
+        - 192.168.100.210
 
 ---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/externaldns.k8s.io/dnsendpoint_v1alpha1.json
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
-  name: lab-ingress
-  annotations:
-    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
-    external-dns/cloudflare: "true"
+  name: lab-ingress-unifi
 spec:
   endpoints:
     - dnsName: lab-ingress.techtales.io
-      recordType: CNAME
+      recordType: A
       targets:
-        - 241df466-7231-4ce1-a346-81a1022f16aa.cfargotunnel.com
+        - 192.168.100.201
+
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: lab-intern-unifi
+spec:
+  endpoints:
+    - dnsName: lab-intern.techtales.io
+      recordType: A
+      targets:
+        - 192.168.100.200

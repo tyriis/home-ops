@@ -92,8 +92,8 @@ spec:
             port: *healthPort
     route:
       app:
-        annotations:
-          external-dns/cloudflare: "true"
+        # annotations:
+        #   external-dns/cloudflare: "true"
         hostnames:
           - &host "{{ .Release.Name }}.techtales.io"
         parentRefs:

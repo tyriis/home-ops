@@ -44,25 +44,25 @@ spec:
               - kind: GitRepository
                 name: flux-system
                 namespace: flux-system
-    route:
-      app:
-        annotations:
-          external-dns/cloudflare: "true"
-        hostnames:
-          - &host flux-webhook-kube-lab.techtales.io
-        parentRefs:
-          - name: external
-            namespace: kube-system
-            sectionName: https
-        rules:
-          - backendRefs:
-              - name: webhook-receiver
-                namespace: flux-system
-                port: 80
-            matches:
-              - path:
-                  type: PathPrefix
-                  value: /hook/
+    # route:
+    #   app:
+    #     # annotations:
+    #     #   external-dns/cloudflare: "true"
+    #     hostnames:
+    #       - &host flux-webhook-kube-lab.techtales.io
+    #     parentRefs:
+    #       - name: external
+    #         namespace: kube-system
+    #         sectionName: https
+    #     rules:
+    #       - backendRefs:
+    #           - name: webhook-receiver
+    #             namespace: flux-system
+    #             port: 80
+    #         matches:
+    #           - path:
+    #               value: /hook
+
     ingress:
       app:
         className: nginx
@@ -71,8 +71,10 @@ spec:
           kubernetes.io/tls-acme: "true"
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
           nginx.ingress.kubernetes.io/ssl-redirect: "true"
+          external-dns.alpha.kubernetes.io/target: lab-ingress.techtales.io
+          external-dns/cloudflare: "true"
         hosts:
-          - host: *host
+          - host: &host flux-webhook-kube-lab.techtales.io
             paths:
               - path: /
                 service:
