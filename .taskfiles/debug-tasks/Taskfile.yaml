@@ -67,9 +67,11 @@ tasks:
 
   privileged:
     desc: Run a privileged pod
-    cmd: |
-      kubectl run privileged-{{.node}} -i --rm --image=null -n default \
-        --overrides="$(yq {{.ROOT_DIR}}/.taskfiles/debug-tasks/privileged-pod.tmpl.yaml -o=json | envsubst)"
+    cmds:
+      - kubectl label --overwrite namespace default pod-security.kubernetes.io/enforce=privileged
+      - |
+        kubectl run privileged-{{.node}} -i --rm --image=null -n default \
+          --overrides="$(yq {{.ROOT_DIR}}/.taskfiles/debug-tasks/privileged-pod.tmpl.yaml -o=json | envsubst)"
     env:
       node: "{{.node}}"
     preconditions:
