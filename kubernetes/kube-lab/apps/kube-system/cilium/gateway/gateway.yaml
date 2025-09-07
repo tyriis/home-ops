@@ -3,9 +3,9 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: internal
+  name: intern
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname kube-lab-ext.techtales.io
+    external-dns.alpha.kubernetes.io/target: &hostname lab-intern.techtales.io
 spec:
   gatewayClassName: cilium
   addresses:
@@ -40,7 +40,8 @@ kind: Gateway
 metadata:
   name: external
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname kube-lab-ext.techtales.io
+    external-dns.alpha.kubernetes.io/target: &hostname lab-extern.techtales.io
+    external-dns/cloudflare: "true"
 spec:
   gatewayClassName: cilium
   addresses:
@@ -49,6 +50,7 @@ spec:
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
+      external-dns/cloudflare: "true"
   listeners:
     - name: http
       protocol: HTTP

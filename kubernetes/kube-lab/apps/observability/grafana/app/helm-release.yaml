@@ -370,7 +370,7 @@ spec:
           gethomepage.dev/group: Observability
           gethomepage.dev/icon: grafana
           gethomepage.dev/name: Grafana Dashboard
-          external-dns/cloudflare: "true"
+          # external-dns/cloudflare: "true"
         hostnames:
           - grafana.techtales.io
         parentRefs:

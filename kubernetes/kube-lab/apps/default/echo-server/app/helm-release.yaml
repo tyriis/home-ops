@@ -95,7 +95,7 @@ spec:
         enabled: true
         className: nginx
         annotations:
-          external-dns.alpha.kubernetes.io/target: kube-lab-ext.techtales.io
+          external-dns.alpha.kubernetes.io/target: lab-ingress.techtales.io
           external-dns/cloudflare: "true"
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/tls-acme: "true"
