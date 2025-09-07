@@ -27,5 +27,5 @@ spec:
       namespace: secops
   postBuild:
     substitute:
-      APP: *app
+      APP: flux-webhook-kube-lab
       GATUS_SUBDOMAIN: flux-webhook-kube-lab
