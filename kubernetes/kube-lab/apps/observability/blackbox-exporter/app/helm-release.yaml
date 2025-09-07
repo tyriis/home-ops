@@ -88,15 +88,20 @@ spec:
         interval: 1m
         scrapeTimeout: 30s
       targets:
+        # Vacuum robot upstairs
+        - module: icmp
+          name: roborock-upstairs-icmp
+          url: roborock-upstairs.localdomain
+
         # Vacuum robot downstairs
         - module: icmp
-          name: roborock-vacuum-a135-icmp
-          url: roborock-vacuum-a135.home
+          name: roborock-downstairs-icmp
+          url: roborock-downstairs.localdomain
 
         # Vacuum robot basement
         - module: icmp
           name: neato-basement-icmp
-          url: neato-basement.home
+          url: neato-basement.localdomain
 
         - module: icmp
           name: ping-cloudflare
