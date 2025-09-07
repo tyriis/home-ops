@@ -57,3 +57,49 @@ spec:
       recordType: A
       targets:
         - 192.168.1.80
+
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: synology-unifi
+  annotations:
+    external-dns/unifi: "true"
+spec:
+  endpoints:
+    - dnsName: synology.techtales.io
+      recordType: A
+      targets:
+        - 192.168.1.4
+    - dnsName: nas.techtales.io
+      recordType: CNAME
+      targets:
+        - synology.techtales.io
+    - dnsName: minio.techtales.io
+      recordType: CNAME
+      targets:
+        - synology.techtales.io
+
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: mqtt-unifi
+  annotations:
+    external-dns/unifi: "true"
+spec:
+  endpoints:
+    - dnsName: mqtt.techtales.io
+      recordType: A
+      targets:
+        - 192.168.1.180
+    - dnsName: mqtt.lan
+      recordType: CNAME
+      targets:
+        - mqtt.techtales.io
+    - dnsName: mqtt.home
+      recordType: CNAME
+      targets:
+        - mqtt.techtales.io
