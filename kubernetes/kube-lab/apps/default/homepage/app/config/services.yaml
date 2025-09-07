@@ -29,7 +29,7 @@
         icon: avm-fritzbox
         href: http://192.168.178.1
         description: FRITZ!Box Router Management
-        # ping: 192.168.178.
+        # ping: 192.168.178.1
         siteMonitor: http://192.168.178.1
         # widget:
         #   type: fritzbox
@@ -39,23 +39,17 @@
         #     - uptime
         #     - received
         #     - sent
-    - OPNSense Firewall:
-        icon: opnsense
-        href: https://opnsense.techtales.io
-        description: OPNSense Firewall Management
-        # ping: opnsense.techtales.io
-        siteMonitor: https://opnsense.techtales.io
+    - UniFi DM SE:
+        icon: unifi
+        href: https://unifi.local
+        description: UniFi Dream Machine Special Edition
+        ping: 192.168.1.1
+        # siteMonitor: https://opnsense.techtales.io
         # widget:
         #   type: opnsense
         #   url: https://opnsense.techtales.io
         #   username: "{{HOMEPAGE_VAR_OPNSENSE_API_KEY}}"
         #   password: "{{HOMEPAGE_VAR_OPNSENSE_SECRET}}"
-    - Hashicorp Vault:
-        icon: vault
-        href: https://vault.techtales.io
-        description: Hashicorp Vault Secrets Management
-        # ping: vault.techtales.io
-        siteMonitor: https://vault.techtales.io
     - OpenBAO:
         icon: https://raw.githubusercontent.com/openbao/artwork/main/color/openbao-color.svg
         href: https://secrets.techtales.io
@@ -89,10 +83,10 @@
         siteMonitor: https://minio.techtales.io
     - Harbor:
         icon: harbor
-        href: https://harbor.techtales.io
+        href: https://harbor.tyriis.dev
         description: Harbor Container Registry
-        # ping: harbor.techtales.io
-        siteMonitor: https://harbor.techtales.io
+        # ping: harbor.tyriis.dev
+        siteMonitor: https://harbor.tyriis.dev
 - Observability:
     - Grafana Cloud:
         icon: grafana
