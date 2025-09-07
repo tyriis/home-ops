@@ -12,7 +12,8 @@ spec:
       version: 1.18.0
       sourceRef:
         kind: HelmRepository
-        name: external-dns
+        name: external-dns-charts
+        namespace: flux-system
   install:
     remediation:
       retries: -1
