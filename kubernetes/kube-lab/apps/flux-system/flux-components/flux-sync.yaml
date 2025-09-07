@@ -29,3 +29,5 @@ spec:
     substitute:
       APP: flux-webhook-kube-lab
       GATUS_SUBDOMAIN: flux-webhook-kube-lab
+      GATUS_STATUS: "404"
+      GATUS_PATH: /hook
