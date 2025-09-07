@@ -10,19 +10,28 @@ debug: false
 ui:
   title: Status | Gatus
   header: Status
+  logo: https://avatars.githubusercontent.com/u/108371159
+  link: https://github.com/techtales-io
+  buttons:
+    - name: Tyriis
+      link: https://github.com/tyriis
+    - name: Jazzlyn
+      link: https://github.com/jazzlyn
+    - name: Homelab
+      link: https://github.com/tyriis/home-ops
 connectivity:
   checker:
     target: 1.1.1.1:53
     interval: 1m
 endpoints:
-  - name: flux-webhook
-    group: external
-    url: https://flux-webhook.techtales.io
-    interval: 1m
-    client:
-      dns-resolver: tcp://1.1.1.1:53
-    conditions:
-      - "[STATUS] == 404"
+  # - name: flux-webhook
+  #   group: external
+  #   url: https://flux-webhook.techtales.io
+  #   interval: 1m
+  #   client:
+  #     dns-resolver: tcp://1.1.1.1:53
+  #   conditions:
+  #     - "[STATUS] == 404"
   # infrastructure
   - name: FRITZ!Box
     group: infrastructure
