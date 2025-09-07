@@ -1,0 +1,38 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: lab-extern-unifi
+spec:
+  endpoints:
+    - dnsName: lab-extern.techtales.io
+      recordType: A
+      targets:
+        - 192.168.100.210
+
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: lab-ingress-unifi
+spec:
+  endpoints:
+    - dnsName: lab-ingress.techtales.io
+      recordType: A
+      targets:
+        - 192.168.100.201
+
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: lab-intern-unifi
+spec:
+  endpoints:
+    - dnsName: lab-intern.techtales.io
+      recordType: A
+      targets:
+        - 192.168.100.200
