@@ -59,7 +59,6 @@ alertmanager:
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/affinity: "true"
       traefik.ingress.kubernetes.io/router.tls: "true"
-      external-dns/opnsense: "true"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: Alerting system that works with Prometheus
       gethomepage.dev/group: Observability

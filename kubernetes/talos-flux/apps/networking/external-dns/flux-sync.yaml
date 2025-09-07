@@ -25,3 +25,30 @@ spec:
   dependsOn:
     - name: external-secrets-stores
       namespace: secops
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname external-dns-unifi
+  labels:
+    substitution.flux.home.arpa/disabled: "true"
+    sops.flux.home.arpa/disabled: "true"
+spec:
+  targetNamespace: networking
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  path: ./kubernetes/talos-flux/apps/networking/external-dns/unifi
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+    namespace: flux-system
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: external-secrets-stores
+      namespace: secops

@@ -10,7 +10,6 @@ metadata:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/affinity: "true"
     traefik.ingress.kubernetes.io/router.tls: "true"
-    external-dns/opnsense: "true"
     gethomepage.dev/enabled: "true"
     gethomepage.dev/description: A modern HTTP reverse proxy
     gethomepage.dev/group: Networking
