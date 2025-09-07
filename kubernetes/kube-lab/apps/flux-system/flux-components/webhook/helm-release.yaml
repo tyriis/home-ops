@@ -76,7 +76,7 @@ spec:
           nginx.ingress.kubernetes.io/ssl-redirect: "true"
 
         hosts:
-          - host: &host flux-webhook-kube-lab.techtales.io
+          - host: &host ${GATUS_SUBDOMAIN}.techtales.io
             paths:
               - path: /
                 service:
