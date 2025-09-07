@@ -86,12 +86,13 @@ spec:
             sectionName: https
 
       webhooks:
-        # annotations:
-        #   external-dns/cloudflare: "true"
+        annotations:
+          external-dns/cloudflare: "true"
+          external-dns/unifi: "true"
         hostnames:
           - n8n-webhook.techtales.io
         parentRefs:
-          - name: external
+          - name: cilium
             namespace: kube-system
             sectionName: https
         rules:

@@ -51,7 +51,7 @@ spec:
     #     hostnames:
     #       - &host flux-webhook-kube-lab.techtales.io
     #     parentRefs:
-    #       - name: external
+    #       - name: cilium
     #         namespace: kube-system
     #         sectionName: https
     #     rules:
@@ -67,12 +67,14 @@ spec:
       app:
         className: nginx
         annotations:
+          external-dns.alpha.kubernetes.io/target: lab-ingress.techtales.io
+          external-dns/cloudflare: "true"
+          external-dns/unifi: "true"
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/tls-acme: "true"
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
           nginx.ingress.kubernetes.io/ssl-redirect: "true"
-          external-dns.alpha.kubernetes.io/target: lab-ingress.techtales.io
-          external-dns/cloudflare: "true"
+
         hosts:
           - host: &host flux-webhook-kube-lab.techtales.io
             paths:

@@ -92,12 +92,13 @@ spec:
             port: *healthPort
     route:
       app:
-        # annotations:
-        #   external-dns/cloudflare: "true"
+        annotations:
+          external-dns/cloudflare: "true"
+          external-dns/unifi: "true"
         hostnames:
           - &host "{{ .Release.Name }}.techtales.io"
         parentRefs:
-          - name: external
+          - name: cilium
             namespace: kube-system
             sectionName: https
         rules:

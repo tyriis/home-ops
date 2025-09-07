@@ -365,16 +365,17 @@ spec:
       main:
         enabled: true
         annotations:
+          external-dns/cloudflare: "true"
+          external-dns/unifi: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Metrics, logs, traces, and profiles, oh my!
           gethomepage.dev/group: Observability
           gethomepage.dev/icon: grafana
           gethomepage.dev/name: Grafana Dashboard
-          # external-dns/cloudflare: "true"
         hostnames:
           - grafana.techtales.io
         parentRefs:
-          - name: external
+          - name: cilium
             namespace: kube-system
             sectionName: https
 
