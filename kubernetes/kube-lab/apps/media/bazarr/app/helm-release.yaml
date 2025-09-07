@@ -82,6 +82,7 @@ spec:
     route:
       app:
         annotations:
+          external-dns/unifi: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Subtitles for your Movies and TV Shows
           gethomepage.dev/group: Arr
@@ -90,7 +91,7 @@ spec:
         hostnames:
           - &host "{{ .Release.Name }}.techtales.io"
         parentRefs:
-          - name: internal
+          - name: cilium
             namespace: kube-system
             sectionName: https
     persistence:

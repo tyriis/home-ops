@@ -87,7 +87,7 @@ spec:
         hostnames:
           - &host echo.techtales.io
         parentRefs:
-          - name: internal
+          - name: cilium
             namespace: kube-system
             sectionName: https
     ingress:
@@ -97,6 +97,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: lab-ingress.techtales.io
           external-dns/cloudflare: "true"
+          external-dns/unifi: "true"
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/tls-acme: "true"
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"

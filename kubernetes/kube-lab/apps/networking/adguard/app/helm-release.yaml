@@ -97,6 +97,7 @@ spec:
     route:
       app:
         annotations:
+          external-dns/unifi: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Software for blocking ads & tracking
           gethomepage.dev/group: Networking
@@ -105,7 +106,7 @@ spec:
         hostnames:
           - adguard.techtales.io
         parentRefs:
-          - name: internal
+          - name: cilium
             namespace: kube-system
             sectionName: https
         rules:

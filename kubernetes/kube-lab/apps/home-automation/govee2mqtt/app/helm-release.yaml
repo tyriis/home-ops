@@ -82,6 +82,7 @@ spec:
     route:
       app:
         annotations:
+          external-dns/unifi: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Govee to MQTT bridge for Home Assistant
           gethomepage.dev/group: Home Automation
@@ -90,7 +91,7 @@ spec:
         hostnames:
           - govee2mqtt.techtales.io
         parentRefs:
-          - name: internal
+          - name: cilium
             namespace: kube-system
             sectionName: https
 

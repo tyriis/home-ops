@@ -3,29 +3,45 @@
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
-  name: lab-extern
+  name: lab-gateway-cloudflare
   annotations:
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
     external-dns/cloudflare: "true"
 spec:
   endpoints:
-    - dnsName: lab-extern.techtales.io
+    - dnsName: lab-gateway.techtales.io
       recordType: CNAME
       targets:
-        - 241df466-7231-4ce1-a346-81a1022f16aa.cfargotunnel.com
+        - 1d1865c6-c0dd-4236-8d7d-79722940886f.cfargotunnel.com
 
 ---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/externaldns.k8s.io/dnsendpoint_v1alpha1.json
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
-  name: lab-ingress
+  name: lab-ingress-cloudflare
   annotations:
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
     external-dns/cloudflare: "true"
 spec:
   endpoints:
     - dnsName: lab-ingress.techtales.io
+      recordType: CNAME
+      targets:
+        - 1d1865c6-c0dd-4236-8d7d-79722940886f.cfargotunnel.com
+
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: external-cloudflare
+  annotations:
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+    external-dns/cloudflare: "true"
+spec:
+  endpoints:
+    - dnsName: external.techtales.io
       recordType: CNAME
       targets:
         - 241df466-7231-4ce1-a346-81a1022f16aa.cfargotunnel.com

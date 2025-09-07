@@ -5,11 +5,18 @@ kind: HTTPRoute
 metadata:
   name: tekton-dashboard
   namespace: tekton-pipelines
+  # annotations:
+  #   external-dns/unifi: "true"
+  #   gethomepage.dev/enabled: "true"
+  #   gethomepage.dev/description: Tekton Dashboard for Tekton Pipelines
+  #   gethomepage.dev/group: CI/CD
+  #   gethomepage.dev/icon: tekton
+  #   gethomepage.dev/name: Tekton Dashboard
 spec:
   hostnames:
     - tekton.techtales.io
   parentRefs:
-    - name: internal
+    - name: cilium
       namespace: kube-system
       sectionName: https
   rules:

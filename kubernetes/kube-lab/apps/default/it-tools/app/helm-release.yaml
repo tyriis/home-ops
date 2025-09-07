@@ -68,6 +68,7 @@ spec:
     route:
       app:
         annotations:
+          external-dns/unifi: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Handy developer online tools
           gethomepage.dev/group: Development
@@ -76,7 +77,7 @@ spec:
         hostnames:
           - &host it-tools.techtales.io
         parentRefs:
-          - name: internal
+          - name: cilium
             namespace: kube-system
             sectionName: https
 

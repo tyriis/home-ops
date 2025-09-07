@@ -172,6 +172,7 @@ spec:
     route:
       app:
         annotations:
+          external-dns/unifi: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Home Automation That Puts Local Control
           gethomepage.dev/group: Home Automation
@@ -180,7 +181,7 @@ spec:
         hostnames:
           - hass2.techtales.io
         parentRefs:
-          - name: internal
+          - name: cilium
             namespace: kube-system
             sectionName: https
         rules:

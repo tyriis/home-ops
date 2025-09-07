@@ -28,6 +28,7 @@ spec:
     route:
       dashboard:
         annotations:
+          external-dns/unifi: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Cloud-Native Storage
           gethomepage.dev/group: Storage
@@ -39,7 +40,7 @@ spec:
           path: /
           pathType: PathPrefix
         parentRefs:
-          - name: internal
+          - name: cilium
             namespace: kube-system
             sectionName: https
 
