@@ -71,27 +71,28 @@ spec:
     route:
       app:
         annotations:
+          external-dns/unifi: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Flexible AI workflow automation
           gethomepage.dev/group: Home Automation
           gethomepage.dev/icon: *app
           gethomepage.dev/name: *app
           gethomepage.dev/pod-selector: app.kubernetes.io/name=n8n
-          external-dns/unifi: "true"
         hostnames:
           - *host
         parentRefs:
-          - name: internal
+          - name: cilium
             namespace: kube-system
             sectionName: https
 
       webhooks:
-        # annotations:
-        #   external-dns/cloudflare: "true"
+        annotations:
+          external-dns/cloudflare: "true"
+          external-dns/unifi: "true"
         hostnames:
           - n8n-webhook.techtales.io
         parentRefs:
-          - name: external
+          - name: cilium
             namespace: kube-system
             sectionName: https
         rules:

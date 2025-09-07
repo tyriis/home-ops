@@ -67,6 +67,7 @@ spec:
     route:
       app:
         annotations:
+          external-dns/unifi: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Web UI frontend for your scanner
           gethomepage.dev/group: Productivity
@@ -75,7 +76,7 @@ spec:
         hostnames:
           - "{{ .Release.Name }}.techtales.io"
         parentRefs:
-          - name: internal
+          - name: cilium
             namespace: kube-system
             sectionName: https
 

@@ -5,6 +5,7 @@ kind: HTTPRoute
 metadata:
   name: podinfo
   annotations:
+    external-dns/unifi: "true"
     gethomepage.dev/enabled: "true"
     gethomepage.dev/description: Podinfo by Stefan Prodan
     gethomepage.dev/group: Networking
@@ -14,7 +15,7 @@ spec:
   hostnames:
     - podinfo.techtales.io
   parentRefs:
-    - name: internal
+    - name: cilium
       namespace: kube-system
       sectionName: https
   rules:

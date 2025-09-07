@@ -11,11 +11,12 @@ metadata:
     gethomepage.dev/icon: argo-cd
     gethomepage.dev/name: Argo Workflows
     gethomepage.dev/pod-selector: app.kubernetes.io/name=argo-workflows-server
+    external-dns/unifi: "true"
 spec:
   hostnames:
     - argo-workflows.techtales.io
   parentRefs:
-    - name: internal
+    - name: cilium
       namespace: kube-system
       sectionName: https
   rules:

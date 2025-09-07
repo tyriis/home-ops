@@ -8,10 +8,7 @@ metadata:
     external-dns.alpha.kubernetes.io/controller: none
 spec:
   parentRefs:
-    - name: internal
-      namespace: kube-system
-      sectionName: http
-    - name: external
+    - name: cilium
       namespace: kube-system
       sectionName: http
   rules:

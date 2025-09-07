@@ -105,7 +105,8 @@ spec:
     route:
       app:
         annotations:
-          # external-dns/cloudflare: "true"
+          external-dns/cloudflare: "true"
+          external-dns/unifi: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Uptime Monitoring
           gethomepage.dev/group: Observability
@@ -114,7 +115,7 @@ spec:
         hostnames:
           - status.techtales.io
         parentRefs:
-          - name: external
+          - name: cilium
             namespace: kube-system
             sectionName: https
 

@@ -107,10 +107,12 @@ spec:
 
     routes:
       app:
+        annotations:
+          external-dns/unifi: "true"
         hostnames:
           - "{{ .Release.Name }}.techtales.io"
         parentRefs:
-          - name: internal
+          - name: cilium
             namespace: kube-system
             sectionName: https
         rules:

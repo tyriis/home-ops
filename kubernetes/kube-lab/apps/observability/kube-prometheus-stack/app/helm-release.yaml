@@ -35,6 +35,7 @@ spec:
         main:
           enabled: true
           annotations:
+            external-dns/unifi: "true"
             gethomepage.dev/enabled: "true"
             gethomepage.dev/description: Kubernetes Alerting
             gethomepage.dev/group: Observability
@@ -44,7 +45,7 @@ spec:
           hostnames:
             - alertmanager.techtales.io
           parentRefs:
-            - name: internal
+            - name: cilium
               namespace: kube-system
               sectionName: https
       alertmanagerSpec:
@@ -181,6 +182,7 @@ spec:
         main:
           enabled: true
           annotations:
+            external-dns/unifi: "true"
             gethomepage.dev/enabled: "true"
             gethomepage.dev/description: Kubernetes Monitoring
             gethomepage.dev/group: Observability
@@ -190,6 +192,6 @@ spec:
           hostnames:
             - prometheus.techtales.io
           parentRefs:
-            - name: internal
+            - name: cilium
               namespace: kube-system
               sectionName: https

@@ -63,6 +63,7 @@ spec:
     route:
       app:
         annotations:
+          external-dns/unifi: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: HTML5 Network Performance Tool
           gethomepage.dev/group: Networking
@@ -71,6 +72,6 @@ spec:
         hostnames:
           - speedtest.techtales.io
         parentRefs:
-          - name: internal
+          - name: cilium
             namespace: kube-system
             sectionName: https
