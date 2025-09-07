@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: &app external-dns-cloudflare
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: external-dns
@@ -14,17 +14,18 @@ spec:
         kind: HelmRepository
         name: external-dns-charts
         namespace: flux-system
-  maxHistory: 15
   install:
     crds: CreateReplace
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
-    cleanupOnFail: true
     crds: CreateReplace
+    cleanupOnFail: true
     remediation:
       strategy: rollback
       retries: 3
+  uninstall:
+    keepHistory: false
   # https://kubernetes-sigs.github.io/external-dns/v0.14.2/
   values:
     # https://artifacthub.io/packages/helm/external-dns/external-dns?modal=values
@@ -44,6 +45,7 @@ spec:
             name: *secret
             key: CF_API_KEY
     extraArgs:
+      - --cloudflare-dns-records-per-page=1000
       - --cloudflare-proxied
       - --annotation-filter=external-dns/cloudflare in (true)
     policy: sync
@@ -54,6 +56,6 @@ spec:
     domainFilters:
       - techtales.io
     serviceMonitor:
-      enabled: false
+      enabled: true
     podAnnotations:
       secret.reloader.stakater.com/reload: *secret
