@@ -12,5 +12,4 @@ resources:
   - ./alertmanager-discord/flux-sync.yaml
   - ./kube-prometheus-stack/flux-sync.yaml
   - ./smartctl-exporter/flux-sync.yaml
-  - ./speedtest-exporter/flux-sync.yaml
   - ./unpoller/flux-sync.yaml

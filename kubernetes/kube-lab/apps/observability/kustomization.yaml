@@ -17,3 +17,4 @@ resources:
   - ./node-exporter/flux-sync.yaml
   - ./promtail/flux-sync.yaml
   - ./smartctl-exporter/flux-sync.yaml
+  - ./speedtest-exporter/flux-sync.yaml

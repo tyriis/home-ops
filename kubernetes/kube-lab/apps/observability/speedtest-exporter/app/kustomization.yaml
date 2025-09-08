@@ -6,4 +6,3 @@ namespace: observability
 resources:
   - helm-release.yaml
   - prometheus-rule.yaml
-  - service-monitor.yaml
