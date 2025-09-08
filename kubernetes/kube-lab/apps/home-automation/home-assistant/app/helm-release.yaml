@@ -37,9 +37,9 @@ spec:
 
         containers:
           app:
-            # envFrom:
-            #   - secretRef:
-            #       name: home-assistant-secrets
+            envFrom:
+              - secretRef:
+                  name: home-assistant-secrets
             env:
               VENV_FOLDER: /venv
             image:
