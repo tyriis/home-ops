@@ -8,7 +8,7 @@ spec:
   retentionPolicy: 30d
   configuration:
     destinationPath: s3://cnpg/kube-lab/
-    endpointURL: https://s3.nas.techtales.io
+    endpointURL: https://s3.tyriis.dev
     s3Credentials:
       accessKeyId:
         name: postgres17-s3
