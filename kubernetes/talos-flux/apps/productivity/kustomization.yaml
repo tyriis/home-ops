@@ -8,5 +8,5 @@ components:
   - ../../../components/sops/talos-flux
 resources:
   - ./namespace.yaml
-  - ./linkwarden/flux-sync.yaml
+  # - ./linkwarden/flux-sync.yaml
   - ./syncthing/flux-sync.yaml
