@@ -25,9 +25,9 @@ spec:
       parameters:
         barmanObjectName: *name
         serverName: *name
-  bootstrap:
-    recovery:
-      source: source
+  # bootstrap:
+  #   recovery:
+  #     source: source
   externalClusters:
     - name: source
       plugin:
