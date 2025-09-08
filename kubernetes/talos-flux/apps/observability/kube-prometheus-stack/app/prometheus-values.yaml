@@ -47,7 +47,7 @@ prometheus:
         secret.reloader.stakater.com/reload: &secret thanos-objstore-secret
     externalLabels:
       cluster: ${FLUX_CLUSTER_NAME}
-    replicas: 3
+    replicas: 1
     replicaExternalLabelName: __replica__
     storageSpec:
       volumeClaimTemplate:

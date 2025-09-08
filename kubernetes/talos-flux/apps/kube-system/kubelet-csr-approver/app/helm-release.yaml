@@ -16,6 +16,6 @@ spec:
         namespace: flux-system
       interval: 30m
   values:
-    replicas: 2
+    replicas: 1
     providerRegex: ^talos\d\d?$
     bypassDnsResolution: true
