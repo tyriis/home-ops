@@ -1,0 +1,33 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cnpg-operator
+spec:
+  interval: 30m
+  timeout: 5m
+  chart:
+    spec:
+      chart: cloudnative-pg
+      version: 0.26.0
+      sourceRef:
+        kind: HelmRepository
+        name: cnpg
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    crds:
+      create: true
+    monitoring:
+      grafanaDashboard:
+        create: true
+      podMonitorEnabled: true
