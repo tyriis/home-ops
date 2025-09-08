@@ -79,7 +79,7 @@ metadata:
   name: cnpg-crds
 spec:
   targetNamespace: cnpg-system
-  path: ./kubernetes/kub-lab/apps/cnpg-system/cnpg/crds
+  path: ./kubernetes/kube-lab/apps/cnpg-system/cnpg/crds
   prune: true
   sourceRef:
     kind: GitRepository
