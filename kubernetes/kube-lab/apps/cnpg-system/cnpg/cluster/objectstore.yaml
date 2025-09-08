@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://schemas.tholinka.dev/barmancloud.cnpg.io/objectstore_v1.json
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: postgres17
+spec:
+  retentionPolicy: 30d
+  configuration:
+    destinationPath: s3://cnpg/kube-lab/
+    endpointURL: https://s3.nas.techtales.io
+    s3Credentials:
+      accessKeyId:
+        name: postgres17-s3
+        key: AWS_ACCESS_KEY_ID
+      secretAccessKey:
+        name: postgres17-s3
+        key: AWS_SECRET_ACCESS_KEY
