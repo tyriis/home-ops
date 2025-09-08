@@ -4,7 +4,7 @@
 # renovate: depName=ghcr.io/siderolabs/installer datasource=docker
 talosVersion: v1.10.7
 # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
-kubernetesVersion: v1.34.0
+kubernetesVersion: v1.33.4
 
 clusterName: talos-flux
 endpoint: https://192.168.1.50:6443
@@ -56,8 +56,6 @@ nodes:
     controlPlane: true
     disableSearchDomain: true
     nameservers:
-      - 1.1.1.1
-      - 8.8.8.8
       - 192.168.1.1
     networkInterfaces:
       - interface: eth0
@@ -190,11 +188,15 @@ worker:
           mirrors:
             docker.io:
               endpoints:
-                - https://harbor.techtales.io/v2/proxy-docker.io
+                - https://harbor.tyriis.dev/v2/proxy-docker.io
               overridePath: true
             ghcr.io:
               endpoints:
-                - https://harbor.techtales.io/v2/proxy-ghcr.io
+                - https://harbor.tyriis.dev/v2/proxy-ghcr.io
+              overridePath: true
+            quay.io:
+              endpoints:
+                - https://harbor.tyriis.dev/v2/proxy-quay.io
               overridePath: true
         features:
           hostDNS:
