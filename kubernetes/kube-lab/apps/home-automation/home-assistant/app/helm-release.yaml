@@ -178,6 +178,7 @@ spec:
           gethomepage.dev/group: Home Automation
           gethomepage.dev/icon: home-assistant
           gethomepage.dev/name: Home Assistant
+          gethomepage.dev/target: https://hass2.techtales.io
         hostnames:
           - hass2.techtales.io
         parentRefs:
