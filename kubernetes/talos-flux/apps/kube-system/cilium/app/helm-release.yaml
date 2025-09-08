@@ -116,7 +116,7 @@ spec:
       mode: dsr
     localRedirectPolicy: true
     operator:
-      replicas: 3
+      replicas: 1
       rollOutPods: true
       prometheus:
         enabled: true

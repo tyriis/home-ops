@@ -45,7 +45,7 @@ spec:
     # https://artifacthub.io/packages/helm/traefik/traefik?modal=values
     deployment:
       enabled: true
-      replicas: 3
+      replicas: 1
     service:
       enabled: true
       type: LoadBalancer
