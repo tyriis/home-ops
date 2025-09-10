@@ -3,16 +3,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app n8n
+  name: &app node-red
 spec:
   targetNamespace: &namespace home-automation
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../../components/gatus/internal
     - ../../../../../components/volsync
-  path: ./kubernetes/kube-lab/apps/home-automation/n8n/app
+  path: ./kubernetes/kube-lab/apps/home-automation/node-red/app
   prune: true
   sourceRef:
     kind: GitRepository

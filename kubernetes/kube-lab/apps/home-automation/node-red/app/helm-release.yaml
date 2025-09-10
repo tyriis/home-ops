@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: &app node-red
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: app-template
@@ -15,11 +15,9 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
-  maxHistory: 15
   install:
-    createNamespace: true
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
@@ -69,34 +67,23 @@ spec:
         controller: *app
         ports:
           http:
-            port: 1880
+            port: ${GATUS_PORT}
 
-    ingress:
+    route:
       app:
-        className: traefik
         annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-production"
-          kubernetes.io/tls-acme: "true"
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/affinity: "true"
-          traefik.ingress.kubernetes.io/router.tls: "true"
+          external-dns/unifi: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Low-code for event-driven applications
           gethomepage.dev/group: Home Automation
           gethomepage.dev/icon: node-red
           gethomepage.dev/name: Node-RED
-          gethomepage.dev/weight: "2" # optional
-        hosts:
-          - host: &host "{{ .Release.Name }}.techtales.io"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
-            secretName: "{{ .Release.Name }}-tls"
+        hostnames:
+          - node-red.techtales.io
+        parentRefs:
+          - name: cilium
+            namespace: kube-system
+            sectionName: https
 
     persistence:
       data:
