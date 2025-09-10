@@ -5,11 +5,12 @@ kind: Kustomization
 metadata:
   name: &app n8n
 spec:
-  targetNamespace: home-automation
+  targetNamespace: &namespace home-automation
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   components:
+    - ../../../../../components/gatus/internal
     - ../../../../../components/volsync
   path: ./kubernetes/kube-lab/apps/home-automation/n8n/app
   prune: true
@@ -31,3 +32,5 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      NAMESPACE: *namespace
+      GATUS_PORT: "3000"

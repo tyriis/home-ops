@@ -3,15 +3,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app homepage
+  name: &app node-red
 spec:
-  targetNamespace: &namespace default
+  targetNamespace: home-automation
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../../components/gatus/internal
-  path: ./kubernetes/kube-lab/apps/default/homepage/app
+    - ../../../../../components/volsync
+  path: ./kubernetes/kube-lab/apps/home-automation/node-red/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -24,8 +24,10 @@ spec:
   dependsOn:
     - name: external-secrets-stores
       namespace: secops
+    - name: volsync
+      namespace: backup-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   postBuild:
     substitute:
       APP: *app
-      NAMESPACE: *namespace
-      GATUS_PORT: "1880"
