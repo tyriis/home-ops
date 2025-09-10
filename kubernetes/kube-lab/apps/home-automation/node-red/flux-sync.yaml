@@ -5,7 +5,7 @@ kind: Kustomization
 metadata:
   name: &app node-red
 spec:
-  targetNamespace: home-automation
+  targetNamespace: &namespace home-automation
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
@@ -31,3 +31,5 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      NAMESPACE: *namespace
+      GATUS_PORT: "3000"
