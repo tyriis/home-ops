@@ -60,7 +60,7 @@ nodes:
               driver: i40e
           mode: 802.3ad
           lacpRate: fast
-          xmitHashPolicy: layer3+4
+          xmitHashPolicy: layer2
         mtu: 9000
         dhcp: false
         addresses:
@@ -134,7 +134,7 @@ nodes:
               driver: i40e
           mode: 802.3ad
           lacpRate: fast
-          xmitHashPolicy: layer3+4
+          xmitHashPolicy: layer2
         mtu: 9000
         dhcp: false
         addresses:
@@ -208,7 +208,7 @@ nodes:
               driver: i40e
           mode: 802.3ad
           lacpRate: fast
-          xmitHashPolicy: layer3+4
+          xmitHashPolicy: layer2
           miimon: 1000
         mtu: 9000
         dhcp: false
