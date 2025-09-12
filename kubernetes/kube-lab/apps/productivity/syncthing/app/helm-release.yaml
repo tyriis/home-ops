@@ -44,7 +44,7 @@ spec:
               capabilities: { drop: ["ALL"] }
             image:
               repository: syncthing/syncthing
-              tag: 2.0.8
+              tag: 2.0.8@sha256:f987f753d468b609734363b4984dc7ccee85ecaf8240c7293fb318a43a38f1df
             resources:
               requests:
                 cpu: 15m
