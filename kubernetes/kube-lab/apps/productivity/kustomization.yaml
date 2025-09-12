@@ -8,3 +8,4 @@ components:
 resources:
   - ./namespace.yaml
   - ./scanservjs/flux-sync.yaml
+  - ./syncthing/flux-sync.yaml
