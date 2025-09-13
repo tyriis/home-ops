@@ -88,6 +88,7 @@ spec:
           gethomepage.dev/group: Home Automation
           gethomepage.dev/icon: mqtt
           gethomepage.dev/name: govee2mqtt
+          gethomepage.dev/weight: "2"
         hostnames:
           - govee2mqtt.techtales.io
         parentRefs:
