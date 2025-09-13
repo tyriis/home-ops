@@ -84,7 +84,7 @@ spec:
         annotations:
           external-dns/unifi: "true"
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Subtitles for your Movies and TV Shows
+          gethomepage.dev/description: Subtitles Manager for Movies and TV Shows
           gethomepage.dev/group: Arr
           gethomepage.dev/icon: bazarr-dark
           gethomepage.dev/name: Bazarr
