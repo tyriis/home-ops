@@ -78,6 +78,7 @@ spec:
           gethomepage.dev/group: Home Automation
           gethomepage.dev/icon: node-red
           gethomepage.dev/name: Node-RED
+          gethomepage.dev/weight: "1"
         hostnames:
           - node-red.techtales.io
         parentRefs:
