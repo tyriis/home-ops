@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app prowlarr
+  name: &app radarr
 spec:
   interval: 30m
   chart:
@@ -26,26 +26,26 @@ spec:
   values:
     # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
     controllers:
-      prowlarr:
+      radarr:
         replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: ghcr.io/home-operations/prowlarr
-              tag: 2.1.0.5180@sha256:5915438f7226ab8390503cc9f7288412b4584fc80e444faa224ccf2055d5f812
+              repository: ghcr.io/home-operations/radarr
+              tag: 5.28.0.10205@sha256:80dec94f1eea0715471853011efdf2c49cf92f8fe3b17b722ad8f8a637e3fead
             env:
               # https://wiki.servarr.com/useful-tools#using-environment-variables-for-config
-              PROWLARR__APP__INSTANCENAME: Prowlarr
-              PROWLARR__APP__THEME: dark
-              PROWLARR__AUTH__METHOD: Forms
-              PROWLARR__AUTH__REQUIRED: DisabledForLocalAddresses
-              PROWLARR__LOG__ANALYTICSENABLED: "False"
-              PROWLARR__LOG__DBENABLED: "False"
-              PROWLARR__LOG__LEVEL: info
-              PROWLARR__SERVER__PORT: &port 9696
-              PROWLARR__UPDATE__BRANCH: develop
+              RADARR__APP__INSTANCENAME: Radarr
+              RADARR__APP__THEME: dark
+              RADARR__AUTH__METHOD: Forms
+              RADARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              RADARR__LOG__ANALYTICSENABLED: "False"
+              RADARR__LOG__DBENABLED: "False"
+              RADARR__LOG__LEVEL: info
+              RADARR__SERVER__PORT: &port 7878
+              RADARR__UPDATE__BRANCH: develop
             ports:
               - name: http
                 containerPort: *port
@@ -84,10 +84,10 @@ spec:
         annotations:
           external-dns/unifi: "true"
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: The Ultimate Indexer Manager
+          gethomepage.dev/description: Movie Collection Manager
           gethomepage.dev/group: Arr
-          gethomepage.dev/icon: prowlarr
-          gethomepage.dev/name: Prowlarr
+          gethomepage.dev/icon: radarr
+          gethomepage.dev/name: Radarr
         hostnames:
           - &host "{{ .Release.Name }}.techtales.io"
         parentRefs:
@@ -97,5 +97,7 @@ spec:
     persistence:
       config:
         existingClaim: ${APP}-config
+      media:
+        existingClaim: media
       tmp:
         type: emptyDir

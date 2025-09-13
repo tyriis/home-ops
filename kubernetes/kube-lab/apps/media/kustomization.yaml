@@ -10,6 +10,6 @@ resources:
   - ./storage.yaml
   - ./bazarr/flux-sync.yaml
   - ./prowlarr/flux-sync.yaml
-  # - ./radarr/flux-sync.yaml
+  - ./radarr/flux-sync.yaml
   # - ./sabnzbd/flux-sync.yaml
   # - ./sonarr/flux-sync.yaml
