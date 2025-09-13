@@ -9,6 +9,9 @@ layout:
   Infrasructure:
     style: columns
     # columns: 1
+  Status:
+    style: columns
+    # columns: 1
   Observability:
     style: columns
     # columns: 1
@@ -32,10 +35,10 @@ layout:
     # columns: 1
   Terraform:
     style: columns
-    columns: 2
+    # columns: 1
   Favorites:
     style: columns
-    columns: 1
+    # columns: 1
 quicklaunch:
   searchDescription: true
   hideInternetSearch: true
