@@ -84,7 +84,7 @@ spec:
         annotations:
           external-dns/unifi: "true"
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Movie Collection Manager
+          gethomepage.dev/description: Movies Collection Manager
           gethomepage.dev/group: Arr
           gethomepage.dev/icon: radarr
           gethomepage.dev/name: Radarr
