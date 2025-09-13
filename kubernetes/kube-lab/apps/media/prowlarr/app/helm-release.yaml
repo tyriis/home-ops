@@ -86,7 +86,7 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: The Ultimate Indexer Manager
           gethomepage.dev/group: Arr
-          gethomepage.dev/icon: prowlarr-dark
+          gethomepage.dev/icon: prowlarr
           gethomepage.dev/name: Prowlarr
         hostnames:
           - &host "{{ .Release.Name }}.techtales.io"
