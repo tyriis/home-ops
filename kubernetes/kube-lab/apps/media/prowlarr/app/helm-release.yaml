@@ -84,7 +84,7 @@ spec:
         annotations:
           external-dns/unifi: "true"
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: The Ultimate Indexer Manager
+          gethomepage.dev/description: Usenet Indexer Manager
           gethomepage.dev/group: Arr
           gethomepage.dev/icon: prowlarr
           gethomepage.dev/name: Prowlarr
