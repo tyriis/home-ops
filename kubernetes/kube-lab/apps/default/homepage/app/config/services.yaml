@@ -122,3 +122,14 @@
         description: Google Drive
         ping: drive.google.com
         # siteMonitor: https://drive.google.com
+- Status:
+    - Cloudflare:
+        icon: cloudflare
+        href: https://www.cloudflarestatus.com
+        description: Cloudflare Status
+        ping: www.cloudflarestatus.com
+    - GitHub:
+        icon: si-github
+        href: https://www.githubstatus.com
+        description: GitHub Status
+        ping: www.githubstatus.com
