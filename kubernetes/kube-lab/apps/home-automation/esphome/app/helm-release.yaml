@@ -72,7 +72,7 @@ spec:
           gethomepage.dev/group: Home Automation
           gethomepage.dev/icon: esphome
           gethomepage.dev/name: ESPHome
-          gethomepage.dev/weight: "1"
+          gethomepage.dev/weight: "2"
         hosts:
           - host: &host "{{ .Release.Name }}.techtales.io"
             paths:
