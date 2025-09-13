@@ -5,8 +5,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: esphome-config
   labels:
-    app.kubernetes.io/instance: esphome
-    app.kubernetes.io/name: esphome
+    kustomize.toolkit.fluxcd.io/prune: disabled
 spec:
   accessModes:
     - ReadWriteOnce

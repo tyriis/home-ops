@@ -5,21 +5,18 @@ kind: HelmRelease
 metadata:
   name: &app esphome
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: app-template
       version: 4.2.0
-      interval: 15m
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
-  maxHistory: 15
   install:
-    createNamespace: true
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
@@ -59,23 +56,22 @@ spec:
 
     ingress:
       app:
-        className: traefik
+        className: nginx
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
+          external-dns.alpha.kubernetes.io/target: lab-ingress.techtales.io
+          external-dns/unifi: "true"
           kubernetes.io/tls-acme: "true"
-          # traefik.ingress.kubernetes.io/router.middlewares: traefik-ingress-sso@kubernetescrd
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/affinity: "true"
-          traefik.ingress.kubernetes.io/router.tls: "true"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+          nginx.ingress.kubernetes.io/ssl-redirect: "true"
+          nginx.ingress.kubernetes.io/auth-url: https://auth.techtales.io/oauth2/auth
+          nginx.ingress.kubernetes.io/auth-signin: https://auth.techtales.io/oauth2/start?rd=https://$host$request_uri
+          nginx.ingress.kubernetes.io/auth-response-headers: x-auth-request-user, x-auth-request-email
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Reimagining DIY Home Automation
+          gethomepage.dev/description: Smart Home Made Simple
           gethomepage.dev/group: Home Automation
           gethomepage.dev/icon: esphome
           gethomepage.dev/name: ESPHome
-          gethomepage.dev/weight: "3" # optional
-          # gethomepage.dev/widget.type: esphome
-          # gethomepage.dev/widget.url: http://esphome.home-automation.svc.cluster.local:6052
-          # gethomepage.dev/widget.fields: '["total", "online", "offline_alt"]'
         hosts:
           - host: &host "{{ .Release.Name }}.techtales.io"
             paths:
@@ -104,29 +100,29 @@ spec:
               - path: /config/secrets.yaml
                 subPath: secrets.yaml
 
-      esphome-config:
-        type: configMap
-        name: esphome-config
-        advancedMounts:
-          esphome:
-            app:
-              - path: /config/light-alexroom.yaml
-                subPath: light-alexroom.yaml
-              - path: /config/light-stairs.yaml
-                subPath: light-stairs.yaml
-              - path: /config/sensor-bathroom.yaml
-                subPath: sensor-bathroom.yaml
-              - path: /config/sensor-domiroom.yaml
-                subPath: sensor-domiroom.yaml
-              - path: /config/sensor-heating.yaml
-                subPath: sensor-heating.yaml
-              - path: /config/switch-alexroom.yaml
-                subPath: switch-alexroom.yaml
-              - path: /config/switch-basement.yaml
-                subPath: switch-basement.yaml
-              - path: /config/switch-domiroom.yaml
-                subPath: switch-domiroom.yaml
-              - path: /config/switch-livingroom.yaml
-                subPath: switch-livingroom.yaml
-              - path: /config/switch-office.yaml
-                subPath: switch-office.yaml
+      # esphome-config:
+      #   type: configMap
+      #   name: esphome-config
+      #   advancedMounts:
+      #     esphome:
+      #       app:
+      #         - path: /config/light-alexroom.yaml
+      #           subPath: light-alexroom.yaml
+      #         - path: /config/light-stairs.yaml
+      #           subPath: light-stairs.yaml
+      #         - path: /config/sensor-bathroom.yaml
+      #           subPath: sensor-bathroom.yaml
+      #         - path: /config/sensor-domiroom.yaml
+      #           subPath: sensor-domiroom.yaml
+      #         - path: /config/sensor-heating.yaml
+      #           subPath: sensor-heating.yaml
+      #         - path: /config/switch-alexroom.yaml
+      #           subPath: switch-alexroom.yaml
+      #         - path: /config/switch-basement.yaml
+      #           subPath: switch-basement.yaml
+      #         - path: /config/switch-domiroom.yaml
+      #           subPath: switch-domiroom.yaml
+      #         - path: /config/switch-livingroom.yaml
+      #           subPath: switch-livingroom.yaml
+      #         - path: /config/switch-office.yaml
+      #           subPath: switch-office.yaml
