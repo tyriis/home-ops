@@ -104,6 +104,8 @@ spec:
         advancedMounts:
           bazarr:
             app:
+              - path: /config/backup
+                subPath: backup
               - path: /config/cache
                 subPath: cache
               - path: /config/log
