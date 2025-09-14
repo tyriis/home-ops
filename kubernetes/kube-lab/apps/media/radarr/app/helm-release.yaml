@@ -99,5 +99,16 @@ spec:
         existingClaim: ${APP}-config
       media:
         existingClaim: media
-      tmp:
+      tmpfs:
         type: emptyDir
+        advancedMounts:
+          radarr:
+            app:
+              - path: /config/Backups
+                subPath: backup
+              - path: /config/MediaCover
+                subPath: cache
+              - path: /config/logs
+                subPath: logs
+              - path: /tmp
+                subPath: tmp
