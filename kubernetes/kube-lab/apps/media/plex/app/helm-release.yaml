@@ -60,6 +60,8 @@ spec:
                 gpu.intel.com/i915: 1
                 cpu: 10m
                 memory: 100Mi
+              limits:
+                gpu.intel.com/i915: 1
         pod:
           nodeSelector:
             intel.feature.node.kubernetes.io/gpu: "true"
