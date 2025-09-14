@@ -97,5 +97,14 @@ spec:
     persistence:
       config:
         existingClaim: ${APP}-config
-      tmp:
+      tmpfs:
         type: emptyDir
+        advancedMounts:
+          prowlarr:
+            app:
+              - path: /config/Backups
+                subPath: backup
+              - path: /config/logs
+                subPath: logs
+              - path: /tmp
+                subPath: tmp
