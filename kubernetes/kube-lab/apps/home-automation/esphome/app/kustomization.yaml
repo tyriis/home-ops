@@ -7,3 +7,4 @@ resources:
   - ./helm-release.yaml
   - ./prometheus-rule.yaml
   - ./pvc.yaml
+  - ./scrape-config.yaml

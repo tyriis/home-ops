@@ -1,0 +1,79 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: &name sensor-heating
+spec:
+  staticConfigs:
+    - targets:
+        - 192.168.10.60:80
+      labels:
+        job: *name
+  metricsPath: /metrics
+  scheme: HTTP
+  scrapeInterval: 15s
+
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: &name sensor-bathroom
+spec:
+  staticConfigs:
+    - targets:
+        - 192.168.10.61:80
+      labels:
+        job: *name
+  metricsPath: /metrics
+  scheme: HTTP
+  scrapeInterval: 15s
+
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: &name light-stairs
+spec:
+  staticConfigs:
+    - targets:
+        - 192.168.10.62:80
+      labels:
+        job: *name
+  metricsPath: /metrics
+  scheme: HTTP
+  scrapeInterval: 15s
+
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: &name switch-livingroom
+spec:
+  staticConfigs:
+    - targets:
+        - 192.168.10.63:80
+      labels:
+        job: *name
+  metricsPath: /metrics
+  scheme: HTTP
+  scrapeInterval: 15s
+
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: &name switch-domiroom
+spec:
+  staticConfigs:
+    - targets:
+        - 192.168.10.64:80
+      labels:
+        job: *name
+  metricsPath: /metrics
+  scheme: HTTP
+  scrapeInterval: 15s
