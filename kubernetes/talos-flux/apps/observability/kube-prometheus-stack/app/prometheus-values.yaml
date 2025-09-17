@@ -80,45 +80,6 @@ prometheus:
     # podMonitorNamespaceSelector: {}
 
     additionalScrapeConfigs:
-      # ESPHome lights
-      - job_name: esphome-light-stairs
-        static_configs:
-          - targets:
-              - esphome-light-stairs.home
-            labels:
-              device: light-stairs
-      # ESPHome sensors
-      - job_name: esphome-sensor-bathroom
-        static_configs:
-          - targets:
-              - esphome-sensor-bathroom.home
-            labels:
-              device: sensor-bathroom
-      - job_name: esphome-sensor-heating
-        static_configs:
-          - targets:
-              - esphome-sensor-heating.home
-            labels:
-              device: sensor-heating
-      # ESPHome switches
-      - job_name: esphome-switch-alexroom
-        static_configs:
-          - targets:
-              - esphome-switch-alexroom.home
-            labels:
-              device: switch-alexroom
-      - job_name: esphome-switch-domiroom
-        static_configs:
-          - targets:
-              - esphome-switch-domiroom.home
-            labels:
-              device: switch-domiroom
-      - job_name: esphome-switch-livingroom
-        static_configs:
-          - targets:
-              - esphome-switch-livingroom.home
-            labels:
-              device: switch-livingroom
       # homeassistant
       - job_name: homeassistant
         scrape_interval: 60s
