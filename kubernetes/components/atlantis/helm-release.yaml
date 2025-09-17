@@ -136,7 +136,7 @@ spec:
         endpoints:
           - port: metrics
             scheme: http
-            path: /
+            path: /metrics
             interval: 15s
 
     route:
