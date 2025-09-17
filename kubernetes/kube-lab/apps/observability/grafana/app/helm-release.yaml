@@ -296,16 +296,6 @@ spec:
           revision: 1
           datasource: Prometheus
 
-      opnsense:
-        # Ref: https://grafana.com/grafana/dashboards/21113
-        opnsense-exporter:
-          # renovate: dashboardName="OPNSense Exporter"
-          gnetId: 21113
-          revision: 1
-          datasource:
-            - name: DS_PROMETHEUS-K0
-              value: Prometheus
-
       unpoller:
         unifi-insights:
           # renovate: dashboardName="UniFi-Poller: Client Insights - Prometheus"
