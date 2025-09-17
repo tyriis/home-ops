@@ -24,14 +24,6 @@ connectivity:
     target: 1.1.1.1:53
     interval: 1m
 endpoints:
-  # - name: flux-webhook-talos-flux
-  #   group: external
-  #   url: https://flux-webhook.techtales.io
-  #   interval: 1m
-  #   client:
-  #     dns-resolver: tcp://1.1.1.1:53
-  #   conditions:
-  #     - "[STATUS] == 404"
   - name: flux-webhook-kube-nas
     group: external
     url: https://flux-webhook-kube-nas.techtales.io
