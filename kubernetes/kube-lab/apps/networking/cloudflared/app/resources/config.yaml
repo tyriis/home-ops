@@ -43,8 +43,6 @@ ingress:
     service: https://n8n-webhook.techtales.io
   - hostname: status.techtales.io
     service: https://status.techtales.io
-  - hostname: flux-webhook.techtales.io
-    service: https://flux-webhook.techtales.io
 
   # Example of a request over TCP:
   # - hostname: example.com
