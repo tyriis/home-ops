@@ -178,9 +178,9 @@ spec:
           gethomepage.dev/group: Home Automation
           gethomepage.dev/icon: home-assistant
           gethomepage.dev/name: Home Assistant
-          gethomepage.dev/href: https://hass2.techtales.io
+          gethomepage.dev/href: https://hass.techtales.io
         hostnames:
-          - hass2.techtales.io
+          - hass.techtales.io
         parentRefs:
           - name: cilium
             namespace: kube-system
