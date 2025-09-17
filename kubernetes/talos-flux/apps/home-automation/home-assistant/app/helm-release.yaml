@@ -98,7 +98,7 @@ spec:
           gethomepage.dev/name: Home Assistant
           gethomepage.dev/weight: "1" # optional
         hosts:
-          - host: &host hass.techtales.io
+          - host: &host hass-old.techtales.io
             paths:
               - path: /
                 service:
