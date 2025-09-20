@@ -385,10 +385,10 @@ controlPlane:
               disabled: true
             service:
               disabled: false
-        apiServer:
-          extraArgs:
-            runtime-config: admissionregistration.k8s.io/v1alpha1=true
-            feature-gates: MutatingAdmissionPolicy=true
+        # apiServer:
+        #   extraArgs:
+        #     runtime-config: admissionregistration.k8s.io/v1alpha1=true
+        #     feature-gates: MutatingAdmissionPolicy=true
         scheduler:
           extraArgs:
             bind-address: 0.0.0.0
