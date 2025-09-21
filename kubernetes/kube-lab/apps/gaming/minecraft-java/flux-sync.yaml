@@ -48,7 +48,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../../components/gatus/minecraft
+    # - ../../../../../components/gatus/minecraft
     - ../../../../../components/volsync
   path: ./kubernetes/kube-lab/apps/gaming/minecraft-java/private-lobby-world
   prune: true
@@ -85,7 +85,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../../components/gatus/minecraft
+    # - ../../../../../components/gatus/minecraft
     - ../../../../../components/volsync
   path: ./kubernetes/kube-lab/apps/gaming/minecraft-java/private-creative-world
   prune: true
@@ -124,7 +124,7 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../../components/volsync
-    - ../../../../../components/gatus/minecraft
+    # - ../../../../../components/gatus/minecraft
   path: ./kubernetes/kube-lab/apps/gaming/minecraft-java/private-playground-world
   prune: true
   sourceRef:
@@ -159,7 +159,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../../components/gatus/minecraft
+    # - ../../../../../components/gatus/minecraft
     - ../../../../../components/volsync
   path: ./kubernetes/kube-lab/apps/gaming/minecraft-java/private-survival-world
   prune: true
@@ -198,7 +198,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../../components/gatus/minecraft
+    # - ../../../../../components/gatus/minecraft
     - ../../../../../components/volsync
   path: ./kubernetes/kube-lab/apps/gaming/minecraft-java/public-lobby-world
   prune: true
@@ -235,7 +235,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../../components/gatus/minecraft
+    # - ../../../../../components/gatus/minecraft
     - ../../../../../components/volsync
   path: ./kubernetes/kube-lab/apps/gaming/minecraft-java/public-playground-world
   prune: true
@@ -309,7 +309,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../../components/gatus/minecraft
+    # - ../../../../../components/gatus/minecraft
     - ../../../../../components/volsync
   path: ./kubernetes/kube-lab/apps/gaming/minecraft-java/public-survival-world
   prune: true
