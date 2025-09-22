@@ -36,6 +36,7 @@ spec:
               - secretRef:
                   name: n8n-env
             env:
+              DB_SQLITE_POOL_SIZE: 4
               DB_SQLITE_VACUUM_ON_STARTUP: true
               EXECUTIONS_DATA_PRUNE: true
               EXECUTIONS_DATA_MAX_AGE: 7
@@ -48,6 +49,7 @@ spec:
               N8N_LOG_LEVEL: info
               N8N_LOG_OUTPUT: console
               N8N_RUNNERS_ENABLED: "true"
+              N8N_BLOCK_ENV_ACCESS_IN_NODE: "true"
               WEBHOOK_URL: https://n8n-webhook.techtales.io/
             ports:
               - name: http
