@@ -9,6 +9,6 @@ spec:
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
-  commonName: techtales.io
+  commonName: &domain nas.techtales.io
   dnsNames:
-    - nas.techtales.io
+    - *domain
