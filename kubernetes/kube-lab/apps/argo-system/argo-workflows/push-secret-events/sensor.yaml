@@ -1,0 +1,16 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: pushsecret-nas-techtales-io-tls
+spec:
+  eventBusName: default
+  dependencies:
+    - name: pushsecret-nas-techtales-io-tls
+      eventSourceName: pushsecret-nas-techtales-io-tls
+      eventName: pushsecret-nas-techtales-io-tls-watcher
+  triggers:
+    - template:
+        name: log-pushsecret-nas-techtales-io-tls
+        log:
+          intervalSeconds: 10

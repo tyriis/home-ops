@@ -1,0 +1,24 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: pushsecret-nas-techtales-io-tls
+spec:
+  eventBusName: default
+  template:
+    serviceAccountName: pushsecret-nas-techtales-io-watcher
+  resource:
+    pushsecret-nas-techtales-io-watcher:
+      namespace: cert-manager
+      group: external-secrets.io
+      version: v1alpha1
+      resource: pushsecrets
+      eventTypes:
+        - ADD
+        - UPDATE
+      filter:
+        # We only care about events after we started our event-source
+        afterStart: true
+        # We only care about this specific PushSecret matching this name
+        metadata:
+          name: nas-techtales-io-tls
