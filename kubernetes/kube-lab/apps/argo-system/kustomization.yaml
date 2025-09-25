@@ -7,4 +7,5 @@ components:
   - ../../../components/flux/alerts
 resources:
   - ./namespace.yaml
+  - ./argo-events/flux-sync.yaml
   - ./argo-workflows/flux-sync.yaml
