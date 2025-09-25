@@ -6,7 +6,7 @@ metadata:
 spec:
   eventBusName: default
   template:
-    serviceAccountName: pushsecret-nas-techtales-io-watcher
+    serviceAccountName: pushsecret-watcher
   resource:
     pushsecret-nas-techtales-io-watcher:
       namespace: cert-manager
