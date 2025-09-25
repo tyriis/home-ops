@@ -11,6 +11,114 @@ spec:
       eventName: pushsecret-nas-techtales-io-tls-watcher
   triggers:
     - template:
-        name: log-pushsecret-nas-techtales-io-tls
-        log:
-          intervalSeconds: 10
+        name: check-certificate-validity
+        argoWorkflow:
+          operation: submit
+          source:
+            resource:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Workflow
+              metadata:
+                generateName: certificate-validity-check-
+                namespace: argo-system
+              spec:
+                entrypoint: check-certificate
+                serviceAccountName: argo-workflow
+                arguments:
+                  parameters:
+                    - name: hostname
+                      value: "nas.techtales.io"
+                    - name: port
+                      value: "443"
+                    - name: pushsecret-name
+                      value: ""
+                    - name: event-type
+                      value: ""
+                templates:
+                  - name: check-certificate
+                    inputs:
+                      parameters:
+                        - name: hostname
+                        - name: port
+                        - name: pushsecret-name
+                        - name: event-type
+                    container:
+                      image: alpine/openssl:latest
+                      command: [sh, -c]
+                      args:
+                        - |
+                          set -e
+
+                          HOSTNAME="{{inputs.parameters.hostname}}"
+                          PORT="{{inputs.parameters.port}}"
+                          PUSHSECRET_NAME="{{inputs.parameters.pushsecret-name}}"
+                          EVENT_TYPE="{{inputs.parameters.event-type}}"
+
+                          echo "=== Certificate Validity Check ==="
+                          echo "Triggered by: PushSecret '$PUSHSECRET_NAME' event: $EVENT_TYPE"
+                          echo "Checking certificate for: $HOSTNAME:$PORT"
+                          echo "Timestamp: $(date -u)"
+                          echo ""
+
+                          # Get certificate information
+                          echo "Fetching certificate from $HOSTNAME:$PORT..."
+                          CERT_INFO=$(echo | openssl s_client -servername $HOSTNAME -connect $HOSTNAME:$PORT 2>/dev/null | openssl x509 -noout -dates -subject -issuer 2>/dev/null)
+
+                          if [ $? -ne 0 ] || [ -z "$CERT_INFO" ]; then
+                            echo "ERROR: Failed to retrieve certificate from $HOSTNAME:$PORT"
+                            exit 1
+                          fi
+
+                          echo "Certificate Details:"
+                          echo "$CERT_INFO"
+                          echo ""
+
+                          # Extract dates
+                          NOT_BEFORE=$(echo "$CERT_INFO" | grep "notBefore=" | cut -d= -f2)
+                          NOT_AFTER=$(echo "$CERT_INFO" | grep "notAfter=" | cut -d= -f2)
+
+                          # Convert to epoch for calculation
+                          CURRENT_EPOCH=$(date +%s)
+                          NOT_AFTER_EPOCH=$(date -d "$NOT_AFTER" +%s 2>/dev/null || echo "0")
+
+                          if [ "$NOT_AFTER_EPOCH" -eq 0 ]; then
+                            echo "ERROR: Could not parse certificate expiration date"
+                            exit 1
+                          fi
+
+                          # Calculate days until expiration
+                          SECONDS_UNTIL_EXPIRY=$((NOT_AFTER_EPOCH - CURRENT_EPOCH))
+                          DAYS_UNTIL_EXPIRY=$((SECONDS_UNTIL_EXPIRY / 86400))
+                          HOURS_UNTIL_EXPIRY=$(((SECONDS_UNTIL_EXPIRY % 86400) / 3600))
+
+                          echo "=== Validity Summary ==="
+                          echo "Certificate valid from: $NOT_BEFORE"
+                          echo "Certificate expires on: $NOT_AFTER"
+                          echo ""
+
+                          if [ $SECONDS_UNTIL_EXPIRY -gt 0 ]; then
+                            echo "✅ Certificate is VALID"
+                            echo "⏱️  Time until expiration: $DAYS_UNTIL_EXPIRY days and $HOURS_UNTIL_EXPIRY hours"
+
+                            if [ $DAYS_UNTIL_EXPIRY -lt 30 ]; then
+                              echo "⚠️  WARNING: Certificate expires in less than 30 days!"
+                            elif [ $DAYS_UNTIL_EXPIRY -lt 7 ]; then
+                              echo "🚨 CRITICAL: Certificate expires in less than 7 days!"
+                            fi
+                          else
+                            DAYS_EXPIRED=$((-DAYS_UNTIL_EXPIRY))
+                            echo "❌ Certificate is EXPIRED"
+                            echo "💀 Certificate expired $DAYS_EXPIRED days ago"
+                          fi
+
+                          echo ""
+                          echo "=== End Certificate Check ==="
+          parameters:
+            - src:
+                dependencyName: pushsecret-nas-techtales-io-tls
+                dataKey: body.object.metadata.name
+              dest: spec.arguments.parameters.2.value
+            - src:
+                dependencyName: pushsecret-nas-techtales-io-tls
+                dataKey: body.type
+              dest: spec.arguments.parameters.3.value
