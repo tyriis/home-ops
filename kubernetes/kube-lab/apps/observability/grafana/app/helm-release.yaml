@@ -178,7 +178,7 @@ spec:
         node-exporter-full:
           # renovate: dashboardName="Node Exporter Full"
           gnetId: 1860
-          revision: 41
+          revision: 42
           datasource: Prometheus
 
         # Ref: https://grafana.com/grafana/dashboards/13665
