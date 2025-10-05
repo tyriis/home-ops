@@ -84,6 +84,7 @@ public-lobby ="minecraft-public-lobby-world-minecraft:25565"
 public-playground="minecraft-public-playground-world-minecraft:25565"
 public-pvp="minecraft-public-pvp-world-minecraft:25565"
 public-survival="minecraft-public-survival-world-minecraft:25565"
+crowlex-lobby="minecraft-crowlex-lobby-world-minecraft:25565"
 
 
 # In what order we should try servers when a player logs in or is kicked from a server.
