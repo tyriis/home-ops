@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ${APP}
+spec:
+  interval: 30m
+  # https://bjw-s-labs.github.io/helm-charts/docs/app-template/
+  values:
+    controllers:
+      minecraft:
+        containers:
+          app:
+            env:
+              PAPER_DOWNLOAD_URL: NULL
+              VERSION: 1.21.9
+              PAPER_BUILD: 50
+              PAPER_CHANNEL: experimental
