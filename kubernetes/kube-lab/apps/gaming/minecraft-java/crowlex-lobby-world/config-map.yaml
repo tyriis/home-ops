@@ -49,7 +49,7 @@ data:
   ENABLE_ROLLING_LOGS: "true"
   LOG_TIMESTAMP: "true"
   SNOOPER_ENABLED: "true"
-  LEVEL: lobby
+  LEVEL: lobby2
   SERVER_NAME: lobby
   STOP_SERVER_ANNOUNCE_DELAY: "30"
   STOP_DURATION: "30"
