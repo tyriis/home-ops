@@ -10,6 +10,9 @@ configMapGenerator:
     files:
       - velocity.toml=config/velocity.toml
       - plugins.txt=config/plugins.txt
+  - name: minecraft-velocity-proxy-plugins-viaversion
+    files:
+      - config.yml=plugins/viaversion/config.yml
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
