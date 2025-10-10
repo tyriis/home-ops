@@ -61,3 +61,18 @@ spec:
       recordType: CNAME
       targets:
         - 1d1865c6-c0dd-4236-8d7d-79722940886f.cfargotunnel.com
+
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: techtales-io-dkim-cloudflare
+  annotations:
+    external-dns/cloudflare: "true"
+spec:
+  endpoints:
+    - dnsName: google._domainkey.techtales.io
+      recordType: TXT
+      targets:
+        - v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyySzvW7IB/mgERmSIvVix/zYEOsz3VSnsd7JRuUe30+nXG8IKRHwEAWAILzWOLxaQW/ASCkBqabnBY5o9L4bTZQccN/FBCAWj+ScyQT9h1vxnziz5XWlhDFDpWNR1pxR5JgmN7Hu2gJTbLu0keXeeP3K5Bb9cH1N/dvjBEtGSRi3KeGVOvg2b5JrCqNUZNkDWoIuphpZdn+n7lcSiNNKLHTRmh4qu7WbyijiVv3Lj6zJgzlHKlN19HxcgqSLMhgN1OdH+jSXzX29rQOKGcIiAMaJyiVFrCJaibFI+QRQP9zcQlUsBaRfBwesIYbLTMzweoIeNyN2Ls/zAoFg/rLl6wIDAQAB
