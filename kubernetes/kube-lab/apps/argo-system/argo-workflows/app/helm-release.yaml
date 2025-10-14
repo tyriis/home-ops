@@ -60,7 +60,7 @@ spec:
       image:
         registry: quay.io
         repository: argoproj/argocli
-        tag: v3.7.2@sha256:a622f9e6951f81b9429948c5a4041dda69f6f5c6ad52c8d4343f882ed09ce5e1
+        tag: v3.7.3@sha256:42a6d8d7a60e06b72adaf9cb45cbbd6733a5c1dad42341adf303396893a82bcc
       resources:
         requests:
           cpu: 10m
