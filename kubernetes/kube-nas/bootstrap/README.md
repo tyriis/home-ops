@@ -3,7 +3,7 @@
 ## Cilium
 
 ```bash
-kubectl kustomize --enable-helm kubernetes/kube-nas/bootstrap/cilium | kubectl apply -n kube-system -f -
+kubectl kustomize --enable-helm kubernetes/kube-nas/bootstrap/cilium | kubectl apply -f -
 ```
 
 ## Coredns
@@ -28,6 +28,7 @@ kubectl kustomize --enable-helm kubernetes/kube-nas/bootstrap/kubelet-csr-approv
 
 ```bash
 kubectl create namespace democratic-csi
+kubectl label --overwrite namespace democratic-csi pod-security.kubernetes.io/enforce=privileged
 kubectl kustomize --enable-helm kubernetes/kube-nas/bootstrap/democratic-csi | kubectl apply -n democratic-csi -f -
 ```
 

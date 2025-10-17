@@ -4,7 +4,7 @@ replicaCount: 1
 k8sAppLabelOverride: kube-dns
 service:
   name: kube-dns
-  clusterIP: 10.43.0.10
+  clusterIP: 10.96.0.10
 serviceAccount:
   create: true
 deployment:
@@ -49,9 +49,6 @@ tolerations:
   - key: CriticalAddonsOnly
     operator: Exists
   - key: node-role.kubernetes.io/control-plane
-    operator: Exists
-    effect: NoSchedule
-  - key: node-role.kubernetes.io/master
     operator: Exists
     effect: NoSchedule
 topologySpreadConstraints:

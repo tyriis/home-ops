@@ -3,19 +3,19 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname flux-operator
-  namespace: flux-system
+  name: &app flux-operator
+  namespace: &namespace flux-system
 spec:
-  targetNamespace: flux-system
+  targetNamespace: *namespace
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *appname
+      app.kubernetes.io/name: *app
   path: ./kubernetes/kube-nas/apps/flux-system/flux-operator/app
   prune: false # should never be deleted
   sourceRef:
     kind: GitRepository
-    name: home-ops
-    namespace: flux-system
+    name: flux-system
+    namespace: *namespace
   wait: true
   interval: 30m
   retryInterval: 1m
@@ -26,19 +26,22 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname flux-instance
-  namespace: flux-system
+  name: &app flux-instance
+  namespace: &namespace flux-system
 spec:
-  targetNamespace: flux-system
+  targetNamespace: *namespace
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *appname
+      app.kubernetes.io/name: *app
   path: /kubernetes/kube-nas/apps/flux-system/flux-operator/instance
   prune: false # should never be deleted
   sourceRef:
     kind: GitRepository
-    name: home-ops
+    name: flux-system
+    namespace: *namespace
   wait: false
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  dependsOn:
+    - name: flux-operator

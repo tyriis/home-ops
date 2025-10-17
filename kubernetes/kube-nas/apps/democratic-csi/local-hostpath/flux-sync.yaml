@@ -3,17 +3,17 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname local-hostpath
+  name: &app local-hostpath
 spec:
   targetNamespace: democratic-csi
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *appname
+      app.kubernetes.io/name: *app
   path: ./kubernetes/kube-nas/apps/democratic-csi/local-hostpath/app
   prune: false # lets not prune our local storage layer
   sourceRef:
     kind: GitRepository
-    name: home-ops
+    name: flux-system
     namespace: flux-system
   wait: true
   interval: 30m

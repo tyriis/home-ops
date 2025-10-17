@@ -1,22 +1,22 @@
 ---
 csiDriver:
-  name: local-hostpath.democratic-csi.kube-nas.home.arpa
+  name: local-hostpath.democratic-csi.home.arpa
   storageCapacity: true # With storage capacity tracking, the scheduler filters out nodes which do not have enough capacity.
   fsGroupPolicy: File # fsGroupChangePolicy
 
 storageClasses:
-  - name: local
+  - name: local-nvme
     defaultClass: true
     reclaimPolicy: Delete
     volumeBindingMode: WaitForFirstConsumer
     # distributed support is not yet ready for expansion
     allowVolumeExpansion: false
 
-volumeSnapshotClasses:
-  - name: local
-    deletionPolicy: Delete
-    parameters:
-      cluster: kube-nas
+# volumeSnapshotClasses:
+#   - name: local-nvme
+#     deletionPolicy: Delete
+#     parameters:
+#       cluster: kube-nas
 
 controller:
   enabled: true
@@ -35,23 +35,23 @@ controller:
   externalResizer:
     enabled: false
 
-  externalSnapshotter:
-    enabled: true
-    extraArgs:
-      - --leader-election=false
-      - --node-deployment=true
+  # externalSnapshotter:
+  #   enabled: true
+  #   extraArgs:
+  #     - --leader-election=false
+  #     - --node-deployment=true
 
 node:
   driver:
     extraVolumeMounts:
       - name: local-hostpath
-        mountPath: /mnt/volume1/data/csi
+        mountPath: /var/mnt/extra
         mountPropagation: Bidirectional
 
   extraVolumes:
     - name: local-hostpath
       hostPath:
-        path: /mnt/volume1/data/csi
+        path: /var/mnt/extra
         type: DirectoryOrCreate
 
 driver:
@@ -59,8 +59,8 @@ driver:
     driver: local-hostpath
     instance_id: kube-nas-local-hostpath
     local-hostpath:
-      shareBasePath: /mnt/volume1/data/csi
-      controllerBasePath: /mnt/volume1/data/csi
+      shareBasePath: /var/mnt/extra
+      controllerBasePath: /var/mnt/extra
       dirPermissionsMode: "0770"
       dirPermissionsUser: 0
       dirPermissionsGroup: 0

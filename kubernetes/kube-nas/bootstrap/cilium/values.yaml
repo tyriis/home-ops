@@ -1,82 +1,50 @@
 ---
+# https://artifacthub.io/packages/helm/cilium/cilium?modal=values
+cluster:
+  name: kube-nas
+  id: 1
+k8sServiceHost: localhost
+k8sServicePort: 7445
 autoDirectNodeRoutes: true
 bandwidthManager:
   enabled: true
   bbr: true
 bpf:
   masquerade: true
+  tproxy: true
 bgp:
   enabled: false
-cluster:
-  name: kube-nas
-  id: 1
-containerRuntime:
-  integration: containerd
-  socketPath: /var/run/k3s/containerd/containerd.sock
+cgroup:
+  autoMount:
+    enabled: false
+  hostRoot: /sys/fs/cgroup
 endpointRoutes:
   enabled: true
 hubble:
-  enabled: true
-  metrics:
-    enabled:
-      - dns:query
-      - drop
-      - tcp
-      - flow
-      - port-distribution
-      - icmp
-      - http
-    serviceMonitor:
-      enabled: false
-    dashboards:
-      enabled: false
-      annotations:
-        grafana_folder: Cilium
+  enabled: false
   relay:
-    enabled: true
-    rollOutPods: true
-    prometheus:
-      serviceMonitor:
-        enabled: false
-  ui:
-    enabled: true
-    rollOutPods: true
-    ingress:
-      enabled: true
-      className: nginx
-      annotations:
-        cert-manager.io/cluster-issuer: self-signed
-        kubernetes.io/tls-acme: "true"
-        nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-        nginx.ingress.kubernetes.io/ssl-redirect: "true"
-      hosts:
-        - &host hubble.tyriis.dev
-      tls:
-        - hosts:
-            - *host
+    enabled: false
 ipam:
   mode: kubernetes
-ipv4NativeRoutingCIDR: 10.42.0.0/16
-# k8sServiceHost: 192.168.1.90
-# k8sServicePort: 6443
-kubeProxyReplacement: strict
-# kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+ipv4NativeRoutingCIDR: 10.244.0.0/16
+kubeProxyReplacement: true
+kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 l2announcements:
   enabled: true
-  leaseDuration: 120s
-  leaseRenewDeadline: 60s
-  leaseRetryPeriod: 1s
+  # leaseDuration: 120s
+  # leaseRenewDeadline: 60s
+  # leaseRetryPeriod: 1s
 loadBalancer:
   algorithm: maglev
   mode: dsr
 localRedirectPolicy: true
 operator:
-  rollOutPods: true
   replicas: 1
+  rollOutPods: true
   prometheus:
     enabled: true
     serviceMonitor:
-      enabled: false
+      enabled: true
   dashboards:
     enabled: false
     annotations:
@@ -84,13 +52,32 @@ operator:
 prometheus:
   enabled: true
   serviceMonitor:
-    enabled: false
-    trustCRDsExist: false
+    enabled: true
+    trustCRDsExist: true
 dashboards:
-  enabled: true
+  enabled: false
   annotations:
     grafana_folder: Cilium
 rollOutCiliumPods: true
+routingMode: native
 securityContext:
   privileged: true
-tunnel: disabled
+  capabilities:
+    ciliumAgent:
+      - CHOWN
+      - KILL
+      - NET_ADMIN
+      - NET_RAW
+      - IPC_LOCK
+      - SYS_ADMIN
+      - SYS_RESOURCE
+      - PERFMON
+      - BPF
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETGID
+      - SETUID
+    cleanCiliumState:
+      - NET_ADMIN
+      - SYS_ADMIN
+      - SYS_RESOURCE

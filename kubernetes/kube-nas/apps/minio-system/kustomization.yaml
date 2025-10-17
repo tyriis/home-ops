@@ -8,4 +8,4 @@ components:
   - ../../../components/flux/alerts
 resources:
   - ./namespace.yaml
-  - ./minio/flux-sync.yaml
+  # - ./minio/flux-sync.yaml
