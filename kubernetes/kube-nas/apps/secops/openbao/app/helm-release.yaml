@@ -66,12 +66,12 @@ spec:
         enabled: true
         size: 2Gi
         mountPath: /openbao/data
-        storageClass: local
+        storageClass: local-nvme
       auditStorage:
         enabled: true
         size: 2Gi
         mountPath: /openbao/audit
-        storageClass: local
+        storageClass: local-nvme
       extraEnvironmentVars:
         GOOGLE_APPLICATION_CREDENTIALS: /openbao/userconfig/kms-openbao-unseal/serviceaccount.json
       extraVolumes:

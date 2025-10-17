@@ -81,16 +81,16 @@ spec:
           existingClaim: harbor-registry-0
         jobservice:
           jobLog:
-            storageClass: local
+            storageClass: local-nvme
             size: 1Gi
         database:
-          storageClass: local
+          storageClass: local-nvme
           size: 1Gi
         redis:
-          storageClass: local
+          storageClass: local-nvme
           size: 1Gi
         trivy:
-          storageClass: local
+          storageClass: local-nvme
           size: 5Gi
     cache:
       enabled: true
