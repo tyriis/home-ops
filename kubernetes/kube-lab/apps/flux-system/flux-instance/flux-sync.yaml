@@ -1,4 +1,29 @@
 ---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app flux-instance
+  namespace: &namespace flux-system
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/kube-lab/apps/flux-system/flux-instance/app
+  prune: false # should never be deleted
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: *namespace
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: flux-operator
+
+---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -12,12 +37,12 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../../components/gatus/external
-  path: ./kubernetes/kube-lab/apps/flux-system/flux-components/webhook
+  path: ./kubernetes/kube-lab/apps/flux-system/flux-instance/webhook
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-    namespace: flux-system
+    namespace: *namespace
   wait: true
   interval: 30m
   retryInterval: 1m
