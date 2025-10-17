@@ -52,7 +52,7 @@ prometheus:
     storageSpec:
       volumeClaimTemplate:
         spec:
-          storageClassName: local
+          storageClassName: local-nvme
           resources:
             requests:
               storage: 10Gi
