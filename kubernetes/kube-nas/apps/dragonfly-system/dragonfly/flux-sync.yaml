@@ -91,5 +91,3 @@ spec:
   dependsOn:
     - name: dragonfly-cluster
       namespace: dragonfly-system
-    - name: kube-prometheus-stack
-      namespace: observability
