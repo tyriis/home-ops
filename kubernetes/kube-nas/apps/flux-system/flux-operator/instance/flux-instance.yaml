@@ -22,7 +22,7 @@ spec:
     tenantDefaultServiceAccount: default
     type: kubernetes
   storage:
-    class: local
+    class: local-nvme
     size: 10Gi
   kustomize:
     patches:
@@ -84,9 +84,6 @@ spec:
       # Configure home-ops GitRepository
       - patch: |
           - op: replace
-            path: /metadata/name
-            value: home-ops
-          - op: replace
             path: /spec/interval
             value: 2h
           - op: add
@@ -99,13 +96,13 @@ spec:
         target:
           kind: GitRepository
           name: flux-system
-      - patch: |
-          - op: replace
-            path: /spec/sourceRef/name
-            value: home-ops
-        target:
-          kind: Kustomization
-          name: flux-system
+      # - patch: |
+      #     - op: replace
+      #       path: /spec/sourceRef/name
+      #       value: home-ops
+      #   target:
+      #     kind: Kustomization
+      #     name: flux-system
       # Enable in-memory kustomize builds
       - patch: |
           - op: add
