@@ -12,8 +12,7 @@ spec:
       version: 1.19.0
       sourceRef:
         kind: HelmRepository
-        name: external-dns-charts
-        namespace: flux-system
+        name: external-dns
   install:
     crds: CreateReplace
     remediation:
@@ -26,12 +25,13 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  # https://kubernetes-sigs.github.io/external-dns/v0.14.2/
+  # https://kubernetes-sigs.github.io/external-dns/latest/
   values:
     # https://artifacthub.io/packages/helm/external-dns/external-dns?modal=values
     fullnameOverride: *app
     interval: 2m
     # logLevel: debug
+    logFormat: json
     provider: cloudflare
     env:
       - name: CF_API_EMAIL
@@ -51,11 +51,14 @@ spec:
     policy: sync
     sources:
       - ingress
+      - gateway-httproute
+      - crd
+    txtOwnerId: kube-nas
     txtPrefix: kube-nas.
-    txtOwnerId: default
     domainFilters:
       - techtales.io
     serviceMonitor:
       enabled: true
     podAnnotations:
       secret.reloader.stakater.com/reload: *secret
+    gatewayNamespace: kube-system

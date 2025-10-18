@@ -53,8 +53,8 @@ spec:
       - ingress
       - gateway-httproute
       - crd
-    txtPrefix: kube-lab.
     txtOwnerId: kube-lab
+    txtPrefix: kube-lab.
     domainFilters:
       - techtales.io
     serviceMonitor:
