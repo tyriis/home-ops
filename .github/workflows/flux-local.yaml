@@ -163,7 +163,7 @@ jobs:
             --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart"
             --limit-bytes 9940
             --all-namespaces
-            --sources "${{ matrix.cluster == 'kube-lab' && 'flux-system' || 'home-ops' }}"
+            --sources "${{ matrix.cluster == 'flux-system' }}"
             --output-file diff.patch
 
       - name: List Diff
