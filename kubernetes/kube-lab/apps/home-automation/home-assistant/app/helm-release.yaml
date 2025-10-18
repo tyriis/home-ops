@@ -44,7 +44,7 @@ spec:
               VENV_FOLDER: /venv
             image:
               repository: ghcr.io/home-operations/home-assistant
-              tag: 2025.10.2@sha256:7f38ac027c09d5bc21f2e9cb5c2356dad46d356ae2f41a4e3acd8d8320e8f1eb
+              tag: 2025.10.3@sha256:94c9906ffd11a2958ca07235686ab30927a7b0a684856f9a8c2f7d2b1a6e2e21
             ports:
               - name: http
                 containerPort: 8123
@@ -63,7 +63,7 @@ spec:
           code-server:
             image:
               repository: ghcr.io/coder/code-server
-              tag: 4.104.3@sha256:8a4f9ec985bcb022de1ae70fab74e3a2c3199b2bc44665df6da203c3ada1643a
+              tag: 4.105.0@sha256:b54261ccfb29a6680a0fbce13f83d37487157f1b9b30390bb8ddca1929f49b4e
             args:
               - --auth
               - none

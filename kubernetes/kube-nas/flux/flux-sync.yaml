@@ -4,14 +4,15 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: flux-repositories
-  namespace: flux-system
+  namespace: &namespace flux-system
 spec:
-  targetNamespace: flux-system
+  targetNamespace: *namespace
   path: ./kubernetes/base/flux/repositories/helm
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-ops
+    name: flux-system
+    namespace: *namespace
   wait: true
   interval: 30m
   retryInterval: 1m
@@ -29,7 +30,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-ops
+    name: flux-system
   wait: false
   interval: 30m
   retryInterval: 1m

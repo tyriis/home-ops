@@ -70,7 +70,7 @@ alertmanager:
     storage:
       volumeClaimTemplate:
         spec:
-          storageClassName: local
+          storageClassName: local-nvme
           resources:
             requests:
               storage: 1Gi

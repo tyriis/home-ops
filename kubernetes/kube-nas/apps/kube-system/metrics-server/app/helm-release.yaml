@@ -6,22 +6,19 @@ metadata:
   name: metrics-server
 spec:
   interval: 30m
-  timeout: 5m
   chart:
     spec:
       chart: metrics-server
       version: 3.13.0
       sourceRef:
         kind: HelmRepository
-        name: metrics-server-charts
-        namespace: flux-system
+        name: metrics-server
   install:
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
   uninstall:
     keepHistory: false
@@ -29,5 +26,4 @@ spec:
     metrics:
       enabled: true
     serviceMonitor:
-      # TODO: enable me after mini prom setup
-      enabled: false
+      enabled: true

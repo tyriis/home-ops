@@ -1,4 +1,4 @@
 ---
-providerRegex: |
-  ^(kube-nas)$
+bypassDnsResolution: true
+providerRegex: ^nas\d\d?$
 replicas: 1

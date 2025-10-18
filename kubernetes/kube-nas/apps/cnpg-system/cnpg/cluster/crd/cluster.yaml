@@ -13,7 +13,7 @@ spec:
   primaryUpdateStrategy: unsupervised
   storage:
     size: 10Gi
-    storageClass: local
+    storageClass: local-nvme
   superuserSecret:
     name: postgres-superuser
   enableSuperuserAccess: true

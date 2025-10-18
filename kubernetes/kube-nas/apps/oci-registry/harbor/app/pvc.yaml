@@ -10,4 +10,4 @@ spec:
   resources:
     requests:
       storage: 100Gi # need to be more in production
-  storageClassName: local
+  storageClassName: local-nvme

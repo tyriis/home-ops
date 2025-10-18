@@ -6,19 +6,17 @@ metadata:
   name: cert-manager
 spec:
   interval: 30m
-  timeout: 5m
   chart:
     spec:
       chart: cert-manager
       version: v1.19.1
       sourceRef:
         kind: HelmRepository
-        name: jetstack-charts
-        namespace: flux-system
+        name: jetstack
   install:
     crds: CreateReplace
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     crds: CreateReplace
@@ -26,13 +24,38 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  # https://artifacthub.io/packages/helm/cert-manager/cert-manager?modal=values-schema
   values:
-    crds:
-      enabled: true
-    dns01RecursiveNameservers: https://1.1.1.1:443/dns-query,https://1.0.0.1:443/dns-query
-    dns01RecursiveNameserversOnly: true
-    # prometheus:
-    #   enabled: true
-    #   servicemonitor:
-    #     enabled: true
+    # https://artifacthub.io/packages/helm/cert-manager/cert-manager?modal=values
+    installCRDs: true
+    extraArgs:
+      - --dns01-recursive-nameservers=1.1.1.1:53
+      - --dns01-recursive-nameservers-only
+      - --enable-certificate-owner-ref
+    replicaCount: 1
+    podDnsPolicy: "None"
+    podDnsConfig:
+      nameservers:
+        - "1.1.1.1"
+    prometheus:
+      servicemonitor:
+        enabled: true
+    resources:
+      requests:
+        cpu: 10m
+        memory: 100Mi
+      limits:
+        memory: 100Mi
+    cainjector:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 223Mi
+        limits:
+          memory: 223Mi
+    webhook:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 100Mi
+        limits:
+          memory: 100Mi

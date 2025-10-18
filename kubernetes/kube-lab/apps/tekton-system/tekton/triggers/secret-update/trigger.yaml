@@ -1,0 +1,65 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/triggers.tekton.dev/v1beta1_TriggerTemplate.json
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: secret-update
+spec:
+  params:
+    - name: secret-name
+    - name: secret-namespace
+    - name: action
+  resourceTemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: secret-update-run-
+      spec:
+        pipelineRef:
+          name: secret-update
+        params:
+          - name: sname
+            value: $(tt.params.name)
+          - name: namespace
+            value: $(tt.params.namespace)
+          - name: action
+            value: $(tt.params.action)
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/triggers.tekton.dev/v1beta1_TriggerBinding.json
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  name: secret-update
+spec:
+  params:
+    - name: name
+      value: $(body.object.metadata.name)
+    - name: namespace
+      value: $(body.object.metadata.namespace)
+    - name: action
+      value: $(body.type)
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/triggers.tekton.dev/v1beta1_EventListener.json
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: secret-update
+  namespace: tekton-system
+spec:
+  serviceAccountName: tekton-trigger-secret-update
+  triggers:
+    - name: secret-update
+      bindings:
+        - kind: TriggerBinding
+          ref: secret-update
+      template:
+        ref: secret-update
+      interceptors:
+        - name: validate-secret-update
+          ref:
+            name: "cel"
+          params:
+            - name: "filter"
+              value: "body.object.kind == 'Secret' && (body.type == 'MODIFIED' || body.type == 'ADDED')"
