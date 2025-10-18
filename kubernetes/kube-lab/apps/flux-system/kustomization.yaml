@@ -7,5 +7,5 @@ components:
   - ../../../components/flux/alerts
 resources:
   - ./namespace.yaml
-  - ./flux-components/flux-sync.yaml
+  - ./flux-instance/flux-sync.yaml
   - ./flux-operator/flux-sync.yaml
