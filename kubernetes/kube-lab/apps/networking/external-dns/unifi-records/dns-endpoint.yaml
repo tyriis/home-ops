@@ -33,6 +33,21 @@ spec:
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
+  name: nas-gateway-unifi
+  annotations:
+    external-dns/unifi: "true"
+spec:
+  endpoints:
+    - dnsName: nas-gateway.techtales.io
+      recordType: A
+      targets:
+        - 192.168.100.92
+
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
   name: nas-ingress-unifi
   annotations:
     external-dns/unifi: "true"
