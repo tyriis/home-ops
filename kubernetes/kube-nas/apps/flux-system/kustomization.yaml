@@ -9,4 +9,4 @@ components:
 resources:
   - ./namespace.yaml
   - ./flux-operator/flux-sync.yaml
-  - ./flux/flux-sync.yaml
+  - ./flux-instance/flux-sync.yaml
