@@ -50,5 +50,5 @@ sops --decrypt kubernetes/kube-nas/flux/config/sops-age.sops.yaml | kubectl appl
 when flux is up and running, we can apply our manifests
 
 ```bash
-kubectl apply --server-side -f kubernetes/kube-nas/apps/flux-system/flux-operator/instance/flux-instance.yaml -n flux-system
+kubectl apply --server-side -f kubernetes/kube-nas/apps/flux-system/flux-instance/app/flux-instance.yaml -n flux-system
 ```

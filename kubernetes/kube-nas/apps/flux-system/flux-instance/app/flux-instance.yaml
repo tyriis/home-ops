@@ -4,26 +4,31 @@ apiVersion: fluxcd.controlplane.io/v1
 kind: FluxInstance
 metadata:
   name: flux
+  annotations:
+    kustomize.toolkit.fluxcd.io/prune: disabled
 spec:
   distribution:
     # renovate: depName=controlplaneio-fluxcd/distribution datasource=github-releases
     version: 2.6.4
     registry: ghcr.io/fluxcd
     artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests
+  cluster:
+    domain: cluster.local
+    type: kubernetes
   components:
     - source-controller
     - kustomize-controller
     - helm-controller
     - notification-controller
-  cluster:
-    domain: cluster.local
-    multitenant: false
-    networkPolicy: true
-    tenantDefaultServiceAccount: default
-    type: kubernetes
   storage:
     class: local-nvme
     size: 10Gi
+  sync:
+    kind: GitRepository
+    url: https://github.com/tyriis/home-ops.git
+    ref: refs/heads/main
+    path: ./kubernetes/kube-nas/flux
+    interval: 2h
   kustomize:
     patches:
       # prevent deletion of namespace by flux
@@ -96,13 +101,6 @@ spec:
         target:
           kind: GitRepository
           name: flux-system
-      # - patch: |
-      #     - op: replace
-      #       path: /spec/sourceRef/name
-      #       value: home-ops
-      #   target:
-      #     kind: Kustomization
-      #     name: flux-system
       # Enable in-memory kustomize builds
       - patch: |
           - op: add
@@ -146,8 +144,3 @@ spec:
         target:
           kind: Deployment
           name: helm-controller
-  sync:
-    kind: GitRepository
-    url: https://github.com/tyriis/home-ops.git
-    ref: refs/heads/main
-    path: ./kubernetes/kube-nas/flux
