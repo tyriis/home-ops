@@ -16,14 +16,10 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: *namespace
-  wait: false
+  wait: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
-  healthChecks:
-    - &crds
-      kind: CustomResourceDefinition
-      name: fluxinstances.fluxcd.controlplane.io
   dependsOn:
     - name: flux-operator
 
