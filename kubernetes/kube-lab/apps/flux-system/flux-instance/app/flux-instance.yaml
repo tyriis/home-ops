@@ -12,20 +12,23 @@ spec:
     version: 2.6.4
     registry: ghcr.io/fluxcd
     artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests
+  cluster:
+    domain: cluster.local
+    type: kubernetes
   components:
     - source-controller
     - kustomize-controller
     - helm-controller
     - notification-controller
-  cluster:
-    domain: cluster.local
-    multitenant: false
-    networkPolicy: true
-    tenantDefaultServiceAccount: default
-    type: kubernetes
   storage:
     class: ceph-block
     size: 10Gi
+  sync:
+    kind: GitRepository
+    url: https://github.com/tyriis/home-ops.git
+    ref: refs/heads/main
+    path: ./kubernetes/kube-lab/flux
+    interval: 2h
   kustomize:
     patches:
       # prevent deletion of namespace by flux
@@ -141,8 +144,3 @@ spec:
         target:
           kind: Deployment
           name: helm-controller
-  sync:
-    kind: GitRepository
-    url: https://github.com/tyriis/home-ops.git
-    ref: refs/heads/main
-    path: ./kubernetes/kube-lab/flux
