@@ -1,9 +1,9 @@
 ---
-# yaml-language-server: $schema=https://github.com/fluxcd-community/flux2-schemas/raw/main/receiver-notification-v1.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/notification.toolkit.fluxcd.io/receiver_v1.json
 apiVersion: notification.toolkit.fluxcd.io/v1
 kind: Receiver
 metadata:
-  name: home-ops
+  name: flux-system
 spec:
   type: github
   events:
@@ -13,4 +13,4 @@ spec:
     name: webhook-token
   resources:
     - kind: GitRepository
-      name: home-ops
+      name: flux-system
