@@ -4,7 +4,7 @@ apiVersion: backstage.io/v1alpha1
 kind: System
 metadata:
   name: kube-nas
-  description: Nixos + k3s to host a declarative single node cluster to have a unified managment via Flux and GitOps principles
+  description: Experimental sidero talos based single node cluster for storage
   annotations:
     # backstage.io/techdocs-ref: dir:.
     github.com/project-slug: tyriis/home-ops
@@ -15,8 +15,8 @@ metadata:
       type: github-repository
   tags:
     - k8s
-    - k3s
-    - nixos
+    - talos
+    - gitops
     - flux
 spec:
   owner: home-ops
