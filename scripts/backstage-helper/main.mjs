@@ -1,6 +1,4 @@
-const fluxKustomizations = await glob([
-  "kubernetes/talos-flux/**/flux-sync.yaml",
-])
+const fluxKustomizations = await glob(["kubernetes/kube-lab/**/flux-sync.yaml"])
 
 // echo`${JSON.stringify(fluxKustomizations, null, 2)}`
 
@@ -40,7 +38,7 @@ for (const item of data) {
       name: backstage
       description: add some description
       links: []
-        # - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/backstage/backstage
+        # - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/kube-lab/apps/backstage/backstage
         #   title: Flux definition
         #   icon: github
         #   type: github-repository
@@ -57,7 +55,7 @@ for (const item of data) {
     spec:
       type: service
       lifecycle: production
-      system: talos-flux
+      system: kube-lab
       owner: home-ops
       # dependsOn:
       #  - component:cert-manager
