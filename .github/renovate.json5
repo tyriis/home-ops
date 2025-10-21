@@ -23,7 +23,6 @@
     "github>techtales-io/renovate-config//dependencies/tektoncd.json5",
   ],
   ignorePaths: [
-    "kubernetes/talos-flux/**",
     "kubernetes/kube-lab/apps/system-upgrade/system-upgrade-controller/plans/kubernetes.yaml",
     "kubernetes/kube-lab/apps/system-upgrade/system-upgrade-controller/plans/talos.yaml",
   ],
