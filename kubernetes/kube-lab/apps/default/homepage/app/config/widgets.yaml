@@ -5,7 +5,7 @@
       # cpu: false
       # memory: false
       # showLabel: true
-      # label: talos-flux
+      # label: kube-lab
     nodes:
       show: true
       cpu: true
