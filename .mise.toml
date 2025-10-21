@@ -31,11 +31,5 @@ talhelper = "3.0.38"
 talosctl = "1.11.3"
 # https://taskfile.dev/
 task = "3.43.3"
-# https://www.terraform.io/
-terraform = "1.11.4"
-# https://terraform-docs.io/
-terraform-docs = "0.20.0"
-# https://github.com/terraform-linters/tflint
-tflint = "0.59.1"
 # https://trivy.dev/
 trivy = "0.67.2"
