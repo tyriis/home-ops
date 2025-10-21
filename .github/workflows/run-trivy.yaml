@@ -34,7 +34,7 @@ jobs:
           exit-code: "1"
           ignore-unfixed: true
           severity: CRITICAL,HIGH
-          scan-ref: infra/terraform
+          scan-ref: kubernetes
 
       # Upload the results to GitHub's code scanning dashboard.
       # https://github.com/github/codeql-action

@@ -4,8 +4,6 @@
     "github>tyriis/renovate-config//generic-regex-manager.json5", //  TODO: reconfigure
     "github>techtales-io/renovate-config:base.json5",
     "github>techtales-io/renovate-config:flux-infra.json5",
-    "github>techtales-io/renovate-config:terraform-infra.json5",
-    "github>techtales-io/renovate-config//nix/default.json5",
     "github>techtales-io/renovate-config//dependencies/argo.json5",
     "github>techtales-io/renovate-config//dependencies/cloudnative-pg.json5",
     "github>techtales-io/renovate-config//dependencies/dragonfly.json5",

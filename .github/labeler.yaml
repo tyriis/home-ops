@@ -13,9 +13,6 @@ area/taskfile:
   - changed-files:
       - any-glob-to-any-file: .taskfiles/**/*
       - any-glob-to-any-file: Taskfile*
-area/terraform:
-  - changed-files:
-      - any-glob-to-any-file: infra/terraform/**/*
 # Cluster
 cluster/kube-nas:
   - changed-files:

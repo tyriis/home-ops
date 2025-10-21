@@ -7,7 +7,6 @@ tasks:
     - task: markdown
     - task: yaml
     - task: prettier
-    - task: terraform
 
   markdown:
     desc: Lint Markdown
@@ -28,8 +27,3 @@ tasks:
     desc: Lint with prettier autofix
     cmds:
       - "prettier --ignore-path .prettierignore --config .prettierrc.yaml --write ."
-
-  terraform:
-    desc: Lint terraform files
-    cmds:
-      - "terraform fmt -check -diff -recursive infra/terraform"
