@@ -20,10 +20,6 @@
         icon: si-github
         href: https://github.com/bjw-s/home-ops
         description: https://github.com/bjw-s/home-ops
-    - NixOS Search:
-        icon: si-nixos
-        href: https://search.nixos.org
-        description: Search NixOS Packages and Options
 - Infrasructure:
     - FRITZ!Box:
         icon: avm-fritzbox
