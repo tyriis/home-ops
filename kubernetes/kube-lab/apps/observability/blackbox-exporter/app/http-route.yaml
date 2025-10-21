@@ -11,6 +11,7 @@ metadata:
     gethomepage.dev/group: Observability
     gethomepage.dev/icon: mdi-eye
     gethomepage.dev/name: Blackbox Exporter
+    gethomepage.dev/pod-selector: app.kubernetes.io/prometheus-blackbox-exporter
 spec:
   hostnames:
     - blackbox-exporter.techtales.io
