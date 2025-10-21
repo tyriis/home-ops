@@ -29,12 +29,27 @@ jobs:
         with:
           scan-type: config
           hide-progress: false
-          format: sarif
-          output: trivy-results.sarif
+          # format: sarif
+          # output: trivy-results.sarif
+          output: trivy.txt
           exit-code: "1"
           ignore-unfixed: true
           severity: CRITICAL,HIGH
-          scan-ref: kubernetes
+          # scan-ref: kubernetes
+
+      - name: Publish Trivy Output to Summary
+        run: |
+          if [[ -s trivy.txt ]]; then
+            {
+              echo "### Security Output"
+              echo "<details><summary>Click to expand</summary>"
+              echo ""
+              echo '```terraform'
+              cat trivy.txt
+              echo '```'
+              echo "</details>"
+            } >> $GITHUB_STEP_SUMMARY
+          fi
 
       # Upload the results to GitHub's code scanning dashboard.
       # https://github.com/github/codeql-action
