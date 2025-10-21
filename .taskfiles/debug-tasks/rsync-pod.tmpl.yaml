@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: rsync-pod
+spec:
+  containers:
+    - name: rsync
+      image: alpine:latest
+      command: ["/bin/sh", "-c", "sleep 3600"] # placeholder, replace with rsync entrypoint as needed
+      volumeMounts:
+        - name: source-data
+          mountPath: /mnt/source
+        - name: dest-data
+          mountPath: /mnt/dest
+  volumes:
+    - name: source-data
+      persistentVolumeClaim:
+        claimName: source-pvc # <-- replace this with your source PVC name
+    - name: dest-data
+      persistentVolumeClaim:
+        claimName: dest-pvc # <-- replace this with your destination PVC name

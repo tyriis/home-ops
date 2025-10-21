@@ -6,7 +6,7 @@ tasks:
   locks:
     desc: Show locks for the restic repository
     vars:
-      CLUSTER: '{{ .CLUSTER | default "talos-flux"}}'
+      CLUSTER: '{{ .CLUSTER | default "kube-lab"}}'
       SOPS_FILE: './kubernetes/{{ .CLUSTER }}/apps/{{ .NAMESPACE }}/{{ .APP }}/{{ .SUB_PATH | default "app" }}/secret.sops.yaml'
     requires:
       vars:
@@ -23,7 +23,7 @@ tasks:
   unlock:
     desc: Unlock the restic repository
     vars:
-      CLUSTER: '{{ .CLUSTER | default "talos-flux"}}'
+      CLUSTER: '{{ .CLUSTER | default "kube-lab"}}'
       SOPS_FILE: './kubernetes/{{ .CLUSTER }}/apps/{{ .NAMESPACE }}/{{ .APP }}/{{ .SUB_PATH | default "app" }}/secret.sops.yaml'
     requires:
       vars:
