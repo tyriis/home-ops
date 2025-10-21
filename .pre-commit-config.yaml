@@ -143,5 +143,5 @@ repos:
         exclude: |
           (?x)^(
             devenv/.*|
-            kubernetes/kube.lab/apps/atlantis-system/.+/helm-release.patch.yaml
+            kubernetes/kube-lab/apps/atlantis-system/.+/helm-release.patch.yaml
           )$()
