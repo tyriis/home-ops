@@ -64,7 +64,6 @@ repos:
         exclude: |
           (?x)^(
             .backstage/systems/talos-flux/mkdocs.yml |
-            kubernetes/talos-flux/apps/home-automation/esphome/app/config/sensor-heating.yaml
           )$()
       - id: destroyed-symlinks
       - id: detect-aws-credentials
@@ -124,10 +123,7 @@ repos:
         exclude: |
           (?x)^(
             kubernetes/kube-nas/apps/secops/rbac.yaml|
-            kubernetes/kube-lab/apps/secops/rbac.yaml|
-            kubernetes/talos-flux/apps/secops/rbac.yaml|
-            kubernetes/talos-flux/apps/devops/tekton/triggers/interceptors.yaml|
-            kubernetes/talos-flux/apps/devops/tekton/triggers/release.yaml
+            kubernetes/kube-lab/apps/secops/rbac.yaml
           )$()
 
   - repo: https://github.com/gitleaks/gitleaks
@@ -147,11 +143,5 @@ repos:
         exclude: |
           (?x)^(
             devenv/.*|
-            kubernetes/talos-flux/apps/home-automation/esphome/app/config/.+.yaml|
-            kubernetes/talos-flux/apps/home-automation/home-assistant/app/patches/db-init.yaml|
-            kubernetes/talos-flux/apps/github/actions-runner-controller/.+/helm-release.yaml|
-            kubernetes/talos-flux/apps/github/actions-runner-controller/.+/(jazzlyn|organization|tyriis)/.+.yaml|
-            kubernetes/kube.lab/apps/atlantis-system/.+/helm-release.patch.yaml|
-            kubernetes/talos-flux/apps/gaming/.+/helm-values.yaml|
-            kubernetes/talos-flux/apps/gaming-public/.+/helm-values.yaml|
+            kubernetes/kube.lab/apps/atlantis-system/.+/helm-release.patch.yaml
           )$()

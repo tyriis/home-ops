@@ -1,6 +1,5 @@
 ---
-misconfigurations:
-  []
+misconfigurations: []
   # # https://avd.aquasec.com/misconfig/kubernetes/general/avd-ksv-0048/
   # # check if this can be improved
   # - id: AVD-KSV-0048 # Deny Create Update Malicious Pod

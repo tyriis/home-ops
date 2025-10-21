@@ -17,10 +17,6 @@ area/terraform:
   - changed-files:
       - any-glob-to-any-file: infra/terraform/**/*
 # Cluster
-cluster/talos-flux:
-  - changed-files:
-      - any-glob-to-any-file: kubernetes/talos-flux/**/*
-      - any-glob-to-any-file: infra/talos/**/*
 cluster/kube-nas:
   - changed-files:
       - any-glob-to-any-file: kubernetes/kube-nas/**/*
