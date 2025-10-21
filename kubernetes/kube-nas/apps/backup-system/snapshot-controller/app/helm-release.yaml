@@ -31,5 +31,4 @@ spec:
     controller:
       replicaCount: 1
       serviceMonitor:
-        # todo add service monitor when prometheus is installed
-        create: false
+        create: true
