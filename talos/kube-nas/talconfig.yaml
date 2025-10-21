@@ -163,5 +163,5 @@ controlPlane:
           extraArgs:
             bind-address: 0.0.0.0
         extraManifests:
-          - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/experimental-install.yaml
+          - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.0/experimental-install.yaml
           - https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.85.0/stripped-down-crds.yaml
