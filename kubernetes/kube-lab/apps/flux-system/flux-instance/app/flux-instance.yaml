@@ -144,3 +144,14 @@ spec:
         target:
           kind: Deployment
           name: helm-controller
+      # enable controllers to watch for changes in configmaps and secrets
+      # https://fluxcd.io/flux/components/helm/helmreleases/#reacting-immediately-to-configuration-dependencies
+      # https://fluxcd.io/flux/components/kustomize/kustomizations/#reacting-immediately-to-configuration-dependencies
+      # https://fluxcd.io/flux/components/notification/receivers/#secret-reference
+      - patch: |
+          - op: add
+            path: /spec/template/spec/containers/0/args/-
+            value: --watch-configs-label-selector=owner!=helm
+        target:
+          kind: Deployment
+          name: (helm-controller|kustomize-controller|notification-controller)
