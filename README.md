@@ -115,12 +115,14 @@ Here is the list of tools and technologies I am using in this project.
 
 #### Hardware
 
-| Device           | CPU       | OS    | OS Disk     | Data Disk              | RAM  | Purpose               |
-| ---------------- | --------- | ----- | ----------- | ---------------------- | ---- | --------------------- |
-| Intel NUC7i7DNHE | i7-8650U  | talos | 500 GB SSD  | 500GB NVMe (rook-ceph) | 32GB | control-plane, worker |
-| Intel NUC7i7DNHE | i7-8650U  | talos | 500 GB SSD  | 500GB NVMe (rook-ceph) | 32GB | control-plane, worker |
-| Intel NUC7i7DNHE | i7-8650U  | talos | 500 GB SSD  | 500GB NVMe (rook-ceph) | 32GB | control-plane, worker |
-| Intel NUC10I7FNH | i7-10710U | talos | 500 GB NVMe | -                      | 32GB | worker                |
+| Device                | CPU        | OS    | OS Disk   | Data Disk              | RAM  | Purpose    |
+| --------------------- | ---------- | ----- | --------- | ---------------------- | ---- | ---------- |
+| MS-01                 | i9-13900H  | Talos | 1 TB NVMe | 500GB NVMe (rook-ceph) | 96GB | Kubernetes |
+| MS-01                 | i9-13900H  | Talos | 1 TB NVMe | 500GB NVMe (rook-ceph) | 96GB | Kubernetes |
+| MS-01                 | i9-13900H  | Talos | 1 TB NVMe | 500GB NVMe (rook-ceph) | 96GB | Kubernetes |
+| AOSTAR WTR Pro        | N100       | Talos | 1 TB NVMe | 2x 8 TB HDD            | 32GB | NAS        |
+| UniFi UDM SE          | -          | -     | 128GB SSD | -                      | 32GB | Router     |
+| UniFi USW Aggregation | -          | -     | -         | -                      | -    | Switch     |
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
