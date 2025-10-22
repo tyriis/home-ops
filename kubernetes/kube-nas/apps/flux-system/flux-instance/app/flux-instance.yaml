@@ -141,3 +141,12 @@ spec:
         target:
           kind: Deployment
           name: helm-controller
+      # cancel health checks on new kustomizations revisions
+      # https://fluxcd.io/flux/components/kustomize/options/
+      - patch: |
+          - op: add
+            path: /spec/template/spec/containers/0/args/-
+            value: --feature-gates=CancelHealthCheckOnNewRevision=true
+        target:
+          kind: Deployment
+          name: kustomize-controller
