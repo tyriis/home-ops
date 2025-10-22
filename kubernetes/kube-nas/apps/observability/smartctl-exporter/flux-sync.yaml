@@ -9,7 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/kube-lnas/apps/observability/smartctl-exporter/app
+  path: ./kubernetes/kube-nas/apps/observability/smartctl-exporter/app
   prune: true
   sourceRef:
     kind: GitRepository
