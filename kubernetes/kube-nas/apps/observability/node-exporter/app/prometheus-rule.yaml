@@ -3,9 +3,6 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  labels:
-    prometheus: k8s
-    role: alert-rules
   name: node-exporter-rules
 spec:
   groups:

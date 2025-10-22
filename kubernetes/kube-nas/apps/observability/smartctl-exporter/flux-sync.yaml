@@ -3,14 +3,14 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname kube-prometheus-stack
+  name: &app smartctl-exporter
 spec:
   targetNamespace: observability
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *appname
-  path: ./kubernetes/kube-nas/apps/observability/kube-prometheus-stack/app
-  prune: false
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/kube-nas/apps/observability/smartctl-exporter/app
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -19,6 +19,3 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
-  postBuild:
-    substitute:
-      FLUX_CLUSTER_NAME: ${FLUX_CLUSTER_NAME}

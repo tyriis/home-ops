@@ -3,13 +3,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname kube-prometheus-stack
+  name: &app kube-state-metrics
 spec:
   targetNamespace: observability
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *appname
-  path: ./kubernetes/kube-nas/apps/observability/kube-prometheus-stack/app
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/kube-nas/apps/observability/kube-state-metrics/app
   prune: false
   sourceRef:
     kind: GitRepository
@@ -19,6 +19,3 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
-  postBuild:
-    substitute:
-      FLUX_CLUSTER_NAME: ${FLUX_CLUSTER_NAME}
