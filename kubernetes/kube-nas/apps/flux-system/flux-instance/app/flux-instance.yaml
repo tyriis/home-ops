@@ -40,17 +40,14 @@ spec:
           kind: Namespace
           version: v1
           name: flux-system
-      # Add Sops decryption to 'flux-system' Kustomization
+      # Add sops decryption to kustomize-controller
       - patch: |
           - op: add
-            path: /spec/decryption
-            value:
-              provider: sops
-              secretRef:
-                name: sops-age
+            path: /spec/template/spec/containers/0/args/-
+            value: --sops-age-secret=sops-age
         target:
-          group: kustomize.toolkit.fluxcd.io
-          kind: Kustomization
+          kind: Deployment
+          name: kustomize-controller
       # Increase the number of reconciliations that can be performed in parallel and bump the resources limits
       # https://fluxcd.io/flux/cheatsheets/bootstrap/#increase-the-number-of-workers
       - patch: |
