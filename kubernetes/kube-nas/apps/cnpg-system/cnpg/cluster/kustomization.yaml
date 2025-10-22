@@ -7,5 +7,4 @@ resources:
   - ./crd/objectstore.yaml
   - ./crd/cluster.yaml
   - ./crd/database-server.yaml
-  # - ./crd/database.yaml
   - ./crd/scheduled-backup.yaml

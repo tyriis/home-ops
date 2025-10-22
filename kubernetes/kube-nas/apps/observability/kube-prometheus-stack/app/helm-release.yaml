@@ -5,105 +5,61 @@ kind: HelmRelease
 metadata:
   name: kube-prometheus-stack
 spec:
-  interval: 15m
-  timeout: 15m
+  dependsOn:
+    - name: local-hostpath
+      namespace: democratic-csi
+  interval: 30m
   chart:
     spec:
       chart: kube-prometheus-stack
       version: 78.4.0
       sourceRef:
         kind: HelmRepository
-        name: prometheus-community-charts
-        namespace: flux-system
+        name: prometheus-community
   install:
     createNamespace: true
     crds: CreateReplace
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     crds: CreateReplace
     remediation:
       retries: 3
-  dependsOn:
-    - name: local-hostpath
-      namespace: democratic-csi
   uninstall:
     keepHistory: false
-  valuesFrom:
-    - kind: ConfigMap
-      name: alertmanager-values
-    - kind: ConfigMap
-      name: kube-state-metrics-values
-    - kind: ConfigMap
-      name: prometheus-values
   # https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack?modal=values
   values:
-    crds:
-      enabled: true
     cleanPrometheusOperatorObjectNames: true
-
-    fullnameOverride: prometheus
-
-    nodeExporter:
-      enabled: true
-
-    prometheus-node-exporter:
-      fullnameOverride: node-exporter
-      extraArgs:
-        - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var)($|/)
-        - --collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs|tmpfs)$
-      prometheus:
-        monitor:
+    alertmanager:
+      route:
+        main:
           enabled: true
-          # lens ide config
-          relabelings:
-            - action: replace
-              regex: (.*)
-              replacement: $1
-              sourceLabels: [__meta_kubernetes_pod_node_name]
-              targetLabel: kubernetes_node
-            # should be removed when https://github.com/lensapp/lens/issues/4851 is fixed
-            - sourceLabels: [__meta_kubernetes_namespace]
-              action: replace
-              regex: (.*)
-              replacement: $1
-              targetLabel: kubernetes_namespace
-            - sourceLabels: [__meta_kubernetes_service_name]
-              action: replace
-              regex: (.*)
-              replacement: $1
-              targetLabel: kubernetes_name
-
-      tolerations:
-        - effect: "NoExecute"
-          operator: "Exists"
-        - effect: "NoSchedule"
-          operator: "Exists"
+          annotations:
+            external-dns/unifi: "true"
+          hostnames:
+            - alertmanager.kube-nas.techtales.io
+          parentRefs:
+            - name: cilium
+              namespace: kube-system
+              sectionName: https
+      alertmanagerSpec:
+        alertmanagerConfiguration:
+          name: alertmanager
+          global:
+            resolveTimeout: 5m
+        externalUrl: https://alertmanager.kube-nas.techtales.io
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: local-nvme
+              resources:
+                requests:
+                  storage: 1Gi
 
     grafana:
       enabled: false
       forceDeployDashboards: false
-      sidecar:
-        dashboards:
-          annotations:
-            grafana_folder: Kubernetes
-          multicluster:
-            etcd:
-              enabled: true
-
-    kubelet:
-      enabled: true
-      serviceMonitor:
-        metricRelabelings:
-          # Drop high cardinality labels by onedr0p
-          - action: labeldrop
-            regex: (uid)
-          - action: labeldrop
-            regex: (id|name)
-          - action: drop
-            sourceLabels: ["__name__"]
-            regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
 
     kubeApiServer:
       enabled: true
@@ -120,37 +76,102 @@ spec:
     kubeControllerManager:
       enabled: true
       endpoints: &cp
-        - 192.168.1.60
+        - 192.168.100.90
 
     kubeEtcd:
       enabled: true
       endpoints: *cp
 
-    kubeScheduler:
+    kubelet:
       enabled: true
-      endpoints: *cp
+      serviceMonitor:
+        metricRelabelings:
+          # Drop high cardinality labels by onedr0p
+          - action: labeldrop
+            regex: (uid)
+          - action: labeldrop
+            regex: (id|name)
+          - action: drop
+            sourceLabels: ["__name__"]
+            regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
 
     kubeProxy:
       enabled: false
 
-    coreDns:
+    kubeScheduler:
       enabled: true
+      endpoints: *cp
 
     kubeStateMetrics:
-      enabled: true
+      enabled: false
 
-    kube-state-metrics:
-      fullnameOverride: kube-state-metrics
-      metricLabelsAllowlist:
-        - pods=[*]
-        - deployments=[*]
-        - persistentvolumeclaims=[*]
-      prometheus:
-        monitor:
+    nodeExporter:
+      enabled: false
+
+    prometheusOperator:
+      kubeletEndpointsEnabled: false
+      kubeletEndpointSliceEnabled: true
+      podAnnotations:
+        reloader.stakater.com/auto: "true"
+      resources:
+        requests:
+          cpu: 10m
+          memory: 100Mi
+      prometheusConfigReloader:
+        resources:
+          requests:
+            cpu: 10m
+            memory: 100Mi
+
+    prometheus:
+      prometheusSpec:
+        enableAdminAPI: true
+        enableFeatures:
+          - memory-snapshot-on-shutdown
+        externalLabels:
+          cluster: ${FLUX_CLUSTER_NAME}
+        externalUrl: https://prometheus.kube-nas.techtales.io
+        # image:
+        # registry: docker.io
+        # repository: prompp/prompp
+        # tag: 2.53.2-0.3.4@sha256:e0212e571c1bbed88f546ed0336f70e82144693c2b2394bf40eaa56ea653ddbd
+        podMetadata:
+          annotations:
+            reloader.stakater.com/auto: "true"
+        podMonitorSelectorNilUsesHelmValues: false
+        probeSelectorNilUsesHelmValues: false
+        resources:
+          requests:
+            cpu: 100m
+            memory: 4Gi
+        replicas: 3
+        retention: 14d
+        retentionSize: 50GB
+        ruleSelectorNilUsesHelmValues: false
+        scrapeConfigSelectorNilUsesHelmValues: false
+        scrapeInterval: 1m # Must match interval in Grafana Helm chart
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 64535
+          runAsGroup: 64535
+          fsGroup: 64535
+        serviceDiscoveryRole: EndpointSlice
+        serviceMonitorSelectorNilUsesHelmValues: false
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: local-nvme
+              resources:
+                requests:
+                  storage: 10Gi
+      route:
+        main:
           enabled: true
-          relabelings:
-            - action: replace
-              regex: (.*)
-              replacement: $1
-              sourceLabels: ["__meta_kubernetes_pod_node_name"]
-              targetLabel: kubernetes_node
+          annotations:
+            external-dns/unifi: "true"
+          hostnames:
+            - prometheus.kube-nas.techtales.io
+          parentRefs:
+            - name: cilium
+              namespace: kube-system
+              sectionName: https

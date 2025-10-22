@@ -1,5 +1,5 @@
 [env]
-TALOSCONFIG="{{config_root}}/talos/clusterconfig/talosconfig"
+TALOSCONFIG="{{config_root}}/talos/kube-lab/clusterconfig/talosconfig"
 
 [tools]
 vcluster = "0.27.0"

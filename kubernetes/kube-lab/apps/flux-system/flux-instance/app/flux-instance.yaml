@@ -9,7 +9,7 @@ metadata:
 spec:
   distribution:
     # renovate: depName=controlplaneio-fluxcd/distribution datasource=github-releases
-    version: 2.6.4
+    version: 2.7.2
     registry: ghcr.io/fluxcd
     artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests
   cluster:
@@ -155,3 +155,12 @@ spec:
         target:
           kind: Deployment
           name: (helm-controller|kustomize-controller|notification-controller)
+      # cancel health checks on new kustomizations revisions
+      # https://fluxcd.io/flux/components/kustomize/options/
+      - patch: |
+          - op: add
+            path: /spec/template/spec/containers/0/args/-
+            value: --feature-gates=CancelHealthCheckOnNewRevision=true
+        target:
+          kind: Deployment
+          name: kustomize-controller
