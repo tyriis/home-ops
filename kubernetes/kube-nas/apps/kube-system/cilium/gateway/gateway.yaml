@@ -32,6 +32,15 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: kube-nas-techtales-io-tls
-          - kind: Secret
             name: techtales-io-tls
+    - name: https-kube-nas
+      protocol: HTTPS
+      port: 443
+      hostname: "*.kube-nas.techtales.io"
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: kube-nas-techtales-io-tls
