@@ -25,10 +25,7 @@ nodes:
       useUKI: true
       secureboot: false
     installDiskSelector:
-      # gen4 slot
-      # serial: S6Z1NU0XA67084J
-      # middle slot disk
-      serial: "175015423704"
+      serial: "S7HDNJ0Y842605L"
 
     disableSearchDomain: true
     nameservers:
