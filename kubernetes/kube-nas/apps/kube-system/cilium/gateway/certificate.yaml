@@ -23,4 +23,4 @@ spec:
     name: letsencrypt-production
     kind: ClusterIssuer
   commonName: kube-nas.techtales.io
-  dnsNames: ["techtales.io", "kube-nas.techtales.io", "*.kube-nas.techtales.io"]
+  dnsNames: ["kube-nas.techtales.io", "*.kube-nas.techtales.io"]
