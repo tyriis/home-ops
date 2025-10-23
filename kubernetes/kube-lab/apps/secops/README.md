@@ -21,7 +21,7 @@ export SA_TOKEN=$(kubectl get secret openbao-auth -n secops \
 
 ```terminal
 export KUBERNETES_CA=$(kubectl get secret openbao-auth -n secops \
-  -o jsonpath="{.data['ca\.crt']}" | base64 --decode)
+  -o jsonpath="{.data['ca\.crt']}")
 ```
 
 ```terminal
