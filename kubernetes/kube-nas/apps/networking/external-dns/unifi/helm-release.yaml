@@ -64,6 +64,7 @@ spec:
     txtPrefix: kube-nas.
     domainFilters:
       - techtales.io
+      - kube-nas.techtales.io
       - tyriis.dev
     serviceMonitor:
       enabled: true
