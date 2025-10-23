@@ -15,7 +15,7 @@ cniConfig:
   name: none
 
 nodes:
-  # N100 / 32 GB /WDC WDS256G1X0C-00ENX0 256 GB / Samsung SSD 870 500G
+  # N100 / 32 GB / Samsung SSD 990 PRO 1TB / Samsung SSD 870 500G
   - hostname: nas01
     ipAddress: 192.168.100.90
     controlPlane: true
@@ -25,7 +25,7 @@ nodes:
       useUKI: true
       secureboot: false
     installDiskSelector:
-      serial: "S7HDNJ0Y842605L"
+      serial: S7HDNJ0Y842605L
 
     disableSearchDomain: true
     nameservers:
