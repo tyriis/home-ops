@@ -33,3 +33,5 @@ spec:
         certificateRefs:
           - kind: Secret
             name: techtales-io-tls
+          - kind: Secret
+            name: kube-nas-techtales-io-tls
