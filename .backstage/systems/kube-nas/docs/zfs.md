@@ -50,7 +50,6 @@ chmod 600 /var/lib/zfs/encryption.key
 
 ```console
 chroot /host zpool create \
-  -m legacy \
   -o ashift=12 \
   -O acltype=posixacl \
   -O compression=lz4 \
@@ -70,15 +69,15 @@ chroot /host zpool status
 ```
 
 ```console
-  pool: zfs-pool
- state: ONLINE
+pool  : zfs-pool
+state : ONLINE
 config:
 
-        NAME        STATE     READ WRITE CKSUM
-        zfs-pool    ONLINE       0     0     0
-          mirror-0  ONLINE       0     0     0
-            sda     ONLINE       0     0     0
-            sdb     ONLINE       0     0     0
+  NAME        STATE     READ WRITE CKSUM
+  zfs-pool    ONLINE       0     0     0
+  mirror-0    ONLINE       0     0     0
+  sda         ONLINE       0     0     0
+  sdb         ONLINE       0     0     0
 
 errors: No known data errors
 ```
