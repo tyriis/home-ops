@@ -2,34 +2,64 @@
 
 <https://github.com/siderolabs/extensions/blob/main/storage/zfs/README.md>
 
+```console
 kubectl -n kube-system debug -it --profile sysadmin --image=alpine node/nas01
+```
 
 To verify AES‑GCM support on your Talos node:acltype
 
-/ # cat /proc/crypto | grep gcm
+```console
+cat /proc/crypto | grep gcm
+```
+
+```console
 name : gcm(aes)
 driver : generic-gcm-aesni-avx
+```
 
-/ # apk add zfs openssl
+```console
+apk add zfs openssl
+```
 
-/ # lsmod | grep zfs
+```console
+lsmod | grep zfs
+```
+
+```console
 zfs 6701056 0
 spl 131072 1 zfs
+```
 
-/ # mkdir -p /host/var/lib/zfs
-/ # ln -s /host/var/lib/zfs /var/lib/zfs
-/ # openssl rand -hex 32 > /var/lib/zfs/encryption.key
+```console
+mkdir -p /host/var/lib/zfs
+```
+
+```console
+ln -s /host/var/lib/zfs /var/lib/zfs
+```
+
+```console
+openssl rand -hex 32 > /var/lib/zfs/encryption.key
+```
 
 store in [secrets.techtales.io/](https://secrets.techtales.io/ui/vault/secrets/infra/show/techtales/kube-nas)
 
-/ # chmod 600 /var/lib/zfs/encryption.key
+```console
+chmod 600 /var/lib/zfs/encryption.key
+```
 
-/ # chroot /host zpool create -m legacy -o ashift=12 -O acltype=posixacl -O compression=lz4 \
+```console
+chroot /host zpool create -m legacy -o ashift=12 -O acltype=posixacl -O compression=lz4 \
  -O dnodesize=auto -O normalization=formD -O relatime=off -O xattr=sa \
  -O encryption=aes-256-gcm -O keylocation=file:///var/lib/zfs/encryption.key -O keyformat=hex \
  -O mountpoint=/var/mnt/zfs-pool zfs-pool mirror /dev/sda /dev/sdb
+```
 
-/ # chroot /host zpool status
+```console
+chroot /host zpool status
+```
+
+```console
 pool: zfs-pool
 state: ONLINE
 config:
@@ -41,3 +71,4 @@ config:
             sdb     ONLINE       0     0     0
 
 errors: No known data errors
+```
