@@ -33,8 +33,8 @@ spec:
         initContainers:
           fix-permissions:
             securityContext:
-              runAsUser: 1000  # Run as non-root
-              runAsGroup: 1000
+              runAsUser: 0  # Run as non-root
+              runAsGroup: 0
               capabilities:
                 add: ["CHOWN", "FOWNER"]
             image:
