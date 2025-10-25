@@ -48,7 +48,13 @@ spec:
             envFrom:
               - secretRef:
                   name: minio-env
-            args: ["server", "/mnt/volume1/minio", "--console-address", ":9001"]
+            args:
+              [
+                "server",
+                "/var/mnt/zfs-pool/minio",
+                "--console-address",
+                ":9001",
+              ]
             probes:
               liveness: &probes
                 enabled: true
@@ -129,4 +135,4 @@ spec:
       data:
         enabled: true
         type: hostPath
-        hostPath: /mnt/volume1/minio
+        hostPath: /var/mnt/zfs-pool/minio

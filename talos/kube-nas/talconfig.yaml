@@ -50,10 +50,10 @@ controlPlane:
     customization:
       systemExtensions:
         officialExtensions:
-          - siderolabs/btrfs
           - siderolabs/intel-ucode
           - siderolabs/nfsd
           - siderolabs/nvme-cli
+          - siderolabs/zfs
       extraKernelArgs:
         - apparmor=0 # Less security, faster puter
         - init_on_alloc=0 # Less security, faster puter
@@ -67,6 +67,9 @@ controlPlane:
   patches:
     - |-
       machine:
+        kernel:
+          modules:
+            - name: zfs
         kubelet:
           extraArgs:
             rotate-server-certificates: "true"
