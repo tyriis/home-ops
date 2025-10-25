@@ -31,9 +31,10 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
+          # this is ugly, but i can not change fodler ownership on talos currently
           fix-permissions:
             securityContext:
-              runAsUser: 0  # Run as non-root
+              runAsUser: 0 # Run as non-root
               runAsGroup: 0
               capabilities:
                 add: ["CHOWN", "FOWNER"]
@@ -152,4 +153,3 @@ spec:
         hostPath: /var/mnt/zfs-pool/minio
         globalMounts:
           - path: /var/mnt/zfs-pool/minio
-
