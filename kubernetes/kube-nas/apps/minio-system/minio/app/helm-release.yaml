@@ -30,6 +30,16 @@ spec:
       minio:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          fix-permissions:
+            enabled: true
+            image:
+              repository: busybox
+              tag: latest
+            command:
+              - /bin/sh
+              - -c
+              - mkdir -p /host/var/mnt/zfs-pool/minio && chown -R 1000:1000 /host/var/mnt/zfs-pool/minio
         containers:
           app:
             image:
