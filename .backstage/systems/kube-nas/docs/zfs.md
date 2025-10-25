@@ -49,10 +49,20 @@ chmod 600 /var/lib/zfs/encryption.key
 ```
 
 ```console
-chroot /host zpool create -m legacy -o ashift=12 -O acltype=posixacl -O compression=lz4 \
- -O dnodesize=auto -O normalization=formD -O relatime=off -O xattr=sa \
- -O encryption=aes-256-gcm -O keylocation=file:///var/lib/zfs/encryption.key -O keyformat=hex \
- -O mountpoint=/var/mnt/zfs-pool zfs-pool mirror /dev/sda /dev/sdb
+chroot /host zpool create \
+  -m legacy \
+  -o ashift=12 \
+  -O acltype=posixacl \
+  -O compression=lz4 \
+  -O dnodesize=auto \
+  -O normalization=formD \
+  -O relatime=off \
+  -O xattr=sa \
+  -O encryption=aes-256-gcm \
+  -O keylocation=file:///var/lib/zfs/encryption.key \
+  -O keyformat=hex \
+  -O mountpoint=/var/mnt/zfs-pool \
+  zfs-pool mirror /dev/sda /dev/sdb
 ```
 
 ```console
@@ -60,15 +70,15 @@ chroot /host zpool status
 ```
 
 ```console
-pool: zfs-pool
-state: ONLINE
+  pool: zfs-pool
+ state: ONLINE
 config:
 
-  NAME        STATE     READ WRITE CKSUM
-  zfs-pool    ONLINE       0     0     0
-    mirror-0  ONLINE       0     0     0
-      sda     ONLINE       0     0     0
-      sdb     ONLINE       0     0     0
+        NAME        STATE     READ WRITE CKSUM
+        zfs-pool    ONLINE       0     0     0
+          mirror-0  ONLINE       0     0     0
+            sda     ONLINE       0     0     0
+            sdb     ONLINE       0     0     0
 
 errors: No known data errors
 ```
