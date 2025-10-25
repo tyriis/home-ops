@@ -7,7 +7,8 @@ components:
   - ../../../components/flux/alerts
 resources:
   - ./namespace.yaml
-  - ./i-see-dead-pods/flux-sync.yaml
+  - ./descheduler/flux-sync.yaml
+  # - ./i-see-dead-pods/flux-sync.yaml
   - ./irqbalance/flux-sync.yaml
   - ./intel-device-plugins/flux-sync.yaml
   - ./k8tz/flux-sync.yaml
