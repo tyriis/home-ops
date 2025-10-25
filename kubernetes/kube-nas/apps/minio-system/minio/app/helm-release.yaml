@@ -32,6 +32,8 @@ spec:
           reloader.stakater.com/auto: "true"
         initContainers:
           fix-permissions:
+            securityContext:
+              runAsUser: 0
             enabled: true
             image:
               repository: busybox
