@@ -6,3 +6,5 @@ metadata:
   name: minio-system
   annotations:
     kustomize.toolkit.fluxcd.io/prune: disabled
+  labels:
+    pod-security.kubernetes.io/enforce: privileged
