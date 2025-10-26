@@ -60,7 +60,7 @@ spec:
                 add:
                   - SYS_ADMIN
                   - SETPCAP
-              readOnlyRootFilesystem: true
+              readOnlyRootFilesystem: false
 
     defaultPodOptions:
       hostNetwork: true
@@ -85,15 +85,15 @@ spec:
         hostPath: /var/mnt/zfs-pool/nfs
         globalMounts:
           - path: /var/mnt/zfs-pool/nfs
-      exports:
-        type: emptyDir
-        advancedMounts:
-          *app :
-            app:
-              - path: /etc/exports
-      lib:
-        type: emptyDir
-        advancedMounts:
-          *app :
-            app:
-              - path: /var/lib/nfs
+      # exports:
+      #   type: emptyDir
+      #   advancedMounts:
+      #     *app :
+      #       app:
+      #         - path: /etc/exports
+      # lib:
+      #   type: emptyDir
+      #   advancedMounts:
+      #     *app :
+      #       app:
+      #         - path: /var/lib/nfs
