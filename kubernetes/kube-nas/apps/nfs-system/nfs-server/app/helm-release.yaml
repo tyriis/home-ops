@@ -85,3 +85,15 @@ spec:
         hostPath: /var/mnt/zfs-pool/nfs
         globalMounts:
           - path: /var/mnt/zfs-pool/nfs
+      exports:
+        type: emptyDir
+        advancedMounts:
+          *app :
+            app:
+              - path: /etc/exports
+      lib:
+        type: emptyDir
+        advancedMounts:
+          *app :
+            app:
+              - path: /var/lib/nfs
