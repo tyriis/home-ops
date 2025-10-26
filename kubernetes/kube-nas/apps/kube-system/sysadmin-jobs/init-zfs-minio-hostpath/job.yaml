@@ -1,0 +1,67 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: init-zfs-minio-hostpath
+  labels:
+    # this job will not be reconciled if it is present on the cluster, you need to delete it to re-run
+    # https://fluxcd.io/flux/components/kustomize/kustomizations/#controlling-the-apply-behavior-of-resources
+    kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      hostNetwork: true
+      hostPID: true
+      automountServiceAccountToken: false
+      containers:
+        - name: init-minio-path
+          image: busybox:latest@sha256:2f590fc602ce325cbff2ccfc39499014d039546dc400ef8bbf5c6ffb860632e7
+          resources:
+            requests:
+              cpu: 10m
+              memory: 8Mi
+            limits:
+              memory: 32Mi
+          env:
+            - name: TARGET_UID
+              value: "1001"
+            - name: TARGET_GID
+              value: "1001"
+            - name: ZFS_PATH
+              value: /var/mnt/zfs-pool/minio
+          command:
+            - /bin/sh
+            - -c
+            - |
+              ls -la "${ZFS_PATH%/*}"  # Show parent directory listing
+              chroot /host zpool status
+              echo "Creating directory: ${ZFS_PATH}"
+              mkdir -p "${ZFS_PATH}"
+              echo "Setting ownership to ${TARGET_UID}:${TARGET_GID}"
+              chown -R "${TARGET_UID}:${TARGET_GID}" "${ZFS_PATH}"
+              echo "Permissions set successfully"
+              ls -la "${ZFS_PATH%/*}"  # Show parent directory listing
+          securityContext:
+            privileged: true
+            capabilities:
+              add: ["CHOWN", "FOWNER"]
+          volumeMounts:
+            - name: host-root
+              mountPath: /host
+            - name: host-var
+              mountPath: /var/mnt
+      volumes:
+        - name: host-root
+          hostPath:
+            path: /
+        - name: host-var
+          hostPath:
+            path: /var/mnt
+      nodeSelector:
+        kubernetes.io/hostname: nas01
+      tolerations:
+        - operator: Exists
+          effect: NoSchedule

@@ -3,22 +3,19 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname minio
+  name: &app init-zfs-minio-hostpath
 spec:
-  targetNamespace: minio-system
+  targetNamespace: kube-system
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *appname
-  path: ./kubernetes/kube-nas/apps/minio-system/minio/app
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/kube-nas/apps/kube-system/sysadmin-jobs/init-zfs-minio-hostpath
   prune: false # should never be deleted
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   wait: true
-  interval: 30m
+  interval: 24h
   retryInterval: 1m
-  timeout: 5m
-  dependsOn:
-    - name: init-zfs-minio-hostpath
-      namespace: kube-system
+  timeout: 1h

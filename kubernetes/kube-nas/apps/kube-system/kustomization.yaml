@@ -12,3 +12,4 @@ resources:
   - ./coredns/flux-sync.yaml
   - ./kubelet-csr-approver/flux-sync.yaml
   - ./metrics-server/flux-sync.yaml
+  - ./sysadmin-jobs/flux-sync.yaml

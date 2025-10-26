@@ -30,21 +30,6 @@ spec:
       minio:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          # this is ugly, but i can not change fodler ownership on talos currently
-          fix-permissions:
-            securityContext:
-              runAsUser: 0 # Run as non-root
-              runAsGroup: 0
-              capabilities:
-                add: ["CHOWN", "FOWNER"]
-            image:
-              repository: busybox
-              tag: latest@sha256:2f590fc602ce325cbff2ccfc39499014d039546dc400ef8bbf5c6ffb860632e7
-            command:
-              - /bin/sh
-              - -c
-              - mkdir -p /var/mnt/zfs-pool/minio && chown -R 1000:1000 /var/mnt/zfs-pool/minio
         containers:
           app:
             image:
@@ -94,10 +79,10 @@ spec:
                 memory: 2Gi
     defaultPodOptions:
       securityContext:
-        # runAsNonRoot: false
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
         fsGroupChangePolicy: Always
         supplementalGroups: [10000]
         seccompProfile: { type: RuntimeDefault }
