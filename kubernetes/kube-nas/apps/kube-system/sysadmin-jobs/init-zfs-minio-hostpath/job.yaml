@@ -22,8 +22,10 @@ spec:
             requests:
               cpu: 10m
               memory: 8Mi
+              ephemeral-storage: 1Mi
             limits:
               memory: 32Mi
+              ephemeral-storage: 1Mi
           env:
             - name: TARGET_UID
               value: "1001"
