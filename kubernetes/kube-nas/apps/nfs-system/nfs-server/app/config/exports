@@ -1,1 +1,1 @@
-/var/mnt/zfs-pool/nfs/test   192.168.1.20(rw,async,no_wdelay,all_squash,insecure_locks,sec=sys,anonuid=1000,anongid=1000)     192.168.1.22(rw,async,no_wdelay,all_squash,insecure_locks,sec=sys,anonuid=1024,anongid=100)    192.168.1.24(rw,async,no_wdelay,all_squash,insecure_locks,sec=sys,anonuid=1000,anongid=1000)
+/var/mnt/zfs-pool/nfs/test   192.168.1.22(rw,async,no_subtree_check,no_wdelay,all_squash,insecure_locks,sec=sys,anonuid=1000,anongid=1000)
