@@ -37,6 +37,7 @@ spec:
               tag: latest@sha256:d71774cc9d8e62cb6807551abdb938ca4bbabdd8395af8fa10cf905cb2e803a8
             env:
               SHARED_DIRECTORY: /var/mnt/zfs-pool/nfs
+              EXPORTS_MOUNTED: "true"
             probes:
               readiness: &probes
                 enabled: true
@@ -75,9 +76,16 @@ spec:
     # service:
     #   app:
     #     controller: *app
+    #     type: ClusterIP
     #     ports:
     #       nfs:
     #         port: 2049
+    #         protocol: TCP
+    #       rpcbind:
+    #         port: 111
+    #         protocol: TCP
+    #       mountd:
+    #         port: 20048
     #         protocol: TCP
     persistence:
       data:
@@ -85,6 +93,12 @@ spec:
         hostPath: /var/mnt/zfs-pool/nfs
         globalMounts:
           - path: /var/mnt/zfs-pool/nfs
+      exports:
+        type: configMap
+        name: nfs-exports
+        globalMounts:
+          - subPath: exports
+            path: /etc/exports
       # exports:
       #   type: emptyDir
       #   advancedMounts:
