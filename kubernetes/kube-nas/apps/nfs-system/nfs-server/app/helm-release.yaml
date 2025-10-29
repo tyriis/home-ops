@@ -73,20 +73,20 @@ spec:
           operator: Exists
       securityContext:
         seccompProfile: { type: RuntimeDefault }
-    service:
-      app:
-        controller: *app
-        type: ClusterIP
-        ports:
-          nfs:
-            port: 2049
-            protocol: TCP
-          rpcbind:
-            port: 111
-            protocol: TCP
-          mountd:
-            port: 20048
-            protocol: TCP
+    # service:
+    #   app:
+    #     controller: *app
+    #     type: ClusterIP
+    #     ports:
+    #       nfs:
+    #         port: 2049
+    #         protocol: TCP
+    #       rpcbind:
+    #         port: 111
+    #         protocol: TCP
+    #       mountd:
+    #         port: 20048
+    #         protocol: TCP
     persistence:
       data:
         type: hostPath
