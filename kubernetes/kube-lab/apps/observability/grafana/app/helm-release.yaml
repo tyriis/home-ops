@@ -271,7 +271,7 @@ spec:
         k8s-views-pods:
           # renovate: dashboardName="Kubernetes / Views / Pods"
           gnetId: 15760
-          revision: 36
+          revision: 37
           datasource: Prometheus
         # Ref: https://grafana.com/grafana/dashboards/11454
         k8s-volumes:
