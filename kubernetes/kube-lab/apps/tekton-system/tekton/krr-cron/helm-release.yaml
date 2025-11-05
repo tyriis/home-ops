@@ -42,7 +42,7 @@ spec:
           cron:
             image:
               repository: curlimages/curl
-              tag: 8.16.0@sha256:463eaf6072688fe96ac64fa623fe73e1dbe25d8ad6c34404a669ad3ce1f104b6
+              tag: 8.17.0@sha256:0f3b048f5b1454b60a5c1bb337c1203df4295430ba047da15b4308133eac96d6
             args:
               - curl
               - -X
