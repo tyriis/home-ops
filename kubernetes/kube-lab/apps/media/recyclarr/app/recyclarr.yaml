@@ -26,20 +26,19 @@ sonarr:
     custom_formats:
       # Normal TV
       - trash_ids:
+          # unwanted
           - 9b27ab6498ec0f31a3353992e19434ca # DV
           - 32b367365729d530ca1c124a0b180c64 # Bad Dual Groups
           - 82d40da2bc6923f41e14394075dd4b03 # No-RlsGroup
           - e1a997ddb54e3ecbfe06341ad323c458 # Obfuscated
           - 06d66ab109d4d2eddb2794d21526d140 # Retags
           - 1b3994c551cbb92a2c781af061f4ab44 # Scene
+          # wanted
+          - ed51973a811f51985f14e2f6f290e47a # German DL
+          - 8a9fcdbb445f2add0505926df3bb7b8a # German
         assign_scores_to:
           - name: WEB-1080p
           - name: WEB-2160p
-      # Anime TV
-      - trash_ids:
-          - 418f50b10f1907201b6cfdf881f467b7 # Anime Dual Audio
-        assign_scores_to:
-          - name: Remux-1080p - Anime
 
 radarr:
   radarr:
@@ -62,16 +61,15 @@ radarr:
     custom_formats:
       # Normal Movies
       - trash_ids:
+          # unwanted
           - b6832f586342ef70d9c128d40c07b872 # Bad Dual Groups
           - cc444569854e9de0b084ab2b8b1532b2 # Black and White Editions
           - ae9b7c9ebde1f3bd336a8cbd1ec4c5e5 # No-RlsGroup
           - 7357cf5161efbf8c4d5d0c30b4815ee2 # Obfuscated
           - 5c44f52a8714fdd79bb4d98e2673be1f # Retags
           - f537cf427b64c38c8e36298f657e4828 # Scene
+          # wanted
+          - f845be10da4f442654c13e1f2c3d6cd5 # German DL
+          - 86bc3115eb4e9873ac96904a4a68e19e # German
         assign_scores_to:
           - name: SQP-1 (2160p)
-      # Anime Movies
-      - trash_ids:
-          - 4a3b087eea2ce012fcc1ce319259a3be # Anime Dual Audio
-        assign_scores_to:
-          - name: Remux-1080p - Anime
