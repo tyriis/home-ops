@@ -26,7 +26,7 @@ sonarr:
     custom_formats:
       # Normal TV
       - trash_ids:
-          - 9b27ab6498ec0f31a3353992e19434ca # DV (WEBDL)
+          - 9b27ab6498ec0f31a3353992e19434ca # DV
           - 32b367365729d530ca1c124a0b180c64 # Bad Dual Groups
           - 82d40da2bc6923f41e14394075dd4b03 # No-RlsGroup
           - e1a997ddb54e3ecbfe06341ad323c458 # Obfuscated
@@ -37,7 +37,7 @@ sonarr:
           - name: WEB-2160p
       # Anime TV
       - trash_ids:
-          - 4a3b087eea2ce012fcc1ce319259a3be # Anime Dual Audio
+          - 418f50b10f1907201b6cfdf881f467b7 # Anime Dual Audio
         assign_scores_to:
           - name: Remux-1080p - Anime
 
