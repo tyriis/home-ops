@@ -38,6 +38,8 @@ spec:
             envFrom:
               - secretRef:
                   name: recyclarr-env
+            env:
+              CRON_SCHEDULE: 0 0 * * * # daily at midnight
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true

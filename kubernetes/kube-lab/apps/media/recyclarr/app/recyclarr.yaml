@@ -4,7 +4,7 @@
 
 sonarr:
   sonarr:
-    base_url: http://sonarr.media.svc.cluster.local
+    base_url: http://sonarr:8989
     # https://github.com/recyclarr/recyclarr/issues/180
     api_key: !env_var SONARR_API_KEY
 
@@ -43,7 +43,7 @@ sonarr:
 
 radarr:
   radarr:
-    base_url: http://radarr.media.svc.cluster.local
+    base_url: http://radarr:7878
     # https://github.com/recyclarr/recyclarr/issues/180
     api_key: !env_var RADARR_API_KEY
     delete_old_custom_formats: true
