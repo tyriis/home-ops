@@ -35,6 +35,9 @@ spec:
             image:
               repository: ghcr.io/home-operations/sonarr
               tag: 4.0.16.2943@sha256:0a1b8f5cb5b072f7ad8c6ff64a25dc512115d1a114ecf19a58a3b4f870207ddd
+            envFrom:
+              - secretRef:
+                  name: sonarr-env
             env:
               # https://wiki.servarr.com/useful-tools#using-environment-variables-for-config
               SONARR__APP__INSTANCENAME: Sonarr
