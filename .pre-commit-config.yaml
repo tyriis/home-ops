@@ -43,7 +43,9 @@ repos:
           - --allow-multiple-documents
         exclude: |
           (?x)^(
+            .backstage/systems/nas/mkdocs.yml |
             .backstage/systems/talos-flux/mkdocs.yml |
+            kubernetes/kube-lab/apps/media/recyclarr/app/recyclarr.yaml |
           )$()
       - id: destroyed-symlinks
       - id: detect-aws-credentials
@@ -123,5 +125,6 @@ repos:
         exclude: |
           (?x)^(
             devenv/.*|
-            kubernetes/kube-lab/apps/atlantis-system/.+/helm-release.patch.yaml
+            kubernetes/kube-lab/apps/atlantis-system/.+/helm-release.patch.yaml |
+            kubernetes/kube-lab/apps/media/recyclarr/app/recyclarr.yaml |
           )$()
