@@ -96,5 +96,7 @@ spec:
         advancedMounts:
           nzbget:
             app:
+              - path: /intermediate
+                subPath: intermediate
               - path: /tmp
                 subPath: tmp
