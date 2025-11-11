@@ -44,7 +44,7 @@ spec:
               # RUST_LOG: govee=trace
             image:
               repository: ghcr.io/wez/govee2mqtt
-              tag: latest@sha256:4e3c48268ebd40266b2906c8e0e383c63546b4363aeaa0d80e4be41cbe3a3f9d
+              tag: latest@sha256:135b0c039f950c71a76a59a22cbc2ddcb3cd8d1963e4593c7fbc5cd1b8f7ad38
             ports:
               - name: http
                 containerPort: &port 8056
