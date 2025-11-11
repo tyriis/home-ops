@@ -22,7 +22,7 @@ spec:
 
   steps:
     - name: krr
-      image: us-central1-docker.pkg.dev/genuine-flight-317411/devel/krr:v1.8.2@sha256:f1554c93fbc7560aa7a05e66b52ee045504d8b347ea215d7828e25b911d17941
+      image: us-central1-docker.pkg.dev/genuine-flight-317411/devel/krr:v1.27.0@sha256:119dffbb022ac4461620251443c30b84cf4b0cade8b088a8c91556e42af9d126
       env:
         - name: PARAM_VERBOSE
           value: $(params.verbose)
