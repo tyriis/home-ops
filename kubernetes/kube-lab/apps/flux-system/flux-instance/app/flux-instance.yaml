@@ -31,28 +31,67 @@ spec:
     interval: 2h
   kustomize:
     patches:
-      # prevent deletion of namespace by flux
+      # configure repository
       - patch: |
           - op: add
-            path: /metadata/labels/kustomize.toolkit.fluxcd.io~1prune
-            value: disabled
+            path: /spec/ignore
+            value: |
+              # exclude all
+              /*
+              # include kubernetes directory only
+              !/kubernetes
         target:
-          kind: Namespace
-          version: v1
+          kind: GitRepository
           name: flux-system
-      # Add Sops decryption to 'flux-system' Kustomization
-      # - patch: |
-      #     - op: add
-      #       path: /spec/decryption
-      #       value:
-      #         provider: sops
-      #         secretRef:
-      #           name: sops-age
-      #   target:
-      #     group: kustomize.toolkit.fluxcd.io
-      #     kind: Kustomization
-      # Increase the number of reconciliations that can be performed in parallel and bump the resources limits
-      # https://fluxcd.io/flux/cheatsheets/bootstrap/#increase-the-number-of-workers
+      # set resource requests for helm-controller
+      - patch: |
+          - op: add
+            path: /spec/template/spec/containers/0/resources/requests
+            value:
+              cpu: 20m
+              memory: 160Mi
+        target:
+          kind: Deployment
+          name: helm-controller
+      # set resource requests for kustomize-controller
+      - patch: |
+          - op: add
+            path: /spec/template/spec/containers/0/resources/requests
+            value:
+              cpu: 10m
+              memory: 160Mi
+        target:
+          kind: Deployment
+          name: kustomize-controller
+      # set resource requests for notification-controller
+      - patch: |
+          - op: add
+            path: /spec/template/spec/containers/0/resources/requests
+            value:
+              cpu: 10m
+              memory: 100Mi
+        target:
+          kind: Deployment
+          name: notification-controller
+      # set resource requests for source-controller
+      - patch: |
+          - op: add
+            path: /spec/template/spec/containers/0/resources/requests
+            value:
+              cpu: 10m
+              memory: 250Mi
+        target:
+          kind: Deployment
+          name: source-controller
+      # remove cpu limits from the controllers
+      - patch: |
+          - op: remove
+            path: /spec/template/spec/containers/0/resources/limits/cpu
+        target:
+          kind: Deployment
+          name: (helm-controller|kustomize-controller|notification-controller|source-controller)
+      # increase the number of reconciliations that can be performed in parallel and bump the resources limits
+      # https://fluxcd.io/flux/installation/configuration/vertical-scaling/#increase-the-number-of-workers-and-limits
       - patch: |
           - op: add
             path: /spec/template/spec/containers/0/args/-
@@ -69,39 +108,8 @@ spec:
         target:
           kind: Deployment
           name: (kustomize-controller|helm-controller|source-controller)
-      # increase resource limits for the controllers
-      - patch: |
-          apiVersion: apps/v1
-          kind: Deployment
-          metadata:
-            name: not-used
-          spec:
-            template:
-              spec:
-                containers:
-                  - name: manager
-                    resources:
-                      limits:
-                        memory: 2Gi
-        target:
-          kind: Deployment
-          name: (kustomize-controller|helm-controller|source-controller)
-      # Configure home-ops GitRepository
-      - patch: |
-          - op: replace
-            path: /spec/interval
-            value: 2h
-          - op: add
-            path: /spec/ignore
-            value: |
-              # exclude all
-              /*
-              # include kubernetes directory only
-              !/kubernetes
-        target:
-          kind: GitRepository
-          name: flux-system
-      # Enable in-memory kustomize builds
+      # enable in-memory kustomize builds
+      # https://fluxcd.io/flux/installation/configuration/vertical-scaling/#enable-in-memory-kustomize-builds
       - patch: |
           - op: add
             path: /spec/template/spec/containers/0/args/-
@@ -115,7 +123,8 @@ spec:
         target:
           kind: Deployment
           name: kustomize-controller
-      # Enable Helm repositories caching
+      # enable Helm repositories caching
+      # https://fluxcd.io/flux/installation/configuration/vertical-scaling/#enable-helm-repositories-caching
       - patch: |
           - op: add
             path: /spec/template/spec/containers/0/args/-
@@ -129,7 +138,7 @@ spec:
         target:
           kind: Deployment
           name: source-controller
-      # Flux near OOM detection for Helm
+      # flux near OOM detection for helm
       # https://fluxcd.io/flux/cheatsheets/bootstrap/#enable-helm-near-oom-detection
       - patch: |
           - op: add
