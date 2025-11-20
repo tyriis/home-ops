@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: quay.io/aminvakil/alpine-nfs-server
-              tag: latest@sha256:d71774cc9d8e62cb6807551abdb938ca4bbabdd8395af8fa10cf905cb2e803a8
+              tag: latest@sha256:608ab6a8dab7d13ac14eedf68d1327edf22acebcc36eeae5a2e45049ebdf33c4
             env:
               SHARED_DIRECTORY: /var/mnt/zfs-pool/nfs
               EXPORTS_MOUNTED: "true"
