@@ -114,7 +114,7 @@ repos:
       - id: gitleaks
 
   - repo: https://github.com/rhysd/actionlint
-    rev: v1.7.8
+    rev: v1.7.9
     hooks:
       - id: actionlint
 
