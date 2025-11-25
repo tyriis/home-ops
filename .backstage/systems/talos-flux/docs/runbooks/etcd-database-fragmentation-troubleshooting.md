@@ -49,7 +49,6 @@ This runbook provides steps for addressing high database fragmentation in etcd c
 ### Common Issues
 
 1. Defragmentation Fails
-
    - Symptoms: Command times out or returns error
    - Cause: Cluster instability or resource constraints
    - Resolution:
@@ -61,7 +60,6 @@ This runbook provides steps for addressing high database fragmentation in etcd c
      ```
 
 2. High Fragmentation Returns Quickly
-
    - Symptoms: Fragmentation ratio rises shortly after defragmentation
    - Cause: High write load or frequent object changes
    - Resolution:
