@@ -1,0 +1,7 @@
+---
+site_name: openbao
+nav:
+  - Home: index.md
+
+plugins:
+  - techdocs-core

@@ -1,4 +1,4 @@
-# SecOps - Hashicorp Vault
+# SecOps - OpenBao
 
 This cluster is using [autounseal-gcpkms][hashicorp-tutorial-unseal-gcpkms] to unseal the vault.
 
@@ -7,7 +7,7 @@ This cluster is using [autounseal-gcpkms][hashicorp-tutorial-unseal-gcpkms] to u
 - active keyring and key in KMS
 - Service account role `roles/cloudkms.cryptoKeyEncrypterDecrypter` and `roles/cloudkms.viewer`, preferably on crypto key level
 
-## Init fresh Vault
+## Init fresh vault
 
 Vault can be initialized with the seal configuration in place. After initial start it will complain about not be able to unseal.
 Exec in Vault Pod and do the following:
@@ -19,7 +19,46 @@ vault operator unseal # do this 3 times if seal is not gcpckms
 vault status          # should be recovery seal type: shamir, initialized: true, sealed: false
 ```
 
-Save Recovery Keys and Root token for further recovery/restore operations.
+**Important**: Save recovery keys and root token securely for disaster recovery.
+
+## Restore vault from raft backup
+
+### Prerequisites
+
+- raft backup locally
+- openbao running (red)
+
+### Steps
+
+copy snapshot to openbao pod
+
+```shell
+kubectl cp raft.snap secops/openbao-0:/openbao
+```
+
+exec into openbao pod
+
+```shell
+kubectl exec -it openbao-0 -n secops -- /bin/sh
+```
+
+init vault and export new VAULT_TOKEN to env
+
+```shell
+export VAULT_TOKEN=$(vault operator init | grep "Initial Root Token" | awk '{print $NF}')
+```
+
+restore snapshot
+
+```shell
+vault operator raft snapshot restore -force openbao/raft.snap
+```
+
+verify
+
+```shell
+vault status # should be recovery seal type: gcpckms, initialized: true, sealed: false
+```
 
 ## Migrate existing vault to auto-unseal with gcpckms
 
@@ -34,20 +73,19 @@ Save Recovery Keys and Root token for further recovery/restore operations.
 vault status # should be recovery seal type: shamir, sealed: false
 ```
 
-## Recover vault from raft backup
+## Configure auth backends in terraform
 
-- download raft backup
-- copy to openbao pod
-- exec into openbao pod
-- init vault
-- export new VAULT_TOKEN to env
-- restore snapshot
+### Kubernetes auth backend
+
+Kubernetes auth backend in terraform requires the following information:
 
 ```shell
-kubectl cp raft.snap secops/openbao-0:/openbao
-export VAULT_TOKEN=$(vault operator init | grep "Initial Root Token" | awk '{print $NF}')
-vault operator raft snapshot restore -force openbao/raft.snap
+export KUBERNETES_URL=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}')
+export KUBERNETES_CA_CERT=$(kubectl get secret openbao-auth -n secops -o jsonpath="{.data['ca\.crt']}" | base64 --decode)
+export SA_TOKEN=$(kubectl get secret openbao-auth -n secops -o jsonpath="{.data.token}" | base64 --decode)
 ```
+
+**Important**: Service account tokens must be updated when the service account is recreated.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
