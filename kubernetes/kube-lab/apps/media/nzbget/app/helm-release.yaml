@@ -43,14 +43,11 @@ spec:
                 containerPort: *port
                 protocol: TCP
             probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /jsonrpc/status
-                    port: *port
-              readiness: *probes
+              # TODO: debug
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
