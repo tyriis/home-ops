@@ -20,10 +20,7 @@ tasks:
     internal: true
     silent: true
     cmds:
-      - |
-        if kind get clusters | grep homeops-devenv >> /dev/null; then
-          kind delete cluster --name homeops-devenv
-        fi
+      - kind delete cluster --name homeops-devenv &> /dev/null || true
       - docker rm -f homeops-kind-registry &> /dev/null
 
   delete-terraform:
