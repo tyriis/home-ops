@@ -48,8 +48,8 @@ spec:
               YOLO_CACHE_DIR: /models/cache
               YOLO_CONFIG_DIR: /models/config
             image:
-              repository: ghcr.io/jazzlyn/ring-ml-person-detector
-              tag: 0.2.0@sha256:b17417e643886b876a4cdca542caf14d854c5db569fb2c7bf4a41c27a7e7f01a
+              repository: ghcr.io/jazzlyn/ml-detector
+              tag: v0.3.0@sha256:8d1474a211da7d5bc91cd329dfddb78712a1d9353e75db27b44130b10d569429
             ports:
               - name: http
                 containerPort: &port 8000
