@@ -11,7 +11,7 @@ spec:
   prune: true
   sourceRef:
     kind: OCIRepository
-    name: homeops-devenv
+    name: flux-system
   wait: true
   interval: 15m
   retryInterval: 5s

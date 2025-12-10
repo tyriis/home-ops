@@ -1,20 +1,21 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: flux-repositories
-  namespace: flux-system
+  namespace: &namespace flux-system
 spec:
-  targetNamespace: flux-system
+  targetNamespace: *namespace
   path: ./kubernetes/base/flux/repositories/helm
   prune: true
   sourceRef:
     kind: OCIRepository
-    name: homeops-devenv
+    name: flux-system
+    namespace: *namespace
   wait: true
   interval: 30m
-  retryInterval: 5s
+  retryInterval: 1m
   timeout: 5m
 
 ---
@@ -29,31 +30,14 @@ spec:
   prune: true
   sourceRef:
     kind: OCIRepository
-    name: homeops-devenv
+    name: flux-system
   wait: false
   interval: 30m
-  retryInterval: 5s
+  retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: flux-system
     - name: flux-repositories
   postBuild:
-    substituteFrom:
-      - kind: ConfigMap
-        name: cluster-settings
-  patches:
-    - patch: |-
-        apiVersion: kustomize.toolkit.fluxcd.io/v1
-        kind: Kustomization
-        metadata:
-          name: not-used
-        spec:
-          postBuild:
-            substituteFrom:
-              - kind: ConfigMap
-                name: cluster-settings
-      target:
-        group: kustomize.toolkit.fluxcd.io
-        version: v1
-        kind: Kustomization
-        labelSelector: substitution.flux.home.arpa/disabled notin (true)
+    substitute:
+      FLUX_CLUSTER_NAME: homeops-devenv
+      TZ: Europe/Vienna

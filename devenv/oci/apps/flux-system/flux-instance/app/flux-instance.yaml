@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/fluxcd.controlplane.io/fluxinstance_v1.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/fluxcd.controlplane.io/fluxinstance_v1.json
 apiVersion: fluxcd.controlplane.io/v1
 kind: FluxInstance
 metadata:
@@ -10,55 +10,56 @@ spec:
     version: 2.7.5
     registry: ghcr.io/fluxcd
     artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests
+  cluster:
+    domain: cluster.local
+    type: kubernetes
   components:
     - source-controller
     - kustomize-controller
     - helm-controller
     - notification-controller
-  cluster:
-    domain: cluster.local
-    multitenant: false
-    networkPolicy: true
-    tenantDefaultServiceAccount: default
-    type: kubernetes
   storage:
     class: standard
     size: 10Gi
+  sync:
+    kind: OCIRepository
+    url: oci://homeops-kind-registry:5000/homeops-devenv
+    ref: local
+    path: ./devenv/oci/flux
+    interval: 1m
   kustomize:
     patches:
-      # prevent deletion of namespace by flux
-      - patch: |
-          - op: add
-            path: /metadata/labels/kustomize.toolkit.fluxcd.io~1prune
-            value: disabled
-        target:
-          kind: Namespace
-          version: v1
-          name: flux-system
       # configure repository
       - patch: |
-          - op: replace
-            path: /metadata/name
-            value: homeops-devenv
           - op: add
             path: /spec/insecure
             value: true
         target:
           kind: OCIRepository
           name: flux-system
+      # remove existing resource limits for the controllers
       - patch: |
-          - op: replace
-            path: /spec/sourceRef/name
-            value: homeops-devenv
+          - op: remove
+            path: /spec/template/spec/containers/0/resources/limits
         target:
-          kind: Kustomization
-          name: flux-system
-      # increase the number of workers
+          kind: Deployment
+          name: (helm-controller|kustomize-controller|notification-controller|source-controller)
+      # set resource requests for controllers
+      - patch: |
+          - op: add
+            path: /spec/template/spec/containers/0/resources/requests
+            value:
+              cpu: 10m
+              memory: 100Mi
+        target:
+          kind: Deployment
+          name: (helm-controller|kustomize-controller|notification-controller|source-controller)
+      # increase the number of reconciliations that can be performed in parallel and bump the resources limits
       # https://fluxcd.io/flux/installation/configuration/vertical-scaling/#increase-the-number-of-workers-and-limits
       - patch: |
           - op: add
             path: /spec/template/spec/containers/0/args/-
-            value: --concurrent=20
+            value: --concurrent=10
           - op: add
             path: /spec/template/spec/containers/0/args/-
             value: --kube-api-qps=500
@@ -101,23 +102,23 @@ spec:
         target:
           kind: Deployment
           name: source-controller
-      # flux near OOM detection for helm
-      # https://fluxcd.io/flux/installation/configuration/helm-oom-detection/
+      # enable controllers to watch for changes in configmaps and secrets
+      # https://fluxcd.io/flux/components/helm/helmreleases/#reacting-immediately-to-configuration-dependencies
+      # https://fluxcd.io/flux/components/kustomize/kustomizations/#reacting-immediately-to-configuration-dependencies
+      # https://fluxcd.io/flux/components/notification/receivers/#secret-reference
       - patch: |
           - op: add
             path: /spec/template/spec/containers/0/args/-
-            value: --feature-gates=OOMWatch=true
-          - op: add
-            path: /spec/template/spec/containers/0/args/-
-            value: --oom-watch-memory-threshold=95
-          - op: add
-            path: /spec/template/spec/containers/0/args/-
-            value: --oom-watch-interval=500ms
+            value: --watch-configs-label-selector=owner!=helm
         target:
           kind: Deployment
-          name: helm-controller
-  sync:
-    kind: OCIRepository
-    url: oci://homeops-kind-registry:5000/homeops-devenv
-    ref: local
-    path: ./devenv/oci/flux
+          name: (helm-controller|kustomize-controller|notification-controller)
+      # cancel health checks on new kustomizations revisions
+      # https://fluxcd.io/flux/components/kustomize/options/
+      - patch: |
+          - op: add
+            path: /spec/template/spec/containers/0/args/-
+            value: --feature-gates=CancelHealthCheckOnNewRevision=true
+        target:
+          kind: Deployment
+          name: kustomize-controller

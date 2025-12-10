@@ -1,37 +1,19 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: flux-operator
-  namespace: flux-system
+  namespace: &namespace flux-system
 spec:
-  targetNamespace: flux-system
+  targetNamespace: *namespace
   path: ./devenv/oci/apps/flux-system/flux-operator/app
   prune: false # should never be deleted
   sourceRef:
     kind: OCIRepository
-    name: homeops-devenv
+    name: flux-system
+    namespace: *namespace
   wait: true
   interval: 30m
-  retryInterval: 5s
-  timeout: 5m
-
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: flux-instance
-  namespace: flux-system
-spec:
-  targetNamespace: flux-system
-  path: ./devenv/oci/apps/flux-system/flux-operator/instance
-  prune: false # should never be deleted
-  sourceRef:
-    kind: OCIRepository
-    name: homeops-devenv
-  wait: false
-  interval: 15m
-  retryInterval: 5s
+  retryInterval: 1m
   timeout: 5m
