@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  build:
+    desc: build image and push to local registry -- <repo-name> arg is required
+    silent: true
+    dir: "{{.SRC_DIR}}/{{.CLI_ARGS}}"
+    cmds:
+      - |-
+        docker buildx build \
+          --push \
+          --output=type=image,push=true \
+          --tag localhost:5050/{{.CLI_ARGS}}:latest \
+          .
