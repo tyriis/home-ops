@@ -25,6 +25,7 @@ spec:
     keepHistory: false
   values:
     # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
+    # https://github.com/jazzlyn/ml-detector
     defaultPodOptions:
       automountServiceAccountToken: false
       securityContext:
@@ -45,8 +46,9 @@ spec:
           app:
             env:
               CONFIG_PATH: /config/configuration.yaml
-              YOLO_CACHE_DIR: /models/cache
-              YOLO_CONFIG_DIR: /models/config
+              TORCH_HOME: /torch
+              YOLO_CACHE_DIR: /yolo
+              YOLO_CONFIG_DIR: /yolo
             image:
               repository: ghcr.io/jazzlyn/ml-detector
               tag: v0.3.0@sha256:8d1474a211da7d5bc91cd329dfddb78712a1d9353e75db27b44130b10d569429
@@ -116,8 +118,17 @@ spec:
         globalMounts:
           - path: /config
             readOnly: true
-      models:
+      tmpfs:
         type: emptyDir
-        globalMounts:
-          - path: /models
-            readOnly: false
+        advancedMounts:
+          ml-detector:
+            app:
+              - path: /models
+                subPath: models
+                readOnly: false
+              - path: /torch
+                subPath: torch
+                readOnly: false
+              - path: /yolo
+                subPath: yolo
+                readOnly: false
