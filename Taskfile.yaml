@@ -16,6 +16,21 @@ includes:
   devenv: .taskfiles/devenv/Taskfile.yaml
   lint: .taskfiles/lint/Taskfile.yaml
   pre-commit: .taskfiles/pre-commit/Taskfile.yaml
+  restic: .taskfiles/restic/Taskfile.yaml
   rook-ceph: .taskfiles/rook-ceph/Taskfile.yaml
   talos: .taskfiles/talos/Taskfile.yaml
-  restic: .taskfiles/restic/Taskfile.yaml
+  test: .taskfiles/test/Taskfile.yaml
+
+tasks:
+  lint:
+    desc: lint codebase
+    dir: "{{.PROJECT_DIR}}"
+    cmds:
+      - task: pre-commit:init
+      - task: pre-commit:run
+
+  test:
+    desc: test codebase -- lab|nas
+    dir: "{{.PROJECT_DIR}}"
+    cmds:
+      - task: test:flux-local
