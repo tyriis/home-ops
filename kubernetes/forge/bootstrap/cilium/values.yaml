@@ -1,0 +1,84 @@
+---
+# https://artifacthub.io/packages/helm/cilium/cilium?modal=values
+cluster:
+  name: kube-nas
+  id: 1
+k8sServiceHost: localhost
+k8sServicePort: 7445
+autoDirectNodeRoutes: true
+bandwidthManager:
+  enabled: true
+  bbr: true
+bpf:
+  masquerade: true
+  tproxy: true
+bgp:
+  enabled: false
+cgroup:
+  autoMount:
+    enabled: false
+  hostRoot: /sys/fs/cgroup
+endpointRoutes:
+  enabled: true
+hubble:
+  enabled: false
+  relay:
+    enabled: false
+ipam:
+  mode: kubernetes
+ipv4NativeRoutingCIDR: 10.244.0.0/16
+kubeProxyReplacement: true
+kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+l2announcements:
+  enabled: true
+  # leaseDuration: 120s
+  # leaseRenewDeadline: 60s
+  # leaseRetryPeriod: 1s
+loadBalancer:
+  algorithm: maglev
+  mode: dsr
+localRedirectPolicies:
+  enabled: true
+operator:
+  replicas: 1
+  rollOutPods: true
+  prometheus:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  dashboards:
+    enabled: false
+    annotations:
+      grafana_folder: Cilium
+prometheus:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    trustCRDsExist: true
+dashboards:
+  enabled: false
+  annotations:
+    grafana_folder: Cilium
+rollOutCiliumPods: true
+routingMode: native
+securityContext:
+  privileged: true
+  capabilities:
+    ciliumAgent:
+      - CHOWN
+      - KILL
+      - NET_ADMIN
+      - NET_RAW
+      - IPC_LOCK
+      - SYS_ADMIN
+      - SYS_RESOURCE
+      - PERFMON
+      - BPF
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETGID
+      - SETUID
+    cleanCiliumState:
+      - NET_ADMIN
+      - SYS_ADMIN
+      - SYS_RESOURCE
