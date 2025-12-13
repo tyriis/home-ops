@@ -2,9 +2,14 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
+vars:
+  SRC_DIR:
+    sh: echo ${TF_VAR_app_src:-$PWD/src}
+
 includes:
   check: check.yaml
   cluster: cluster.yaml
+  docker: docker.yaml
   flux: flux.yaml
 
 tasks:
