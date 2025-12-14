@@ -51,13 +51,13 @@ spec:
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
-  name: nas-gateway-cloudflare
+  name: forge-gateway-cloudflare
   annotations:
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
     external-dns/cloudflare: "true"
 spec:
   endpoints:
-    - dnsName: nas-gateway.techtales.io
+    - dnsName: forge-gateway.techtales.io
       recordType: CNAME
       targets:
         - 1d1865c6-c0dd-4236-8d7d-79722940886f.cfargotunnel.com
@@ -67,13 +67,13 @@ spec:
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
-  name: nas-ingress-cloudflare
+  name: forge-ingress-cloudflare
   annotations:
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
     external-dns/cloudflare: "true"
 spec:
   endpoints:
-    - dnsName: nas-ingress.techtales.io
+    - dnsName: forge-ingress.techtales.io
       recordType: CNAME
       targets:
         - 1d1865c6-c0dd-4236-8d7d-79722940886f.cfargotunnel.com
