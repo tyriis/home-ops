@@ -26,7 +26,7 @@ spec:
   sync:
     kind: GitRepository
     url: https://github.com/tyriis/home-ops.git
-    ref: refs/heads/feature/setup-cluster-forge
+    ref: refs/heads/main
     path: ./kubernetes/forge/flux
     interval: 2h
   kustomize:
