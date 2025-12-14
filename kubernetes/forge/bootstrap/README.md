@@ -42,7 +42,7 @@ kubectl kustomize --enable-helm kubernetes/forge/bootstrap/flux-operator | kubec
 ### age key
 
 ```bash
-sops --decrypt kubernetes/kube-nas/flux/config/sops-age.sops.yaml | kubectl apply -n flux-system -f -
+sops --decrypt kubernetes/forge/flux/config/sops-age.sops.yaml | kubectl apply -n flux-system -f -
 ```
 
 ### FluxInstance
@@ -50,5 +50,5 @@ sops --decrypt kubernetes/kube-nas/flux/config/sops-age.sops.yaml | kubectl appl
 when flux is up and running, we can apply our manifests
 
 ```bash
-kubectl apply --server-side -f kubernetes/kube-nas/apps/flux-system/flux-instance/app/flux-instance.yaml -n flux-system
+kubectl apply --server-side -f kubernetes/forge/apps/flux-system/flux-instance/app/flux-instance.yaml -n flux-system
 ```

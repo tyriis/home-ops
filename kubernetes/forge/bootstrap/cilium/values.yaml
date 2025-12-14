@@ -1,7 +1,7 @@
 ---
 # https://artifacthub.io/packages/helm/cilium/cilium?modal=values
 cluster:
-  name: kube-nas
+  name: forge
   id: 1
 k8sServiceHost: localhost
 k8sServicePort: 7445

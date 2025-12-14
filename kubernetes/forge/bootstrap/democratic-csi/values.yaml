@@ -16,7 +16,7 @@ storageClasses:
 #   - name: local-nvme
 #     deletionPolicy: Delete
 #     parameters:
-#       cluster: kube-nas
+#       cluster: forge
 
 controller:
   enabled: true
@@ -57,7 +57,7 @@ node:
 driver:
   config:
     driver: local-hostpath
-    instance_id: kube-nas-local-hostpath
+    instance_id: forge-local-hostpath
     local-hostpath:
       shareBasePath: /var/mnt/extra
       controllerBasePath: /var/mnt/extra
