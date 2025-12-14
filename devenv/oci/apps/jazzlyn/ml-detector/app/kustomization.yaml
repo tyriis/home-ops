@@ -1,0 +1,8 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../../../../../kubernetes/kube-lab/apps/jazzlyn/ml-detector/app
+patches:
+  - path: helm-values.yaml

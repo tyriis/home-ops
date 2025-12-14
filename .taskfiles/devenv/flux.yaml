@@ -19,12 +19,12 @@ tasks:
     desc: push to local oci registry
     internal: true
     cmds:
-      - |
-        flux push artifact oci://localhost:5050/homeops-devenv:local \
-          --path="{{.PROJECT_DIR}}" \
-          --source="local" \
-          --revision="latest" \
-          --ignore-paths=".git/,.gitignore,.gitmodules,.gitattributes,*.jpg,*.jpeg,*.gif,*.png,*.wmv,*.flv,*.tar.gz,*.zip,**/infra/"
+      - >
+        flux push artifact oci://localhost:5050/homeops-devenv:local
+        --path="{{.PROJECT_DIR}}"
+        --source="local"
+        --revision="latest"
+        --ignore-paths=".git/,.gitignore,.gitmodules,.gitattributes,*.jpg,*.jpeg,*.gif,*.png,*.wmv,*.flv,*.tar.gz,*.zip,**/infra/"
 
   reconcile-oci:
     desc: reconcile local oci registry
