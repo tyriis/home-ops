@@ -44,7 +44,7 @@ jobs:
             if length > 0 then
               # Define cluster mappings
               [
-                {path: "kubernetes/kube-nas/", name: "kube-nas"},
+                {path: "kubernetes/forge/", name: "forge"},
                 {path: "kubernetes/kube-lab/", name: "kube-lab"}
               ] as $cluster_mappings |
 
