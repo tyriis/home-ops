@@ -24,5 +24,5 @@ spec:
     keepHistory: false
   values:
     bypassDnsResolution: true
-    providerRegex: ^nas\d\d?$
+    providerRegex: ^forge\d\d?$
     replicas: 1
