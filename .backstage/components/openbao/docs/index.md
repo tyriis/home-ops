@@ -81,8 +81,8 @@ Kubernetes auth backend in terraform requires the following information:
 
 ```shell
 export KUBERNETES_URL=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}')
-export KUBERNETES_CA_CERT=$(kubectl get secret openbao-auth -n secops -o jsonpath="{.data['ca\.crt']}" | base64 --decode)
-export SA_TOKEN=$(kubectl get secret openbao-auth -n secops -o jsonpath="{.data.token}" | base64 --decode)
+export KUBERNETES_CA_CERT=$(kubectl get secret openbao-auth -n secops -o jsonpath="{.data['ca\.crt']}")
+export SA_TOKEN=$(kubectl get secret openbao-auth -n secops -o jsonpath="{.data.token}")
 ```
 
 **Important**: Service account tokens must be updated when the service account is recreated.
