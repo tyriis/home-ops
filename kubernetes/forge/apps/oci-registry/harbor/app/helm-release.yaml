@@ -94,7 +94,7 @@ spec:
           size: 5Gi
     cache:
       enabled: true
-    existingSecretAdminPassword: harbor-credentials
+    existingSecretAdminPassword: harbor-credentials #NOSONAR this is not a hardcoded secret, just the name of a k8s secret
     existingSecretAdminPasswordKey: password
     secretKey:
     existingSecretSecretKey: harbor-encryption
