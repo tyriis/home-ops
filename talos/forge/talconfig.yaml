@@ -7,7 +7,7 @@ talosVersion: v1.11.5
 kubernetesVersion: v1.34.2
 
 clusterName: forge
-endpoint: https://192.168.100.80:6443
+endpoint: https://192.168.100.90:6443
 domain: cluster.local
 allowSchedulingOnMasters: true
 allowSchedulingOnControlPlanes: true
@@ -17,7 +17,7 @@ cniConfig:
 nodes:
   # i7-8650U / 32GB / WD BLUE SN570 500GB NVME
   - hostname: forge01
-    ipAddress: 192.168.100.80
+    ipAddress: 192.168.100.90
     controlPlane: true
     machineSpec:
       mode: metal
@@ -31,8 +31,8 @@ nodes:
     nameservers:
       - 192.168.1.1
     networkInterfaces:
-      # LAN
-      - interface: en01
+      # 1GbE LAN
+      - interface: eno1
         mtu: 1500
         dhcp: true
     nodeLabels:
