@@ -89,16 +89,16 @@
         href: https://homecluster.grafana.net
         description: Grafana Cloud Monitoring
         ping: homecluster.grafana.net
-    - Prometheus kube-nas:
-        icon: prometheus
-        href: https://prometheus.kube-nas.techtales.io
-        description: Monitoring and Alerting Toolkit
-        siteMonitor: https://prometheus.kube-nas.techtales.io
-    - Alertmanager kube-nas:
+    - Alertmanager forge:
         icon: alertmanager
-        href: https://alertmanager.kube-nas.techtales.io
+        href: https://alertmanager.forge.techtales.io
         description: Alerting system that works with Prometheus
-        siteMonitor: https://alertmanager.kube-nas.techtales.io
+        siteMonitor: https://alertmanager.forge.techtales.io
+    - Prometheus forge:
+        icon: prometheus
+        href: https://prometheus.forge.techtales.io
+        description: Monitoring and Alerting Toolkit
+        siteMonitor: https://prometheus.forge.techtales.io
 - Productivity:
     - Gmail:
         icon: gmail
