@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: techtales-io
+spec:
+  secretName: techtales-io-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: techtales.io
+  dnsNames: ["techtales.io", "*.techtales.io"]
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: forge-techtales-io
+spec:
+  secretName: forge-techtales-io-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: forge.techtales.io
+  dnsNames: ["forge.techtales.io", "*.forge.techtales.io"]

@@ -1,2 +1,0 @@
-/var/mnt/zfs-pool/nfs *(rw,async,no_subtree_check,no_wdelay,all_squash,insecure_locks,sec=sys,anonuid=1000,anongid=1000)
-/var/mnt/zfs-pool/nfs/test *(rw,async,no_subtree_check,no_wdelay,all_squash,insecure_locks,sec=sys,anonuid=1000,anongid=1000)
