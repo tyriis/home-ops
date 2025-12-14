@@ -8,7 +8,7 @@ spec:
   driftDetection:
     mode: enabled
   interval: 30m
-  timeout: 15m # TODO: check if still required
+  timeout: 15m
   chart:
     spec:
       chart: harbor

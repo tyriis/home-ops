@@ -60,11 +60,9 @@ spec:
         proxy-busy-buffers-size: 16k
         ssl-protocols: TLSv1.3 TLSv1.2
       metrics:
-        # TODO: enable me
-        enabled: false
+        enabled: true
         serviceMonitor:
-          # TODO: enable me
-          enabled: false
+          enabled: true
           namespace: ingress-nginx
           namespaceSelector:
             any: true
