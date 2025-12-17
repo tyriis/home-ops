@@ -27,7 +27,7 @@ metadata:
   namespace: flux-system
 spec:
   path: ./kubernetes/kube-lab/apps
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
