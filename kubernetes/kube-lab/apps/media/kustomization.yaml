@@ -14,4 +14,5 @@ resources:
   - ./prowlarr/flux-sync.yaml
   - ./radarr/flux-sync.yaml
   - ./recyclarr/flux-sync.yaml
+  - ./seerr/flux-sync.yaml
   - ./sonarr/flux-sync.yaml
