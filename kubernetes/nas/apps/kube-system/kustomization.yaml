@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: kube-system
+components:
+  - ../../../components/sops/nas
+  - ../../../components/flux/alerts
+resources:
+  - ./namespace.yaml
+  - ./cilium/flux-sync.yaml
+  - ./coredns/flux-sync.yaml
+  - ./kubelet-csr-approver/flux-sync.yaml
+  - ./metrics-server/flux-sync.yaml
