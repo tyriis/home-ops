@@ -62,8 +62,8 @@ spec:
           nginx.ingress.kubernetes.io/ssl-redirect: "true"
         className: nginx
         hosts:
-          core: &external harbor.tyriis.dev
-    externalURL: https://harbor.tyriis.dev
+          core: &external harbor.techtales.io
+    externalURL: https://harbor.techtales.io
     redis:
       type: external
       external:
