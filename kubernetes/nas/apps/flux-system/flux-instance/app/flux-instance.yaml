@@ -26,7 +26,7 @@ spec:
   sync:
     kind: GitRepository
     url: https://github.com/tyriis/home-ops.git
-    ref: refs/heads/main
+    ref: refs/heads/feature/setup-nas-cluster
     path: ./kubernetes/nas/flux
     interval: 2h
   kustomize:
