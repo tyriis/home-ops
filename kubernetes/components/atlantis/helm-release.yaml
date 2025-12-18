@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.4.0
+      version: 4.5.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -49,7 +49,7 @@ spec:
           app:
             image:
               repository: ghcr.io/runatlantis/atlantis
-              tag: v0.37.1@sha256:26043adad30edf8834da84d1e4ef4946e4c8b5222f287b0234d7edddfb136565
+              tag: v0.38.0@sha256:db84af5f9202f6a0ef4c107c35a3821c6e80a25a6d43be71adedca9f3dbb740e
             ports:
               - name: http
                 containerPort: &port 4141

@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.4.0
+      version: 4.5.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -44,7 +44,7 @@ spec:
               VENV_FOLDER: /venv
             image:
               repository: ghcr.io/home-operations/home-assistant
-              tag: 2025.11.3@sha256:8cdb8a2ae0bd6d96b4c0bb1cd529cf97a7634a40ca8ac3b6ebd824a5583a7281
+              tag: 2025.12.3@sha256:711c90c7e6f73268a212806bcd9235b6917ae9f81012041aa2dfc895ec2cc558
             ports:
               - name: http
                 containerPort: 8123
@@ -63,7 +63,7 @@ spec:
           code-server:
             image:
               repository: ghcr.io/coder/code-server
-              tag: 4.106.2@sha256:cca5c0bbff928df75ba9344a878e4ca7a321c0d42c34b39e02722b29855a56ac
+              tag: 4.107.0@sha256:4b622c4cd1b0f559fec0df67fcf09042d63e9ce84c575102066afd9511695627
             args:
               - --auth
               - none

@@ -1,0 +1,109 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app openbao-snapshots
+spec:
+  interval: 30m
+  driftDetection:
+    mode: enabled
+  chart:
+    spec:
+      chart: app-template
+      version: 4.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  uninstall:
+    keepHistory: false
+  # https://github.com/bjw-s/helm-charts/blob/main/charts/library/common/values.yaml
+  values:
+    controllers:
+      openbao-snapshots:
+        type: cronjob
+        cronjob:
+          concurrencyPolicy: Forbid
+          schedule: "0 6 * * *" # daily at 6am
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            runAsNonRoot: true
+        containers:
+          snapshot:
+            image:
+              repository: vault
+              tag: 1.13.3@sha256:f98ac9dd97b0612746630033771bc7a8c86408a44a056f3f4be47fc576ec3744
+            command:
+              - /bin/sh
+              - -ec
+              - |
+                mkdir -p /data/snapshots
+                export VAULT_TOKEN=$(vault write -format=json auth/approle/login role_id=$APPROLE_ROLE_ID secret_id=$APPROLE_SECRET_ID | awk -F'"' '/client_token/{print $4}')
+                vault operator raft snapshot save /data/snapshots/openbao-raft.snap
+                ls -l /data/snapshots
+            envFrom:
+              - secretRef:
+                  name: openbao-snapshot-agent-credentials
+            env:
+              - name: VAULT_ADDR
+                value: http://openbao-active.secops.svc.cluster.local:8200 #NOSONAR allow http
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+            resources:
+              requests:
+                cpu: 10m
+                memory: 10Mi
+          upload:
+            image:
+              repository: google/cloud-sdk
+              tag: 550.0.0-alpine@sha256:5e608bda5a78b4b795e541ea9fea62513c4feb23192b45f305754f968faf5813
+            command:
+              - /bin/sh
+              - -ec
+              - |
+                until [ -f /data/snapshots/openbao-raft.snap ]; do sleep 5; done
+                gcloud auth activate-service-account --key-file=/data/credentials/credentials.json
+                gsutil cp /data/snapshots/openbao-raft.snap gs://$BUCKET_NAME/openbao_raft_$(date +"%Y%m%d_%H%M%S").snap
+            env:
+              - name: HOME
+                value: /data/nobody
+            envFrom:
+              - secretRef:
+                  name: openbao-snapshots-gcs
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+            resources:
+              requests:
+                cpu: 10m
+                memory: 10Mi
+    persistence:
+      data:
+        type: emptyDir
+        globalMounts:
+          - path: /data
+      credentials:
+        type: secret
+        name: openbao-snapshots-gcp-sa
+        advancedMounts:
+          openbao-snapshots:
+            upload:
+              - path: /data/credentials/credentials.json
+                subPath: credentials.json
+                readOnly: true

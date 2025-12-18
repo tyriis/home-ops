@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: openbao
+  description: |
+    OpenBao is an open-source, community-driven secrets and encryption management system that is a fork of HashiCorp Vault.
+    It securely stores and manages sensitive data.
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/kube-nas/apps/secops/openbao
+      title: Flux definitions
+      icon: github
+      type: github-repository
+  tags:
+    - secops
+spec:
+  type: service
+  lifecycle: experimental
+  system: kube-nas
+  owner: home-ops

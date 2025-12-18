@@ -12,24 +12,24 @@ flux2 = "2.7.5"
 # https://gitleaks.io/
 gitleaks = "8.30.0"
 # https://helm.sh/
-helm = "4.0.1"
+helm = "3.19.4"
 # https://k9scli.io/
 k9s = "0.40.10"
 # https://kubernetes.io/docs/reference/kubectl/
-kubectl = "1.34.2"
+kubectl = "1.35.0"
 # https://kustomize.io/
 kustomize = "5.8.0"
 # https://nodejs.org/
-node = "24.11.1"
+node = "24.12.0"
 # https://pre-commit.com/
-pre-commit = "4.5.0"
+pre-commit = "4.5.1"
 # https://github.com/mozilla/sops
 sops = "3.11.0"
 # https://github.com/budimanjojo/talhelper
 talhelper = "3.0.41"
 # https://www.talos.dev/
-talosctl = "1.11.5"
+talosctl = "1.11.6"
 # https://taskfile.dev/
 task = "3.43.3"
 # https://trivy.dev/
-trivy = "0.67.2"
+trivy = "0.68.2"

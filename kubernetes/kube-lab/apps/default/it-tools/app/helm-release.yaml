@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.4.0
+      version: 4.5.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -44,7 +44,7 @@ spec:
           app:
             image:
               repository: ghcr.io/sharevb/it-tools
-              tag: 2025.8.24-34373f1a@sha256:c70e7285e92dbfc29be6a3573ad99cf51bec50c37ccd43d606c296f2ea2c9cdf
+              tag: 2025.12.7@sha256:da4738f667288bd9ce2cd964d843231d65b5569bf0e74246a48c4e161ddc2e02
             resources:
               requests:
                 cpu: 5m

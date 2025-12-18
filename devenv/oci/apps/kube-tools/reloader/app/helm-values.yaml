@@ -5,12 +5,7 @@ kind: HelmRelease
 metadata:
   name: reloader
 spec:
-  interval: 15m
-  install:
-    remediation:
-      retries: 5
-  uninstall:
-    keepHistory: false
+  interval: 30m
   # https://artifacthub.io/packages/helm/stakater/reloader?modal=values
   values:
     replicas: 1

@@ -80,7 +80,7 @@ repos:
       - id: forbid-bidi-controls
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.46.0
+    rev: v0.47.0
     hooks:
       - id: markdownlint-fix
         args:
@@ -88,7 +88,7 @@ repos:
           - .markdownlint.yaml
 
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.6.2
+    rev: v3.7.4
     hooks:
       - id: prettier
         args:
@@ -103,7 +103,7 @@ repos:
       - id: forbid-secrets
         exclude: |
           (?x)^(
-            kubernetes/kube-nas/apps/secops/rbac.yaml|
+            kubernetes/forge/apps/secops/rbac.yaml|
             kubernetes/kube-lab/apps/secops/rbac.yaml
           )$()
 

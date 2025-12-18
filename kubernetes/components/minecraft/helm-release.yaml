@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.4.0
+      version: 4.5.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -45,7 +45,7 @@ spec:
           app:
             image:
               repository: ghcr.io/itzg/minecraft-server
-              tag: java21@sha256:c0f4ad3714150272f923098cdfd414237165e0b683f1c20ae91e78e9f15ef351
+              tag: java21@sha256:68c15cd399f4ab943b84bba8754579d6a3597a2462d5cec2b0a61467d3875146
             probes:
               liveness: &probes
                 enabled: true

@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: prometheus-blackbox-exporter
-      version: 11.5.0
+      version: 11.6.1
       sourceRef:
         kind: HelmRepository
         name: prometheus-community
@@ -97,11 +97,6 @@ spec:
         - module: icmp
           name: roborock-downstairs-icmp
           url: roborock-downstairs.localdomain
-
-        # Vacuum robot basement
-        - module: icmp
-          name: neato-basement-icmp
-          url: neato-basement.localdomain
 
         - module: icmp
           name: ping-cloudflare

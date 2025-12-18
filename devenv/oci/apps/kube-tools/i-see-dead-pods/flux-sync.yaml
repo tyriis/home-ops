@@ -1,18 +1,18 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: i-see-dead-pods
-  namespace: flux-system
 spec:
   targetNamespace: kube-tools
   path: ./devenv/oci/apps/kube-tools/i-see-dead-pods/app
   prune: true
   sourceRef:
     kind: OCIRepository
-    name: homeops-devenv
+    name: flux-system
+    namespace: flux-system
   wait: true
-  interval: 15m
-  retryInterval: 5s
+  interval: 30m
+  retryInterval: 1m
   timeout: 5m

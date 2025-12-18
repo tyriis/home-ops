@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.4.0
+      version: 4.5.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -45,7 +45,7 @@ spec:
           i-see-dead-pods:
             image:
               repository: alpine/kubectl
-              tag: 1.34.2@sha256:34dbd66e8afed366925afbb282783a768743f4bca518c57e74eed0238ca4f789
+              tag: 1.34.2@sha256:96a7d245a74d461925a56e3024d2f027c2a7a822b3e9e0117ec558db42de9c35
             command:
               - /bin/sh
               - -ec

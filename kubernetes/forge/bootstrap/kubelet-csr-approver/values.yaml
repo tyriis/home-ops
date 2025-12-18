@@ -1,0 +1,4 @@
+---
+bypassDnsResolution: true
+providerRegex: ^forge\d\d?$
+replicas: 1

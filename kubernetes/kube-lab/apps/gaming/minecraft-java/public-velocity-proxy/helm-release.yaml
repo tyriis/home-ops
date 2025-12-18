@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.4.0
+      version: 4.5.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -46,7 +46,7 @@ spec:
             nameOverride: *app
             image:
               repository: itzg/mc-proxy
-              tag: java21@sha256:c5a336be505ca8ff7e1f31547991c3492596ee222e698f40a434fcc3c6bfef47
+              tag: java21@sha256:d361e2c1cbe14d9ccf349322c7674b89967af015cde0d721698be7be3bd2c471
             envFrom:
               - secretRef:
                   name: minecraft-public-velocity-proxy-rcon

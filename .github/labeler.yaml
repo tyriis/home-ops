@@ -14,11 +14,11 @@ area/taskfile:
       - any-glob-to-any-file: .taskfiles/**/*
       - any-glob-to-any-file: Taskfile*
 # Cluster
-cluster/kube-nas:
-  - changed-files:
-      - any-glob-to-any-file: kubernetes/kube-nas/**/*
-      - any-glob-to-any-file: infra/nix/kube-nas/**/*
 cluster/kube-lab:
   - changed-files:
       - any-glob-to-any-file: kubernetes/kube-lab/**/*
-      - any-glob-to-any-file: talos/*
+      - any-glob-to-any-file: talos/kube-lab/*
+cluster/forge:
+  - changed-files:
+      - any-glob-to-any-file: kubernetes/forge/**/*
+      - any-glob-to-any-file: talos/forge/*
