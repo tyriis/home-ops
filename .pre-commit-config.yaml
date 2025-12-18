@@ -116,3 +116,14 @@ repos:
     rev: v1.7.9
     hooks:
       - id: actionlint
+
+  - repo: https://github.com/tarioch/flux-check-hook
+    rev: v0.8.0
+    hooks:
+      - id: check-flux-helm-values
+        exclude: |
+          (?x)^(
+            devenv/.*|
+            kubernetes/kube-lab/apps/atlantis-system/.+/helm-release.patch.yaml |
+            kubernetes/kube-lab/apps/media/recyclarr/app/recyclarr.yaml |
+          )$()
