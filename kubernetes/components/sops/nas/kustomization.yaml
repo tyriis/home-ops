@@ -4,4 +4,4 @@ apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 # This component is used to deploy the flux-config into the namespace
 resources:
-  - ../../../forge/flux/config/sops-age.sops.yaml
+  - ../../../nas/flux/config/sops-age.sops.yaml
