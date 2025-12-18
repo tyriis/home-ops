@@ -76,7 +76,7 @@ spec:
     kubeControllerManager:
       enabled: true
       endpoints: &cp
-        - 192.168.100.90
+        - 192.168.100.10
 
     kubeEtcd:
       enabled: true
@@ -144,7 +144,7 @@ spec:
           requests:
             cpu: 100m
             memory: 4Gi
-        replicas: 3
+        replicas: 1
         retention: 14d
         retentionSize: 50GB
         ruleSelectorNilUsesHelmValues: false
