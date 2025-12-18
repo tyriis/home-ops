@@ -36,9 +36,9 @@ spec:
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/unifi-controller/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/zigbee2mqtt/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/domains/home/catalog-info.yaml
-    - https://github.com/tyriis/home-ops/blob/main/.backstage/systems/kube-nas/catalog-info.yaml
-    - https://github.com/tyriis/home-ops/blob/main/.backstage/systems/mqtt.home/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/systems/nas/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/systems/mqtt.home/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/.backstage/systems/synology-nas/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/systems/opnsense/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/systems/talos-flux/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/systems/zigbee-bridge/catalog-info.yaml

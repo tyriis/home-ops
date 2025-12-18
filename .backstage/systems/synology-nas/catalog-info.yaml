@@ -3,21 +3,24 @@
 apiVersion: backstage.io/v1alpha1
 kind: System
 metadata:
-  name: kube-nas
-  description: Experimental sidero talos based single node cluster for storage
+  name: nas
+  description: synology ds218+
   annotations:
     # backstage.io/techdocs-ref: dir:.
     github.com/project-slug: tyriis/home-ops
   links:
-    - url: https://github.com/tyriis/home-ops
-      title: home-ops
-      icon: github
-      type: github-repository
+    - url: https://nas.techtales.io
+      title: nas
+      icon: dashboard
+      type: admin-dashboard
   tags:
-    - k8s
-    - talos
-    - gitops
-    - flux
+    - nas
+    - nfs
+    - backup
+    - storage
 spec:
   owner: home-ops
   domain: home
+  type: storage
+  lifecycle: production
+  system: nas

@@ -38,9 +38,9 @@ markdown_extensions:
   - pymdownx.snippets
   - pymdownx.superfences
   - attr_list
-  - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
+  # - pymdownx.emoji:
+  #     emoji_index: !!python/name:materialx.emoji.twemoji
+  #     emoji_generator: !!python/name:materialx.emoji.to_svg
   - def_list
   - pymdownx.tasklist
   - pymdownx.details
