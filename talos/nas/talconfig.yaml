@@ -44,7 +44,7 @@ nodes:
         vip:
           ip: 192.168.100.10
 
-  # Intel N100 / 32 GB / Samsung SSD 990 PRO 1TB /
+  # Intel N100 / 32 GB / Samsung SSD 990 PRO 1TB / WDC WD80EFPX-68C 8TB / WDC WD80EFPX-68C 8TB
   - hostname: nas02
     ipAddress: 192.168.100.12
     controlPlane: false

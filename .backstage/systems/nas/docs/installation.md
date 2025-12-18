@@ -103,8 +103,8 @@ On your workstation run:
 
 ```bash
 talosctl apply-config --insecure \
-   --nodes 192.168.100.11 \
-   --file clusterconfig/nas-nas01.yaml
+  --nodes 192.168.100.11 \
+  --file clusterconfig/nas-nas01.yaml
 ```
 
 Assure your TALCONFIG env variable is set
@@ -133,8 +133,8 @@ In order to be able to access the kubernetes cluster api, run:
 
 ```bash
 talosctl kubeconfig \
-   --nodes 192.168.100.11 \
-   --force
+  --nodes 192.168.100.11 \
+  --force
 ```
 
 The kubeconfig should be created and you should be able to access the cluster with the following command:
@@ -166,8 +166,8 @@ On your workstation run:
 
 ```bash
 talosctl apply-config --insecure \
-   --nodes 192.168.100.12 \
-   --file clusterconfig/nas-nas02.yaml
+  --nodes 192.168.100.12 \
+  --file clusterconfig/nas-nas02.yaml
 ```
 
 Lets check our nodes:
