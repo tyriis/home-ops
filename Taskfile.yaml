@@ -6,20 +6,19 @@ vars:
   PROJECT_DIR:
     sh: "git rev-parse --show-toplevel"
   DEVENV_DIR: "{{.PROJECT_DIR}}/devenv"
-  FLUX_DIR: "{{.PROJECT_DIR}}/kubernetes"
-  TALOS_DIR: "{{.ROOT_DIR}}/talos"
-  KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
+  KUBERNETES_DIR: "{{.PROJECT_DIR}}/kubernetes"
+  TALOS_DIR: "{{.PROJECT_DIR}}/talos"
 
 includes:
   backstage: .taskfiles/backstage/Taskfile.yaml
   debug: .taskfiles/debug-tasks/Taskfile.yaml
   devenv: .taskfiles/devenv/Taskfile.yaml
+  flux-local: .taskfiles/flux-local/Taskfile.yaml
   lint: .taskfiles/lint/Taskfile.yaml
   pre-commit: .taskfiles/pre-commit/Taskfile.yaml
   restic: .taskfiles/restic/Taskfile.yaml
   rook-ceph: .taskfiles/rook-ceph/Taskfile.yaml
   talos: .taskfiles/talos/Taskfile.yaml
-  test: .taskfiles/test/Taskfile.yaml
 
 tasks:
   lint:
@@ -33,4 +32,4 @@ tasks:
     desc: test codebase -- lab|nas
     dir: "{{.PROJECT_DIR}}"
     cmds:
-      - task: test:flux-local
+      - task: flux-local:test
