@@ -1,0 +1,1 @@
+/var/mnt/export/test *(rw,async,no_subtree_check,no_wdelay,all_squash,insecure_locks,sec=sys,anonuid=1000,anongid=1000,no_subtree_check)
