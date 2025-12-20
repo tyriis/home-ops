@@ -7,4 +7,4 @@ components:
   - ../../../components/flux/alerts
 resources:
   - ./namespace.yaml
-  - ./nfs-server/flux-sync.yaml
+  - ./openebs/flux-sync.yaml
