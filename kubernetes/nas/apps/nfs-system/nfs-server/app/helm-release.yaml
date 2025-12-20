@@ -90,17 +90,20 @@ spec:
     #         port: 20048
     #         protocol: TCP
     persistence:
-      data:
-        type: hostPath
-        hostPath: /var/mnt/export
+      fake-export:
+        type: emptyDir
         globalMounts:
-          - path: /var/mnt/export
+          - path: /export
       exports:
         type: configMap
         name: nfs-exports
         globalMounts:
           - subPath: exports
             path: /etc/exports
+      bob:
+        existingClaim: bob
+        globalMounts:
+          - path: /export/bob
       # exports:
       #   type: emptyDir
       #   advancedMounts:
