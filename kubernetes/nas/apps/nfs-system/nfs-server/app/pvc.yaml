@@ -1,44 +1,13 @@
 ---
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: media
-spec:
-  accessModes:
-    - ReadWriteMany
-  capacity:
-    storage: 1Ti
-  claimRef:
-    apiVersion: v1
-    kind: PersistentVolumeClaim
-    name: media
-    namespace: nfs-system
-  csi:
-    driver: zfs.csi.openebs.io
-    fsType: zfs
-    volumeAttributes:
-      openebs.io/poolname: pool0
-    volumeHandle: media
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - nas02
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: zfs-pool
-  volumeMode: Filesystem
----
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: media
 spec:
   storageClassName: zfs-pool
+  volumeName: media
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: 7.14T
+      storage: 8000Gi

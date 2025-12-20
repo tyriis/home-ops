@@ -30,6 +30,15 @@ spec:
       *app :
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          app:
+            image:
+              repository: busybox
+              tag: latest
+            command:
+              - sh
+              - -c
+              - chown 1000:1000 /export/media
         containers:
           app:
             image:
