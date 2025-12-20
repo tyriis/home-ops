@@ -1,1 +1,1 @@
-/var/mnt/export/test *(rw,fsid=0,async,no_subtree_check,no_wdelay,all_squash,insecure_locks,sec=sys,anonuid=1000,anongid=1000,nohide)
+/var/mnt/export/test *(rw,fsid=0,async,no_subtree_check,no_wdelay,all_squash,insecure_locks,sec=sys,anonuid=1000,anongid=1000)
