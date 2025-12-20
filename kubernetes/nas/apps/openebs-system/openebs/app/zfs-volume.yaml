@@ -8,7 +8,6 @@ spec:
   fsType: zfs
   recordsize: 128k
   compression: lz4
-  atime: "off"
   ownerNodeID: nas02
   poolName: pool0/data
   volumeType: DATASET
@@ -25,7 +24,6 @@ spec:
   fsType: zfs
   recordsize: 128k
   compression: lz4
-  atime: "off"
   ownerNodeID: nas02
   poolName: pool0/data
   volumeType: DATASET
