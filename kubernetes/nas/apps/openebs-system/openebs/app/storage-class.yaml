@@ -18,9 +18,9 @@ metadata:
   name: zfs-pool0-data
 allowVolumeExpansion: true
 parameters:
-  recordsize: 128k
-  compression: lz4
-  dedup: "off"
+  # recordsize: 128k
+  # compression: lz4
+  # dedup: "off"
   poolname: pool0/data
   fstype: zfs
   shared: "yes"
