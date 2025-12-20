@@ -31,7 +31,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
-          app:
+          fix-permissions:
             image:
               repository: busybox
               tag: latest
