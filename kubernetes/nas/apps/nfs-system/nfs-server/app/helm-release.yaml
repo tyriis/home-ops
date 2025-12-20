@@ -113,6 +113,10 @@ spec:
         existingClaim: media
         globalMounts:
           - path: /export/media
+      public:
+        existingClaim: public
+        globalMounts:
+          - path: /export/public
       # exports:
       #   type: emptyDir
       #   advancedMounts:
