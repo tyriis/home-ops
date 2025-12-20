@@ -100,10 +100,10 @@ spec:
         globalMounts:
           - subPath: exports
             path: /etc/exports
-      bob:
-        existingClaim: bob
+      media:
+        existingClaim: media
         globalMounts:
-          - path: /export/bob
+          - path: /export/media
       # exports:
       #   type: emptyDir
       #   advancedMounts:

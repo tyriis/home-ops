@@ -1,1 +1,1 @@
-/export/bob *(rw,fsid=0,crossmnt,all_squash,anonuid=1000,anongid=1000,insecure,no_subtree_check)
+/export/media *(rw,fsid=0,crossmnt,all_squash,anonuid=1000,anongid=1000,insecure,no_subtree_check)
