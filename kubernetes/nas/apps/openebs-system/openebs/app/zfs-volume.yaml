@@ -1,0 +1,33 @@
+---
+apiVersion: zfs.openebs.io/v1
+kind: ZFSVolume
+metadata:
+  name: media
+spec:
+  capacity: "1Ti"
+  fsType: zfs
+  recordsize: 128k
+  compression: lz4
+  atime: "off"
+  ownerNodeID: nas02
+  poolName: pool0/data
+  volumeType: DATASET
+  shared: "yes"
+  thinProvision: "yes"
+
+---
+apiVersion: zfs.openebs.io/v1
+kind: ZFSVolume
+metadata:
+  name: bob
+spec:
+  capacity: "1Ti"
+  fsType: zfs
+  recordsize: 128k
+  compression: lz4
+  atime: "off"
+  ownerNodeID: nas02
+  poolName: pool0/data
+  volumeType: DATASET
+  shared: "yes"
+  thinProvision: "yes"

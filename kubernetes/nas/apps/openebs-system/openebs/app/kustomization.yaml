@@ -7,3 +7,4 @@ resources:
   - ./helm-repository.yaml
   - ./storage-class.yaml
   - ./volume-snapshot-class.yaml
+  - ./zfs-volume.yaml
