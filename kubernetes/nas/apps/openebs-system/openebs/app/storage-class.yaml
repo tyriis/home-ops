@@ -18,8 +18,11 @@ metadata:
   name: zfs-pool0-data
 allowVolumeExpansion: true
 parameters:
-  poolname: "pool0/data"
-  fstype: "zfs"
+  recordsize: 128k
+  compression: lz4
+  dedup: "off"
+  poolname: pool0/data
+  fstype: zfs
   shared: "yes"
   thinprovision: "yes"
 provisioner: zfs.csi.openebs.io
