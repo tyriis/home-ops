@@ -38,7 +38,7 @@ spec:
             command:
               - sh
               - -c
-              - chown 1000:1000 /export/media
+              - chown 1000:1000 /export/media && chown 1000:1000 /export/public
         containers:
           app:
             image:
