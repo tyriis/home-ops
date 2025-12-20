@@ -79,7 +79,7 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: &name media
+  name: &name public
 spec:
   storageClassName: zfs-pool
   volumeName: *name
