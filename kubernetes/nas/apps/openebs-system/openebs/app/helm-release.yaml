@@ -44,7 +44,7 @@ spec:
       zfs:
         bin: /usr/local/sbin/zfs
       zfsNode:
-        encrKeysDir: /var/zfs/keys
+        encrKeysDir: /var/lib/zfs
         nodeSelector:
           kubernetes.io/hostname: nas02
       zfsPlugin:
