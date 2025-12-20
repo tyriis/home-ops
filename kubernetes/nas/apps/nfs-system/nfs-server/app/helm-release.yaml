@@ -34,9 +34,9 @@ spec:
           app:
             image:
               repository: quay.io/aminvakil/alpine-nfs-server
-              tag: latest@sha256:608ab6a8dab7d13ac14eedf68d1327edf22acebcc36eeae5a2e45049ebdf33c4
+              tag: latest@sha256:38aba2dfc6665867ea693055b0c7dd05fa7c1c27f6843bddd37891706cc68879
             env:
-              SHARED_DIRECTORY: /var/mnt/export
+              SHARED_DIRECTORY: /export
               EXPORTS_MOUNTED: "true"
             probes:
               readiness: &probes
