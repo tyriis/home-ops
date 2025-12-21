@@ -91,6 +91,7 @@ spec:
               tag: 1.7.6@sha256:7b488dee696792f17231bfc36684ea92c84eb7f2021653d026f6c9949cff7b78
             env:
               CONSOLE_MINIO_SERVER: https://s3.nas.techtales.io
+              CONSOLE_DEBUG_LOGLEVEL: "3"
             envFrom:
               - secretRef:
                   name: minio-console-env
