@@ -87,7 +87,7 @@ spec:
                 cpu: 100m
               limits:
                 memory: 2Gi
-
+          # https://github.com/OpenMaxIO/openmaxio-object-browser/issues/8
           ui:
             image:
               repository: ghcr.io/astrateam-net/minio-browser
