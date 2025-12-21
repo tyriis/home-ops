@@ -3,7 +3,7 @@
 <https://github.com/siderolabs/extensions/blob/main/storage/zfs/README.md>
 
 ```console
-kubectl -n kube-system debug -it --profile sysadmin --image=alpine node/nas01
+kubectl -n kube-system debug -it --profile sysadmin --image=alpine node/nas02
 ```
 
 To verify AES‑GCM support on your Talos node:acltype
@@ -31,7 +31,7 @@ spl 131072 1 zfs
 ```
 
 ```console
-mkdir -p /host/var/lib/zfs
+mkdir -p /host/var/mnt/pool
 ```
 
 ```console
@@ -39,17 +39,17 @@ ln -s /host/var/lib/zfs /var/lib/zfs
 ```
 
 ```console
-openssl rand -hex 32 > /var/lib/zfs/encryption.key
+openssl rand -hex 32 > /host/var/lib/zfs/encryption.key
 ```
 
 store in [secrets.techtales.io/](https://secrets.techtales.io/ui/vault/secrets/infra/show/techtales/kube-nas)
 
 ```console
-chmod 600 /var/lib/zfs/encryption.key
+chmod 600 /host/var/lib/zfs/encryption.key
 ```
 
 ```console
-chroot /host zpool create \
+chroot /host zpool create -f \
   -o ashift=12 \
   -O acltype=posixacl \
   -O compression=lz4 \
@@ -60,8 +60,8 @@ chroot /host zpool create \
   -O encryption=aes-256-gcm \
   -O keylocation=file:///var/lib/zfs/encryption.key \
   -O keyformat=hex \
-  -O mountpoint=/var/mnt/zfs-pool \
-  zfs-pool mirror /dev/sda /dev/sdb
+  -O mountpoint="legacy" \
+  pool0 mirror /dev/sda /dev/sdb
 ```
 
 ```console
@@ -81,3 +81,7 @@ config:
 
 errors: No known data errors
 ```
+
+## create named datasets
+
+create an openebs zfsvolume
