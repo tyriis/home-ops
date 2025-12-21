@@ -18,8 +18,8 @@ spec:
     - backendRefs:
         - name: webhook-receiver
           namespace: flux-system
-          port: 9292
+          port: 80
       matches:
         - path:
             type: PathPrefix
-            value: /hook/
+            value: /
