@@ -131,20 +131,6 @@ spec:
               - name: minio
                 namespace: minio-system
                 port: 9001
-      app2:
-        annotations:
-          external-dns/unifi: "true"
-        hostnames:
-          - minio2.techtales.io
-        parentRefs:
-          - name: cilium
-            namespace: kube-system
-            sectionName: https
-        rules:
-          - backendRefs:
-              - name: minio
-                namespace: minio-system
-                port: 9001
       s3:
         annotations:
           external-dns/unifi: "true"
@@ -154,20 +140,6 @@ spec:
           - name: cilium
             namespace: kube-system
             sectionName: https-nas
-        rules:
-          - backendRefs:
-              - name: minio
-                namespace: minio-system
-                port: 9000
-      s32:
-        annotations:
-          external-dns/unifi: "true"
-        hostnames:
-          - s32.techtales.io
-        parentRefs:
-          - name: cilium
-            namespace: kube-system
-            sectionName: https
         rules:
           - backendRefs:
               - name: minio
