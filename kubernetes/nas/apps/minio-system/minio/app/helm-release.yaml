@@ -59,10 +59,10 @@ spec:
                   name: minio-env
             args: ["server", "/data/minio", "--console-address", ":9001"]
             ports:
-              - containerPort: 9000
+              - containerPort: 9001
                 name: http
                 protocol: TCP
-              - containerPort: 9001
+              - containerPort: 9000
                 name: s3
                 protocol: TCP
             probes:
