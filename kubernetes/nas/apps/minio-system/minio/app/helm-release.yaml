@@ -80,6 +80,9 @@ spec:
                 cpu: 100m
               limits:
                 memory: 2Gi
+        pod:
+          nodeSelector:
+            kubernetes.io/hostname: nas02
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
