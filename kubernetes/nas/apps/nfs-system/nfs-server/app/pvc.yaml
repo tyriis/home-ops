@@ -88,3 +88,13 @@ spec:
   resources:
     requests:
       storage: 100Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: test
+spec:
+  storageClassName: zfs-pool
+  resources:
+    requests:
+      storage: 1Gi
