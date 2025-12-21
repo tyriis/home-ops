@@ -90,7 +90,7 @@ spec:
               repository: ghcr.io/astrateam-net/minio-browser
               tag: 1.7.6@sha256:7b488dee696792f17231bfc36684ea92c84eb7f2021653d026f6c9949cff7b78
             env:
-              CONSOLE_MINIO_SERVER: http://localhost:9000
+              CONSOLE_MINIO_SERVER: https://s3.nas.techtales.io
             args: ["./console", "server"]
             ports:
               - containerPort: 9090
@@ -167,8 +167,10 @@ spec:
     persistence:
       data:
         existingClaim: minio
-        globalMounts:
-          - path: /data/minio
+        advancedMounts:
+          minio:
+            app:
+              - path: /data/minio
       console:
         type: emptyDir
         advancedMounts:
