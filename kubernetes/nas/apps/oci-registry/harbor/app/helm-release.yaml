@@ -45,24 +45,17 @@ spec:
     #   targetPath: trivy.githubToken
     #   optional: false
   values:
-    expose:
-      type: ingress
-      tls:
-        enabled: true
-        certSource: secret
-        secret:
-          secretName: harbor-tls
-      ingress:
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          external-dns.alpha.kubernetes.io/target: nas-ingress.techtales.io
-          external-dns/unifi: "true"
-          kubernetes.io/tls-acme: "true"
-          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-          nginx.ingress.kubernetes.io/ssl-redirect: "true"
-        className: nginx
-        hosts:
-          core: &external harbor.techtales.io
+    # expose:
+    #   type: route
+    #   route:
+    #     annotations:
+    #       external-dns/unifi: "true"
+    #     parentRefs:
+    #       - name: cilium
+    #         namespace: kube-system
+    #         sectionName: https
+    #         hosts:
+    #           - harbor.techtales.io
     externalURL: https://harbor.techtales.io
     redis:
       type: external
