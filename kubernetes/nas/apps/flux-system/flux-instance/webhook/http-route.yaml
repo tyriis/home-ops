@@ -9,16 +9,16 @@ metadata:
     external-dns/unifi: "true"
 spec:
   hostnames:
-    - flux-webhook-nas.techtales.io
+    - flux-webhook.nas.techtales.io
   parentRefs:
     - name: cilium
       namespace: kube-system
-      sectionName: https
+      sectionName: https-nas
   rules:
     - backendRefs:
         - name: webhook-receiver
           namespace: flux-system
-          port: 80
+          port: 9292
       matches:
         - path:
             type: PathPrefix
