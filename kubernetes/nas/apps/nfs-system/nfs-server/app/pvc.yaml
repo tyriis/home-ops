@@ -95,6 +95,8 @@ metadata:
   name: test
 spec:
   storageClassName: zfs-pool
+  accessModes:
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
