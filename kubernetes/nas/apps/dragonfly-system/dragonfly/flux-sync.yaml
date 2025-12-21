@@ -1,0 +1,93 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname dragonfly-crds
+spec:
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: dragonfly-operator
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname dragonfly-operator
+spec:
+  targetNamespace: dragonfly-system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: dragonfly
+      app.kubernetes.io/component: *appname
+  path: ./kubernetes/nas/apps/dragonfly-system/dragonfly/operator
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: dragonfly-crds
+      namespace: dragonfly-system
+
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname dragonfly-cluster
+spec:
+  targetNamespace: dragonfly-system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: dragonfly
+      app.kubernetes.io/component: *appname
+  path: ./kubernetes/nas/apps/dragonfly-system/dragonfly/cluster
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: dragonfly-operator
+      namespace: dragonfly-system
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname dragonfly-observability
+  namespace: flux-system
+spec:
+  targetNamespace: dragonfly-system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: dragonfly
+      app.kubernetes.io/component: *appname
+  path: ./kubernetes/nas/apps/dragonfly-system/dragonfly/observability
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: dragonfly-cluster
+      namespace: dragonfly-system

@@ -1,0 +1,70 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: openebs
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: openebs
+      version: 4.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: openebs
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    # https://artifacthub.io/packages/helm/openebs/openebs?modal=values
+    # mostly taken from https://github.com/aclerici38/home-ops/blob/main/kubernetes/apps/openebs-system/openebs/app/hr.yaml
+    loki:
+      enabled: false
+    alloy:
+      enabled: false
+    openebs-crds:
+      csi:
+        volumeSnapshots:
+          enabled: false
+    localpv-provisioner:
+      enabled: false
+    # https://github.com/openebs/zfs-localpv/blob/HEAD/deploy/helm/charts/values.yaml
+    zfs-localpv:
+      enabled: true
+      analytics:
+        enabled: false
+      zfs:
+        bin: /usr/local/sbin/zfs
+      zfsNode:
+        encrKeysDir: /var/lib/zfs
+        nodeSelector:
+          kubernetes.io/hostname: nas02
+      zfsPlugin:
+        image:
+          registry: ghcr.io/
+      crds:
+        csi:
+          volumeSnapshots:
+            enabled: false
+
+    lvm-localpv:
+      enabled: false
+
+    mayastor:
+      enabled: false
+
+    engines:
+      local:
+        lvm:
+          enabled: false
+      replicated:
+        mayastor:
+          enabled: false

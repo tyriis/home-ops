@@ -22,3 +22,7 @@ cluster/forge:
   - changed-files:
       - any-glob-to-any-file: kubernetes/forge/**/*
       - any-glob-to-any-file: talos/forge/*
+cluster/nas:
+  - changed-files:
+      - any-glob-to-any-file: kubernetes/nas/**/*
+      - any-glob-to-any-file: talos/nas/*

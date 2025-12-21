@@ -45,6 +45,7 @@ jobs:
               # Define cluster mappings
               [
                 {path: "kubernetes/forge/", name: "forge"},
+                {path: "kubernetes/nas/", name: "nas"},
                 {path: "kubernetes/kube-lab/", name: "kube-lab"}
               ] as $cluster_mappings |
 

@@ -1,0 +1,182 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: minio
+spec:
+  interval: 30m
+  timeout: 5m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      minio:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        # initContainers:
+        #   fix-permissions:
+        #     image:
+        #       repository: busybox
+        #       tag: latest
+        #     command:
+        #       - sh
+        #       - -c
+        #       - chown -R 1000:1000 /data/minio
+        containers:
+          app:
+            image:
+              repository: quay.io/minio/minio
+              tag: RELEASE.2025-09-07T16-13-09Z@sha256:14cea493d9a34af32f524e538b8346cf79f3321eff8e708c1e2960462bd8936e
+            env:
+              MINIO_API_CORS_ALLOW_ORIGIN: https://minio.nas.techtales.io,https://s3.nas.techtales.io
+              MINIO_BROWSER_REDIRECT_URL: https://minio.nas.techtales.io
+              MINIO_PROMETHEUS_JOB_ID: minio
+              MINIO_PROMETHEUS_URL: https://prometheus.techtales.io
+              MINIO_PROMETHEUS_AUTH_TYPE: public
+              MINIO_SERVER_URL: https://s3.nas.techtales.io
+              MINIO_STORAGE_CLASS_RRS: EC:0
+              MINIO_STORAGE_CLASS_STANDARD: EC:0
+              MINIO_UPDATE: "off"
+            envFrom:
+              - secretRef:
+                  name: minio-env
+            args: ["server", "/data/minio"]
+            ports:
+              - containerPort: 9000
+                name: s3
+                protocol: TCP
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /minio/health/live
+                    port: 9000
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 6
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 2Gi
+          # https://github.com/OpenMaxIO/openmaxio-object-browser/issues/8
+          console:
+            image:
+              repository: ghcr.io/astrateam-net/minio-browser
+              tag: 1.7.6@sha256:7b488dee696792f17231bfc36684ea92c84eb7f2021653d026f6c9949cff7b78
+            env:
+              CONSOLE_MINIO_SERVER: https://s3.nas.techtales.io
+              CONSOLE_DEBUG_LOGLEVEL: "3"
+            envFrom:
+              - secretRef:
+                  name: minio-console-env
+            args: ["./console", "server"]
+            ports:
+              - containerPort: 9090
+                name: console
+                protocol: TCP
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+                memory: 100Mi
+        pod:
+          nodeSelector:
+            kubernetes.io/hostname: nas02
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: Always
+        supplementalGroups: [10000]
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      app:
+        controller: minio
+        ports:
+          s3:
+            port: 9000
+          console:
+            port: 9090
+    serviceMonitor:
+      app:
+        serviceName: minio
+        endpoints:
+          - port: s3
+            scheme: http
+            path: /minio/v2/metrics/cluster
+            interval: 1m
+            scrapeTimeout: 10s
+    route:
+      app:
+        annotations:
+          external-dns/unifi: "true"
+        hostnames:
+          - minio.nas.techtales.io
+        parentRefs:
+          - name: cilium
+            namespace: kube-system
+            sectionName: https-nas
+        rules:
+          - backendRefs:
+              - name: minio
+                namespace: minio-system
+                port: 9090
+      s3:
+        annotations:
+          external-dns/unifi: "true"
+        hostnames:
+          - s3.nas.techtales.io
+        parentRefs:
+          - name: cilium
+            namespace: kube-system
+            sectionName: https-nas
+        rules:
+          - backendRefs:
+              - name: minio
+                namespace: minio-system
+                port: 9000
+
+    persistence:
+      data:
+        existingClaim: minio
+        advancedMounts:
+          minio:
+            app:
+              - path: /data/minio
+      console:
+        type: emptyDir
+        advancedMounts:
+          minio:
+            console:
+              - path: /.console

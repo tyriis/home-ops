@@ -1,0 +1,329 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
+
+# renovate: depName=ghcr.io/siderolabs/installer datasource=docker
+talosVersion: v1.11.5
+# renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
+kubernetesVersion: v1.34.2
+
+clusterName: nas
+endpoint: https://192.168.100.10:6443
+domain: cluster.local
+allowSchedulingOnControlPlanes: true
+cniConfig:
+  name: none
+nodes:
+  # Intel N3450 / 16GB / SAMSUNG SSD 870 EVO 500GB SATA / SAMSUNG SSD 870 EVO 500GB SATA
+  - hostname: nas01
+    ipAddress: 192.168.100.11
+    controlPlane: true
+    machineSpec:
+      mode: metal
+      arch: amd64
+      useUKI: true
+      secureboot: true
+    installDiskSelector:
+      size: 500GB
+      model: Samsung SSD 870
+    nodeLabels:
+      topology.kubernetes.io/zone: home
+      talos.sidero.dev/secureboot: >-
+        {{
+          .MachineConfig.MachineInstall.InstallImage |
+          contains "installer-secureboot"
+        }}
+    nodeAnnotations:
+      talos.sidero.dev/installer-url: "{{ .MachineConfig.MachineInstall.InstallImage }}"
+    disableSearchDomain: true
+    nameservers:
+      - 192.168.1.1
+    networkInterfaces:
+      - interface: enp2s0
+        mtu: 1500
+        dhcp: true
+        vip:
+          ip: 192.168.100.10
+
+  # Intel N100 / 32 GB / Samsung SSD 990 PRO 1TB / WDC WD80EFPX-68C 8TB / WDC WD80EFPX-68C 8TB
+  - hostname: nas02
+    ipAddress: 192.168.100.12
+    controlPlane: false
+    machineSpec:
+      mode: metal
+      arch: amd64
+      useUKI: true
+      secureboot: true
+    installDiskSelector:
+      serial: S7HDNJ0Y842605L
+    nodeLabels:
+      topology.kubernetes.io/zone: home
+      talos.sidero.dev/secureboot: >-
+        {{
+          .MachineConfig.MachineInstall.InstallImage |
+          contains "installer-secureboot"
+        }}
+    nodeAnnotations:
+      talos.sidero.dev/installer-url: "{{ .MachineConfig.MachineInstall.InstallImage }}"
+    disableSearchDomain: true
+    nameservers:
+      - 192.168.1.1
+    networkInterfaces:
+      # 2.5GbE LAN
+      - interface: enp2s0
+        mtu: 1500
+        dhcp: true
+      # 2.5GbE LAN
+      - interface: enp3s0
+        mtu: 1500
+        dhcp: true
+
+controlPlane:
+  schematic:
+    customization:
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/intel-ucode
+      extraKernelArgs:
+        - apparmor=0 # Less security, faster puter
+        - init_on_alloc=0 # Less security, faster puter
+        - init_on_free=0 # Less security, faster puter
+        - intel_iommu=on # PCI Passthrough
+        - iommu=pt # PCI Passthrough
+        - mitigations=off # Less security, faster puter
+        - security=none # Less security, faster puter
+        - talos.auditd.disabled=1 # Less security, faster puter
+
+  patches:
+    - |-
+      machine:
+        kubelet:
+          extraArgs:
+            rotate-server-certificates: "true"
+          extraMounts:
+            - destination: /var/mnt/extra
+              type: bind
+              source: /var/mnt/extra
+              options:
+                - rbind
+                - rw
+                - rshared
+          extraConfig:
+            serializeImagePulls: false
+          defaultRuntimeSeccompProfileEnabled: false
+          nodeIP:
+            validSubnets: ["192.168.100.0/24"]
+          disableManifestsDirectory: true
+        files:
+          - op: create
+            path: /etc/cri/conf.d/20-customization.part
+            content: |
+              [plugins]
+                [plugins."io.containerd.grpc.v1.cri"]
+                  enable_unprivileged_ports = true
+                  enable_unprivileged_icmp = true
+              [plugins."io.containerd.cri.v1.images"]
+                discard_unpacked_layers = false
+              [plugins."io.containerd.cri.v1.runtime"]
+                device_ownership_from_security_context = true
+          - op: overwrite
+            path: /etc/nfsmount.conf
+            permissions: 0o644
+            content: |
+              [ NFSMount_Global_Options ]
+              nfsvers=4.1
+              hard=True
+              nconnect=8
+              noatime=True
+              rsize=1048576
+              wsize=1048576
+
+        sysctls:
+          fs.inotify.max_user_watches: 1048576   # Watchdog
+          fs.inotify.max_user_instances: 8192    # Watchdog
+          net.ipv4.tcp_fastopen: 3               # Send and accept data in the opening SYN packet
+          net.ipv4.tcp_mtu_probing: 1            # Jumbo frames
+          vm.nr_hugepages: 1024                  # PostgreSQL
+        time:
+          disabled: false
+          servers:
+            - 192.168.100.1
+            - time.cloudflare.com
+        registries:
+          mirrors:
+            docker.io:
+              endpoints:
+                - https://harbor.techtales.io/v2/proxy-docker.io
+              overridePath: true
+            ghcr.io:
+              endpoints:
+                - https://harbor.techtales.io/v2/proxy-ghcr.io
+              overridePath: true
+        features:
+          rbac: true
+          stableHostname: true
+          kubernetesTalosAPIAccess:
+            enabled: true
+            allowedRoles:
+              - os:admin
+            allowedKubernetesNamespaces:
+              - system-upgrade
+          apidCheckExtKeyUsage: true
+          diskQuotaSupport: true
+          kubePrism:
+            enabled: true
+            port: 7445
+          hostDNS:
+            enabled: true
+            resolveMemberNames: true
+            forwardKubeDNSToHost: false
+
+      cluster:
+        etcd:
+          extraArgs:
+            listen-metrics-urls: http://0.0.0.0:2381
+        controllerManager:
+          extraArgs:
+            bind-address: 0.0.0.0
+        proxy:
+          disabled: true
+        coreDNS:
+          disabled: true
+        discovery:
+          enabled: true
+          registries:
+            kubernetes:
+              disabled: true
+            service:
+              disabled: false
+        scheduler:
+          extraArgs:
+            bind-address: 0.0.0.0
+        extraManifests:
+          - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.1/experimental-install.yaml
+          - https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.87.1/stripped-down-crds.yaml
+
+worker:
+  schematic:
+    customization:
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/intel-ucode
+          - siderolabs/nfsd
+          - siderolabs/nvme-cli
+          - siderolabs/zfs
+      extraKernelArgs:
+        - apparmor=0 # Less security, faster puter
+        - init_on_alloc=0 # Less security, faster puter
+        - init_on_free=0 # Less security, faster puter
+        - intel_iommu=on # PCI Passthrough
+        - iommu=pt # PCI Passthrough
+        - mitigations=off # Less security, faster puter
+        - security=none # Less security, faster puter
+        - talos.auditd.disabled=1 # Less security, faster puter
+
+  patches:
+    - |-
+      machine:
+        kernel:
+          modules:
+            - name: zfs
+        kubelet:
+          extraArgs:
+            rotate-server-certificates: "true"
+          extraMounts:
+            - destination: /var/mnt/extra
+              type: bind
+              source: /var/mnt/extra
+              options:
+                - rbind
+                - rw
+                - rshared
+          extraConfig:
+            serializeImagePulls: false
+          defaultRuntimeSeccompProfileEnabled: false
+          nodeIP:
+            validSubnets: ["192.168.100.0/24"]
+          disableManifestsDirectory: true
+        files:
+          - op: create
+            path: /etc/cri/conf.d/20-customization.part
+            content: |
+              [plugins]
+                [plugins."io.containerd.grpc.v1.cri"]
+                  enable_unprivileged_ports = true
+                  enable_unprivileged_icmp = true
+              [plugins."io.containerd.cri.v1.images"]
+                discard_unpacked_layers = false
+              [plugins."io.containerd.cri.v1.runtime"]
+                device_ownership_from_security_context = true
+          - op: overwrite
+            path: /etc/nfsmount.conf
+            permissions: 0o644
+            content: |
+              [ NFSMount_Global_Options ]
+              nfsvers=4.1
+              hard=True
+              nconnect=8
+              noatime=True
+              rsize=1048576
+              wsize=1048576
+
+        sysctls:
+          fs.inotify.max_user_watches: 1048576   # Watchdog
+          fs.inotify.max_user_instances: 8192    # Watchdog
+          net.ipv4.tcp_fastopen: 3               # Send and accept data in the opening SYN packet
+          net.ipv4.tcp_mtu_probing: 1            # Jumbo frames
+          vm.nr_hugepages: 1024                  # PostgreSQL
+        time:
+          disabled: false
+          servers:
+            - 192.168.1.1
+            - time.cloudflare.com
+        registries:
+          mirrors:
+            docker.io:
+              endpoints:
+                - https://harbor.techtales.io/v2/proxy-docker.io
+              overridePath: true
+            ghcr.io:
+              endpoints:
+                - https://harbor.techtales.io/v2/proxy-ghcr.io
+              overridePath: true
+            quay.io:
+              endpoints:
+                - https://harbor.techtales.io/v2/proxy-quay.io
+              overridePath: true
+        features:
+          rbac: true
+          stableHostname: true
+          apidCheckExtKeyUsage: true
+          diskQuotaSupport: true
+          kubePrism:
+            enabled: true
+            port: 7445
+          hostDNS:
+            enabled: true
+            resolveMemberNames: true
+            forwardKubeDNSToHost: false
+
+      cluster:
+        controllerManager:
+          extraArgs:
+            bind-address: 0.0.0.0
+        proxy:
+          disabled: true
+        coreDNS:
+          disabled: true
+        discovery:
+          enabled: true
+          registries:
+            kubernetes:
+              disabled: true
+            service:
+              disabled: false
+        scheduler:
+          extraArgs:
+            bind-address: 0.0.0.0
+        extraManifests:
+          - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.1/experimental-install.yaml
+          - https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.87.1/stripped-down-crds.yaml

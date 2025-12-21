@@ -1,0 +1,63 @@
+---
+apiVersion: zfs.openebs.io/v1
+kind: ZFSVolume
+metadata:
+  name: media
+spec:
+  capacity: 7.14T
+  fsType: zfs
+  recordsize: 128k
+  compression: lz4
+  ownerNodeID: nas02
+  poolName: pool0
+  volumeType: DATASET
+  shared: "yes"
+  thinProvision: "yes"
+
+---
+apiVersion: zfs.openebs.io/v1
+kind: ZFSVolume
+metadata:
+  name: syncthing
+spec:
+  capacity: 10G
+  fsType: zfs
+  recordsize: 128k
+  compression: lz4
+  ownerNodeID: nas02
+  poolName: pool0
+  volumeType: DATASET
+  shared: "yes"
+  thinProvision: "yes"
+
+---
+apiVersion: zfs.openebs.io/v1
+kind: ZFSVolume
+metadata:
+  name: public
+spec:
+  capacity: 100G
+  fsType: zfs
+  recordsize: 128k
+  compression: lz4
+  ownerNodeID: nas02
+  poolName: pool0
+  volumeType: DATASET
+  shared: "yes"
+  thinProvision: "yes"
+
+---
+apiVersion: zfs.openebs.io/v1
+kind: ZFSVolume
+metadata:
+  name: minio
+spec:
+  capacity: 7.14T
+  fsType: zfs
+  recordsize: 128k
+  compression: lz4
+  ownerNodeID: nas02
+  poolName: pool0
+  volumeType: DATASET
+  shared: "yes"
+  thinProvision: "yes"

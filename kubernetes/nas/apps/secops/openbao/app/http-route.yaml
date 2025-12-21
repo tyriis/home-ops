@@ -1,0 +1,25 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: openbao
+  annotations:
+    external-dns/cloudflare: "true"
+    external-dns/unifi: "true"
+spec:
+  hostnames:
+    - secrets.techtales.io
+  parentRefs:
+    - name: cilium
+      namespace: kube-system
+      sectionName: https
+  rules:
+    - backendRefs:
+        - name: openbao-active
+          namespace: secops
+          port: 8200
+      matches:
+        - path:
+            type: PathPrefix
+            value: /

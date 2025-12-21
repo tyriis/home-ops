@@ -1,9 +1,0 @@
----
-apiVersion: dbman.hef.sh/v1alpha2
-kind: DatabaseServer
-metadata:
-  name: forge-postgres17
-spec:
-  connString: "host=forge-postgres17-rw.cnpg-system.svc.cluster.local"
-  credentials:
-    basicAuthSecretRef: postgres-superuser

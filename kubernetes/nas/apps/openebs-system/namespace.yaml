@@ -1,0 +1,10 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/namespace.json
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: openebs-system
+  annotations:
+    kustomize.toolkit.fluxcd.io/prune: disable
+  labels:
+    pod-security.kubernetes.io/enforce: privileged

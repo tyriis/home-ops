@@ -1,0 +1,138 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app nfs-server
+spec:
+  interval: 30m
+  timeout: 5m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    # https://github.com/aminvakil/docker-alpine-nfs-server
+    controllers:
+      *app :
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          fix-permissions:
+            image:
+              repository: busybox
+              tag: latest
+            command:
+              - sh
+              - -c
+              - chown 1000:1000 /export/media && chown 1000:1000 /export/public
+        containers:
+          app:
+            image:
+              repository: quay.io/aminvakil/alpine-nfs-server
+              tag: latest@sha256:38aba2dfc6665867ea693055b0c7dd05fa7c1c27f6843bddd37891706cc68879
+            env:
+              SHARED_DIRECTORY: /export
+              EXPORTS_MOUNTED: "true"
+            probes:
+              readiness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - sh
+                      - -c
+                      - 'showmount -e localhost | grep -q "$SHARED_DIRECTORY"'
+              liveness: *probes
+            resources:
+              requests:
+                cpu: 10m
+                memory: 10Mi
+              limits:
+                memory: 512Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                add:
+                  - SYS_ADMIN
+                  - SETPCAP
+              readOnlyRootFilesystem: false
+
+    defaultPodOptions:
+      hostNetwork: true
+      priorityClassName: system-cluster-critical
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+        - effect: NoExecute
+          operator: Exists
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      nodeSelector:
+        kubernetes.io/hostname: nas02
+    # service:
+    #   app:
+    #     controller: *app
+    #     type: ClusterIP
+    #     ports:
+    #       nfs:
+    #         port: 2049
+    #         protocol: TCP
+    #       rpcbind:
+    #         port: 111
+    #         protocol: TCP
+    #       mountd:
+    #         port: 20048
+    #         protocol: TCP
+    persistence:
+      fake-export:
+        type: emptyDir
+        globalMounts:
+          - path: /export
+      exports:
+        type: configMap
+        name: nfs-exports
+        globalMounts:
+          - subPath: exports
+            path: /etc/exports
+      media:
+        existingClaim: media
+        globalMounts:
+          - path: /export/media
+      public:
+        existingClaim: public
+        globalMounts:
+          - path: /export/public
+      test:
+        existingClaim: test
+        globalMounts:
+          - path: /export/test
+      # exports:
+      #   type: emptyDir
+      #   advancedMounts:
+      #     *app :
+      #       app:
+      #         - path: /etc/exports
+      # lib:
+      #   type: emptyDir
+      #   advancedMounts:
+      #     *app :
+      #       app:
+      #         - path: /var/lib/nfs
