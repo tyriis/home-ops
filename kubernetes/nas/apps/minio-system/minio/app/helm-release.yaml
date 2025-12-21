@@ -57,11 +57,8 @@ spec:
             envFrom:
               - secretRef:
                   name: minio-env
-            args: ["server", "/data/minio", "--console-address", ":9001"]
+            args: ["server", "/data/minio"]
             ports:
-              - containerPort: 9001
-                name: http
-                protocol: TCP
               - containerPort: 9000
                 name: s3
                 protocol: TCP
@@ -88,7 +85,7 @@ spec:
               limits:
                 memory: 2Gi
           # https://github.com/OpenMaxIO/openmaxio-object-browser/issues/8
-          ui:
+          console:
             image:
               repository: ghcr.io/astrateam-net/minio-browser
               tag: 1.7.6@sha256:7b488dee696792f17231bfc36684ea92c84eb7f2021653d026f6c9949cff7b78
@@ -97,7 +94,7 @@ spec:
             args: ["./console", "server"]
             ports:
               - containerPort: 9090
-                name: ui
+                name: console
                 protocol: TCP
             securityContext:
               allowPrivilegeEscalation: false
@@ -124,11 +121,9 @@ spec:
       app:
         controller: minio
         ports:
-          http:
-            port: 9001
           s3:
             port: 9000
-          ui:
+          console:
             port: 9090
     serviceMonitor:
       app:
@@ -174,3 +169,9 @@ spec:
         existingClaim: minio
         globalMounts:
           - path: /data/minio
+      console:
+        type: emptyDir
+        advancedMounts:
+          minio:
+            console:
+              - path: /.console
