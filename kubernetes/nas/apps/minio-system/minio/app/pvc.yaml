@@ -1,0 +1,38 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: &name minio
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 8000Gi
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: *name
+    namespace: minio-system
+  csi:
+    driver: zfs.csi.openebs.io
+    fsType: zfs
+    volumeAttributes:
+      openebs.io/poolname: pool0
+    volumeHandle: *name
+  nodeSelector: nas02
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: zfs-pool
+  volumeMode: Filesystem
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: &name minio
+spec:
+  storageClassName: zfs-pool
+  volumeName: *name
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8000Gi
