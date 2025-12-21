@@ -45,12 +45,12 @@ spec:
               repository: quay.io/minio/minio
               tag: RELEASE.2025-09-07T16-13-09Z@sha256:14cea493d9a34af32f524e538b8346cf79f3321eff8e708c1e2960462bd8936e
             env:
-              MINIO_API_CORS_ALLOW_ORIGIN: https://minio.tyriis.dev,https://s3.tyriis.dev
-              MINIO_BROWSER_REDIRECT_URL: https://minio.tyriis.dev
+              MINIO_API_CORS_ALLOW_ORIGIN: https://minio.nas.techtales.io,https://s3.nas.techtales.io
+              MINIO_BROWSER_REDIRECT_URL: https://minio.nas.techtales.io
               MINIO_PROMETHEUS_JOB_ID: minio
               MINIO_PROMETHEUS_URL: https://prometheus.techtales.io
               MINIO_PROMETHEUS_AUTH_TYPE: public
-              MINIO_SERVER_URL: https://s3.tyriis.dev
+              MINIO_SERVER_URL: https://s3.nas.techtales.io
               MINIO_STORAGE_CLASS_RRS: EC:0
               MINIO_STORAGE_CLASS_STANDARD: EC:0
               MINIO_UPDATE: "off"
