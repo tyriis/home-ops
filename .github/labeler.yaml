@@ -18,10 +18,6 @@ cluster/kube-lab:
   - changed-files:
       - any-glob-to-any-file: kubernetes/kube-lab/**/*
       - any-glob-to-any-file: talos/kube-lab/*
-cluster/forge:
-  - changed-files:
-      - any-glob-to-any-file: kubernetes/forge/**/*
-      - any-glob-to-any-file: talos/forge/*
 cluster/nas:
   - changed-files:
       - any-glob-to-any-file: kubernetes/nas/**/*

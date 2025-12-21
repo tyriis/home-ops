@@ -4,10 +4,6 @@ creation_rules:
     encrypted_regex: "^(data|stringData)$"
     age: >-
       age1clg0rd6ca86h3lnfnjyqsc9stgr0cnyp3l5uswtusxppjq9h2vcsaqckec
-  - path_regex: kubernetes/forge/.*\.ya?ml
-    encrypted_regex: "^(data|stringData)$"
-    age: >-
-      age1clg0rd6ca86h3lnfnjyqsc9stgr0cnyp3l5uswtusxppjq9h2vcsaqckec
   - path_regex: kubernetes/nas/.*\.ya?ml
     encrypted_regex: "^(data|stringData)$"
     age: >-
