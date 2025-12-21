@@ -87,6 +87,27 @@ spec:
                 cpu: 100m
               limits:
                 memory: 2Gi
+
+          ui:
+            image:
+              repository: ghcr.io/astrateam-net/minio-browser
+              tag: 1.7.6@sha256:7b488dee696792f17231bfc36684ea92c84eb7f2021653d026f6c9949cff7b78
+            env:
+              CONSOLE_MINIO_SERVER: http://localhost:9000
+            args: ["./console", "server"]
+            ports:
+              - containerPort: 9090
+                name: ui
+                protocol: TCP
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 100Mi
         pod:
           nodeSelector:
             kubernetes.io/hostname: nas02
@@ -107,6 +128,8 @@ spec:
             port: 9001
           s3:
             port: 9000
+          ui:
+            port: 9090
     serviceMonitor:
       app:
         serviceName: minio
@@ -130,7 +153,7 @@ spec:
           - backendRefs:
               - name: minio
                 namespace: minio-system
-                port: 9001
+                port: 9090
       s3:
         annotations:
           external-dns/unifi: "true"
