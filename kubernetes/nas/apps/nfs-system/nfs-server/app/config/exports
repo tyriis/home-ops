@@ -1,2 +1,2 @@
 /export 192.168.100.0/24(rw,fsid=0,async,no_subtree_check,no_auth_nlm,insecure,all_squash,anonuid=1000,anongid=1000)
-/export/media 192.168.100.0/24(rw,,async,no_subtree_check,no_auth_nlm,insecure,all_squash,anonuid=1000,anongid=1000)
+/export/media 192.168.100.0/24(rw,async,no_subtree_check,no_auth_nlm,insecure,all_squash,anonuid=1000,anongid=1000)
