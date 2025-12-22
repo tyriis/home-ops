@@ -9,11 +9,11 @@ metadata:
     external-dns/unifi: "true"
 spec:
   hostnames:
-    - flux-webhook.nas.techtales.io
+    - flux-webhook-nas.techtales.io
   parentRefs:
     - name: cilium
       namespace: kube-system
-      sectionName: https-nas
+      sectionName: https
   rules:
     - backendRefs:
         - name: webhook-receiver
@@ -22,4 +22,4 @@ spec:
       matches:
         - path:
             type: PathPrefix
-            value: /
+            value: /hook
