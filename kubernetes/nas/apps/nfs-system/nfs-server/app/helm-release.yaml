@@ -47,8 +47,9 @@ spec:
             env:
               SHARED_DIRECTORY: /export
               EXPORTS_MOUNTED: "true"
+              NFS_THREADS: 128
             probes:
-              readiness: &probes
+              startup:
                 enabled: true
                 custom: true
                 spec:
@@ -57,6 +58,10 @@ spec:
                       - sh
                       - -c
                       - 'showmount -e localhost | grep -q "$SHARED_DIRECTORY"'
+              readiness: &probes
+                enabled: true
+                type: TCP
+                port: 2049
               liveness: *probes
             resources:
               requests:
