@@ -21,16 +21,16 @@ mountOptions:
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: nfs-kube-nas
+  name: nfs-nas02
 provisioner: nfs.csi.k8s.io
 parameters:
-  server: 192.168.1.60
-  share: /export/data/csi
+  server: nas02
+  share: /export/public
 reclaimPolicy: Retain
 volumeBindingMode: WaitForFirstConsumer
 allowVolumeExpansion: true
 mountOptions:
-  - nfsvers=4.1
+  - nfsvers=4.2
   - nconnect=8
   - hard
   - noatime
