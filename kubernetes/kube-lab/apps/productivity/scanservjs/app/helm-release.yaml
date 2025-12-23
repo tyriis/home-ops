@@ -81,8 +81,8 @@ spec:
             sectionName: https
 
     persistence:
-      scans:
-        existingClaim: scans
+      data:
+        existingClaim: ${APP}-data
         advancedMounts:
           scanservjs:
             app:
