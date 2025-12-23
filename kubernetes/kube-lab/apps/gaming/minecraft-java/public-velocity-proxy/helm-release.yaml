@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: &app minecraft-public-velocity-proxy
 spec:
-  interval: 15m
+  interval: 30m
   driftDetection:
     mode: enabled
   chart:
@@ -17,12 +17,14 @@ spec:
         name: bjw-s-charts
         namespace: flux-system
   install:
-    createNamespace: true
     remediation:
       retries: -1
   upgrade:
+    cleanupOnFail: true
     remediation:
       retries: 3
+  uninstall:
+    keepHistory: false
   # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
   values:
     defaultPodOptions:

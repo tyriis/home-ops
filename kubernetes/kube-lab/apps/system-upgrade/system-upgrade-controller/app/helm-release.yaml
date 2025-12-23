@@ -5,9 +5,9 @@ kind: HelmRelease
 metadata:
   name: system-upgrade-controller
 spec:
-  interval: 30m
   driftDetection:
     mode: enabled
+  interval: 30m
   chart:
     spec:
       chart: app-template
@@ -16,6 +16,15 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     controllers:
       system-upgrade-controller:
