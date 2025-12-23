@@ -94,8 +94,6 @@ spec:
         existingClaim: ${APP}-config
         globalMounts:
           - path: /app/config
-      # media:
-      #   existingClaim: media
       media:
         type: nfs
         server: nas02
