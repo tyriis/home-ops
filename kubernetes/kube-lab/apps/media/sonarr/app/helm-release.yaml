@@ -100,8 +100,14 @@ spec:
     persistence:
       config:
         existingClaim: ${APP}-config
+      # media:
+      #   existingClaim: media
       media:
-        existingClaim: media
+        type: nfs
+        server: nas02
+        path: /media
+        globalMounts:
+          - path: /media
       tmpfs:
         type: emptyDir
         advancedMounts:
