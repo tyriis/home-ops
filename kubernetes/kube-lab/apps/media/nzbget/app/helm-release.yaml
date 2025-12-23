@@ -86,8 +86,6 @@ spec:
     persistence:
       config:
         existingClaim: ${APP}-config
-      # media:
-      #   existingClaim: media
       media:
         type: nfs
         server: nas02
@@ -99,7 +97,5 @@ spec:
         advancedMounts:
           nzbget:
             app:
-              - path: /intermediate
-                subPath: intermediate
               - path: /tmp
                 subPath: tmp
