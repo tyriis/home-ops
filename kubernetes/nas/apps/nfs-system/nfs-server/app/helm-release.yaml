@@ -125,6 +125,10 @@ spec:
         existingClaim: public
         globalMounts:
           - path: /export/public
+      csi:
+        existingClaim: csi
+        globalMounts:
+          - path: /export/csi
       test:
         existingClaim: test
         globalMounts:
