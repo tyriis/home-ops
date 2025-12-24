@@ -30,12 +30,19 @@ spec:
       enabled: false
     alloy:
       enabled: false
+    minio:
+      enabled: false
     openebs-crds:
       csi:
         volumeSnapshots:
           enabled: false
     localpv-provisioner:
-      enabled: false
+      localpv:
+        rbac:
+          create: false
+        enabled: false
+      hostpathClass:
+        enabled: false
     # https://github.com/openebs/zfs-localpv/blob/HEAD/deploy/helm/charts/values.yaml
     zfs-localpv:
       enabled: true
@@ -56,6 +63,9 @@ spec:
             enabled: false
 
     lvm-localpv:
+      enabled: false
+
+    rawfile-localpv:
       enabled: false
 
     mayastor:
