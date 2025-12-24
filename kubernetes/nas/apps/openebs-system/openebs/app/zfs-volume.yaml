@@ -77,19 +77,3 @@ spec:
   volumeType: DATASET
   shared: "yes"
   thinProvision: "yes"
-
----
-apiVersion: zfs.openebs.io/v1
-kind: ZFSVolume
-metadata:
-  name: syncthing
-spec:
-  capacity: 10G
-  fsType: zfs
-  recordsize: 128k
-  compression: lz4
-  ownerNodeID: nas02
-  poolName: pool0
-  volumeType: DATASET
-  shared: "yes"
-  thinProvision: "yes"
