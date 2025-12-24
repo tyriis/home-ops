@@ -38,7 +38,18 @@ spec:
             command:
               - sh
               - -c
-              - chown 1000:1000 /export/media && chown 1000:1000 /export/public
+              - |
+                for dir in /export/*/; do
+                  if [ -d "$dir" ]; then
+                    current_owner=$(stat -c "%u:%g" "$dir")
+                    if [ "$current_owner" != "1000:1000" ]; then
+                      echo "Changing ownership of $dir from $current_owner to 1000:1000"
+                      chown 1000:1000 "$dir"
+                    else
+                      echo "Skipping $dir - already owned by 1000:1000"
+                    fi
+                  fi
+                done
         containers:
           app:
             image:
