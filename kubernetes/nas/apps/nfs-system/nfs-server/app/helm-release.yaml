@@ -50,6 +50,7 @@ spec:
                     fi
                   fi
                 done
+
         containers:
           app:
             image:
@@ -103,20 +104,7 @@ spec:
           type: RuntimeDefault
       nodeSelector:
         kubernetes.io/hostname: nas02
-    # service:
-    #   app:
-    #     controller: *app
-    #     type: ClusterIP
-    #     ports:
-    #       nfs:
-    #         port: 2049
-    #         protocol: TCP
-    #       rpcbind:
-    #         port: 111
-    #         protocol: TCP
-    #       mountd:
-    #         port: 20048
-    #         protocol: TCP
+
     persistence:
       fake-export:
         type: emptyDir
@@ -148,15 +136,3 @@ spec:
         existingClaim: test
         globalMounts:
           - path: /export/test
-      # exports:
-      #   type: emptyDir
-      #   advancedMounts:
-      #     *app :
-      #       app:
-      #         - path: /etc/exports
-      # lib:
-      #   type: emptyDir
-      #   advancedMounts:
-      #     *app :
-      #       app:
-      #         - path: /var/lib/nfs
