@@ -37,7 +37,7 @@ spec:
         parameters:
           server: nas02
           share: /
-          subDir: /csi/${pvc.metadata.namespace}/${pv.metadata.name}
+          subDir: /csi/kube-lab/${pvc.metadata.namespace}/${pv.metadata.name}
         mountOptions:
           - nfsvers=4.2
           - nconnect=16
