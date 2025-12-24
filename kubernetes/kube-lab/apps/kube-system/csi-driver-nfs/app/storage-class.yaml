@@ -26,7 +26,7 @@ provisioner: nfs.csi.k8s.io
 parameters:
   server: nas02
   share: /
-  subPath: /public
+  subDir: /public/$${pvc.metadata.namespace}/$${pv.metadata.name}
 reclaimPolicy: Retain
 volumeBindingMode: WaitForFirstConsumer
 allowVolumeExpansion: true
