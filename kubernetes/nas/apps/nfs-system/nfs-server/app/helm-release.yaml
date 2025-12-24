@@ -140,6 +140,10 @@ spec:
         existingClaim: csi
         globalMounts:
           - path: /export/csi
+      syncthing:
+        existingClaim: syncthing
+        globalMounts:
+          - path: /export/syncthing
       test:
         existingClaim: test
         globalMounts:
