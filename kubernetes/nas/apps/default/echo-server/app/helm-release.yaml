@@ -78,6 +78,8 @@ spec:
           - port: http
     route:
       app:
+        annotations:
+          external-dns/unifi: "true"
         hostnames:
           - echo.nas.techtales.io
         parentRefs:
