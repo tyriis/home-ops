@@ -134,10 +134,9 @@ spec:
           syncthing:
             app:
               - path: /var/syncthing
-
       data:
-        existingClaim: syncthing-data
-        advancedMounts:
-          syncthing:
-            app:
-              - path: /data
+        type: nfs
+        server: nas02
+        path: /syncthing
+        globalMounts:
+          - path: /data
