@@ -45,4 +45,17 @@ spec:
           - retrans=2
         reclaimPolicy: Retain
         volumeBindingMode: Immediate
-
+      - name: nfs-zfs2
+        parameters:
+          server: nas02
+          share: /
+          subDir: /public/${pvc.metadata.namespace}/${pv.metadata.name}
+        mountOptions:
+          - nfsvers=4.2
+          - nconnect=16
+          - hard
+          - noatime
+          - timeo=600
+          - retrans=2
+        reclaimPolicy: Retain
+        volumeBindingMode: Immediate
