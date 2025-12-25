@@ -9,7 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/kube-lab/apps/kube-tools/node-feature-discovery/app
+  path: ./kubernetes/nas/apps/kube-tools/node-feature-discovery/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -32,7 +32,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
       app.kubernetes.io/part-of: node-feature-discovery
-  path: ./kubernetes/kube-lab/apps/kube-tools/node-feature-discovery/rules
+  path: ./kubernetes/nas/apps/kube-tools/node-feature-discovery/rules
   prune: true
   sourceRef:
     kind: GitRepository
