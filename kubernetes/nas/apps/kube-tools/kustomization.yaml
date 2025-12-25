@@ -9,5 +9,6 @@ components:
 resources:
   - ./namespace.yaml
   - ./descheduler/flux-sync.yaml
-  - ./reloader/flux-sync.yaml
   - ./k8tz/flux-sync.yaml
+  - ./node-feature-discovery/flux-sync.yaml
+  - ./reloader/flux-sync.yaml
