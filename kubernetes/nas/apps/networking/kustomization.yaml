@@ -8,4 +8,5 @@ components:
   - ../../../components/flux/alerts
 resources:
   - ./namespace.yaml
+  - ./envoy-gateway/flux-sync.yaml
   - ./external-dns/flux-sync.yaml
