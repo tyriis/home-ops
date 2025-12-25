@@ -28,6 +28,7 @@ spec:
                   requests:
                     storage: 1Gi
 
+
 # ---
 # # yaml-language-server: $schema=https://raw.githubusercontent.com/redhat-developer/vscode-tekton/main/scheme/triggers.tekton.dev/v1beta1_TriggerBinding.json
 # apiVersion: triggers.tekton.dev/v1beta1
