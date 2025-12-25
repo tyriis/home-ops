@@ -1,0 +1,43 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+vars:
+  KUBE_VERSION:
+    sh: grep '^kubectl = ' {{.ROOT_DIR}}/.mise.toml | cut -d'"' -f2
+
+tasks:
+  default:
+    desc: test codebase -- lab|nas
+    cmds:
+      - task: test
+
+  setup-venv:
+    desc: setup venv if not yet done
+    internal: true
+    status:
+      - test -d .venv
+    cmds:
+      - uv venv .venv
+
+  install:
+    desc: install flux-local if not yet done
+    deps: [setup-venv]
+    internal: true
+    status:
+      - test -x .venv/bin/flux-local
+    cmds:
+      - uv pip install flux-local
+
+  test:
+    desc: run flux-local test
+    deps: [install]
+    internal: true
+    cmds:
+      - >
+        uv run flux-local test
+        --kube-version {{.KUBE_VERSION}}
+        --all-namespaces
+        --path {{.KUBERNETES_DIR}}/{{.CLI_ARGS}}/flux
+        --enable-helm
+        --verbose
