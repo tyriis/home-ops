@@ -7,6 +7,11 @@ vars:
     sh: grep '^kubectl = ' {{.ROOT_DIR}}/.mise.toml | cut -d'"' -f2
 
 tasks:
+  default:
+    desc: test codebase -- lab|nas
+    cmds:
+      - task: test
+
   setup-venv:
     desc: setup venv if not yet done
     internal: true

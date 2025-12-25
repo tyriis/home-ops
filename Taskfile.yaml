@@ -19,17 +19,3 @@ includes:
   restic: .taskfiles/restic/Taskfile.yaml
   rook-ceph: .taskfiles/rook-ceph/Taskfile.yaml
   talos: .taskfiles/talos/Taskfile.yaml
-
-tasks:
-  lint:
-    desc: lint codebase
-    dir: "{{.PROJECT_DIR}}"
-    cmds:
-      - task: pre-commit:init
-      - task: pre-commit:run
-
-  test:
-    desc: test codebase -- lab|nas
-    dir: "{{.PROJECT_DIR}}"
-    cmds:
-      - task: flux-local:test
