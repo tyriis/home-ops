@@ -28,6 +28,9 @@
   ansible: {
     enabled: false,
   },
+  jenkins: {
+    enabled: false,
+  },
   lockFileMaintenance: {
     enabled: true,
     extends: ["schedule:weekly"],
@@ -43,23 +46,27 @@
       matchUpdateTypes: ["patch", "minor", "major"],
       automerge: false,
     },
+    // separate siderolabs per cluster
     {
-      matchDepNames: ["app-template"],
-      matchFileNames: ["**/base/**"],
-      additionalBranchPrefix: "base-",
-    },
-    {
-      matchDepNames: ["app-template"],
-      matchFileNames: ["**/kube-nas/**"],
-      additionalBranchPrefix: "kube-nas-",
-    },
-    {
-      matchDepNames: ["app-template"],
+      matchPackageNames: ["/siderolabs/"],
       matchFileNames: ["**/kube-lab/**"],
       additionalBranchPrefix: "kube-lab-",
     },
+    {
+      matchPackageNames: ["/siderolabs/"],
+      matchFileNames: ["**/nas/**"],
+      additionalBranchPrefix: "nas-",
+    },
+    // separate app-template per cluster
+    {
+      matchPackageNames: ["/app-template/"],
+      matchFileNames: ["**/kube-lab/**"],
+      additionalBranchPrefix: "kube-lab-",
+    },
+    {
+      matchPackageNames: ["/app-template/"],
+      matchFileNames: ["**/nas/**"],
+      additionalBranchPrefix: "nas-",
+    },
   ],
-  jenkins: {
-    enabled: false,
-  },
 }
