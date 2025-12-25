@@ -1,0 +1,138 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app nfs-server
+spec:
+  interval: 30m
+  timeout: 5m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    # https://github.com/aminvakil/docker-alpine-nfs-server
+    controllers:
+      *app :
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          fix-permissions:
+            image:
+              repository: busybox
+              tag: latest
+            command:
+              - sh
+              - -c
+              - |
+                for dir in /export/*/; do
+                  if [ -d "$dir" ]; then
+                    current_owner=$(stat -c "%u:%g" "$dir")
+                    if [ "$current_owner" != "1000:1000" ]; then
+                      echo "Changing ownership of $dir from $current_owner to 1000:1000"
+                      chown 1000:1000 "$dir"
+                    else
+                      echo "Skipping $dir - already owned by 1000:1000"
+                    fi
+                  fi
+                done
+
+        containers:
+          app:
+            image:
+              repository: quay.io/aminvakil/alpine-nfs-server
+              tag: latest@sha256:38aba2dfc6665867ea693055b0c7dd05fa7c1c27f6843bddd37891706cc68879
+            env:
+              SHARED_DIRECTORY: /export
+              EXPORTS_MOUNTED: "true"
+              NFS_THREADS: 128
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - sh
+                      - -c
+                      - 'showmount -e localhost | grep -q "$SHARED_DIRECTORY"'
+              readiness: &probes
+                enabled: true
+                type: TCP
+                port: 2049
+              liveness: *probes
+            resources:
+              requests:
+                cpu: 10m
+                memory: 10Mi
+              limits:
+                memory: 512Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                add:
+                  - SYS_ADMIN
+                  - SETPCAP
+              readOnlyRootFilesystem: false
+
+    defaultPodOptions:
+      hostNetwork: true
+      priorityClassName: system-cluster-critical
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+        - effect: NoExecute
+          operator: Exists
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      nodeSelector:
+        kubernetes.io/hostname: nas02
+
+    persistence:
+      fake-export:
+        type: emptyDir
+        globalMounts:
+          - path: /export
+      exports:
+        type: configMap
+        name: nfs-exports
+        globalMounts:
+          - subPath: exports
+            path: /etc/exports
+      media:
+        existingClaim: media
+        globalMounts:
+          - path: /export/media
+      public:
+        existingClaim: public
+        globalMounts:
+          - path: /export/public
+      csi:
+        existingClaim: csi
+        globalMounts:
+          - path: /export/csi
+      syncthing:
+        existingClaim: syncthing
+        globalMounts:
+          - path: /export/syncthing
+      test:
+        existingClaim: test
+        globalMounts:
+          - path: /export/test

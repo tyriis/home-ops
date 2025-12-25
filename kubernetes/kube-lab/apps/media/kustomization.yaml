@@ -7,12 +7,12 @@ components:
   - ../../../components/flux/alerts
 resources:
   - ./namespace.yaml
-  - ./storage.yaml
   - ./bazarr/flux-sync.yaml
   - ./nzbget/flux-sync.yaml
   - ./plex/flux-sync.yaml
   - ./prowlarr/flux-sync.yaml
   - ./radarr/flux-sync.yaml
   - ./recyclarr/flux-sync.yaml
+  - ./sabnzbd/flux-sync.yaml
   - ./seerr/flux-sync.yaml
   - ./sonarr/flux-sync.yaml

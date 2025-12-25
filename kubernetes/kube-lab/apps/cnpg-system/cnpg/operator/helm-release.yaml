@@ -6,7 +6,6 @@ metadata:
   name: cnpg-operator
 spec:
   interval: 30m
-  timeout: 5m
   chart:
     spec:
       chart: cloudnative-pg
@@ -20,7 +19,6 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
   uninstall:
     keepHistory: false

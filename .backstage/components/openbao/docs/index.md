@@ -79,10 +79,22 @@ vault status # should be recovery seal type: shamir, sealed: false
 
 Kubernetes auth backend in terraform requires the following information:
 
+get `HOST`
+
 ```shell
-export KUBERNETES_URL=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}')
-export KUBERNETES_CA_CERT=$(kubectl get secret openbao-auth -n secops -o jsonpath="{.data['ca\.crt']}")
-export SA_TOKEN=$(kubectl get secret openbao-auth -n secops -o jsonpath="{.data.token}")
+kubectl config view --minify -o jsonpath="{.clusters[0].cluster.server}"
+```
+
+get `CA_CERT`
+
+```shell
+kubectl get secret openbao-auth -n secops -o jsonpath="{.data['ca\.crt']}"
+```
+
+get `SA_TOKEN`
+
+```shell
+kubectl get secret openbao-auth -n secops -o jsonpath="{.data.token}"
 ```
 
 **Important**: Service account tokens must be updated when the service account is recreated.

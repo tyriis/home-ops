@@ -5,6 +5,7 @@ kind: HelmRelease
 metadata:
   name: descheduler
 spec:
+  interval: 30m
   chart:
     spec:
       chart: descheduler
@@ -12,7 +13,6 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: descheduler
-  interval: 30m
   install:
     remediation:
       retries: -1

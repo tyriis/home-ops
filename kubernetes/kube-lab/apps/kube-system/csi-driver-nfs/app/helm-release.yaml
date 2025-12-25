@@ -4,6 +4,8 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: csi-driver-nfs
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
 spec:
   interval: 30m
   chart:
@@ -28,5 +30,20 @@ spec:
       enabled: false
     volumeSnapshotClass:
       create: true
-      name: nfs-csi
+      name: nfs-nas
       deletionPolicy: Delete
+    storageClasses:
+      - name: nfs-nas
+        parameters:
+          server: nas02
+          share: /
+          subDir: /csi/kube-lab/${pvc.metadata.namespace}/${pv.metadata.name}
+        mountOptions:
+          - nfsvers=4.2
+          - nconnect=16
+          - hard
+          - noatime
+          - timeo=600
+          - retrans=2
+        reclaimPolicy: Retain
+        volumeBindingMode: Immediate

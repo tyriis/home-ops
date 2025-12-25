@@ -5,9 +5,9 @@ kind: HelmRelease
 metadata:
   name: &app blackbox-exporter
 spec:
-  interval: 30m
   driftDetection:
     mode: enabled
+  interval: 30m
   chart:
     spec:
       chart: prometheus-blackbox-exporter

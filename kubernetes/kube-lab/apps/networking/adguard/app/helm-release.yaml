@@ -20,8 +20,9 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: uninstall # no idea if this is a good idea
       retries: 3
+  uninstall:
+    keepHistory: false
   values:
     controllers:
       adguard-home:

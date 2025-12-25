@@ -1,0 +1,34 @@
+# ---
+# # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/storageclass.json
+# apiVersion: storage.k8s.io/v1
+# kind: StorageClass
+# metadata:
+#   name: zfs-ssd
+# allowVolumeExpansion: true
+# parameters:
+#   poolname: "ssd"
+#   fstype: "zfs"
+#   shared: "yes"
+# provisioner: zfs.csi.openebs.io
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/storageclass.json
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: zfs-pool
+allowVolumeExpansion: true
+parameters:
+  recordsize: 128k
+  compression: lz4
+  dedup: "off"
+  poolname: pool0
+  fstype: zfs
+  shared: "yes"
+  thinprovision: "yes"
+provisioner: zfs.csi.openebs.io
+allowedTopologies:
+  - matchLabelExpressions:
+      - key: kubernetes.io/hostname
+        values:
+          - nas02
