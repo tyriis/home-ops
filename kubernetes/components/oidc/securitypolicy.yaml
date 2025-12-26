@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/gateway.envoyproxy.io/securitypolicy_v1alpha1.json
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: oidc-${APP}
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: ${APP}
+  oidc:
+    provider:
+      issuer: "https://accounts.google.com"
+    clientIDRef:
+      name: envoy-oidc-google
+      namespace: networking
+    clientSecret:
+      name: envoy-oidc-google
+      namespace: networking
+    redirectURL: https://auth.techtales.io/oauth2/callback
+    # logoutPath: /logout
