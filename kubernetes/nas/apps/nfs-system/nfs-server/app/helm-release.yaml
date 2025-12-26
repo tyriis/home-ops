@@ -88,7 +88,26 @@ spec:
                   - SYS_ADMIN
                   - SETPCAP
               readOnlyRootFilesystem: false
-
+          filebrowser:
+            image:
+              repository: gtstef/filebrowser
+              tag: 1.1.0-stable-slim@sha256:5093ba7349a77b6016db20273f8d0a3b74953f4ebb476c1659589622452fbe2b
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+              readOnlyRootFilesystem: false
+              runAsUser: 1000
+              runAsGroup: 1000
+            ports:
+              - containerPort: 8080
+                name: filebrowser
+                protocol: TCP
+            env:
+              FILEBROWSER_CONFIG: /config/config.yaml
+              FILEBROWSER_DATABASE: /data/filebrowser.db
+              FILEBROWSER_SERVER_PORT: 8080 # not working need proper config file
     defaultPodOptions:
       hostNetwork: true
       priorityClassName: system-cluster-critical
@@ -104,6 +123,12 @@ spec:
           type: RuntimeDefault
       nodeSelector:
         kubernetes.io/hostname: nas02
+    service:
+      *app :
+        type: ClusterIP
+        ports:
+          http:
+            port: 8080
 
     persistence:
       fake-export:
@@ -136,3 +161,21 @@ spec:
         existingClaim: test
         globalMounts:
           - path: /export/test
+      filebrowser-config:
+        type: configMap
+        name: filebrowser-config
+        advancedMounts:
+          *app :
+            filebrowser:
+              - path: /config/config.yaml
+                subPath: config.yaml
+                readOnly: true
+      filebrowser-data:
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: zfs-pool
+        advancedMounts:
+          *app :
+            filebrowser:
+              - path: /data
