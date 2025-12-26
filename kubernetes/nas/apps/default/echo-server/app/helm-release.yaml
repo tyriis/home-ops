@@ -36,7 +36,7 @@ spec:
               repository: ghcr.io/mendhak/http-https-echo
               tag: 38@sha256:c73e039e883944a38e37eaba829eb9a67641cd03eff868827683951feceef96e
             env:
-              HTTP_PORT: &port 80
+              HTTP_PORT: &port 8080
               LOG_WITHOUT_NEWLINE: true
               LOG_IGNORE_PATH: /healthz
               PROMETHEUS_ENABLED: true
@@ -53,6 +53,10 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
+            ports:
+              - containerPort: *port
+                name: http
+                protocol: TCP
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -83,6 +87,6 @@ spec:
         hostnames:
           - echo.nas.techtales.io
         parentRefs:
-          - name: cilium
+          - name: envoy
             namespace: kube-system
             sectionName: https-nas
