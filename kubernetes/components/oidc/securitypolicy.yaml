@@ -11,7 +11,7 @@ spec:
       name: ${APP}
   oidc:
     provider:
-      issuer: "https://accounts.google.com"
+      issuer: https://accounts.google.com
     clientIDRef:
       name: envoy-oidc-google
       namespace: networking
