@@ -35,7 +35,7 @@ spec:
   hostnames:
     - flux-webhook.nas.techtales.io
   parentRefs:
-    - name: envoy-external
+    - name: envoy
       namespace: networking
       sectionName: https-nas
   rules:
