@@ -40,8 +40,8 @@ spec:
           hostnames:
             - alertmanager.nas.techtales.io
           parentRefs:
-            - name: cilium
-              namespace: kube-system
+            - name: envoy
+              namespace: networking
               sectionName: https-nas
       alertmanagerSpec:
         alertmanagerConfiguration:
@@ -172,6 +172,6 @@ spec:
           hostnames:
             - prometheus.nas.techtales.io
           parentRefs:
-            - name: cilium
-              namespace: kube-system
+            - name: envoy
+              namespace: networking
               sectionName: https-nas

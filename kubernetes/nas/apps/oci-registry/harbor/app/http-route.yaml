@@ -9,8 +9,8 @@ metadata:
     external-dns/unifi: "true"
 spec:
   parentRefs:
-    - name: cilium
-      namespace: kube-system
+    - name: emvoy
+      namespace: networking
       sectionName: https
   hostnames:
     - harbor.techtales.io
