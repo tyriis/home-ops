@@ -5,6 +5,5 @@ kind: Kustomization
 resources:
   - ./certificate.yaml
   - ./envoy-proxy.yaml
-  - ./external-secret.yaml
   - ./gateway.yaml
   - ./http-route.yaml
