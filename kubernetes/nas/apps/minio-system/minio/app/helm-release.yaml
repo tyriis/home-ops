@@ -144,8 +144,8 @@ spec:
         hostnames:
           - minio.nas.techtales.io
         parentRefs:
-          - name: cilium
-            namespace: kube-system
+          - name: envoy
+            namespace: networking
             sectionName: https-nas
         rules:
           - backendRefs:
@@ -158,8 +158,8 @@ spec:
         hostnames:
           - s3.nas.techtales.io
         parentRefs:
-          - name: cilium
-            namespace: kube-system
+          - name: envoy
+            namespace: networking
             sectionName: https-nas
         rules:
           - backendRefs:
