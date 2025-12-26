@@ -1,0 +1,10 @@
+---
+server:
+  port: 8080
+  sources:
+    - path: /export/media
+      config:
+        defaultEnabled: true
+auth:
+  adminUsername: admin
+  adminPassword: admin
