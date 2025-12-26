@@ -88,5 +88,5 @@ spec:
           - echo.nas.techtales.io
         parentRefs:
           - name: envoy
-            namespace: kube-system
+            namespace: networking
             sectionName: https-nas
