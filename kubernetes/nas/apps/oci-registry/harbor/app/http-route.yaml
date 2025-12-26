@@ -9,7 +9,7 @@ metadata:
     external-dns/unifi: "true"
 spec:
   parentRefs:
-    - name: emvoy
+    - name: envoy
       namespace: networking
       sectionName: https
   hostnames:
