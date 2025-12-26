@@ -5,13 +5,13 @@ kind: Gateway
 metadata:
   name: envoy
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname nas-gateway-envoy.techtales.io
+    external-dns.alpha.kubernetes.io/target: &hostname nas-gateway.techtales.io
 spec:
   gatewayClassName: envoy
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
-      lbipam.cilium.io/ips: 192.168.100.21
+      lbipam.cilium.io/ips: 192.168.100.20
   listeners:
     - name: https-nas
       protocol: HTTPS
