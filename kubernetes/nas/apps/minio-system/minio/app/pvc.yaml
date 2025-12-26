@@ -5,7 +5,7 @@ metadata:
   name: &name minio
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   capacity:
     storage: 8000Gi
   claimRef:
@@ -32,7 +32,7 @@ spec:
   storageClassName: zfs-pool
   volumeName: *name
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 8000Gi
