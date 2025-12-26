@@ -50,7 +50,6 @@ spec:
       - --annotation-filter=external-dns/cloudflare in (true)
     policy: sync
     sources:
-      - ingress
       - gateway-httproute
       - crd
     txtOwnerId: nas
@@ -61,4 +60,4 @@ spec:
       enabled: true
     podAnnotations:
       secret.reloader.stakater.com/reload: *secret
-    gatewayNamespace: kube-system
+    gatewayNamespace: networking
