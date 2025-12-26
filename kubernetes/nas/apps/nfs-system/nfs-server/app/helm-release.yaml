@@ -91,7 +91,7 @@ spec:
           filebrowser:
             image:
               repository: gtstef/filebrowser
-              tag: 1.1.0-stable-slim@sha256:5093ba7349a77b6016db20273f8d0a3b74953f4ebb476c1659589622452fbe2b
+              tag: 1.1.0-stable-slim@sha256:a4158c454c5aa90f916e0b807e2354734b6b7d367b31361b37b83656af948c11
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
