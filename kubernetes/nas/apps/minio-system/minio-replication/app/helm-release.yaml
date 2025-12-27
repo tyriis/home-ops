@@ -30,15 +30,15 @@ spec:
       minio:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          fix-permissions:
-            image:
-              repository: busybox
-              tag: latest
-            command:
-              - sh
-              - -c
-              - chown -R 1000:1000 /data/minio
+        # initContainers:
+        #   fix-permissions:
+        #     image:
+        #       repository: busybox
+        #       tag: latest
+        #     command:
+        #       - sh
+        #       - -c
+        #       - chown 1000:1000 /data/minio
         containers:
           app:
             image:
