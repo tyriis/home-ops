@@ -11,3 +11,4 @@ resources:
   - ./rbac.yaml
   - ./external-secrets/flux-sync.yaml
   - ./openbao/flux-sync.yaml
+  - ./pocket-id/flux-sync.yaml
