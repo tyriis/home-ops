@@ -13,7 +13,7 @@ allowSchedulingOnControlPlanes: true
 cniConfig:
   name: none
 nodes:
-  # Intel N3450 / 16GB / SAMSUNG SSD 870 EVO 500GB SATA / SAMSUNG SSD 870 EVO 500GB SATA
+  # Intel N3450 / 16GB / SAMSUNG SSD 870 EVO 500GB SATA / SAMSUNG SSD 870 EVO 500GB SATA / SAMSUNG SSD 870 EVO 500GB USB
   - hostname: nas01
     ipAddress: 192.168.100.11
     controlPlane: true
@@ -83,6 +83,7 @@ controlPlane:
       systemExtensions:
         officialExtensions:
           - siderolabs/intel-ucode
+          - siderolabs/zfs
       extraKernelArgs:
         - apparmor=0 # Less security, faster puter
         - init_on_alloc=0 # Less security, faster puter
@@ -96,6 +97,9 @@ controlPlane:
   patches:
     - |-
       machine:
+        kernel:
+          modules:
+            - name: zfs
         kubelet:
           extraArgs:
             rotate-server-certificates: "true"
@@ -160,7 +164,6 @@ controlPlane:
               overridePath: true
         features:
           rbac: true
-          stableHostname: true
           kubernetesTalosAPIAccess:
             enabled: true
             allowedRoles:
@@ -295,7 +298,6 @@ worker:
               overridePath: true
         features:
           rbac: true
-          stableHostname: true
           apidCheckExtKeyUsage: true
           diskQuotaSupport: true
           kubePrism:
