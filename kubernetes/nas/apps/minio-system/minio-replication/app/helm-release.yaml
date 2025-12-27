@@ -56,7 +56,7 @@ spec:
               MINIO_UPDATE: "off"
             envFrom:
               - secretRef:
-                  name: minio-env
+                  name: minio-replication-env
             args: ["server", "/data/minio"]
             ports:
               - containerPort: 9000
@@ -94,7 +94,7 @@ spec:
               CONSOLE_DEBUG_LOGLEVEL: "3"
             envFrom:
               - secretRef:
-                  name: minio-console-env
+                  name: minio-replication-console-env
             args: ["./console", "server"]
             ports:
               - containerPort: 9090
@@ -130,7 +130,7 @@ spec:
             port: 9090
     serviceMonitor:
       app:
-        serviceName: minio
+        serviceName: minio-replication
         endpoints:
           - port: s3
             scheme: http
