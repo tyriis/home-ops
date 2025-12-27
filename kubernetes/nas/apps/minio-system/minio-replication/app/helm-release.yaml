@@ -30,15 +30,15 @@ spec:
       minio:
         annotations:
           reloader.stakater.com/auto: "true"
-        # initContainers:
-        #   fix-permissions:
-        #     image:
-        #       repository: busybox
-        #       tag: latest
-        #     command:
-        #       - sh
-        #       - -c
-        #       - chown -R 1000:1000 /data/minio
+        initContainers:
+          fix-permissions:
+            image:
+              repository: busybox
+              tag: latest
+            command:
+              - sh
+              - -c
+              - chown -R 1000:1000 /data/minio
         containers:
           app:
             image:
@@ -149,7 +149,7 @@ spec:
             sectionName: https-nas
         rules:
           - backendRefs:
-              - name: minio
+              - name: minio-replication
                 namespace: minio-system
                 port: 9090
       s3:
@@ -163,7 +163,7 @@ spec:
             sectionName: https-nas
         rules:
           - backendRefs:
-              - name: minio
+              - name: minio-replication
                 namespace: minio-system
                 port: 9000
 
