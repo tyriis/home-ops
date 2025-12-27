@@ -23,6 +23,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: volsync
+      namespace: backup-system
   postBuild:
     substitute:
       APP: *app
