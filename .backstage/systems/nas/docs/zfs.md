@@ -1,48 +1,73 @@
-# ZFS Setup
+# ZFS Setup nas02
 
 <https://github.com/siderolabs/extensions/blob/main/storage/zfs/README.md>
 
+test if zfs is working
+
 ```console
-kubectl -n kube-system debug -it --profile sysadmin --image=alpine node/nas02
+talosctl -n nas02 get extensions | grep zfs
+```
+
+should show something like
+
+```console
+NODE    NAMESPACE   TYPE              ID            VERSION   NAME          VERSION
+nas02   runtime     ExtensionStatus   3             1         zfs           2.4.0-v1.12.0
+```
+
+```console
+talosctl -n nas02 read /proc/modules | grep zfs
+```
+
+should show:
+
+```console
+zfs 6631424 7 - Live 0x0000000000000000 (PO)
+spl 135168 1 zfs, Live 0x0000000000000000 (O)
 ```
 
 To verify AES‑GCM support on your Talos node:acltype
 
 ```console
-cat /proc/crypto | grep gcm
+talosctl -n nas02 read /proc/crypto | grep gcm
+```
+
+should show:
+
+```console
+name         : rfc4106(gcm(aes))
+driver       : rfc4106-gcm-aesni-avx
+name         : gcm(aes)
+driver       : generic-gcm-aesni-avx
+name         : rfc4106(gcm(aes))
+driver       : rfc4106-gcm-aesni
+name         : gcm(aes)
+driver       : generic-gcm-aesni
 ```
 
 ```console
-name : gcm(aes)
-driver : generic-gcm-aesni-avx
+kubectl -n kube-system debug -it --profile sysadmin --image=alpine node/nas02 && kubectl delete pods -n kube-system -l app.kubernetes.io/managed-by=kubectl-debug
 ```
 
 ```console
-apk add zfs openssl
-```
-
-```console
-lsmod | grep zfs
-```
-
-```console
-zfs 6701056 0
-spl 131072 1 zfs
+apk add openssl
 ```
 
 ```console
 mkdir -p /host/var/mnt/pool
 ```
 
+<!--
 ```console
 ln -s /host/var/lib/zfs /var/lib/zfs
 ```
+-->
 
 ```console
 openssl rand -hex 32 > /host/var/lib/zfs/encryption.key
 ```
 
-store in [secrets.techtales.io/](https://secrets.techtales.io/ui/vault/secrets/infra/show/techtales/kube-nas)
+store in [secrets.techtales.io/](https://secrets.techtales.io/ui/vault/secrets/infra/show/techtales/nas/nas02)
 
 ```console
 chmod 600 /host/var/lib/zfs/encryption.key
@@ -81,6 +106,8 @@ config:
 
 errors: No known data errors
 ```
+
+> I needed to restart the node in order to make the zfsvolume work as expected in openebs
 
 ## create named datasets
 

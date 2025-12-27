@@ -9,3 +9,4 @@ components:
 resources:
   - ./namespace.yaml
   - ./minio/flux-sync.yaml
+  - ./minio-replication/flux-sync.yaml

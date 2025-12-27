@@ -1,0 +1,38 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: &name minio-replication
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 450Mi
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: *name
+    namespace: minio-system
+  csi:
+    driver: zfs.csi.openebs.io
+    fsType: zfs
+    volumeAttributes:
+      openebs.io/poolname: glacier
+    volumeHandle: *name
+  nodeSelector: nas01
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: zfs-glacier
+  volumeMode: Filesystem
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: &name minio-replication
+spec:
+  storageClassName: zfs-glacier
+  volumeName: *name
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 450Mi
