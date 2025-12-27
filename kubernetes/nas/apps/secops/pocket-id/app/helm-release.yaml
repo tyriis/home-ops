@@ -96,6 +96,8 @@ spec:
             scrapeTimeout: 10s
     route:
       app:
+        annotations:
+          external-dns/unifi: "true"
         hostnames:
           - "{{ .Release.Name }}.techtales.io"
         parentRefs:
