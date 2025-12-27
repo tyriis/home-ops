@@ -38,7 +38,7 @@ spec:
               tag: v1.16.0@sha256:f8cde808e8e840acda25683fc2168e0206e3f3fb1a48cca89d211aafd87eaeef
             env:
               ANALYTICS_DISABLED: "true"
-              APP_URL: &host "{{ .Release.Name }}.techtales.io"
+              APP_URL: https://pocket-id.techtales.io
               INTERNAL_APP_URL: http://pocket-id.secops.svc.cluster.local #NOSONAR allow http
               DB_PROVIDER: postgres
               FILE_BACKEND: database
@@ -97,7 +97,7 @@ spec:
     route:
       app:
         hostnames:
-          - *host
+          - "{{ .Release.Name }}.techtales.io"
         parentRefs:
           - name: cilium
             namespace: kube-system
