@@ -110,3 +110,44 @@ minio   Bound    minio    8000Gi     RWO            zfs-pool       <unset>      
 
 [reddit thread](https://www.reddit.com/r/selfhosted/comments/1lcgq86/minio_removed_admin_features_from_the_web_ui_in)
 [fork of minio console](https://github.com/OpenMaxIO/openmaxio-object-browser/issues/8)
+
+## fix permissions
+
+fresh generated zfsvolumes have ownership root:root for all files, in order to fix it, mount the new pvc to a pod and fix the permissions
+
+```yaml
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: debug-minio
+  namespace: minio-system
+spec:
+  containers:
+    - name: debug
+      image: alpine:latest
+      command:
+        - sleep
+        - "3600"
+      volumeMounts:
+        - name: minio-data
+          mountPath: /data/minio
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+        capabilities:
+          add:
+            - CHOWN
+            - DAC_OVERRIDE
+  volumes:
+    - name: minio-data
+      persistentVolumeClaim:
+        claimName: minio
+  restartPolicy: Never
+```
+
+in the container run:
+
+```console
+chown 1000:1000 /data/minio
+```
