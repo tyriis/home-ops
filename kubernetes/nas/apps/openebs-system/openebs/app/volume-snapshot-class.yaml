@@ -1,15 +1,11 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/snapshot.storage.k8s.io/volumesnapshotclass_v1.json
 kind: VolumeSnapshotClass
 apiVersion: snapshot.storage.k8s.io/v1
 metadata:
   name: zfs-pool
   annotations:
     snapshot.storage.kubernetes.io/is-default-class: "true"
-allowedTopologies:
-  - matchLabelExpressions:
-      - key: kubernetes.io/hostname
-        values:
-          - nas02
 driver: zfs.csi.openebs.io
 deletionPolicy: Delete
 parameters:
