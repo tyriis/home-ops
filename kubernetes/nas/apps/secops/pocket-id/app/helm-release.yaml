@@ -29,7 +29,7 @@ spec:
       pocket-id:
         annotations:
           reloader.stakater.com/auto: "true"
-        replicas: 3
+        replicas: 2
         strategy: RollingUpdate
         containers:
           app:
@@ -40,7 +40,7 @@ spec:
               ANALYTICS_DISABLED: "true"
               APP_URL: &host "{{ .Release.Name }}.techtales.io"
               EMAILS_VERIFIED: "true"
-              INTERNAL_APP_URL: http://pocket-id.secops.svc.cluster.local
+              INTERNAL_APP_URL: http://pocket-id.secops.svc.cluster.local #NOSONAR allow http
               LOG_LEVEL: info
               LOG_JSON: "true"
               METRICS_ENABLED: "true"
