@@ -9,8 +9,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../../components/volsync
   path: ./kubernetes/nas/apps/secops/pocket-id/app
   prune: true
   sourceRef:
@@ -21,13 +19,3 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
-  dependsOn:
-    - name: volsync
-      namespace: backup-system
-  postBuild:
-    substitute:
-      APP: *app
-      VOLSYNC_CACHE_SNAPSHOTCLASS: &storage local-nvme
-      VOLSYNC_SNAPSHOTCLASS: *storage
-      VOLSYNC_STORAGECLASS: *storage
-      VOLSYNC_SUFFIX: data

@@ -39,13 +39,21 @@ spec:
             env:
               ANALYTICS_DISABLED: "true"
               APP_URL: &host "{{ .Release.Name }}.techtales.io"
-              EMAILS_VERIFIED: "true"
               INTERNAL_APP_URL: http://pocket-id.secops.svc.cluster.local #NOSONAR allow http
+              DB_PROVIDER: postgres
+              FILE_BACKEND: database
+              KEYS_STORAGE: database
+              EMAILS_VERIFIED: "true"
               LOG_LEVEL: info
               LOG_JSON: "true"
               METRICS_ENABLED: "true"
               TRACING_ENABLED: "true"
               OTEL_METRICS_EXPORTER: prometheus
+            envFrom:
+              - secretRef:
+                  name: pocket-id-database
+              - secretRef:
+                  name: pocket-id-encryption
             probes:
               liveness: &probes
                 enabled: true
@@ -94,9 +102,3 @@ spec:
           - name: cilium
             namespace: kube-system
             sectionName: https
-    persistence:
-      config:
-        existingClaim: ${APP}-data
-        globalMounts:
-          - path: /data
-            subPath: data

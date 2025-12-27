@@ -1,0 +1,18 @@
+---
+apiVersion: dbman.hef.sh/v1alpha3
+kind: Database
+metadata:
+  name: pocket-id
+spec:
+  credentials:
+    usernameSecretRef:
+      name: pocket-id-database
+      key: INIT_POSTGRES_USER
+    passwordSecretRef:
+      name: pocket-id-database
+      key: INIT_POSTGRES_PASS
+  databaseName: pocketId
+  databaseServerRef:
+    namespace: cnpg-system
+    name: nas-postgres17
+  prune: false
