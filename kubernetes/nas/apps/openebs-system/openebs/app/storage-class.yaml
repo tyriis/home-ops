@@ -32,3 +32,24 @@ allowedTopologies:
       - key: kubernetes.io/hostname
         values:
           - nas02
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/storageclass.json
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: zfs-glacier
+allowVolumeExpansion: true
+parameters:
+  recordsize: 128k
+  compression: lz4
+  dedup: "off"
+  poolname: glacier
+  fstype: zfs
+  shared: "yes"
+  thinprovision: "yes"
+provisioner: zfs.csi.openebs.io
+allowedTopologies:
+  - matchLabelExpressions:
+      - key: kubernetes.io/hostname
+        values:
+          - nas01
