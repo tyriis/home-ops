@@ -1,0 +1,7 @@
+---
+site_name: volsync
+nav:
+  - Home: index.md
+
+plugins:
+  - techdocs-core
