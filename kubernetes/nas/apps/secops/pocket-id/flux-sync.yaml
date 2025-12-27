@@ -27,4 +27,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      VOLSYNC_CACHE_SNAPSHOTCLASS: &storage local-nvme
+      VOLSYNC_SNAPSHOTCLASS: *storage
+      VOLSYNC_STORAGECLASS: *storage
       VOLSYNC_SUFFIX: data
