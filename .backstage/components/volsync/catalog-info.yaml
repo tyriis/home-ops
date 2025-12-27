@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: volsync
+  description: |
+    VolSync asynchronously replicates Kubernetes persistent volumes between clusters using either rsync or rclone.
+    It also supports creating backups of persistent volumes via restic.
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/nas/apps/backup-system/volsync
+      title: Flux definitions
+      icon: github
+      type: github-repository
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/kube-lab/apps/backup-system/volsync
+      title: Flux definitions
+      icon: github
+      type: github-repository
+  tags:
+    - secops
+spec:
+  type: service
+  lifecycle: experimental
+  system: kube-nas
+  owner: home-ops
