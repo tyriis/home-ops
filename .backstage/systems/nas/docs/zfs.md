@@ -107,6 +107,8 @@ config:
 errors: No known data errors
 ```
 
+> I needed to restart the node in order to make the zfsvolume work as expected in openebs
+
 ## create named datasets
 
 create an openebs zfsvolume
