@@ -2,10 +2,10 @@
 server:
   port: 8080
   sources:
-    - path: /files/media
+    - path: /mnt/media
       config:
         defaultEnabled: true
-    - path: /files/public
+    - path: /mnt/public
       config:
         defaultEnabled: true
 auth:
