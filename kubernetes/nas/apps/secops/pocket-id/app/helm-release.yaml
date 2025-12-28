@@ -39,7 +39,6 @@ spec:
             env:
               ANALYTICS_DISABLED: "true"
               APP_URL: https://id.techtales.io
-              INTERNAL_APP_URL: "http://{{ .Release.Name }}.secops.svc.cluster.local" #NOSONAR allow http
               DB_PROVIDER: postgres
               FILE_BACKEND: database
               KEYS_STORAGE: database
