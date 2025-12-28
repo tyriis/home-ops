@@ -1,1 +1,269 @@
-@import url("https://theme-park.dev/css/base/filebrowser/dark.css")
+/*
+    filebrowser-css - a custom stylesheet for filebrowser
+    that adds colors and changes some icons
+    https://github.com/jniggemann/filebrowser-css
+
+    Copyright (C) 2021-2022 Jan Niggemann
+        With kind contributions of
+        * Richard Asplin (https://github.com/richneptune)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+*/
+
+
+/* remove a bit of padding from the file list entries */
+#listing.list .item {
+    padding: 0.7em;
+}
+
+/* make folders yellow-ish */
+#listing .item[data-dir=true] div i {
+    color: #ffc84b;
+}
+
+/* packed files - colorize and change icon */
+#listing .item[aria-label$=".7z"] div i {
+    color: #a268a1;
+}
+#listing .item[aria-label$=".7z"] .material-icons {
+    visibility: hidden;
+}
+#listing .item[aria-label$=".7z"] .material-icons::before {
+    content: "archive";
+    visibility: visible;
+}
+
+#listing .item[aria-label$=".arj"] div i {
+    color: #a268a1;
+}
+#listing .item[aria-label$=".arj"] .material-icons {
+    visibility: hidden;
+}
+#listing .item[aria-label$=".arj"] .material-icons::before {
+    content: "archive";
+    visibility: visible;
+}
+
+#listing .item[aria-label$=".zip"] div i {
+    color: #a268a1;
+}
+#listing .item[aria-label$=".zip"] .material-icons {
+    visibility: hidden;
+}
+#listing .item[aria-label$=".zip"] .material-icons::before {
+    content: "archive";
+    visibility: visible;
+}
+
+#listing .item[aria-label$=".gz"] div i {
+    color: #a268a1;
+}
+#listing .item[aria-label$=".gz"] .material-icons {
+    visibility: hidden;
+}
+#listing .item[aria-label$=".gz"] .material-icons::before {
+    content: "archive";
+    visibility: visible;
+}
+
+#listing .item[aria-label$=".tar"] div i {
+    color: #a268a1;
+}
+#listing .item[aria-label$=".tar"] .material-icons {
+    visibility: hidden;
+}
+#listing .item[aria-label$=".tar"] .material-icons::before {
+    content: "archive";
+    visibility: visible;
+}
+
+
+#listing .item[aria-label$=".bz"] div i {
+    color: #a268a1;
+}
+#listing .item[aria-label$=".bz"] .material-icons {
+    visibility: hidden;
+}
+#listing .item[aria-label$=".bz"] .material-icons::before {
+    content: "archive";
+    visibility: visible;
+}
+
+#listing .item[aria-label$=".bz2"] div i {
+    color: #a268a1;
+}
+#listing .item[aria-label$=".bz2"] .material-icons {
+    visibility: hidden;
+}
+#listing .item[aria-label$=".bz2"] .material-icons::before {
+    content: "archive";
+    visibility: visible;
+}
+
+#listing .item[aria-label$=".xz"] div i {
+    color: #a268a1;
+}
+#listing .item[aria-label$=".xz"] .material-icons {
+    visibility: hidden;
+}
+#listing .item[aria-label$=".xz"] .material-icons::before {
+    content: "archive";
+    visibility: visible;
+}
+
+#listing .item[aria-label$=".tbz"] div i {
+    color: #a268a1;
+}
+#listing .item[aria-label$=".tbz"] .material-icons {
+    visibility: hidden;
+}
+#listing .item[aria-label$=".tbz"] .material-icons::before {
+    content: "archive";
+    visibility: visible;
+}
+
+
+/* office files */
+/* PDF - colorize and change icon /*
+/* Note: This is yellow because I use SumatraPDF */
+#listing .item[aria-label$=".pdf"] div i {
+    color: #FFEE00;
+}
+#listing .item[aria-label$=".pdf"] .material-icons {
+    visibility: hidden;
+}
+#listing .item[aria-label$=".pdf"] .material-icons::before {
+    content: "picture_as_pdf";
+    visibility: visible;
+}
+
+/* word processors - colorize and change icon */
+/* Word */
+#listing .item[aria-label$=".doc"] div i {
+    color: #185ABD;
+}
+#listing .item[aria-label$=".doc"] .material-icons {
+    visibility: hidden;
+}
+#listing .item[aria-label$=".doc"] .material-icons::before {
+    content: "description";
+    visibility: visible;
+}
+
+#listing .item[aria-label$=".docx"] div i {
+    color: #185ABD;
+}
+#listing .item[aria-label$=".docx"] .material-icons {
+    visibility: hidden;
+}
+#listing .item[aria-label$=".docx"] .material-icons::before {
+    content: "description";
+    visibility: visible;
+}
+
+/* OpenOffice Writer */
+#listing .item[aria-label$=".odt"] div i {
+    color: #185ABD;
+}
+#listing .item[aria-label$=".odt"] .material-icons {
+    visibility: hidden;
+}
+#listing .item[aria-label$=".odt"] .material-icons::before {
+    content: "description";
+    visibility: visible;
+}
+
+/* LibreOffice Writer */
+#listing .item[aria-label$=".sxw"] div i {
+    color: #185ABD;
+}
+#listing .item[aria-label$=".sxw"] .material-icons {
+    visibility: hidden;
+}
+#listing .item[aria-label$=".sxw"] .material-icons::before {
+    content: "description";
+    visibility: visible;
+}
+
+
+/* PowerPoint */
+#listing .item[aria-label$=".ppt"] div i {
+    color: #D35230;
+}
+#listing .item[aria-label$=".pptx"] div i {
+    color: #D35230;
+}
+#listing .item[aria-label$=".pps"] div i {
+    color: #D35230;
+}
+/* OpenOffice Impress */
+#listing .item[aria-label$=".odp"] div i {
+    color: #D35230;
+}
+
+
+/* Excel */
+#listing .item[aria-label$=".xls"] div i {
+    color: #107C41;
+}
+#listing .item[aria-label$=".xlsx"] div i {
+    color: #107C41;
+}
+#listing .item[aria-label$=".ods"] div i {
+    color: #107C41;
+}
+#listing .item[aria-label$=".sxc"] div i {
+    color: #107C41;
+}
+#listing .item[aria-label$=".wri"] div i {
+    color: #336eff;
+}
+
+
+/* sound files - colorize */
+#listing .item[data-type=audio] div i {
+    color: #F47900;
+}
+
+/* video files - colorize */
+#listing .item[data-type=video] div i {
+    color: #F47900;
+}
+
+/* text files - change icon*/
+#listing .item[aria-label$=".txt"] .material-icons {
+    visibility: hidden;
+}
+#listing .item[aria-label$=".txt"] .material-icons::before {
+    content: "description";
+    visibility: visible;
+}
+#listing .item[aria-label$=".md"] .material-icons {
+    visibility: hidden;
+}
+#listing .item[aria-label$=".md"] .material-icons::before {
+    content: "description";
+    visibility: visible;
+}
+
+/* various other files*/
+/* iCal - change icon*/
+#listing .item[aria-label$=".ics"] .material-icons {
+    visibility: hidden;
+}
+#listing .item[aria-label$=".ics"] .material-icons::before {
+    content: "event";
+    visibility: visible;
+}
