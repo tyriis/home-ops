@@ -53,6 +53,11 @@ spec:
                   name: pocket-id-database
               - secretRef:
                   name: pocket-id-encryption
+            ports:
+              - name: http
+                containerPort: &port 1411
+              - name: metrics
+                containerPort: &metricsPort 9464
             probes:
               liveness: &probes
                 enabled: true
@@ -60,7 +65,7 @@ spec:
                 spec:
                   httpGet:
                     path: /healthz
-                    port: &port 1411
+                    port: *port
               readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
@@ -89,7 +94,7 @@ spec:
           http:
             port: *port
           metrics:
-            port: 9464
+            port: *metricsPort
     serviceMonitor:
       app:
         serviceName: *app
