@@ -90,18 +90,6 @@ spec:
         existingClaim: public
         globalMounts:
           - path: /mnt/public
-      csi:
-        existingClaim: csi
-        globalMounts:
-          - path: /mnt/csi
-      syncthing:
-        existingClaim: syncthing
-        globalMounts:
-          - path: /mnt/syncthing
-      test:
-        existingClaim: test
-        globalMounts:
-          - path: /mnt/test
       filebrowser-config:
         type: configMap
         name: filebrowser-config

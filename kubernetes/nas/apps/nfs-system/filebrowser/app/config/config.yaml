@@ -5,12 +5,9 @@ server:
     - path: /files/media
       config:
         defaultEnabled: true
-    - path: /files/test
-      config:
-        defaultEnabled: true
     - path: /files/public
       config:
         defaultEnabled: true
 auth:
   adminUsername: admin
-  adminPassword: admin
+  # adminPassword: admin
