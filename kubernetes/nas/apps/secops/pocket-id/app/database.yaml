@@ -11,7 +11,7 @@ spec:
     passwordSecretRef:
       name: pocket-id-database
       key: INIT_POSTGRES_PASS
-  databaseName: pocketId
+  databaseName: pocketid
   databaseServerRef:
     namespace: cnpg-system
     name: nas-postgres17
