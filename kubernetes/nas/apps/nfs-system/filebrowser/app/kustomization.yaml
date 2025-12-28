@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./external-secret.yaml
+  - ./helm-release.yaml
+  - ./pvc.yaml
+configMapGenerator:
+  - name: filebrowser-config
+    files:
+      - config.yaml=config/config.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disable
