@@ -37,6 +37,7 @@ spec:
               repository: ghcr.io/pocket-id/pocket-id
               tag: v1.16.0@sha256:f8cde808e8e840acda25683fc2168e0206e3f3fb1a48cca89d211aafd87eaeef
             env:
+              # https://pocket-id.org/docs/configuration/environment-variables
               ANALYTICS_DISABLED: "true"
               APP_URL: https://id.techtales.io
               DB_PROVIDER: postgres
