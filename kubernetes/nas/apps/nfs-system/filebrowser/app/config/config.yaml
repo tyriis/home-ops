@@ -15,10 +15,8 @@ auth:
   methods:
     oidc:
       enabled: true
-      clientId: "filebrowser-client"
-      clientSecret: "xxx"  # Use environment variable
       issuerUrl: "https://accounts.google.com"
-      scopes: email openid profile groups
+      scopes: email openid profile
       userIdentifier: preferred_username
       createUser: true
       logoutRedirectUrl: ""
