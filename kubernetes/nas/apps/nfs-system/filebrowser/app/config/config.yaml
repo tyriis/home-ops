@@ -40,4 +40,4 @@ auth:
       createUser: true
       logoutRedirectUrl: https://id.techtales.io/api/oidc/end-session
       groupsClaim: groups
-      adminGroups: filebrowser-admins
+      adminGroup: filebrowser-admins
