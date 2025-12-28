@@ -10,7 +10,6 @@ configMapGenerator:
   - name: filebrowser-config
     files:
       - config.yaml=config/config.yaml
-      - custom.css=config/custom.css
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
