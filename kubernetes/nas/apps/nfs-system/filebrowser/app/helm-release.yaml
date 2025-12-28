@@ -51,6 +51,9 @@ spec:
               FILEBROWSER_CONFIG: /config/config.yaml
               FILEBROWSER_DATABASE: /data/filebrowser.db
               # FILEBROWSER_SERVER_PORT: 8080
+            envFrom:
+              - secretRef:
+                  name: filebrowser-env
     defaultPodOptions:
       securityContext:
         fsGroup: 1000
