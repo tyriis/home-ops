@@ -114,6 +114,9 @@ spec:
               - path: /config/config.yaml
                 subPath: config.yaml
                 readOnly: true
+              - path: /config/custom.css
+                subPath: custom.css
+                readOnly: true
       data:
         existingClaim: filebrowser-data
         advancedMounts:
