@@ -1,6 +1,7 @@
 ---
 server:
   port: 8080
+  database: /data/database.db
   sources:
     - path: /mnt/media
       config:
