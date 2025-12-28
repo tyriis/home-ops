@@ -90,7 +90,7 @@ spec:
         existingClaim: public
         globalMounts:
           - path: /mnt/public
-      filebrowser-config:
+      config:
         type: configMap
         name: filebrowser-config
         advancedMounts:
@@ -99,11 +99,8 @@ spec:
               - path: /config/config.yaml
                 subPath: config.yaml
                 readOnly: true
-      filebrowser-data:
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: zfs-pool
+      data:
+        existingClaim: filebrowser-data
         advancedMounts:
           *app :
             filebrowser:

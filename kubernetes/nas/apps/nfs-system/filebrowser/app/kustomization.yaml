@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./external-secret.yaml
   - ./helm-release.yaml
+  - ./pvc.yaml
 configMapGenerator:
   - name: filebrowser-config
     files:
