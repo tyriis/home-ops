@@ -77,14 +77,14 @@ spec:
         existingClaim: backup
         globalMounts:
           - path: /target
-      media:
+      public:
         type: nfs
         server: nas02
-        path: /media
+        path: /public
         advancedMounts:
           *app :
             app:
-              - path: /source/media
+              - path: /source/public
       fotos:
         type: nfs
         server: nas02
@@ -93,8 +93,6 @@ spec:
           *app :
             app:
               - path: /source/fotos
-
-              - path: /source/media
       home:
         type: nfs
         server: nas02
