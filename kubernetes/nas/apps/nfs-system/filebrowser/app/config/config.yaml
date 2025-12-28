@@ -20,9 +20,11 @@ server:
         defaultEnabled: true
         createUserDir: true
 auth:
-  adminUsername: admin
+  # adminUsername: admin
   # adminPassword: admin
   methods:
+    password:
+      enabled: false
     # GOOOGLE OIDC
     # oidc:
     #   enabled: true
