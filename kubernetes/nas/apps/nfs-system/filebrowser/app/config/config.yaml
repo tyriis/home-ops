@@ -15,8 +15,8 @@ auth:
   methods:
     oidc:
       enabled: true
-      issuerUrl: "https://accounts.google.com"
+      issuerUrl: https://accounts.google.com
       scopes: email openid profile
-      userIdentifier: preferred_username
+      userIdentifier: email
       createUser: true
       logoutRedirectUrl: ""
