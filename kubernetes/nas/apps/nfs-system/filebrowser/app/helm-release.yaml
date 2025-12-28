@@ -98,7 +98,7 @@ spec:
         name: filebrowser-config
         advancedMounts:
           *app :
-            filebrowser:
+            app:
               - path: /config/config.yaml
                 subPath: config.yaml
                 readOnly: true
@@ -106,5 +106,5 @@ spec:
         existingClaim: filebrowser-data
         advancedMounts:
           *app :
-            filebrowser:
+            app:
               - path: /data
