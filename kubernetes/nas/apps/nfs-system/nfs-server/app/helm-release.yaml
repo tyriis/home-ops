@@ -131,7 +131,11 @@ spec:
         existingClaim: syncthing
         globalMounts:
           - path: /export/syncthing
-      test:
-        existingClaim: test
+      home:
+        existingClaim: home
         globalMounts:
-          - path: /export/test
+          - path: /export/home
+      fotos:
+        existingClaim: fotos
+        globalMounts:
+          - path: /export/fotos

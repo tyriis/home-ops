@@ -93,6 +93,18 @@ spec:
         existingClaim: public
         globalMounts:
           - path: /mnt/public
+      home:
+        existingClaim: home
+        globalMounts:
+          - path: /mnt/home
+      fotos:
+        existingClaim: fotos
+        globalMounts:
+          - path: /mnt/fotos
+      syncthing:
+        existingClaim: syncthing
+        globalMounts:
+          - path: /mnt/syncthing
       config:
         type: configMap
         name: filebrowser-config

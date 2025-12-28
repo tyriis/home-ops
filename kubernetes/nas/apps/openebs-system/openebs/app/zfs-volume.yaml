@@ -50,6 +50,38 @@ spec:
 apiVersion: zfs.openebs.io/v1
 kind: ZFSVolume
 metadata:
+  name: home
+spec:
+  capacity: 1000G
+  fsType: zfs
+  recordsize: 128k
+  compression: lz4
+  ownerNodeID: nas02
+  poolName: pool0
+  volumeType: DATASET
+  shared: "yes"
+  thinProvision: "yes"
+
+---
+apiVersion: zfs.openebs.io/v1
+kind: ZFSVolume
+metadata:
+  name: fotos
+spec:
+  capacity: 1000G
+  fsType: zfs
+  recordsize: 128k
+  compression: lz4
+  ownerNodeID: nas02
+  poolName: pool0
+  volumeType: DATASET
+  shared: "yes"
+  thinProvision: "yes"
+
+---
+apiVersion: zfs.openebs.io/v1
+kind: ZFSVolume
+metadata:
   name: minio
 spec:
   capacity: 7.14T

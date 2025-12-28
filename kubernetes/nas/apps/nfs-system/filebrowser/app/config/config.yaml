@@ -5,10 +5,20 @@ server:
   sources:
     - path: /mnt/media
       config:
-        defaultEnabled: true
+        denyByDefault: true
+    - path: /mnt/fotos
+      config:
+        denyByDefault: true
+    - path: /mnt/syncthing
+      config:
+        denyByDefault: true
     - path: /mnt/public
       config:
+        denyByDefault: true
+    - path: /mnt/home
+      config:
         defaultEnabled: true
+        createUserDir: true
 auth:
   adminUsername: admin
   # adminPassword: admin
@@ -29,3 +39,5 @@ auth:
       userIdentifier: preferred_username
       createUser: true
       logoutRedirectUrl: https://id.techtales.io/api/oidc/end-session
+      groupsClaim: groups
+      adminGroups: filebrowser-admins

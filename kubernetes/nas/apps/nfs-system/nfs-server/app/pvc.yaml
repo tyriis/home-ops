@@ -165,6 +165,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: zfs-pool
   volumeMode: Filesystem
+
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -178,15 +179,95 @@ spec:
   resources:
     requests:
       storage: 10Gi
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: &name home
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 1000Gi
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: *name
+    namespace: nfs-system
+  csi:
+    driver: zfs.csi.openebs.io
+    fsType: zfs
+    volumeAttributes:
+      openebs.io/poolname: pool0
+    volumeHandle: *name
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - nas02
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: zfs-pool
+  volumeMode: Filesystem
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: test
+  name: &name home
 spec:
   storageClassName: zfs-pool
+  volumeName: *name
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
-      storage: 1Gi
+      storage: 1000Gi
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: &name fotos
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 1000Gi
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: *name
+    namespace: nfs-system
+  csi:
+    driver: zfs.csi.openebs.io
+    fsType: zfs
+    volumeAttributes:
+      openebs.io/poolname: pool0
+    volumeHandle: *name
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - nas02
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: zfs-pool
+  volumeMode: Filesystem
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: &name fotos
+spec:
+  storageClassName: zfs-pool
+  volumeName: *name
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1000Gi
