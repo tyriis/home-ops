@@ -1,0 +1,113 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app rsync-time-backup
+spec:
+  interval: 30m
+  timeout: 5m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    # https://filebrowserquantum.com/en/docs/
+    controllers:
+      *app :
+        type: cronjob
+        cronjob:
+          concurrencyPolicy: Forbid
+          schedule: "0 3 * * *" # daily at 3am
+        initContainers:
+          fix-permissions:
+            image:
+              repository: busybox
+              tag: latest@sha256:d80cd694d3e9467884fcb94b8ca1e20437d8a501096cdf367a5a1918a34fc2fd
+            command:
+              - sh
+              - -c
+              - |
+                if [ -d "/target" ]; then
+                  current_owner=$(stat -c "%u:%g" "/target")
+                  if [ "$current_owner" != "1000:1000" ]; then
+                    echo "Changing ownership of /target from $current_owner to 1000:1000"
+                    chown 1000:1000 "/target" ; touch "/target/backup.marker"
+                  else
+                    echo "Skipping /target - already owned by 1000:1000"
+                  fi
+                fi
+        containers:
+          app:
+            image:
+              repository: harbor.techtales.io/main/rsync-time-backup
+              tag: 25.12.0@sha256:24365768119e07c3422c82cdbe1078e207456a44a5d9ff8a63982bd38f905bce
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+              readOnlyRootFilesystem: false
+              runAsUser: 1000
+              runAsGroup: 1000
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      nodeSelector:
+        kubernetes.io/hostname: nas01
+
+    persistence:
+      target:
+        existingClaim: backup
+        globalMounts:
+          - path: /target
+      media:
+        type: nfs
+        server: nas02
+        path: /media
+        advancedMounts:
+          *app :
+            app:
+              - path: /source/media
+      fotos:
+        type: nfs
+        server: nas02
+        path: /fotos
+        advancedMounts:
+          *app :
+            app:
+              - path: /source/fotos
+
+              - path: /source/media
+      home:
+        type: nfs
+        server: nas02
+        path: /home
+        advancedMounts:
+          *app :
+            app:
+              - path: /source/home
+      syncthing:
+        type: nfs
+        server: nas02
+        path: /syncthing
+        advancedMounts:
+          *app :
+            app:
+              - path: /source/syncthing

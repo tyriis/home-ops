@@ -1,0 +1,45 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: &name backup
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 450Gi
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: *name
+    namespace: nfs-system
+  csi:
+    driver: zfs.csi.openebs.io
+    fsType: zfs
+    volumeAttributes:
+      openebs.io/poolname: glacier
+    volumeHandle: *name
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - nas01
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: zfs-pool
+  volumeMode: Filesystem
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: &name backup
+spec:
+  storageClassName: zfs-pool
+  volumeName: *name
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 450Gi
