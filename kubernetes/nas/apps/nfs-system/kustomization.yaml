@@ -10,3 +10,4 @@ resources:
   - ./csi-driver-nfs/flux-sync.yaml
   - ./filebrowser/flux-sync.yaml
   - ./nfs-server/flux-sync.yaml
+  - ./rsync-time-backup/flux-sync.yaml
