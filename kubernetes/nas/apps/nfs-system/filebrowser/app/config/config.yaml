@@ -13,10 +13,19 @@ auth:
   adminUsername: admin
   # adminPassword: admin
   methods:
+    # GOOOGLE OIDC
+    # oidc:
+    #   enabled: true
+    #   issuerUrl: https://accounts.google.com
+    #   scopes: email openid profile
+    #   userIdentifier: email
+    #   createUser: true
+    #   logoutRedirectUrl: ""
+    # POCKET ID
     oidc:
       enabled: true
-      issuerUrl: https://accounts.google.com
-      scopes: email openid profile
-      userIdentifier: email
+      issuerUrl: https://id.techtales.io
+      scopes: openid profile email groups
+      userIdentifier: preferred_username
       createUser: true
-      logoutRedirectUrl: ""
+      logoutRedirectUrl: https://id.techtales.io/api/oidc/end-session
