@@ -46,8 +46,9 @@ spec:
               LOG_LEVEL: info
               LOG_JSON: "true"
               METRICS_ENABLED: "true"
-              TRACING_ENABLED: "true"
+              TRACING_ENABLED: "false"
               OTEL_METRICS_EXPORTER: prometheus
+              OTEL_EXPORTER_PROMETHEUS_HOST: 0.0.0.0
             envFrom:
               - secretRef:
                   name: pocket-id-database
