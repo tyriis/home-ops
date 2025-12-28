@@ -1,0 +1,122 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app filebrowser
+spec:
+  interval: 30m
+  timeout: 5m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    # https://filebrowserquantum.com/en/docs/
+    controllers:
+      *app :
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: gtstef/filebrowser
+              tag: 1.1.0-stable-slim@sha256:a4158c454c5aa90f916e0b807e2354734b6b7d367b31361b37b83656af948c11
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+              readOnlyRootFilesystem: false
+              runAsUser: 1000
+              runAsGroup: 1000
+            ports:
+              - containerPort: 8080
+                name: http
+                protocol: TCP
+            env:
+              FILEBROWSER_CONFIG: /config/config.yaml
+              FILEBROWSER_DATABASE: /data/filebrowser.db
+              # FILEBROWSER_SERVER_PORT: 8080
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      nodeSelector:
+        kubernetes.io/hostname: nas02
+    service:
+      *app :
+        type: ClusterIP
+        ports:
+          http:
+            port: 8080
+    route:
+      *app :
+        annotations:
+          external-dns/unifi: "true"
+        hostnames:
+          - files.techtales.io
+        parentRefs:
+          - name: envoy
+            namespace: networking
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                namespace: nfs-server
+                port: 8080
+
+    persistence:
+      media:
+        existingClaim: media
+        globalMounts:
+          - path: /mnt/media
+      public:
+        existingClaim: public
+        globalMounts:
+          - path: /mnt/public
+      csi:
+        existingClaim: csi
+        globalMounts:
+          - path: /mnt/csi
+      syncthing:
+        existingClaim: syncthing
+        globalMounts:
+          - path: /mnt/syncthing
+      test:
+        existingClaim: test
+        globalMounts:
+          - path: /mnt/test
+      filebrowser-config:
+        type: configMap
+        name: filebrowser-config
+        advancedMounts:
+          *app :
+            filebrowser:
+              - path: /config/config.yaml
+                subPath: config.yaml
+                readOnly: true
+      filebrowser-data:
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: zfs-pool
+        advancedMounts:
+          *app :
+            filebrowser:
+              - path: /data
