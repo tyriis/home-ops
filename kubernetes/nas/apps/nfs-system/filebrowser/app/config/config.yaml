@@ -12,3 +12,13 @@ server:
 auth:
   adminUsername: admin
   # adminPassword: admin
+  methods:
+    oidc:
+      enabled: true
+      clientId: "filebrowser-client"
+      clientSecret: "xxx"  # Use environment variable
+      issuerUrl: "https://accounts.google.com"
+      scopes: email openid profile groups
+      userIdentifier: preferred_username
+      createUser: true
+      logoutRedirectUrl: ""
