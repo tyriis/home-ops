@@ -81,7 +81,7 @@ spec:
         rules:
           - backendRefs:
               - name: *app
-                namespace: nfs-server
+                namespace: nfs-system
                 port: 8080
 
     persistence:
