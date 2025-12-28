@@ -9,9 +9,6 @@ configMapGenerator:
   - name: nfs-exports
     files:
       - exports=config/exports
-  - name: filebrowser-config
-    files:
-      - config.yaml=config/filebrowser-config.yaml
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
