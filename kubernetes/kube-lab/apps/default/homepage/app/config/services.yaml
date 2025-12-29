@@ -70,6 +70,11 @@
         ping: 192.168.1.8
         # siteMonitor: https://192.168.1.8/
 - Storage:
+    - FileBrowser:
+        icon: filebrowser-quantum
+        href: https://files.techtales.io
+        description: FileBrowser for Storage
+        siteMonitor: https://files.techtales.io
     - Synology NAS:
         icon: synology-dsm
         href: https://nas.techtales.io
