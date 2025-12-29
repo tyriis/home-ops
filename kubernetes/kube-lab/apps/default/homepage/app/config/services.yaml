@@ -73,7 +73,7 @@
     - FileBrowser:
         icon: filebrowser-quantum
         href: https://files.techtales.io
-        description: FileBrowser for Storage
+        description: Web-based File Manager
         siteMonitor: https://files.techtales.io
     - Synology NAS:
         icon: synology-dsm
@@ -143,3 +143,9 @@
         href: https://www.githubstatus.com
         description: GitHub Status
         ping: www.githubstatus.com
+- Networking:
+    - EchoServer nas:
+        icon: mdi-video-input-antenna
+        href: https://echo.nas.techtales.io
+        description: Simple HTTP Echo Server
+        siteMonitor: https://echo.nas.techtales.io
