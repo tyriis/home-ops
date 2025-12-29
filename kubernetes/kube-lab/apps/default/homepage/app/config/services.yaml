@@ -92,6 +92,11 @@
         href: https://minio.nas.techtales.io
         description: Minio Object Storage
         siteMonitor: https://minio.nas.techtales.io
+    - Minio replication nas:
+        icon: minio-light
+        href: https://minio-replication.nas.techtales.io
+        description: Minio Object Storage
+        siteMonitor: https://minio-replication.nas.techtales.io
     - Harbor:
         icon: harbor
         href: https://harbor.techtales.io
