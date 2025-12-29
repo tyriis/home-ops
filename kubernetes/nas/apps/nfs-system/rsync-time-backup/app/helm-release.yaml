@@ -54,7 +54,7 @@ spec:
           app:
             image:
               repository: harbor.techtales.io/main/rsync-time-backup
-              tag: 25.12.1
+              tag: 25.12.2:sha256:552c6e0b5d988ed2ba30ff17f6680f5f5b5bd31bcb47b81781a084d8a9f424ed
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
