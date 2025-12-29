@@ -59,7 +59,7 @@
     #     # ping: cloudflare.techtales.io
     #     # siteMonitor: https://dash.cloudflare.com
     - Pocket ID:
-        icon: pocketid
+        icon: pocket-id
         href: https://id.techtales.io
         description: Identity Management and OIDC provider
         siteMonitor: https://id.techtales.io
