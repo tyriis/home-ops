@@ -86,7 +86,7 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Subtitles Manager for Movies and TV Shows
           gethomepage.dev/group: Arr
-          gethomepage.dev/icon: bazarr-dark
+          gethomepage.dev/icon: bazarr
           gethomepage.dev/name: Bazarr
         hostnames:
           - &host "{{ .Release.Name }}.techtales.io"
