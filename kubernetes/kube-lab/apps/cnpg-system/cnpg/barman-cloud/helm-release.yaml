@@ -44,7 +44,7 @@ spec:
               - --leader-elect
               - --log-level=debug
             env:
-              SIDECAR_IMAGE: ghcr.io/cloudnative-pg/plugin-barman-cloud-sidecar:v0.9.0@sha256:f6aa40ed2ac56163f40176e2829ca09beebc1fccd7858399608f5fd1ef663311
+              SIDECAR_IMAGE: ghcr.io/cloudnative-pg/plugin-barman-cloud-sidecar:v0.10.0@sha256:12b211f40b702a39b18859b0b96aa896e068135984f40c8b3e44e8b5d1610c7f
             probes:
               readiness:
                 enabled: true
