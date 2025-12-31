@@ -17,3 +17,4 @@ generatorOptions:
     kustomize.toolkit.fluxcd.io/substitute: disabled
 patches:
   - path: helm-release.patch.yaml
+  - path: external-secret.patch.yaml
