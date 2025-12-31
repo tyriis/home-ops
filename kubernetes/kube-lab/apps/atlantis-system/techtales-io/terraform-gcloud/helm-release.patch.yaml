@@ -19,6 +19,7 @@ spec:
                   name: ${APP}-env
             env:
               VAULT_ADDR: https://secrets.techtales.io
+              AWS_ENDPOINT_URL_S3: https://s3.nas.techtales.io/
     persistence:
       allowlist:
         type: configMap
