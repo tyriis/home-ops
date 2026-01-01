@@ -33,3 +33,5 @@ talosctl = "1.12.0"
 task = "3.43.3"
 # https://trivy.dev/
 trivy = "0.68.2"
+# minio client
+mc = "2025-08-13T08-35-41Z"
