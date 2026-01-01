@@ -168,39 +168,6 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app atlantis-techtales-io-terraform-opnsense
-spec:
-  targetNamespace: &namepsace atlantis-system
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  components:
-    - ../../../../../components/gatus/internal
-  path: ./kubernetes/kube-lab/apps/atlantis-system/techtales-io/terraform-opnsense
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  wait: true
-  prune: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-  dependsOn:
-    - name: external-secrets-stores
-      namespace: secops
-  postBuild:
-    substitute:
-      APP: *app
-      NAMESPACE: *namepsace
-      REPO: github.com/techtales-io/terraform-opnsense
-      GATUS_PORT: "4141"
-
----
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
   name: &app atlantis-techtales-io-terraform-vault
 spec:
   targetNamespace: &namespace atlantis-system
