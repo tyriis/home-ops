@@ -17,10 +17,9 @@ spec:
                   name: atlantis-techtales-io-env
               - secretRef:
                   name: ${APP}-env
-              - secretRef:
-                  name: ${APP}-github-token
             env:
               VAULT_ADDR: https://secrets.techtales.io
+              AWS_ENDPOINT_URL_S3: https://s3.nas.techtales.io/
     persistence:
       allowlist:
         type: configMap
