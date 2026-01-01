@@ -19,6 +19,8 @@ spec:
                   name: atlantis-tyriis-terraform-github-env
             env:
               ATLANTIS_REPO_ALLOWLIST: github.com/tyriis/terraform-github
+              VAULT_ADDR: https://secrets.techtales.io
+              AWS_ENDPOINT_URL_S3: https://s3.nas.techtales.io/
     persistence:
       allowlist:
         type: configMap
