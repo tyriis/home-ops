@@ -24,9 +24,9 @@ connectivity:
     target: 1.1.1.1:53
     interval: 1m
 endpoints:
-  - name: flux-webhook-kube-nas
+  - name: flux-webhook-nas
     group: external
-    url: https://flux-webhook-kube-nas.techtales.io
+    url: https://flux-webhook-nas.techtales.io
     interval: 1m
     client:
       dns-resolver: tcp://192.168.1.1:53
