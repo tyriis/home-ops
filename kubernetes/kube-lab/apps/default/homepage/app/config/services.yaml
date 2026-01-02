@@ -103,7 +103,7 @@
     - IT-Tools:
         icon: it-tools
         href: https://it-tools.techtales.io
-        description: IT-Tools Dashboard
+        description: Handy developer online tools
         siteMonitor: https://it-tools.techtales.io
 - Web:
     - Perplexity AI:

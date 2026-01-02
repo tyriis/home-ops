@@ -14,6 +14,10 @@ layout:
     style: columns
     # columns: 1
     tab: Home
+  Web:
+    style: columns
+    # columns: 1
+    tab: Home
   Observability:
     style: columns
     # columns: 1
