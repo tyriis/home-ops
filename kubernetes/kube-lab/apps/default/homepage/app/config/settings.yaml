@@ -58,6 +58,7 @@ layout:
     style: columns
     # columns: 1
     tab: IaC
+    header: false
   Infra:
     style: columns
     # columns: 1
@@ -66,23 +67,26 @@ layout:
     style: columns
     # columns: 1
     tab: IaC
-  "User IaC":
-    style: row
-    columns: 4
-    header: true
+    header: false
+  Jazzlyn:
+    style: columns
+    # columns: 1
     tab: IaC
-    "Tyriis Links":
-      style: columns
-      # columns: 1
-      tab: IaC
-    Tyriis:
-      style: columns
-      # columns: 1
-      tab: IaC
-    Jazzlyn:
-      style: columns
-      # columns: 1
-      tab: IaC
+  "Jazzlyn Links":
+    style: columns
+    # columns: 1
+    tab: IaC
+    header: false
+  Tyriis:
+    style: columns
+    # columns: 1
+    tab: IaC
+  "Tyriis Links":
+    style: columns
+    # columns: 1
+    tab: IaC
+    header: false
+
 quicklaunch:
   searchDescription: true
   hideInternetSearch: true
