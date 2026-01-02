@@ -101,13 +101,13 @@
         description: Plex Media Server
         siteMonitor: https://plex.techtales.io
     - IT-Tools:
-        icon: it-tools
+        icon: it-tools-light
         href: https://it-tools.techtales.io
         description: Handy developer online tools
         siteMonitor: https://it-tools.techtales.io
 - Web:
     - Perplexity AI:
-        icon: perplexity-dark
+        icon: si-perplexity
         href: https://perplexity.ai
         description: AI Search Engine
         ping: perplexity.ai
