@@ -17,30 +17,39 @@ layout:
   Observability:
     style: columns
     # columns: 1
+    tab: Test
   Development:
     style: columns
     # columns: 1
+    tab: Test
   Arr:
     style: columns
     # columns: 1
+    tab: Test
   Productivity:
     style: columns
     # columns: 1
+    tab: Test
   Networking:
     style: columns
     # columns: 1
+    tab: Test
   Home Automation:
     style: columns
     # columns: 1
+    tab: Test
   Storage:
     style: columns
     # columns: 1
+    tab: Test
   Terraform:
     style: columns
     # columns: 1
+    tab: IaC
   Favorites:
     style: columns
     # columns: 1
+    tab: Test
   Cloud:
     style: columns
     # columns: 1
