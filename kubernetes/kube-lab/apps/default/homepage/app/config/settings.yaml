@@ -41,6 +41,22 @@ layout:
   Favorites:
     style: columns
     # columns: 1
+  Cloud:
+    style: columns
+    # columns: 1
+    tab: IaC
+  Infra:
+    style: columns
+    # columns: 1
+    tab: IaC
+  Tyriis:
+    style: columns
+    # columns: 1
+    tab: IaC
+  Jazzlyn:
+    style: columns
+    # columns: 1
+    tab: IaC
 quicklaunch:
   searchDescription: true
   hideInternetSearch: true
