@@ -62,7 +62,15 @@ layout:
     style: columns
     # columns: 1
     tab: IaC
+  Infra Links:
+    style: columns
+    # columns: 1
+    tab: IaC
   Tyriis:
+    style: columns
+    # columns: 1
+    tab: IaC
+  Tyriis Links:
     style: columns
     # columns: 1
     tab: IaC
