@@ -159,3 +159,24 @@
         icon: si-github
         href: https://github.com/techtales-io/terraform-discord
         description: IaC for techtales dicord server
+    - techtales-io/terraform-gcloud:
+        icon: si-github
+        href: https://github.com/techtales-io/terraform-gcloud
+        description: IaC for Google Cloud resources
+    - techtales-io/terraform-github:
+        icon: si-github
+        href: https://github.com/techtales-io/terraform-github
+        description: IaC for GitHub repositories and org settings
+    - techtales-io/terraform-gworkspace:
+        icon: si-github
+        href: https://github.com/techtales-io/terraform-gworkspace
+        description: IaC for Google Workspace
+- Infra Links:
+    - techtales-io/terraform-minio:
+        icon: si-github
+        href: https://github.com/techtales-io/terraform-minio
+        description: IaC for Minio Object Storage
+    - techtales-io/terraform-vault:
+        icon: si-github
+        href: https://github.com/techtales-io/terraform-vault
+        description: IaC for OpenBao
