@@ -144,7 +144,7 @@ spec:
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Terraform Pull Request Automation
-          gethomepage.dev/group: Terraform
+          gethomepage.dev/group: ${GROUP:=Terraform}
           gethomepage.dev/icon: terraform
           gethomepage.dev/name: ${APP}
           gethomepage.dev/pod-selector: app.kubernetes.io/name=${APP}

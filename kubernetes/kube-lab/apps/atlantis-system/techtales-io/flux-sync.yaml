@@ -30,6 +30,7 @@ spec:
       NAMESPACE: *namespace
       REPO: github.com/techtales-io/terraform-discord
       GATUS_PORT: "4141"
+      GROUP: Cloud
 
 ---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -63,6 +64,7 @@ spec:
       NAMESPACE: *namespace
       REPO: github.com/techtales-io/terraform-gcloud
       GATUS_PORT: "4141"
+      GROUP: Cloud
 
 ---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -96,6 +98,7 @@ spec:
       NAMESPACE: *namespace
       REPO: github.com/techtales-io/terraform-github
       GATUS_PORT: "4141"
+      GROUP: Cloud
 
 ---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -129,7 +132,7 @@ spec:
       NAMESPACE: *namespace
       REPO: github.com/techtales-io/terraform-gworkspace
       GATUS_PORT: "4141"
-
+      GROUP: Cloud
 ---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -162,7 +165,7 @@ spec:
       NAMESPACE: *namespace
       REPO: github.com/techtales-io/terraform-minio
       GATUS_PORT: "4141"
-
+      GROUP: Infra
 ---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -195,3 +198,4 @@ spec:
       NAMESPACE: *namespace
       REPO: github.com/techtales-io/terraform-vault
       GATUS_PORT: "4141"
+      GROUP: Infra
