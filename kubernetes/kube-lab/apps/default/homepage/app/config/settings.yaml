@@ -66,9 +66,9 @@ layout:
     style: columns
     # columns: 1
     tab: IaC
-  User IaC:
-    # style: row
-    # columns: 4
+  "User IaC":
+    style: row
+    columns: 4
     header: false
     tab: IaC
 
@@ -76,7 +76,7 @@ layout:
       style: columns
       columns: 1
       tab: IaC
-    Tyriis Links:
+    "Tyriis Links":
       style: columns
       columns: 1
       tab: IaC
