@@ -68,11 +68,11 @@ layout:
     tab: IaC
   Tyriis:
     style: columns
-    # columns: 1
+    columns: 1
     tab: IaC
   Tyriis Links:
     style: columns
-    # columns: 1
+    columns: 1
     tab: IaC
   Jazzlyn:
     style: columns
