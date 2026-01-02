@@ -70,10 +70,12 @@ layout:
     style: columns
     # columns: 1
     tab: IaC
+    initiallyCollapsed: true
   "Jazzlyn Links":
     style: columns
     # columns: 1
     tab: IaC
+    initiallyCollapsed: true
   Tyriis:
     style: columns
     # columns: 1

@@ -190,10 +190,10 @@
         href: https://github.com/tyriis/home-ops
         description: IaC for Kubernetes with Flux
 - Jazzlyn:
-    - jazzlyn/terraform-github:
-        icon: si-github
-        description: IaC for Jazzlyn GitHub repositories
+    - placeholder:
+        icon: terraform
+        description: IaC for Jazzlyns Placeholder
 - "Jazzlyn Links":
-    - jazzlyn/terraform-github:
+    - placeholder:
         icon: si-github
-        description: IaC for Jazzlyn GitHub repositories
+        description: IaC for Jazzlyns Placeholder
