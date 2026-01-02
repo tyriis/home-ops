@@ -79,6 +79,18 @@
     #     description: HP LaserJet Printer Management
     #     ping: 192.168.1.8
     #     # siteMonitor: https://192.168.1.8/
+- Apps:
+    - FileBrowser:
+        icon: filebrowser-quantum
+        href: https://files.techtales.io
+        description: Web-based File Manager
+        siteMonitor: https://files.techtales.io
+    - Grafana:
+        icon: grafana
+        href: https://grafana.techtales.io
+        description: Grafana Dashboard and Visualization
+        siteMonitor: https://grafana.techtales.io
+
 - Storage:
     - FileBrowser:
         icon: filebrowser-quantum

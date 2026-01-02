@@ -9,35 +9,39 @@ layout:
   Connectivity:
     style: columns
     # columns: 1
-    tab: Test
+    tab: Home
+  Apps:
+    style: columns
+    # columns: 1
+    tab: Home
   Observability:
     style: columns
     # columns: 1
-    tab: Test
+    tab: Services
   Development:
     style: columns
     # columns: 1
-    tab: Test
+    tab: Home
   Arr:
     style: columns
     # columns: 1
-    tab: Test
+    tab: Services
   Productivity:
     style: columns
     # columns: 1
-    tab: Test
+    tab: Services
   Networking:
     style: columns
     # columns: 1
-    tab: Test
+    tab: Services
   Home Automation:
     style: columns
     # columns: 1
-    tab: Test
+    tab: Services
   Storage:
     style: columns
     # columns: 1
-    tab: Test
+    tab: Services
   Terraform:
     style: columns
     # columns: 1
@@ -45,7 +49,7 @@ layout:
   Favorites:
     style: columns
     # columns: 1
-    tab: Test
+    tab: Home
   Cloud:
     style: columns
     # columns: 1
