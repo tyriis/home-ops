@@ -154,3 +154,8 @@
         href: https://echo.nas.techtales.io
         description: Simple HTTP Echo Server
         siteMonitor: https://echo.nas.techtales.io
+- Cloud Links:
+    - techtales-io/terraform-discord:
+        icon: si-github
+        href: https://github.com/techtales-io/terraform-discord
+        description: IaC for techtales dicord server

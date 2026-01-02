@@ -54,6 +54,10 @@ layout:
     style: columns
     # columns: 1
     tab: IaC
+  Cloud Links:
+    style: columns
+    # columns: 1
+    tab: IaC
   Infra:
     style: columns
     # columns: 1
