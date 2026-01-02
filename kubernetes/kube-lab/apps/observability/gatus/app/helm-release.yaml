@@ -108,7 +108,7 @@ spec:
           external-dns/unifi: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Uptime Monitoring
-          gethomepage.dev/group: Status
+          gethomepage.dev/group: Connectivity
           gethomepage.dev/icon: *app
           gethomepage.dev/name: Gatus
         hostnames:

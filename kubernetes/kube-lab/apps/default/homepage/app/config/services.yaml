@@ -20,7 +20,7 @@
         icon: si-github
         href: https://github.com/bjw-s/home-ops
         description: https://github.com/bjw-s/home-ops
-- Infrasructure:
+- Connectivity:
     - FRITZ!Box:
         icon: avm-fritzbox
         href: http://192.168.178.1
@@ -46,29 +46,39 @@
         #   url: https://opnsense.techtales.io
         #   username: "{{HOMEPAGE_VAR_OPNSENSE_API_KEY}}"
         #   password: "{{HOMEPAGE_VAR_OPNSENSE_SECRET}}"
-    - OpenBAO:
-        icon: https://raw.githubusercontent.com/openbao/artwork/main/color/openbao-color.svg
-        href: https://secrets.techtales.io
-        description: OpenBao Secrets Management
-        # ping: openbao.techtales.io
-        siteMonitor: https://secrets.techtales.io
-    # - Cloudflare:
+    - Cloudflare:
+        icon: cloudflare
+        href: https://www.cloudflarestatus.com
+        description: Cloudflare Status
+        ping: www.cloudflarestatus.com
+    - GitHub:
+        icon: si-github
+        href: https://www.githubstatus.com
+        description: GitHub Status
+        ping: www.githubstatus.com
+    # - OpenBAO:
+    #     icon: https://raw.githubusercontent.com/openbao/artwork/main/color/openbao-color.svg
+    #     href: https://secrets.techtales.io
+    #     description: OpenBao Secrets Management
+    #     # ping: openbao.techtales.io
+    #     siteMonitor: https://secrets.techtales.io
+    # # - Cloudflare Dashboard:
     #     icon: cloudflare
     #     href: https://dash.cloudflare.com
     #     description: Cloudflare DNS and CDN
     #     # ping: cloudflare.techtales.io
     #     # siteMonitor: https://dash.cloudflare.com
-    - Pocket ID:
-        icon: pocket-id
-        href: https://id.techtales.io
-        description: Identity Management and OIDC provider
-        siteMonitor: https://id.techtales.io
-    - HP LaserJet:
-        icon: hp
-        href: https://192.168.1.8/sws/index.html
-        description: HP LaserJet Printer Management
-        ping: 192.168.1.8
-        # siteMonitor: https://192.168.1.8/
+    # - Pocket ID:
+    #     icon: pocket-id
+    #     href: https://id.techtales.io
+    #     description: Identity Management and OIDC provider
+    #     siteMonitor: https://id.techtales.io
+    # - HP LaserJet:
+    #     icon: hp
+    #     href: https://192.168.1.8/sws/index.html
+    #     description: HP LaserJet Printer Management
+    #     ping: 192.168.1.8
+    #     # siteMonitor: https://192.168.1.8/
 - Storage:
     - FileBrowser:
         icon: filebrowser-quantum
@@ -137,17 +147,6 @@
         description: Google Drive
         ping: drive.google.com
         # siteMonitor: https://drive.google.com
-- Status:
-    - Cloudflare:
-        icon: cloudflare
-        href: https://www.cloudflarestatus.com
-        description: Cloudflare Status
-        ping: www.cloudflarestatus.com
-    - GitHub:
-        icon: si-github
-        href: https://www.githubstatus.com
-        description: GitHub Status
-        ping: www.githubstatus.com
 - Networking:
     - EchoServer nas:
         icon: mdi-video-input-antenna

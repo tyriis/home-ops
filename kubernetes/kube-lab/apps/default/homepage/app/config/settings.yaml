@@ -6,14 +6,10 @@ headerStyle: clean
 iconStyle: theme
 target: _self
 layout:
-  Infrasructure:
+  Connectivity:
     style: columns
     # columns: 1
     tab: Test
-  Status:
-    style: columns
-    # columns: 1
-    tab: Test2
   Observability:
     style: columns
     # columns: 1
