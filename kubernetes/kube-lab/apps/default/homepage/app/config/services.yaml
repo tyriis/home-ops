@@ -90,7 +90,32 @@
         href: https://grafana.techtales.io
         description: Grafana Dashboard and Visualization
         siteMonitor: https://grafana.techtales.io
-
+    - Home Assistant:
+        icon: home-assistant
+        href: https://homeassistant.techtales.io
+        description: Home Automation Platform
+        siteMonitor: https://homeassistant.techtales.io
+    - Plex:
+        icon: plex
+        href: https://plex.techtales.io
+        description: Plex Media Server
+        siteMonitor: https://plex.techtales.io
+    - IT-Tools:
+        icon: it-tools
+        href: https://it-tools.techtales.io
+        description: IT-Tools Dashboard
+        siteMonitor: https://it-tools.techtales.io
+- Web:
+    - Perplexity AI:
+        icon: perplexity-dark
+        href: https://perplexity.ai
+        description: AI Search Engine
+        ping: perplexity.ai
+    - Kubesearch:
+        icon: kubernetes
+        href: https://kubesearch.dev/
+        description: Search Flux HelmReleases
+        siteMonitor: https://kubesearch.dev/
 - Storage:
     - FileBrowser:
         icon: filebrowser-quantum
