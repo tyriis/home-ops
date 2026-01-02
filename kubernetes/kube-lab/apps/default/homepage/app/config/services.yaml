@@ -92,9 +92,9 @@
         siteMonitor: https://grafana.techtales.io
     - Home Assistant:
         icon: home-assistant
-        href: https://homeassistant.techtales.io
+        href: https://hass.techtales.io
         description: Home Automation Platform
-        siteMonitor: https://homeassistant.techtales.io
+        siteMonitor: https://hass.techtales.io
     - Plex:
         icon: plex
         href: https://plex.techtales.io
