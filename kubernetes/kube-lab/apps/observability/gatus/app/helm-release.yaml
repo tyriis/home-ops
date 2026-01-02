@@ -111,7 +111,7 @@ spec:
           gethomepage.dev/group: Connectivity
           gethomepage.dev/icon: *app
           gethomepage.dev/name: Gatus
-          gethomepage.dev/weight: "0"
+          gethomepage.dev/weight: "-1"
         hostnames:
           - status.techtales.io
         parentRefs:
