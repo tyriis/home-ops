@@ -181,7 +181,7 @@
         href: https://github.com/techtales-io/terraform-vault
         description: IaC for OpenBao
 - "User IaC":
-    Tyriis:
+    # Tyriis:
     "Tyriis Links":
       - tyriis/terraform-github:
           icon: si-github
@@ -191,5 +191,5 @@
           icon: si-github
           href: https://github.com/tyriis/home-ops
           description: IaC for Kubernetes with Flux
-    Jazzlyn:
-    "Jazzlyn Links":
+    # Jazzlyn:
+    #"Jazzlyn Links":
