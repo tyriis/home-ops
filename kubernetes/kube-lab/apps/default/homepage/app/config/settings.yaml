@@ -69,7 +69,7 @@ layout:
   "User IaC":
     style: row
     columns: 4
-    header: false
+    header: true
     tab: IaC
     "Tyriis Links":
       style: columns
