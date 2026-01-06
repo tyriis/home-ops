@@ -8,6 +8,7 @@ components:
 resources:
   - ./namespace.yaml
   - ./bazarr/flux-sync.yaml
+  - ./jellyfin/flux-sync.yaml
   - ./nzbget/flux-sync.yaml
   - ./plex/flux-sync.yaml
   - ./prowlarr/flux-sync.yaml
