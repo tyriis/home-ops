@@ -133,16 +133,18 @@ spec:
           name: kustomize-controller
       # enable Helm repositories caching
       # https://fluxcd.io/flux/installation/configuration/vertical-scaling/#enable-helm-repositories-caching
+      # --helm-cache-max-size: 1.5 times the number of helm repositories
+      # --helm-cache-ttl: 1.5 times the spec.interval
       - patch: |
           - op: add
             path: /spec/template/spec/containers/0/args/-
-            value: --helm-cache-max-size=10
+            value: --helm-cache-max-size=85
           - op: add
             path: /spec/template/spec/containers/0/args/-
-            value: --helm-cache-ttl=60m
+            value: --helm-cache-ttl=45m
           - op: add
             path: /spec/template/spec/containers/0/args/-
-            value: --helm-cache-purge-interval=5m
+            value: --helm-cache-purge-interval=10m
         target:
           kind: Deployment
           name: source-controller
