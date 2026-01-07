@@ -3,13 +3,13 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app radarr
+  name: &app jellyfin
 spec:
   interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 4.6.0
+      version: 4.5.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -25,33 +25,20 @@ spec:
     keepHistory: false
   values:
     # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
+    # https://github.com/jellyfin/jellyfin
     controllers:
-      radarr:
+      jellyfin:
         replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: ghcr.io/home-operations/radarr
-              tag: 6.1.1.10317@sha256:dc191495299b0adf19f4347ffe35f773c56a04d71e38a1f06aa564547b6e799e
-            envFrom:
-              - secretRef:
-                  name: radarr-env
-            env:
-              # https://wiki.servarr.com/useful-tools#using-environment-variables-for-config
-              RADARR__APP__INSTANCENAME: Radarr
-              RADARR__APP__THEME: dark
-              RADARR__AUTH__METHOD: Forms
-              RADARR__AUTH__REQUIRED: DisabledForLocalAddresses
-              RADARR__LOG__ANALYTICSENABLED: "False"
-              RADARR__LOG__DBENABLED: "False"
-              RADARR__LOG__LEVEL: info
-              RADARR__SERVER__PORT: &port 7878
-              RADARR__UPDATE__BRANCH: develop
+              repository: ghcr.io/jellyfin/jellyfin
+              tag: 10.11.5@sha256:cd7e4cb71812dd76988a725da615e37c6d0d24c200be904ad5d183e51f1dc6ed
             ports:
               - name: http
-                containerPort: *port
+                containerPort: &port 8096
                 protocol: TCP
             probes:
               liveness: &probes
@@ -59,7 +46,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /ping
+                    path: /health
                     port: *port
               readiness: *probes
             securityContext:
@@ -68,8 +55,14 @@ spec:
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
+                gpu.intel.com/i915: 1
                 cpu: 10m
                 memory: 100Mi
+              limits:
+                gpu.intel.com/i915: 1
+        pod:
+          nodeSelector:
+            intel.feature.node.kubernetes.io/gpu: "true"
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -87,10 +80,10 @@ spec:
         annotations:
           external-dns/unifi: "true"
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Movies Collection Manager
+          gethomepage.dev/description: Media Streaming Server
           gethomepage.dev/group: Arr
-          gethomepage.dev/icon: radarr
-          gethomepage.dev/name: Radarr
+          gethomepage.dev/icon: jellyfin
+          gethomepage.dev/name: Jellyfin
         hostnames:
           - &host "{{ .Release.Name }}.techtales.io"
         parentRefs:
@@ -106,16 +99,15 @@ spec:
         path: /media
         globalMounts:
           - path: /media
+            readOnly: true
       tmpfs:
         type: emptyDir
         advancedMounts:
-          radarr:
+          jellyfin:
             app:
-              - path: /config/Backups
-                subPath: backup
-              - path: /config/MediaCover
+              - path: /cache
                 subPath: cache
-              - path: /config/logs
-                subPath: logs
+              - path: /config/log
+                subPath: log
               - path: /tmp
                 subPath: tmp

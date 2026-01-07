@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.5.0
+      version: 4.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -36,7 +36,7 @@ spec:
           fix-permissions:
             image:
               repository: busybox
-              tag: latest@sha256:d80cd694d3e9467884fcb94b8ca1e20437d8a501096cdf367a5a1918a34fc2fd
+              tag: latest@sha256:2383baad1860bbe9d8a7a843775048fd07d8afe292b94bd876df64a69aae7cb1
             command:
               - sh
               - -c
