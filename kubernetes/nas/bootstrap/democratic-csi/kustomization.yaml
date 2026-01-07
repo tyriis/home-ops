@@ -8,7 +8,7 @@ helmCharts:
     releaseName: local-hostpath
     repo: https://democratic-csi.github.io/charts/
     valuesFile: values.yaml
-    version: 0.15.0
+    version: 0.15.1
 commonAnnotations:
   meta.helm.sh/release-name: local-hostpath
   meta.helm.sh/release-namespace: democratic-csi
