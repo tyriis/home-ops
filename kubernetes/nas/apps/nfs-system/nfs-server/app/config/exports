@@ -1,1 +1,1 @@
-/export 192.168.100.0/24(rw,fsid=0,crossmnt,async,no_subtree_check,no_auth_nlm,insecure,all_squash,anonuid=1000,anongid=1000) 192.168.1.22(rw,fsid=0,crossmnt,async,no_subtree_check,no_auth_nlm,insecure,all_squash,anonuid=1000,anongid=1000)
+/export 192.168.100.0/24(rw,fsid=0,crossmnt,async,no_subtree_check,no_auth_nlm,insecure,all_squash,anonuid=1000,anongid=1000)
