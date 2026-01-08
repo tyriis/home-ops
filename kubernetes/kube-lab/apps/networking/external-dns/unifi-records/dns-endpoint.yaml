@@ -72,10 +72,6 @@ spec:
       recordType: A
       targets:
         - 192.168.1.4
-    - dnsName: minio.techtales.io
-      recordType: CNAME
-      targets:
-        - nas.techtales.io
 
 ---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/externaldns.k8s.io/dnsendpoint_v1alpha1.json

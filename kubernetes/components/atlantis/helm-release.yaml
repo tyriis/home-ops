@@ -104,7 +104,7 @@ spec:
               ATLANTIS_STATS_NAMESPACE: ${APP}
               ATLANTIS_REPO_ALLOWLIST: ${REPO}
               AWS_REGION: home
-              AWS_ENDPOINT_URL_S3: https://minio.techtales.io/
+              AWS_ENDPOINT_URL_S3: https://s3.nas.techtales.io/
               AWS_S3_FORCE_PATH_STYLE: "true"
             envFrom:
               - secretRef:

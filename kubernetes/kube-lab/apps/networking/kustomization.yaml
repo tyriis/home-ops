@@ -7,6 +7,5 @@ components:
   - ../../../components/flux/alerts
 resources:
   - ./namespace.yaml
-  # - ./adguard/flux-sync.yaml
   - ./cloudflared/flux-sync.yaml
   - ./external-dns/flux-sync.yaml
