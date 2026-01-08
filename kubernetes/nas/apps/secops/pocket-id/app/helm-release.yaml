@@ -29,20 +29,18 @@ spec:
       pocket-id:
         annotations:
           reloader.stakater.com/auto: "true"
-        replicas: 2
+        replicas: 1
         strategy: RollingUpdate
         containers:
           app:
             image:
               repository: ghcr.io/pocket-id/pocket-id
-              tag: v1.16.0@sha256:f8cde808e8e840acda25683fc2168e0206e3f3fb1a48cca89d211aafd87eaeef
+              tag: v2.1.0@sha256:f8ed26e8012ae60d5320735dcdecf7347778e2a31c69a147f5c030e017cb32d9
             env:
               # https://pocket-id.org/docs/configuration/environment-variables
               ANALYTICS_DISABLED: "true"
               APP_URL: https://id.techtales.io
-              DB_PROVIDER: postgres
               FILE_BACKEND: database
-              KEYS_STORAGE: database
               EMAILS_VERIFIED: "true"
               LOG_LEVEL: info
               LOG_JSON: "true"
