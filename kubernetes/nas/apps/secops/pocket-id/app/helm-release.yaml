@@ -40,9 +40,7 @@ spec:
               # https://pocket-id.org/docs/configuration/environment-variables
               ANALYTICS_DISABLED: "true"
               APP_URL: https://id.techtales.io
-              DB_PROVIDER: postgres
               FILE_BACKEND: database
-              KEYS_STORAGE: database
               EMAILS_VERIFIED: "true"
               LOG_LEVEL: info
               LOG_JSON: "true"
