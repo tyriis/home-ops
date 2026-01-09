@@ -26,7 +26,7 @@ spec:
     metrics:
       prometheus:
         compression:
-          type: Zstd
+          type: Gzip
 ---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/gateway.networking.k8s.io/gatewayclass_v1.json
 apiVersion: gateway.networking.k8s.io/v1
@@ -55,8 +55,6 @@ spec:
     - type: Zstd
     - type: Brotli
     - type: Gzip
-  connection:
-    bufferLimit: 32Mi
   tcpKeepalive: {}
   timeout:
     http:
@@ -73,11 +71,7 @@ spec:
     xForwardedFor:
       trustedCIDRs:
         - 10.244.0.0/16
-  connection:
-    bufferLimit: 32Mi
-    maxAcceptPerSocketEvent: 0
   http2:
-    maxConcurrentStreams: 1000
     onInvalidMessage: TerminateStream
   http3: {}
   targetSelectors:
