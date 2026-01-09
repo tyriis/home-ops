@@ -7,4 +7,4 @@ components:
   - ../../../components/flux/alerts
 resources:
   - ./namespace.yaml
-  - ./system-upgrade-controller/flux-sync.yaml
+  - ./tuppr/flux-sync.yaml
