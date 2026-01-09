@@ -13,7 +13,7 @@ allowSchedulingOnControlPlanes: true
 cniConfig:
   name: none
 nodes:
-  # Intel N3450 / 16GB / SAMSUNG SSD 870 EVO 500GB SATA / SAMSUNG SSD 870 EVO 500GB SATA / SAMSUNG SSD 870 EVO 500GB USB
+  # Intel N250 / 16GB / WD BLACK SN7100 1TB NVME / SAMSUNG SSD 870 EVO 500GB USB / SAMSUNG SSD 870 EVO 500GB USB
   - hostname: nas01
     ipAddress: 192.168.100.11
     controlPlane: true
@@ -23,8 +23,7 @@ nodes:
       useUKI: true
       secureboot: true
     installDiskSelector:
-      size: 500GB
-      model: Samsung SSD 870
+      serial: "254816806483"
     nodeLabels:
       topology.kubernetes.io/zone: home
       talos.sidero.dev/secureboot: >-
@@ -38,13 +37,13 @@ nodes:
     nameservers:
       - 192.168.1.1
     networkInterfaces:
-      - interface: enp2s0
+      - interface: enp1s0
         mtu: 1500
         dhcp: true
         vip:
           ip: 192.168.100.10
 
-  # Intel N100 / 32 GB / Samsung SSD 990 PRO 1TB / WDC WD80EFPX-68C 8TB / WDC WD80EFPX-68C 8TB
+  # Intel N100 / 32 GB / Samsung SSD 990 PRO 1TB NVME / WDC WD80EFPX-68C 8TB SATA / WDC WD80EFPX-68C 8TB SATA
   - hostname: nas02
     ipAddress: 192.168.100.12
     controlPlane: false
@@ -83,6 +82,7 @@ controlPlane:
       systemExtensions:
         officialExtensions:
           - siderolabs/intel-ucode
+          - siderolabs/nvme-cli
           - siderolabs/zfs
       extraKernelArgs:
         - apparmor=0 # Less security, faster puter
