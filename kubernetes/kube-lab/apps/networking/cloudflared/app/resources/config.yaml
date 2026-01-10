@@ -27,6 +27,8 @@ ingress:
     service: https://atlantis-techtales-io-terraform-gworkspace-webhook.techtales.io
   - hostname: atlantis-techtales-io-terraform-gcloud-webhook.techtales.io
     service: https://atlantis-techtales-io-terraform-gcloud-webhook.techtales.io
+  - hostname: atlantis-techtales-io-terraform-harbor-webhook.techtales.io
+    service: https://atlantis-techtales-io-terraform-harbor-webhook.techtales.io
   - hostname: atlantis-techtales-io-terraform-minio-webhook.techtales.io
     service: https://atlantis-techtales-io-terraform-minio-webhook.techtales.io
   - hostname: atlantis-techtales-io-terraform-opnsense-webhook.techtales.io
