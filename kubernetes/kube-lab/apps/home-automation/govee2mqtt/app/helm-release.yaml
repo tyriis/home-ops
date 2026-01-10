@@ -36,7 +36,7 @@ spec:
               # GOVEE_LAN_NO_MULTICAST: "true"
               # GOVEE_LAN_BROADCAST_ALL: "false"
               # GOVEE_LAN_BROADCAST_GLOBAL: "false"
-              GOVEE_LAN_SCAN: 192.168.10.30,192.168.10.31,192.168.10.255
+              GOVEE_LAN_SCAN: 192.168.10.30,192.168.10.31,192.168.10.32,192.168.10.255
               GOVEE_MQTT_HOST: mqtt.techtales.io
               GOVEE_MQTT_PORT: 1883
               GOVEE_TEMPERATURE_SCALE: C
