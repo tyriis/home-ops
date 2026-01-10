@@ -152,8 +152,8 @@ spec:
         hostnames:
           - "{{ .Release.Name }}.techtales.io"
         parentRefs:
-          - name: cilium
-            namespace: kube-system
+          - name: envoy
+            namespace: networking
             sectionName: https
       webhook:
         annotations:
@@ -162,8 +162,8 @@ spec:
         hostnames:
           - "{{ .Release.Name }}-webhook.techtales.io"
         parentRefs:
-          - name: cilium
-            namespace: kube-system
+          - name: envoy
+            namespace: networking
             sectionName: https
         rules:
           - backendRefs:
