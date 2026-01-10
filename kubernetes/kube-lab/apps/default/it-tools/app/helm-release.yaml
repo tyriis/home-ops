@@ -77,8 +77,8 @@ spec:
         hostnames:
           - &host it-tools.techtales.io
         parentRefs:
-          - name: cilium
-            namespace: kube-system
+          - name: envoy
+            namespace: networking
             sectionName: https
 
     persistence:

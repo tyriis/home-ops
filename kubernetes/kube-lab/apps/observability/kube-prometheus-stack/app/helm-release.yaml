@@ -45,8 +45,8 @@ spec:
           hostnames:
             - alertmanager.techtales.io
           parentRefs:
-            - name: cilium
-              namespace: kube-system
+            - name: envoy
+              namespace: networking
               sectionName: https
       alertmanagerSpec:
         alertmanagerConfiguration:
@@ -192,6 +192,6 @@ spec:
           hostnames:
             - prometheus.techtales.io
           parentRefs:
-            - name: cilium
-              namespace: kube-system
+            - name: envoy
+              namespace: networking
               sectionName: https

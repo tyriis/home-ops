@@ -72,6 +72,6 @@ spec:
         hostnames:
           - speedtest.techtales.io
         parentRefs:
-          - name: cilium
-            namespace: kube-system
+          - name: envoy
+            namespace: networking
             sectionName: https

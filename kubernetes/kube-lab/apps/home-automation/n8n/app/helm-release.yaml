@@ -93,8 +93,8 @@ spec:
         hostnames:
           - *host
         parentRefs:
-          - name: cilium
-            namespace: kube-system
+          - name: envoy
+            namespace: networking
             sectionName: https
 
       webhooks:
@@ -104,8 +104,8 @@ spec:
         hostnames:
           - n8n-webhook.techtales.io
         parentRefs:
-          - name: cilium
-            namespace: kube-system
+          - name: envoy
+            namespace: networking
             sectionName: https
         rules:
           - matches:

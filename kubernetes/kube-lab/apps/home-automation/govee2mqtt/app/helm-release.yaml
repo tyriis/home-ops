@@ -92,8 +92,8 @@ spec:
         hostnames:
           - govee2mqtt.techtales.io
         parentRefs:
-          - name: cilium
-            namespace: kube-system
+          - name: envoy
+            namespace: networking
             sectionName: https
 
     persistence:

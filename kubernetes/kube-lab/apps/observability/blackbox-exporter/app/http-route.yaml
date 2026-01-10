@@ -16,8 +16,8 @@ spec:
   hostnames:
     - blackbox-exporter.techtales.io
   parentRefs:
-    - name: cilium
-      namespace: kube-system
+    - name: envoy
+      namespace: networking
       sectionName: https
   rules:
     - backendRefs:

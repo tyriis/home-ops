@@ -40,8 +40,8 @@ spec:
           path: /
           pathType: PathPrefix
         parentRefs:
-          - name: cilium
-            namespace: kube-system
+          - name: envoy
+            namespace: networking
             sectionName: https
 
     cephClusterSpec:

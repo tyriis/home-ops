@@ -15,8 +15,8 @@ spec:
   hostnames:
     - podinfo.techtales.io
   parentRefs:
-    - name: cilium
-      namespace: kube-system
+    - name: envoy
+      namespace: networking
       sectionName: https
   rules:
     - backendRefs:
