@@ -51,8 +51,8 @@ spec:
     #     hostnames:
     #       - &host flux-webhook-kube-lab.techtales.io
     #     parentRefs:
-    #       - name: cilium
-    #         namespace: kube-system
+    #       - name: envoy
+    #         namespace: networking
     #         sectionName: https
     #     rules:
     #       - backendRefs:

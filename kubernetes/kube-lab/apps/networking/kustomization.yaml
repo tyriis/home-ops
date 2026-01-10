@@ -8,4 +8,5 @@ components:
 resources:
   - ./namespace.yaml
   - ./cloudflared/flux-sync.yaml
+  - ./envoy-gateway/flux-sync.yaml
   - ./external-dns/flux-sync.yaml
