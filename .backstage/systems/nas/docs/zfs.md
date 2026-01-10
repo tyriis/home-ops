@@ -112,3 +112,62 @@ errors: No known data errors
 ## create named datasets
 
 create an openebs zfsvolume
+
+## DR
+
+### restore the encryption key
+
+```terminal
+echo "my-secret-key0123456789" > /host/var/lib/zfs/encryption.key
+chmod 600 /host/var/lib/zfs/encryption.key
+```
+
+### check if the pool can be imported
+
+```console
+chroot /host zpool import
+```
+
+```console
+  pool: glacier
+    id: 17419615542118046973
+ state: ONLINE
+action: The pool can be imported using its name or numeric identifier.
+config:
+
+        glacier     ONLINE
+          mirror-0  ONLINE
+            sdb     ONLINE
+            sda     ONLINE
+```
+
+### import the pool
+
+```console
+chroot /host zpool import -l glacier
+```
+
+```console
+1 / 1 keys successfully loaded
+```
+
+### test
+
+```console
+chroot /host zpool status
+```
+
+```console
+  pool: glacier
+ state: ONLINE
+  scan: resilvered 0B in 00:00:00 with 0 errors on Sat Dec 27 21:46:22 2025
+config:
+
+        NAME        STATE     READ WRITE CKSUM
+        glacier     ONLINE       0     0     0
+          mirror-0  ONLINE       0     0     0
+            sdb     ONLINE       0     0     0
+            sda     ONLINE       0     0     0
+
+errors: No known data errors
+```
