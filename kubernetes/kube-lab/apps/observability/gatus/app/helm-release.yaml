@@ -31,24 +31,20 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
-          init-config:
+          gatus-sidecar:
             image:
-              repository: ghcr.io/home-operations/k8s-sidecar
-              tag: 1.30.11@sha256:d8a53f834b0fe70030df75f3f956d1c5e56fbb067b09803708b2bc26e26cfc12
-            # https://github.com/kiwigrid/k8s-sidecar
-            env:
-              FOLDER: /config
-              LABEL: gatus.io/enabled
-              NAMESPACE: ALL
-              RESOURCE: configmap
-              UNIQUE_FILENAMES: true
-              METHOD: WATCH
-            restartPolicy: Always
+              repository: ghcr.io/home-operations/gatus-sidecar
+              tag: 0.0.12@sha256:83bf82d422e9b0529a8076cb584d557a12158d9d8a4c373b4d27afcb87a17569
+            args:
+              - --auto-httproute
+              - --enable-httproute
+              - --enable-service
             resources:
               requests:
                 cpu: 10m
               limits:
-                memory: 256Mi
+                memory: 64Mi
+            restartPolicy: Always
         containers:
           app:
             image:
@@ -57,7 +53,7 @@ spec:
             env:
               GATUS_CONFIG_PATH: /config
               GATUS_DELAY_START_SECONDS: 5
-              WEB_PORT: &port 80
+              GATUS_WEB_PORT: &port 80
             probes:
               liveness: &probes
                 enabled: true
@@ -74,14 +70,14 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities:
+                drop:
+                  - ALL
             resources:
               requests:
                 cpu: 100m
               limits:
                 memory: 256Mi
-        serviceAccount:
-          identifier: gatus
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -124,9 +120,23 @@ spec:
         gatus:
           type: ClusterRole
           rules:
-            - apiGroups: [""]
-              resources: ["configmaps"]
-              verbs: ["get", "watch", "list"]
+            - apiGroups:
+                - ""
+              resources:
+                - services
+              verbs:
+                - get
+                - watch
+                - list
+            - apiGroups:
+                - gateway.networking.k8s.io
+              resources:
+                - gateways
+                - httproutes
+              verbs:
+                - get
+                - watch
+                - list
       bindings:
         gatus:
           type: ClusterRoleBinding
