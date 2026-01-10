@@ -24,15 +24,23 @@ tasks:
     desc: Unlock the restic repository
     vars:
       CLUSTER: '{{ .CLUSTER | default "kube-lab"}}'
-      SOPS_FILE: './kubernetes/{{ .CLUSTER }}/apps/{{ .NAMESPACE }}/{{ .APP }}/{{ .SUB_PATH | default "app" }}/secret.sops.yaml'
+      VAULT_DATA:
+        sh: vault kv get -format=yaml "infra/talos-flux/volsync/{{ .PVC }}" | yq ".data.data"
+      RESTIC_REPOSITORY:
+        sh: echo '{{ .VAULT_DATA }}' | yq .RESTIC_REPOSITORY
+      RESTIC_PASSWORD:
+        sh: echo '{{ .VAULT_DATA }}' | yq .RESTIC_PASSWORD
+      AWS_ACCESS_KEY_ID:
+        sh: echo '{{ .VAULT_DATA }}' | yq .AWS_ACCESS_KEY_ID
+      AWS_SECRET_ACCESS_KEY:
+        sh: echo '{{ .VAULT_DATA }}' | yq .AWS_SECRET_ACCESS_KEY
     requires:
       vars:
-        - APP
-        - NAMESPACE
+        - PVC
     cmds:
       - |
-        RESTIC_REPOSITORY=$(sops decrypt "{{ .SOPS_FILE }}" | yq .stringData.RESTIC_REPOSITORY) \
-        RESTIC_PASSWORD=$(sops decrypt "{{ .SOPS_FILE }}" | yq .stringData.RESTIC_PASSWORD) \
-        AWS_ACCESS_KEY_ID=$(sops decrypt "{{ .SOPS_FILE }}" | yq .stringData.AWS_ACCESS_KEY_ID) \
-        AWS_SECRET_ACCESS_KEY=$(sops decrypt "{{ .SOPS_FILE }}" | yq .stringData.AWS_SECRET_ACCESS_KEY) \
+        RESTIC_REPOSITORY='{{ .RESTIC_REPOSITORY }}' \
+        RESTIC_PASSWORD='{{ .RESTIC_PASSWORD }}' \
+        AWS_ACCESS_KEY_ID='{{ .AWS_ACCESS_KEY_ID }}' \
+        AWS_SECRET_ACCESS_KEY='{{ .AWS_SECRET_ACCESS_KEY }}' \
         restic unlock
