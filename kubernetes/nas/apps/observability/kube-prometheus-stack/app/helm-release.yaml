@@ -42,7 +42,7 @@ spec:
           parentRefs:
             - name: envoy
               namespace: networking
-              sectionName: https-nas
+              sectionName: https
       alertmanagerSpec:
         alertmanagerConfiguration:
           name: alertmanager
@@ -174,4 +174,4 @@ spec:
           parentRefs:
             - name: envoy
               namespace: networking
-              sectionName: https-nas
+              sectionName: https

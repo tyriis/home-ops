@@ -13,17 +13,6 @@ spec:
       external-dns.alpha.kubernetes.io/hostname: *hostname
       lbipam.cilium.io/ips: 192.168.100.20
   listeners:
-    - name: https-nas
-      protocol: HTTPS
-      port: 443
-      hostname: "*.nas.techtales.io"
-      allowedRoutes:
-        namespaces:
-          from: All
-      tls:
-        certificateRefs:
-          - kind: Secret
-            name: nas-techtales-io-tls
     - name: http
       protocol: HTTP
       port: 80
@@ -42,3 +31,5 @@ spec:
         certificateRefs:
           - kind: Secret
             name: techtales-io-tls
+          - kind: Secret
+            name: nas-techtales-io-tls

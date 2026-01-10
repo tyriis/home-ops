@@ -89,4 +89,4 @@ spec:
         parentRefs:
           - name: envoy
             namespace: networking
-            sectionName: https-nas
+            sectionName: https
