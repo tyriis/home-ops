@@ -53,7 +53,9 @@ spec:
             env:
               GATUS_CONFIG_PATH: /config
               GATUS_DELAY_START_SECONDS: 5
-              GATUS_WEB_PORT: &port 80
+            ports:
+              - containerPort: &port 8080
+                name: http
             probes:
               liveness: &probes
                 enabled: true
