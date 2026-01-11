@@ -12,6 +12,14 @@ metadata:
     gethomepage.dev/name: Argo Workflows
     gethomepage.dev/pod-selector: app.kubernetes.io/name=argo-workflows-server
     external-dns/unifi: "true"
+    gatus.home-operations.com/endpoint: |
+      interval: 1m
+      group: internal
+      ui:
+        hide-hostname: true
+        hide-url: true
+      conditions:
+        - "[STATUS] == 200"
 spec:
   hostnames:
     - argo-workflows.techtales.io
