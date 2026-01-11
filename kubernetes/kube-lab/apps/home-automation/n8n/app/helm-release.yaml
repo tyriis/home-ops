@@ -83,6 +83,12 @@ spec:
       app:
         annotations:
           external-dns/unifi: "true"
+          gatus.home-operations.com/endpoint: |
+            name: n8n
+            group: internal
+            ui:
+              hide-hostname: true
+              hide-url: true
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Flexible AI workflow automation
           gethomepage.dev/group: Home Automation
@@ -101,6 +107,16 @@ spec:
         annotations:
           external-dns/cloudflare: "true"
           external-dns/unifi: "true"
+          gatus.home-operations.com/endpoint: |
+            name: n8n-webhook
+            group: external
+            client:
+              dns-resolver: tcp://1.1.1.1:53
+            ui:
+              hide-hostname: true
+              hide-url: true
+            conditions:
+              - "[STATUS] == 404"
         hostnames:
           - n8n-webhook.techtales.io
         parentRefs:
