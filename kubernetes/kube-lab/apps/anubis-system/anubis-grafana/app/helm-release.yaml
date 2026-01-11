@@ -109,6 +109,7 @@ spec:
       app:
         annotations:
           external-dns/unifi: "true"
+          gatus.home-operations.com/enabled: "false"
         hostnames:
           - "{{ .Release.Name }}.techtales.io"
         parentRefs:
