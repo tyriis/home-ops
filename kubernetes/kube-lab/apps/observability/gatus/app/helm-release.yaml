@@ -105,6 +105,8 @@ spec:
         annotations:
           external-dns/cloudflare: "true"
           external-dns/unifi: "true"
+          gatus.home-operations.com/endpoint: |
+            group: external
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Uptime Monitoring
           gethomepage.dev/group: Connectivity
