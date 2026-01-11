@@ -44,45 +44,29 @@ spec:
               - kind: GitRepository
                 name: flux-system
                 namespace: flux-system
-    # route:
-    #   app:
-    #     # annotations:
-    #     #   external-dns/cloudflare: "true"
-    #     hostnames:
-    #       - &host flux-webhook-kube-lab.techtales.io
-    #     parentRefs:
-    #       - name: envoy
-    #         namespace: networking
-    #         sectionName: https
-    #     rules:
-    #       - backendRefs:
-    #           - name: webhook-receiver
-    #             namespace: flux-system
-    #             port: 80
-    #         matches:
-    #           - path:
-    #               value: /hook
-
-    ingress:
+    route:
       app:
-        className: nginx
         annotations:
-          external-dns.alpha.kubernetes.io/target: lab-ingress.techtales.io
           external-dns/cloudflare: "true"
           external-dns/unifi: "true"
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          kubernetes.io/tls-acme: "true"
-          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-          nginx.ingress.kubernetes.io/ssl-redirect: "true"
+          gatus.home-operations.com/endpoint: |
+            interval: 1m
+            group: external
+            client:
+              dns-resolver: tcp://1.1.1.1:53
+        hostnames:
+          - flux-webhook-kube-lab.techtales.io
+        parentRefs:
+          - name: envoy
+            namespace: networking
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: webhook-receiver
+                namespace: flux-system
+                port: 80
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /hook/
 
-        hosts:
-          - host: &host ${GATUS_SUBDOMAIN}.techtales.io
-            paths:
-              - path: /
-                service:
-                  name: webhook-receiver
-                  port: 80
-        tls:
-          - hosts:
-              - *host
-            secretName: "{{ .Release.Name }}-tls"
