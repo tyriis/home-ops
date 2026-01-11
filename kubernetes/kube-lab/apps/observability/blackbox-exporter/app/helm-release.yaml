@@ -98,6 +98,11 @@ spec:
           name: roborock-downstairs-icmp
           url: roborock-downstairs.localdomain
 
+        # Vacuum robot basement
+        - module: icmp
+          name: roborock-basement-icmp
+          url: roborock-basement.localdomain
+
         - module: icmp
           name: ping-cloudflare
           url: 1.1.1.1
