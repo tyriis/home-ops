@@ -89,6 +89,8 @@ spec:
             ui:
               hide-hostname: true
               hide-url: true
+            conditions:
+              - '[STATUS] == 401'
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Media Streaming Server
           gethomepage.dev/group: Arr
