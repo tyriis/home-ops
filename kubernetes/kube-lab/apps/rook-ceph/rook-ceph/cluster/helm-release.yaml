@@ -29,6 +29,12 @@ spec:
       dashboard:
         annotations:
           external-dns/unifi: "true"
+          gatus.home-operations.com/endpoint: |
+            name: rook-ceph
+            group: internal
+            ui:
+              hide-hostname: true
+              hide-url: true
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Cloud-Native Storage
           gethomepage.dev/group: Storage
