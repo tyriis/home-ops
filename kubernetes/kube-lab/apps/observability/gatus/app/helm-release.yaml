@@ -107,6 +107,8 @@ spec:
           external-dns/unifi: "true"
           gatus.home-operations.com/endpoint: |
             group: external
+            client:
+              dns-resolver: tcp://1.1.1.1:53
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Uptime Monitoring
           gethomepage.dev/group: Connectivity
