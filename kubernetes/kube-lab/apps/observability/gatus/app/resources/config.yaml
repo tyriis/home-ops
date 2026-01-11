@@ -28,6 +28,9 @@ endpoints:
     group: external
     url: https://flux-webhook-nas.techtales.io
     interval: 1m
+    ui:
+      hide-hostname: true
+      hide-url: true
     client:
       dns-resolver: tcp://192.168.1.1:53
     conditions:
@@ -51,15 +54,15 @@ endpoints:
   #   ui:
   #     hide-hostname: false
   #     hide-url: false
-  - name: NAS
-    group: infrastructure
-    url: https://nas.techtales.io
-    interval: 1m
-    conditions:
-      - "[STATUS] == 200"
-    ui:
-      hide-hostname: false
-      hide-url: false
+  # - name: NAS
+  #   group: infrastructure
+  #   url: https://nas.techtales.io
+  #   interval: 1m
+  #   conditions:
+  #     - "[STATUS] == 200"
+  #   ui:
+  #     hide-hostname: false
+  #     hide-url: false
   - name: OpenBAO
     group: infrastructure
     url: https://secrets.techtales.io/ui/
