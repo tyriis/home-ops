@@ -128,6 +128,18 @@ spec:
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: ${CILIUM_LB_IPS}
+          gatus.home-operations.com/enabled: "true"
+          gatus.home-operations.com/endpoint: |
+            name: minecraft-public-velocity-proxy
+            group: minecraft
+            url: tcp://minecraft-public-velocity-proxy-velocity.gaming.svc.cluster.local:25565
+            interval: 1m
+            ui:
+              hide-hostname: true
+              hide-url: true
+            conditions:
+              - "[CONNECTED] == true" # Validates TCP connection success
+              - "[RESPONSE_TIME] < 500" # Optional: Alert if latency exceeds 500ms
         ports:
           velocity-proxy:
             port: *port
