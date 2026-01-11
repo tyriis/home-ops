@@ -168,6 +168,9 @@ spec:
           gatus.home-operations.com/endpoint: |
             interval: 1m
             group: external
+            ui:
+              hide-hostname: true
+              hide-url: true
             client:
               dns-resolver: tcp://1.1.1.1:53
             conditions:
