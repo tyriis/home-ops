@@ -26,4 +26,3 @@ spec:
     substitute:
       APP: *app
       NAMESPACE: *namespace
-      GATUS_PORT: "7007"

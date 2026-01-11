@@ -65,7 +65,7 @@ spec:
         controller: *app
         ports:
           http:
-            port: ${GATUS_PORT}
+            port: 1880
 
     route:
       app:

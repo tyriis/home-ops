@@ -27,5 +27,3 @@ spec:
       APP: *app
       NAMESPACE: *namespace
       REPO: github.com/tyriis/terraform-github
-      GATUS_PORT: "4141"
-      GROUP: Tyriis
