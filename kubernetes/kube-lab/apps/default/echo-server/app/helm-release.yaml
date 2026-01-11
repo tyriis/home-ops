@@ -84,6 +84,11 @@ spec:
           gethomepage.dev/group: Networking
           gethomepage.dev/icon: mdi-video-input-antenna
           gethomepage.dev/name: Echo Server
+          gatus.home-operations.com/endpoint: |
+            interval: 1m
+            group: external
+            client:
+              dns-resolver: tcp://1.1.1.1:53
         hostnames:
           - &host echo.techtales.io
         parentRefs:
