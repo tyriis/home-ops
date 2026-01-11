@@ -122,16 +122,9 @@ spec:
     route:
       main:
         annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Terraform Pull Request Automation
-          gethomepage.dev/group: ${GROUP:=Terraform}
-          gethomepage.dev/icon: terraform
-          gethomepage.dev/name: ${APP}
-          gethomepage.dev/pod-selector: app.kubernetes.io/name=${APP}
           external-dns/unifi: "true"
           external-dns/cloudflare: "true"
           gatus.home-operations.com/endpoint: |
-            interval: 1m
             group: external
             client:
               dns-resolver: tcp://1.1.1.1:53

@@ -128,8 +128,8 @@ spec:
           lbipam.cilium.io/ips: ${CILIUM_LB_IPS}
           gatus.home-operations.com/enabled: "true"
           gatus.home-operations.com/endpoint: |
-            name: velocity-proxy private
-            group: minecraft
+            name: minecraft velocity-proxy
+            group: internal
             url: tcp://minecraft-velocity-proxy-velocity.gaming.svc.cluster.local:25565
             ui:
               hide-hostname: true

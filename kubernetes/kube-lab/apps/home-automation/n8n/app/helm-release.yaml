@@ -108,9 +108,6 @@ spec:
             group: external
             client:
               dns-resolver: tcp://1.1.1.1:53
-            ui:
-              hide-hostname: true
-              hide-url: true
             conditions:
               - "[STATUS] == 404"
         hostnames:
