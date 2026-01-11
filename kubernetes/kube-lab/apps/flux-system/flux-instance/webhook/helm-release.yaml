@@ -54,6 +54,8 @@ spec:
             group: external
             client:
               dns-resolver: tcp://1.1.1.1:53
+            conditions:
+              - "[STATUS] == 404"
         hostnames:
           - flux-webhook-kube-lab.techtales.io
         parentRefs:
