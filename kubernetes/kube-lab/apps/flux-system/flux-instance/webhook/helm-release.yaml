@@ -50,6 +50,7 @@ spec:
           external-dns/cloudflare: "true"
           external-dns/unifi: "true"
           gatus.home-operations.com/endpoint: |
+            name: flux-webhook-kube-lab
             interval: 1m
             group: external
             client:
