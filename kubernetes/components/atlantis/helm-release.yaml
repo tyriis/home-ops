@@ -149,12 +149,6 @@ spec:
           gethomepage.dev/name: ${APP}
           gethomepage.dev/pod-selector: app.kubernetes.io/name=${APP}
           external-dns/unifi: "true"
-          gatus.home-operations.com/endpoint: |
-            interval: 1m
-            group: internal
-            ui:
-              hide-hostname: true
-              hide-url: true
         hostnames:
           - "{{ .Release.Name }}.techtales.io"
         parentRefs:

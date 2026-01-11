@@ -81,12 +81,6 @@ spec:
       app:
         annotations:
           external-dns/unifi: "true"
-          gatus.home-operations.com/endpoint: |
-            interval: 1m
-            group: internal
-            ui:
-              hide-hostname: true
-              hide-url: true
         hostnames:
           - home.techtales.io
         parentRefs:

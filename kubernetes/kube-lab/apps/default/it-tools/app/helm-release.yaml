@@ -69,12 +69,6 @@ spec:
       app:
         annotations:
           external-dns/unifi: "true"
-          gatus.home-operations.com/endpoint: |
-            interval: 1m
-            group: internal
-            ui:
-              hide-hostname: true
-              hide-url: true
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Handy developer online tools
           gethomepage.dev/group: Development

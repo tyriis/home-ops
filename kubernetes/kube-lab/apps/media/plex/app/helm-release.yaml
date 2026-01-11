@@ -85,10 +85,6 @@ spec:
         annotations:
           external-dns/unifi: "true"
           gatus.home-operations.com/endpoint: |
-            group: internal
-            ui:
-              hide-hostname: true
-              hide-url: true
             conditions:
               - '[STATUS] == 401'
           gethomepage.dev/enabled: "true"
