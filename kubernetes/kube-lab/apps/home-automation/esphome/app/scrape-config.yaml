@@ -77,3 +77,35 @@ spec:
   metricsPath: /metrics
   scheme: HTTP
   scrapeInterval: 15s
+
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: &name bt-proxy-office
+spec:
+  staticConfigs:
+    - targets:
+        - 192.168.10.65:80
+      labels:
+        job: *name
+  metricsPath: /metrics
+  scheme: HTTP
+  scrapeInterval: 15s
+
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: &name bt-proxy-diningroom
+spec:
+  staticConfigs:
+    - targets:
+        - 192.168.10.65:80
+      labels:
+        job: *name
+  metricsPath: /metrics
+  scheme: HTTP
+  scrapeInterval: 15s
