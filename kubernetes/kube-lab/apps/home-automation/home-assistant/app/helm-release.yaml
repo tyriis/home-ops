@@ -97,33 +97,6 @@ spec:
           code-server:
             port: 12321
 
-    # ingress:
-    #   app:
-    #     enabled: true
-    #     className: nginx
-    #     annotations:
-    #       cert-manager.io/cluster-issuer: letsencrypt-production
-    #       kubernetes.io/tls-acme: "true"
-    #       nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    #       nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    #       gethomepage.dev/enabled: "true"
-    #       gethomepage.dev/description: Home Automation That Puts Local Control
-    #       gethomepage.dev/group: Home Automation
-    #       gethomepage.dev/icon: home-assistant
-    #       gethomepage.dev/name: Home Assistant
-    #       gethomepage.dev/weight: "1" # optional
-    #     hosts:
-    #       - host: &host hass.techtales.io
-    #         paths:
-    #           - path: /
-    #             service:
-    #               identifier: app
-    #               port: http
-    #     tls:
-    #       - hosts:
-    #           - *host
-    #         secretName: hass-tls
-
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}-config"
@@ -173,6 +146,11 @@ spec:
       app:
         annotations:
           external-dns/unifi: "true"
+          gatus.home-operations.com/endpoint: |
+            group: internal
+            ui:
+              hide-hostname: true
+              hide-url: true
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Home Automation That Puts Local Control
           gethomepage.dev/group: Home Automation
