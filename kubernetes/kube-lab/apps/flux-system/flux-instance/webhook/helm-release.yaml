@@ -53,6 +53,9 @@ spec:
             name: flux-webhook-kube-lab
             interval: 1m
             group: external
+            ui:
+              hide-hostname: true
+              hide-url: true
             client:
               dns-resolver: tcp://1.1.1.1:53
             conditions:
