@@ -6,6 +6,11 @@ metadata:
   name: envoy
   annotations:
     external-dns.alpha.kubernetes.io/target: &hostname nas-gateway.techtales.io
+    gatus.home-operations.com/endpoint: |
+      group: internal
+      ui:
+        hide-hostname: true
+        hide-url: true
 spec:
   gatewayClassName: envoy
   infrastructure:
