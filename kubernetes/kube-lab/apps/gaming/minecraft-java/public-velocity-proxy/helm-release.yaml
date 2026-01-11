@@ -133,7 +133,6 @@ spec:
             name: velocity-proxy public
             group: minecraft
             url: tcp://minecraft-public-velocity-proxy-velocity.gaming.svc.cluster.local:25565
-            interval: 1m
             ui:
               hide-hostname: true
               hide-url: true
