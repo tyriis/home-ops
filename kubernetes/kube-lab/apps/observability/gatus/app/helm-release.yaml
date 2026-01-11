@@ -31,6 +31,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
+          # https://github.com/home-operations/gatus-sidecar
           gatus-sidecar:
             image:
               repository: ghcr.io/home-operations/gatus-sidecar
