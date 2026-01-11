@@ -9,8 +9,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../../components/gatus/internal
   path: ./kubernetes/kube-lab/apps/atlantis-system/techtales-io/terraform-discord
   sourceRef:
     kind: GitRepository
@@ -43,8 +41,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../../components/gatus/internal
   path: ./kubernetes/kube-lab/apps/atlantis-system/techtales-io/terraform-gcloud
   sourceRef:
     kind: GitRepository
@@ -77,8 +73,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../../components/gatus/internal
   path: ./kubernetes/kube-lab/apps/atlantis-system/techtales-io/terraform-github
   sourceRef:
     kind: GitRepository
@@ -111,8 +105,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../../components/gatus/internal
   path: ./kubernetes/kube-lab/apps/atlantis-system/techtales-io/terraform-gworkspace
   sourceRef:
     kind: GitRepository
@@ -144,8 +136,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../../components/gatus/internal
   path: ./kubernetes/kube-lab/apps/atlantis-system/techtales-io/terraform-harbor
   sourceRef:
     kind: GitRepository
@@ -177,8 +167,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../../components/gatus/internal
   path: ./kubernetes/kube-lab/apps/atlantis-system/techtales-io/terraform-minio
   sourceRef:
     kind: GitRepository
@@ -210,8 +198,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../../components/gatus/internal
   path: ./kubernetes/kube-lab/apps/atlantis-system/techtales-io/terraform-vault
   sourceRef:
     kind: GitRepository
