@@ -9,7 +9,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
   path: ./kubernetes/kube-lab/apps/home-automation/govee2mqtt/app
   prune: true
   sourceRef:
