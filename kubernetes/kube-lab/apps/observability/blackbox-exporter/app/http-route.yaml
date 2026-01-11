@@ -6,6 +6,11 @@ metadata:
   name: blackbox-exporter
   annotations:
     external-dns/unifi: "true"
+    gatus.home-operations.com/endpoint: |
+      group: internal
+      ui:
+        hide-hostname: true
+        hide-url: true
     gethomepage.dev/enabled: "true"
     gethomepage.dev/description: Blackbox Exporter for Prometheus
     gethomepage.dev/group: Observability
