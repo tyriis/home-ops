@@ -53,7 +53,7 @@ spec:
               tag: v5.34.0@sha256:3fff895e77d35ee62e898860f4613755bc2344127d93e3f326429d40270e2115
             env:
               GATUS_CONFIG_PATH: /config
-              GATUS_DELAY_START_SECONDS: 5
+              GATUS_DELAY_START_SECONDS: 15
             ports:
               - containerPort: &port 8080
                 name: http
