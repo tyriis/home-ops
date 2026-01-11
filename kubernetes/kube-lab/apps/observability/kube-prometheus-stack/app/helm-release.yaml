@@ -36,6 +36,12 @@ spec:
           enabled: true
           annotations:
             external-dns/unifi: "true"
+            gatus.home-operations.com/endpoint: |
+              name: alertmanager
+              group: external
+              ui:
+                hide-hostname: true
+                hide-url: true
             gethomepage.dev/enabled: "true"
             gethomepage.dev/description: Kubernetes Alerting
             gethomepage.dev/group: Observability
@@ -183,6 +189,12 @@ spec:
           enabled: true
           annotations:
             external-dns/unifi: "true"
+            gatus.home-operations.com/endpoint: |
+              name: prometheus
+              group: external
+              ui:
+                hide-hostname: true
+                hide-url: true
             gethomepage.dev/enabled: "true"
             gethomepage.dev/description: Kubernetes Monitoring
             gethomepage.dev/group: Observability
