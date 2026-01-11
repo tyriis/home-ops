@@ -27,3 +27,4 @@ spec:
       APP: *app
       NAMESPACE: *namespace
       REPO: github.com/tyriis/terraform-github
+      GROUP: Tyriis
