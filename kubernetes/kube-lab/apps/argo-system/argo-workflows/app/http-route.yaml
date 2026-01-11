@@ -18,8 +18,6 @@ metadata:
       ui:
         hide-hostname: true
         hide-url: true
-      conditions:
-        - "[STATUS] == 200"
 spec:
   hostnames:
     - argo-workflows.techtales.io
