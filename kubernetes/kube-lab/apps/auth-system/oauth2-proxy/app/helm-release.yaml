@@ -106,7 +106,7 @@ spec:
         controller: *app
         ports:
           http:
-            port: 4180
+            port: &port 4180
           metrics:
             port: 44180
 
@@ -119,25 +119,33 @@ spec:
             interval: 30s
             scrapeTimeout: 5s
 
-    ingress:
-      app:
-        className: nginx
+    route:
+      main:
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          external-dns.alpha.kubernetes.io/target: lab-ingress.techtales.io
-          external-dns/cloudflare: "true"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Terraform Pull Request Automation
+          gethomepage.dev/group: ${GROUP:=Terraform}
+          gethomepage.dev/icon: terraform
+          gethomepage.dev/name: ${APP}
+          gethomepage.dev/pod-selector: app.kubernetes.io/name=${APP}
           external-dns/unifi: "true"
-          kubernetes.io/tls-acme: "true"
-          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-          nginx.ingress.kubernetes.io/ssl-redirect: "true"
-        hosts:
-          - host: &host auth.techtales.io
-            paths:
-              - path: /oauth2
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
-            secretName: "{{ .Release.Name }}-tls"
+          external-dns/cloudflare: "true"
+          gatus.home-operations.com/endpoint: |
+            interval: 1m
+            group: external
+            client:
+              dns-resolver: tcp://1.1.1.1:53
+        hostnames:
+          - auth.techtales.io
+        parentRefs:
+          - name: envoy
+            namespace: networking
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /oauth2
