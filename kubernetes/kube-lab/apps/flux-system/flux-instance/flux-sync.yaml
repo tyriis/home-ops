@@ -35,8 +35,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../../components/gatus/external
   path: ./kubernetes/kube-lab/apps/flux-system/flux-instance/webhook
   prune: true
   sourceRef:

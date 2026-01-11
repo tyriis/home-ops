@@ -9,8 +9,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../../components/gatus/external
   path: ./kubernetes/kube-lab/apps/observability/grafana/app
   prune: true
   sourceRef:

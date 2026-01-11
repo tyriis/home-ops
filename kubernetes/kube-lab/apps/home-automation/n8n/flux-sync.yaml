@@ -10,7 +10,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../../components/gatus/internal
     - ../../../../../components/volsync
   path: ./kubernetes/kube-lab/apps/home-automation/n8n/app
   prune: true

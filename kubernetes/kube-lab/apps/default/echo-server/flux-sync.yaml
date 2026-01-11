@@ -10,8 +10,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../../components/gatus/external
   path: ./kubernetes/kube-lab/apps/default/echo-server/app
   prune: true
   sourceRef:
