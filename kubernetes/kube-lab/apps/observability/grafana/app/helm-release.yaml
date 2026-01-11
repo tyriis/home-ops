@@ -357,6 +357,10 @@ spec:
         annotations:
           external-dns/cloudflare: "true"
           external-dns/unifi: "true"
+          gatus.home-operations.com/endpoint: |
+            group: external
+            client:
+              dns-resolver: tcp://1.1.1.1:53
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Metrics, logs, traces, and profiles, oh my!
           gethomepage.dev/group: Observability
