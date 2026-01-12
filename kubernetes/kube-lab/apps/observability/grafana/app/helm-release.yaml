@@ -54,14 +54,14 @@ spec:
         enabled: false
       auth.generic_oauth:
         enabled: true
-        name: pocketid
+        name: Pocket ID
         allow_sign_up: true
         allowed_domains: techtales.io
         api_url: https://id.techtales.io/api/oidc/userinfo
         auth_url: https://id.techtales.io/authorize
         token_url: https://id.techtales.io/api/oidc/token
         signout_redirect_url: https://id.techtales.io/api/oidc/end-session
-        role_attribute_path: contains(groups[*], 'grafana-admins') && 'Admin'
+        role_attribute_path: contains(groups[*], 'admins') && 'Admin'
         scopes: openid profile email groups
         use_pkce: true
       date_formats:
