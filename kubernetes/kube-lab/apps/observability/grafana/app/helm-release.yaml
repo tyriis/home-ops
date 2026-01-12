@@ -27,12 +27,6 @@ spec:
     replicas: 1
 
     env:
-      GF_EXPLORE_ENABLED: "true"
-      GF_PANELS_DISABLE_SANITIZE_HTML: "true"
-      GF_DATE_FORMATS_USE_BROWSER_LOCALE: "true"
-      GF_LOG_LEVEL: info
-      GF_AUTH_DISABLE_LOGIN_FORM: "true"
-      GF_AUTH_GENERIC_OAUTH_AUTO_LOGIN: "true"
       DS_PROMETHEUS: prometheus
 
     envFromSecrets:
@@ -44,10 +38,41 @@ spec:
       passwordKey: PASSWORD
 
     grafana.ini:
+      analytics:
+        check_for_updates: false
+        check_for_plugin_updates: false
+        feedback_links_enabled: false
+        reporting_enabled: false
+      auth:
+        oauth_auto_login: false
+        disable_login_form: true
+      auth.anonymous:
+        enabled: false
+      auth.basic:
+        enabled: false
+      auth.passwordless:
+        enabled: false
+      auth.generic_oauth:
+        enabled: true
+        name: pocketid
+        allow_sign_up: true
+        allowed_domains: techtales.io
+        api_url: https://id.techtales.io/api/oidc/userinfo
+        auth_url: https://id.techtales.io/authorize
+        token_url: https://id.techtales.io/api/oidc/token
+        signout_redirect_url: https://id.techtales.io/api/oidc/end-session
+        role_attribute_path: contains(groups[*], 'grafana-admins') && 'Admin'
+        scopes: openid profile email groups
+        use_pkce: true
+      date_formats:
+        use_browser_locale: true
       server:
+        enable_gzip: true
         root_url: https://grafana.techtales.io
       users:
-        auto_assign_org_role: Admin
+        auto_assign_org_role: Viewer
+        viewers_can_edit: true
+      # TODO: to be removed
       auth.google:
         enabled: true
         allow_sign_up: true
