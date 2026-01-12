@@ -72,14 +72,6 @@ spec:
       users:
         auto_assign_org_role: Viewer
         viewers_can_edit: true
-      # TODO: to be removed
-      auth.google:
-        enabled: true
-        allow_sign_up: true
-        allowed_domains: techtales.io
-        scopes: https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email
-        auth_url: https://accounts.google.com/o/oauth2/auth
-        token_url: https://accounts.google.com/o/oauth2/token
 
     dashboardProviders:
       dashboardproviders.yaml:
