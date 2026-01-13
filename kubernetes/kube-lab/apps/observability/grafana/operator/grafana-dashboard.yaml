@@ -6,6 +6,7 @@ metadata:
   name: grafana-operator
 spec:
   allowCrossNamespaceImport: true
+  resyncPeriod: 1m
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
