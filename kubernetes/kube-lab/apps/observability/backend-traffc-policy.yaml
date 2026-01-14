@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/gateway.envoyproxy.io/backendtrafficpolicy_v1alpha1.json
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: disable-error-pages
+spec:
+  # Target specific HTTPRoutes that should NOT have error page redirects
+  # Use label selector to target routes with error-pages: "disabled"
+  targetSelectors:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      matchLabels:
+        tarampampam/error-pages: disabled
+
+  # Inherit all settings from Gateway-level policy (compression, retry, timeout, etc.)
+  # But explicitly override responseOverride to be empty
+  responseOverride: []

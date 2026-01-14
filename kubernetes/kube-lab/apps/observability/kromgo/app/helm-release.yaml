@@ -101,6 +101,8 @@ spec:
               dns-resolver: tcp://1.1.1.1:53
             conditions:
               - "[STATUS] == 404"
+        labels:
+          tarampampam/error-pages: disabled
         hostnames:
           - &host "{{ .Release.Name }}.techtales.io"
         parentRefs:
