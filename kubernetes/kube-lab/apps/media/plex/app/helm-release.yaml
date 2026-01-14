@@ -92,6 +92,8 @@ spec:
           gethomepage.dev/group: Arr
           gethomepage.dev/icon: plex
           gethomepage.dev/name: Plex
+        labels:
+          tarampampam/error-pages: disabled
         hostnames:
           - &host "{{ .Release.Name }}.techtales.io"
         parentRefs:
