@@ -41,7 +41,7 @@
 
 </div>
 
-# GitOps my homelab
+# GitOps my home infra
 
 - 💼 managed with [Flux2][flux-url]
 - 🤖 updated by [RenovateBot][renovate-url]

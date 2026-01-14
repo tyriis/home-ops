@@ -17,7 +17,7 @@ ui:
       link: https://github.com/tyriis
     - name: Jazzlyn
       link: https://github.com/jazzlyn
-    - name: Homelab
+    - name: home-ops
       link: https://github.com/tyriis/home-ops
 connectivity:
   checker:

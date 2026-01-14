@@ -1,6 +1,6 @@
 ---
 site_name: node-red
-site_description: all information about node-red based automations on the homelab
+site_description: all information about node-red based automations on the home-ops platform
 
 nav:
   - Overview: index.md

@@ -8,7 +8,7 @@ decision-makers: tyriis, jazzlyn
 
 ## Context and Problem Statement
 
-Multiple Kubernetes clusters exist in the homelab environment, each serving different roles (core infrastructure vs. production workloads including Home Assistant, automations, and lab services).
+Multiple Kubernetes clusters exist in the home-ops environment, each serving different roles (core infrastructure vs. production workloads including Home Assistant, automations, and lab services).
 Without a clear, memorable naming convention, contexts are harder to distinguish in tooling, scripts, and day-to-day operations.
 
 The goal is to define an iconic, thematic, and scalable naming scheme and to assign concrete names to the current clusters to reduce operational errors and improve mental mapping.
