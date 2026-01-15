@@ -71,4 +71,3 @@ spec:
               - path:
                   type: PathPrefix
                   value: /hook/
-
