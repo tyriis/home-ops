@@ -39,3 +39,11 @@ spec:
               - path: /etc/atlantis/repos.yaml
                 subPath: repos.yaml
                 readOnly: true
+      age-keys:
+        type: secret
+        name: ${APP}-age-keys
+        advancedMounts:
+          main:
+            app:
+              - path: /home/atlantis/.config/sops/age
+                readOnly: true
