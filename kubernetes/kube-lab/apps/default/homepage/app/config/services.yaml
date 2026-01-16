@@ -37,7 +37,7 @@
         #     - sent
     - UniFi DM SE:
         icon: unifi
-        href: https://unifi.local
+        href: https://unifi.techtales.io
         description: UniFi Dream Machine Special Edition
         ping: 192.168.1.1
     - Cloudflare:
