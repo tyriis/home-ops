@@ -1,12 +1,12 @@
 ---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+# https://grafana.github.io/grafana-operator/docs/examples/dashboard/
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
   name: grafana-operator
 spec:
   allowCrossNamespaceImport: true
-  resyncPeriod: 1m
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana

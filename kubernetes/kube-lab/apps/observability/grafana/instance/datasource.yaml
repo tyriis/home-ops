@@ -1,12 +1,11 @@
 ---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+# https://grafana.github.io/grafana-operator/docs/examples/datasource/
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
   name: prometheus
-# https://grafana.github.io/grafana-operator/docs/examples/datasource/
 spec:
-  resyncPeriod: 1m
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -19,13 +18,12 @@ spec:
 
 ---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+# https://grafana.github.io/grafana-operator/docs/examples/datasource/
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
   name: alertmanager
-# https://grafana.github.io/grafana-operator/docs/examples/datasource/
 spec:
-  resyncPeriod: 1m
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -39,13 +37,12 @@ spec:
 
 ---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+# https://grafana.github.io/grafana-operator/docs/examples/datasource/
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
   name: loki
-# https://grafana.github.io/grafana-operator/docs/examples/datasource/
 spec:
-  resyncPeriod: 1m
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -58,13 +55,12 @@ spec:
 
 # ---
 # # yaml-language-server: $schema=https://kube-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+# # https://grafana.github.io/grafana-operator/docs/examples/datasource/
 # apiVersion: grafana.integreatly.org/v1beta1
 # kind: GrafanaDatasource
 # metadata:
 #   name: github-tyriis-home-ops
-# # https://grafana.github.io/grafana-operator/docs/examples/datasource/
 # spec:
-#   resyncPeriod: 1m
 #   instanceSelector:
 #     matchLabels:
 #       grafana.internal/instance: grafana

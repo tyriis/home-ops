@@ -25,6 +25,7 @@ spec:
     replicas: 1
     dashboard:
       enabled: true
+    defaultResyncPeriod: 1m
     serviceMonitor:
       enabled: true
     resources:
