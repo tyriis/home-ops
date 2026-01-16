@@ -45,15 +45,15 @@ endpoints:
     ui:
       hide-hostname: true
       hide-url: true
-  # - name: Unifi
-  #   group: infrastructure
-  #   url: http://192.168.1.1
-  #   interval: 1m
-  #   conditions:
-  #     - "[STATUS] == 301"
-  #   ui:
-  #     hide-hostname: false
-  #     hide-url: false
+  - name: Unifi
+    group: infrastructure
+    url: http://unifi.techtales.io
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+    ui:
+      hide-hostname: false
+      hide-url: false
   # - name: NAS
   #   group: infrastructure
   #   url: https://nas.techtales.io
