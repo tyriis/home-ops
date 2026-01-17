@@ -79,7 +79,12 @@ spec:
           lbipam.cilium.io/ips: ${CILIUM_LB_IPS}
         ports:
           http:
+            primary: true
             port: *port
+          dlna:
+            port: 1900
+            targetPort: 1900
+            protocol: UDP
     route:
       app:
         annotations:

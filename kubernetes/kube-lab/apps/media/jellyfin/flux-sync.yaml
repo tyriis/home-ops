@@ -32,3 +32,4 @@ spec:
     substitute:
       APP: *app
       VOLSYNC_SUFFIX: config
+      CILIUM_LB_IPS: 192.168.100.216
