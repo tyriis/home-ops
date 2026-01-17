@@ -100,6 +100,10 @@ spec:
           - name: envoy
             namespace: networking
             sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
     persistence:
       config:
         existingClaim: ${APP}-config
