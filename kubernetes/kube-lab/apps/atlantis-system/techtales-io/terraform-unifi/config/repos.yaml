@@ -4,8 +4,8 @@ repos:
     pre_workflow_hooks:
       - run: sh /home/atlantis/scripts/allow_list.sh
         description: Check Allow List
-      # - run: sh /home/atlantis/scripts/vault_config.sh
-      #   description: Configure Vault
+      - run: sh /home/atlantis/scripts/vault_config.sh
+        description: Configure Vault
     apply_requirements: []
     allowed_overrides: []
     allow_custom_workflows: true
