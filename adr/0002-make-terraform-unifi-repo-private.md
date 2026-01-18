@@ -12,11 +12,8 @@ The Terraform configuration repository managing UniFi network infrastructure was
 However, the repository currently contains sensitive information, including:
 
 - Firewall and network rules that could reveal internal structure and segmentation.
-
 - Client names, MAC addresses, and hostnames exposing personal or device identifiers.
-
 - Static IP assignments and internal subnet layouts.
-
 - Site topology and VLAN configurations that could aid potential attackers.
 
 Scrubbing or anonymizing all this information would require continuous oversight and automation to ensure no sensitive details reappear (e.g., after Renovate or device sync updates).
