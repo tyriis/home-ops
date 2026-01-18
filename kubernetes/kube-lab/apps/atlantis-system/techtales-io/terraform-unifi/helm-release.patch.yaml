@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ${APP}
+spec:
+  interval: 15m
+  # https://bjw-s-labs.github.io/helm-charts/docs/app-template/
+  values:
+    controllers:
+      main:
+        containers:
+          app:
+            envFrom:
+              - secretRef:
+                  name: atlantis-techtales-io-env
+              - secretRef:
+                  name: ${APP}-env
+            env:
+              VAULT_ADDR: https://secrets.techtales.io
+              AWS_ENDPOINT_URL_S3: https://s3.nas.techtales.io/
+              AWS_REGION: home
+    persistence:
+      allowlist:
+        type: configMap
+        name: ${APP}-allowlist
+        advancedMounts:
+          main:
+            app:
+              - path: /etc/atlantis/allowlist.txt
+                subPath: allowlist.txt
+                readOnly: true
+      config:
+        type: configMap
+        name: ${APP}-config
+        advancedMounts:
+          main:
+            app:
+              - path: /etc/atlantis/repos.yaml
+                subPath: repos.yaml
+                readOnly: true
