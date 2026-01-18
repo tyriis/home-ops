@@ -75,16 +75,6 @@ spec:
         ports:
           http:
             port: *port
-      dlna:
-        controller: *app
-        type: LoadBalancer
-        annotations:
-          lbipam.cilium.io/ips: ${CILIUM_LB_IPS}
-        ports:
-          dlna:
-            port: 1900
-            targetPort: 1900
-            protocol: UDP
     route:
       app:
         annotations:
@@ -100,10 +90,6 @@ spec:
           - name: envoy
             namespace: networking
             sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port
     persistence:
       config:
         existingClaim: ${APP}-config
