@@ -342,7 +342,7 @@ spec:
         dragonfly:
           dragonfly-dashboard:
             # renovate: depName=dragonflydb/dragonfly-operator datasource=github-releases
-            url: https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/v1.3.0/monitoring/grafana-dashboard.json
+            url: https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/v1.4.0/monitoring/grafana-dashboard.json
             datasource:
               - name: DS_PROMETHEUS
                 value: Prometheus
