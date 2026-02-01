@@ -14,7 +14,7 @@ metadata:
       title: Flux definitions
       icon: github
       type: github-repository
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/kube-lab/apps/backup-system/volsync
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/backup-system/volsync
       title: Flux definitions
       icon: github
       type: github-repository
