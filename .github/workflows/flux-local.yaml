@@ -45,7 +45,7 @@ jobs:
               # Define cluster mappings
               [
                 {path: "kubernetes/nas/", name: "nas"},
-                {path: "kubernetes/kube-lab/", name: "kube-lab"}
+                {path: "kubernetes/main/", name: "main"}
               ] as $cluster_mappings |
 
               # Get the input array for reference

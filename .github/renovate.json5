@@ -20,10 +20,7 @@
     "github>techtales-io/renovate-config//dependencies/talos.json5",
     "github>techtales-io/renovate-config//dependencies/tektoncd.json5",
   ],
-  ignorePaths: [
-    "kubernetes/kube-lab/apps/system-upgrade/system-upgrade-controller/plans/kubernetes.yaml",
-    "kubernetes/kube-lab/apps/system-upgrade/system-upgrade-controller/plans/talos.yaml",
-  ],
+  ignorePaths: [],
   rebaseWhen: "conflicted",
   ansible: {
     enabled: false,
@@ -49,8 +46,8 @@
     // separate siderolabs per cluster
     {
       matchPackageNames: ["/siderolabs/"],
-      matchFileNames: ["**/kube-lab/**"],
-      additionalBranchPrefix: "kube-lab-",
+      matchFileNames: ["**/main/**"],
+      additionalBranchPrefix: "main-",
     },
     {
       matchPackageNames: ["/siderolabs/"],
@@ -60,8 +57,8 @@
     // separate app-template per cluster
     {
       matchPackageNames: ["/app-template/"],
-      matchFileNames: ["**/kube-lab/**"],
-      additionalBranchPrefix: "kube-lab-",
+      matchFileNames: ["**/main/**"],
+      additionalBranchPrefix: "main-",
     },
     {
       matchPackageNames: ["/app-template/"],
