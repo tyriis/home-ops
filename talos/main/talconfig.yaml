@@ -6,7 +6,7 @@ talosVersion: v1.12.2
 # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
 kubernetesVersion: v1.35.0
 
-clusterName: kube-lab
+clusterName: main
 endpoint: https://192.168.100.100:6443
 domain: cluster.local
 allowSchedulingOnMasters: true
