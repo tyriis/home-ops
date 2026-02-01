@@ -9,7 +9,7 @@ spec:
   interval: 12h
   url: https://github.com/dragonflydb/dragonfly-operator.git
   ref:
-    tag: v1.3.1
+    tag: v1.4.0
   ignore: |
     # exclude all
     /*
