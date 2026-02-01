@@ -48,9 +48,6 @@ spec:
   dependsOn:
     - name: external-secrets-stores
       namespace: secops
-  postBuild:
-    substitute:
-      APP: flux-webhook-main
 
 ---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json

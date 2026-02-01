@@ -46,4 +46,5 @@ spec:
       namespace: secops
   postBuild:
     substitute:
-      FLUX_CLUSTER_NAME: ${FLUX_CLUSTER_NAME}
+      # FIXME: this should come from cluster config
+      FLUX_CLUSTER_NAME: kube-lab
