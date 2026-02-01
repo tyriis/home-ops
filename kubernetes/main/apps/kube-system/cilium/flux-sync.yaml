@@ -21,7 +21,8 @@ spec:
   timeout: 5m
   postBuild:
     substitute:
-      FLUX_CLUSTER_NAME: ${FLUX_CLUSTER_NAME}
+      # FIXME: use ${FLUX_CLUSTER_NAME}
+      FLUX_CLUSTER_NAME: kube-lab
 
 ---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
