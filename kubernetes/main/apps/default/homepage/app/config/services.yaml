@@ -197,10 +197,22 @@
         href: https://github.com/techtales-io/terraform-gworkspace
         description: IaC for Google Workspace
 - Infra Links:
+    - techtales-io/terraform-harbor:
+        icon: si-github
+        href: https://github.com/techtales-io/terraform-harbor
+        description: IaC for Harbor Container Registry
     - techtales-io/terraform-minio:
         icon: si-github
         href: https://github.com/techtales-io/terraform-minio
         description: IaC for Minio Object Storage
+    - techtales-io/terraform-pocket-id:
+        icon: si-github
+        href: https://github.com/techtales-io/terraform-pocket-id
+        description: IaC for Pocket ID Identity Management
+    - techtales-io/terraform-unifi:
+        icon: si-github
+        href: https://github.com/techtales-io/terraform-unifi
+        description: IaC for UniFi Network Devices
     - techtales-io/terraform-vault:
         icon: si-github
         href: https://github.com/techtales-io/terraform-vault
