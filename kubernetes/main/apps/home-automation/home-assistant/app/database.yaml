@@ -6,10 +6,10 @@ metadata:
 spec:
   credentials:
     usernameSecretRef:
-      name: home-assistant-secrets
+      name: home-assistant-db-init
       key: INIT_POSTGRES_USER
     passwordSecretRef:
-      name: home-assistant-secrets
+      name: home-assistant-db-init
       key: INIT_POSTGRES_PASS
   databaseName: hass
   databaseServerRef:

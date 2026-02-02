@@ -39,7 +39,7 @@ spec:
           app:
             envFrom:
               - secretRef:
-                  name: home-assistant-secrets
+                  name: home-assistant-env
             env:
               VENV_FOLDER: /venv
             image:
