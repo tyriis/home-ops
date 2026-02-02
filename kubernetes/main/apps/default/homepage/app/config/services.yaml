@@ -79,9 +79,9 @@
         siteMonitor: https://plex.techtales.io
     - IT-Tools:
         icon: it-tools-light
-        href: https://it-tools.techtales.io
+        href: https://tools.techtales.io
         description: Handy developer online tools
-        siteMonitor: https://it-tools.techtales.io
+        siteMonitor: https://tools.techtales.io
     - OpenBAO:
         icon: https://raw.githubusercontent.com/openbao/artwork/main/color/openbao-color.svg
         href: https://secrets.techtales.io
