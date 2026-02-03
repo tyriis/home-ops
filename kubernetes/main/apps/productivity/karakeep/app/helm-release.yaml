@@ -44,13 +44,13 @@ spec:
               repository: ghcr.io/karakeep-app/karakeep
               tag: 0.30.0@sha256:2724d4a9a6d13a7fa3babf53b9245767aae56c34f06042a8463ee983c6b41caf
             env:
-              BROWSER_WEB_URL: http://karakeep-chrome.productivity.svc.cluster.local:9222
+              BROWSER_WEB_URL: http://karakeep-chrome.productivity.svc.cluster.local:9222 #NOSONAR allow http
               CRAWLER_DOWNLOAD_BANNER_IMAGE: true
               CRAWLER_ENABLE_ADBLOCKER: true
               CRAWLER_STORE_SCREENSHOT: true
               DATA_DIR: /data
               DISABLE_SIGNUPS: true
-              MEILI_ADDR: http://karakeep-meilisearch.productivity.svc.cluster.local:7700
+              MEILI_ADDR: http://karakeep-meilisearch.productivity.svc.cluster.local:7700 #NOSONAR allow http
               DISABLE_NEW_RELEASE_CHECK: true
               COREPACK_INTEGRITY_KEYS: 0
               OAUTH_PROVIDER_NAME: Pocket-ID
