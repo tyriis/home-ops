@@ -57,6 +57,7 @@ spec:
               OAUTH_WELLKNOWN_URL: https://id.techtales.io/.well-known/openid-configuration
               DISABLE_PASSWORD_AUTH: true
               OAUTH_ALLOW_DANGEROUS_EMAIL_ACCOUNT_LINKING: true
+              NEXTAUTH_URL: https://karakeep.techtales.io
             envFrom:
               - secretRef:
                   name: karakeep-env
