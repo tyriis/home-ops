@@ -1,0 +1,83 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app piper
+spec:
+  driftDetection:
+    mode: enabled
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.6.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
+    controllers:
+      piper:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: rhasspy/wyoming-piper
+              tag: 2.2.1@sha256:bcf04f784ade82a19279f7a1e72cc7c6147d8cd40557d633edb6d2885f23039c
+            args:
+              - --voice
+              - en_US-lessac-medium
+            ports:
+              - name: wyoming
+                containerPort: &port 10200
+                protocol: TCP
+            resources:
+              requests:
+                cpu: 200m
+                memory: 300Mi
+            probes:
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+            securityContext:
+              readOnlyRootFilesystem: true
+        pod:
+          terminationGracePeriodSeconds: 1
+
+    service:
+      app:
+        controller: *app
+        ports:
+          wyoming:
+            port: *port
+
+    persistence:
+      data:
+        forceRename: piper-data
+        retain: true
+        storageClass: ceph-block
+        accessMode: ReadWriteOnce
+        size: 10Gi
+
+      tmp:
+        enabled: true
+        type: emptyDir
+        medium: Memory

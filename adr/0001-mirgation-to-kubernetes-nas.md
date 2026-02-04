@@ -8,7 +8,7 @@ decision-makers: [tyriis, Jazzlyn]
 
 ## Context and Problem Statement
 
-During our evaluation phase to replace Synology NAS, we initially adopted TrueNAS as a potential solution for our homelab storage system.
+During our evaluation phase to replace Synology NAS, we initially adopted TrueNAS as a potential solution for our home-ops storage system.
 However, during Proof of Concept (PoC) testing, several limitations emerged regarding infrastructure-as-code (IaC) compatibility, lifecycle management, and automation.
 TrueNAS' lack of a Terraform provider prevents effective GitOps workflows.
 Other services such as MinIO, certificate management, and ZFS dataset configuration also proved harder to automate compared to our Kubernetes-based systems managed with Talos, Flux, and Renovate.

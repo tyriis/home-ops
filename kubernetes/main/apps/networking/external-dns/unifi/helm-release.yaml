@@ -1,0 +1,73 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app external-dns-unifi
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: external-dns
+      version: 1.20.0
+      sourceRef:
+        kind: HelmRepository
+        name: external-dns
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  # https://kubernetes-sigs.github.io/external-dns/latest/
+  values:
+    # https://artifacthub.io/packages/helm/external-dns/external-dns?modal=values
+    fullnameOverride: *app
+    provider:
+      name: webhook
+      webhook:
+        image:
+          repository: ghcr.io/kashalls/external-dns-unifi-webhook
+          tag: v0.8.1@sha256:e9b7bf621768c490110fb154c94a4f610f254c9f0c540140ea429c601a8475dd
+        env:
+          - name: UNIFI_HOST
+            value: https://unifi.techtales.io
+          - name: UNIFI_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: &secret external-dns-unifi-credentials
+                key: UNIFI_API_KEY
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: http-webhook
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: http-webhook
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+    triggerLoopOnEvent: true
+    extraArgs:
+      - --annotation-filter=external-dns/unifi in (true)
+    policy: sync
+    sources:
+      - ingress
+      - gateway-httproute
+      - crd
+    txtOwnerId: kube-lab
+    txtPrefix: kube-lab.
+    domainFilters:
+      - techtales.io
+      - lan
+      - home
+    serviceMonitor:
+      enabled: true
+    podAnnotations:
+      secret.reloader.stakater.com/reload: *secret
+    gatewayNamespace: networking

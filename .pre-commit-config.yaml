@@ -45,7 +45,7 @@ repos:
           (?x)^(
             .backstage/systems/nas/mkdocs.yml |
             .backstage/systems/talos-flux/mkdocs.yml |
-            kubernetes/kube-lab/apps/media/recyclarr/app/recyclarr.yaml |
+            kubernetes/main/apps/media/recyclarr/app/recyclarr.yaml |
           )$()
       - id: destroyed-symlinks
       - id: detect-aws-credentials
@@ -88,7 +88,7 @@ repos:
           - .markdownlint.yaml
 
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.7.4
+    rev: v3.8.1
     hooks:
       - id: prettier
         args:
@@ -104,7 +104,7 @@ repos:
         exclude: |
           (?x)^(
             kubernetes/nas/apps/secops/rbac.yaml|
-            kubernetes/kube-lab/apps/secops/rbac.yaml
+            kubernetes/main/apps/secops/rbac.yaml
           )$()
 
   - repo: https://github.com/gitleaks/gitleaks
@@ -124,6 +124,6 @@ repos:
         exclude: |
           (?x)^(
             devenv/.*|
-            kubernetes/kube-lab/apps/atlantis-system/.+/helm-release.patch.yaml |
-            kubernetes/kube-lab/apps/media/recyclarr/app/recyclarr.yaml |
+            kubernetes/main/apps/atlantis-system/.+/helm-release.patch.yaml |
+            kubernetes/main/apps/media/recyclarr/app/recyclarr.yaml |
           )$()

@@ -1,0 +1,118 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app plex
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.6.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
+    controllers:
+      plex:
+        replicas: 1
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/home-operations/plex
+              tag: 1.43.0.10467@sha256:fa62165df48d04e9a418805951e903f831dec0e0601f4dc4245f9948d7fd719b
+            env:
+              PLEX_ADVERTISE_URL: "http://plex.media.svc.cluster.local:32400,http://${CILIUM_LB_IPS}:32400,https://{{ .Release.Name }}.techtales.io:443"
+              PLEX_NO_AUTH_NETWORKS: 192.168.100.0/24, 192.168.101.0/24, 192.168.1.0/24, 192.168.20.0/24
+            ports:
+              - name: http
+                containerPort: &port 32400
+                protocol: TCP
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /identity
+                    port: *port
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                gpu.intel.com/i915: 1
+                cpu: 10m
+                memory: 100Mi
+              limits:
+                gpu.intel.com/i915: 1
+        pod:
+          nodeSelector:
+            intel.feature.node.kubernetes.io/gpu: "true"
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+    service:
+      app:
+        controller: *app
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: ${CILIUM_LB_IPS}
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        annotations:
+          external-dns/unifi: "true"
+          gatus.home-operations.com/endpoint: |
+            conditions:
+              - '[STATUS] == 401'
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Media Streaming Server
+          gethomepage.dev/group: Arr
+          gethomepage.dev/icon: plex
+          gethomepage.dev/name: Plex
+        labels:
+          tarampampam/error-pages: disabled
+        hostnames:
+          - &host "{{ .Release.Name }}.techtales.io"
+        parentRefs:
+          - name: envoy
+            namespace: networking
+            sectionName: https
+    persistence:
+      config:
+        existingClaim: ${APP}-config
+      media:
+        type: nfs
+        server: nas02
+        path: /media
+        globalMounts:
+          - path: /media
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          plex:
+            app:
+              - path: /tmp
+                subPath: tmp

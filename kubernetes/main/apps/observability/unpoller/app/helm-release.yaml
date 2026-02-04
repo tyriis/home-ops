@@ -1,0 +1,112 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app unpoller
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.6.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+
+    controllers:
+      unpoller:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        strategy: RollingUpdate
+        containers:
+          app:
+            image:
+              repository: ghcr.io/unpoller/unpoller
+              tag: v2.33.0@sha256:654764c5202f936601aa66a9892783c9d0fca13eba619ed170f6e921623dbc51
+            env:
+              # Prometheus exporter settings
+              UP_PROMETHEUS_DISABLE: "false"
+              UP_PROMETHEUS_HTTP_LISTEN: 0.0.0.0:9130
+              # Disable unused outputs
+              UP_INFLUXDB_DISABLE: "true"
+              UP_LOKI_DISABLE: "true"
+              # UniFi controller settings
+              UP_UNIFI_DYNAMIC: "false"
+              UP_UNIFI_DEFAULT_URL: https://unifi.techtales.io
+              UP_UNIFI_DEFAULT_SITES_0: all
+              UP_UNIFI_DEFAULT_SAVE_IDS: "false"
+              UP_UNIFI_DEFAULT_SAVE_SITES: "false"
+              UP_UNIFI_DEFAULT_SAVE_DPI: "false"
+              UP_UNIFI_DEFAULT_SAVE_EVENTS: "false"
+              UP_UNIFI_DEFAULT_SAVE_ALARMS: "false"
+              UP_UNIFI_DEFAULT_SAVE_ANOMALIES: "false"
+              UP_UNIFI_DEFAULT_VERIFY_SSL: "true"
+            envFrom:
+              - secretRef:
+                  name: unpoller-env
+            ports:
+              - containerPort: &port 9130
+                name: metrics
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 128Mi
+
+    service:
+      app:
+        controller: *app
+        ports:
+          metrics:
+            port: *port
+
+    serviceMonitor:
+      metrics:
+        serviceName: *app
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 30s

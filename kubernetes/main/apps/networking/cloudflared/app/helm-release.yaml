@@ -1,0 +1,113 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app cloudflared
+spec:
+  driftDetection:
+    mode: enabled
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.6.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
+    controllers:
+      cloudflared:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: cloudflare/cloudflared
+              tag: 2026.1.2-amd64@sha256:e6aba36f47b17ba21c62404f826e7be09f089dc0d8978732752204a75d9d7375
+            args:
+              - tunnel
+              - --loglevel
+              - info
+              - --config
+              - /etc/cloudflared/config.yaml
+              - --metrics
+              - 0.0.0.0:9090
+              - run
+            ports:
+              - name: metrics
+                containerPort: &port 9090
+                protocol: TCP
+            resources:
+              requests:
+                memory: 64Mi
+                cpu: 10m
+              limits:
+                memory: 128Mi
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+                  httpGet: &httpGet
+                    path: /ready
+                    port: *port
+              readiness: *probes
+              startup:
+                <<: *probes
+                spec:
+                  httpGet: *httpGet
+                  periodSeconds: 1
+                  failureThreshold: 300
+
+    service:
+      app:
+        controller: cloudflared
+        ports:
+          http:
+            port: *port
+
+    serviceMonitor:
+      app:
+        enabled: true
+        endpoints:
+          - port: http
+            scheme: http
+            interval: 30s
+            scrapeTimeout: 5s
+            path: /metrics
+
+    persistence:
+      config:
+        type: configMap
+        name: "{{ .Release.Name }}-config"
+        advancedMounts:
+          cloudflared:
+            app:
+              - path: /etc/cloudflared/config.yaml
+                subPath: config.yaml
+                readOnly: true
+      credentials:
+        type: secret
+        name: "{{ .Release.Name }}-credentials"
+        advancedMounts:
+          cloudflared:
+            app:
+              - path: /etc/cloudflared/1d1865c6-c0dd-4236-8d7d-79722940886f.json
+                subPath: 1d1865c6-c0dd-4236-8d7d-79722940886f.json
+                readOnly: true

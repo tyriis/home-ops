@@ -1,0 +1,99 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app node-red
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.6.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      node-red:
+        strategy: Recreate
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: "OnRootMismatch"
+
+        containers:
+          app:
+            image:
+              repository: docker.io/nodered/node-red
+              tag: 4.1.4@sha256:926f1f116276e434dd8c74ab7ca36eb0158e1def5cf2fbe78451938ee0e58790
+            env:
+              FLOWS: flows.json
+              NODE_RED_ENABLE_PROJECTS: "true"
+              NODE_RED_ENABLE_SAFE_MODE: "false"
+            resources:
+              requests:
+                memory: 247Mi
+                cpu: 20m
+              limits:
+                memory: 247Mi
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: 1880
+
+    route:
+      app:
+        annotations:
+          external-dns/unifi: "true"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Low-code for event-driven applications
+          gethomepage.dev/group: Home Automation
+          gethomepage.dev/icon: node-red
+          gethomepage.dev/name: Node-RED
+          gethomepage.dev/weight: "1"
+        hostnames:
+          - node-red.techtales.io
+        parentRefs:
+          - name: envoy
+            namespace: networking
+            sectionName: https
+
+    persistence:
+      data:
+        existingClaim: node-red-data
+        advancedMounts:
+          node-red:
+            app:
+              - path: /data
+      gitconfig:
+        type: configMap
+        name: node-red-gitconfig
+        globalMounts:
+          - path: /usr/src/node-red/.gitconfig
+            subPath: .gitconfig

@@ -1,0 +1,20 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: media
+components:
+  - ../../../components/flux/alerts
+resources:
+  - ./namespace.yaml
+  - ./backend-traffic-policy.yaml
+  - ./bazarr/flux-sync.yaml
+  - ./jellyfin/flux-sync.yaml
+  - ./nzbget/flux-sync.yaml
+  - ./plex/flux-sync.yaml
+  - ./prowlarr/flux-sync.yaml
+  - ./radarr/flux-sync.yaml
+  - ./recyclarr/flux-sync.yaml
+  - ./sabnzbd/flux-sync.yaml
+  - ./seerr/flux-sync.yaml
+  - ./sonarr/flux-sync.yaml

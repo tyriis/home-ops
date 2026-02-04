@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.6.0
+      version: 4.6.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -31,7 +31,7 @@ spec:
           barman-cloud:
             image:
               repository: ghcr.io/cloudnative-pg/plugin-barman-cloud
-              tag: v0.10.0@sha256:79103130df436ff08bc10a1d1117bed3acf3d3e4d8a15ca322d7079e71ac4412
+              tag: v0.11.0@sha256:c2788d1560118926302a21159b4b0452fc133df1a3f957c1b2ed6b41834ee571
             args:
               - operator
               - --server-cert=/server/tls.crt
@@ -41,7 +41,7 @@ spec:
               - --leader-elect
               - --log-level=debug
             env:
-              SIDECAR_IMAGE: ghcr.io/cloudnative-pg/plugin-barman-cloud-sidecar:v0.10.0@sha256:12b211f40b702a39b18859b0b96aa896e068135984f40c8b3e44e8b5d1610c7f
+              SIDECAR_IMAGE: ghcr.io/cloudnative-pg/plugin-barman-cloud-sidecar:v0.11.0@sha256:8e45fedbfaae916d7dff1160ea22648c2d21e6184479d3eb75e9ff0f3b23428a
             probes:
               readiness:
                 enabled: true

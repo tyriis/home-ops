@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ${APP}
+spec:
+  interval: 30m
+  # https://bjw-s-labs.github.io/helm-charts/docs/app-template/
+  values:
+    controllers:
+      minecraft:
+        containers:
+          app:
+            env:
+              # FIXME: update to latest pinned paper version
+              PAPER_DOWNLOAD_URL: https://fill-data.papermc.io/v1/objects/b727f13945dd442cd2bc1de6c64680e8630e7f54ba259aac7687e9c7c3cc18a3/paper-1.21.11-97.jar
+              MEMORY: 1024M

@@ -1,0 +1,51 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: node-exporter
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: prometheus-node-exporter
+      version: 4.51.1
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  # https://artifacthub.io/packages/helm/prometheus-community/prometheus-node-exporter?modal=values
+  values:
+    fullnameOverride: node-exporter
+    extraArgs:
+      - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var)($|/)
+      - --collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs|tmpfs)$
+    hostNetwork: false
+    prometheus:
+      monitor:
+        enabled: true
+        relabelings:
+          - action: replace
+            regex: (.*)
+            replacement: $1
+            sourceLabels: [__meta_kubernetes_pod_node_name]
+            targetLabel: kubernetes_node
+        metricRelabelings:
+          # drop useless ms-01 temperature sensors in chip="platform_nct6775_2592", sensor=~"(temp1|temp3|temp4|temp5|temp6|temp8|temp9|temp10|temp11|temp12)"
+          - action: drop
+            sourceLabels: [chip, sensor]
+            regex: platform_nct6775_2592;(temp1|temp3|temp4|temp5|temp6|temp8|temp9|temp10|temp11|temp12)
+    resources:
+      requests:
+        cpu: 10m
+        memory: 100Mi

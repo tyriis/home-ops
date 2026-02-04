@@ -1,0 +1,166 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app zigbee2mqtt
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.6.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      zigbee2mqtt:
+        pod:
+          nodeSelector:
+            zigbee.feature.node.kubernetes.io/slae.sh: "true"
+        replicas: 1
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            nameOverride: *app
+            # required to open USB device
+            securityContext:
+              privileged: true
+            # envFrom:
+            #   - secretRef:
+            #       name: zigbee2mqtt-env
+            env:
+              ZIGBEE2MQTT_DATA: /config
+              # ZIGBEE2MQTT_CONFIG_ADVANCED_HOMEASSISTANT_DISCOVERY_TOPIC: homeassistant
+              ZIGBEE2MQTT_CONFIG_ADVANCED_HOMEASSISTANT_LEGACY_ENTITY_ATTRIBUTES: "true"
+              ZIGBEE2MQTT_CONFIG_ADVANCED_HOMEASSISTANT_LEGACY_TRIGGERS: "true"
+              # ZIGBEE2MQTT_CONFIG_ADVANCED_HOMEASSISTANT_STATUS_TOPIC: homeassistant/status
+              ZIGBEE2MQTT_CONFIG_ADVANCED_LAST_SEEN: ISO_8601
+              ZIGBEE2MQTT_CONFIG_ADVANCED_LEGACY_API: "false"
+              ZIGBEE2MQTT_CONFIG_ADVANCED_LEGACY_AVAILABILITY_PAYLOAD: "false"
+              ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_LEVEL: info # debug
+              ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_OUTPUT: '["console"]'
+              ZIGBEE2MQTT_CONFIG_AVAILABILITY_ACTIVE_TIMEOUT: 60
+              ZIGBEE2MQTT_CONFIG_AVAILABILITY_PASSIVE_TIMEOUT: 2000
+              ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_LEGACY: "false"
+              ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_RETAIN: "true"
+              ZIGBEE2MQTT_CONFIG_EXPERIMENTAL_NEW_API: "true"
+              ZIGBEE2MQTT_CONFIG_FRONTEND_PORT: &port 8080
+              ZIGBEE2MQTT_CONFIG_FRONTEND_HOST: 0.0.0.0
+              ZIGBEE2MQTT_CONFIG_FRONTEND_URL: https://zigbee2mqtt.techtales.io
+              # ZIGBEE2MQTT_CONFIG_HOMEASSISTANT: "true"
+              ZIGBEE2MQTT_CONFIG_MQTT_INCLUDE_DEVICE_INFORMATION: "true"
+              ZIGBEE2MQTT_CONFIG_MQTT_KEEPALIVE: 60
+              ZIGBEE2MQTT_CONFIG_MQTT_REJECT_UNAUTHORIZED: "true"
+              ZIGBEE2MQTT_CONFIG_MQTT_SERVER: mqtt://mqtt.techtales.io
+              # ZIGBEE2MQTT_CONFIG_MQTT_VERSION: 5
+              ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: "false"
+              # ZIGBEE2MQTT_CONFIG_SERIAL_BAUDRATE: 115200
+              # ZIGBEE2MQTT_CONFIG_SERIAL_DISABLE_LED: "false"
+              # ZIGBEE2MQTT_CONFIG_SERIAL_PORT: tcp://192.168.1.90:6638
+              ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER: zstack
+              ZIGBEE2MQTT_CONFIG_SERIAL_PORT: /dev/ttyUSB0
+            image:
+              repository: ghcr.io/koenkk/zigbee2mqtt
+              tag: 2.8.0@sha256:89cf02f379aa743a68494388e3a26fba7b8c9101f8b452038cc07aeff3fc983c
+            ports:
+              - name: http
+                containerPort: 8080
+                protocol: TCP
+            resources:
+              requests:
+                cpu: 50m
+                memory: 100Mi
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+
+          zigbee2mqtt-exporter:
+            env:
+              ZIGBEE2MQTT_WS: ws://127.0.0.1:8080/api
+            image:
+              repository: ghcr.io/tyriis/zigbee2mqtt-exporter
+              tag: v0.2.7@sha256:27563503a27da9a4e64c2a5fd2f75967af95b8e54452d576a20364efa56c8321
+            ports:
+              - name: http-prom
+                containerPort: 3000
+                protocol: TCP
+    service:
+      app:
+        controller: zigbee2mqtt
+        ports:
+          http:
+            port: 8080
+
+    serviceMonitor:
+      app:
+        serviceName: zigbee2mqtt
+        endpoints:
+          - port: http-prom
+            scheme: http
+            path: /metrics
+            interval: 5m
+            scrapeTimeout: 15s
+
+    ingress:
+      app:
+        className: nginx
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          external-dns.alpha.kubernetes.io/target: lab-ingress.techtales.io
+          external-dns/unifi: "true"
+          kubernetes.io/tls-acme: "true"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+          nginx.ingress.kubernetes.io/ssl-redirect: "true"
+          nginx.ingress.kubernetes.io/auth-url: https://auth.techtales.io/oauth2/auth
+          nginx.ingress.kubernetes.io/auth-signin: https://auth.techtales.io/oauth2/start?rd=https://$host$request_uri
+          nginx.ingress.kubernetes.io/auth-response-headers: x-auth-request-user, x-auth-request-email
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Get rid of your proprietary Zigbee bridges
+          gethomepage.dev/group: Home Automation
+          gethomepage.dev/icon: zigbee2mqtt
+          gethomepage.dev/name: Zigbee2MQTT
+        hosts:
+          - host: &host "{{ .Release.Name }}.techtales.io"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+            secretName: "{{ .Release.Name }}-tls"
+
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}-data"
+        advancedMounts:
+          zigbee2mqtt:
+            app:
+              - path: /config
+      usb:
+        enabled: true
+        type: hostPath
+        hostPathType: CharDevice
+        hostPath: /dev/serial/by-id/usb-Silicon_Labs_slae.sh_cc2652rb_stick_-_slaesh_s_iot_stuff_00_12_4B_00_21_4F_24_18-if00-port0
+        advancedMounts:
+          zigbee2mqtt:
+            app:
+              - path: /dev/ttyUSB0

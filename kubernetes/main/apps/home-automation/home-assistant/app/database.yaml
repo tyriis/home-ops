@@ -1,0 +1,18 @@
+---
+apiVersion: dbman.hef.sh/v1alpha3
+kind: Database
+metadata:
+  name: hass
+spec:
+  credentials:
+    usernameSecretRef:
+      name: home-assistant-db-init
+      key: INIT_POSTGRES_USER
+    passwordSecretRef:
+      name: home-assistant-db-init
+      key: INIT_POSTGRES_PASS
+  databaseName: hass
+  databaseServerRef:
+    name: postgres17
+    namespace: cnpg-system
+  prune: false

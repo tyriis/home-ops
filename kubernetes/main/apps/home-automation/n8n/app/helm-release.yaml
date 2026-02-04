@@ -1,0 +1,137 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app n8n
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.6.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      n8n:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: "OnRootMismatch"
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/n8n-io/n8n
+              tag: 2.7.1@sha256:3ed9f3bc9b77bc79e6e847edf63317381d4f2dc631f8300a0af96385fd944a13
+            envFrom:
+              - secretRef:
+                  name: n8n-env
+            env:
+              DB_SQLITE_POOL_SIZE: 4
+              DB_SQLITE_VACUUM_ON_STARTUP: true
+              EXECUTIONS_DATA_PRUNE: true
+              EXECUTIONS_DATA_MAX_AGE: 7
+              EXECUTIONS_DATA_PRUNE_MAX_COUNT: 50000
+              GENERIC_TIMEZONE: "Europe/Vienna"
+              N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: false
+              N8N_PROTOCOL: "https"
+              N8N_PORT: &port 8080
+              N8N_HOST: &host n8n.techtales.io
+              N8N_LOG_LEVEL: info
+              N8N_LOG_OUTPUT: console
+              N8N_RUNNERS_ENABLED: "true"
+              N8N_BLOCK_ENV_ACCESS_IN_NODE: "true"
+              WEBHOOK_URL: https://n8n-webhook.techtales.io/
+            ports:
+              - name: http
+                containerPort: *port
+                protocol: TCP
+
+            resources:
+              requests:
+                cpu: 5m
+                memory: 128Mi
+              limits:
+                memory: 2Gi
+
+    service:
+      app:
+        controller: n8n
+        ports:
+          http:
+            port: *port
+
+    route:
+      app:
+        annotations:
+          external-dns/unifi: "true"
+          gatus.home-operations.com/endpoint: |
+            name: n8n
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Flexible AI workflow automation
+          gethomepage.dev/group: Home Automation
+          gethomepage.dev/icon: *app
+          gethomepage.dev/name: *app
+          gethomepage.dev/pod-selector: app.kubernetes.io/name=n8n
+          gethomepage.dev/weight: "1"
+        hostnames:
+          - *host
+        parentRefs:
+          - name: envoy
+            namespace: networking
+            sectionName: https
+
+      webhooks:
+        annotations:
+          external-dns/cloudflare: "true"
+          external-dns/unifi: "true"
+          gatus.home-operations.com/endpoint: |
+            name: n8n-webhook
+            group: external
+            client:
+              dns-resolver: tcp://1.1.1.1:53
+            conditions:
+              - "[STATUS] == 404"
+        labels:
+          tarampampam/error-pages: disabled
+        hostnames:
+          - n8n-webhook.techtales.io
+        parentRefs:
+          - name: envoy
+            namespace: networking
+            sectionName: https
+        rules:
+          - matches:
+              - path:
+                  value: /webhook
+            backendRefs: [{}]
+          - matches:
+              - path:
+                  value: /webhook-test
+            backendRefs: [{}]
+
+    persistence:
+      data:
+        existingClaim: n8n-data
+        advancedMounts:
+          n8n:
+            app:
+              - path: /home/node/.n8n

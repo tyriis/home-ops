@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/gitrepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: cnpg-barman-cloud-crds
+  namespace: cnpg-system
+spec:
+  interval: 1h
+  url: https://github.com/cloudnative-pg/plugin-barman-cloud.git
+  ref:
+    tag: v0.11.0
+  ignore: |
+    # exclude
+    /*
+    # include
+    !config/crd/bases/barmancloud.cnpg.io_objectstores.yaml

@@ -8,7 +8,7 @@
 
 <!-- This section provides an overview of the system, its purpose, and its intended users. -->
 
-The `talos-flux` represents a Kubernetes cluster built upon the robust foundation of [Talos Linux](https://www.talos.dev/). This cluster operates efficiently on low-power hardware within the confines of a HomeLab environment.
+The `talos-flux` represents a Kubernetes cluster built upon the robust foundation of [Talos Linux](https://www.talos.dev/). This cluster operates efficiently on low-power hardware within the confines of a home-ops environment.
 
 Its primary mission is to serve as the hosting platform for a comprehensive suite of applications essential for managing a modern smart home and catering to the digital needs of a family.
 
