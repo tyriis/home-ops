@@ -51,8 +51,6 @@ spec:
               DEVICE: iGPU
               ZES_ENABLE_SYSMAN: "1"
               no_proxy: localhost,127.0.0.1
-              # Optional: Pre-pull Mistral
-              # OLLAMA_MODELS_PREPULL: "mistral:7b-instruct-q4_K_M"
             resources:
               requests:
                 cpu: 200m
