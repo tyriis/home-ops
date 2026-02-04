@@ -59,7 +59,7 @@ spec:
               OAUTH_ALLOW_DANGEROUS_EMAIL_ACCOUNT_LINKING: true
               NEXTAUTH_URL: https://karakeep.techtales.io
               OLLAMA_BASE_URL: http://ollama.ai.svc.cluster.local:11434 #NOSONAR allow http
-              INFERENCE_TEXT_MODEL: gemma3
+              INFERENCE_TEXT_MODEL: gemma3:1b
               INFERENCE_IMAGE_MODEL: llava
             envFrom:
               - secretRef:
