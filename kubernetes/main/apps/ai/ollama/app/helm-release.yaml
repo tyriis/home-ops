@@ -48,7 +48,7 @@ spec:
               OLLAMA_HOST: 0.0.0.0
               OLLAMA_INTEL_GPU: "true"
               OLLAMA_NUM_GPU: "999"
-              DEVICE: UHD Graphics
+              DEVICE: iGPU
               ZES_ENABLE_SYSMAN: "1"
               no_proxy: localhost,127.0.0.1
               # Optional: Pre-pull Mistral
@@ -58,15 +58,22 @@ spec:
                 cpu: 200m
                 gpu.intel.com/i915: 1
               limits:
+                cpu: 4
                 memory: 24Gi
                 gpu.intel.com/i915: 1
+            ports:
+              - name: http
+                containerPort: &port 11434
+                protocol: TCP
     service:
       app:
         ports:
           http:
-            port: 11434
+            port: *port
     route:
       app:
+        annotations:
+          external-dns/unifi: "true"
         hostnames:
           - "{{ .Release.Name }}.techtales.io"
         parentRefs:
