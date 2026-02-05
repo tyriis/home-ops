@@ -1,6 +1,6 @@
 # UnifiedMetrics https://modrinth.com/plugin/unifiedmetrics
 https://cdn.modrinth.com/data/p1ewR5kV/versions/Ypqt7eH1/unifiedmetrics-platform-bukkit-0.3.8.jar
 # LuckPerms https://luckperms.net/download
-https://download.luckperms.net/1617/bukkit/loader/LuckPerms-Bukkit-5.5.29.jar
+https://download.luckperms.net/1620/bukkit/loader/LuckPerms-Bukkit-5.5.32.jar
 # FancyNpcs https://modrinth.com/plugin/fancynpcs/versions?c=release&l=paper
 https://cdn.modrinth.com/data/EeyAn23L/versions/ZCrVQ3rv/FancyNpcs-2.9.1.jar
