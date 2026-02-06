@@ -1,0 +1,34 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: grafana-operator
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: grafana-operator
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    # https://artifacthub.io/packages/helm/grafana/grafana-operator?modal=values
+    replicas: 1
+    dashboard:
+      enabled: true
+    defaultResyncPeriod: 1m
+    serviceMonitor:
+      enabled: true
+    resources:
+      requests:
+        cpu: 10m
+        memory: 100Mi
