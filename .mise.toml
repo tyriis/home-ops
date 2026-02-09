@@ -9,7 +9,7 @@ flux2 = "2.7.5"
 # https://gitleaks.io/
 gitleaks = "8.30.0"
 # https://helm.sh/
-helm = "4.1.0"
+helm = "4.1.1"
 # https://k9scli.io/
 k9s = "0.40.10"
 # https://kubernetes.io/docs/reference/kubectl/
