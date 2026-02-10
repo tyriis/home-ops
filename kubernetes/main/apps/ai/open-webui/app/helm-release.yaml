@@ -1,0 +1,89 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app open-webui
+spec:
+  driftDetection:
+    mode: enabled
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.6.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
+    controllers:
+      main:
+        replicas: 1 # Single node
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/open-webui/open-webui
+              tag: 0.7.2@sha256:16d9a3615b45f14a0c89f7ad7a3bf151f923ed32c2e68f9204eb17d1ce40774b
+            env:
+              ENABLE_OPENAI_API: False
+              ENABLE_OLLAMA_API: True
+              # ENABLE_IMAGE_GENERATION: False
+              # ENABLE_IMAGE_GENERATION: True
+              # IMAGE_GENERATION_ENGINE: comfyui
+              # IMAGE_GENERATION_MODEL: dreamshaper_8
+              # IMAGE_SIZE: 400x400
+              # IMAGE_STEPS: 8
+              # COMFYUI_BASE_URL: http://comfyui:8188
+              OLLAMA_BASE_URL: http://ollama:11434
+              # ENABLE_RAG_WEB_SEARCH: true
+              # ENABLE_SEARCH_QUERY: true
+              # RAG_WEB_SEARCH_ENGINE: searxng
+              # SEARXNG_QUERY_URL: http://searxng:8080/search?q=<query>
+              ENABLE_WEBSOCKET_SUPPORT: "true"
+              WEBSOCKET_MANAGER: "redis"
+              WEBSOCKET_REDIS_URL: "redis://dragonfly.dragonfly-system.svc.cluster.local:6379"
+              # DATABASE_URL: # TODO
+            resources:
+              requests:
+                cpu: 500m
+                memory: 1Gi
+              limits:
+                memory: 2Gi
+            ports:
+              - name: http
+                containerPort: &port 8080
+                protocol: TCP
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        annotations:
+          external-dns/unifi: "true"
+        hostnames:
+          - ai.techtales.io
+        parentRefs:
+          - name: envoy
+            namespace: networking
+            sectionName: https
+    # persistence:
+    #   config:
+    #     enabled: true
+    #     existingClaim: "{{ .Release.Name }}"
+    #     globalMounts:
+    #       - path: /app/backend/data
