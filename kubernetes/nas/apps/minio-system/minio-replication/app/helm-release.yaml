@@ -139,6 +139,8 @@ spec:
             scrapeTimeout: 10s
     route:
       app:
+        labels:
+          envoy-gateway/compression: disabled
         annotations:
           external-dns/unifi: "true"
         hostnames:
@@ -153,6 +155,8 @@ spec:
                 namespace: minio-system
                 port: 9090
       s3:
+        labels:
+          envoy-gateway/compression: disabled
         annotations:
           external-dns/unifi: "true"
         hostnames:

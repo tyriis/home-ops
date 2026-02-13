@@ -8,5 +8,6 @@ components:
   - ../../../components/flux/alerts
 resources:
   - ./namespace.yaml
+  - ./backend-traffic-policy.yaml
   - ./minio/flux-sync.yaml
   - ./minio-replication/flux-sync.yaml
