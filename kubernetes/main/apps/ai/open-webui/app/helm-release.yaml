@@ -47,7 +47,7 @@ spec:
               # IMAGE_SIZE: 400x400
               # IMAGE_STEPS: 8
               # COMFYUI_BASE_URL: http://comfyui:8188
-              OLLAMA_BASE_URL: http://ollama:11434 #NOSONAR allow http
+              OLLAMA_BASE_URL: http://olla:40114/olla/ollama #NOSONAR allow http
               # ENABLE_RAG_WEB_SEARCH: true
               # ENABLE_SEARCH_QUERY: true
               # RAG_WEB_SEARCH_ENGINE: searxng
