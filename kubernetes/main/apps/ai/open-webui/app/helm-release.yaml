@@ -81,9 +81,9 @@ spec:
           - name: envoy
             namespace: networking
             sectionName: https
-    # persistence:
-    #   config:
-    #     enabled: true
-    #     existingClaim: "{{ .Release.Name }}"
-    #     globalMounts:
-    #       - path: /app/backend/data
+    persistence:
+      data:
+        enabled: true
+        existingClaim: "{{ .Release.Name }}-data"
+        globalMounts:
+          - path: /app/backend/data
