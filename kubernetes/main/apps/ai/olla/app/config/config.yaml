@@ -18,6 +18,8 @@ proxy:
 
 discovery:
   type: static
+  model_discovery:
+    enabled: true
   static:
     endpoints:
       # Primary workstation GPU
