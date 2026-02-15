@@ -203,7 +203,7 @@ controlPlane:
             bind-address: 0.0.0.0
         extraManifests:
           - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.1/experimental-install.yaml
-          - https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.88.1/stripped-down-crds.yaml
+          - https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.89.0/stripped-down-crds.yaml
 
 worker:
   schematic:
@@ -328,4 +328,4 @@ worker:
             bind-address: 0.0.0.0
         extraManifests:
           - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.1/experimental-install.yaml
-          - https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.88.1/stripped-down-crds.yaml
+          - https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.89.0/stripped-down-crds.yaml
