@@ -82,5 +82,5 @@ spec:
         type: configMap
         name: "{{ .Release.Name }}-config"
         globalMounts:
-          - path: /app/config.local.yaml
+          - path: /app/config.yaml
             subPath: config.yaml
