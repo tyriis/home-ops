@@ -25,21 +25,30 @@ discovery:
         name: red-rtx2060
         type: ollama
         priority: 100
+        model_url: /api/tags
+        health_check_url: /
         check_interval: 5s
+        check_timeout: 1s
 
       # Secondary machine on network
       - url: http://192.168.1.12:11434
         name: purple-rtx2060
         type: ollama
         priority: 99
+        model_url: /api/tags
+        health_check_url: /
         check_interval: 5s
+        check_timeout: 1s
 
       # main cluster with intel iGPU
       - url: http://ollama:11434
         name: ollama-main
         type: ollama
         priority: 90
-        check_interval: 5s
+        model_url: /api/tags
+        health_check_url: /
+        check_interval: 2s
+        check_timeout: 1s
 
       # # LM Studio instance
       # - url: http://localhost:1234
