@@ -56,6 +56,7 @@ spec:
               WEBSOCKET_MANAGER: "redis"
               WEBSOCKET_REDIS_URL: "redis://dragonfly.dragonfly-system.svc.cluster.local:6379"
               # DATABASE_URL: # TODO
+              # https://pocket-id.org/docs/client-examples/open-webui
               ENABLE_OAUTH_SIGNUP: "true"
               OAUTH_PROVIDER_NAME: Pocket ID
               OPENID_PROVIDER_URL: https://id.techtales.io/.well-known/openid-configuration
@@ -68,7 +69,7 @@ spec:
               OAUTH_ROLES_CLAIM: groups
               OAUTH_SCOPES: openid email profile groups
               DEFAULT_USER_ROLE: user
-              # ENABLE_LOGIN_FORM: "false"
+              ENABLE_LOGIN_FORM: "false"
               OAUTH_UPDATE_PICTURE_ON_LOGIN: "true"
             envFrom:
               - secretRef:
