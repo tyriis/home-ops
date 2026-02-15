@@ -10,6 +10,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../../components/volsync
   path: ./kubernetes/main/apps/ai/open-webui/app
   prune: true
   sourceRef:
@@ -20,6 +22,15 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  dependsOn:
+    - name: external-secrets-stores
+      namespace: secops
+    - name: volsync
+      namespace: backup-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   postBuild:
     substitute:
       APP: *app
+      NAMESPACE: *namespace
+      VOLSYNC_CAPACITY: 20Gi
