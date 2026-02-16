@@ -87,7 +87,10 @@ spec:
           - name: envoy
             namespace: networking
             sectionName: https
-    # persistence:
+    persistence:
+      tmp:
+        type: emptyDir
+
     #   config:
     #     type: configMap
     #     name: "{{ .Release.Name }}-config"
