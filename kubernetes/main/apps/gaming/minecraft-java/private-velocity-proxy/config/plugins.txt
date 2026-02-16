@@ -8,8 +8,8 @@ https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/lates
 # UnifiedMetrics https://modrinth.com/plugin/unifiedmetrics, https://hangar.papermc.io/cubxity/UnifiedMetrics
 https://cdn.modrinth.com/data/p1ewR5kV/versions/Dubg3nLw/unifiedmetrics-platform-velocity-0.3.8.jar
 # MiniMOTD https://modrinth.com/plugin/minimotd/versions?l=velocity
-https://cdn.modrinth.com/data/16vhQOQN/versions/4ceIMQUi/minimotd-velocity-2.1.8.jar
-# ViaVersion https://viaversion.com/setup.html?lang=en https://modrinth.com/plugin/viaversion/versions?c=release&l=velocity
-https://hangarcdn.papermc.io/plugins/ViaVersion/ViaVersion/versions/5.5.0/PAPER/ViaVersion-5.5.0.jar
-# ViaBackwards https://hangar.papermc.io/ViaVersion/ViaBackwards
-https://hangarcdn.papermc.io/plugins/ViaVersion/ViaBackwards/versions/5.5.0/PAPER/ViaBackwards-5.5.0.jar
+https://cdn.modrinth.com/data/16vhQOQN/versions/VJZkuJ7o/minimotd-velocity-2.2.2.jar
+# ViaVersion https://modrinth.com/plugin/viaversion/versions?c=release&l=velocity
+https://cdn.modrinth.com/data/P1OZGk5p/versions/UU6hYsGX/ViaVersion-5.7.1.jar
+# ViaBackwards https://modrinth.com/plugin/viabackwards/versions?c=release&l=velocity
+https://cdn.modrinth.com/data/NpvuJQoq/versions/s4iIv3dm/ViaBackwards-5.7.1.jar

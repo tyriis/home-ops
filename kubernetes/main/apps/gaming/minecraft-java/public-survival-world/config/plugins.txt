@@ -1,13 +1,12 @@
 # UnifiedMetrics https://modrinth.com/plugin/unifiedmetrics
 https://cdn.modrinth.com/data/p1ewR5kV/versions/Ypqt7eH1/unifiedmetrics-platform-bukkit-0.3.8.jar
-# AxGraves https://hangar.papermc.io/Artillex-Studios/AxGraves
-https://hangarcdn.papermc.io/plugins/Artillex-Studios/AxGraves/versions/1.25.1/PAPER/AxGraves-1.25.1.jar
+# AxGraves https://modrinth.com/plugin/axgraves/versions?c=release&l=paper
+https://cdn.modrinth.com/data/Cz6msz34/versions/a57lqR5L/AxGraves-1.26.1.jar
 # QualityArmory https://modrinth.com/plugin/qualityarmory/versions?l=paper
 https://cdn.modrinth.com/data/flkUwsSr/versions/ChE6OZxM/QualityArmory.jar
-# SimpleTPA https://modrinth.com/plugin/simpletpaplugin
+# SimpleTPA https://modrinth.com/plugin/simpletpaplugin/versions?l=paper
 https://cdn.modrinth.com/data/6t5Ziqmz/versions/6DLbpyAy/SimpleTPA-1.3.jar
 # Vane https://modrinth.com/plugin/vane/versions?l=paper
-https://cdn.modrinth.com/data/698NGGtb/versions/7iN7nUoH/vane-core-1.21.0.jar
-# ProtocolLib https://ci.dmulloy2.net/job/ProtocolLib/ required by Vane
-# https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/artifact/build/libs/ProtocolLib.jar
+https://cdn.modrinth.com/data/698NGGtb/versions/hSyzjZEi/vane-core-1.21.1.jar
+# ProtocolLib, required by Vane https://github.com/dmulloy2/ProtocolLib/releases
 https://github.com/dmulloy2/ProtocolLib/releases/download/5.4.0/ProtocolLib.jar

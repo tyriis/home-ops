@@ -13,7 +13,6 @@ spec:
         containers:
           app:
             env:
-              PAPER_DOWNLOAD_URL: https://fill-data.papermc.io/v1/objects/d99ef05d75304ca6a7808300354f4bcd7846e015f5c088f218113ed529d1b4f0/paper-1.21.11-113.jar
               MEMORY: 4096M
             resources:
               requests:

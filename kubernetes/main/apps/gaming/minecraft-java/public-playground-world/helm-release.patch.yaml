@@ -13,5 +13,4 @@ spec:
         containers:
           app:
             env:
-              PAPER_DOWNLOAD_URL: https://api.papermc.io/v2/projects/paper/versions/1.21.7/builds/32/downloads/paper-1.21.7-32.jar
               MEMORY: 1024M
