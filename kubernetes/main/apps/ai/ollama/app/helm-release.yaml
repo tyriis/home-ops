@@ -36,7 +36,7 @@ spec:
           app:
             image:
               repository: intelanalytics/ipex-llm-inference-cpp-xpu
-              tag: 2.3.0-SNAPSHOT
+              tag: 2.3.0-SNAPSHOT@sha256:74c7fba6e12a083ff664ae54e1ff16a977a39caa03d272125db406eeddaee09e
             command:
               - /bin/sh
               - -c
