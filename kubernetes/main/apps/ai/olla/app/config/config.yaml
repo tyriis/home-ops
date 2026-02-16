@@ -1,0 +1,89 @@
+---
+server:
+  host: 0.0.0.0 # Accept connections from network
+  port: 40114
+  request_logging: true
+  rate_limits:
+    global_requests_per_minute: 1000
+    per_ip_requests_per_minute: 100
+  request_limits:
+    max_body_size: 52428800 # 50MB
+    max_header_size: 524288 # 512KB
+
+proxy:
+  engine: sherpa
+  profile: auto
+  load_balancer: priority
+  connection_timeout: 30s
+
+discovery:
+  type: static
+  model_discovery:
+    enabled: true
+    interval: 5m         # How often to refresh models
+    timeout: 30s         # Discovery request timeout
+    concurrent_workers: 5 # Parallel discovery workers
+  static:
+    endpoints:
+      # Primary workstation GPU
+      - url: http://192.168.1.22:11434
+        name: red-rtx2060
+        type: ollama
+        priority: 100
+        model_url: /api/tags
+        health_check_url: /
+        check_interval: 5s
+        check_timeout: 1s
+
+      # Secondary machine on network
+      - url: http://192.168.1.12:11434
+        name: purple-rtx2060
+        type: ollama
+        priority: 99
+        model_url: /api/tags
+        health_check_url: /
+        check_interval: 5s
+        check_timeout: 1s
+
+      # main cluster with intel iGPU
+      - url: http://ollama:11434
+        name: ollama-main
+        type: ollama
+        priority: 90
+        model_url: /api/tags
+        health_check_url: /
+        check_interval: 2s
+        check_timeout: 1s
+
+      # # LM Studio instance
+      # - url: http://localhost:1234
+      #   name: lmstudio-local
+      #   type: lm-studio
+      #   priority: 50
+      #   check_interval: 10s
+
+      # # llama.cpp instance
+      # - url: http://localhost:8080
+      #   name: llamacpp-local
+      #   type: llamacpp
+      #   priority: 95
+      #   check_interval: 10s
+
+model_registry:
+  type: memory
+  enable_unifier: true
+  routing_strategy:
+    type: optimistic # Home lab: more flexible routing
+    options:
+      fallback_behavior: all # Use any available endpoint if model not found
+      discovery_timeout: 5s
+      discovery_refresh_on_miss: false
+  unification:
+    enabled: true
+    stale_threshold: 1h
+    cleanup_interval: 10m
+
+logging:
+  level: info
+  format: json
+  output: stdout

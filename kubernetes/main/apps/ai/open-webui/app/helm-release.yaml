@@ -1,0 +1,108 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app open-webui
+spec:
+  driftDetection:
+    mode: enabled
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.6.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
+    controllers:
+      main:
+        replicas: 1 # Single node
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/open-webui/open-webui
+              tag: v0.8.2@sha256:7b7d324724ea4aa95d206362d8e9332544f11be167cd254ff83af9ab75734db8
+            env:
+              ENABLE_OPENAI_API: False
+              ENABLE_OLLAMA_API: True
+              # ENABLE_IMAGE_GENERATION: False
+              # ENABLE_IMAGE_GENERATION: True
+              # IMAGE_GENERATION_ENGINE: comfyui
+              # IMAGE_GENERATION_MODEL: dreamshaper_8
+              # IMAGE_SIZE: 400x400
+              # IMAGE_STEPS: 8
+              # COMFYUI_BASE_URL: http://comfyui:8188
+              OLLAMA_BASE_URL: http://olla:40114/olla/ollama #NOSONAR allow http
+              # ENABLE_RAG_WEB_SEARCH: true
+              # ENABLE_SEARCH_QUERY: true
+              # RAG_WEB_SEARCH_ENGINE: searxng
+              # SEARXNG_QUERY_URL: http://searxng:8080/search?q=<query>
+              ENABLE_WEBSOCKET_SUPPORT: "true"
+              WEBSOCKET_MANAGER: "redis"
+              WEBSOCKET_REDIS_URL: "redis://dragonfly.dragonfly-system.svc.cluster.local:6379"
+              # DATABASE_URL: # TODO
+              # https://pocket-id.org/docs/client-examples/open-webui
+              ENABLE_OAUTH_SIGNUP: "true"
+              OAUTH_PROVIDER_NAME: Pocket ID
+              OPENID_PROVIDER_URL: https://id.techtales.io/.well-known/openid-configuration
+              OAUTH_MERGE_ACCOUNTS_BY_EMAIL: "true"
+              ENABLE_OAUTH_ROLE_MANAGEMENT: "true"
+              ENABLE_OAUTH_GROUP_MANAGEMENT: "true"
+              ENABLE_OAUTH_GROUP_CREATION: "true"
+              OAUTH_ALLOWED_ROLES: users, admins
+              OAUTH_ADMIN_ROLES: admins
+              OAUTH_ROLES_CLAIM: groups
+              OAUTH_SCOPES: openid email profile groups
+              DEFAULT_USER_ROLE: user
+              ENABLE_LOGIN_FORM: "false"
+              OAUTH_UPDATE_PICTURE_ON_LOGIN: "true"
+            envFrom:
+              - secretRef:
+                  name: open-webui-env
+
+            resources:
+              requests:
+                cpu: 500m
+                memory: 1Gi
+              limits:
+                memory: 2Gi
+            ports:
+              - name: http
+                containerPort: &port 8080
+                protocol: TCP
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        annotations:
+          external-dns/unifi: "true"
+        hostnames:
+          - ai.techtales.io
+        parentRefs:
+          - name: envoy
+            namespace: networking
+            sectionName: https
+    persistence:
+      data:
+        enabled: true
+        existingClaim: "{{ .Release.Name }}-data"
+        globalMounts:
+          - path: /app/backend/data

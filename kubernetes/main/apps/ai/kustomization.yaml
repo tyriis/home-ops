@@ -1,0 +1,12 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: ai
+components:
+  - ../../../components/flux/alerts
+resources:
+  - ./namespace.yaml
+  - ./olla/flux-sync.yaml
+  - ./ollama/flux-sync.yaml
+  - ./open-webui/flux-sync.yaml

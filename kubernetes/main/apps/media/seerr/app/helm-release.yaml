@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: ghcr.io/seerr-team/seerr
-              tag: develop@sha256:c3de4154620ea574adffa83abf84cbed21ef1d59ae9ec2402813e7edbcaec3ff
+              tag: develop@sha256:a28db02d90b33f20c1dac8cc8b5489c56f246087a790f7039e12a043279aec95
             envFrom:
               - secretRef:
                   name: seerr-env

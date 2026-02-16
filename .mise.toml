@@ -9,26 +9,26 @@ flux2 = "2.7.5"
 # https://gitleaks.io/
 gitleaks = "8.30.0"
 # https://helm.sh/
-helm = "4.1.0"
+helm = "4.1.1"
 # https://k9scli.io/
 k9s = "0.40.10"
 # https://kubernetes.io/docs/reference/kubectl/
-kubectl = "1.35.0"
+kubectl = "1.35.1"
 # https://kustomize.io/
-kustomize = "5.8.0"
+kustomize = "5.8.1"
 # https://nodejs.org/
-node = "24.13.0"
+node = "24.13.1"
 # https://pre-commit.com/
 pre-commit = "4.5.1"
 # https://github.com/mozilla/sops
 sops = "3.11.0"
 # https://github.com/budimanjojo/talhelper
-talhelper = "3.1.3"
+talhelper = "3.1.5"
 # https://www.talos.dev/
-talosctl = "1.12.1"
+talosctl = "1.12.4"
 # https://taskfile.dev/
 task = "3.43.3"
 # https://trivy.dev/
-trivy = "0.69.0"
+trivy = "0.69.1"
 # minio client
 mc = "2025-08-13T08-35-41Z"

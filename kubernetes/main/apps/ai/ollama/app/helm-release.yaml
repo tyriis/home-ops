@@ -1,0 +1,91 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app ollama
+spec:
+  driftDetection:
+    mode: enabled
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.6.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
+    controllers:
+      main:
+        replicas: 1 # Single node
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: intelanalytics/ipex-llm-inference-cpp-xpu
+              tag: 2.3.0-SNAPSHOT@sha256:74c7fba6e12a083ff664ae54e1ff16a977a39caa03d272125db406eeddaee09e
+            command:
+              - /bin/sh
+              - -c
+              - mkdir -p /llm/ollama && cd /llm/ollama && init-ollama && exec ./ollama serve
+            securityContext:
+              privileged: true # Needed for iGPU device access
+            env:
+              OLLAMA_MODELS: &modelPath /models
+              OLLAMA_HOST: 0.0.0.0
+              OLLAMA_INTEL_GPU: "true"
+              OLLAMA_NUM_GPU: "999"
+              DEVICE: iGPU
+              ZES_ENABLE_SYSMAN: "1"
+              no_proxy: localhost,127.0.0.1
+            resources:
+              requests:
+                cpu: 200m
+                gpu.intel.com/i915: 1
+              limits:
+                cpu: 4
+                memory: 24Gi
+                gpu.intel.com/i915: 1
+            ports:
+              - name: http
+                containerPort: &port 11434
+                protocol: TCP
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        annotations:
+          external-dns/unifi: "true"
+        hostnames:
+          - "{{ .Release.Name }}.techtales.io"
+        parentRefs:
+          - name: envoy
+            namespace: networking
+            sectionName: https
+    persistence:
+      data:
+        existingClaim: ollama-data
+        globalMounts:
+          - path: *modelPath
+            subPath: models
+          - path: /root/.ollama
+            subPath: config
+      dri:
+        type: hostPath
+        hostPath: /dev/dri
