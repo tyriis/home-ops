@@ -34,7 +34,7 @@ spec:
       image:
         registry: quay.io
         repository: argoproj/workflow-controller
-        tag: v3.7.10@sha256:68aaa490fe6bbd4133f5485ae90c104ea4432e4375e50443d8a9bca78705fa53
+        tag: v4.0.1@sha256:d515d0fc1109c1e34be1dba02587f6cc804dc6d2f1d1c370305d820010116a03
       parallelism: 20
       resourceRateLimit:
         limit: 10
@@ -53,14 +53,14 @@ spec:
       image:
         registry: quay.io
         repository: argoproj/argoexec
-        tag: v3.7.10@sha256:2f10566b99d9c8555f4964c9cdac1c5443eca492cea866e620e6aaa0891b790d
+        tag: v4.0.1@sha256:2a73e2a57daabde06bc838c1efe00bd9732c58baf37cd05a9201acd2935856b2
 
     server:
       enabled: true
       image:
         registry: quay.io
         repository: argoproj/argocli
-        tag: v3.7.10@sha256:cb93a5cc1085b2b89e978bc59037cefe580551ae6b34230046cf6e701a436a3a
+        tag: v4.0.1@sha256:d5ec6c39f19fcec95c68605f12d1bb483188996938b297ed974921875bfa9669
       resources:
         requests:
           cpu: 10m
