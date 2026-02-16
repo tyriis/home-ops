@@ -13,7 +13,4 @@ spec:
         containers:
           app:
             env:
-              PAPER_DOWNLOAD_URL: NULL
-              VERSION: 1.21.9
-              PAPER_BUILD: 50
               PAPER_CHANNEL: experimental

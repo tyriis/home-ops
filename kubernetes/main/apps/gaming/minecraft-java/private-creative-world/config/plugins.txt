@@ -1,7 +1,6 @@
 # UnifiedMetrics https://modrinth.com/plugin/unifiedmetrics
 https://cdn.modrinth.com/data/p1ewR5kV/versions/Ypqt7eH1/unifiedmetrics-platform-bukkit-0.3.8.jar
 # Vane https://modrinth.com/plugin/vane/versions?l=paper
-https://cdn.modrinth.com/data/698NGGtb/versions/Z9TLW1LC/all-plugins.zip
-# ProtocolLib https://ci.dmulloy2.net/job/ProtocolLib/ required by Vane
-# https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/artifact/build/libs/ProtocolLib.jar
+https://cdn.modrinth.com/data/698NGGtb/versions/hSyzjZEi/vane-core-1.21.1.jar
+# ProtocolLib (required by Vane) https://github.com/dmulloy2/ProtocolLib/releases
 https://github.com/dmulloy2/ProtocolLib/releases/download/5.4.0/ProtocolLib.jar

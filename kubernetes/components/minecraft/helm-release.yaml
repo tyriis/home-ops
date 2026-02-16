@@ -73,13 +73,10 @@ spec:
             env:
               # https://docker-minecraft-server.readthedocs.io/en/latest/variables
               TYPE: "PAPER"
-              # renovate custom manager for 1.21.5 builds
-              PAPER_DOWNLOAD_URL: https://api.papermc.io/v2/projects/paper/versions/1.21.7/builds/32/downloads/paper-1.21.7-32.jar
-
-              # TODO: use instead of direct download
               # PAPER_CHANNEL: experimental
-              # VERSION: 1.21.5
-              # PAPER_BUILD: 113
+              # TODO: update with renovate
+              VERSION: 1.21.11
+              PAPER_BUILD: 116
 
               MEMORY: 1024M
               MODS_FILE: /config/plugins.txt

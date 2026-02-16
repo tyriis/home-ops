@@ -13,6 +13,5 @@ spec:
         containers:
           app:
             env:
-              PAPER_DOWNLOAD_URL: https://api.papermc.io/v2/projects/paper/versions/1.21.8/builds/6/downloads/paper-1.21.8-6.jar
               MEMORY: 1024M
               MAX_TICK_TIME: "-1"
