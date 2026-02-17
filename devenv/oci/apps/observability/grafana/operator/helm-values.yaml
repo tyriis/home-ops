@@ -1,0 +1,12 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: grafana-operator
+spec:
+  interval: 30m
+  # https://artifacthub.io/packages/helm/grafana/grafana-operator?modal=values
+  values:
+    serviceMonitor:
+      enabled: false

@@ -1,0 +1,108 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/grafana.integreatly.org/grafana_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: Grafana
+metadata:
+  name: grafana
+  labels:
+    grafana.internal/instance: grafana
+# https://grafana.github.io/grafana-operator/docs/examples/grafana/
+spec:
+  config:
+    analytics:
+      check_for_updates: "false"
+      check_for_plugin_updates: "false"
+      feedback_links_enabled: "false"
+      reporting_enabled: "false"
+    auth:
+      oauth_auto_login: "false"
+      disable_login_form: "true"
+    auth.anonymous:
+      enabled: "false"
+    auth.basic:
+      enabled: "false"
+    auth.passwordless:
+      enabled: "false"
+    auth.generic_oauth:
+      enabled: "true"
+      name: Pocket ID
+      allow_sign_up: "true"
+      allowed_domains: techtales.io
+      api_url: https://id.techtales.io/api/oidc/userinfo
+      auth_url: https://id.techtales.io/authorize
+      token_url: https://id.techtales.io/api/oidc/token
+      signout_redirect_url: https://id.techtales.io/api/oidc/end-session
+      role_attribute_path: contains(groups[*], 'admins') && 'Admin'
+      scopes: openid profile email groups
+      use_pkce: "true"
+    date_formats:
+      use_browser_locale: "true"
+    log:
+      mode: console
+    server:
+      enable_gzip: "true"
+      root_url: https://grafana.techtales.io
+    users:
+      auto_assign_org_role: Viewer
+      viewers_can_edit: "true"
+  deployment:
+    spec:
+      replicas: 1
+      strategy:
+        type: Recreate
+      template:
+        spec:
+          containers:
+            - name: grafana
+              env:
+                - name: GF_SECURITY_ADMIN_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: grafana-admin
+                      key: PASSWORD
+                - name: GF_AUTH_GENERIC_OAUTH_CLIENT_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: grafana-env
+                      key: GF_AUTH_GENERIC_OAUTH_CLIENT_ID
+                - name: GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET
+                  valueFrom:
+                    secretKeyRef:
+                      name: grafana-env
+                      key: GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities: { drop: ["ALL"] }
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 100Mi
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+  httpRoute:
+    metadata:
+      annotations:
+        external-dns/cloudflare: "true"
+        external-dns/unifi: "true"
+        gatus.home-operations.com/endpoint: |
+          group: external
+          client:
+            dns-resolver: tcp://1.1.1.1:53
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/description: Metrics, logs, traces, and profiles, oh my!
+        gethomepage.dev/group: Observability
+        gethomepage.dev/icon: grafana
+        gethomepage.dev/name: Grafana
+    spec:
+      hostnames:
+        - grafana.techtales.io
+      parentRefs:
+        - name: envoy
+          namespace: networking
+          sectionName: https
+  disableDefaultAdminSecret: true
+  disableDefaultSecurityContext: All

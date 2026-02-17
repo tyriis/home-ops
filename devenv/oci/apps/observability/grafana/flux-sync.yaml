@@ -3,16 +3,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app grafana-operator
+  name: grafana-operator
 spec:
   targetNamespace: observability
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/observability/grafana/operator
+  path: ./devenv/oci/apps/observability/grafana/operator
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   wait: true
@@ -25,16 +22,13 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app grafana-instance
+  name: grafana-instance
 spec:
   targetNamespace: observability
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/observability/grafana/instance
+  path: ./devenv/oci/apps/observability/grafana/instance
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   wait: true
@@ -42,6 +36,4 @@ spec:
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: external-secrets-stores
-      namespace: secops
     - name: grafana-operator
