@@ -20,7 +20,7 @@ spec:
     auth.anonymous:
       enabled: "false"
     auth.basic:
-      enabled: "false"
+      enabled: "true" # need to be enabled for the operator
     auth.passwordless:
       enabled: "false"
     auth.generic_oauth:
