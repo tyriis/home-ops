@@ -5,9 +5,6 @@ kind: HelmRelease
 metadata:
   name: &app anubis-grafana
 spec:
-  dependsOn:
-    - name: grafana
-      namespace: observability
   interval: 30m
   driftDetection:
     mode: enabled
