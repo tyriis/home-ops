@@ -104,5 +104,9 @@ spec:
         - name: envoy
           namespace: networking
           sectionName: https
+      rules:
+        - backendRefs:
+            - name: grafana-service
+              port: 3000
   disableDefaultAdminSecret: true
   disableDefaultSecurityContext: All
