@@ -84,6 +84,9 @@ spec:
       app:
         annotations:
           external-dns/unifi: "true"
+          gatus.home-operations.com/endpoint: |
+            conditions:
+              - "[STATUS] == 302"
         hostnames:
           - "{{ .Release.Name }}.techtales.io"
         parentRefs:
