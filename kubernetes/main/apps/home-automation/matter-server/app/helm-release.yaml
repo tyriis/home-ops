@@ -1,5 +1,6 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# TODO: Add flux sync for this helm release, but it needs additional network configuration to work properly, so it is currently disabled
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
