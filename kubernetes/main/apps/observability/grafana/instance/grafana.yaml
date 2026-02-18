@@ -97,6 +97,9 @@ spec:
           group: external
           client:
             dns-resolver: tcp://1.1.1.1:53
+          conditions:
+            - "[STATUS] == 302"
+          name: grafana
         gethomepage.dev/enabled: "true"
         gethomepage.dev/description: Metrics, logs, traces, and profiles, oh my!
         gethomepage.dev/group: Observability
