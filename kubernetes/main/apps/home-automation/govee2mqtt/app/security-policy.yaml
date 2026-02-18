@@ -1,0 +1,20 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/gateway.envoyproxy.io/securitypolicy_v1alpha1.json
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: &name govee2mqtt-pocketid
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: govee2mqtt
+  oidc:
+    provider:
+      issuer: https://id.techtales.io
+    clientIDRef:
+      name: *name
+    clientSecret:
+      name: *name
+    redirectURL: https://govee2mqtt.techtales.io/oauth2/callback
+    logoutPath: /oauth2/logout
