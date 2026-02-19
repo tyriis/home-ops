@@ -54,36 +54,22 @@ spec:
           http:
             port: 6052
 
-    ingress:
+    route:
       app:
-        className: nginx
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          external-dns.alpha.kubernetes.io/target: lab-ingress.techtales.io
           external-dns/unifi: "true"
-          kubernetes.io/tls-acme: "true"
-          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-          nginx.ingress.kubernetes.io/ssl-redirect: "true"
-          nginx.ingress.kubernetes.io/auth-url: https://auth.techtales.io/oauth2/auth
-          nginx.ingress.kubernetes.io/auth-signin: https://auth.techtales.io/oauth2/start?rd=https://$host$request_uri
-          nginx.ingress.kubernetes.io/auth-response-headers: x-auth-request-user, x-auth-request-email
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Smart Home Made Simple
           gethomepage.dev/group: Home Automation
           gethomepage.dev/icon: esphome
           gethomepage.dev/name: ESPHome
           gethomepage.dev/weight: "2"
-        hosts:
-          - host: &host "{{ .Release.Name }}.techtales.io"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
-            secretName: "{{ .Release.Name }}-tls"
+        hostnames:
+          - "{{ .Release.Name }}.techtales.io"
+        parentRefs:
+          - name: envoy
+            namespace: networking
+            sectionName: https
 
     persistence:
       config:
