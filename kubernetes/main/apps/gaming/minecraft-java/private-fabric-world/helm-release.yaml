@@ -79,7 +79,7 @@ spec:
               MEMORY: 4096M
               MODS_FILE: /config/plugins.txt
               REPLACE_ENV_DURING_SYNC: "true"
-              CFG_PROXY_SECRET:
+              FABRIC_PROXY_SECRET:
                 valueFrom:
                   secretKeyRef:
                     name: ${APP}-proxy-forwarding
