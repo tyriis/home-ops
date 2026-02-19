@@ -5,4 +5,4 @@ kind: Kustomization
 resources:
   - ./helm-release.yaml
 patches:
-  - ./security-policy.patch.yaml
+  - path: ./security-policy.patch.yaml
