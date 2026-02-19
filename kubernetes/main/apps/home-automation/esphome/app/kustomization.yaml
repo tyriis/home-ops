@@ -8,3 +8,4 @@ resources:
   - ./prometheus-rule.yaml
   - ./pvc.yaml
   - ./scrape-config.yaml
+  - ./security-policy.yaml
