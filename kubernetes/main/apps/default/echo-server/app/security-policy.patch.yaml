@@ -5,4 +5,5 @@ metadata:
   name: &name ${APP}-pocketid
 spec:
   oidc:
+    # override to use echo instead of echo-server as subdomain
     redirectURL: https://echo.techtales.io/oauth2/callback
