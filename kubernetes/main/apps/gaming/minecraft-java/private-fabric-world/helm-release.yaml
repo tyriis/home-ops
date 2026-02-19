@@ -1,0 +1,155 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ${APP}
+spec:
+  interval: 30m
+  driftDetection:
+    mode: enabled
+  chart:
+    spec:
+      chart: app-template
+      version: 4.6.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    remediation:
+      retries: 3
+    timeout: 10m
+  uninstall:
+    keepHistory: false
+  # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
+  values:
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+    controllers:
+      minecraft:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/itzg/minecraft-server
+              tag: java21@sha256:750261eb41112d82a04de9dd6facb9fa594c4efd626ae52f126a21971640f04a
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  initialDelaySeconds: 30
+                  periodSeconds: 5
+                  exec: &mc-health { command: ["mc-health"] }
+                  failureThreshold: 20
+              readiness: *probes
+              startup:
+                <<: *probes
+                spec:
+                  initialDelaySeconds: 30
+                  periodSeconds: 1
+                  failureThreshold: 300
+                  exec: *mc-health
+            envFrom:
+              - secretRef:
+                  name: ${APP}-rcon
+              - secretRef:
+                  name: ${APP}-curseforge-api-key
+              - configMapRef:
+                  name: ${APP}-env
+            env:
+              # https://docker-minecraft-server.readthedocs.io/en/latest/variables
+              TYPE: FABRIC
+              # TODO: update with renovate
+              VERSION: 1.21.11
+
+              MEMORY: 4096M
+              MODS_FILE: /config/plugins.txt
+              REPLACE_ENV_DURING_SYNC: "true"
+              CFG_PROXY_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: ${APP}-proxy-forwarding
+                    key: forwarding.secret
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities:
+                drop:
+                  - ALL
+            ports:
+              - name: java
+                containerPort: 25565
+              - name: rcon
+                containerPort: 25575
+              - name: metrics
+                containerPort: 9100
+
+            resources:
+              requests:
+                cpu: 500m
+                memory: 4000Mi
+
+    service:
+      minecraft:
+        controller: minecraft
+        type: ClusterIP
+        ports:
+          java:
+            port: 25565
+            protocol: TCP
+          metrics:
+            port: 9100
+            protocol: TCP
+      rcon:
+        controller: minecraft
+        type: ClusterIP
+        ports:
+          rcon:
+            port: 25575
+            protocol: TCP
+
+    serviceMonitor:
+      metrics:
+        enabled: true
+        serviceName: ${APP}-minecraft
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /
+            interval: 1m
+
+    persistence:
+      data:
+        existingClaim: ${APP}-data
+        advancedMounts:
+          minecraft:
+            app:
+              - path: /data
+      config:
+        type: configMap
+        name: ${APP}-config
+        globalMounts:
+          - path: /config/plugins.txt
+            subPath: plugins.txt
+            readOnly: true
+      universal-graves:
+        type: configMap
+        name: minecraft-fabric-world-plugins-universal-graves-config
+        globalMounts:
+          - path: /config/universal-graves/config.json
+            subPath: config.json
+            readOnly: true

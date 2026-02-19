@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./config-map.yaml
+  - ./helm-release.yaml
+# components:
+#   - ../../../../../components/minecraft
+configMapGenerator:
+  - name: minecraft-fabric-world-config
+    files:
+      - plugins.txt=config/plugins.txt
+  - name: minecraft-fabric-world-plugins-universal-graves-config
+    files:
+      - config.json=plugins/universal-graves/config.json
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+# patches:
+#   - path: ./helm-release.patch.yaml

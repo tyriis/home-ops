@@ -1,0 +1,35 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: minecraft-fabric-world-env
+data:
+  EULA: "true"
+  DIFFICULTY: hard
+  OPS: "tyriis,jazzlyin"
+  MAX_PLAYERS: "25"
+  ENABLE_COMMAND_BLOCK: "false"
+  GENERATE_STRUCTURES: "true"
+  SPAWN_ANIMALS: "true"
+  SPAWN_MONSTERS: "true"
+  SPAWN_NPCS: "true"
+  SPAWN_PROTECTION: "0"
+  VIEW_DISTANCE: "14"
+  MODE: survival
+  MOTD: techtales survival
+  PVP: "false"
+  LEVEL_TYPE: DEFAULT
+  FORCE_GAMEMODE: "true"
+  ONLINE_MODE: "false"
+  CF_PARALLEL_DOWNLOADS: "4"
+  ENABLE_RCON: "true"
+  MAX_BUILD_HEIGHT: "256"
+  ENABLE_ROLLING_LOGS: "true"
+  LOG_TIMESTAMP: "true"
+  SNOOPER_ENABLED: "true"
+  LEVEL: survival-20260218
+  SERVER_NAME: survival
+  STOP_SERVER_ANNOUNCE_DELAY: "30"
+  STOP_DURATION: "30"
+  USE_AIKAR_FLAGS: "true"
+  SEED: "694269426948426330"
