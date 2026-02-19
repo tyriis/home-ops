@@ -13,3 +13,5 @@ https://cdn.modrinth.com/data/16vhQOQN/versions/VJZkuJ7o/minimotd-velocity-2.2.2
 https://cdn.modrinth.com/data/P1OZGk5p/versions/UU6hYsGX/ViaVersion-5.7.1.jar
 # ViaBackwards https://modrinth.com/plugin/viabackwards/versions?c=release&l=velocity
 https://cdn.modrinth.com/data/NpvuJQoq/versions/s4iIv3dm/ViaBackwards-5.7.1.jar
+# FabricProxy-Lite https://modrinth.com/mod/fabricproxy-lite/versions?c=release&l=fabric
+https://cdn.modrinth.com/data/8dI2tmqs/versions/nR8AIdvx/FabricProxy-Lite-2.11.0.jar
