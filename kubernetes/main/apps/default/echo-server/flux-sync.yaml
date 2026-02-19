@@ -10,6 +10,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../../components/envoy-pocketid
   path: ./kubernetes/main/apps/default/echo-server/app
   prune: true
   sourceRef:
@@ -23,3 +25,4 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      NAMESPACE: *namespace

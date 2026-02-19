@@ -79,6 +79,8 @@ spec:
     route:
       app:
         annotations:
+          external-dns/cloudflare: "true"
+          external-dns/unifi: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Simple HTTP Echo Server
           gethomepage.dev/group: Networking
@@ -94,30 +96,3 @@ spec:
           - name: envoy
             namespace: networking
             sectionName: https
-    ingress:
-      app:
-        enabled: true
-        className: nginx
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          external-dns.alpha.kubernetes.io/target: lab-ingress.techtales.io
-          external-dns/cloudflare: "true"
-          external-dns/unifi: "true"
-          kubernetes.io/tls-acme: "true"
-          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-          nginx.ingress.kubernetes.io/ssl-redirect: "true"
-          nginx.ingress.kubernetes.io/auth-url: https://auth.techtales.io/oauth2/auth
-          nginx.ingress.kubernetes.io/auth-signin: https://auth.techtales.io/oauth2/start?rd=https://$host$request_uri
-          nginx.ingress.kubernetes.io/auth-response-headers: x-auth-request-user, x-auth-request-email
-        hosts:
-          - host: *host
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
-            secretName: "{{ .Release.Name }}-tls"
