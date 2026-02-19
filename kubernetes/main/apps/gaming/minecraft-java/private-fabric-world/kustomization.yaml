@@ -14,7 +14,7 @@ configMapGenerator:
       - plugins.txt=config/plugins.txt
   - name: minecraft-fabric-world-plugins-universal-graves-config
     files:
-      - config.json=plugins/universal-graves/config.json
+      - config.json=config/universal-graves/config.json
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
