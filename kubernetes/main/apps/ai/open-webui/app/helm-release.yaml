@@ -71,6 +71,8 @@ spec:
               DEFAULT_USER_ROLE: user
               ENABLE_LOGIN_FORM: "false"
               OAUTH_UPDATE_PICTURE_ON_LOGIN: "true"
+              # https://docs.openwebui.com/features/#-administration simplifying workflows in trusted environments
+              BYPASS_MODEL_ACCESS_CONTROL: "true"
             envFrom:
               - secretRef:
                   name: open-webui-env
