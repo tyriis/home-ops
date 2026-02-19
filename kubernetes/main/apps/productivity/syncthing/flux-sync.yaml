@@ -5,12 +5,13 @@ kind: Kustomization
 metadata:
   name: &app syncthing
 spec:
-  targetNamespace: productivity
+  targetNamespace: &namespace productivity
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   components:
     - ../../../../../components/volsync
+    - ../../../../../components/envoy-pocketid
   path: ./kubernetes/main/apps/productivity/syncthing/app
   prune: true
   sourceRef:
@@ -31,6 +32,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      NAMESPACE: *namespace
       CILIUM_LB_IPS: 192.168.100.204
       VOLSYNC_CACHE_CAPACITY: 1Gi
       VOLSYNC_CAPACITY: 1Gi
