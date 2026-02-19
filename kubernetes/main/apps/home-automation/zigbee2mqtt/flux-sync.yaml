@@ -5,12 +5,13 @@ kind: Kustomization
 metadata:
   name: &app zigbee2mqtt
 spec:
-  targetNamespace: home-automation
+  targetNamespace: &namespace home-automation
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   components:
     - ../../../../../components/volsync
+    - ../../../../../components/envoy-pocketid
   path: ./kubernetes/main/apps/home-automation/zigbee2mqtt/app
   prune: true
   sourceRef:
@@ -31,5 +32,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      NAMESPACE: *namespace
       VOLSYNC_CAPACITY: 5Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
