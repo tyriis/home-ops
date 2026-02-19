@@ -18,14 +18,14 @@ spec:
       name: *name
     redirectURL: https://${APP}.techtales.io/oauth2/callback
     logoutPath: /oauth2/logout
-  jwt:
-    providers:
-      - name: pocketid-api
-        issuer: https://id.techtales.io
-        remoteJWKS:
-          uri: https://id.techtales.io/.well-known/jwks.json
-        claimToHeaders:
-        - claim: "display_name"
-          header: "X-User-Name"
-        - claim: "email"
-          header: "X-User-Email"
+  # jwt:
+  #   providers:
+  #     - name: pocketid-api
+  #       issuer: https://id.techtales.io
+  #       remoteJWKS:
+  #         uri: https://id.techtales.io/.well-known/jwks.json
+  #       claimToHeaders:
+  #         - claim: "display_name"
+  #           header: "X-User-Name"
+  #         - claim: "email"
+  #           header: "X-User-Email"
