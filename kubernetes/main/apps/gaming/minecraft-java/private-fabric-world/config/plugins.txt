@@ -7,6 +7,8 @@ https://cdn.modrinth.com/data/P7dR8mSH/versions/i5tSkVBH/fabric-api-0.141.3%2B1.
 https://cdn.modrinth.com/data/Ha28R6CL/versions/ViT4gucI/fabric-language-kotlin-1.13.9%2Bkotlin.2.3.10.jar
 # Polymer https://modrinth.com/mod/polymer/versions?c=release&l=fabric
 https://cdn.modrinth.com/data/xGdtZczs/versions/wugBT1fU/polymer-bundled-0.15.2%2B1.21.11.jar
+# FabricProxy-Lite https://modrinth.com/mod/fabricproxy-lite/versions?c=release&l=fabric
+https://cdn.modrinth.com/data/8dI2tmqs/versions/nR8AIdvx/FabricProxy-Lite-2.11.0.jar
 
 # Universal Graves https://modrinth.com/mod/universal-graves/versions?c=release
 https://cdn.modrinth.com/data/yn9u3ypm/versions/rZeFZ5ip/graves-3.10.2%2B1.21.11.jar
