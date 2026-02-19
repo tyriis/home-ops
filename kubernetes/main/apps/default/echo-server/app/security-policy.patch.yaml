@@ -1,0 +1,8 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: &name ${APP}-pocketid
+spec:
+  oidc:
+    redirectURL: https://echo.techtales.io/oauth2/callback
