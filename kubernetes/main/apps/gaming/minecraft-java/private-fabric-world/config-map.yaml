@@ -28,7 +28,7 @@ data:
   LOG_TIMESTAMP: "true"
   SNOOPER_ENABLED: "true"
   LEVEL: survival-20260218
-  SERVER_NAME: survival
+  SERVER_NAME: fabric-survival
   STOP_SERVER_ANNOUNCE_DELAY: "30"
   STOP_DURATION: "30"
   USE_AIKAR_FLAGS: "true"
