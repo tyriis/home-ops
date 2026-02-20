@@ -3,6 +3,7 @@ apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
   name: &name ${APP}-pocketid
+  namespace: &namespace ${NAMESPACE} # can be removed when tekton is removed
 spec:
   oidc:
     # override to use echo instead of echo-server as subdomain
