@@ -32,7 +32,7 @@ spec:
       auth_url: https://id.techtales.io/authorize
       token_url: https://id.techtales.io/api/oidc/token
       signout_redirect_url: https://id.techtales.io/api/oidc/end-session
-      role_attribute_path: contains(groups[*], 'admins') && 'Admin || contains(groups[*], 'privileged-users') && 'Editor' || 'Viewer'
+      role_attribute_path: (contains(groups[*], 'admins') && 'Admin) || (contains(groups[*], 'privileged-users') && 'Editor') || 'Viewer'
       scopes: openid profile email groups
       use_pkce: "true"
     date_formats:
