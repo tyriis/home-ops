@@ -44,7 +44,6 @@ spec:
       root_url: https://grafana.techtales.io
     users:
       auto_assign_org_role: Viewer
-      viewers_can_edit: "false"
   deployment:
     spec:
       replicas: 1
