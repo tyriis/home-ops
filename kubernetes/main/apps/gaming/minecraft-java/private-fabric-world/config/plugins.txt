@@ -18,5 +18,8 @@ https://cdn.modrinth.com/data/uXXizFIs/versions/Ii0gP3D8/ferritecore-8.2.0-fabri
 https://cdn.modrinth.com/data/gvQqBUqZ/versions/qvNsoO3l/lithium-fabric-0.21.3%2Bmc1.21.11.jar
 # Sodium https://modrinth.com/mod/sodium/versions?c=release&l=fabric
 https://cdn.modrinth.com/data/AANobbMI/versions/1OWNgWVR/sodium-fabric-0.8.4%2Bmc1.21.11.jar
+
+# Farmers Delight https://modrinth.com/mod/farmers-delight-refabricated/versions?l=fabric
+https://cdn.modrinth.com/data/7vxePowz/versions/Kvd7dSLJ/FarmersDelight-1.21.1-3.2.3%2Brefabricated.jar
 # Universal Graves https://modrinth.com/mod/universal-graves/versions?c=release
 https://cdn.modrinth.com/data/yn9u3ypm/versions/rZeFZ5ip/graves-3.10.2%2B1.21.11.jar
