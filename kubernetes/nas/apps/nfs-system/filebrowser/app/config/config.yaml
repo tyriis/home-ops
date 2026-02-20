@@ -42,7 +42,7 @@ auth:
       createUser: true
       logoutRedirectUrl: https://id.techtales.io/api/oidc/end-session
       groupsClaim: groups
-      adminGroup: filebrowser-admins
+      adminGroup: admins
 frontend:
   styling:
     customCSS: /config/custom.css
