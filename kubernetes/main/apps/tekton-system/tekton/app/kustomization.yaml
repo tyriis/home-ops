@@ -14,8 +14,7 @@ resources:
   # https://github.com/tektoncd/dashboard/releases
   # renovate: depName=tektoncd/dashboard datasource=github-releases
   - https://github.com/tektoncd/dashboard/releases/download/v0.65.0/release.yaml
-  # - ./http-route.yaml
-  - ./ingress.yaml
+  - ./http-route.yaml
 
 patches:
   # Disable k8tz injection for the entire tekton-pipelines and tekton-pipelines-resolvers namespaces
