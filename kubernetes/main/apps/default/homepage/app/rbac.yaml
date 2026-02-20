@@ -8,15 +8,6 @@ metadata:
     app.kubernetes.io/name: homepage
 rules:
   - apiGroups:
-      - ""
-    resources:
-      - namespaces
-      - pods
-      - nodes
-    verbs:
-      - get
-      - list
-  - apiGroups:
       - networking.k8s.io
     resources:
       - ingresses

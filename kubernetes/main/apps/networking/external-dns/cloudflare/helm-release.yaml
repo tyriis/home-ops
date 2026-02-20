@@ -49,7 +49,6 @@ spec:
       - --annotation-filter=external-dns/cloudflare in (true)
     policy: sync
     sources:
-      - ingress
       - gateway-httproute
       - crd
     txtOwnerId: kube-lab
