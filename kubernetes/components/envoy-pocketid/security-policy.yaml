@@ -36,18 +36,14 @@ spec:
           cookies:
           - pocketid-token
         claimToHeaders:
-          - claim: name
+          - claim: display_name
             header: X-User-Name
           - claim: email
             header: X-User-Email
-          - claim: groups
-            header: X-User-Groups
           - claim: sub
             header: X-User-Id
           - claim: picture
             header: X-User-Picture
-          - claim: display_name
-            header: X-User-Display-Name
   authorization:
     defaultAction: Deny
     rules:
@@ -59,8 +55,4 @@ spec:
               - name: groups
                 valueType: StringArray
                 values:
-                  - users
-            scopes:
-              - profile
-              - email
-              - groups
+                  - ${POCKETID_GROUP:=privileged-users}
