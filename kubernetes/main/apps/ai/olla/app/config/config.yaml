@@ -20,8 +20,8 @@ discovery:
   type: static
   model_discovery:
     enabled: true
-    interval: 5m         # How often to refresh models
-    timeout: 30s         # Discovery request timeout
+    interval: 5m # How often to refresh models
+    timeout: 30s # Discovery request timeout
     concurrent_workers: 5 # Parallel discovery workers
   static:
     endpoints:
