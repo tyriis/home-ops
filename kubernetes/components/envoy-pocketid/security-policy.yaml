@@ -4,7 +4,7 @@ apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
   name: &name ${APP}-pocketid
-  namespace: &namespace ${NAMESPACE}
+  namespace: &namespace ${NAMESPACE} # fix for tekton
 spec:
   targetRefs:
     - group: gateway.networking.k8s.io
