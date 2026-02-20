@@ -29,6 +29,8 @@ spec:
       namespace: backup-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
+    - name: envoy-gateway
+      namespace: networking
   postBuild:
     substitute:
       APP: *app
