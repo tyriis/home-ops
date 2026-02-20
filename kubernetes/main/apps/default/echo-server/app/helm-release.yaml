@@ -88,8 +88,8 @@ spec:
           gethomepage.dev/name: Echo Server
           gatus.home-operations.com/endpoint: |
             group: external
-            client:
-              dns-resolver: tcp://1.1.1.1:53
+            # client:
+            #   dns-resolver: tcp://1.1.1.1:53
         hostnames:
           - &host echo.techtales.io
         parentRefs:

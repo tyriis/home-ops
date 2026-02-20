@@ -22,7 +22,11 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  dependsOn:
+    - name: envoy-gateway
+      namespace: networking
   postBuild:
     substitute:
       APP: *app
       NAMESPACE: *namespace
+      POCKETID_GROUP: users
