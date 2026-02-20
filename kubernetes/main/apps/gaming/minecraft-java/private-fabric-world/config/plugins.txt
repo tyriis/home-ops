@@ -10,5 +10,16 @@ https://cdn.modrinth.com/data/xGdtZczs/versions/wugBT1fU/polymer-bundled-0.15.2%
 # FabricProxy-Lite https://modrinth.com/mod/fabricproxy-lite/versions?c=release&l=fabric
 https://cdn.modrinth.com/data/8dI2tmqs/versions/nR8AIdvx/FabricProxy-Lite-2.11.0.jar
 
+# Distant Horizons https://modrinth.com/mod/distanthorizons/versions?l=fabric
+https://cdn.modrinth.com/data/uCdwusMi/versions/GT3Bm3GN/DistantHorizons-2.4.5-b-1.21.11-fabric-neoforge.jar
+# FerriteCore https://modrinth.com/mod/ferrite-core/versions?c=release&l=fabric
+https://cdn.modrinth.com/data/uXXizFIs/versions/Ii0gP3D8/ferritecore-8.2.0-fabric.jar
+# Lithium https://modrinth.com/mod/lithium/versions?c=release&l=fabric
+https://cdn.modrinth.com/data/gvQqBUqZ/versions/qvNsoO3l/lithium-fabric-0.21.3%2Bmc1.21.11.jar
+# Sodium https://modrinth.com/mod/sodium/versions?c=release&l=fabric
+https://cdn.modrinth.com/data/AANobbMI/versions/1OWNgWVR/sodium-fabric-0.8.4%2Bmc1.21.11.jar
+
+# Farmers Delight https://modrinth.com/mod/farmers-delight-refabricated/versions?l=fabric
+https://cdn.modrinth.com/data/7vxePowz/versions/VyHaPl8C/FarmersDelight-1.21.11-3.4.8%2Brefabricated.jar
 # Universal Graves https://modrinth.com/mod/universal-graves/versions?c=release
 https://cdn.modrinth.com/data/yn9u3ypm/versions/rZeFZ5ip/graves-3.10.2%2B1.21.11.jar
