@@ -78,34 +78,6 @@ spec:
           http:
             port: *port
 
-    # ingress:
-    #   app:
-    #     enabled: true
-    #     className: traefik
-    #     annotations:
-    #       cert-manager.io/cluster-issuer: letsencrypt-production
-    #       traefik.ingress.kubernetes.io/router.middlewares: traefik-ingress-sso@kubernetescrd
-    #       traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    #       traefik.ingress.kubernetes.io/affinity: "true"
-    #       traefik.ingress.kubernetes.io/router.tls: "true"
-    #       gethomepage.dev/enabled: "true"
-    #       gethomepage.dev/description: Govee to MQTT bridge for Home Assistant
-    #       gethomepage.dev/group: Home Automation
-    #       gethomepage.dev/icon: mqtt
-    #       gethomepage.dev/name: ring-mqtt
-    #       gethomepage.dev/weight: "3" # optional
-    #     hosts:
-    #       - host: &host ring-mqtt.techtales.io
-    #         paths:
-    #           - path: /
-    #             service:
-    #               identifier: app
-    #               port: rtsp
-    #     tls:
-    #       - hosts:
-    #           - *host
-    #         secretName: ring-mqtt-tls
-
     persistence:
       data:
         existingClaim: ring-mqtt-data
