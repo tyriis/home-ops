@@ -19,15 +19,48 @@ spec:
       name: *name
     redirectURL: https://${APP}.techtales.io/oauth2/callback
     logoutPath: /oauth2/logout
-  #   forwardAccessToken: true
-  # jwt:
-  #   providers:
-  #     - name: pocketid-api
-  #       issuer: https://id.techtales.io
-  #       remoteJWKS:
-  #         uri: https://id.techtales.io/.well-known/jwks.json
-  #       claimToHeaders:
-  #         - claim: "display_name"
-  #           header: "X-User-Name"
-  #         - claim: "email"
-  #           header: "X-User-Email"
+    forwardAccessToken: true
+    cookieNames:
+      idToken: pocketid-token
+    scopes:
+    - profile
+    - email
+    - groups
+  jwt:
+    providers:
+      - name: pocketid
+        issuer: https://id.techtales.io
+        remoteJWKS:
+          uri: https://id.techtales.io/.well-known/jwks.json
+        extractFrom:
+          cookies:
+          - pocketid-token
+        claimToHeaders:
+          - claim: name
+            header: X-User-Name
+          - claim: email
+            header: X-User-Email
+          - claim: groups
+            header: X-User-Groups
+          - claim: sub
+            header: X-User-Id
+          - claim: picture
+            header: X-User-Picture
+          - claim: display_name
+            header: X-User-Display-Name
+  authorization:
+    defaultAction: Deny
+    rules:
+      - action: Allow
+        principal:
+          jwt:
+            provider: pocketid # must match a provider name in spec.jwt
+            claims:
+              - name: groups
+                valueType: StringArray
+                values:
+                  - users
+            scopes:
+              - profile
+              - email
+              - groups
