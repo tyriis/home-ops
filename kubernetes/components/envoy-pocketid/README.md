@@ -47,14 +47,16 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
-    dependsOn:
+  dependsOn:
     - name: envoy-gateway
       namespace: networking
+    - name: external-secrets-stores
+      namespace: secops
   postBuild:
     substitute:
       APP: *app
       NAMESPACE: *namespace
-      POCKETID_GROUP: users  # optional, defaults to privileged-users
+      POCKETID_GROUP: users # optional, defaults to privileged-users
 ```
 
 ## Notes
