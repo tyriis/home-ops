@@ -38,12 +38,9 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
-    dns:
-      - 1.1.1.1
-      - 8.8.8.8
     image: ghcr.io/kimdre/doco-cd:0.64.0@sha256:379db0fd1fd5d185c9c39d70610f066e951d4503d2b2cd2b022a66f6d313b63e
     ports:
-      - 8080:8080
+      - ${HTTP_PORT}:${HTTP_PORT}
     restart: unless-stopped
     # secrets:
     #   - webhook_secret
