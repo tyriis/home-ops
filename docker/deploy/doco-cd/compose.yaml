@@ -22,9 +22,9 @@ services:
     configs:
       - source: poll-config.yml
         target: /poll-config.yml
-    container_name: doco-cd
+    container_name: doco-cd_temp
     environment:
-      HTTP_PORT: 8080
+      HTTP_PORT: ${HTTP_PORT:-8080}
       LOG_LEVEL: debug
       POLL_CONFIG_FILE: /poll-config.yml
       # WEBHOOK_SECRET_FILE: /run/secrets/webhook_secret
@@ -38,6 +38,9 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
     image: ghcr.io/kimdre/doco-cd:0.64.0@sha256:379db0fd1fd5d185c9c39d70610f066e951d4503d2b2cd2b022a66f6d313b63e
     ports:
       - 8080:8080
