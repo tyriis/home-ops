@@ -1,3 +1,5 @@
 ---
 name: doco-cd
 working_dir: docker/deploy/doco-cd
+env_files:
+  - red.env
