@@ -9,6 +9,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../../components/envoy-pocketid
   path: ./kubernetes/main/apps/productivity/scanservjs/app
   prune: true
   sourceRef:
@@ -19,7 +21,13 @@ spec:
   interval: 30m
   retryInterval: 15s
   timeout: 3m
+  dependsOn:
+    - name: envoy-gateway
+      namespace: networking
+    - name: external-secrets-stores
+      namespace: secops
   postBuild:
     substitute:
       APP: *app
       NAMESPACE: *namespace
+      POCKETID_GROUP: users
