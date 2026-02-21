@@ -13,9 +13,9 @@ configs:
         interval: 180
       # - url: https://github.com/user/repo.git
       #   run_once: true
-# secrets:
   # webhook_secret:
   #   file: ${HOME}/.config/doco-cd/webhook_secret
+# secrets:
 services:
   doco-cd:
     scale: 1 # scale to 0 if you want to stop the service without losing data
@@ -24,7 +24,7 @@ services:
         target: /poll-config.yml
     container_name: ${CONTAINER_NAME:-doco-cd}
     environment:
-      HTTP_PORT: ${HTTP_PORT:-8080}
+      HTTP_PORT: ${HTTP_PORT:-8088}
       LOG_LEVEL: debug
       POLL_CONFIG_FILE: /poll-config.yml
       # WEBHOOK_SECRET_FILE: /run/secrets/webhook_secret
