@@ -13,10 +13,6 @@ metadata:
     gethomepage.dev/icon: si-tekton
     gethomepage.dev/name: Tekton
     gethomepage.dev/pod-selector: app.kubernetes.io/name=dashboard
-    # not sure why this route trigger while others don't
-    gatus.home-operations.com/endpoint: |
-      conditions:
-        - "[STATUS] == 302"
   labels:
     app.kubernetes.io/instance: tekton-dashboard
     app.kubernetes.io/name: tekton-dashboard
