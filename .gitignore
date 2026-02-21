@@ -12,6 +12,7 @@ Thumbs.db
 # Env files
 *.envrc
 *.env
+!docker/deploy/**/red.env
 
 # Crash log files
 crash.log
