@@ -1,0 +1,49 @@
+---
+volumes:
+  data:
+    external: ${VOLUME_EXTERNAL:-false}
+    name: ${VOLUME_NAME:-doco-cd_data}
+    driver: ${VOLUME_DRIVER:-local}
+
+configs:
+  poll-config.yml:
+    content: |
+      - url: https://github.com/tyriis/home-ops.git
+        target: ${TARGET}
+        interval: 180
+      # - url: https://github.com/user/repo.git
+      #   run_once: true
+# secrets:
+  # webhook_secret:
+  #   file: ${HOME}/.config/doco-cd/webhook_secret
+services:
+  doco-cd:
+    scale: 1 # scale to 0 if you want to stop the service without losing data
+    configs:
+      - source: poll-config.yml
+        target: /poll-config.yml
+    container_name: doco-cd
+    environment:
+      HTTP_PORT: 8080
+      LOG_LEVEL: debug
+      POLL_CONFIG_FILE: /poll-config.yml
+      # WEBHOOK_SECRET_FILE: /run/secrets/webhook_secret
+      DEPLOY_CONFIG_BASE_DIR: ./docker
+    healthcheck:
+      test:
+        - CMD
+        - /doco-cd
+        - healthcheck
+      start_period: 15s
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    image: ghcr.io/kimdre/doco-cd:0.64.0@sha256:379db0fd1fd5d185c9c39d70610f066e951d4503d2b2cd2b022a66f6d313b63e
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+    # secrets:
+    #   - webhook_secret
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - data:/data
