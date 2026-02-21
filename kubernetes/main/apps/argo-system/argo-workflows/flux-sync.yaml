@@ -12,6 +12,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../../components/envoy-pocketid
   path: ./kubernetes/main/apps/argo-system/argo-workflows/app
   prune: true
   sourceRef:
@@ -22,6 +24,11 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  dependsOn:
+    - name: envoy-gateway
+      namespace: networking
+    - name: external-secrets-stores
+      namespace: secops
   postBuild:
     substitute:
       APP: *app
