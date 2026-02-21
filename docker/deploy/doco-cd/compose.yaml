@@ -22,7 +22,7 @@ services:
     configs:
       - source: poll-config.yml
         target: /poll-config.yml
-    container_name: doco-cd_temp
+    container_name: ${CONTAINER_NAME:-doco-cd}
     environment:
       HTTP_PORT: ${HTTP_PORT:-8080}
       LOG_LEVEL: debug
