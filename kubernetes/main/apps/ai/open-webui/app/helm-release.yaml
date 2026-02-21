@@ -96,6 +96,11 @@ spec:
       app:
         annotations:
           external-dns/unifi: "true"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: The freedom AI stack
+          gethomepage.dev/group: Productivity
+          gethomepage.dev/icon: si-openai
+          gethomepage.dev/name: Open WebUI
         hostnames:
           - ai.techtales.io
         parentRefs:
