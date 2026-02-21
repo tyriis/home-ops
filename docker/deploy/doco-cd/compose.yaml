@@ -24,7 +24,7 @@ services:
         target: /poll-config.yml
     container_name: ${CONTAINER_NAME:-doco-cd}
     environment:
-      HTTP_PORT: ${HTTP_PORT:-8088}
+      HTTP_PORT: ${HTTP_PORT:-8080}
       LOG_LEVEL: debug
       POLL_CONFIG_FILE: /poll-config.yml
       # WEBHOOK_SECRET_FILE: /run/secrets/webhook_secret
