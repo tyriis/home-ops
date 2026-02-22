@@ -19,9 +19,9 @@ volumes:
 services:
   doco-cd:
     scale: 1 # scale to 0 if you want to stop the service without losing data
-    configs:
-      - source: poll-config.yml
-        target: /poll-config.yml
+    # configs:
+    #   - source: poll-config.yml
+    #     target: /poll-config.yml
     container_name: ${CONTAINER_NAME:-doco-cd}
     environment:
       HTTP_PORT: ${HTTP_PORT:-8080}
