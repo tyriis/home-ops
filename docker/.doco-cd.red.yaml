@@ -4,8 +4,8 @@ working_dir: docker/deploy/doco-cd
 env_files:
   - red.env
 ---
-name: node-exporter
-working_dir: docker/deploy/node-exporter
----
 name: ollama
 working_dir: docker/deploy/ollama
+---
+name: node-exporter
+working_dir: docker/deploy/node-exporter
