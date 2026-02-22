@@ -5,16 +5,16 @@ volumes:
     name: ${VOLUME_NAME:-doco-cd_data}
     driver: ${VOLUME_DRIVER:-local}
 
-configs:
-  poll-config.yml:
-    content: |
-      - url: https://github.com/tyriis/home-ops.git
-        target: ${TARGET}
-        interval: 180
-      # - url: https://github.com/user/repo.git
-      #   run_once: true
-  # webhook_secret:
-  #   file: ${HOME}/.config/doco-cd/webhook_secret
+# configs:
+#   poll-config.yml:
+#     content: |
+#       - url: https://github.com/tyriis/home-ops.git
+#         target: ${TARGET}
+#         interval: 180
+#       # - url: https://github.com/user/repo.git
+#       #   run_once: true
+#   webhook_secret:
+#     file: ${HOME}/.config/doco-cd/webhook_secret
 # secrets:
 services:
   doco-cd:
@@ -26,7 +26,7 @@ services:
     environment:
       HTTP_PORT: ${HTTP_PORT:-8080}
       LOG_LEVEL: info
-      POLL_CONFIG_FILE: /poll-config.yml
+      # POLL_CONFIG_FILE: /poll-config.yml
       # WEBHOOK_SECRET_FILE: /run/secrets/webhook_secret
       DEPLOY_CONFIG_BASE_DIR: ./docker
     healthcheck:
