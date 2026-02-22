@@ -29,7 +29,7 @@ services:
       HTTP_PORT: ${HTTP_PORT:-8080}
       LOG_LEVEL: debug
       POLL_CONFIG_FILE: /poll-config.yml
-      WEBHOOK_SECRET_FILE: /run/secrets/webhook_secret
+      # WEBHOOK_SECRET_FILE: /run/secrets/webhook_secret
       DEPLOY_CONFIG_BASE_DIR: ./docker
     healthcheck:
       test:
