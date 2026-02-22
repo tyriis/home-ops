@@ -9,7 +9,7 @@ services:
       - --web.listen-address=0.0.0.0:9100
       - --collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)
     container_name: node-exporter
-    image: quay.io/prometheus/node-exporter:v1.10.2
+    image: quay.io/prometheus/node-exporter:v1.10.2@sha256:337ff1d356b68d39cef853e8c6345de11ce7556bb34cda8bd205bcf2ed30b565
     network_mode: host
     ports:
       - 9100:9100
@@ -21,7 +21,7 @@ services:
 
   smartctl-exporter:
     container_name: smartctl-exporter
-    image: quay.io/prometheuscommunity/smartctl-exporter:v0.14.0
+    image: quay.io/prometheuscommunity/smartctl-exporter:v0.14.0@sha256:cfe22c36d7d2fac48ebf619707305acb65eb0fb670656eb80f356e606d782bc1
     ports:
       - 9633:9633
     privileged: true
