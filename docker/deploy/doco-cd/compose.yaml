@@ -5,7 +5,9 @@ volumes:
     name: ${VOLUME_NAME:-doco-cd_data}
     driver: ${VOLUME_DRIVER:-local}
 
-# configs:
+configs:
+  poll-config.yml:
+    file: /etc/doco-cd/poll-config.yaml
 #   poll-config.yml:
 #     content: |
 #       - url: https://github.com/tyriis/home-ops.git
@@ -19,15 +21,15 @@ volumes:
 services:
   doco-cd:
     scale: 1 # scale to 0 if you want to stop the service without losing data
-    # configs:
-    #   - source: poll-config.yml
-    #     target: /poll-config.yml
+    configs:
+      - source: poll-config.yml
+        target: /poll-config.yml
     container_name: ${CONTAINER_NAME:-doco-cd}
     environment:
       HTTP_PORT: ${HTTP_PORT:-8080}
-      LOG_LEVEL: info
-      # POLL_CONFIG_FILE: /poll-config.yml
-      # WEBHOOK_SECRET_FILE: /run/secrets/webhook_secret
+      LOG_LEVEL: debug
+      POLL_CONFIG_FILE: /poll-config.yml
+      WEBHOOK_SECRET_FILE: /run/secrets/webhook_secret
       DEPLOY_CONFIG_BASE_DIR: ./docker
     healthcheck:
       test:
