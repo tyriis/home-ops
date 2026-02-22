@@ -1,13 +1,13 @@
 ---
 volumes:
   data:
-    external: ${VOLUME_EXTERNAL:-false}
-    name: ${VOLUME_NAME:-ollama_data}
-    driver: ${VOLUME_DRIVER:-local}
+    external: false
+    name: ollama_data
+    driver: local
 services:
   ollama:
     scale: 1 # scale to 0 if you want to stop the service without losing data
-    container_name: ${CONTAINER_NAME:-ollama}
+    container_name: ollama
     environment:
       OLLAMA_MODELS: /data/.ollama/models
       # OLLAMA_KEEP_ALIVE: 24h
@@ -23,7 +23,7 @@ services:
     #   retries: 3
     image: ollama/ollama:0.16.3@sha256:63f052826604a28a83795df1a66d9e364410c0b8d1357a62a885c62cef05cdbb
     ports:
-      - ${HTTP_PORT:-11434}:${HTTP_PORT:-11434}
+      - 11434:11434
     restart: unless-stopped
     volumes:
       - data:/data
@@ -34,7 +34,6 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
-
 
 # TODO: find a way to pull the models f.e.
 # llava:7b            8dd30f6b0cb1    4.7 GB    6 days ago
