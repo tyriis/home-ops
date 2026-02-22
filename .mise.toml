@@ -21,7 +21,7 @@ node = "24.13.1"
 # https://pre-commit.com/
 pre-commit = "4.5.1"
 # https://github.com/mozilla/sops
-sops = "3.11.0"
+sops = "3.12.1"
 # https://github.com/budimanjojo/talhelper
 talhelper = "3.1.5"
 # https://www.talos.dev/
