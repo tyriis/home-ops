@@ -7,12 +7,10 @@ volumes:
 
 configs:
   poll-config.yml:
-    file: /etc/doco-cd/poll-config.yaml
-#   poll-config.yml:
-#     content: |
-#       - url: https://github.com/tyriis/home-ops.git
-#         target: ${TARGET}
-#         interval: 180
+    content: |
+      - url: https://github.com/tyriis/home-ops.git
+        target: ${TARGET}
+        interval: 180
 #       # - url: https://github.com/user/repo.git
 #       #   run_once: true
 #   webhook_secret:
@@ -27,7 +25,7 @@ services:
     container_name: ${CONTAINER_NAME:-doco-cd}
     environment:
       HTTP_PORT: ${HTTP_PORT:-8080}
-      LOG_LEVEL: debug
+      LOG_LEVEL: info
       POLL_CONFIG_FILE: /poll-config.yml
       # WEBHOOK_SECRET_FILE: /run/secrets/webhook_secret
       DEPLOY_CONFIG_BASE_DIR: ./docker
