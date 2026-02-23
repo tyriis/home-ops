@@ -1,0 +1,6 @@
+---
+name: ollama
+working_dir: docker/deploy/ollama
+---
+name: node-exporter
+working_dir: docker/deploy/node-exporter
