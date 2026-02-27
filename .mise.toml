@@ -5,7 +5,7 @@ age = "1.2.1"
 # https://direnv.net/
 direnv = "2.37.1"
 # https://fluxcd.io/
-flux2 = "2.7.5"
+flux2 = "2.8.1"
 # https://gitleaks.io/
 gitleaks = "8.30.0"
 # https://helm.sh/
