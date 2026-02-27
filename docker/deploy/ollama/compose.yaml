@@ -21,7 +21,7 @@ services:
     #   interval: 30s
     #   timeout: 5s
     #   retries: 3
-    image: ollama/ollama:0.17.2@sha256:917c942fbd5b3d659f830d08b48da466ce9bb1e56e2fc3d920d8e835a0922318
+    image: ollama/ollama:0.17.4@sha256:b165fa2700dc374f8d4f9e8314d81c7be75487c76eee2b46ef4b511a496b736c
     ports:
       - 11434:11434
     restart: unless-stopped
