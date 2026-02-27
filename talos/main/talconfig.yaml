@@ -412,6 +412,6 @@ controlPlane:
                           topologyKey: kubernetes.io/hostname
                           whenUnsatisfiable: ScheduleAnyway
         extraManifests:
-          - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.1/experimental-install.yaml
+          - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.0/experimental-install.yaml
           - https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.89.0/stripped-down-crds.yaml
           - https://github.com/grafana/grafana-operator/releases/download/v5.21.4/crds.yaml
