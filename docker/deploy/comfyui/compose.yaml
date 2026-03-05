@@ -1,0 +1,108 @@
+---
+# use bind mounts instead from user home folder
+volumes:
+  run:
+    external: false
+    name: comfyui_run
+    driver: local
+  basedir:
+    external: false
+    name: comfyui_basedir
+    driver: local
+  smartgallery:
+    external: false
+    name: comfyui_smartgallery
+    driver: local
+
+services:
+  comfyui-nvidia:
+    # Use latest tag which points to ubuntu24_cuda12.6.3-latest
+    # For Blackwell (RTX 50xx) GPUs, use: mmartial/comfyui-nvidia-docker:ubuntu24_cuda12.8-latest
+    # For GTX 10xx GPUs, use: mmartial/comfyui-nvidia-docker:ubuntu24_cuda12.6.3-latest
+    image: mmartial/comfyui-nvidia-docker:ubuntu24_cuda13.1-20260121
+    container_name: comfyui-nvidia
+    restart: unless-stopped
+    ports:
+      - 8188:8188 # Remove 127.0.0.1: prefix to expose on all interfaces
+    volumes:
+      - run:/comfy/mnt
+      - basedir:/basedir
+      # Uncomment if using Windows Subsystem for Linux 2
+      # - /usr/lib/wsl:/usr/lib/wsl
+    environment:
+      # Use "uv pip" instead of "pip" for faster package installation
+      - USE_UV=true
+      # Set WANTED_UID and WANTED_GID to your user and group
+      # Get your values with: id -u and id -g
+      - WANTED_UID=1000
+      - WANTED_GID=984
+      # Enable BASE_DIRECTORY for separation of run and user files
+      - BASE_DIRECTORY=/basedir
+      # Set SECURITY_LEVEL (normal is default, use 'weak' for more flexibility)
+      - SECURITY_LEVEL=normal
+      # Use new ComfyUI Manager (requires ComfyUI >= 0.5.0)
+      - USE_NEW_MANAGER=true
+      # Uncomment to use legacy UI with new manager
+      # - ENABLE_MANAGER_LEGACY_UI=true
+      # NVIDIA GPU settings
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      # Uncomment to add ComfyUI command-line arguments
+      # Examples: --fast, --fp16-vae, --normalvram, --reserve-vram 1
+      # - COMFY_CMDLINE_EXTRA=--fast --normalvram
+      # Uncomment to use socat for localhost-only access
+      # - USE_SOCAT=false
+      # Uncomment to force directory ownership changes (can be slow)
+      - FORCE_CHOWN=false
+      # Upgrade packages on startup (enabled by default)
+      # - USE_PIPUPGRADE=true
+      # Uncomment to disable all upgrades (use after initial setup)
+      # - DISABLE_UPGRADES=false
+      # Automatically install/upgrade torch (enabled by default)
+      # - PREINSTALL_TORCH=true
+      # Uncomment and add your HuggingFace token to avoid rate limiting
+      # - HF_TOKEN=${HF_TOKEN}
+      # Network mode for ComfyUI Manager (do not change if installing custom nodes)
+      # - NETWORK_MODE=personal_cloud
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
+    # Uncomment to add custom host mappings (e.g., for Ollama)
+    # extra_hosts:
+    #   - ollama.internal:10.12.13.14
+    depends_on:
+      fix-permissions:
+        condition: service_completed_successfully
+  comfyui-gallery:
+    image: mmartial/smart-comfyui-gallery:1.55
+    container_name: comfyui-gallery
+    restart: unless-stopped
+    ports:
+      - 8189:8189
+    volumes:
+      - basedir:/basedir
+      - smartgallery:/smartgallery
+    environment:
+      - WANTED_UID=1000
+      - WANTED_GID=984
+      - BASE_INPUT_PATH=/basedir/input
+      - BASE_OUTPUT_PATH=/basedir/output
+      - BASE_SMARTGALLERY_PATH=/smartgallery
+    depends_on:
+      fix-permissions:
+        condition: service_completed_successfully
+
+  fix-permissions:
+    image: alpine:latest
+    volumes:
+      - smartgallery:/smartgallery
+      - basedir:/basedir
+    command: sh -c "
+      stat -c '%u:%g' /smartgallery | grep -q '^1000:984$$' || chown -R 1000:984 /smartgallery;
+      stat -c '%u:%g' /basedir | grep -q '^1000:984$$' || chown -R 1000:984 /basedir"
+    restart: "no"
