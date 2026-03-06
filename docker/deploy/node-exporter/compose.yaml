@@ -20,6 +20,10 @@ services:
       - /sys:/host/sys:ro
 
   smartctl-exporter:
+    scale: ${ENABLE_SMARTCTL_EXPORTER:-1} # scale to 0 if you want to stop the service without losing data
+
+    # container_name: ${CONTAINER_NAME:-doco-cd}
+
     container_name: smartctl-exporter
     image: quay.io/prometheuscommunity/smartctl-exporter:v0.14.0@sha256:cfe22c36d7d2fac48ebf619707305acb65eb0fb670656eb80f356e606d782bc1
     ports:

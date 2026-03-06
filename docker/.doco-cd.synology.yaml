@@ -1,0 +1,5 @@
+---
+name: node-exporter
+working_dir: docker/deploy/node-exporter
+env_files:
+  - synology.env
