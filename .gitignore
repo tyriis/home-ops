@@ -13,6 +13,7 @@ Thumbs.db
 *.envrc
 *.env
 !docker/deploy/**/red.env
+!docker/deploy/**/synology.env
 
 # Crash log files
 crash.log
