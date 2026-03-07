@@ -1,10 +1,4 @@
 ---
-volumes:
-  data:
-    external: ${VOLUME_EXTERNAL:-false}
-    name: ${VOLUME_NAME:-minio_data}
-    driver: ${VOLUME_DRIVER:-local}
-
 services:
   minio:
     container_name: ${CONTAINER_NAME:-minio}
@@ -30,4 +24,4 @@ services:
       - ${CONSOLE_PORT:-9001}:9001
     restart: unless-stopped
     volumes:
-      - data:/data
+      - ${DATA_PATH:-./data}:/data
