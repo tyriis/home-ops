@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: gtstef/filebrowser
-              tag: 1.2.1-stable-slim@sha256:0a5d8b5aa68609ab5917fee925ad39eff7bd223927cb3c8d6b4be754a661ceb5
+              tag: 1.2.2-stable-slim@sha256:43e28cbc261494033f3f1543c9230db05d81d978d2b32ce0c6d37af3f4260ec7
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
