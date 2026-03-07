@@ -26,5 +26,3 @@ spec:
       cpu: 100m
     limits:
       memory: 512Mi
-  nodeSelector:
-    kubernetes.io/hostname: nas02
