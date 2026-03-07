@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: k8tz
-      version: 0.18.0
+      version: 0.19.0
       sourceRef:
         kind: HelmRepository
         name: k8tz
