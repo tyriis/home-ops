@@ -3,35 +3,35 @@
 # https://github.com/rcdailey/trash-updater/wiki/Configuration-Reference
 
 sonarr:
-  sonarr:
+  series:
     base_url: http://sonarr:8989
     # https://github.com/recyclarr/recyclarr/issues/180
     api_key: !env_var SONARR_API_KEY
 
     delete_old_custom_formats: true
-    replace_existing_custom_formats: true
+    media_management:
+      propers_and_repacks: do_not_prefer
 
-    include:
-      # Normal TV
-      - template: sonarr-quality-definition-series
-      ## 1080p
-      - template: sonarr-v4-quality-profile-web-1080p
-      - template: sonarr-v4-custom-formats-web-1080p
-      ## German 1080p
-      - template: sonarr-v4-custom-formats-hd-bluray-web-german
-      - template: sonarr-v4-quality-profile-hd-bluray-web-german
-      ## German 2160p
-      - template: sonarr-v4-custom-formats-uhd-bluray-web-german
-      - template: sonarr-v4-quality-profile-uhd-bluray-web-german
-      # Anime TV
-      - template: sonarr-quality-definition-anime
-      - template: sonarr-v4-quality-profile-anime
-      - template: sonarr-v4-custom-formats-anime
+    quality_definition:
+      type: series
 
     quality_profiles:
-      - name: WEB-1080p
-      - name: HD Bluray + WEB (GER)
-      - name: UHD Bluray + WEB (GER)
+      - trash_id: 72dae194fc92bf828f32cde7744e51a1 # WEB-1080p
+        name: WEB-1080p
+        reset_unmatched_scores:
+          enabled: true
+      - trash_id: dca7e5e9e99c703bcbdaaa471dd40e98 # [German] HD Bluray + WEB
+        name: HD Bluray + WEB (GER)
+        reset_unmatched_scores:
+          enabled: true
+      - trash_id: 3b0fa37fddaaefc931b75f2889d4b4f5 # [German] UHD Bluray + WEB
+        name: UHD Bluray + WEB (GER)
+        reset_unmatched_scores:
+          enabled: true
+      - trash_id: 20e0fc959f1f1704bed501f23bdae76f # [Anime] Remux-1080p
+        name: Remux-1080p - Anime
+        reset_unmatched_scores:
+          enabled: true
 
     custom_formats:
       - trash_ids:
@@ -71,29 +71,27 @@ sonarr:
             score: 10000
 
 radarr:
-  radarr:
+  movies:
     base_url: http://radarr:7878
     # https://github.com/recyclarr/recyclarr/issues/180
     api_key: !env_var RADARR_API_KEY
     delete_old_custom_formats: true
-    replace_existing_custom_formats: true
 
-    include:
-      - template: radarr-quality-definition-movie
-      # German 1080p
-      - template: radarr-custom-formats-hd-bluray-web-german
-      - template: radarr-quality-profile-hd-bluray-web-german
-      # German 2160p
-      - template: radarr-custom-formats-uhd-bluray-web-german
-      - template: radarr-quality-profile-uhd-bluray-web-german
-      # Anime Movies
-      - template: radarr-quality-definition-anime
-      - template: radarr-quality-profile-anime
-      - template: radarr-custom-formats-anime
+    quality_definition:
+      type: movie
 
     quality_profiles:
-      - name: HD Bluray + WEB (GER)
-      - name: UHD Bluray + WEB (GER)
+      - trash_id: 2b90e905c99490edc7c7a5787443748b # [German] HD Bluray + WEB
+        name: HD Bluray + WEB (GER)
+        reset_unmatched_scores:
+          enabled: true
+      - trash_id: 27cc3d153c0a799fd139ef1ff4c4cc42 # [German] UHD Bluray + WEB
+        name: UHD Bluray + WEB (GER)
+        reset_unmatched_scores:
+          enabled: true
+      - trash_id: 722b624f9af1e492284c4bc842153a38 # [Anime] Remux-1080p
+        reset_unmatched_scores:
+          enabled: true
 
     custom_formats:
       - trash_ids:
