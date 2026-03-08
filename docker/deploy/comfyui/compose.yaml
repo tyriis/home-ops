@@ -99,6 +99,7 @@ services:
 
   fix-permissions:
     image: alpine:latest
+    container_name: comfyui-fix-permissions
     volumes:
       - smartgallery:/smartgallery
       - basedir:/basedir

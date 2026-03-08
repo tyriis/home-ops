@@ -212,7 +212,7 @@ Then use `http://ollama.internal:11434` in ComfyUI nodes.
 
 ## Resources
 
-- [ComfyUI GitHub](https://github.com/comfyanonymous/ComfyUI)
+- [ComfyUI GitHub](https://github.com/Comfy-Org/ComfyUI)
 - [ComfyUI Examples](https://comfyanonymous.github.io/ComfyUI_examples/)
 - [ComfyUI Docker GitHub](https://github.com/mmartial/ComfyUI-Nvidia-Docker)
 - [ComfyUI Manager](https://github.com/ltdrdata/ComfyUI-Manager)
