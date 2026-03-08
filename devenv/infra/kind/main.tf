@@ -3,17 +3,25 @@
 # --------------------------------------------------------------------------------
 
 terraform {
-  required_version = "1.14.5"
+  required_version = "1.14.6"
   required_providers {
     kind = {
       source  = "tehcyx/kind"
-      version = "0.10.0"
+      version = "0.11.0"
     }
     docker = {
       source  = "kreuzwerker/docker"
       version = "3.6.2"
     }
   }
+}
+
+resource "local_file" "hosts_toml" {
+  content  = <<EOF
+[host."http://${local.registry_name}:${local.registry_internal_port}"]
+  capabilities = ["pull", "resolve", "push"]
+EOF
+  filename = "./hosts.toml"
 }
 
 # https://registry.terraform.io/providers/tehcyx/kind/latest/docs/resources/cluster
@@ -25,14 +33,6 @@ resource "kind_cluster" "flux_devenv" {
   kind_config {
     kind        = "Cluster"
     api_version = "kind.x-k8s.io/v1alpha4"
-
-    containerd_config_patches = [
-      # configure local oci registry
-      <<EOF
-        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."localhost:${local.registry_port}"]
-            endpoint = ["http://${local.registry_name}:${local.registry_internal_port}"]
-        EOF
-    ]
 
     node {
       role = "control-plane"
@@ -51,32 +51,21 @@ resource "kind_cluster" "flux_devenv" {
         host_port      = 443
         listen_address = "127.0.0.1"
       }
+      extra_mounts {
+        host_path      = abspath("${path.cwd}/hosts.toml")
+        container_path = "/etc/containerd/certs.d/_default/hosts.toml"
+      }
     }
-
-    # add 1 observability node
-    # node {
-    #   role = "worker"
-    #   labels = {
-    #     "application/role"              = "observability"
-    #   }
-    #   kubeadm_config_patches = [
-    #     # taint
-    #     <<EOF
-    #     kind: JoinConfiguration
-    #     nodeRegistration:
-    #       taints:
-    #         - key: observability
-    #           value: reserved
-    #           effect: NoSchedule
-    #     EOF
-    #   ]
-    # }
 
     # add 1 workload node
     node {
       role = "worker"
       labels = {
         "application/role" = "workload"
+      }
+      extra_mounts {
+        host_path      = abspath("${path.cwd}/hosts.toml")
+        container_path = "/etc/containerd/certs.d/_default/hosts.toml"
       }
     }
   }
