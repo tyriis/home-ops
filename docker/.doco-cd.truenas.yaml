@@ -5,4 +5,6 @@ working_dir: docker/deploy/node-exporter
 name: minio
 working_dir: docker/deploy/minio
 env_files:
-  - truenas.sops.env
+  - truenas.env
+compose_files:
+  - compose.truenas.yaml

@@ -10,9 +10,12 @@ services:
       - :${CONSOLE_PORT:-9001}
     container_name: ${CONTAINER_NAME:-minio}
     image: pgsty/minio:RELEASE.2026-02-14T12-00-00Z@sha256:00c404465c4e7c4fd716d98caec2928e9e0f82c3548615662fdd3866ea9a28c0
-    environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-admin}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-changeme123}
+
+    env_file:
+      - truenas.sops.env
+    # environment:
+      # MINIO_ROOT_USER: ${MINIO_ROOT_USER:-admin}
+      # MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-changeme123}
       # MINIO_BROWSER_REDIRECT_URL: ${MINIO_BROWSER_REDIRECT_URL:-}
       # MINIO_SERVER_URL: ${MINIO_SERVER_URL:-}
     healthcheck:
@@ -39,8 +42,6 @@ services:
 #   minio:
 #     environment:
 #       MINIO_BROWSER_REDIRECT_URL: https://minio.techtales.io:9002
-#       MINIO_ROOT_PASSWORD: l6TtDPtc7lBJgCVSQqolIlMibcpcjvQBvYDcII23
-#       MINIO_ROOT_USER: minioadmin
 #       MINIO_SERVER_URL: https://minio.techtales.io:9000
 #       MINIO_VOLUMES: /export
 #       NVIDIA_VISIBLE_DEVICES: void
