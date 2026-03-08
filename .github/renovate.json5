@@ -65,5 +65,11 @@
       matchFileNames: ["**/nas/**"],
       additionalBranchPrefix: "nas-",
     },
+    // automerge devenv
+    {
+      matchFileNames: ["devenv/**"],
+      matchUpdateTypes: ["minor", "patch"],
+      automerge: true,
+    },
   ],
 }
