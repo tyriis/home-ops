@@ -37,8 +37,10 @@ spec:
         repository: openbao/openbao
         tag: 2.5.1@sha256:87d715029a47328172774638cabfeb04d5b356678d660621b796b6a671f93581
       updateStrategy: RollingUpdate
-      logLevel: "info"
-      logFormat: "json"
+      logLevel: info
+      logFormat: json
+      nodeSelector:
+        kubernetes.io/hostname: nas01
       resources:
         requests:
           cpu: 25m
@@ -102,7 +104,7 @@ spec:
       publishNotReadyAddresses: true
       # The service should only contain selectors for active Vault pod
       activeVaultPodOnly: true
-      serviceType: "ClusterIP"
+      serviceType: ClusterIP
       serviceNodePort: null
       externalPort: 8200
       targetPort: 8200
