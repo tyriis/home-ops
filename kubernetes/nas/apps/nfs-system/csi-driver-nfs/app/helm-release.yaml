@@ -35,15 +35,15 @@ spec:
     storageClasses:
       - name: nfs-nas
         parameters:
-          server: nas02
+          server: nas.techtales.io
           share: /
-          subDir: /csi/nas/${pvc.metadata.namespace}/${pv.metadata.name}
+          subDir: /mnt/tank/csi/nas/${pvc.metadata.namespace}/${pv.metadata.name}
         mountOptions:
           - nfsvers=4.2
-          - nconnect=16
+          - nconnect=8
           - hard
-          - noatime
+          - noatime=True
           - timeo=600
           - retrans=2
         reclaimPolicy: Retain
-        volumeBindingMode: Immediate
+        volumeBindingMode: WaitForFirstConsumer
