@@ -9,5 +9,5 @@ components:
 resources:
   - ./namespace.yaml
   - ./backend-traffic-policy.yaml
-  - ./minio/flux-sync.yaml
+  # - ./minio/flux-sync.yaml
   - ./minio-replication/flux-sync.yaml
