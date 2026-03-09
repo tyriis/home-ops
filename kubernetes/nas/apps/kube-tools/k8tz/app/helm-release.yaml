@@ -28,7 +28,7 @@ spec:
   values:
     namespace: kube-tools
 
-    replicaCount: 2
+    replicaCount: 1
 
     timezone: Europe/Vienna
     cronJobTimeZone: true
