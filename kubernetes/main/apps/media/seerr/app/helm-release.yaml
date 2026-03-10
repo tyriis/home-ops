@@ -96,8 +96,8 @@ spec:
           - path: /app/config
       media:
         type: nfs
-        server: nas02
-        path: /media
+        server: nas.techtales.io
+        path: /mnt/tank/media
         globalMounts:
           - path: /media
       tmpfs:
