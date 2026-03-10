@@ -126,7 +126,7 @@ spec:
               - path: /var/syncthing
       data:
         type: nfs
-        server: nas02
-        path: /syncthing
+        server: nas.techtales.io
+        path: /mnt/tank/syncthing
         globalMounts:
           - path: /data
