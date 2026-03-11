@@ -114,3 +114,11 @@ spec:
           - name: envoy
             namespace: networking
             sectionName: https
+
+    persistence:
+      backup:
+        enabled: true
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: nfs-nas
