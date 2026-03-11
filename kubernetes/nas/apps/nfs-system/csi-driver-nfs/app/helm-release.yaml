@@ -42,7 +42,7 @@ spec:
           - nfsvers=4.2
           - nconnect=8
           - hard
-          - noatime=True
+          - noatime
           - timeo=600
           - retrans=2
         reclaimPolicy: Retain
