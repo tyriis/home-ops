@@ -15,8 +15,7 @@ spec:
       version: 2.1.0
       sourceRef:
         kind: HelmRepository
-        name: external-secrets-charts
-        namespace: flux-system
+        name: external-secrets
   install:
     remediation:
       retries: 3
