@@ -104,7 +104,8 @@ repos:
         exclude: |
           (?x)^(
             kubernetes/nas/apps/secops/rbac.yaml|
-            kubernetes/main/apps/secops/rbac.yaml
+            kubernetes/main/apps/secops/rbac.yaml|
+            kubernetes/utility/apps/secops/rbac.yaml
           )$()
 
   - repo: https://github.com/gitleaks/gitleaks

@@ -22,3 +22,7 @@ cluster/nas:
   - changed-files:
       - any-glob-to-any-file: kubernetes/nas/**/*
       - any-glob-to-any-file: talos/nas/*
+cluster/utility:
+  - changed-files:
+      - any-glob-to-any-file: kubernetes/utility/**/*
+      - any-glob-to-any-file: talos/utility/*
