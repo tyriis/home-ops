@@ -30,6 +30,8 @@ kind: Kustomization
 metadata:
   name: &app flux-webhook
   namespace: &namespace flux-system
+  labels:
+    sops.flux.home.arpa/enabled: "true"
 spec:
   targetNamespace: *namespace
   commonMetadata:
