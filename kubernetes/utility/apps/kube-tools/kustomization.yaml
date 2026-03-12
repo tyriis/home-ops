@@ -7,7 +7,6 @@ components:
   - ../../../components/sops/utility
   - ../../../components/flux/alerts
 resources:
-  - ./csi-driver-nfs/flux-sync.yaml
   - ./namespace.yaml
   - ./descheduler/flux-sync.yaml
   - ./k8tz/flux-sync.yaml
