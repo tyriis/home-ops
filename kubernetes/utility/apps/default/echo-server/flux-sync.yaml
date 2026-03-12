@@ -24,7 +24,7 @@ spec:
   dependsOn:
     - name: envoy-gateway
       namespace: networking
-    - name: external-secrets-store
+    - name: external-secrets-stores
       namespace: secops
   postBuild:
     substitute:
