@@ -1,0 +1,37 @@
+---
+server:
+  port: 8080
+  database: /data/database.db
+  sources:
+    - path: /mnt/media
+      config:
+        denyByDefault: true
+    - path: /mnt/fotos
+      config:
+        denyByDefault: true
+    - path: /mnt/public
+      config:
+        denyByDefault: true
+    - path: /mnt/home
+      config:
+        defaultEnabled: true
+        createUserDir: true
+auth:
+  # adminUsername: admin
+  # adminPassword: admin
+  methods:
+    password:
+      enabled: false
+    # POCKET ID
+    oidc:
+      enabled: true
+      issuerUrl: https://id.techtales.io
+      scopes: openid profile email groups
+      userIdentifier: preferred_username
+      createUser: true
+      logoutRedirectUrl: https://id.techtales.io/api/oidc/end-session
+      groupsClaim: groups
+      adminGroup: admins
+frontend:
+  styling:
+    customCSS: /config/custom.css
