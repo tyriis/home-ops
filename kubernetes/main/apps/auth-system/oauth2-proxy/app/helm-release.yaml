@@ -37,7 +37,7 @@ spec:
           app:
             image:
               repository: quay.io/oauth2-proxy/oauth2-proxy
-              tag: v7.14.2@sha256:121cdc6520a02d7a2ddd181af6dbdc0f11f7d0c0d9353a999a69c3998cbfe37e
+              tag: v7.14.3@sha256:68336da945bdaff799262c8d14fb1d1aa9354df5e02b87e0955addc040344618
             envFrom:
               - secretRef:
                   name: oauth2-proxy-env
