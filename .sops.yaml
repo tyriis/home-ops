@@ -11,3 +11,6 @@ creation_rules:
   - path_regex: 'talos/.*\.sops\.ya?ml$'
     age: >-
       age16zqeqx5y6ay3flwz0d06rn83yjv9ckys3j8tpkysf9v6295fhc6sf4r0uj
+  - path_regex: 'docker/deploy/.*/.*\.enc\.env$'
+    age: >-
+      age16pcjw9pvhx2lnx382hrgcpydpjvjz6r8u22wflm228cakedrlgdqzlwx4s
