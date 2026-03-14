@@ -7,8 +7,6 @@
 ---
 name: busybox-sops
 working_dir: docker/deploy/busybox-sops
-env_files:
-  - secrets.enc.env
 ---
 name: ollama
 working_dir: docker/deploy/ollama
