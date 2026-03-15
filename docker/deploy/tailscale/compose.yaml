@@ -1,6 +1,8 @@
 ---
 services:
   tailscale:
+    scale: 1
+    container_name: tailscale
     cap_add:
       - CHOWN
       - DAC_OVERRIDE
