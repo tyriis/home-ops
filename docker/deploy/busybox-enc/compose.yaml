@@ -5,12 +5,12 @@ services:
     container_name: busybox-enc
     image: busybox:1.37.0@sha256:b3255e7dfbcd10cb367af0d409747d511aeb66dfac98cf30e97e87e4207dd76f
     env_file:
-      - secrets.sops.env
+      - ${SOPS_ENV_FILE:-secrets.sops.env}
     command:
       - sh
       - -c
       - |
-        echo "hello from doco-cd target=red"
+        echo "hello from doco-cd target=${TARGET:-undefined}"
         echo "decrypted secret value: $${DEMO_SECRET}"
         sleep 3600
     restart: unless-stopped

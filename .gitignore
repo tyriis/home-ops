@@ -14,10 +14,11 @@ Thumbs.db
 *.env
 !docker/deploy/**/red.env
 !docker/deploy/**/synology.env
+!docker/deploy/**/synology.sops.env
 !docker/deploy/**/truenas.env
 !docker/deploy/**/truenas.sops.env
-!docker/deploy/**/*.enc.env
-!docker/deploy/busybox-enc/secrets.sops.env
+!docker/deploy/**/red.env
+!docker/deploy/**/red.sops.env
 
 # Crash log files
 crash.log

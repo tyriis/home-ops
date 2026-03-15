@@ -4,7 +4,12 @@ working_dir: docker/deploy/node-exporter
 env_files:
   - synology.env
 ---
-name: minio
-working_dir: docker/deploy/minio
+name: busybox-enc
+working_dir: docker/deploy/busybox-enc
 env_files:
   - synology.env
+# ---
+# name: minio
+# working_dir: docker/deploy/minio
+# env_files:
+#   - synology.env
