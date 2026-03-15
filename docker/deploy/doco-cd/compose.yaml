@@ -13,9 +13,11 @@ configs:
         interval: 180
 #       # - url: https://github.com/user/repo.git
 #       #   run_once: true
-#   webhook_secret:
-#     file: ${HOME}/.config/doco-cd/webhook_secret
-# secrets:
+secrets:
+  sops_age_key:
+    file: ${SOPS_AGE_KEY_FILE:-/etc/doco-cd/age-keys.txt}
+  webhook_secret:
+    file: ${WEBHOOK_SECRET_FILE:-/etc/doco-cd/webhook_secret}
 services:
   doco-cd:
     scale: 1 # scale to 0 if you want to stop the service without losing data
@@ -25,9 +27,10 @@ services:
     container_name: ${CONTAINER_NAME:-doco-cd}
     environment:
       HTTP_PORT: ${HTTP_PORT:-8080}
-      LOG_LEVEL: info
+      LOG_LEVEL: debug
       POLL_CONFIG_FILE: /poll-config.yml
-      # WEBHOOK_SECRET_FILE: /run/secrets/webhook_secret
+      WEBHOOK_SECRET_FILE: /run/secrets/webhook_secret
+      SOPS_AGE_KEY_FILE: /run/secrets/sops_age_key
       DEPLOY_CONFIG_BASE_DIR: ./docker
     healthcheck:
       test:
@@ -38,12 +41,13 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
-    image: ghcr.io/kimdre/doco-cd:0.72.2@sha256:14997f07cc2fea4e7a95d1ab8db66210f4ac2961cd3d0ed5be44c8af808d1dd9
+    image: ghcr.io/kimdre/doco-cd:0.73.0@sha256:c2911d3916e292b09bd1c4d7ef7a55c301abd104afa8478f93f20505dbd0ca17
     ports:
       - ${HTTP_PORT:-8080}:${HTTP_PORT:-8080}
     restart: unless-stopped
-    # secrets:
-    #   - webhook_secret
+    secrets:
+      - webhook_secret
+      - sops_age_key
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - data:/data
