@@ -6,9 +6,9 @@
 #   - red.env
 ---
 name: busybox-enc
-working_dir: docker/deploy/targets/red/busybox-enc
+working_dir: docker/red/busybox-enc
 env_files:
-  - red.env
+  - .env
 ---
 name: ollama
 working_dir: docker/deploy/ollama

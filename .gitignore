@@ -13,12 +13,12 @@ Thumbs.db
 *.envrc
 *.env
 !docker/deploy/**/red.env
-!docker/deploy/**/synology.env
-!docker/deploy/**/synology.sops.env
-!docker/deploy/**/truenas.env
-!docker/deploy/**/truenas.sops.env
-!docker/deploy/targets/red/**/red.env
-!docker/deploy/targets/red/**/red.sops.env
+!docker/red/**/.env
+!docker/red/**/sops.env
+!docker/synology/**/.env
+!docker/synology/**/sops.env
+!docker/truenas/**/.env
+!docker/truenas/**/sops.env
 
 # Crash log files
 crash.log
