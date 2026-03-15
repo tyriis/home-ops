@@ -62,7 +62,7 @@
   - [Configure SOPS (optional)](#configure-sops-optional)
   - [Configure kubectl](#configure-kubectl)
 - [Roadmap](#roadmap)
-- [🕵️ Troubleshooting](#-troubleshooting)
+- [🕵 Troubleshooting](#-troubleshooting)
   - [Stuck HelmRelease](#stuck-helmrelease)
 - [Quality](#quality)
 
@@ -172,7 +172,7 @@ See the [open issues][github-issues] for a full list of proposed features (and k
 
 <!-- TROUBLESHOOTING -->
 
-## 🕵️ Troubleshooting
+## 🕵 Troubleshooting
 
 ### Stuck HelmRelease
 
