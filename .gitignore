@@ -11,7 +11,7 @@ Thumbs.db
 
 # Env files
 *.envrc
-# *.env
+*.env
 !docker/deploy/**/red.env
 !docker/deploy/**/synology.env
 !docker/deploy/**/truenas.env
