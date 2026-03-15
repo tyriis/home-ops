@@ -9,6 +9,11 @@ name: node-exporter
 working_dir: docker/synology/node-exporter
 env_files:
   - .env
+---
+name: tailscale
+working_dir: docker/synology/tailscale
+env_files:
+  - .env
 # ---
 # name: minio
 # working_dir: docker/deploy/minio
