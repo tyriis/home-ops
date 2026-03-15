@@ -4,8 +4,9 @@ working_dir: docker/deploy/node-exporter
 env_files:
   - synology.env
 ---
+---
 name: busybox-enc
-working_dir: docker/deploy/busybox-enc
+working_dir: docker/deploy/targets/synology/busybox-enc
 env_files:
   - synology.env
 # ---

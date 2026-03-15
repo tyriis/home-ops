@@ -6,7 +6,7 @@
 #   - red.env
 ---
 name: busybox-enc
-working_dir: docker/deploy/busybox-enc
+working_dir: docker/deploy/targets/red/busybox-enc
 env_files:
   - red.env
 ---
