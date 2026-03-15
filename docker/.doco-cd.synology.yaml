@@ -2,7 +2,7 @@
 name: node-exporter
 working_dir: docker/synology/node-exporter
 env_files:
-  - synology.env
+  - .env
 ---
 name: busybox-enc
 working_dir: docker/synology/busybox-enc
