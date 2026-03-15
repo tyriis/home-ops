@@ -17,8 +17,8 @@ Thumbs.db
 !docker/deploy/**/synology.sops.env
 !docker/deploy/**/truenas.env
 !docker/deploy/**/truenas.sops.env
-!docker/deploy/**/red.env
-!docker/deploy/**/red.sops.env
+!docker/deploy/targets/red/**/red.env
+!docker/deploy/targets/red/**/red.sops.env
 
 # Crash log files
 crash.log
