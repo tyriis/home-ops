@@ -39,8 +39,6 @@ spec:
     - name: flux-repositories
   decryption:
     provider: sops
-    secretRef:
-      name: sops-age
   postBuild:
     substitute:
       FLUX_CLUSTER_NAME: utility
