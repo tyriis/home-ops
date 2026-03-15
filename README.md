@@ -54,7 +54,7 @@
 
 - [Statistics](#statistics)
 - [About The Project](#about-the-project)
-  - [🧰 Tools and Technologies](#%F0%9F%A7%B0-tools-and-technologies)
+  - [🧰 Tools and Technologies](#-tools-and-technologies)
   - [📖 Overview](#-overview)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
@@ -62,7 +62,7 @@
   - [Configure SOPS (optional)](#configure-sops-optional)
   - [Configure kubectl](#configure-kubectl)
 - [Roadmap](#roadmap)
-- [🕵️ Troubleshooting](#%EF%B8%8F-troubleshooting)
+- [🕵 Troubleshooting](#-troubleshooting)
   - [Stuck HelmRelease](#stuck-helmrelease)
 - [Quality](#quality)
 
@@ -172,7 +172,7 @@ See the [open issues][github-issues] for a full list of proposed features (and k
 
 <!-- TROUBLESHOOTING -->
 
-## 🕵️ Troubleshooting
+## 🕵 Troubleshooting
 
 ### Stuck HelmRelease
 
@@ -210,6 +210,7 @@ example:
 
 [backstage-url]: https://backstage.spotify.com/
 [cloudflare-homepage]: https://www.cloudflare.com/
+[cloudflared-url]: https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/
 [flux-home-cluster-url]: https://github.com/tyriis/flux.home-cluster
 [flux-k3s-home-url]: https://github.com/tyriis/flux.k3s.home
 [flux-pi-k3s-home-url]: https://github.com/tyriis/flux.pi-k3s.home
@@ -233,6 +234,5 @@ example:
 [talos-url]: https://www.talos.dev/
 [kubernetes-shield]: https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fkromgo.techtales.io%2Fquery%3Fformat%3Dendpoint%26metric%3Dkubernetes_version&query=%24.message&style=for-the-badge&logo=kubernetes&label=kubernetes&color=%23326CE5&cacheSeconds=600
 [kubernetes-url]: https://kubernetes.io/releases/
-[cloudflared-url]: https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/
 [flux-shield]: https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.techtales.io%2Fflux_version&style=for-the-badge&logo=flux&logoColor=326CE5&color=326CE5&label=flux&cacheSeconds=600
 [gatus-shield]: https://img.shields.io/uptimerobot/status/m800769967-13f5c929f419ccdd73096f8a?color=brightgreeen&label=Status&style=for-the-badge&logo=data:image/svg%2bxml;base64,CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWw6c3BhY2U9InByZXNlcnZlIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiI+PHBhdGggZD0iTTE5Mi4xIDM3M2MtNjQuNS0zNS4zLTg4LjItMTE2LjMtNTIuOC0xODAuOCAxMi4zLTIyLjQgMzAuOC00MC45IDUzLjMtNTMuMSA2LjktMy44IDE0LjItNi45IDIxLjctOS40IDU0LjEtMTcuMSA5MS02Ny4xIDkxLjYtMTIzLjhDMzAyLjUuMiAyOTEuMS4yIDI1Ni4yLjJjLTUxLjggMC01Mi41IDEtNTAuMyAxOC40IDYuMSA0Ni4zLTUzLjcgNzEuMy04Mi40IDM0LjItMTEuMS0xNC40LTEyLTE0LjQtNDkuNSAyMy43LTM1LjUgMzUuOS0zNi4xIDM1LjgtMjEuNSA0Ny4xQzY5IDEzNi4zIDc1IDE1OC42IDY3IDE3Ny45Yy04LjMgMTkuMy0yOC42IDMwLjYtNDkuNCAyNy42QzAgMjAzLjQgMCAyMDQgMCAyNThjLjUgNDkuMSAwIDUwLjIgMTguOCA0OC4xIDI1LjItMyA0OC4xIDE1IDUxLjEgNDAuMiAxLjcgMTQuNS0zLjYgMjktMTQuMiAzOS0xNy4xIDE2LjEtMTYuMiAxNC45IDE2LjIgNDguNCAzMSAzMi4xIDM2LjEgMzguNCA0Ni41IDI5LjlsNzUuNS03NS41YzMuOC0zLjQgNC4xLTkuMy43LTEzLjEtLjctLjktMS42LTEuNS0yLjUtMiIgc3R5bGU9ImZpbGw6IzNjYWQ0YiIvPjxwYXRoIGQ9Ik00ODcuMyAyMDYuM2MtMjUuNS0uMi00Ni4xLTIxLjEtNDUuOC00Ni43LjEtMTMuMiA1LjktMjUuNyAxNS44LTM0LjQgMTYuMy0xNC4zIDE2LjEtMTMuNS0yMC4zLTQ5LjktMjQuNi0yNC42LTMyLjYtMzIuOC0zOS4yLTMwLjhMMzE4IDEyNC40Yy0zLjcgMy43LTMuNyA5LjYgMCAxMy4zLjYuNiAxLjMgMS4yIDIuMSAxLjYgNjQuNSAzNS40IDg4LjEgMTE2LjMgNTIuNyAxODAuOC0xMi4zIDIyLjQtMzAuOCA0MC44LTUzLjMgNTMtOS4zIDQuOS0xOSA4LjctMjkuMiAxMS40LTQ4LjcgMTMtODQgNTQuOS04NCAxMDUuNHY3LjJjLjkgMTQuNSA2LjggMTMuOCA0NiAxNC40IDUzLjIuOCA1MS45IDIgNTMuNS0yNi42IDEuNS0yNS41IDIzLjQtNDUgNDguOS00My41IDExLjguNyAyMi45IDUuOSAzMSAxNC41IDE3LjEgMTggMTMuNiAxNy43IDQ5LjgtMTcuOSAzNy40LTM2LjkgMzkuMS0zNS43IDIxLTUyLjEtMTguOS0xNy4yLTIwLjMtNDYuNC0zLjEtNjUuMyA5LjYtMTAuNSAyMy41LTE2LjEgMzcuNy0xNSAyMSAxLjUgMjAgLjMgMjAuNy00Ni4xLjgtNTIuNCAxLjYtNTMtMjQuNS01My4yIiBzdHlsZT0iZmlsbDojMDE3NDAwIi8+PHBhdGggZD0iTTIzNC41IDMzNi43aDQ1LjZjMi40IDAgNC40LTEuOSA0LjQtNC4zdi00NC43YzAtMi40IDEuOS00LjMgNC4zLTQuM2g0NC44YzIuNCAwIDQuNC0yIDQuNC00LjR2LTQ2YzAtMi40LTItNC4zLTQuNC00LjNoLTQ0LjRjLTIuNCAwLTQuNC0xLjktNC40LTQuM3YtNDQuOGMwLTIuNC0xLjktNC40LTQuMy00LjRoLTQ1LjdjLTIuNCAwLTQuNCAxLjktNC40IDQuM3Y0NC44YzAgMi40LTEuOSA0LjQtNC4zIDQuNEgxODFjLTIuNCAwLTQuNCAxLjktNC40IDQuM3Y0NmMwIDIuNCAyIDQuNCA0LjQgNC40aDQ0LjdjMi40IDAgNC40IDEuOSA0LjQgNC4zdjQ0LjljLjEgMi40IDIuMSA0LjIgNC40IDQuMSIgc3R5bGU9ImZpbGw6IzFlOTAyNSIvPjwvc3ZnPg==

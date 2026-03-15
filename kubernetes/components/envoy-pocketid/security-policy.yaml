@@ -23,9 +23,9 @@ spec:
     cookieNames:
       idToken: pocketid-token
     scopes:
-    - profile
-    - email
-    - groups
+      - profile
+      - email
+      - groups
   jwt:
     providers:
       - name: pocketid
@@ -34,7 +34,7 @@ spec:
           uri: https://id.techtales.io/.well-known/jwks.json
         extractFrom:
           cookies:
-          - pocketid-token
+            - pocketid-token
         claimToHeaders:
           - claim: display_name
             header: X-User-Name
