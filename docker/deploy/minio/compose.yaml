@@ -1,4 +1,8 @@
 ---
+networks:
+  apps:
+    name: apps
+    external: false
 services:
   minio:
     cap_drop:
@@ -24,6 +28,8 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
+    networks:
+      - apps
     ports:
       - ${API_PORT:-9000}:9000
       - ${CONSOLE_PORT:-9001}:9001
