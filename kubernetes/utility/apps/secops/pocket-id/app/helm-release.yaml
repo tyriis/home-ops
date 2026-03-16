@@ -147,6 +147,11 @@ spec:
             namespace: networking
             sectionName: https
     persistence:
+      backup:
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        storageClass: nfs-truenas
+        size: 10Gi
       data:
         type: emptyDir
         globalMounts:
