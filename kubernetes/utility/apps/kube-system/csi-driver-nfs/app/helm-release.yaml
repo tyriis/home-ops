@@ -36,7 +36,8 @@ spec:
       - name: nfs-truenas
         parameters:
           server: nas.techtales.io
-          subDir: /mnt/tank/csi/${FLUX_CLUSTER_NAME}/${pvc.metadata.namespace}/${pv.metadata.name}
+          share: /
+          subDir: /mnt/tank/csi/utility/${pvc.metadata.namespace}/${pv.metadata.name}
         mountOptions:
           - nfsvers=4.2
           - nconnect=8
