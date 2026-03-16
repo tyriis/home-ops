@@ -1,6 +1,6 @@
 ---
 dbs:
-  - path: /data/pocket-id.db
+  - path: /app/data/pocket-id.db
     replicas:
       - type: s3
         bucket: litestream

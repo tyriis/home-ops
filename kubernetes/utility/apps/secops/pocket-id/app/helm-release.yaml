@@ -40,7 +40,7 @@ spec:
               - restore
               - -if-db-not-exists
               - -if-replica-exists
-              - /data/pocket-id.db
+              - /app/data/pocket-id.db
             envFrom:
               - secretRef:
                   name: pocket-id-litestream
@@ -150,7 +150,7 @@ spec:
       data:
         type: emptyDir
         globalMounts:
-          - path: /data
+          - path: /app/data
       litestream-config:
         type: configMap
         name: pocket-id-litestream-config
