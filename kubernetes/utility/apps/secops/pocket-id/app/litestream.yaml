@@ -1,0 +1,9 @@
+---
+dbs:
+  - path: /data/pocket-id.db
+    replicas:
+      - type: s3
+        bucket: litestream
+        path: pocket-id/pocket-id.db
+        endpoint: https://s3.techtales.io
+        force-path-style: true

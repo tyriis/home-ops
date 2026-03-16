@@ -31,6 +31,47 @@ spec:
           reloader.stakater.com/auto: "true"
         replicas: 1
         strategy: RollingUpdate
+        initContainers:
+          litestream-restore:
+            image:
+              repository: litestream/litestream
+              tag: 0.5.9@sha256:b47fa2afb4a6ca46fcaf8c85e77b3cf3f8c6d5cdbf91735cf5f30c99f111bd88
+            args:
+              - restore
+              - -if-db-not-exists
+              - -if-replica-exists
+              - /data/pocket-id.db
+            envFrom:
+              - secretRef:
+                  name: pocket-id-litestream
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 100Mi
+          litestream:
+            image:
+              repository: litestream/litestream
+              tag: 0.5.9@sha256:b47fa2afb4a6ca46fcaf8c85e77b3cf3f8c6d5cdbf91735cf5f30c99f111bd88
+            args:
+              - replicate
+            restartPolicy: Always
+            envFrom:
+              - secretRef:
+                  name: pocket-id-litestream
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 100Mi
         containers:
           app:
             image:
@@ -40,17 +81,15 @@ spec:
               # https://pocket-id.org/docs/configuration/environment-variables
               ANALYTICS_DISABLED: "true"
               APP_URL: https://id.techtales.io
-              FILE_BACKEND: database
               EMAILS_VERIFIED: "true"
+              FILE_BACKEND: filesystem
               LOG_LEVEL: info
               LOG_JSON: "true"
               METRICS_ENABLED: "true"
-              TRACING_ENABLED: "false"
               OTEL_METRICS_EXPORTER: prometheus
               OTEL_EXPORTER_PROMETHEUS_HOST: 0.0.0.0
+              TRACING_ENABLED: "false"
             envFrom:
-              - secretRef:
-                  name: pocket-id-database
               - secretRef:
                   name: pocket-id-encryption
             ports:
@@ -80,13 +119,6 @@ spec:
             runAsUser: 65534
             runAsGroup: 65534
             runAsNonRoot: true
-          topologySpreadConstraints:
-            - maxSkew: 1
-              topologyKey: kubernetes.io/hostname
-              whenUnsatisfiable: DoNotSchedule
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/name: *app
     service:
       app:
         controller: *app
@@ -114,11 +146,21 @@ spec:
           - name: envoy
             namespace: networking
             sectionName: https
-
     persistence:
-      backup:
-        enabled: true
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: nfs-truenas
+      data:
+        type: emptyDir
+        globalMounts:
+          - path: /data
+      litestream-config:
+        type: configMap
+        name: pocket-id-litestream-config
+        advancedMounts:
+          pocket-id:
+            litestream:
+              - path: /etc/litestream.yml
+                subPath: litestream.yml
+                readOnly: true
+            litestream-restore:
+              - path: /etc/litestream.yml
+                subPath: litestream.yml
+                readOnly: true
