@@ -73,20 +73,63 @@ test:
         Add 2nd Hardware Key for backup
         Apply
 
-## Setup Tailscale (not working)
-
-    Synology DSM -> Package Center -> Search -> Tailscale
-      Install
-      Open
-      Reauthenticate if required
-      Connect device
-
 ## Setup Container Manager
 
     Synology DSM -> Package Center -> Search -> container manager
       Install
 
-## Fix TUN/TAP not available on a Synology NAS
+## Install doco-cd
+
+get the [compose.yaml](https://github.com/tyriis/home-ops/blob/main/docker/deploy/doco-cd/compose.yaml)
+
+Synology has no git client installed.
+
+```bash
+curl https://raw.githubusercontent.com/tyriis/home-ops/refs/heads/main/docker/deploy/doco-cd/compose.yaml -O
+```
+
+Synology does not support config.content.
+comment file location in and file content out
+
+```bash
+sed -i '10s/^[[:space:]]*# //; 11,14s/^/# /' compose.yaml
+```
+
+create the doco-cd config folder as root
+
+```bash
+mkdir -p /etc/doco-cd
+```
+
+next create the poll config as root
+
+```bash
+cat <<EOF > /etc/doco-cd/poll-config.yml
+- url: https://github.com/tyriis/home-ops.git
+  target: synology
+  interval: 180
+EOF
+```
+
+create the file `/etc/doco-cd/age-keys.txt` with the content of `infra/synology/doco-cd` secret as root
+
+```bash
+sudo vim /etc/doco-cd/age-keys.txt
+```
+
+create the file `/etc/doco-cd/webhook_secret` with the content of `infra/synology/doco-cd` secret as root
+
+```bash
+sudo vim /etc/doco-cd/webhook_secret
+```
+
+make them readable by root only
+
+```bash
+sudo chmod 600 /etc/doco-cd/age-keys.txt && sudo chmod 600 /etc/doco-cd/webhook_secret
+```
+
+## Fix TUN/TAP not available on a Synology NAS (required for tailscale)
 
 Link on [memoryleak.dev](https://memoryleak.dev/post/fix-tun-tap-not-available-on-a-synology-nas/)
 
@@ -131,7 +174,13 @@ chmod a+x /usr/local/bin/tun.sh
         OK
         Confirm with password
 
-## Setup Tailscale with docker
+## start doco-cd
+
+in the doco cd compose folder
+
+```bash
+docker compose up -d
+```
 
 ## Setup DNS to point to tailscale net
 
@@ -156,44 +205,123 @@ Name resolution with techtales services should work now
 curl https://home.techtales.io
 ```
 
-## Install doco-cd
+## free port 80 and 443
 
-get the [compose.yaml](https://github.com/tyriis/home-ops/blob/main/docker/deploy/doco-cd/compose.yaml)
-
-Synology has no git client installed.
-
-Synology does not support config.content.
-
-create the doco-cd config folder as root
+followed this [article](https://tonylawrence.com/posts/unix/synology/freeing-port-80/)
 
 ```bash
-mkdir -p /etc/doco-cd
-```
+cat <<EOF > /usr/local/bin/remap-http-ports.sh
+#!/bin/sh -e
 
-next create the poll config as root
-
-```bash
-cat <<EOF > /etc/doco-cd/poll-config.yml
-- url: https://github.com/tyriis/home-ops.git
-  target: synology
-  interval: 180
+HTTP_PORT=8081 HTTPS_PORT=8443; \
+for f in /usr/syno/share/nginx/server.mustache /usr/syno/share/nginx/DSM.mustache /usr/syno/share/nginx/WWWService.mustache; do
+  sudo sed -E -i.bak \
+    -e "s/listen 80 default_server/listen ${HTTP_PORT} default_server/g" \
+    -e "s/listen \[::\]:80 default_server/listen [::]:${HTTP_PORT} default_server/g" \
+    -e "s/listen 443 default_server ssl/listen ${HTTPS_PORT} default_server ssl/g" \
+    -e "s/listen \[::\]:443 default_server ssl/listen [::]:${HTTPS_PORT} default_server ssl/g" \
+    "$f";
+done
 EOF
 ```
 
-create the file `/etc/doco-cd/age-keys.txt` with the content of `infra/synology/doco-cd` secret as root
-
 ```bash
-sudo vim /etc/doco-cd/age-keys.txt
+chmod a+x /usr/local/bin/remap-http-ports.sh
 ```
 
-create the file `/etc/doco-cd/webhook_secret` with the content of `infra/synology/doco-cd` secret as root
-
 ```bash
-sudo vim /etc/doco-cd/webhook_secret
+/bin/bash /usr/local/bin/remap-http-ports.sh
 ```
 
-make them readable by root only
+```bash
+synosystemctl restart nginx
+```
+
+    Synology DSM -> Control Panel -> Task Scheduler
+      Create -> Triggered Task -> User-defined script
+        General
+          Task: remap-http-ports
+          User: root
+          Event: Boot-up
+        Task Settings
+          User-defined script:
+            /bin/bash /usr/local/bin/remap-http-ports.sh
+        OK
+        OK
+        Confirm with password
+
+## setup traefik config
+
+create config path
 
 ```bash
-sudo chmod 600 /etc/doco-cd/age-keys.txt && sudo chmod 600 /etc/doco-cd/webhook_secret
+mkdir -p /etc/traefik/dynamic
+```
+
+setup certs
+
+```bash
+cat <<EOF > /etc/traefik/dynamic/tls.yaml
+---
+tls:
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /certs/fullchain.pem
+        keyFile: /certs/privkey.pem
+EOF
+```
+
+```bash
+cat <<'EOF' > /etc/traefik/dynamic/dsm.yaml
+---
+http:
+  routers:
+    dsm:
+      rule: Host(`synology.techtales.io`)
+      entryPoints:
+        - websecure
+      tls: {}
+      service: dsm
+
+  services:
+    dsm:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: http://synology:5000
+EOF
+```
+
+```bash
+cat <<'EOF' > /etc/traefik/dynamic/minio.yaml
+http:
+  routers:
+    minio-console:
+      rule: Host(`minio.synology.techtales.io`)
+      entryPoints:
+        - websecure
+      tls: {}
+      service: minio-console
+
+    minio-s3:
+      rule: Host(`s3.synology.techtales.io`)
+      entryPoints:
+        - websecure
+      tls: {}
+      service: minio-s3
+
+  services:
+    minio-console:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: http://minio:9001
+
+    minio-s3:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: http://minio:9000
+EOF
 ```
