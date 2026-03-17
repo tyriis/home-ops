@@ -1,16 +1,16 @@
 ---
+validation:
+  interval: 1h
 dbs:
   - path: /app/data/pocket-id.db
-    replicas:
-      - type: s3
-        bucket: litestream
-        path: pocket-id/pocket-id.db
-        endpoint: https://s3.techtales.io
-        force-path-style: true
-      - type: file
-        path: /backup/litestream/pocket-id
-        validation:
-          interval: 1h
-        snapshot:
-          interval: 1h
-          retention: 168h
+    replica:
+      type: s3
+      bucket: litestream
+      path: pocket-id/pocket-id.db
+      endpoint: https://s3.techtales.io
+      force-path-style: true
+      # - type: file
+      #   path: /backup/litestream/pocket-id
+      #   snapshot:
+      #     interval: 1h
+      #     retention: 168h
