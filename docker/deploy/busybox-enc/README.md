@@ -1,23 +1,35 @@
 # busybox-enc
 
-Minimal test workload for doco-cd encrypted dotenv files on the `red` target.
+This workload is a **debug/test container only** to validate SOPS decryption in `doco-cd`.
 
-## Files
+It is not intended as an application workload.
 
-- `compose.yaml` - runs a busybox container and prints hello + a secret env var
-- `secrets.enc.env` - encrypted file consumed by compose
+## Purpose
 
-## Verify decryption manually (optional)
+- verify target-specific SOPS key wiring
+- verify `doco-cd` decrypts dotenv files before compose runtime
+- print `DEMO_SECRET` to container logs for quick validation
+
+## Layout
+
+- `compose.yaml`: shared compose definition (uses `SOPS_ENV_FILE`, default `sops.env`)
+- `docker/red/busybox-enc/compose.yaml`: red target instance
+- `docker/red/busybox-enc/sops.env`: red encrypted dotenv
+- `docker/synology/busybox-enc/compose.yaml`: synology target instance
+- `docker/synology/busybox-enc/sops.env`: synology encrypted dotenv
+
+## Manual decrypt check
 
 ```bash
-sops --decrypt docker/deploy/busybox-sops/secrets.enc.env
+sops --decrypt docker/red/busybox-enc/sops.env
+sops --decrypt docker/synology/busybox-enc/sops.env
 ```
 
 ## Runtime requirement on doco-cd host
 
-The doco-cd container must have one of these configured:
+`doco-cd` must have a valid age private key configured via:
 
-- `SOPS_AGE_KEY_FILE` (recommended)
+- `SOPS_AGE_KEY_FILE` (recommended), or
 - `SOPS_AGE_KEY`
 
-Without the age private key, deployment will fail when doco-cd tries to decrypt `secrets.enc.env`.
+If the key is missing or wrong, deployment fails during the decryption stage.

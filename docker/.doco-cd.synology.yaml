@@ -1,10 +1,21 @@
+# ---
+# # For testing only
+# name: busybox-enc
+# working_dir: docker/synology/busybox-enc
+# env_files:
+#   - .env
 ---
 name: node-exporter
-working_dir: docker/deploy/node-exporter
+working_dir: docker/synology/node-exporter
 env_files:
-  - synology.env
+  - .env
+---
+name: tailscale
+working_dir: docker/synology/tailscale
+env_files:
+  - .env
 ---
 name: minio
-working_dir: docker/deploy/minio
+working_dir: docker/synology/minio
 env_files:
-  - synology.env
+  - .env

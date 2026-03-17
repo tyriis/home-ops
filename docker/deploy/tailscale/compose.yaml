@@ -1,0 +1,53 @@
+---
+services:
+  tailscale:
+    scale: 1
+    container_name: tailscale
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - NET_ADMIN
+      - NET_RAW
+      - SYS_MODULE
+    cap_drop:
+      - ALL
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    env_file:
+      - ${SOPS_ENV_FILE:-sops.env}
+    environment:
+      TS_HOSTNAME: ${TARGET}
+      TS_SOCKET: "/var/run/tailscale/tailscaled.sock"
+      TS_STATE_DIR: "/var/lib/tailscale"
+      TZ: "Europe/Vienna"
+      UMASK: "002"
+      UMASK_SET: "002"
+    healthcheck:
+      interval: "30s"
+      retries: 5
+      start_period: "15s"
+      test:
+        - CMD
+        - tailscale
+        - status
+      timeout: "5s"
+    image: ghcr.io/tailscale/tailscale:v1.94.2
+    network_mode: host
+    platform: linux/amd64
+    privileged: false
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges=true
+    stdin_open: false
+    tmpfs:
+      - /var/run/tailscale:mode=0755
+    tty: false
+    volumes:
+      - type: bind
+        source: ${DATA_PATH}
+        target: /var/lib/tailscale
+        read_only: false
+        bind:
+          create_host_path: false
+          propagation: rprivate
