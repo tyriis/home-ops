@@ -30,7 +30,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         replicas: 1
-        strategy: RollingUpdate
+        strategy: Recreate
         initContainers:
           litestream-restore:
             image:
