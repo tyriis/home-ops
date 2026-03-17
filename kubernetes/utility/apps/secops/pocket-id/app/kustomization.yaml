@@ -4,5 +4,10 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./external-secret.yaml
-  - ./database.yaml
   - ./helm-release.yaml
+configMapGenerator:
+  - name: pocket-id-litestream-config
+    files:
+      - litestream.yml=litestream.yaml
+generatorOptions:
+  disableNameSuffixHash: true

@@ -4,6 +4,8 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname openbao
+  labels:
+    sops.flux.home.arpa/enabled: "true"
 spec:
   targetNamespace: secops
   commonMetadata:
