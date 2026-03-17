@@ -82,7 +82,7 @@ spec:
               ANALYTICS_DISABLED: "true"
               APP_URL: https://id.techtales.io
               EMAILS_VERIFIED: "true"
-              FILE_BACKEND: filesystem
+              FILE_BACKEND: database
               LOG_LEVEL: info
               LOG_JSON: "true"
               METRICS_ENABLED: "true"
