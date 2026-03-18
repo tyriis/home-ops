@@ -4,7 +4,7 @@ apiVersion: backstage.io/v1alpha1
 kind: System
 metadata:
   name: nas
-  description: Experimental sidero talos based cluster for storage
+  description: Experimental TrueNAS
   annotations:
     # backstage.io/techdocs-ref: dir:.
     github.com/project-slug: tyriis/home-ops
@@ -14,10 +14,9 @@ metadata:
       icon: github
       type: github-repository
   tags:
-    - k8s
-    - talos
+    - truenas
     - gitops
-    - flux
+    - doco-cd
 spec:
   owner: home-ops
   domain: home

@@ -3,14 +3,14 @@
 apiVersion: backstage.io/v1alpha1
 kind: System
 metadata:
-  name: nas
+  name: synology
   description: synology ds218+
   annotations:
     # backstage.io/techdocs-ref: dir:.
     github.com/project-slug: tyriis/home-ops
   links:
-    - url: https://nas.techtales.io
-      title: nas
+    - url: https://synology.techtales.io
+      title: Synology dashboard
       icon: dashboard
       type: admin-dashboard
   tags:
@@ -18,9 +18,10 @@ metadata:
     - nfs
     - backup
     - storage
+    - s3
 spec:
   owner: home-ops
   domain: home
   type: storage
   lifecycle: production
-  system: nas
+  system: synology
