@@ -51,8 +51,8 @@
     },
     {
       matchPackageNames: ["/siderolabs/"],
-      matchFileNames: ["**/nas/**"],
-      additionalBranchPrefix: "nas-",
+      matchFileNames: ["**/utility/**"],
+      additionalBranchPrefix: "utility-",
     },
     // separate app-template per cluster
     {
@@ -62,8 +62,8 @@
     },
     {
       matchPackageNames: ["/app-template/"],
-      matchFileNames: ["**/nas/**"],
-      additionalBranchPrefix: "nas-",
+      matchFileNames: ["**/utility/**"],
+      additionalBranchPrefix: "utility-",
     },
     // automerge devenv
     {

@@ -21,6 +21,12 @@ labels:
   - name: cluster/kube-nas
     description: ""
     color: ededed
+  - name: cluster/nas
+    description: ""
+    color: ededed
+  - name: cluster/utility
+    description: ""
+    color: ededed
   - name: cluster/talos-flux
     description: ""
     color: ededed
@@ -127,6 +133,8 @@ repos:
       - cluster/kube-nas
       - cluster/main
       - cluster/talos-flux
+      - cluster/utility
+      - cluster/nas
       - documentation
       - duplicate
       - enhancement
