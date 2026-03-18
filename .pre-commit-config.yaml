@@ -98,7 +98,6 @@ repos:
       - id: forbid-secrets
         exclude: |
           (?x)^(
-            kubernetes/nas/apps/secops/rbac.yaml|
             kubernetes/main/apps/secops/rbac.yaml|
             kubernetes/utility/apps/secops/rbac.yaml
           )$()
