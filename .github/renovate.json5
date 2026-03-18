@@ -51,11 +51,6 @@
     },
     {
       matchPackageNames: ["/siderolabs/"],
-      matchFileNames: ["**/nas/**"],
-      additionalBranchPrefix: "nas-",
-    },
-    {
-      matchPackageNames: ["/siderolabs/"],
       matchFileNames: ["**/utility/**"],
       additionalBranchPrefix: "utility-",
     },
@@ -64,11 +59,6 @@
       matchPackageNames: ["/app-template/"],
       matchFileNames: ["**/main/**"],
       additionalBranchPrefix: "main-",
-    },
-    {
-      matchPackageNames: ["/app-template/"],
-      matchFileNames: ["**/nas/**"],
-      additionalBranchPrefix: "nas-",
     },
     {
       matchPackageNames: ["/app-template/"],
