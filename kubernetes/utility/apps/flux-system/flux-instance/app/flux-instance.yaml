@@ -26,7 +26,7 @@ spec:
   sync:
     kind: GitRepository
     url: https://github.com/tyriis/home-ops.git
-    ref: refs/heads/feature/utility-cluster
+    ref: refs/heads/main
     path: ./kubernetes/utility/flux
     interval: 2h
   kustomize:
