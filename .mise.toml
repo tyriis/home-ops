@@ -25,7 +25,7 @@ sops = "3.12.2"
 # https://github.com/budimanjojo/talhelper
 talhelper = "3.1.6"
 # https://www.talos.dev/
-talosctl = "1.12.4"
+talosctl = "1.12.6"
 # https://taskfile.dev/
 task = "3.43.3"
 # https://trivy.dev/
