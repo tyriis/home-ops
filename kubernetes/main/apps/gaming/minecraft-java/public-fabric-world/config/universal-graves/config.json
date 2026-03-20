@@ -1,0 +1,63 @@
+{
+  "config_version": 3,
+  "protection": {
+    "non_owner_protection_time": -1,
+    "self_destruction_time": -1,
+    "drop_items_on_expiration": true,
+    "attackers_bypass_protection": false,
+    "use_real_time": false
+  },
+  "interactions": {
+    "unlocking_cost": {},
+    "give_death_compass": true,
+    "enable_click_to_open_gui": true,
+    "shift_and_use_quick_pickup": true,
+    "allow_remote_protection_removal": true,
+    "allow_remote_breaking": true,
+    "allow_remote_unlocking": false
+  },
+  "storage": {
+    "experience_type": "percent_level",
+    "experience_percent:setting_value": 100.0,
+    "can_store_only_xp": false,
+    "alternative_experience_entity": false,
+    "blocked_enchantments": []
+  },
+  "placement": {
+    "player_grave_limit": -1,
+    "replace_any_block": false,
+    "max_distance_from_source_location": 8,
+    "shift_location_on_failure": true,
+    "max_shift_tries": 5,
+    "max_shift_distance": 40,
+    "generate_on_top_of_fluids": true,
+    "restore_replaced_block": false,
+    "restore_replaced_block_after_player_breaking": true,
+    "cancel_creation_for_damage_types": {},
+    "cancel_creation_for_ignored_attacker_types": {},
+    "blocking_predicates": [],
+    "block_in_protected_area": {},
+    "blacklisted_worlds": [],
+    "blacklisted_areas": {}
+  },
+  "teleportation": {
+    "cost": {},
+    "required_time": 5,
+    "y_offset": 1.0,
+    "invincibility_time": 2,
+    "allow_movement_while_waiting": false,
+    "text": {}
+  },
+  "model": {
+    "default": "default",
+    "alternative": [],
+    "enable_geyser_workaround": true,
+    "gravestone_item_base": "minecraft:skeleton_skull",
+    "gravestone_item_nbt": {}
+  },
+  "ui": {},
+  "text": {
+    "date_format": "dd.MM.yyyy, HH:mm",
+    "world_names": {}
+  }
+}
