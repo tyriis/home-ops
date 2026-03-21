@@ -50,7 +50,7 @@ spec:
                 mountPath: /home/runner/.docker
         initContainers:
           - name: dockerconfigwriter
-            image: busybox@sha256:b3255e7dfbcd10cb367af0d409747d511aeb66dfac98cf30e97e87e4207dd76f
+            image: busybox
             command:
               - /bin/sh
               - -ec
