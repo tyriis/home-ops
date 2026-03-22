@@ -13,7 +13,7 @@ services:
       - --console-address
       - :${CONSOLE_PORT:-9001}
     container_name: ${CONTAINER_NAME:-minio}
-    image: pgsty/minio:RELEASE.2026-02-14T12-00-00Z@sha256:00c404465c4e7c4fd716d98caec2928e9e0f82c3548615662fdd3866ea9a28c0
+    image: pgsty/minio:RELEASE.2026-02-14T12-00-00Z
     env_file:
       - ${SOPS_ENV_FILE:-sops.env}
     environment:
