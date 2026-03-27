@@ -13,4 +13,4 @@ spec:
   datasources:
     - datasourceName: prometheus
       inputName: DS_PROMETHEUS
-  url: https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/v1.4.0/monitoring/grafana-dashboard.json
+  url: https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/v1.5.0/monitoring/grafana-dashboard.json
