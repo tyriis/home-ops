@@ -156,16 +156,16 @@
         href: https://homecluster.grafana.net
         description: Grafana Cloud Monitoring
         ping: homecluster.grafana.net
-    - Alertmanager nas:
+    - Alertmanager utility:
         icon: alertmanager
-        href: https://alertmanager.nas.techtales.io
+        href: https://alertmanager.utility.techtales.io
         description: Alerting system that works with Prometheus
-        siteMonitor: https://alertmanager.nas.techtales.io
-    - Prometheus nas:
+        siteMonitor: https://alertmanager.utility.techtales.io
+    - Prometheus utility:
         icon: prometheus
-        href: https://prometheus.nas.techtales.io
+        href: https://prometheus.utility.techtales.io
         description: Monitoring and Alerting Toolkit
-        siteMonitor: https://prometheus.nas.techtales.io
+        siteMonitor: https://prometheus.utility.techtales.io
 - Productivity:
     - HP LaserJet:
         icon: hp
