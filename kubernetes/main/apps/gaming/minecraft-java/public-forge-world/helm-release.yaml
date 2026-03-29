@@ -72,14 +72,14 @@ spec:
                   name: ${APP}-env
             env:
               # https://docker-minecraft-server.readthedocs.io/en/latest/variables
-              TYPE: FABRIC
+              TYPE: FORGE
               # TODO: update with renovate
               VERSION: 1.21.11
 
               MEMORY: 4096M
-              MODS_FILE: /config/plugins.txt
+              MODS_FILE: /config/mods.txt
               REPLACE_ENV_DURING_SYNC: "true"
-              FABRIC_PROXY_SECRET:
+              CFG_PROXY_SECRET:
                 valueFrom:
                   secretKeyRef:
                     name: ${APP}-proxy-forwarding
@@ -143,13 +143,15 @@ spec:
         type: configMap
         name: ${APP}-config
         globalMounts:
-          - path: /config/plugins.txt
-            subPath: plugins.txt
+          - path: /config/mods.txt
+            subPath: mods.txt
             readOnly: true
-      universal-graves:
+      proxy-compatible-forge-config:
         type: configMap
-        name: minecraft-fabric-world-plugins-universal-graves-config
-        globalMounts:
-          - path: /config/universal-graves/config.json
-            subPath: config.json
-            readOnly: true
+        name: ${APP}-proxy-compatible-forge-config
+        advancedMounts:
+          minecraft:
+            app:
+              - path: /data/config/proxy-compatible-forge.toml
+                subPath: proxy-compatible-forge.toml
+                readOnly: true

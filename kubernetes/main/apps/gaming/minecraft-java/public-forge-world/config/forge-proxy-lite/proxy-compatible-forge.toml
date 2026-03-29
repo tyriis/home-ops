@@ -1,0 +1,17 @@
+[forwarding]
+enabled = true
+mode = "MODERN"
+secret = "${CFG_PROXY_SECRET}"
+approvedProxyHosts = []
+
+[crossStitch]
+enabled = true
+forceWrappedArguments = []
+forceWrapVanillaArguments = false
+
+[debug]
+enabled = false
+disabledMixins = []
+
+[advanced]
+modernForwardingVersion = "NO_OVERRIDE"
