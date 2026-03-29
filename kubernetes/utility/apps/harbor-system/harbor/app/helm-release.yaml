@@ -1,0 +1,64 @@
+---
+# yaml-language-server: $schema=https://github.com/fluxcd-community/flux2-schemas/raw/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: harbor
+spec:
+  driftDetection:
+    mode: enabled
+  interval: 30m
+  timeout: 15m
+  chart:
+    spec:
+      chart: harbor
+      version: 1.18.3
+      sourceRef:
+        kind: HelmRepository
+        name: harbor
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  uninstall:
+    keepHistory: false
+  # https://github.com/goharbor/harbor-helm
+  values:
+    externalURL: https://harbor.techtales.io
+    redis:
+      type: internal
+    database:
+      type: internal
+    trivy:
+      enabled: true
+    persistence:
+      enabled: true
+      persistentVolumeClaim:
+        registry:
+          storageClass: nfs-truenas
+          size: 100Gi
+        jobservice:
+          jobLog:
+            storageClass: nfs-truenas
+            size: 1Gi
+        database:
+          storageClass: local-nvme
+          size: 1Gi
+        redis:
+          storageClass: local-nvme
+          size: 1Gi
+        trivy:
+          storageClass: nfs-truenas
+          size: 10Gi
+    cache:
+      enabled: true
+    existingSecretAdminPassword: harbor-credentials #NOSONAR this is not a hardcoded secret, just the name of a k8s secret
+    existingSecretAdminPasswordKey: password
+    secretKey:
+    existingSecretSecretKey: harbor-encryption
+    notary:
+      enabled: false

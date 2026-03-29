@@ -1,0 +1,20 @@
+---
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: truenas
+  labels:
+    app.kubernetes.io/name: truenas
+spec:
+  metricsPath: /metrics
+  scheme: HTTP
+  scrapeInterval: 15s
+  staticConfigs:
+    - labels:
+        job: truenas-node
+      targets:
+        - nas.techtales.io:9100
+    - labels:
+        job: truenas-smartctl
+      targets:
+        - nas.techtales.io:9633

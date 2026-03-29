@@ -8,7 +8,7 @@ vars:
 
 tasks:
   default:
-    desc: test codebase -- lab|nas
+    desc: test codebase -- main|utility
     cmds:
       - task: test
 

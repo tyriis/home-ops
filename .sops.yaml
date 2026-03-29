@@ -1,10 +1,6 @@
 ---
 creation_rules:
-  - path_regex: kubernetes/kube-nas/.*\.ya?ml
-    encrypted_regex: "^(data|stringData)$"
-    age: >-
-      age1clg0rd6ca86h3lnfnjyqsc9stgr0cnyp3l5uswtusxppjq9h2vcsaqckec
-  - path_regex: kubernetes/nas/.*\.ya?ml
+  - path_regex: kubernetes/utility/.*\.ya?ml
     encrypted_regex: "^(data|stringData)$"
     age: >-
       age1clg0rd6ca86h3lnfnjyqsc9stgr0cnyp3l5uswtusxppjq9h2vcsaqckec

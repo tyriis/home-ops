@@ -24,9 +24,9 @@ connectivity:
     target: 1.1.1.1:53
     interval: 1m
 endpoints:
-  - name: flux-webhook-nas
+  - name: flux-webhook-utility
     group: external
-    url: https://flux-webhook-nas.techtales.io
+    url: https://flux-webhook-utility.techtales.io
     interval: 1m
     ui:
       hide-hostname: true

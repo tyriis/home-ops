@@ -2,9 +2,9 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
 
 # renovate: depName=ghcr.io/siderolabs/installer datasource=docker
-talosVersion: v1.12.4
+talosVersion: v1.12.6
 # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
-kubernetesVersion: v1.35.1
+kubernetesVersion: v1.35.3
 
 clusterName: main
 endpoint: https://192.168.100.100:6443
@@ -56,12 +56,16 @@ nodes:
       - interface: bond0
         bond:
           deviceSelectors:
-            - hardwareAddr: 58:47:ca:77:*
+            - permanentAddr: 58:47:ca:77:29:22
+              driver: i40e
+            - permanentAddr: 58:47:ca:77:29:22
               driver: i40e
           mode: 802.3ad
           lacpRate: fast
-          xmitHashPolicy: layer2
-          miimon: 1000
+          xmitHashPolicy: layer3+4
+          miimon: 100
+          updelay: 200
+          downdelay: 200
         mtu: 9000
         dhcp: false
         addresses:
@@ -131,12 +135,16 @@ nodes:
       - interface: bond0
         bond:
           deviceSelectors:
-            - hardwareAddr: 58:47:ca:76:*
+            - permanentAddr: 58:47:ca:76:87:47
+              driver: i40e
+            - permanentAddr: 58:47:ca:76:87:48
               driver: i40e
           mode: 802.3ad
           lacpRate: fast
-          xmitHashPolicy: layer2
-          miimon: 1000
+          xmitHashPolicy: layer3+4
+          miimon: 100
+          updelay: 200
+          downdelay: 200
         mtu: 9000
         dhcp: false
         addresses:
@@ -179,7 +187,7 @@ nodes:
       # gen4 slot
       # serial: S6Z1NJ0Y301566D
       # middle slot disk
-      serial: S6Z1NJ0W534350X
+      serial: S7HDNL0YA54989Z
     disableSearchDomain: true
     nameservers:
       # - 1.1.1.1
@@ -206,12 +214,16 @@ nodes:
       - interface: bond0
         bond:
           deviceSelectors:
-            - hardwareAddr: 58:47:ca:76:*
+            - permanentAddr: 58:47:ca:76:7f:73
+              driver: i40e
+            - permanentAddr: 58:47:ca:76:7f:74
               driver: i40e
           mode: 802.3ad
           lacpRate: fast
-          xmitHashPolicy: layer2
-          miimon: 1000
+          xmitHashPolicy: layer3+4
+          miimon: 100
+          updelay: 200
+          downdelay: 200
         mtu: 9000
         dhcp: false
         addresses:
@@ -239,7 +251,7 @@ nodes:
           - network: 169.254.255.102/32
             metric: 2048
     nodeLabels:
-      topology.kubernetes.io/zone: home-lab
+      topology.kubernetes.io/zone: home
 
 controlPlane:
   schematic:
@@ -352,7 +364,6 @@ controlPlane:
               overridePath: true
         features:
           rbac: true
-          stableHostname: true
           kubernetesTalosAPIAccess:
             enabled: true
             allowedRoles:
@@ -413,5 +424,5 @@ controlPlane:
                           whenUnsatisfiable: ScheduleAnyway
         extraManifests:
           - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/experimental-install.yaml
-          - https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.89.0/stripped-down-crds.yaml
-          - https://github.com/grafana/grafana-operator/releases/download/v5.21.4/crds.yaml
+          - https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.90.1/stripped-down-crds.yaml
+          - https://github.com/grafana/grafana-operator/releases/download/v5.22.2/crds.yaml

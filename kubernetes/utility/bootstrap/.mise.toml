@@ -1,0 +1,3 @@
+[tools]
+# https://helm.sh/
+helm = "3.20.1"
