@@ -3,8 +3,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ../../../../../../kubernetes/kube-lab/apps/observability/grafana/instance/datasource.yaml
-  - ../../../../../../kubernetes/kube-lab/apps/observability/grafana/instance/grafana.yaml
-  # - ../../../../../../kubernetes/kube-lab/apps/observability/grafana/instance/service-monitor.yaml
+  - ../../../../../../kubernetes/main/apps/observability/grafana/instance/datasource.yaml
+  - ../../../../../../kubernetes/main/apps/observability/grafana/instance/grafana.yaml
+  # - ../../../../../../kubernetes/main/apps/observability/grafana/instance/service-monitor.yaml
 patches:
   - path: grafana.yaml
