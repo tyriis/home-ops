@@ -17,4 +17,4 @@ spec:
     - labels:
         job: truenas-smartctl
       targets:
-        - truenas.techtales.io:9633
+        - nas.techtales.io:9633
