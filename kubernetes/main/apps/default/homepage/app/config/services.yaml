@@ -135,16 +135,16 @@
         description: Synology Disk Station Manager
         # ping: nas.techtales.io
         siteMonitor: https://nas.techtales.io
-    - Minio nas:
+    - Minio:
         icon: minio-light
-        href: https://minio.nas.techtales.io
+        href: https://minio.techtales.io
         description: Minio Object Storage
-        siteMonitor: https://minio.nas.techtales.io
-    - Minio replication nas:
+        siteMonitor: https://minio.techtales.io
+    - Minio Synology:
         icon: minio-light
-        href: https://minio-replication.nas.techtales.io
+        href: https://minio.synology.techtales.io
         description: Minio Object Storage
-        siteMonitor: https://minio-replication.nas.techtales.io
+        # siteMonitor: https://minio.synology.techtales.io
     - Harbor:
         icon: harbor
         href: https://harbor.techtales.io
