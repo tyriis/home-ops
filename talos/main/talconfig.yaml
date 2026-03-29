@@ -251,7 +251,7 @@ nodes:
           - network: 169.254.255.102/32
             metric: 2048
     nodeLabels:
-      topology.kubernetes.io/zone: home-lab
+      topology.kubernetes.io/zone: home
 
 controlPlane:
   schematic:
