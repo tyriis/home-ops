@@ -129,12 +129,18 @@
         href: https://files.techtales.io
         description: Web-based File Manager
         siteMonitor: https://files.techtales.io
+    - TrueNAS:
+        icon: truenas
+        href: https://nas.techtales.io
+        description: TrueNAS Storage Management
+        # ping: truenas.techtales.io
+        siteMonitor: https://nas.techtales.io
     - Synology NAS:
         icon: synology-dsm
-        href: https://nas.techtales.io
+        href: https://synology.techtales.io
         description: Synology Disk Station Manager
         # ping: nas.techtales.io
-        siteMonitor: https://nas.techtales.io
+        # siteMonitor: https://nas.techtales.io
     - Minio:
         icon: minio-light
         href: https://minio.techtales.io
