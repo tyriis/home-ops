@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: minecraft-public-forge-world-env
+data:
+  EULA: "true"
+  DIFFICULTY: normal
+  OPS: "tyriis,jazzlyin"
+  MAX_PLAYERS: "25"
+  ALLOW_NETHER: "true"
+  ENABLE_COMMAND_BLOCK: "false"
+  GENERATE_STRUCTURES: "true"
+  SPAWN_ANIMALS: "true"
+  SPAWN_MONSTERS: "true"
+  SPAWN_NPCS: "true"
+  SPAWN_PROTECTION: "0"
+  VIEW_DISTANCE: "14"
+  MODE: survival
+  MOTD: techicraft forge
+  PVP: "true"
+  LEVEL_TYPE: DEFAULT
+  ONLINE_MODE: "false"
+  CF_PARALLEL_DOWNLOADS: "4"
+  ENABLE_RCON: "true"
+  ENABLE_ROLLING_LOGS: "true"
+  LOG_TIMESTAMP: "true"
+  SNOOPER_ENABLED: "true"
+  LEVEL: forge-20260329
+  SERVER_NAME: forge
+  STOP_SERVER_ANNOUNCE_DELAY: "30"
+  STOP_DURATION: "30"
+  USE_AIKAR_FLAGS: "true"
