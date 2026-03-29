@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../../../../components/minecraft/external-secret.yaml
+  - ./config-map.yaml
+  - ./helm-release.yaml
+configMapGenerator:
+  - name: minecraft-public-forge-world-config
+    files:
+      - mods.txt=config/mods.txt
+  - name: minecraft-public-forge-world-proxy-template
+    files:
+      - proxy-compatible-forge.toml=config/forge-proxy-lite/proxy-compatible-forge.toml
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
