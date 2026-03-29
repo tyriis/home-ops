@@ -10,7 +10,7 @@ configMapGenerator:
   - name: minecraft-public-forge-world-config
     files:
       - mods.txt=config/mods.txt
-  - name: minecraft-public-forge-world-proxy-template
+  - name: minecraft-public-forge-world-proxy-compatible-forge-config
     files:
       - proxy-compatible-forge.toml=config/forge-proxy-lite/proxy-compatible-forge.toml
 generatorOptions:

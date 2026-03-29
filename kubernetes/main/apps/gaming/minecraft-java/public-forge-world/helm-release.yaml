@@ -147,7 +147,7 @@ spec:
             subPath: mods.txt
             readOnly: true
       proxy-compatible-forge-config:
-        type: secret
+        type: configMap
         name: ${APP}-proxy-compatible-forge-config
         advancedMounts:
           minecraft:
