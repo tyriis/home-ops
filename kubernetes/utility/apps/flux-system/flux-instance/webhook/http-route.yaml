@@ -9,7 +9,7 @@ metadata:
     external-dns/unifi: "true"
 spec:
   hostnames:
-    - flux-webhook.utility.techtales.io
+    # - flux-webhook.utility.techtales.io
     - flux-webhook-utility.techtales.io
   parentRefs:
     - name: envoy
