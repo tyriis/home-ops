@@ -179,7 +179,7 @@ nodes:
       # gen4 slot
       # serial: S6Z1NJ0Y301566D
       # middle slot disk
-      serial: S6Z1NJ0W534350X
+      serial: S7HDNL0YA54989Z
     disableSearchDomain: true
     nameservers:
       # - 1.1.1.1
@@ -352,7 +352,6 @@ controlPlane:
               overridePath: true
         features:
           rbac: true
-          stableHostname: true
           kubernetesTalosAPIAccess:
             enabled: true
             allowedRoles:
