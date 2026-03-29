@@ -15,7 +15,7 @@ ingress:
     service: https://auth.techtales.io
   - hostname: flux-webhook.techtales.io
     service: https://flux-webhook.techtales.io
-  - hostname: flux-webhook.utility.techtales.io
+  - hostname: flux-webhook-utility.techtales.io
     service: https://flux-webhhook.utility.techtales.io
   - hostname: atlantis-tyriis-terraform-github-webhook.techtales.io
     service: https://atlantis-tyriis-terraform-github-webhook.techtales.io
