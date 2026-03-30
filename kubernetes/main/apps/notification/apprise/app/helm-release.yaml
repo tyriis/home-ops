@@ -1,0 +1,145 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app apprise
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.6.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/caronc/apprise
+              tag: v1.3.3@sha256:4bfeac268ba87b8e08e308c9aa0182fe99e9501ec464027afc333d1634e65977
+            env:
+              APPRISE_DEFAULT_THEME: dark
+              APPRISE_STATEFUL_MODE: simple
+              APPRISE_WORKER_COUNT: 4
+              APPRISE_CONFIG_LOCK: "yes"
+              BASE_URL: "https://{{ .Release.Name }}.techtales.io"
+              IPV4_ONLY: true
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 100Mi
+              limits:
+                memory: 500Mi
+            ports:
+              - name: http
+                containerPort: &port 8000
+                protocol: TCP
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  initialDelaySeconds: 5
+                  periodSeconds: 60
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+                  httpGet: &httpGet
+                    path: /status
+                    port: *port
+              readiness:
+                <<: *probes
+                spec:
+                  initialDelaySeconds: 10
+                  periodSeconds: 5
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+                  httpGet: *httpGet
+              startup:
+                <<: *probes
+                spec:
+                  initialDelaySeconds: 5
+                  periodSeconds: 1
+                  failureThreshold: 60
+                  httpGet: *httpGet
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    serviceMonitor:
+      app:
+        enabled: true
+        serviceName: app
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
+            interval: 1m
+    route:
+      app:
+        annotations:
+          external-dns/unifi: "true"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Push notification gateway
+          gethomepage.dev/group: Productivity
+          gethomepage.dev/icon: apprise
+          gethomepage.dev/name: Apprise
+        hostnames:
+          - "{{ .Release.Name }}.techtales.io"
+        parentRefs:
+          - name: envoy
+            namespace: networking
+            sectionName: https
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}-config"
+        advancedMounts:
+          main:
+            app:
+              - path: /config
+                subPath: config
+              - path: /plugin
+                subPath: plugin
+      config-apprise:
+        type: secret
+        name: apprise-config
+        globalMounts:
+          - path: /config/apprise.yml
+            subPath: apprise.yml
+            readOnly: true
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          main:
+            app:
+              - path: /attach
+                subPath: attach
+              - path: /tmp
+                subPath: tmp

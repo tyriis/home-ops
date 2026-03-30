@@ -1,0 +1,5 @@
+---
+version: 1
+
+urls:
+  - tgram://{{ .TELEGRAM_BOT_TOKEN }}/{{ .TELEGRAM_CHAT_ID }}
