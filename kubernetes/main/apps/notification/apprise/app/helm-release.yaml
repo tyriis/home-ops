@@ -94,7 +94,7 @@ spec:
           http:
             port: *port
     serviceMonitor:
-      metrics:
+      app:
         enabled: true
         serviceName: app
         endpoints:
@@ -137,7 +137,7 @@ spec:
       tmpfs:
         type: emptyDir
         advancedMounts:
-          apprise:
+          main:
             app:
               - path: /attach
                 subPath: attach
