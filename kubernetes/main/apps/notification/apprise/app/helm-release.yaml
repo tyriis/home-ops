@@ -54,6 +54,33 @@ spec:
               - name: http
                 containerPort: &port 8000
                 protocol: TCP
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  initialDelaySeconds: 5
+                  periodSeconds: 60
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+                  httpGet: &httpGet
+                    path: /status
+                    port: *port
+              readiness:
+                <<: *probes
+                spec:
+                  initialDelaySeconds: 10
+                  periodSeconds: 5
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+                  httpGet: *httpGet
+              startup:
+                <<: *probes
+                spec:
+                  initialDelaySeconds: 5
+                  periodSeconds: 1
+                  failureThreshold: 60
+                  httpGet: *httpGet
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
