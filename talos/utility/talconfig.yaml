@@ -2,9 +2,9 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
 
 # renovate: depName=ghcr.io/siderolabs/installer datasource=docker
-talosVersion: v1.12.4
+talosVersion: v1.12.6
 # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
-kubernetesVersion: v1.35.1
+kubernetesVersion: v1.35.3
 
 clusterName: utility
 endpoint: https://192.168.100.30:6443
@@ -193,5 +193,5 @@ controlPlane:
                           topologyKey: kubernetes.io/hostname
                           whenUnsatisfiable: ScheduleAnyway
         extraManifests:
-          - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.1/experimental-install.yaml
-          - https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.89.0/stripped-down-crds.yaml
+          - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/experimental-install.yaml
+          - https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.90.1/stripped-down-crds.yaml

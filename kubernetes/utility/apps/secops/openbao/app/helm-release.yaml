@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: openbao
-      version: 0.26.1
+      version: 0.26.2
       sourceRef:
         kind: HelmRepository
         name: openbao
@@ -34,7 +34,7 @@ spec:
       image:
         registry: quay.io
         repository: openbao/openbao
-        tag: 2.5.1@sha256:87d715029a47328172774638cabfeb04d5b356678d660621b796b6a671f93581
+        tag: 2.5.2@sha256:6c75c97223873807260352f269640935a07db0c26b3dbf12a98a36ec43ad9878
       updateStrategy: RollingUpdate
       logLevel: info
       logFormat: json

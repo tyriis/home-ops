@@ -205,123 +205,58 @@ Name resolution with techtales services should work now
 curl https://home.techtales.io
 ```
 
-## free port 80 and 443
+## setup synology proxy
 
-followed this [article](https://tonylawrence.com/posts/unix/synology/freeing-port-80/)
-
-```bash
-cat <<EOF > /usr/local/bin/remap-http-ports.sh
-#!/bin/sh -e
-
-HTTP_PORT=8081 HTTPS_PORT=8443; \
-for f in /usr/syno/share/nginx/server.mustache /usr/syno/share/nginx/DSM.mustache /usr/syno/share/nginx/WWWService.mustache; do
-  sudo sed -E -i.bak \
-    -e "s/listen 80 default_server/listen ${HTTP_PORT} default_server/g" \
-    -e "s/listen \[::\]:80 default_server/listen [::]:${HTTP_PORT} default_server/g" \
-    -e "s/listen 443 default_server ssl/listen ${HTTPS_PORT} default_server ssl/g" \
-    -e "s/listen \[::\]:443 default_server ssl/listen [::]:${HTTPS_PORT} default_server ssl/g" \
-    "$f";
-done
-EOF
-```
-
-```bash
-chmod a+x /usr/local/bin/remap-http-ports.sh
-```
-
-```bash
-/bin/bash /usr/local/bin/remap-http-ports.sh
-```
-
-```bash
-synosystemctl restart nginx
-```
-
-    Synology DSM -> Control Panel -> Task Scheduler
-      Create -> Triggered Task -> User-defined script
-        General
-          Task: remap-http-ports
-          User: root
-          Event: Boot-up
-        Task Settings
-          User-defined script:
-            /bin/bash /usr/local/bin/remap-http-ports.sh
+    Synology DSM -> Control Panel -> Login Portal
+      DSM -> Domain
+        Customized domain: synology.techtales.io
+        Save
         OK
-        OK
-        Confirm with password
 
-## setup traefik config
+Should be available under [synology.techtales.io](https://synology.techtales.io)
 
-create config path
+## use letsencrypt certificate
 
-```bash
-mkdir -p /etc/traefik/dynamic
-```
+    Synology DSM -> Security -> Certificate
+      synology.techtales.io -> Right Click -> Edit
+        Set as default certificate: true
 
-setup certs
+    Settings -> Configure
+      System default: synology.techtales.io
+      synology.techtales.io: synology.techtales.io
+      OK
+      Yes
 
-```bash
-cat <<EOF > /etc/traefik/dynamic/tls.yaml
----
-tls:
-  stores:
-    default:
-      defaultCertificate:
-        certFile: /certs/fullchain.pem
-        keyFile: /certs/privkey.pem
-EOF
-```
+## Setup Synology Nginx proxy for minio
 
-```bash
-cat <<'EOF' > /etc/traefik/dynamic/dsm.yaml
----
-http:
-  routers:
-    dsm:
-      rule: Host(`synology.techtales.io`)
-      entryPoints:
-        - websecure
-      tls: {}
-      service: dsm
+    Synology DSM -> Control Panel -> Login Portal
+      Advanced -> Reverse Proxy
+        Create
+          General
+            Reverse Proxy Name: minio
+            Source:
+              Protocol: HTTPS
+              Hostnamne: minio.synology.techtales.io
+              Port: 443
+              Enable HSTS: true
+            Destination:
+              Protocol: HTTP
+              Hostname: localhost
+              Port: 9001
+          Custom Header
+            Create -> WebSocket
+          Save
 
-  services:
-    dsm:
-      loadBalancer:
-        passHostHeader: true
-        servers:
-          - url: http://synology:5000
-EOF
-```
-
-```bash
-cat <<'EOF' > /etc/traefik/dynamic/minio.yaml
-http:
-  routers:
-    minio-console:
-      rule: Host(`minio.synology.techtales.io`)
-      entryPoints:
-        - websecure
-      tls: {}
-      service: minio-console
-
-    minio-s3:
-      rule: Host(`s3.synology.techtales.io`)
-      entryPoints:
-        - websecure
-      tls: {}
-      service: minio-s3
-
-  services:
-    minio-console:
-      loadBalancer:
-        passHostHeader: true
-        servers:
-          - url: http://minio:9001
-
-    minio-s3:
-      loadBalancer:
-        passHostHeader: true
-        servers:
-          - url: http://minio:9000
-EOF
-```
+        Create
+          General
+            Reverse Proxy Name: s3
+            Source:
+              Protocol: HTTPS
+              Hostnamne: s3.synology.techtales.io
+              Port: 443
+              Enable HSTS: true
+            Destination:
+              Protocol: HTTP
+              Hostname: localhost
+              Port: 9000
+          Save

@@ -25,13 +25,18 @@ spec:
       VOLSYNC_SUFFIX: data
 ```
 
+goto terraform-minio
+
+- create user in data/users
+- create pr and let atlantis apply
+
 goto `secrets.techtales.io`
 
 - create secret in `infra/talos-flux/volsync/<app>-<suffix>`
-- check another volsync secret for structure
-- create token (it-tools..)
-  - copy as is
-- adjust path and save
+- copy aws credentials from created user in `infra/minio/iam/nas.techtales.io/
+- create token for restic password (tools.techtales.io: 64 length)
+- adjust path of restic repository
+- save
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->

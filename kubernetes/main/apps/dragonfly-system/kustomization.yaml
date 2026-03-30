@@ -7,5 +7,6 @@ components:
   - ../../../components/flux/alerts
 resources:
   - ./namespace.yaml
+  - ./network-policy.yaml
   - ./dragonfly/git-repository.yaml
   - ./dragonfly/flux-sync.yaml

@@ -35,7 +35,7 @@ spec:
           litestream-restore:
             image:
               repository: litestream/litestream
-              tag: 0.5.8@sha256:9874588ddb04789179d0d93cc902ba9309bb0cac4c33eb5631599d4559c60106
+              tag: 0.5.10@sha256:66c0ef32779b20f7ce682751ec50ba0f1363cad5cb9dba1e23fbeee6ae3197b9
             args:
               - restore
               - -if-db-not-exists
@@ -56,7 +56,7 @@ spec:
           litestream:
             image:
               repository: litestream/litestream
-              tag: 0.5.8@sha256:9874588ddb04789179d0d93cc902ba9309bb0cac4c33eb5631599d4559c60106
+              tag: 0.5.10@sha256:66c0ef32779b20f7ce682751ec50ba0f1363cad5cb9dba1e23fbeee6ae3197b9
             args:
               - replicate
             restartPolicy: Always
@@ -76,7 +76,7 @@ spec:
           app:
             image:
               repository: ghcr.io/pocket-id/pocket-id
-              tag: v2.4.0@sha256:3e790c5d4fd82ff276b1c2bc3242be9da13cff204a2b937768ea1eba1e892571
+              tag: v2.5.0@sha256:1549f31f76a6c158af0056a4f2c62a590627886a84e9da9bda76eb1e142a449a
             env:
               # https://pocket-id.org/docs/configuration/environment-variables
               ANALYTICS_DISABLED: "true"
