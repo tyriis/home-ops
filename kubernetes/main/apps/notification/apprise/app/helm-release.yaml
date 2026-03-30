@@ -34,11 +34,11 @@ spec:
               repository: ghcr.io/caronc/apprise
               tag: v1.3.3@sha256:4bfeac268ba87b8e08e308c9aa0182fe99e9501ec464027afc333d1634e65977
             env:
+              # https://appriseit.com/api/reference/environment/
               APPRISE_DEFAULT_THEME: dark
               APPRISE_STATEFUL_MODE: simple
               APPRISE_WORKER_COUNT: 4
               APPRISE_CONFIG_LOCK: "yes"
-              BASE_URL: "https://{{ .Release.Name }}.techtales.io"
               IPV4_ONLY: true
             securityContext:
               allowPrivilegeEscalation: false
