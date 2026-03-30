@@ -75,7 +75,7 @@ spec:
           gethomepage.dev/icon: it-tools-light
           gethomepage.dev/name: IT-Tools
         hostnames:
-          - &host it-tools.techtales.io
+          - &host tools.techtales.io
         parentRefs:
           - name: envoy
             namespace: networking
