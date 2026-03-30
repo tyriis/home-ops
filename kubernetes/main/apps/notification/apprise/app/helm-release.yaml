@@ -121,7 +121,7 @@ spec:
       config:
         existingClaim: "{{ .Release.Name }}-config"
         advancedMounts:
-          apprise:
+          main:
             app:
               - path: /config
                 subPath: config
