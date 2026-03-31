@@ -148,7 +148,7 @@ spec:
             readOnly: true
       universal-graves:
         type: configMap
-        name: minecraft-fabric-world-plugins-universal-graves-config
+        name: minecraft-public-fabric-world-plugins-universal-graves-config
         globalMounts:
           - path: /config/universal-graves/config.json
             subPath: config.json

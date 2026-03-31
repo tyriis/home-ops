@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: minecraft-fabric-world-env
+  name: minecraft-public-fabric-world-env
 data:
   EULA: "true"
   DIFFICULTY: hard
@@ -27,7 +27,7 @@ data:
   ENABLE_ROLLING_LOGS: "true"
   LOG_TIMESTAMP: "true"
   SNOOPER_ENABLED: "true"
-  LEVEL: survival-20260320
+  LEVEL: survival-20260331
   SERVER_NAME: fabric-survival
   STOP_SERVER_ANNOUNCE_DELAY: "30"
   STOP_DURATION: "30"
