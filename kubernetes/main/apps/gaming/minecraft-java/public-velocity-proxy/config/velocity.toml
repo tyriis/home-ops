@@ -79,6 +79,7 @@ playground = "minecraft-public-playground-world-minecraft:25565"
 survival = "minecraft-public-survival-world-minecraft:25565"
 pvp = "minecraft-public-pvp-world-minecraft:25565"
 lobby = "minecraft-public-lobby-world-minecraft:25565"
+fabric = "minecraft-public-fabric-world-minecraft:25565"
 forge = "minecraft-public-forge-world-minecraft:25565"
 # survival = "minecraft-survival-world-minecraft:25565"
 
@@ -88,6 +89,7 @@ try = [
   "survival",
   "playground",
   "pvp",
+  "fabric",
   "forge",
 ]
 
