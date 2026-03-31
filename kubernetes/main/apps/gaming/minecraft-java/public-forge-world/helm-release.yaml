@@ -152,6 +152,6 @@ spec:
         advancedMounts:
           minecraft:
             app:
-              - path: /data/config/proxy-compatible-forge.toml
+              - path: /config/proxy-compatible-forge.toml
                 subPath: proxy-compatible-forge.toml
                 readOnly: true
