@@ -1,8 +1,9 @@
-# https://modrinth.com/mod/connector/versions?l=forge #run fabrick mods
-https://cdn.modrinth.com/data/u58R1TMW/versions/1i8teo7m/connector-2.0.0-beta.14%2B1.21.1-full.jar
+# does not work with latest version
+# https://modrinth.com/mod/connector/versions?l=forge #run fabric plugins
+# https://cdn.modrinth.com/data/u58R1TMW/versions/dmW0aite/Connector-1.0.0-beta.48%2B1.20.1.jar
 
 # UnifiedMetrics https://modrinth.com/plugin/unifiedmetrics/versions?l=fabric&c=release
-https://cdn.modrinth.com/data/p1ewR5kV/versions/xwRVtqbA/unifiedmetrics-platform-fabric-0.3.8.jar
+# https://cdn.modrinth.com/data/p1ewR5kV/versions/xwRVtqbA/unifiedmetrics-platform-fabric-0.3.8.jar
 
 # ForgeProxy-Lite https://modrinth.com/mod/proxy-compatible-forge/versions?l=forge
 https://cdn.modrinth.com/data/vDyrHl8l/versions/K0BYby1n/proxy-compatible-forge-1.2.3.jar

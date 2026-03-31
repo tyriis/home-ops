@@ -122,15 +122,15 @@ spec:
             port: 25575
             protocol: TCP
 
-    serviceMonitor:
-      metrics:
-        enabled: true
-        serviceName: ${APP}-minecraft
-        endpoints:
-          - port: metrics
-            scheme: http
-            path: /
-            interval: 1m
+    # serviceMonitor:
+    #   metrics:
+    #     enabled: true
+    #     serviceName: ${APP}-minecraft
+    #     endpoints:
+    #       - port: metrics
+    #         scheme: http
+    #         path: /
+    #         interval: 1m
 
     persistence:
       data:
