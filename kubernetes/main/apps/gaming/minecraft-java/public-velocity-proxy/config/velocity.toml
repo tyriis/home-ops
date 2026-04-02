@@ -75,11 +75,13 @@ enable-player-address-logging = true
 # Configure your servers here. Each key represents the server's name, and the value
 # represents the IP address of the server to connect to.
 lobby = "minecraft-public-lobby-world-minecraft:25565"
+fabric = "minecraft-public-fabric-world-minecraft:25565"
 forge = "minecraft-public-forge-world-minecraft:25565"
 
 # In what order we should try servers when a player logs in or is kicked from a server.
 try = [
   "lobby",
+  "fabric",
   "forge",
 ]
 
