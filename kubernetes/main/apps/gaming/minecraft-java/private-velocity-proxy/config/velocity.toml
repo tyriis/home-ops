@@ -77,17 +77,12 @@ enable-player-address-logging = true
 # Configure your servers here. Each key represents the server's name, and the value
 # represents the IP address of the server to connect to.
 lobby = "minecraft-lobby-world-minecraft:25565"
-creative = "minecraft-creative-world-minecraft:25565"
-playground = "minecraft-playground-world-minecraft:25565"
-survival = "minecraft-survival-world-minecraft:25565"
-fabric-survival = "minecraft-fabric-world-minecraft:25565"
+fabric = "minecraft-fabric-world-minecraft:25565"
+paper = "minecraft-survival-world-minecraft:25565"
 public-lobby ="minecraft-public-lobby-world-minecraft:25565"
-public-playground="minecraft-public-playground-world-minecraft:25565"
-public-pvp="minecraft-public-pvp-world-minecraft:25565"
-public-survival="minecraft-public-survival-world-minecraft:25565"
-public-fabric-survival="minecraft-public-fabric-world-minecraft:25565"
+public-fabric="minecraft-public-fabric-world-minecraft:25565"
+public-forge="minecraft-public-forge-world-minecraft:25565"
 crowlex-lobby="minecraft-crowlex-lobby-world-minecraft:25565"
-
 
 # In what order we should try servers when a player logs in or is kicked from a server.
 try = [
