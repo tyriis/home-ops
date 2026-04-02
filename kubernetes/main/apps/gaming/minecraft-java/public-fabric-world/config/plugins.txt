@@ -24,6 +24,6 @@ https://cdn.modrinth.com/data/7vxePowz/versions/Sddkv0PO/FarmersDelight-1.21.1-3
 # Universal Graves https://modrinth.com/mod/universal-graves/versions?c=release
 https://cdn.modrinth.com/data/yn9u3ypm/versions/Fg64B87Y/graves-3.4.4%2B1.21.jar
 # TACZ Refabricated https://modrinth.com/mod/tacz-refabricated/versions?c=release&l=fabric
-https://cdn.modrinth.com/data/1j76DVHU/versions/QJsQvQpC/TACZ-Refabricated-1.21.1-0.5.0-forge1.1.7-hotfix2.jar
+# https://cdn.modrinth.com/data/1j76DVHU/versions/QJsQvQpC/TACZ-Refabricated-1.21.1-0.5.0-forge1.1.7-hotfix2.jar
 # ForgeConfigAPI Port https://modrinth.com/mod/forge-config-api-port/versions?l=fabric # required for TACZ
 https://cdn.modrinth.com/data/ohNO6lps/versions/N5qzq0XV/ForgeConfigAPIPort-v21.1.6-1.21.1-Fabric.jar
