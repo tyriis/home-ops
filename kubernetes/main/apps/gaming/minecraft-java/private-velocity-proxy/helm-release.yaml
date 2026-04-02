@@ -200,7 +200,7 @@ spec:
             readOnly: true
       viaversion:
         type: configMap
-        name: minecraft-public-velocity-proxy-plugins-viaversion
+        name: minecraft-velocity-proxy-plugins-viaversion
         advancedMounts:
           velocity:
             app:
