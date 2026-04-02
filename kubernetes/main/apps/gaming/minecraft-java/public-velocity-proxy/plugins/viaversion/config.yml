@@ -188,8 +188,6 @@ velocity-ping-save: true
 # It will fall back to the default option if none found.
 velocity-servers:
   default: 775
-  #lobby: 775
-  #fabric-survival: 775
   forge: 767
 # Vines that are not connected to blocks will be mapped to air, else 1.13+ would still be able to climb up on them.
 vine-climb-fix: false
