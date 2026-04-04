@@ -13,7 +13,8 @@ spec:
             summary:
               Mounted drive {{ $labels.device }} on device {{ $labels.instance }}
               has a temperature higher than 65°C.
-          expr: smartctl_device_temperature > 65
+          expr: |-
+            smartctl_device_temperature > 65
           for: 15m
           labels:
             severity: critical
@@ -22,7 +23,7 @@ spec:
             summary:
               Mounted drive {{ $labels.device }} on device {{ $labels.instance }}
               did not pass its SMART test.
-          expr: |
+          expr: |-
             (
               smartctl_device_smart_status != 1
             or
@@ -36,7 +37,8 @@ spec:
             summary:
               Mounted drive {{ $labels.device }} on device {{ $labels.instance }}
               is in a critical state.
-          expr: smartctl_device_critical_warning != 0
+          expr: |-
+            smartctl_device_critical_warning != 0
           for: 15m
           labels:
             severity: critical
@@ -48,7 +50,8 @@ spec:
             summary:
               Mounted drive {{ $labels.device }} on device {{ $labels.instance }}
               has media errors.
-          expr: smartctl_device_media_errors != 0
+          expr: |-
+            smartctl_device_media_errors != 0
           for: 15m
           labels:
             severity: critical
@@ -57,7 +60,8 @@ spec:
             summary:
               Device {{ $labels.device }} on instance {{ $labels.instance }}
               is under available spare threashold.
-          expr: smartctl_device_available_spare_threshold > smartctl_device_available_spare
+          expr: |-
+            smartctl_device_available_spare_threshold > smartctl_device_available_spare
           for: 15m
           labels:
             severity: critical
@@ -66,7 +70,7 @@ spec:
             summary:
               Device {{ $labels.device }} on instance {{ $labels.instance }}
               interface is slower then it should be.
-          expr: |
+          expr: |-
             smartctl_device_interface_speed{speed_type="current"} != on(device, instance, namespace, pod) smartctl_device_interface_speed{speed_type="max"}
           for: 15m
           labels:
