@@ -8,9 +8,8 @@ metadata:
     app.kubernetes.io/name: *app
 spec:
   podMetricsEndpoints:
-    - interval: 30s
-      port: admin
-  podTargetLabels: ["app.kubernetes.io/name"]
+    - port: admin
+      interval: 30s
   selector:
     matchLabels:
       app.kubernetes.io/name: *app
