@@ -39,6 +39,8 @@ spec:
       use_browser_locale: "true"
     log:
       mode: console
+    public_dashboards:
+      enabled: "false"
     server:
       enable_gzip: "true"
       root_url: https://grafana.techtales.io
