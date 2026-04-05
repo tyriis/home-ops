@@ -3,12 +3,12 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
-  name: grafana-operator
+  name: envoy-gateway
 spec:
   interval: 30m
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
-  url: oci://ghcr.io/grafana/helm-charts/grafana-operator
   ref:
-    tag: 5.22.2
+    tag: v1.7.1
+  url: oci://mirror.gcr.io/envoyproxy/gateway-helm
