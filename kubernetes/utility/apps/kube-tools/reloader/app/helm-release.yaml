@@ -6,7 +6,6 @@ metadata:
   name: reloader
 spec:
   interval: 30m
-  timeout: 5m
   chart:
     spec:
       chart: reloader
@@ -16,11 +15,10 @@ spec:
         name: stakater
   install:
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
   uninstall:
     keepHistory: false
