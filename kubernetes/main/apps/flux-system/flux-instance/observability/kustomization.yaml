@@ -4,8 +4,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./grafana-dashboard.yaml
-  - ./pod-monitor.yaml
   - ./prometheus-rule.yaml
+  - ./service.yaml
+  - ./service-monitor.yaml
 configMapGenerator:
   - name: flux-dashboards
     files:
