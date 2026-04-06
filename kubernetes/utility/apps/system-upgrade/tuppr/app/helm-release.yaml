@@ -5,10 +5,19 @@ kind: HelmRelease
 metadata:
   name: tuppr
 spec:
+  interval: 30m
   chartRef:
     kind: OCIRepository
     name: tuppr
-  interval: 1h
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     # https://github.com/home-operations/tuppr/blob/main/charts/tuppr/values.yaml
     replicaCount: 2
