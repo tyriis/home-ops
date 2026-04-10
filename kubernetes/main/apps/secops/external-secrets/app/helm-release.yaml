@@ -25,7 +25,8 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    installCRDs: true
-    replicaCount: 1
-    grafana:
-      enabled: false
+    # https://artifacthub.io/packages/helm/external-secrets-operator/external-secrets?modal=values
+    grafanaDashboard:
+      enabled: true
+    serviceMonitor:
+      enabled: true
