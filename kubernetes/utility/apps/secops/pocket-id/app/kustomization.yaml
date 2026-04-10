@@ -8,6 +8,6 @@ resources:
 configMapGenerator:
   - name: pocket-id-litestream-config
     files:
-      - litestream.yml=litestream.yaml
+      - litestream.yml=./litestream.yaml
 generatorOptions:
   disableNameSuffixHash: true
