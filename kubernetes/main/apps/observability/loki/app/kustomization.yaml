@@ -10,7 +10,7 @@ resources:
 configMapGenerator:
   - name: loki-alerting-rules
     files:
-      - loki-alerting-rules.yaml
+      - ./loki-alerting-rules.yaml
 generatorOptions:
   disableNameSuffixHash: true
   annotations:

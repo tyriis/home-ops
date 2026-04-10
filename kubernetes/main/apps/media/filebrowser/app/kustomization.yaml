@@ -8,7 +8,7 @@ resources:
 configMapGenerator:
   - name: filebrowser-config
     files:
-      - config.yaml=config/config.yaml
+      - config.yaml=./config/config.yaml
 generatorOptions:
   disableNameSuffixHash: true
   annotations:

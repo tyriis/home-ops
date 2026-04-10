@@ -7,14 +7,14 @@ components:
 configMapGenerator:
   - name: atlantis-techtales-io-terraform-minio-allowlist
     files:
-      - allowlist.txt=config/allowlist.txt
+      - allowlist.txt=./config/allowlist.txt
   - name: atlantis-techtales-io-terraform-minio-config
     files:
-      - repos.yaml=config/repos.yaml
+      - repos.yaml=./config/repos.yaml
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
 patches:
-  - path: helm-release.patch.yaml
-  - path: external-secret.patch.yaml
+  - path: ./helm-release.patch.yaml
+  - path: ./external-secret.patch.yaml

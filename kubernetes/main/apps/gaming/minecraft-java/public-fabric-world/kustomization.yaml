@@ -11,10 +11,10 @@ resources:
 configMapGenerator:
   - name: minecraft-public-fabric-world-config
     files:
-      - plugins.txt=config/plugins.txt
+      - plugins.txt=./config/plugins.txt
   - name: minecraft-public-fabric-world-plugins-universal-graves-config
     files:
-      - config.json=config/universal-graves/config.json
+      - config.json=./config/universal-graves/config.json
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
