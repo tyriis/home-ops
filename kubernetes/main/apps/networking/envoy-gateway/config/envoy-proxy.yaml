@@ -11,8 +11,8 @@ spec:
   provider:
     type: Kubernetes
     kubernetes:
-      envoyDeployment:
-        replicas: 2
+      # each node need an instance if ExternalTrafficPolicy is set to Local in the Gateway spec
+      envoyDaemonSet:
         container:
           image: mirror.gcr.io/envoyproxy/envoy:v1.37.2@sha256:c5e8a68e52f4d4697a9adb280dbe415d77fedf1257e183dcb86205bd438f18bd
           resources:
