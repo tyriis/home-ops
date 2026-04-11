@@ -46,7 +46,7 @@ spec:
           cron:
             image:
               repository: alpine/kubectl
-              tag: 1.35.3@sha256:802b5375c087bdccf41707ae1736db1eba8382a04183543a28df5db5c3c98ece
+              tag: 1.35.3@sha256:c4a11ae9a1cbac1f203bfe7efa481ae9c33b1bfdf1f73bc84f62cb973f039e4b
             command:
               - /bin/sh
               - -ec
