@@ -11,7 +11,7 @@ Each instance is configured via patches applied on top of this component.
 
 ## Vault Secrets
 
-The component reads all secrets from the **hardcoded** path `infra/talos-flux/gaming/minecraft-java` in the `openbao-backend` `ClusterSecretStore`. The secret must contain:
+The component reads all secrets from the **hardcoded** path `infra/kubernetes/main/gaming/minecraft-java` in the `openbao-backend` `ClusterSecretStore`. The secret must contain:
 
 | Key                       | Description                                  |
 | ------------------------- | -------------------------------------------- |
