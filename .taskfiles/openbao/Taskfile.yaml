@@ -1,0 +1,116 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  copy:
+    desc: Copy an OpenBao KV tree from SRC to DST
+    requires:
+      vars:
+        - SRC
+        - DST
+    cmds:
+      - |
+        #!/usr/bin/env bash
+        set -euo pipefail
+
+        SRC="{{ .SRC }}"
+        DST="{{ .DST }}"
+
+        SRC="${SRC%/}"
+        DST="${DST%/}"
+
+        tmpdir="$(mktemp -d)"
+        trap 'rm -rf "$tmpdir"' EXIT
+
+        copy_secret() {
+          local src="$1"
+          local dst="$2"
+
+          local payload
+          payload="$tmpdir/payload.json"
+
+          bao kv get -format=json "$src" \
+            | jq '.data.data' > "$payload"
+
+          bao kv put "$dst" @"$payload"
+        }
+
+        copy_path() {
+          local src="$1"
+          local dst="$2"
+
+          local items
+          if ! items="$(bao kv list -format=json "$src" 2>/dev/null | jq -r '.[]' 2>/dev/null)"; then
+            copy_secret "$src" "$dst"
+            return
+          fi
+
+          while IFS= read -r item; do
+            [[ -z "$item" ]] && continue
+
+            if [[ "$item" == */ ]]; then
+              copy_path "$src/${item%/}" "$dst/${item%/}"
+            else
+              copy_secret "$src/$item" "$dst/$item"
+            fi
+          done <<< "$items"
+        }
+
+        copy_path "$SRC" "$DST"
+
+  delete:
+    desc: Delete an OpenBao KV tree at SRC
+    prompt: Delete all secrets under {{ .SRC }}? This cannot be undone.
+    requires:
+      vars:
+        - SRC
+    cmds:
+      - |
+        #!/usr/bin/env bash
+        set -euo pipefail
+
+        SRC="{{ .SRC }}"
+        SRC="${SRC%/}"
+
+        delete_secret() {
+          local src="$1"
+          bao kv delete "$src"
+        }
+
+        delete_path() {
+          local src="$1"
+
+          local items
+          if ! items="$(bao kv list -format=json "$src" 2>/dev/null | jq -r '.[]' 2>/dev/null)"; then
+            delete_secret "$src"
+            return
+          fi
+
+          while IFS= read -r item; do
+            [[ -z "$item" ]] && continue
+
+            if [[ "$item" == */ ]]; then
+              delete_path "$src/${item%/}"
+            else
+              delete_secret "$src/$item"
+            fi
+          done <<< "$items"
+        }
+
+        delete_path "$SRC"
+
+  move:
+    desc: Move an OpenBao KV tree from SRC to DST
+    requires:
+      vars:
+        - SRC
+        - DST
+    cmds:
+      - task: copy
+        vars:
+          SRC: "{{ .SRC }}"
+          DST: "{{ .DST }}"
+      - task: delete
+        vars:
+          SRC: "{{ .SRC }}"
