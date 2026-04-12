@@ -5,11 +5,11 @@ kind: Kustomization
 metadata:
   name: &app backstage
 spec:
-  targetNamespace: &namespace developer-hub
+  targetNamespace: &namespace backstage
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/developer-hub/backstage/app
+  path: ./kubernetes/main/apps/backstage/backstage/app
   prune: true
   sourceRef:
     kind: GitRepository
