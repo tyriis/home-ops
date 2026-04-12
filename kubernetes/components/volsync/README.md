@@ -68,7 +68,7 @@ The component expects secrets to be stored in OpenBao with the following structu
 ### Secret Path
 
 ```text
-infra/talos-flux/volsync/${APP}-${VOLSYNC_SUFFIX}
+infra/kubernetes/main/volsync/${APP}-${VOLSYNC_SUFFIX}
 ```
 
 ### Required Secret Keys

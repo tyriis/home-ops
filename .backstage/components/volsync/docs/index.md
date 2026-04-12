@@ -32,7 +32,7 @@ goto terraform-minio
 
 goto `secrets.techtales.io`
 
-- create secret in `infra/talos-flux/volsync/<app>-<suffix>`
+- create secret in `infra/kubernetes/main/volsync/<app>-<suffix>`
 - copy aws credentials from created user in `infra/minio/iam/nas.techtales.io/
 - create token for restic password (tools.techtales.io: 64 length)
 - adjust path of restic repository
