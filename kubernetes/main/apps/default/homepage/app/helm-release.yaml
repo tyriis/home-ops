@@ -46,9 +46,6 @@ spec:
             env:
               LOG_TARGETS: stdout
               HOMEPAGE_ALLOWED_HOSTS: home.techtales.io
-            envFrom:
-              - secretRef:
-                  name: homepage-env
             image:
               repository: ghcr.io/gethomepage/homepage
               tag: v1.12.3@sha256:cc84f2f5eb3c7734353701ccbaa24ed02dacb0d119114e50e4251e2005f3990a
