@@ -3,3 +3,7 @@ d518055fb132ca94988fc1e117c804881cfabe0d:cluster/apps/secops/vault/configure-oid
 bc59aa503eef55651de6262404967b126faa963e:cluster/apps/secops/vaultwarden/helm-release.yaml:hashicorp-tf-password:51
 885eacca31b4c2f5c5e660cbc178083dac7bcc2b:kubernetes/talos-flux/apps/observability/loki/app/helm-release.yaml:generic-api-key:153
 00caa977dcf41070647a3987cbcae5ca34d514c5:docker/deploy/minio/compose.yaml:generic-api-key:42
+95863da3502fe7cbd3fc992135e96c03d76cd943:kubernetes/main/apps/observability/unpoller/app/external-secret.yaml:generic-api-key:21
+5dc987820d053401b38818939c28268958d25b31:kubernetes/main/apps/observability/loki/app/external-secret.yaml:generic-api-key:25
+faff40a117b8ff3137ef9c7a38fa6dd4e98be51c:kubernetes/main/apps/observability/grafana/instance/external-secret.yaml:generic-api-key:22
+faff40a117b8ff3137ef9c7a38fa6dd4e98be51c:kubernetes/main/apps/observability/grafana/instance/external-secret.yaml:generic-api-key:45
