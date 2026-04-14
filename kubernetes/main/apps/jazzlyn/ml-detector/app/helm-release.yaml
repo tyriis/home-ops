@@ -47,6 +47,7 @@ spec:
             env:
               CONFIG_PATH: /config/configuration.yaml
               TORCH_HOME: /torch
+              TORCHINDUCTOR_CACHE_DIR: /torch
               YOLO_CACHE_DIR: /yolo
               YOLO_CONFIG_DIR: /yolo
             image:
