@@ -47,11 +47,12 @@ spec:
             env:
               CONFIG_PATH: /config/configuration.yaml
               TORCH_HOME: /torch
+              TORCHINDUCTOR_CACHE_DIR: /torch
               YOLO_CACHE_DIR: /yolo
               YOLO_CONFIG_DIR: /yolo
             image:
               repository: ghcr.io/jazzlyn/ml-detector
-              tag: v0.3.0@sha256:8d1474a211da7d5bc91cd329dfddb78712a1d9353e75db27b44130b10d569429
+              tag: 0.4.0@sha256:0620671b240b8d91119ff9160fed73f034af7996c82cfab50227e8740474278c
             ports:
               - name: http
                 containerPort: &port 8000
