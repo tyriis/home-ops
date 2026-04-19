@@ -2,13 +2,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Sensor
 metadata:
-  name: pushsecret-nas-techtales-io-tls
+  name: pushsecret-unifi-techtales-io-tls
 spec:
   eventBusName: default
   dependencies:
-    - name: pushsecret-nas-techtales-io-tls
-      eventSourceName: pushsecret-nas-techtales-io-tls
-      eventName: pushsecret-nas-techtales-io-tls-watcher
+    - name: pushsecret-unifi-techtales-io-tls
+      eventSourceName: pushsecret-unifi-techtales-io-tls
+      eventName: pushsecret-unifi-techtales-io-tls-watcher
   triggers:
     - template:
         name: check-certificate-validity
@@ -115,10 +115,10 @@ spec:
                           echo "=== End Certificate Check ==="
           parameters:
             - src:
-                dependencyName: pushsecret-nas-techtales-io-tls
+                dependencyName: pushsecret-unifi-techtales-io-tls
                 dataKey: body.object.metadata.name
               dest: spec.arguments.parameters.2.value
             - src:
-                dependencyName: pushsecret-nas-techtales-io-tls
+                dependencyName: pushsecret-unifi-techtales-io-tls
                 dataKey: body.type
               dest: spec.arguments.parameters.3.value
