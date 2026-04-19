@@ -14,7 +14,7 @@ spec:
         # This is expected in heterogeneous networks with different interface types (1500, 9000, 65520 MTU)
         # Alert definition from rook-ceph is suppressed by this rule that always evaluates to false
         - alert: CephInconsistentMTU
-          expr: "vector(0)"
+          expr: vector(0) > 0
           annotations:
             summary: "Suppressed: MTU settings are intentionally different across Ceph hosts"
-            description: "This alert is disabled because MTU inconsistency is expected with multiple interface types"
+            description: This alert is disabled because MTU inconsistency is expected with multiple interface types
