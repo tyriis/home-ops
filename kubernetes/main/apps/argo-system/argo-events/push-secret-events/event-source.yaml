@@ -2,13 +2,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: EventSource
 metadata:
-  name: pushsecret-nas-techtales-io-tls
+  name: pushsecret-unifi-techtales-io-tls
 spec:
   eventBusName: default
   template:
     serviceAccountName: pushsecret-watcher
   resource:
-    pushsecret-nas-techtales-io-watcher:
+    pushsecret-unifi-techtales-io-watcher:
       namespace: cert-manager
       group: external-secrets.io
       version: v1alpha1
@@ -21,4 +21,4 @@ spec:
         afterStart: true
         # We only care about this specific PushSecret matching this name
         metadata:
-          name: nas-techtales-io-tls
+          name: unifi-techtales-io-tls
