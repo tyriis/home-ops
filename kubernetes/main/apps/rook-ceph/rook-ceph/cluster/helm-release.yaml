@@ -23,6 +23,9 @@ spec:
     monitoring:
       enabled: true
       createPrometheusRules: true
+      prometheusRuleOverrides:
+        CephNodeInconsistentMTU:
+          disabled: true
     toolbox:
       enabled: true
     route:
