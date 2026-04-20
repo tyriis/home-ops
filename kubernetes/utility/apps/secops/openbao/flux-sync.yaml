@@ -12,7 +12,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   path: ./kubernetes/utility/apps/secops/openbao/app
-  prune: false # should never be deleted
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -38,7 +38,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   path: ./kubernetes/utility/apps/secops/openbao/snapshots
-  prune: false # should never be deleted
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

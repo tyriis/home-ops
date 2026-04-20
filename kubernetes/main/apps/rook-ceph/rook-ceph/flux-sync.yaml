@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/main/apps/rook-ceph/rook-ceph/operator
-  prune: false # never should be deleted
+  prune: false # should never be deleted
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -33,7 +33,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/main/apps/rook-ceph/rook-ceph/cluster
-  prune: false # never should be deleted
+  prune: false # should never be deleted
   sourceRef:
     kind: GitRepository
     name: flux-system

@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   path: ./kubernetes/utility/apps/observability/kube-prometheus-stack/app
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

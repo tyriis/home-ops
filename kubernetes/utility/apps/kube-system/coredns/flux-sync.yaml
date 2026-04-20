@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/utility/apps/kube-system/coredns/app
-  prune: false # should never be deleted
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
