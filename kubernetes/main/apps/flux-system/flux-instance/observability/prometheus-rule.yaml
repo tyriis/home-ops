@@ -10,7 +10,7 @@ spec:
       rules:
         - alert: FluxInstanceAbsent
           annotations:
-            summary: Flux instance metric is missing
+            summary: Flux instance metric is missing.
             description: |
               The flux_instance_info metric for the Flux instance in namespace {{ $labels.exported_namespace }} is not available.
           expr: |-
@@ -21,7 +21,7 @@ spec:
 
         - alert: FluxInstanceNotReady
           annotations:
-            summary: Flux instance {{ $labels.name }} is not ready
+            summary: Flux instance {{ $labels.name }} is not ready.
             description: |
               The Flux instance in namespace {{ $labels.exported_namespace }} is not ready.
               Reason: {{ $labels.reason }}
@@ -33,7 +33,7 @@ spec:
 
         - alert: FluxReconciliationFailure
           annotations:
-            summary: Flux reconciliation failed
+            summary: Flux reconciliation failed.
             description: |
               {{ $labels.kind }} {{ $labels.exported_namespace }}/{{ $labels.name }} reconciliation has been failing for more than 15 minutes.
           expr: |-
@@ -44,7 +44,7 @@ spec:
 
         - alert: FluxReconciliationSuspended
           annotations:
-            summary: Flux reconciliation suspended
+            summary: Flux reconciliation suspended.
             description: |
               {{ $labels.kind }} {{ $labels.exported_namespace }}/{{ $labels.name }} reconciliation has been suspended for more than 15 minutes.
           expr: |-
