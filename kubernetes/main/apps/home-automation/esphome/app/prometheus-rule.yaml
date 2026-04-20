@@ -10,8 +10,8 @@ spec:
       rules:
         - alert: ESPHomeSensorHeatingAbsent
           annotations:
-            description: ESPHome sensor-heating has disappeared from Prometheus target discovery
-            summary: ESPHome sensor-heating has disappeared from Prometheus target discovery
+            description: ESPHome sensor-heating has disappeared from Prometheus target discovery.
+            summary: ESPHome sensor-heating has disappeared from Prometheus target discovery.
           expr: |-
             absent(up{job="sensor-heating"})
           for: 15m
@@ -19,8 +19,8 @@ spec:
             severity: warning
         - alert: ESPHomeSensorHeatingHighTemperature
           annotations:
-            description: ESPHome sensor-heating temperature is too high
-            summary: ESPHome sensor-heating high temp
+            description: ESPHome sensor-heating temperature is too high.
+            summary: ESPHome sensor-heating high temp.
           expr: |-
             esphome_sensor_value{node="sensor-heating", name="Sensor Heating Temperature Flow Upstairs"} > 30
           for: 10m
@@ -28,8 +28,8 @@ spec:
             severity: critical
         - alert: ESPHomeSensorHeatingLowTemperature
           annotations:
-            description: ESPHome sensor-heating temperature is low
-            summary: ESPHome sensor-heating low temp
+            description: ESPHome sensor-heating temperature is low.
+            summary: ESPHome sensor-heating low temp.
           expr: |-
             esphome_sensor_value{node="sensor-heating", name="Sensor Heating Temperature Flow Upstairs"} < 22
           for: 10m

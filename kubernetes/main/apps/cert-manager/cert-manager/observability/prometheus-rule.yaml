@@ -10,7 +10,7 @@ spec:
       rules:
         - alert: CertManagerAbsent
           annotations:
-            summary: Cert Manager has dissapeared from Prometheus service discovery
+            summary: Cert Manager has dissapeared from Prometheus service discovery.
           expr: |-
             absent(up{job="cert-manager"})
           for: 5m
@@ -21,7 +21,7 @@ spec:
       rules:
         - alert: CertManagerCertExpirySoon
           annotations:
-            summary: The cert {{ $labels.name }} is {{ $value | humanizeDuration }} from expiry, it should have renewed over a week ago
+            summary: The cert {{ $labels.name }} is {{ $value | humanizeDuration }} from expiry, it should have renewed over a week ago.
           expr: |-
             avg by (exported_namespace, namespace, name) (
               certmanager_certificate_expiration_timestamp_seconds - time()
@@ -31,7 +31,7 @@ spec:
             severity: warning
         - alert: CertManagerCertNotReady
           annotations:
-            summary: The cert {{ $labels.name }} is not ready to serve traffic
+            summary: The cert {{ $labels.name }} is not ready to serve traffic.
           expr: |-
             max by (name, exported_namespace, namespace, condition) (
               certmanager_certificate_ready_status{condition!="True"} == 1
@@ -41,7 +41,7 @@ spec:
             severity: critical
         - alert: CertManagerHittingRateLimits
           annotations:
-            summary: Cert manager hitting LetsEncrypt rate limits
+            summary: Cert manager hitting LetsEncrypt rate limits.
           expr: |-
             sum by (host) (
               rate(certmanager_http_acme_client_request_count{status="429"}[5m])
