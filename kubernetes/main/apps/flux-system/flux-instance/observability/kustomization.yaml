@@ -5,3 +5,14 @@ kind: Kustomization
 resources:
   - ./grafana-dashboard.yaml
   - ./prometheus-rule.yaml
+  - ./service.yaml
+  - ./service-monitor.yaml
+configMapGenerator:
+  - name: flux-dashboards
+    files:
+      - ./dashboards/flux-control-plane.json
+      - ./dashboards/flux-instance.json
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled

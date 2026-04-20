@@ -2,13 +2,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Sensor
 metadata:
-  name: pushsecret-nas-techtales-io-tls
+  name: pushsecret-unifi-techtales-io-tls
 spec:
   eventBusName: default
   dependencies:
-    - name: pushsecret-nas-techtales-io-tls
-      eventSourceName: pushsecret-nas-techtales-io-tls
-      eventName: pushsecret-nas-techtales-io-tls-watcher
+    - name: pushsecret-unifi-techtales-io-tls
+      eventSourceName: pushsecret-unifi-techtales-io-tls
+      eventName: pushsecret-unifi-techtales-io-tls-watcher
   triggers:
     - template:
         name: check-certificate-validity
@@ -43,7 +43,7 @@ spec:
                         - name: pushsecret-name
                         - name: event-type
                     container:
-                      image: alpine/openssl:3.5.5@sha256:7a1465c710d66ef753236a2d96c9c41f1fb0453862e5794640d6065aa1853087
+                      image: alpine/openssl:3.5.6@sha256:e096712ccb885b6dacb187e27c57f10d81e7d243a6676f420fafb9291bd6a0ba
                       command: [sh, -c]
                       args:
                         - |
@@ -115,10 +115,10 @@ spec:
                           echo "=== End Certificate Check ==="
           parameters:
             - src:
-                dependencyName: pushsecret-nas-techtales-io-tls
+                dependencyName: pushsecret-unifi-techtales-io-tls
                 dataKey: body.object.metadata.name
               dest: spec.arguments.parameters.2.value
             - src:
-                dependencyName: pushsecret-nas-techtales-io-tls
+                dependencyName: pushsecret-unifi-techtales-io-tls
                 dataKey: body.type
               dest: spec.arguments.parameters.3.value

@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -34,7 +34,7 @@ spec:
               ESPHOME_DASHBOARD_USE_PING: "true"
             image:
               repository: ghcr.io/esphome/esphome
-              tag: 2026.3.2@sha256:7edfba9d31b11e3852863fca788e3cff729e43e5af68446604aea875e65f684d
+              tag: 2026.4.1@sha256:8786a898d9f2e8aec76f70af3dd53383a63e8ee9b0d2882aa04b2baa58a84db8
             ports:
               - name: http
                 containerPort: &port 6052

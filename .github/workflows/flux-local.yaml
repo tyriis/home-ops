@@ -92,7 +92,7 @@ jobs:
           persist-credentials: false
 
       - name: Run flux-local test
-        uses: docker://ghcr.io/allenporter/flux-local:v8.1.0@sha256:37c3c4309a351830b04f93c323adfcb0e28c368001818cd819cbce3e08828261
+        uses: docker://ghcr.io/allenporter/flux-local:v8.2.0@sha256:9c77739d8d7c71b808311693ea52d603d1ddb5190d3d4f23e47f6f33d5254602
         with:
           args: >-
             test
@@ -121,7 +121,7 @@ jobs:
       # https://github.com/marketplace/actions/create-github-app-token
       - if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
         name: Generate Token
-        uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3.0.0
+        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
         id: app-token
         with:
           app-id: ${{ secrets.BOT_APP_ID }}
@@ -129,7 +129,7 @@ jobs:
 
       # https://github.com/marketplace/actions/sticky-pull-request-comment
       - name: Clear Comment
-        uses: marocchino/sticky-pull-request-comment@70d2764d1a7d5d9560b100cbea0077fc8f633987 # v3.0.2
+        uses: marocchino/sticky-pull-request-comment@0ea0beb66eb9baf113663a64ec522f60e49231c0 # v3.0.4
         with:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           header: ${{ github.event.pull_request.number }}/${{ matrix.cluster }}/${{ matrix.resource }}
@@ -152,7 +152,7 @@ jobs:
           ref: "${{ github.event.repository.default_branch }}"
 
       - name: Run flux-local diff
-        uses: docker://ghcr.io/allenporter/flux-local:v8.1.0@sha256:37c3c4309a351830b04f93c323adfcb0e28c368001818cd819cbce3e08828261
+        uses: docker://ghcr.io/allenporter/flux-local:v8.2.0@sha256:9c77739d8d7c71b808311693ea52d603d1ddb5190d3d4f23e47f6f33d5254602
         with:
           args: >-
             diff ${{ matrix.resource }}
@@ -193,7 +193,7 @@ jobs:
       # https://github.com/marketplace/actions/sticky-pull-request-comment
       - if: ${{ steps.diff.outputs.diff != '' }}
         name: Add Comment
-        uses: marocchino/sticky-pull-request-comment@70d2764d1a7d5d9560b100cbea0077fc8f633987 # v3.0.2
+        uses: marocchino/sticky-pull-request-comment@0ea0beb66eb9baf113663a64ec522f60e49231c0 # v3.0.4
         with:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           header: ${{ github.event.pull_request.number }}/${{ matrix.cluster }}/${{ matrix.resource }}

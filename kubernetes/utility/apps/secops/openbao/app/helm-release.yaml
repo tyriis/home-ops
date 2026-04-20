@@ -11,17 +11,16 @@ spec:
   chart:
     spec:
       chart: openbao
-      version: 0.26.2
+      version: 0.27.1
       sourceRef:
         kind: HelmRepository
         name: openbao
   install:
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
   uninstall:
     keepHistory: false
@@ -35,7 +34,7 @@ spec:
         registry: quay.io
         repository: openbao/openbao
         tag: 2.5.2@sha256:6c75c97223873807260352f269640935a07db0c26b3dbf12a98a36ec43ad9878
-      updateStrategy: RollingUpdate
+      updateStrategyType: RollingUpdate
       logLevel: info
       logFormat: json
       nodeSelector:

@@ -4,7 +4,7 @@
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
-  name: node-exporter
+  name: cilium-operator
 spec:
   allowCrossNamespaceImport: true
   instanceSelector:
@@ -13,7 +13,10 @@ spec:
   datasources:
     - datasourceName: prometheus
       inputName: DS_PROMETHEUS
-  url: https://grafana.com/api/dashboards/11074/revisions/9/download
+  # created by cilium
+  configMapRef:
+    name: cilium-operator-dashboard
+    key: cilium-operator-dashboard.json
 
 ---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
@@ -21,7 +24,7 @@ spec:
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
-  name: node-exporter-full
+  name: cilium
 spec:
   allowCrossNamespaceImport: true
   instanceSelector:
@@ -30,4 +33,7 @@ spec:
   datasources:
     - datasourceName: prometheus
       inputName: DS_PROMETHEUS
-  url: https://grafana.com/api/dashboards/1860/revisions/42/download
+  # created by cilium
+  configMapRef:
+    name: cilium-dashboard
+    key: cilium-dashboard.json

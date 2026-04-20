@@ -5,12 +5,12 @@ kind: OCIRepository
 metadata:
   name: flux-operator
 spec:
-  interval: 10m
+  interval: 30m
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   url: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator
   ref:
-    tag: 0.45.1
+    tag: 0.47.0
   verify:
     provider: cosign

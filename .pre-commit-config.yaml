@@ -13,7 +13,7 @@ repos:
       - id: check-useless-excludes
 
   - repo: https://github.com/thlorenz/doctoc
-    rev: v2.3.0
+    rev: v2.4.1
     hooks:
       - id: doctoc
         args:
@@ -83,7 +83,7 @@ repos:
           - .markdownlint.yaml
 
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.8.1
+    rev: v3.8.3
     hooks:
       - id: prettier
         args:

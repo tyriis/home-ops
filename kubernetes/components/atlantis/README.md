@@ -14,7 +14,7 @@ Each instance manages a single Terraform repository and is configured via patche
 
 ## Vault Secret
 
-The component expects an `ExternalSecret` that reads from the path `infra/talos-flux/atlantis-system/${APP}` in the `openbao-backend` `ClusterSecretStore`. The secret must contain:
+The component expects an `ExternalSecret` that reads from the path `infra/kubernetes/main/atlantis-system/${APP}` in the `openbao-backend` `ClusterSecretStore`. The secret must contain:
 
 | Key                          | Description                                                       |
 | ---------------------------- | ----------------------------------------------------------------- |

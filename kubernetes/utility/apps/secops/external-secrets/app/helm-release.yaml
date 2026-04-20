@@ -8,21 +8,19 @@ spec:
   driftDetection:
     mode: enabled
   interval: 30m
-  timeout: 5m
   chart:
     spec:
       chart: external-secrets
-      version: 2.2.0
+      version: 2.3.0
       sourceRef:
         kind: HelmRepository
         name: external-secrets
   install:
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
   uninstall:
     keepHistory: false

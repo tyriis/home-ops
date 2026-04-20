@@ -12,5 +12,5 @@ spec:
       grafana.internal/instance: grafana
   datasources:
     - datasourceName: prometheus
-      inputName: DS_PROMETHEUS
+      inputName: DS_GRAFANACLOUD-UNIFIEDMETRICS-PROM
   url: https://grafana.com/api/dashboards/14756/revisions/11/download

@@ -8,6 +8,6 @@ configMapGenerator:
   - name: locking-service-config
     behavior: create
     files:
-      - configuration.yaml
+      - ./configuration.yaml
 generatorOptions:
   disableNameSuffixHash: true

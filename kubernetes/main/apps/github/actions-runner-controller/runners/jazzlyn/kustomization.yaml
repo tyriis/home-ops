@@ -5,4 +5,3 @@ kind: Kustomization
 resources:
   - ./external-secret.yaml
   - ./gh-actions-demo.yaml
-  - ./kind-flux-demo.yaml

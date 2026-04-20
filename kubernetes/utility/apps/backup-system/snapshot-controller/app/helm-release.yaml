@@ -6,7 +6,6 @@ metadata:
   name: snapshot-controller
 spec:
   interval: 30m
-  timeout: 5m
   chart:
     spec:
       chart: snapshot-controller
@@ -17,12 +16,11 @@ spec:
   install:
     crds: CreateReplace
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     crds: CreateReplace
     remediation:
-      strategy: rollback
       retries: 3
   uninstall:
     keepHistory: false

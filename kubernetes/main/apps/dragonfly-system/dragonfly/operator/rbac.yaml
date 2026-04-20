@@ -1,37 +1,30 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/clusterrole.json
+# cluster-level read access to discover dragonfly crs across namespaces
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: dragonfly-operator
 rules:
-  - apiGroups: ["coordination.k8s.io"]
-    resources: ["leases"]
-    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
-  - apiGroups: [""]
-    resources: ["events"]
-    verbs: ["create", "patch"]
   - apiGroups: [""]
     resources: ["pods", "services"]
-    verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
+    verbs: ["get", "list", "watch"]
   - apiGroups: ["apps"]
     resources: ["statefulsets"]
-    verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
+    verbs: ["get", "list", "watch"]
   - apiGroups: ["policy"]
     resources: ["poddisruptionbudgets"]
-    verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
+    verbs: ["get", "list", "watch"]
   - apiGroups: ["networking.k8s.io"]
     resources: ["networkpolicies"]
-    verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
+    verbs: ["get", "list", "watch"]
   - apiGroups: ["dragonflydb.io"]
     resources: ["dragonflies"]
-    verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
-  - apiGroups: ["dragonflydb.io"]
-    resources: ["dragonflies/finalizers"]
-    verbs: ["update"]
+    verbs: ["get", "list", "watch"]
   - apiGroups: ["dragonflydb.io"]
     resources: ["dragonflies/status"]
-    verbs: ["get", "patch", "update"]
+    verbs: ["get"]
+
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/clusterrolebinding.json
 apiVersion: rbac.authorization.k8s.io/v1
@@ -41,6 +34,59 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
+  name: dragonfly-operator
+subjects:
+  - kind: ServiceAccount
+    name: dragonfly-operator
+    namespace: dragonfly-system
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/role.json
+# privileged write access restricted to the dragonfly namespace
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: dragonfly-operator
+  namespace: dragonfly-system
+rules:
+  - apiGroups: ["coordination.k8s.io"]
+    resources: ["leases"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["create", "patch"]
+  - apiGroups: [""]
+    resources: ["pods", "services"]
+    verbs: ["create", "delete", "patch", "update"]
+  - apiGroups: ["apps"]
+    resources: ["statefulsets"]
+    verbs: ["create", "delete", "patch", "update"]
+  - apiGroups: ["policy"]
+    resources: ["poddisruptionbudgets"]
+    verbs: ["create", "delete", "patch", "update"]
+  - apiGroups: ["networking.k8s.io"]
+    resources: ["networkpolicies"]
+    verbs: ["create", "delete", "patch", "update"]
+  - apiGroups: ["dragonflydb.io"]
+    resources: ["dragonflies"]
+    verbs: ["create", "delete", "patch", "update"]
+  - apiGroups: ["dragonflydb.io"]
+    resources: ["dragonflies/finalizers"]
+    verbs: ["update"]
+  - apiGroups: ["dragonflydb.io"]
+    resources: ["dragonflies/status"]
+    verbs: ["patch", "update"]
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/rolebinding.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: dragonfly-operator
+  namespace: dragonfly-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
   name: dragonfly-operator
 subjects:
   - kind: ServiceAccount

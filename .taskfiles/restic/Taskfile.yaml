@@ -25,7 +25,7 @@ tasks:
     vars:
       CLUSTER: '{{ .CLUSTER | default "main"}}'
       VAULT_DATA:
-        sh: vault kv get -format=yaml "infra/talos-flux/volsync/{{ .PVC }}" | yq ".data.data"
+        sh: vault kv get -format=yaml "infra/kubernetes/main/volsync/{{ .PVC }}" | yq ".data.data"
       RESTIC_REPOSITORY:
         sh: echo '{{ .VAULT_DATA }}' | yq .RESTIC_REPOSITORY
       RESTIC_PASSWORD:

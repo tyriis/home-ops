@@ -12,7 +12,7 @@ spec:
   chart:
     spec:
       chart: kube-prometheus-stack
-      version: 82.17.1
+      version: 83.6.0
       sourceRef:
         kind: HelmRepository
         name: prometheus-community
@@ -76,7 +76,7 @@ spec:
     kubeControllerManager:
       enabled: true
       endpoints: &cp
-        - 192.168.100.10
+        - 192.168.100.30
 
     kubeEtcd:
       enabled: true

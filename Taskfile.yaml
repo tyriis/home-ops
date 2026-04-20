@@ -15,6 +15,7 @@ includes:
   devenv: .taskfiles/devenv/Taskfile.yaml
   flux-local: .taskfiles/flux-local/Taskfile.yaml
   lint: .taskfiles/lint/Taskfile.yaml
+  openbao: .taskfiles/openbao/Taskfile.yaml
   pre-commit: .taskfiles/pre-commit/Taskfile.yaml
   restic: .taskfiles/restic/Taskfile.yaml
   rook-ceph: .taskfiles/rook-ceph/Taskfile.yaml

@@ -10,7 +10,7 @@ configMapGenerator:
   # Ref: https://github.com/actions/actions-runner-controller/blob/master/docs/gha-runner-scale-set-controller/samples/grafana-dashboard/ARC-Autoscaling-Runner-Set-Monitoring.json
   - name: arc-dashboard
     files:
-      - arc-dashboard.json
+      - ./arc-dashboard.json
 generatorOptions:
   disableNameSuffixHash: true
   annotations:

@@ -8,14 +8,14 @@ resources:
 configMapGenerator:
   - name: minecraft-public-velocity-proxy-config
     files:
-      - velocity.toml=config/velocity.toml
-      - plugins.txt=config/plugins.txt
+      - velocity.toml=./config/velocity.toml
+      - plugins.txt=./config/plugins.txt
   - name: minecraft-public-velocity-proxy-plugins-viaversion
     files:
-      - config.yml=plugins/viaversion/config.yml
+      - config.yml=./plugins/viaversion/config.yml
   - name: minecraft-public-velocity-proxy-plugins-minimotd
     files:
-      - main.conf=plugins/minimotd-velocity/main.conf
+      - main.conf=./plugins/minimotd-velocity/main.conf
 generatorOptions:
   disableNameSuffixHash: true
   annotations:

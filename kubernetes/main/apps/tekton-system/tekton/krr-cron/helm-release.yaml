@@ -27,6 +27,7 @@ spec:
     # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
     controllers:
       krr:
+        enabled: false # disable it
         type: cronjob
         cronjob:
           concurrencyPolicy: Forbid
@@ -42,7 +43,7 @@ spec:
           cron:
             image:
               repository: curlimages/curl
-              tag: 8.18.0@sha256:d94d07ba9e7d6de898b6d96c1a072f6f8266c687af78a74f380087a0addf5d17
+              tag: 8.19.0@sha256:9a6f6a17667960e077f1b153009aaf18ac99a622221084e1938a45a06fff057a
             args:
               - curl
               - -X

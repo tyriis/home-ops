@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -18,11 +18,10 @@ spec:
         namespace: flux-system
   install:
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
   uninstall:
     keepHistory: false
@@ -71,7 +70,7 @@ spec:
           upload:
             image:
               repository: google/cloud-sdk
-              tag: 563.0.0-alpine@sha256:8f64a97c97d745bcc516fe3ad6f6a8612276d51692dd293e88f83159df466fe9
+              tag: 565.0.0-alpine@sha256:ed5a97b1486da5460ba7bad44b8cba787e31cf6b9b79368006ff6aa4cd94afa4
             command:
               - /bin/sh
               - -ec

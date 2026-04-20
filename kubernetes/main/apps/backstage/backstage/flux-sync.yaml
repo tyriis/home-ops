@@ -3,14 +3,14 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app kube-state-metrics
+  name: &app backstage
 spec:
-  targetNamespace: observability
+  targetNamespace: &namespace backstage
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/observability/kube-state-metrics/app
-  prune: false
+  path: ./kubernetes/main/apps/backstage/backstage/app
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -19,3 +19,10 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  dependsOn:
+    - name: external-secrets-stores
+      namespace: secops
+  postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace

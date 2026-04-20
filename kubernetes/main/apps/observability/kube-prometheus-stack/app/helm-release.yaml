@@ -5,14 +5,11 @@ kind: HelmRelease
 metadata:
   name: kube-prometheus-stack
 spec:
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   interval: 30m
   chart:
     spec:
       chart: kube-prometheus-stack
-      version: 82.17.1
+      version: 83.6.0
       sourceRef:
         kind: HelmRepository
         name: prometheus-community
@@ -53,8 +50,6 @@ spec:
       alertmanagerSpec:
         alertmanagerConfiguration:
           name: alertmanager
-          global:
-            resolveTimeout: 5m
         externalUrl: https://alertmanager.techtales.io
         storage:
           volumeClaimTemplate:
@@ -66,14 +61,12 @@ spec:
 
     grafana:
       enabled: false
-      forceDeployDashboards: false
-      sidecar:
-        dashboards:
-          annotations:
-            grafana_folder: Kubernetes
-          multicluster:
-            etcd:
-              enabled: true
+      forceDeployDashboards: true
+      operator:
+        dashboardsConfigMapRefEnabled: true
+        folder: observability
+        matchLabels:
+          grafana.internal/instance: grafana
 
     kubeApiServer:
       enabled: true
@@ -119,10 +112,45 @@ spec:
       endpoints: *cp
 
     kubeStateMetrics:
-      enabled: false
+      enabled: true
 
-    nodeExporter:
-      enabled: false
+    kube-state-metrics:
+      fullnameOverride: kube-state-metrics
+      selfMonitor:
+        enabled: true
+      metricLabelsAllowlist:
+        - pods=[*]
+        - deployments=[*]
+        - persistentvolumeclaims=[*]
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels: ["__meta_kubernetes_pod_node_name"]
+              targetLabel: kubernetes_node
+
+    prometheus-node-exporter:
+      fullnameOverride: node-exporter
+      extraArgs:
+        - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var)($|/)
+        - --collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs|tmpfs)$
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels: ["__meta_kubernetes_pod_node_name"]
+              targetLabel: kubernetes_node
+          metricRelabelings:
+            # drop useless ms-01 temperature sensors in chip="platform_nct6775_2592", sensor=~"(temp1|temp3|temp4|temp5|temp6|temp8|temp9|temp10|temp11|temp12)"
+            - action: drop
+              sourceLabels: [chip, sensor]
+              regex: platform_nct6775_2592;(temp1|temp3|temp4|temp5|temp6|temp8|temp9|temp10|temp11|temp12)
 
     prometheusOperator:
       kubeletEndpointsEnabled: false
@@ -147,10 +175,6 @@ spec:
         externalLabels:
           cluster: ${FLUX_CLUSTER_NAME}
         externalUrl: https://prometheus.techtales.io
-        # image:
-        # registry: docker.io
-        # repository: prompp/prompp
-        # tag: 2.53.2-0.3.4@sha256:e0212e571c1bbed88f546ed0336f70e82144693c2b2394bf40eaa56ea653ddbd
         podMetadata:
           annotations:
             reloader.stakater.com/auto: "true"

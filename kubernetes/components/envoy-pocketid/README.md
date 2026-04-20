@@ -12,7 +12,7 @@ Kustomize component that adds [Pocket ID](https://pocket-id.org) OIDC authentica
 
 ## Vault Secret
 
-The component expects an `ExternalSecret` that reads from the path `infra/kube-lab/${NAMESPACE}/${APP}` in the `openbao-backend` `ClusterSecretStore`. The secret must contain:
+The component expects an `ExternalSecret` that reads from the path `infra/kubernetes/main/${NAMESPACE}/${APP}` in the `openbao-backend` `ClusterSecretStore`. The secret must contain:
 
 | Key                   | Description                                 |
 | --------------------- | ------------------------------------------- |
