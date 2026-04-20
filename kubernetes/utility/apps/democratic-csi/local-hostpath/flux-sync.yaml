@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/utility/apps/democratic-csi/local-hostpath/app
-  prune: false # lets not prune our local storage layer
+  prune: false # should never be deleted
   sourceRef:
     kind: GitRepository
     name: flux-system
