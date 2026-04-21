@@ -49,7 +49,7 @@ spec:
           app:
             image:
               repository: ghcr.io/runatlantis/atlantis
-              tag: v0.41.0@sha256:634ffcdb7c1eb308349be81a09c3778a4fb4cb5b397c2ecf6d843f0e18d51bd7
+              tag: v0.42.0@sha256:2cdb755c268b1edb1851a9a0555af07f22e181184052b9aa42555a63affd0699
             ports:
               - name: http
                 containerPort: &port 4141
