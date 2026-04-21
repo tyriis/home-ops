@@ -4,7 +4,7 @@
     "non_owner_protection_time": -1,
     "self_destruction_time": -1,
     "drop_items_on_expiration": true,
-    "attackers_bypass_protection": false,
+    "attackers_bypass_protection": true,
     "use_real_time": false
   },
   "interactions": {

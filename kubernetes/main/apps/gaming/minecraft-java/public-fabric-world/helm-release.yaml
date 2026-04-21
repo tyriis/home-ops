@@ -74,7 +74,7 @@ spec:
               # https://docker-minecraft-server.readthedocs.io/en/latest/variables
               TYPE: FABRIC
               # TODO: update with renovate
-              VERSION: 1.21.1
+              VERSION: 1.21.11
 
               MEMORY: 4096M
               MODS_FILE: /config/plugins.txt
