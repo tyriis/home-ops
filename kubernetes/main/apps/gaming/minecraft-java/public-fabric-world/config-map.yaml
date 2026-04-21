@@ -27,7 +27,7 @@ data:
   ENABLE_ROLLING_LOGS: "true"
   LOG_TIMESTAMP: "true"
   SNOOPER_ENABLED: "true"
-  LEVEL: survival-20260331
+  LEVEL: survival-20260421
   SERVER_NAME: fabric-survival
   STOP_SERVER_ANNOUNCE_DELAY: "30"
   STOP_DURATION: "30"
