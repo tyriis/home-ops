@@ -5,7 +5,7 @@ metadata:
   name: minecraft-public-fabric-world-env
 data:
   EULA: "true"
-  DIFFICULTY: hard
+  DIFFICULTY: normal
   OPS: "tyriis,jazzlyin"
   MAX_PLAYERS: "25"
   ENABLE_COMMAND_BLOCK: "false"
