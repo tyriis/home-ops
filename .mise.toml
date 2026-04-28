@@ -33,4 +33,4 @@ trivy = "0.69.1"
 # minio client
 mc = "2025-08-13T08-35-41Z"
 # https://openbao.org/
-openbao = "2.5.2"
+openbao = "2.5.3"
