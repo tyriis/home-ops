@@ -18,14 +18,13 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  # https://grafana.com/docs/loki/latest/configuration/
-  # https://artifacthub.io/packages/helm/grafana/loki?modal=values
-  # https://github.com/grafana/loki/blob/main/production/helm/loki/values.yaml
   values:
+    # https://artifacthub.io/packages/helm/grafana-community/loki?modal=values
     deploymentMode: SingleBinary
-    loki:
+    defaults:
       podAnnotations:
         reloader.stakater.com/auto: "true"
+    loki:
       analytics:
         reporting_enabled: false
       auth_enabled: false
@@ -104,8 +103,6 @@ spec:
         enabled: true
       serviceMonitor:
         enabled: true
-        metricsInstance:
-          enabled: true
 
   valuesFrom:
     - kind: Secret
