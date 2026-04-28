@@ -1,7 +1,7 @@
 [tools]
 vcluster = "0.27.0"
 # https://age-encryption.org/
-age = "1.2.1"
+age = "1.3.1"
 # https://direnv.net/
 direnv = "2.37.1"
 # https://fluxcd.io/
