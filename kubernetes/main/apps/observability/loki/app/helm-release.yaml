@@ -6,13 +6,9 @@ metadata:
   name: loki
 spec:
   interval: 30m
-  chart:
-    spec:
-      chart: loki
-      version: 6.55.0
-      sourceRef:
-        kind: HelmRepository
-        name: grafana
+  chartRef:
+    kind: OCIRepository
+    name: loki
   install:
     remediation:
       retries: -1
