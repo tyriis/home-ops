@@ -100,7 +100,7 @@ spec:
 
     monitoring:
       dashboards:
-        enabled: true
+        enabled: false
       serviceMonitor:
         enabled: true
 
