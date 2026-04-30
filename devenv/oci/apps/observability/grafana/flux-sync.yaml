@@ -38,23 +38,24 @@ spec:
   dependsOn:
     - name: grafana-operator
 
----
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: grafana-observability
-spec:
-  targetNamespace: observability
-  path: ./devenv/oci/apps/observability/grafana/observability
-  prune: true
-  sourceRef:
-    kind: OCIRepository
-    name: flux-system
-    namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-  dependsOn:
-    - name: grafana-operator
+# ---
+# TODO: setup kube-prometheus-stack
+# # yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: grafana-observability
+# spec:
+#   targetNamespace: observability
+#   path: ./devenv/oci/apps/observability/grafana/observability
+#   prune: true
+#   sourceRef:
+#     kind: OCIRepository
+#     name: flux-system
+#     namespace: flux-system
+#   wait: true
+#   interval: 30m
+#   retryInterval: 1m
+#   timeout: 5m
+#   dependsOn:
+#     - name: grafana-operator
