@@ -17,7 +17,6 @@ spec:
         kind: HelmRepository
         name: prometheus-community
   install:
-    createNamespace: true
     crds: CreateReplace
     remediation:
       retries: -1
@@ -46,8 +45,6 @@ spec:
       alertmanagerSpec:
         alertmanagerConfiguration:
           name: alertmanager
-          global:
-            resolveTimeout: 5m
         externalUrl: https://alertmanager.utility.techtales.io
         storage:
           volumeClaimTemplate:
@@ -103,10 +100,40 @@ spec:
       endpoints: *cp
 
     kubeStateMetrics:
-      enabled: false
+      enabled: true
 
-    nodeExporter:
-      enabled: false
+    kube-state-metrics:
+      fullnameOverride: kube-state-metrics
+      selfMonitor:
+        enabled: true
+      metricLabelsAllowlist:
+        - pods=[*]
+        - deployments=[*]
+        - persistentvolumeclaims=[*]
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels: ["__meta_kubernetes_pod_node_name"]
+              targetLabel: kubernetes_node
+
+    prometheus-node-exporter:
+      fullnameOverride: node-exporter
+      extraArgs:
+        - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var)($|/)
+        - --collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs|tmpfs)$
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels: ["__meta_kubernetes_pod_node_name"]
+              targetLabel: kubernetes_node
 
     prometheusOperator:
       kubeletEndpointsEnabled: false
@@ -131,10 +158,6 @@ spec:
         externalLabels:
           cluster: ${FLUX_CLUSTER_NAME}
         externalUrl: https://prometheus.utility.techtales.io
-        # image:
-        # registry: docker.io
-        # repository: prompp/prompp
-        # tag: 2.53.2-0.3.4@sha256:e0212e571c1bbed88f546ed0336f70e82144693c2b2394bf40eaa56ea653ddbd
         podMetadata:
           annotations:
             reloader.stakater.com/auto: "true"
