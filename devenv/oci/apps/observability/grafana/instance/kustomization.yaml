@@ -5,6 +5,5 @@ kind: Kustomization
 resources:
   - ../../../../../../kubernetes/main/apps/observability/grafana/instance/datasource.yaml
   - ../../../../../../kubernetes/main/apps/observability/grafana/instance/grafana.yaml
-  # - ../../../../../../kubernetes/main/apps/observability/grafana/instance/service-monitor.yaml
 patches:
   - path: grafana.yaml
