@@ -6,7 +6,7 @@ resources:
   - ./external-secret.yaml
   - ./grafana-dashboard.yaml
   - ./helm-release.yaml
-  - ./helm-repository.yaml
+  - ./oci-repository.yaml
   - ./prometheus-rule.yaml
 configMapGenerator:
   - name: loki-alerting-rules

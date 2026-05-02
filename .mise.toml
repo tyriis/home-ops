@@ -1,5 +1,5 @@
 [tools]
-vcluster = "0.33.2"
+vcluster = "0.34.0"
 # https://age-encryption.org/
 age = "1.3.1"
 # https://direnv.net/

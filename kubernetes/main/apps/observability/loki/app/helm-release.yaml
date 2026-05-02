@@ -6,13 +6,9 @@ metadata:
   name: loki
 spec:
   interval: 30m
-  chart:
-    spec:
-      chart: loki
-      version: 6.55.0
-      sourceRef:
-        kind: HelmRepository
-        name: grafana
+  chartRef:
+    kind: OCIRepository
+    name: loki
   install:
     remediation:
       retries: -1
@@ -22,14 +18,13 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  # https://grafana.com/docs/loki/latest/configuration/
-  # https://artifacthub.io/packages/helm/grafana/loki?modal=values
-  # https://github.com/grafana/loki/blob/main/production/helm/loki/values.yaml
   values:
+    # https://artifacthub.io/packages/helm/grafana-community/loki?modal=values
     deploymentMode: SingleBinary
-    loki:
+    defaults:
       podAnnotations:
         reloader.stakater.com/auto: "true"
+    loki:
       analytics:
         reporting_enabled: false
       auth_enabled: false
@@ -105,11 +100,9 @@ spec:
 
     monitoring:
       dashboards:
-        enabled: true
+        enabled: false
       serviceMonitor:
         enabled: true
-        metricsInstance:
-          enabled: true
 
   valuesFrom:
     - kind: Secret

@@ -3,12 +3,12 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
-  name: tuppr
+  name: loki
 spec:
   interval: 30m
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
+  url: oci://ghcr.io/grafana-community/helm-charts/loki
   ref:
-    tag: 0.1.11
-  url: oci://ghcr.io/home-operations/charts/tuppr
+    tag: 13.3.3
