@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.6.2
+      version: 5.0.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,13 +26,15 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    global:
+      createDefaultServiceAccount: false
     # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
     rawResources:
       flux-system:
         forceRename: flux-system
-        apiVersion: notification.toolkit.fluxcd.io/v1
-        kind: Receiver
-        spec:
+        manifest:
+          apiVersion: notification.toolkit.fluxcd.io/v1
+          kind: Receiver
           spec:
             type: github
             events:
