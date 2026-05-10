@@ -3,7 +3,7 @@
 # --------------------------------------------------------------------------------
 
 terraform {
-  required_version = "1.15.1"
+  required_version = "1.15.2"
   required_providers {
     kind = {
       source  = "tehcyx/kind"
@@ -11,7 +11,7 @@ terraform {
     }
     docker = {
       source  = "kreuzwerker/docker"
-      version = "4.2.0"
+      version = "4.3.0"
     }
   }
 }

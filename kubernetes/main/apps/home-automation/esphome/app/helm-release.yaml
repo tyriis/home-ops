@@ -34,7 +34,7 @@ spec:
               ESPHOME_DASHBOARD_USE_PING: "true"
             image:
               repository: ghcr.io/esphome/esphome
-              tag: 2026.4.3@sha256:50073eb6ba7fad9afdd855bb41f370ba65915b4166d6d3b2f1554b478473761e
+              tag: 2026.4.5@sha256:7419641c7fd8e37d6362f71c458bb17570f1f471cfea3b022b30dfd8117a2361
             ports:
               - name: http
                 containerPort: &port 6052
