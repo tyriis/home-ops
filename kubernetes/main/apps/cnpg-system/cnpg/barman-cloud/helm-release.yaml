@@ -63,6 +63,7 @@ spec:
               readOnlyRootFilesystem: true
 
     defaultPodOptions:
+      automountServiceAccountToken: true
       securityContext:
         runAsNonRoot: true
         runAsGroup: 10001
