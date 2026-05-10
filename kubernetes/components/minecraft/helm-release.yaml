@@ -27,6 +27,8 @@ spec:
     keepHistory: false
   # https://bjw-s-labs.github.io/helm-charts/docs/app-template/
   values:
+    global:
+      createDefaultServiceAccount: false
     defaultPodOptions:
       automountServiceAccountToken: false
       securityContext:
