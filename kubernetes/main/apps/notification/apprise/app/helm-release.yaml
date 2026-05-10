@@ -24,6 +24,8 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    global:
+      createDefaultServiceAccount: false
     controllers:
       main:
         annotations:

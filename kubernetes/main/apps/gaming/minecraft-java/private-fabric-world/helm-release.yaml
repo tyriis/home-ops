@@ -27,6 +27,8 @@ spec:
     keepHistory: false
   # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
   values:
+    global:
+      createDefaultServiceAccount: false
     defaultPodOptions:
       automountServiceAccountToken: false
       securityContext:

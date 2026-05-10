@@ -25,6 +25,8 @@ spec:
     keepHistory: false
   # https://github.com/sbs20/scanservjs
   values:
+    global:
+      createDefaultServiceAccount: false
     controllers:
       scanservjs:
         annotations:

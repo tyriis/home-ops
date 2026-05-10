@@ -25,6 +25,8 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    global:
+      createDefaultServiceAccount: false
     controllers:
       govee2mqtt:
         annotations:
