@@ -27,6 +27,8 @@ spec:
     keepHistory: false
   # https://github.com/bjw-s/helm-charts/blob/main/charts/library/common/values.yaml
   values:
+    global:
+      createDefaultServiceAccount: false
     controllers:
       openbao-snapshots:
         type: cronjob
