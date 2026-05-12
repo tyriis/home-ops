@@ -1,11 +1,87 @@
 # AGENTS.md
 
-## Skills Setup
+## CRITICAL
 
-This repo uses agent skills tracked in `skills-lock.json`. Skills are not committed to git and must be installed locally.
+Before starting any task, check if skills are installed. If `.agents/skills/` is missing, run: `npx skills install`.
+Use the skill tool to load a skill when a task matches its description.
 
-**Before starting any task**, check if the skills are installed. If `.agents/skills/` is missing or any skill directories listed in `skills-lock.json` are absent, run:
+## Section 1: Core Directives & Rules
 
-```sh
-npx skills install
-```
+### RESPONSES
+
+- Keep responses concise and to the point - unless the user asks otherwise.
+
+### PLANNING_MODE
+
+- Always ask clarifying questions.
+- Never assume design, tech stack or features.
+- Use deep-dive sub-agents to assist with research and to review different aspects of your plan before presenting to the user.
+
+### CHANGE_EDIT_MODE
+
+- Never implement features yourself when possible - use sub-agents.
+- Identify changes from the plan that can be implemented in parallel, and use sub-agents to implement the features efficiently.
+- When using sub-agents to implement features, act as a coordinator only.
+- Use the best model for the task.
+
+### GIT_COMMIT
+
+- Use `git-commit` skill for all git commit messages.
+
+### SUBAGENT_DEVELOPMENT
+
+When using the `writing-plans` skill to generate an implementation plan or when writing specs:
+
+- **Git Commits in Plans**: Ensure the git commit commands specified in the plan STRICTLY follow the `GIT_COMMIT` rules.
+- **Spec Flexibility for Linters/Types**: Explicitly include a note in your plan that the implementer subagent is **authorized and expected** to add necessary type hints, docstrings, linting suppression comments,
+  and repository configuration updates required to pass the project's CI, type-checkers, and linters.
+
+### GITOPS_FIRST
+
+When asked to deploy a new application or change a configuration, modify the Flux manifests (HelmReleases, Kustomizations) rather than applying changes directly to the cluster. Manual `kubectl apply` commands should be avoided.
+
+## Section 2: Repository Architecture & Directory Mapping
+
+### CLUSTER_TOPOLOGY
+
+The infrastructure is split into multiple clusters:
+
+- `kubernetes/main/apps`: Core applications like media, home automation, databases, AI, gaming.
+- `kubernetes/utility/apps`: Infrastructure services like Harbor, OpenBao, cert-manager.
+- `kubernetes/base` & `kubernetes/components`: Shared kustomizations.
+
+### INFRASTRUCTURE_OS
+
+Kubernetes nodes are running Talos Linux.
+
+- `talos/main` & `talos/utility` contain the machine configurations and cluster configurations.
+
+### TOOLING_AUTOMATION
+
+All automation and scripts are managed via Task. Always use `task` to execute workflows. You can discover available tasks by running `task --list` or exploring the `.taskfiles/` directory. Do not write custom bash scripts for standard operations.
+
+### LOCAL_DEVELOPMENT
+
+The `devenv/` directory contains configurations for a local docker/kind environment used for testing.
+
+## Section 3: Secret Management, App Scaffolding, & Quality
+
+### SECRET_MANAGEMENT
+
+- **Primary**: The vast majority of secrets are stored in OpenBao and synced to the clusters using the External Secrets Operator (`ExternalSecret` manifests).
+- **Secondary**: SOPS (with age encryption) is used sparingly, primarily for bootstrapping the cluster (`talos/` configs).
+
+### CRITICAL-SECURITY
+
+Never commit plaintext secrets to the repository.
+
+### APP_SCAFFOLDING
+
+Use read and glob tools to understand how similar applications are deployed before scaffolding a new application. Strictly follow the existing structural conventions and directory layout.
+When adding a new app, always copy the structure of an existing app in `kubernetes/main/apps/` (e.g., check `podinfo` or `echo-server` in the `default` namespace).
+This includes `kustomization.yaml`, `namespace.yaml`, and the release manifest (like `helmrelease.yaml`).
+
+### QUALITY_VERIFICATION
+
+- Tooling versions are strictly managed using `mise` (`.mise.toml`).
+- This repository uses `pre-commit` and MegaLinter. Ensure changes are properly formatted and pass linting before committing.
