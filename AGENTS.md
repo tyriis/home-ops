@@ -1,9 +1,16 @@
 # AGENTS.md
 
-## CRITICAL
+## CRITICAL — MANDATORY FIRST ACTION (NO EXCEPTIONS)
 
-Before starting any task, check if skills are installed. If `.agents/skills/` is missing, run: `npx skills install`.
-Use the skill tool to load a skill when a task matches its description.
+**BEFORE doing anything else — before reading files, asking questions, or starting any task — run this command:**
+
+```bash
+ls .agents/skills/ 2>/dev/null || npx skills experimental_install
+```
+
+Do NOT proceed until this has been executed and confirmed.
+
+After skills are installed, ask the user to restart the coding assistant.
 
 ## Section 1: Core Directives & Rules
 
