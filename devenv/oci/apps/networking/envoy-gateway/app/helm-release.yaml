@@ -1,0 +1,34 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: envoy-gateway
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: envoy-gateway
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  # https://artifacthub.io/packages/helm/envoy-gateway/gateway-helm?modal=values
+  values:
+    deployment:
+      pod:
+        nodeSelector:
+          ingress-ready: "true"
+        tolerations:
+          - key: "node-role.kubernetes.io/control-plane"
+            operator: "Equal"
+            effect: "NoSchedule"
+    global:
+      images:
+        envoyGateway:
+          imageRegistry: mirror.gcr.io
