@@ -14,6 +14,7 @@ configMapGenerator:
   - name: atlantis-tyriis-terraform-github-scripts
     files:
       - vault_config.sh=./config/vault_config.sh
+      - allow_list.sh=./config/allow_list.sh
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
