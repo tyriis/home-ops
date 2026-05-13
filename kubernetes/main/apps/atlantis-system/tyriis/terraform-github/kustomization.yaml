@@ -8,6 +8,9 @@ configMapGenerator:
   - name: atlantis-tyriis-allowlist
     files:
       - allowlist.txt=./config/allowlist.txt
+  - name: atlantis-tyriis-terraform-github-config
+    files:
+      - repos.yaml=./config/repos.yaml
 generatorOptions:
   disableNameSuffixHash: true
   annotations:

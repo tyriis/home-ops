@@ -31,3 +31,12 @@ spec:
               - path: /etc/atlantis/allowlist.txt
                 subPath: allowlist.txt
                 readOnly: true
+      config:
+        type: configMap
+        name: ${APP}-config
+        advancedMounts:
+          main:
+            app:
+              - path: /etc/atlantis/repos.yaml
+                subPath: repos.yaml
+                readOnly: true
