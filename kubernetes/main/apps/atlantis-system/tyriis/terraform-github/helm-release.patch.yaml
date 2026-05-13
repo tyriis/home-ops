@@ -46,6 +46,5 @@ spec:
         advancedMounts:
           main:
             app:
-              - path: /home/atlantis/scripts/vault_config.sh
-                subPath: vault_config.sh
+              - path: /home/atlantis/scripts
                 readOnly: true
