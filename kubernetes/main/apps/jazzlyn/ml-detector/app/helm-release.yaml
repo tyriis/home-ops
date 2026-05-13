@@ -54,7 +54,7 @@ spec:
               YOLO_CONFIG_DIR: /yolo
             image:
               repository: ghcr.io/jazzlyn/ml-detector
-              tag: 0.4.0@sha256:0620671b240b8d91119ff9160fed73f034af7996c82cfab50227e8740474278c
+              tag: 0.5.0@sha256:760bc8c9c38e04dfcb1a3cb5a0ffd156b4f9d41c2280b99f03f74ef7733af7b7
             ports:
               - name: http
                 containerPort: &port 8000
