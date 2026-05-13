@@ -40,3 +40,12 @@ spec:
               - path: /etc/atlantis/repos.yaml
                 subPath: repos.yaml
                 readOnly: true
+      scripts:
+        type: configMap
+        name: ${APP}-scripts
+        advancedMounts:
+          main:
+            app:
+              - path: /home/atlantis/scripts/vault_config.sh
+                subPath: vault_config.sh
+                readOnly: true

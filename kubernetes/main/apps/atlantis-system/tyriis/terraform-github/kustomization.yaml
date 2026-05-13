@@ -11,6 +11,9 @@ configMapGenerator:
   - name: atlantis-tyriis-terraform-github-config
     files:
       - repos.yaml=./config/repos.yaml
+  - name: atlantis-tyriis-terraform-github-scripts
+    files:
+      - vault_config.sh=./config/vault_config.sh
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
