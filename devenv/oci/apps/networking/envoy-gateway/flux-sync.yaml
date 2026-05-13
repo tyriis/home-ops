@@ -1,10 +1,9 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: envoy-gateway
-  namespace: flux-system
 spec:
   targetNamespace: networking
   path: ./devenv/oci/apps/networking/envoy-gateway/app
@@ -15,7 +14,7 @@ spec:
     namespace: flux-system
   wait: true
   interval: 15m
-  retryInterval: 5s
+  retryInterval: 1m
   timeout: 5m
 
 ---
@@ -37,7 +36,7 @@ spec:
     namespace: flux-system
   wait: true
   interval: 15m
-  retryInterval: 5s
+  retryInterval: 1m
   timeout: 5m
   dependsOn:
     - name: cert-manager-issuers
