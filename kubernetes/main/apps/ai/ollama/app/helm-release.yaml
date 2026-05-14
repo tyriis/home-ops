@@ -49,10 +49,7 @@ spec:
               # OLLAMA_KV_CACHE_TYPE: q8_0
               OLLAMA_FLASH_ATTENTION: 0
               OLLAMA_KEEP_ALIVE: 30m
-              # OLLAMA_INTEL_GPU: "true"
-              # OLLAMA_NUM_GPU: "999"
-              # DEVICE: iGPU
-              # ZES_ENABLE_SYSMAN: "1"
+              OLLAMA_VULKAN: 1
               no_proxy: localhost,127.0.0.1
             resources:
               requests:
