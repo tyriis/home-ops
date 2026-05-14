@@ -52,7 +52,7 @@ spec:
               OLLAMA_KEEP_ALIVE: 30m
               OLLAMA_VULKAN: 1
               OLLAMA_NO_CLOUD: 1
-              OLLAMA_FLASH_ATTENTION: 1
+              # OLLAMA_FLASH_ATTENTION: 1
             resources:
               requests:
                 cpu: 2
