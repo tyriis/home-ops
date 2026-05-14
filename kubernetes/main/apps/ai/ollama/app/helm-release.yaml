@@ -46,7 +46,7 @@ spec:
               OLLAMA_HOST: 0.0.0.0
               OLLAMA_NUM_PARALLEL: 1
               # OLLAMA_CONTEXT_LENGTH: 32768
-              OLLAMA_KV_CACHE_TYPE: q8_0
+              # OLLAMA_KV_CACHE_TYPE: q8_0
               OLLAMA_FLASH_ATTENTION: 0
               OLLAMA_KEEP_ALIVE: 30m
               # OLLAMA_INTEL_GPU: "true"
@@ -58,9 +58,11 @@ spec:
               requests:
                 cpu: 2
                 memory: 8Gi
+                gpu.intel.com/i915: 1
               limits:
                 cpu: 12
                 memory: 24Gi
+                gpu.intel.com/i915: 1
             ports:
               - name: http
                 containerPort: &port 11434
