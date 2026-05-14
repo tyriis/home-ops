@@ -45,12 +45,14 @@ spec:
               OLLAMA_MODELS: &modelPath /models
               OLLAMA_HOST: 0.0.0.0
               OLLAMA_NUM_PARALLEL: 1
-              # OLLAMA_CONTEXT_LENGTH: 32768
-              # OLLAMA_KV_CACHE_TYPE: q8_0
-              OLLAMA_FLASH_ATTENTION: 0
+              OLLAMA_CONTEXT_LENGTH: 8192
+              OLLAMA_KV_CACHE_TYPE: q8_0
+              OLLAMA_MAX_QUEUE: 8
+              OLLAMA_INTEL_GPU: 1
               OLLAMA_KEEP_ALIVE: 30m
               OLLAMA_VULKAN: 1
-              no_proxy: localhost,127.0.0.1
+              OLLAMA_NO_CLOUD: 1
+              OLLAMA_FLASH_ATTENTION: 1
             resources:
               requests:
                 cpu: 2
