@@ -10,7 +10,8 @@ services:
     container_name: ollama
     environment:
       OLLAMA_MODELS: /data/.ollama/models
-      OLLAMA_CONTEXT_LENGTH: 8192
+      OLLAMA_CONTEXT_LENGTH: 16384
+      OLLAMA_KEEP_ALIVE: -1
       # OLLAMA_KEEP_ALIVE: 24h
     # healthcheck:
     #   test:
