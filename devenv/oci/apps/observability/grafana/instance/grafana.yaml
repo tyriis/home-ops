@@ -21,6 +21,15 @@ spec:
           containers:
             - name: grafana
               env: []
-  # TODO: fix with envoy
   httpRoute:
-    $patch: delete
+    spec:
+      hostnames:
+        - grafana.local
+      parentRefs:
+        - name: envoy
+          namespace: networking
+          sectionName: https
+      rules:
+        - backendRefs:
+            - name: grafana-service
+              port: 3000
