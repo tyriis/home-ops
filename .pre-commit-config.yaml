@@ -1,9 +1,5 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/pre-commit-config.json
-exclude: |
-  (?x)^(
-    .agents/.*
-  )$()
 fail_fast: false
 default_stages:
   - pre-commit
@@ -101,6 +97,7 @@ repos:
       - id: forbid-secrets
         exclude: |
           (?x)^(
+            devenv/.*|
             kubernetes/main/apps/secops/rbac.yaml|
             kubernetes/utility/apps/secops/rbac.yaml
           )$()
