@@ -26,6 +26,9 @@ spec:
   values:
     # https://artifacthub.io/packages/helm/external-dns/external-dns?modal=values
     fullnameOverride: *app
+    env:
+      - name: TZ
+        value: Europe/Vienna
     provider:
       name: webhook
       webhook:

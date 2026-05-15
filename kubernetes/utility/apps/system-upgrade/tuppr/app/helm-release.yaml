@@ -20,6 +20,8 @@ spec:
     keepHistory: false
   values:
     # https://github.com/home-operations/tuppr/blob/main/charts/tuppr/values.yaml
+    env:
+      TZ: Europe/Vienna
     replicaCount: 2
     monitoring:
       serviceMonitor:
