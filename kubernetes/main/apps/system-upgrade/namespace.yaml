@@ -7,3 +7,5 @@ metadata:
   labels:
     kustomize.toolkit.fluxcd.io/prune: disabled
     pod-security.kubernetes.io/enforce: privileged
+  annotations:
+    k8tz.io/inject: "false"
