@@ -20,9 +20,14 @@ spec:
     keepHistory: false
   values:
     # https://github.com/home-operations/tuppr/blob/main/charts/tuppr/values.yaml
-    replicaCount: 2
+    env:
+      - name: TZ
+        value: Europe/Vienna
+    replicaCount: 1
     monitoring:
       serviceMonitor:
+        enabled: true
+      prometheusRule:
         enabled: true
     resources:
       requests:

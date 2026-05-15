@@ -33,6 +33,8 @@ spec:
     logFormat: json
     provider: cloudflare
     env:
+      - name: TZ
+        value: Europe/Vienna
       - name: CF_API_EMAIL
         valueFrom:
           secretKeyRef:

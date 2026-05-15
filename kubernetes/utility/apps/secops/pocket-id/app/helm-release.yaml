@@ -81,6 +81,7 @@ spec:
               tag: v2.7.0@sha256:45bdeaf3fcd6d07cf8721e98785d93324bb8e65b586498874c05a3d489c8094e
             env:
               # https://pocket-id.org/docs/configuration/environment-variables
+              TZ: Europe/Vienna
               ANALYTICS_DISABLED: "true"
               APP_URL: https://id.techtales.io
               EMAILS_VERIFIED: "true"
