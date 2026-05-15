@@ -22,9 +22,11 @@ spec:
     # https://github.com/home-operations/tuppr/blob/main/charts/tuppr/values.yaml
     env:
       TZ: Europe/Vienna
-    replicaCount: 2
+    replicaCount: 1
     monitoring:
       serviceMonitor:
+        enabled: true
+      prometheusRule:
         enabled: true
     resources:
       requests:
