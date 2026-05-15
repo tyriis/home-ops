@@ -172,22 +172,9 @@ the official OpenCode schema rejects).
 
 ### Sources
 
-1. "LLM progress is slowing and getting more expensive" - Moov AI
-   <https://www.linkedin.com/pulse/llm-progress-slowing-getting-more-expensive-moov-ai-ac1te>
-
-2. "Third-party agents lose access as Anthropic tightens Claude usage rules"
-   - PYMNTS, April 2026
-     <https://www.pymnts.com/artificial-intelligence-2/2026/third-party-agents-lose-access-as-anthropic-tightens-claude-usage-rules/>
-
-3. "GitHub Copilot is moving to usage-based billing" - GitHub Blog
-   <https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/>
-
-4. "Updates to Consumer Terms and Privacy Policy" - Anthropic, August 2025
-   <https://www.anthropic.com/news/updates-to-our-consumer-terms>
-
-5. "AI Data Privacy 2026: The AI Privacy Trap" - drainpipe.io
-   <https://drainpipe.io/ai-data-privacy-2026-the-ai-privacy-trap/>
-
-6. "Privacy Risks in LLMs: Governance Frameworks for Enterprise AI" - Secure
-   Privacy
-   <https://secureprivacy.ai/blog/privacy-risks-llms-enterprise-ai-governance>
+1. ["LLM progress is slowing and getting more expensive" - Moov AI](https://www.linkedin.com/pulse/llm-progress-slowing-getting-more-expensive-moov-ai-ac1te)
+2. ["Third-party agents lose access as Anthropic tightens Claude usage rules" - PYMNTS, April 2026](https://www.pymnts.com/artificial-intelligence-2/2026/third-party-agents-lose-access-as-anthropic-tightens-claude-usage-rules/)
+3. ["GitHub Copilot is moving to usage-based billing" - GitHub Blog](https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/)
+4. ["Updates to Consumer Terms and Privacy Policy" - Anthropic, August 2025](https://www.anthropic.com/news/updates-to-our-consumer-terms)
+5. ["AI Data Privacy 2026: The AI Privacy Trap" - drainpipe.io](https://drainpipe.io/ai-data-privacy-2026-the-ai-privacy-trap/)
+6. ["Privacy Risks in LLMs: Governance Frameworks for Enterprise AI" - Secure Privacy](https://secureprivacy.ai/blog/privacy-risks-llms-enterprise-ai-governance)
