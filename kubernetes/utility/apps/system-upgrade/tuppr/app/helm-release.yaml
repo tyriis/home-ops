@@ -21,7 +21,8 @@ spec:
   values:
     # https://github.com/home-operations/tuppr/blob/main/charts/tuppr/values.yaml
     env:
-      TZ: Europe/Vienna
+      name: TZ
+      value: Europe/Vienna
     replicaCount: 1
     monitoring:
       serviceMonitor:
