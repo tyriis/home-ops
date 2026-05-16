@@ -27,7 +27,7 @@ talhelper = "3.1.10"
 # https://www.talos.dev/
 talosctl = "1.13.2"
 # https://taskfile.dev/
-task = "3.50.0"
+task = "3.51.1"
 # https://trivy.dev/
 trivy = "0.69.1"
 # minio client
