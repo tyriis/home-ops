@@ -1,0 +1,370 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app firecrawl
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 5.0.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    global:
+      createDefaultServiceAccount: false
+
+    controllers:
+      api:
+        replicas: 1
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/firecrawl/firecrawl
+              tag: v3.0.0
+            command: ["node", "--max-old-space-size=6144", "dist/src/index.js"]
+            env:
+              FLY_PROCESS_GROUP: app
+              PORT: "3002"
+              REDIS_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
+              REDIS_RATE_LIMIT_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
+              PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.ai.svc.cluster.local:3000/scrape
+              USE_DB_AUTHENTICATION: "false"
+              ENV: production
+              LOGGING_LEVEL: INFO
+              IS_KUBERNETES: "true"
+              HOST: 0.0.0.0
+            envFrom:
+              - secretRef:
+                  name: firecrawl-env
+            ports:
+              - name: http
+                containerPort: 3002
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /v0/health/liveness
+                    port: 3002
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /v0/health/readiness
+                    port: 3002
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+            resources:
+              requests:
+                cpu: 2
+                memory: 4Gi
+              limits:
+                cpu: 2
+                memory: 6Gi
+
+      worker:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/firecrawl/firecrawl
+              tag: v3.0.0
+            command:
+              [
+                "node",
+                "--max-old-space-size=3072",
+                "dist/src/services/queue-worker.js",
+              ]
+            env:
+              FLY_PROCESS_GROUP: worker
+              PORT: "3005"
+              REDIS_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
+              REDIS_RATE_LIMIT_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
+              PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.ai.svc.cluster.local:3000/scrape
+              USE_DB_AUTHENTICATION: "false"
+              ENV: production
+              LOGGING_LEVEL: INFO
+              IS_KUBERNETES: "true"
+              HOST: 0.0.0.0
+            envFrom:
+              - secretRef:
+                  name: firecrawl-env
+            ports:
+              - name: http
+                containerPort: 3005
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /liveness
+                    port: 3005
+                  initialDelaySeconds: 5
+                  periodSeconds: 5
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+            resources:
+              requests:
+                cpu: 1
+                memory: 3Gi
+              limits:
+                cpu: 1
+                memory: 4Gi
+
+      extract-worker:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/firecrawl/firecrawl
+              tag: v3.0.0
+            command:
+              [
+                "node",
+                "--max-old-space-size=2048",
+                "dist/src/services/extract-worker.js",
+              ]
+            env:
+              FLY_PROCESS_GROUP: extract
+              PORT: "3004"
+              REDIS_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
+              REDIS_RATE_LIMIT_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
+              PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.ai.svc.cluster.local:3000/scrape
+              USE_DB_AUTHENTICATION: "false"
+              ENV: production
+              LOGGING_LEVEL: INFO
+              IS_KUBERNETES: "true"
+              HOST: 0.0.0.0
+            envFrom:
+              - secretRef:
+                  name: firecrawl-env
+            ports:
+              - name: http
+                containerPort: 3004
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /liveness
+                    port: 3004
+                  initialDelaySeconds: 5
+                  periodSeconds: 5
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+            resources:
+              requests:
+                cpu: 1
+                memory: 2Gi
+              limits:
+                cpu: 1
+                memory: 3Gi
+
+      nuq-worker:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/firecrawl/firecrawl
+              tag: v3.0.0
+            command:
+              [
+                "node",
+                "--max-old-space-size=3072",
+                "dist/src/services/nuq-worker.js",
+              ]
+            env:
+              FLY_PROCESS_GROUP: nuq
+              PORT: "3006"
+              REDIS_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
+              REDIS_RATE_LIMIT_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
+              PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.ai.svc.cluster.local:3000/scrape
+              USE_DB_AUTHENTICATION: "false"
+              ENV: production
+              LOGGING_LEVEL: INFO
+              IS_KUBERNETES: "true"
+              HOST: 0.0.0.0
+            envFrom:
+              - secretRef:
+                  name: firecrawl-env
+            ports:
+              - name: http
+                containerPort: 3006
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /liveness
+                    port: 3006
+                  initialDelaySeconds: 5
+                  periodSeconds: 5
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+            resources:
+              requests:
+                cpu: 1
+                memory: 3Gi
+              limits:
+                cpu: 1
+                memory: 4Gi
+
+      nuq-prefetch-worker:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/firecrawl/firecrawl
+              tag: v3.0.0
+            command:
+              [
+                "node",
+                "--max-old-space-size=1024",
+                "dist/src/services/nuq-prefetch-worker.js",
+              ]
+            env:
+              FLY_PROCESS_GROUP: prefetch
+              PORT: "3011"
+              REDIS_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
+              REDIS_RATE_LIMIT_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
+              PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.ai.svc.cluster.local:3000/scrape
+              USE_DB_AUTHENTICATION: "false"
+              ENV: production
+              LOGGING_LEVEL: INFO
+              IS_KUBERNETES: "true"
+              HOST: 0.0.0.0
+            envFrom:
+              - secretRef:
+                  name: firecrawl-env
+            ports:
+              - name: http
+                containerPort: 3011
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /liveness
+                    port: 3011
+                  initialDelaySeconds: 5
+                  periodSeconds: 5
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+            resources:
+              requests:
+                cpu: 500m
+                memory: 1Gi
+              limits:
+                cpu: 1
+                memory: 2Gi
+
+      playwright-service:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/firecrawl/playwright-service
+              tag: latest
+            env:
+              PORT: "3000"
+              BLOCK_MEDIA: "true"
+              MAX_CONCURRENT_PAGES: "10"
+            ports:
+              - name: http
+                containerPort: 3000
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 3000
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+            resources:
+              requests:
+                cpu: 1
+                memory: 2Gi
+              limits:
+                cpu: 2
+                memory: 4Gi
+
+    service:
+      api:
+        controller: api
+        ports:
+          http:
+            port: 3002
+      playwright:
+        controller: playwright-service
+        ports:
+          http:
+            port: 3000
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
