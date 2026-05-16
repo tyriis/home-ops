@@ -93,6 +93,9 @@ spec:
                 memory: 6Gi
 
       worker:
+        replicas: 1
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -148,6 +151,9 @@ spec:
                 memory: 4Gi
 
       extract-worker:
+        replicas: 1
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -203,6 +209,9 @@ spec:
                 memory: 3Gi
 
       nuq-worker:
+        replicas: 1
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -258,6 +267,9 @@ spec:
                 memory: 4Gi
 
       nuq-prefetch-worker:
+        replicas: 1
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -313,6 +325,9 @@ spec:
                 memory: 2Gi
 
       playwright-service:
+        replicas: 1
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
