@@ -254,6 +254,9 @@ spec:
 
       nuq-postgres:
         replicas: 1
+        pod:
+          securityContext:
+            fsGroup: 999
         containers:
           app:
             image:
@@ -266,6 +269,13 @@ spec:
             ports:
               - name: postgres
                 containerPort: 5432
+            securityContext:
+              runAsUser: 999
+              runAsGroup: 999
+              runAsNonRoot: true
+              capabilities:
+                drop:
+                  - ALL
             resources:
               requests:
                 cpu: 250m
@@ -296,6 +306,12 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /tmp
+      data:
+        type: emptyDir
+        advancedMounts:
+          nuq-postgres:
+            app:
+              - path: /var/lib/postgresql/data
 
     defaultPodOptions:
       securityContext:
