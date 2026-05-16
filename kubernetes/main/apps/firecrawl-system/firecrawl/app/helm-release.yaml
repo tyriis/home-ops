@@ -1,0 +1,143 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app firecrawl
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: ./examples/kubernetes/firecrawl-helm
+      sourceRef:
+        kind: GitRepository
+        name: firecrawl
+        namespace: firecrawl-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    image:
+      repository: ghcr.io/firecrawl/firecrawl
+      tag: v2.10@sha256:6c5049312506841d85e0bc386da34656630645dca867d72e9a33aa01a1f1b519
+      pullPolicy: IfNotPresent
+      dockerSecretEnabled: false
+
+    playwright:
+      repository: ghcr.io/firecrawl/playwright-service
+      tag: latest@sha256:9e0737bc09df28275aab29726b1c0824a7725113945434e843385d487b7f7ec6
+      pullPolicy: IfNotPresent
+
+    nuqPostgres:
+      image:
+        repository: ghcr.io/firecrawl/nuq-postgres
+        tag: latest@sha256:f9388bd25ae2e1f1d034518236f993ce236173c1d8800ce24092ea6643a95a33
+        pullPolicy: IfNotPresent
+      auth:
+        username: postgres
+        password: password
+        database: postgres
+      persistence:
+        enabled: false
+      resources:
+        requests:
+          cpu: "250m"
+          memory: "512Mi"
+        limits:
+          cpu: "500m"
+          memory: "1Gi"
+
+    rabbitmq:
+      enabled: true
+      resources:
+        requests:
+          cpu: "250m"
+          memory: "512Mi"
+        limits:
+          cpu: "500m"
+          memory: "1Gi"
+
+    resources:
+      enabled: true
+
+    api:
+      replicaCount: 1
+      resources:
+        requests:
+          cpu: "2000m"
+          memory: "4Gi"
+        limits:
+          cpu: "2000m"
+          memory: "6Gi"
+
+    worker:
+      replicaCount: 1
+      resources:
+        requests:
+          cpu: "1000m"
+          memory: "3Gi"
+        limits:
+          cpu: "1000m"
+          memory: "4Gi"
+
+    extractWorker:
+      enabled: true
+      replicaCount: 1
+      resources:
+        requests:
+          cpu: "1000m"
+          memory: "2Gi"
+        limits:
+          cpu: "1000m"
+          memory: "3Gi"
+
+    nuqWorker:
+      replicaCount: 1
+      resources:
+        requests:
+          cpu: "1000m"
+          memory: "3Gi"
+        limits:
+          cpu: "1000m"
+          memory: "4Gi"
+
+    nuqPrefetchWorker:
+      enabled: true
+      replicaCount: 1
+      resources:
+        requests:
+          cpu: "500m"
+          memory: "1Gi"
+        limits:
+          cpu: "1000m"
+          memory: "2Gi"
+
+    config:
+      USE_DB_AUTHENTICATION: "false"
+      IS_KUBERNETES: "true"
+      ENV: "production"
+      LOGGING_LEVEL: "INFO"
+      HOST: "0.0.0.0"
+      BLOCK_MEDIA: "true"
+      MAX_CONCURRENT_PAGES: "10"
+
+    imagePullSecrets: []
+
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Secret
+              name: firecrawl-secret
+            patch: |-
+              $patch: delete
+              apiVersion: v1
+              kind: Secret
+              metadata:
+                name: firecrawl-secret
