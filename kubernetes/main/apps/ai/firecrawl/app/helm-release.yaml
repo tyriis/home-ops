@@ -36,7 +36,7 @@ spec:
           app:
             image:
               repository: ghcr.io/firecrawl/firecrawl
-              tag: v2.10
+              tag: v2.10@sha256:6c5049312506841d85e0bc386da34656630645dca867d72e9a33aa01a1f1b519
             command: ["node", "--max-old-space-size=6144", "dist/src/index.js"]
             env:
               FLY_PROCESS_GROUP: app
@@ -100,7 +100,7 @@ spec:
           app:
             image:
               repository: ghcr.io/firecrawl/firecrawl
-              tag: v2.10
+              tag: v2.10@sha256:6c5049312506841d85e0bc386da34656630645dca867d72e9a33aa01a1f1b519
             command:
               [
                 "node",
@@ -158,7 +158,7 @@ spec:
           app:
             image:
               repository: ghcr.io/firecrawl/firecrawl
-              tag: v2.10
+              tag: v2.10@sha256:6c5049312506841d85e0bc386da34656630645dca867d72e9a33aa01a1f1b519
             command:
               [
                 "node",
@@ -216,7 +216,7 @@ spec:
           app:
             image:
               repository: ghcr.io/firecrawl/firecrawl
-              tag: v2.10
+              tag: v2.10@sha256:6c5049312506841d85e0bc386da34656630645dca867d72e9a33aa01a1f1b519
             command:
               [
                 "node",
@@ -274,7 +274,7 @@ spec:
           app:
             image:
               repository: ghcr.io/firecrawl/firecrawl
-              tag: v2.10
+              tag: v2.10@sha256:6c5049312506841d85e0bc386da34656630645dca867d72e9a33aa01a1f1b519
             command:
               [
                 "node",
@@ -332,7 +332,7 @@ spec:
           app:
             image:
               repository: ghcr.io/firecrawl/playwright-service
-              tag: latest
+              tag: latest@sha256:9e0737bc09df28275aab29726b1c0824a7725113945434e843385d487b7f7ec6
             env:
               PORT: "3000"
               BLOCK_MEDIA: "true"
@@ -377,6 +377,12 @@ spec:
         ports:
           http:
             port: 3000
+
+    persistence:
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
 
     defaultPodOptions:
       securityContext:
