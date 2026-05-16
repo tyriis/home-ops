@@ -11,7 +11,7 @@ ENABLE_LINTERS:
   - EDITORCONFIG_EDITORCONFIG_CHECKER
   - REPOSITORY_GITLEAKS
   - SPELL_PROSELINT
-FILTER_REGEX_EXCLUDE: (\.envrc|\.git/*|talos/clusterconfig/*)
+FILTER_REGEX_EXCLUDE: (\.envrc|\.git/*|talos/clusterconfig/*|docs/superpowers/)
 MARKDOWN_MARKDOWNLINT_CONFIG_FILE: .markdownlint.yaml
 YAML_YAMLLINT_CONFIG_FILE: .yamllint.yaml
 YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (.*\.sops\..*)
