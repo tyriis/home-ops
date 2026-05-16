@@ -43,7 +43,7 @@ spec:
               PORT: "3002"
               REDIS_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
               REDIS_RATE_LIMIT_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
-              PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.ai.svc.cluster.local:3000/scrape
+              PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.ai.svc.cluster.local:3000/scrape #NOSONAR allow http
               USE_DB_AUTHENTICATION: "false"
               ENV: production
               LOGGING_LEVEL: INFO
@@ -112,7 +112,7 @@ spec:
               PORT: "3005"
               REDIS_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
               REDIS_RATE_LIMIT_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
-              PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.ai.svc.cluster.local:3000/scrape
+              PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.ai.svc.cluster.local:3000/scrape #NOSONAR allow http
               USE_DB_AUTHENTICATION: "false"
               ENV: production
               LOGGING_LEVEL: INFO
@@ -170,7 +170,7 @@ spec:
               PORT: "3004"
               REDIS_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
               REDIS_RATE_LIMIT_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
-              PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.ai.svc.cluster.local:3000/scrape
+              PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.ai.svc.cluster.local:3000/scrape #NOSONAR allow http
               USE_DB_AUTHENTICATION: "false"
               ENV: production
               LOGGING_LEVEL: INFO
@@ -228,7 +228,7 @@ spec:
               PORT: "3006"
               REDIS_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
               REDIS_RATE_LIMIT_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
-              PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.ai.svc.cluster.local:3000/scrape
+              PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.ai.svc.cluster.local:3000/scrape #NOSONAR allow http
               USE_DB_AUTHENTICATION: "false"
               ENV: production
               LOGGING_LEVEL: INFO
@@ -286,7 +286,7 @@ spec:
               PORT: "3011"
               REDIS_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
               REDIS_RATE_LIMIT_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
-              PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.ai.svc.cluster.local:3000/scrape
+              PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.ai.svc.cluster.local:3000/scrape #NOSONAR allow http
               USE_DB_AUTHENTICATION: "false"
               ENV: production
               LOGGING_LEVEL: INFO
