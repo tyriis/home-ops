@@ -23,6 +23,8 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    fullnameOverride: firecrawl
+
     image:
       repository: ghcr.io/firecrawl/firecrawl
       tag: v2.10@sha256:6c5049312506841d85e0bc386da34656630645dca867d72e9a33aa01a1f1b519
