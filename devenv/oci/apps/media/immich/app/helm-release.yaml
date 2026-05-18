@@ -1,0 +1,181 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app immich
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 5.0.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      server:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+        containers:
+          app:
+            image:
+              repository: ghcr.io/immich-app/immich-server
+              tag: v2.7.5@sha256:c15bff75068effb03f4355997d03dc7e0fc58720c2b54ad6f7f10d1bc57efaa5
+            envFrom:
+              - configMapRef:
+                  name: immich-config
+              - secretRef:
+                  name: immich-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/server/ping
+                    port: &port 2283
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 5
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/server/ping
+                    port: *port
+                  failureThreshold: 30
+                  periodSeconds: 5
+            ports:
+              - containerPort: *port
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+
+      postgres:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/immich-app/postgres
+              tag: 17-vectorchord0.5.3@sha256:5f8bc60f14eaaea23c1130dec2b2a3a4cbd57850f3af85f3771f9b5fb40e00fc
+            env:
+              POSTGRES_DB:
+                valueFrom:
+                  secretKeyRef:
+                    name: immich-secret
+                    key: DB_DATABASE_NAME
+              POSTGRES_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: immich-secret
+                    key: DB_USERNAME
+              POSTGRES_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: immich-secret
+                    key: DB_PASSWORD
+              PGDATA: /var/lib/postgresql/data/pgdata
+            ports:
+              - containerPort: 5432
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+
+      dragonfly:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/dragonflydb/dragonfly
+              tag: v1.38.1@sha256:baf70ba7ad182a992b988497cfa31a488978c8fab7712079784c2401f447e402
+            args:
+              - --cluster_mode=emulated
+              - --default_lua_flags=allow-undeclared-keys
+            ports:
+              - containerPort: 6379
+            resources:
+              requests:
+                cpu: 50m
+                memory: 64Mi
+
+    service:
+      server:
+        controller: server
+        ports:
+          http:
+            port: *port
+      postgres:
+        controller: postgres
+        ports:
+          postgres:
+            port: 5432
+      dragonfly:
+        controller: dragonfly
+        ports:
+          redis:
+            port: 6379
+
+    route:
+      app:
+        hostnames:
+          - immich.local
+        parentRefs:
+          - name: envoy
+            namespace: networking
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: server
+                port: *port
+
+    persistence:
+      library:
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 10Gi
+        storageClass: standard
+        advancedMounts:
+          server:
+            app:
+              - path: /media
+      postgres-data:
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 5Gi
+        storageClass: standard
+        advancedMounts:
+          postgres:
+            app:
+              - path: /var/lib/postgresql/data
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          server:
+            app:
+              - path: /tmp
