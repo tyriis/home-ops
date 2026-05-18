@@ -6,3 +6,4 @@ resources:
   - ./certificate.yaml
   - ./envoy-proxy.yaml
   - ./gateway.yaml
+  - ./http-redirect.yaml
