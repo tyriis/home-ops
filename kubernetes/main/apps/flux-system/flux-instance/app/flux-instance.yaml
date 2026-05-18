@@ -140,8 +140,8 @@ spec:
         target:
           kind: Deployment
           name: source-controller
-      # flux near OOM detection for helm
-      # https://fluxcd.io/flux/cheatsheets/bootstrap/#enable-helm-near-oom-detection
+      # enable helm OOM detection — requires a memory limit on the controller
+      # https://fluxcd.io/flux/installation/configuration/helm-oom-detection
       - patch: |
           - op: add
             path: /spec/template/spec/containers/0/args/-
