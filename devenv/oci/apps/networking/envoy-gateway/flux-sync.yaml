@@ -13,7 +13,7 @@ spec:
     name: flux-system
     namespace: flux-system
   wait: true
-  interval: 15m
+  interval: 30m
   retryInterval: 1m
   timeout: 5m
 
@@ -25,9 +25,6 @@ metadata:
   name: &app envoy-gateway-config
 spec:
   targetNamespace: networking
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   path: ./devenv/oci/apps/networking/envoy-gateway/config
   prune: true
   sourceRef:
@@ -35,7 +32,7 @@ spec:
     name: flux-system
     namespace: flux-system
   wait: true
-  interval: 15m
+  interval: 30m
   retryInterval: 1m
   timeout: 5m
   dependsOn:
