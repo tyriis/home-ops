@@ -7,3 +7,5 @@ bc59aa503eef55651de6262404967b126faa963e:cluster/apps/secops/vaultwarden/helm-re
 5dc987820d053401b38818939c28268958d25b31:kubernetes/main/apps/observability/loki/app/external-secret.yaml:generic-api-key:25
 faff40a117b8ff3137ef9c7a38fa6dd4e98be51c:kubernetes/main/apps/observability/grafana/instance/external-secret.yaml:generic-api-key:22
 faff40a117b8ff3137ef9c7a38fa6dd4e98be51c:kubernetes/main/apps/observability/grafana/instance/external-secret.yaml:generic-api-key:45
+c6308e3d984a3f4ab090195ff66d3f5ad32af4b3:docs/superpowers/plans/2026-05-16-firecrawl-deployment.md:generic-api-key:110
+c6308e3d984a3f4ab090195ff66d3f5ad32af4b3:docs/superpowers/plans/2026-05-16-firecrawl-deployment.md:generic-api-key:135
