@@ -9,5 +9,5 @@ spec:
   interval: 1h
   url: oci://ghcr.io/stefanprodan/charts/podinfo
   ref:
-    tag: 6.11.2
-    digest: sha256:9d56c8b20ff974813d746ccff8012e167cd8c9ba016acd57eb0121a38540aad5
+    tag: 6.12.0
+    digest: sha256:935725a423a7ca5d7f5f9a850d152b80938528d0d4f209dd1ce66a3bc0ddea92
