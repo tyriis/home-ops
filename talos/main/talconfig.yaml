@@ -425,4 +425,4 @@ controlPlane:
         extraManifests:
           - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/experimental-install.yaml
           - https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.91.0/stripped-down-crds.yaml
-          - https://github.com/grafana/grafana-operator/releases/download/v5.22.2/crds.yaml
+          - https://github.com/grafana/grafana-operator/releases/download/v5.23.0/crds.yaml
