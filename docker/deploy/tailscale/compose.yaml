@@ -32,7 +32,7 @@ services:
         - tailscale
         - status
       timeout: "5s"
-    image: ghcr.io/tailscale/tailscale:v1.96.5@sha256:dbeff02d2337344b351afac203427218c4d0a06c43fc10a865184063498472a6
+    image: ghcr.io/tailscale/tailscale:v1.98.3@sha256:854b77123b9536adae2e97f5a5fdb1790ed03438b911ab7f07780155e0af6ce2
     network_mode: host
     platform: linux/amd64
     privileged: false
