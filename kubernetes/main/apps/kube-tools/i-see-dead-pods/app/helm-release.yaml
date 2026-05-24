@@ -45,7 +45,7 @@ spec:
           i-see-dead-pods:
             image:
               repository: alpine/kubectl
-              tag: 1.36.1@sha256:aefd8c0632b8e03aba69ec121a533da412643c0b69a29ade1c6c6f5f3e94981e
+              tag: 1.36.1@sha256:21da3ea4223f6f0f829d38ed0c56b0837fafa569c229998af5293a822348e83f
             command:
               - /bin/sh
               - -ec
