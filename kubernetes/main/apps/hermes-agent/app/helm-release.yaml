@@ -80,7 +80,7 @@ spec:
         advancedMounts:
           hermes:
             app:
-              - path: /data
+              - path: /opt/data
       tmp:
         type: emptyDir
         advancedMounts:
