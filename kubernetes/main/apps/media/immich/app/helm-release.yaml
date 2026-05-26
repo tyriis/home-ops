@@ -38,8 +38,22 @@ spec:
             envFrom:
               - configMapRef:
                   name: immich-config
-              - secretRef:
-                  name: immich-env
+            env:
+              DB_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: immich-db-init
+                    key: INIT_POSTGRES_USER
+              DB_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: immich-db-init
+                    key: INIT_POSTGRES_PASS
+              DB_DATABASE_NAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: immich-db-init
+                    key: INIT_POSTGRES_DB
             probes:
               liveness: &probes
                 enabled: true
