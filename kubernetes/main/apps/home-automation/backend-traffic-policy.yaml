@@ -15,4 +15,76 @@ spec:
 
   # Inherit all settings from Gateway-level policy (compression, retry, timeout, etc.)
   # But explicitly override responseOverride to be empty
-  responseOverride: []
+  responseOverride:
+    # 401 Unauthorized
+    - match:
+        statusCodes:
+          - type: Value
+            value: 401
+        source: Local
+
+    # 403 Forbidden
+    - match:
+        statusCodes:
+          - type: Value:q
+            value: 403
+        source: Local
+
+    # 404 Not Found
+    - match:
+        statusCodes:
+          - type: Value
+            value: 404
+        source: Local
+
+    # 500 Internal Server Error
+    - match:
+        statusCodes:
+          - type: Value
+            value: 500
+      redirect:
+        scheme: https
+        hostname: &host error-pages.techtales.io
+        path:
+          type: ReplaceFullPath
+          replaceFullPath: /500.html
+        statusCode: 302
+
+    # 502 Bad Gateway
+    - match:
+        statusCodes:
+          - type: Value
+            value: 502
+      redirect:
+        scheme: https
+        hostname: *host
+        path:
+          type: ReplaceFullPath
+          replaceFullPath: /502.html
+        statusCode: 302
+
+    # 503 Service Unavailable
+    - match:
+        statusCodes:
+          - type: Value
+            value: 503
+      redirect:
+        scheme: https
+        hostname: *host
+        path:
+          type: ReplaceFullPath
+          replaceFullPath: /503.html
+        statusCode: 302
+
+    # 504 Gateway Timeout
+    - match:
+        statusCodes:
+          - type: Value
+            value: 504
+      redirect:
+        scheme: https
+        hostname: *host
+        path:
+          type: ReplaceFullPath
+          replaceFullPath: /504.html
+        statusCode: 302
