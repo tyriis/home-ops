@@ -41,12 +41,14 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           app:
+            command: ["gateway", "run"]
             image:
               repository: docker.io/nousresearch/hermes-agent
               tag: v2026.5.16@sha256:b6e41c155d6bfce5ad83c5d0fec670086db8a43250e4511c9474134be5482d33
             env:
               PORT: "8642"
               API_SERVER_ENABLED: "true"
+              API_SERVER_HOST: "0.0.0.0"
             envFrom:
               - secretRef:
                   name: ${APP}-secret
