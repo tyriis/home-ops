@@ -59,11 +59,6 @@ spec:
             probes:
               liveness:
                 enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: *port
               readiness:
                 enabled: true
             securityContext:
