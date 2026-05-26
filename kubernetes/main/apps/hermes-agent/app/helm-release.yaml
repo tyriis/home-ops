@@ -56,6 +56,7 @@ spec:
               PORT: "8642"
               API_SERVER_ENABLED: "true"
               API_SERVER_HOST: "0.0.0.0"
+              HERMES_DASHBOARD: "1"
             envFrom:
               - secretRef:
                   name: ${APP}-secret
