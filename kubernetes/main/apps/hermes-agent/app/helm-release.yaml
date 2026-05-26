@@ -47,7 +47,7 @@ spec:
               tag: v2026.5.16@sha256:b6e41c155d6bfce5ad83c5d0fec670086db8a43250e4511c9474134be5482d33
             ports:
               - name: gateway
-                containerPort: &port 8642
+                containerPort: 8642
                 protocol: TCP
               - name: dashboard
                 containerPort: 9119
@@ -60,10 +60,27 @@ spec:
               - secretRef:
                   name: ${APP}-secret
             probes:
-              liveness:
-                enabled: true
-              readiness:
-                enabled: true
+              liveness: &probes
+                enabled: false
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 9119
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  failureThreshold: 5
+              readiness: *probes
+              startup:
+                enabled: false
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: *port
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  failureThreshold: 30
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -81,7 +98,7 @@ spec:
         primary: true
         controller: hermes
         ports:
-          http:
+          gateway:
             port: 8642
           dashboard:
             port: 9119
