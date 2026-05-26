@@ -22,7 +22,7 @@ spec:
               app.kubernetes.io/name: open-webui
       ports:
         - protocol: TCP
-          port: 8080
+          port: 8642
   egress:
     # Allow DNS resolution
     - to:

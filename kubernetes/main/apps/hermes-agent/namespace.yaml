@@ -6,4 +6,3 @@ metadata:
   name: hermes-agent
   labels:
     kustomize.toolkit.fluxcd.io/prune: disabled
-    volsync.backube/privileged-movers: "true"

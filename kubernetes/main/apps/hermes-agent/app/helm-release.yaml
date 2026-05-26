@@ -24,9 +24,8 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    global:
-      createDefaultServiceAccount: false
     defaultPodOptions:
+      automountServiceAccountToken: false
       securityContext:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
@@ -42,11 +41,24 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           app:
+            args: ["gateway", "run"]
             image:
               repository: docker.io/nousresearch/hermes-agent
               tag: v2026.5.16@sha256:b6e41c155d6bfce5ad83c5d0fec670086db8a43250e4511c9474134be5482d33
+            ports:
+              - name: gateway
+                containerPort: &port 8642
+                protocol: TCP
+              - name: dashboard
+                containerPort: 9119
+                protocol: TCP
             env:
-              PORT: "8080"
+              PORT: "8642"
+              API_SERVER_ENABLED: "true"
+              API_SERVER_HOST: "0.0.0.0"
+            envFrom:
+              - secretRef:
+                  name: ${APP}-secret
             probes:
               liveness:
                 enabled: true
@@ -70,14 +82,16 @@ spec:
         controller: hermes
         ports:
           http:
-            port: 8080
+            port: 8642
+          dashboard:
+            port: 9119
     persistence:
       data:
         existingClaim: ${APP}-data
         advancedMounts:
           hermes:
             app:
-              - path: /data
+              - path: /opt/data
       tmp:
         type: emptyDir
         advancedMounts:

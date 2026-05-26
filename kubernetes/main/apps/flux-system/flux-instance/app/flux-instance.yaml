@@ -123,7 +123,7 @@ spec:
         target:
           kind: Deployment
           name: kustomize-controller
-      # enable Helm repositories caching
+      # enable helm repositories caching
       # https://fluxcd.io/flux/installation/configuration/vertical-scaling/#enable-helm-repositories-caching
       # --helm-cache-max-size: 1.5 times the number of helm repositories
       # --helm-cache-ttl: 1.5 times the spec.interval
@@ -140,8 +140,8 @@ spec:
         target:
           kind: Deployment
           name: source-controller
-      # flux near OOM detection for helm
-      # https://fluxcd.io/flux/cheatsheets/bootstrap/#enable-helm-near-oom-detection
+      # enable helm OOM detection — requires a memory limit on the controller
+      # https://fluxcd.io/flux/installation/configuration/helm-oom-detection
       - patch: |
           - op: add
             path: /spec/template/spec/containers/0/args/-
@@ -166,12 +166,13 @@ spec:
         target:
           kind: Deployment
           name: (helm-controller|kustomize-controller|notification-controller)
-      # cancel health checks on new kustomizations revisions
-      # https://fluxcd.io/flux/components/kustomize/options/
+      # cancel health checks when a new revision is detected
+      # https://fluxcd.io/flux/components/kustomize/options/#feature-gates
+      # https://fluxcd.io/flux/components/helm/options/#feature-gates
       - patch: |
           - op: add
             path: /spec/template/spec/containers/0/args/-
             value: --feature-gates=CancelHealthCheckOnNewRevision=true
         target:
           kind: Deployment
-          name: kustomize-controller
+          name: (kustomize-controller|helm-controller)
