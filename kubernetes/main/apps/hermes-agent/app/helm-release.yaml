@@ -49,6 +49,9 @@ spec:
               - name: http
                 containerPort: &port 8642
                 protocol: TCP
+              - name: dashboard
+                containerPort: 9119
+                protocol: TCP
             env:
               PORT: "8642"
               API_SERVER_ENABLED: "true"
@@ -80,6 +83,8 @@ spec:
         ports:
           http:
             port: 8642
+          dashboard:
+            port: 9119
     persistence:
       data:
         existingClaim: ${APP}-data
