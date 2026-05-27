@@ -21,21 +21,21 @@ spec:
         statusCodes:
           - type: Value
             value: 401
-        source: Local
+      source: Local
 
     # 403 Forbidden
     - match:
         statusCodes:
-          - type: Value:q
+          - type: Value
             value: 403
-        source: Local
+      source: Local
 
     # 404 Not Found
     - match:
         statusCodes:
           - type: Value
             value: 404
-        source: Local
+      source: Local
 
     # 500 Internal Server Error
     - match:
