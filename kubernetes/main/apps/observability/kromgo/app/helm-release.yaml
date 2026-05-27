@@ -101,8 +101,6 @@ spec:
             group: external
             client:
               dns-resolver: tcp://1.1.1.1:53
-        labels:
-          tarampampam/error-pages: disabled
         hostnames:
           - &host "{{ .Release.Name }}.techtales.io"
         parentRefs:
