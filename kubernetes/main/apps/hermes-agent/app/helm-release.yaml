@@ -58,7 +58,8 @@ spec:
               API_SERVER_HOST: "0.0.0.0"
               # API_SERVER_MODEL_NAME: "${APP}"
               HERMES_DASHBOARD: "1"
-              HERMES_HOME: &home /opt/data
+              HOME: &home /opt/data
+              HERMES_HOME: *home
             envFrom:
               - secretRef:
                   name: ${APP}-secret
