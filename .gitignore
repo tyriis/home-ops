@@ -32,6 +32,3 @@ kubernetes/**/bootstrap/**/charts
 # External agent skills (managed via skills-lock.json, install with: npx skills install)
 # To track a self-maintained skill, add: !.agents/skills/<skill-name>
 .agents/skills/
-
-# Superpowers documentation
-docs/superpowers/
