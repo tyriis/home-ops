@@ -70,45 +70,6 @@ spec:
 
   # Custom error page redirects - applies to all routes by default
   responseOverride:
-    # 401 Unauthorized
-    - match:
-        statusCodes:
-          - type: Value
-            value: 401
-      redirect:
-        scheme: https
-        hostname: &host error-pages.techtales.io
-        path:
-          type: ReplaceFullPath
-          replaceFullPath: /401.html
-        statusCode: 302
-
-    # 403 Forbidden
-    - match:
-        statusCodes:
-          - type: Value
-            value: 403
-      redirect:
-        scheme: https
-        hostname: *host
-        path:
-          type: ReplaceFullPath
-          replaceFullPath: /403.html
-        statusCode: 302
-
-    # 404 Not Found
-    - match:
-        statusCodes:
-          - type: Value
-            value: 404
-      redirect:
-        scheme: https
-        hostname: *host
-        path:
-          type: ReplaceFullPath
-          replaceFullPath: /404.html
-        statusCode: 302
-
     # 500 Internal Server Error
     - match:
         statusCodes:
@@ -116,7 +77,7 @@ spec:
             value: 500
       redirect:
         scheme: https
-        hostname: *host
+        hostname: &host error-pages.techtales.io
         path:
           type: ReplaceFullPath
           replaceFullPath: /500.html
