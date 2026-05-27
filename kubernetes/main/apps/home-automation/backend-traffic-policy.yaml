@@ -22,6 +22,7 @@ spec:
           - type: Value
             value: 401
       source: Local
+      response: {}
 
     # 403 Forbidden
     - match:
@@ -29,6 +30,7 @@ spec:
           - type: Value
             value: 403
       source: Local
+      response: {}
 
     # 404 Not Found
     - match:
@@ -36,6 +38,7 @@ spec:
           - type: Value
             value: 404
       source: Local
+      response: {}
 
     # 500 Internal Server Error
     - match:
