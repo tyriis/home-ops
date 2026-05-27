@@ -27,6 +27,40 @@ spec:
     global:
       createDefaultServiceAccount: false
     controllers:
+      postgres:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/immich-app/postgres
+              tag: 16-vectorchord0.4.3-pgvector0.8.0-pgvectors0.3.0
+            env:
+              POSTGRES_DB:
+                valueFrom:
+                  secretKeyRef:
+                    name: immich-db-init
+                    key: INIT_POSTGRES_DB
+              POSTGRES_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: immich-db-init
+                    key: INIT_POSTGRES_USER
+              POSTGRES_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: immich-db-init
+                    key: INIT_POSTGRES_PASS
+            securityContext:
+              runAsUser: 999
+              runAsGroup: 999
+              runAsNonRoot: true
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 1Gi
       server:
         annotations:
           reloader.stakater.com/auto: "true"
@@ -39,6 +73,7 @@ spec:
               - configMapRef:
                   name: immich-config
             env:
+              DB_HOSTNAME: immich-postgres.media.svc.cluster.local
               DB_USERNAME:
                 valueFrom:
                   secretKeyRef:
@@ -95,6 +130,11 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
 
     service:
+      postgres:
+        controller: postgres
+        ports:
+          http:
+            port: 5432
       server:
         controller: server
         ports:
@@ -122,6 +162,15 @@ spec:
                 port: *port
 
     persistence:
+      postgres-data:
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 50Gi
+        storageClass: local-nvme
+        advancedMounts:
+          postgres:
+            app:
+              - path: /var/lib/postgresql/data
       media:
         type: nfs
         server: nas.techtales.io
