@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: immich-config
+  namespace: media
+data:
+  DB_HOSTNAME: immich-postgres
+  REDIS_HOSTNAME: immich-dragonfly
+  IMMICH_MEDIA_LOCATION: /media
+  IMMICH_MACHINE_LEARNING_ENABLED: "false"

@@ -1,0 +1,18 @@
+---
+apiVersion: dbman.hef.sh/v1alpha3
+kind: Database
+metadata:
+  name: immich
+spec:
+  credentials:
+    usernameSecretRef:
+      name: immich-db-init
+      key: INIT_POSTGRES_USER
+    passwordSecretRef:
+      name: immich-db-init
+      key: INIT_POSTGRES_PASS
+  databaseName: immich
+  databaseServerRef:
+    name: postgres17
+    namespace: cnpg-system
+  prune: false
