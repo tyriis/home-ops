@@ -113,6 +113,12 @@ spec:
           hermes:
             app:
               - path: *home
+      run:
+        type: emptyDir
+        advancedMounts:
+          hermes:
+            app:
+              - path: /run
       tmp:
         type: emptyDir
         advancedMounts:
