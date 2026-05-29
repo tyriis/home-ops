@@ -92,3 +92,25 @@ This includes `kustomization.yaml`, `namespace.yaml`, and the release manifest (
 
 - Tooling versions are strictly managed using `mise` (`.mise.toml`).
 - This repository uses `pre-commit` and MegaLinter. Ensure changes are properly formatted and pass linting before committing.
+
+### REGRESSION INVESTIGATION
+
+When investigating a bug or regression, first check recent git history (last 20-30 commits)
+on the affected area to identify what changed. If the user says "it worked before",
+correlate the timeline of recent changes immediately before deep-diving into code/config.
+
+### PR WORKFLOW
+
+After committing and pushing a fix/feature to a branch:
+
+1. Present the commits to the user and ask if they're aligned/happy with the changes.
+2. Ask: "Ready for a PR?" — do not create a PR without confirmation.
+
+### POST-MERGE CLEANUP
+
+When the user says "I merged it" or equivalent, automatically:
+
+1. `git checkout main`
+2. `git pull`
+3. `git fetch -p`
+4. Delete all dangling local branches (`git branch -vv | awk '/: gone]/{print $1}' | xargs -r git branch -D`)

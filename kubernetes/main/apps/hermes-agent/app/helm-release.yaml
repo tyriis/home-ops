@@ -29,9 +29,6 @@ spec:
       securityContext:
         fsGroup: 10000
         fsGroupChangePolicy: OnRootMismatch
-        runAsGroup: 10000
-        runAsNonRoot: true
-        runAsUser: 10000
         seccompProfile:
           type: RuntimeDefault
     controllers:
@@ -91,6 +88,10 @@ spec:
               capabilities:
                 drop:
                   - ALL
+                add:
+                  - SETUID
+                  - SETGID
+                  - CHOWN
             resources:
               requests:
                 cpu: 10m
