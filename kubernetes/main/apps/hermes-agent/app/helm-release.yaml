@@ -27,11 +27,11 @@ spec:
     defaultPodOptions:
       automountServiceAccountToken: false
       securityContext:
-        fsGroup: 1000
+        fsGroup: 10000
         fsGroupChangePolicy: OnRootMismatch
-        runAsGroup: 1000
+        runAsGroup: 10000
         runAsNonRoot: true
-        runAsUser: 1000
+        runAsUser: 10000
         seccompProfile:
           type: RuntimeDefault
     controllers:
@@ -39,27 +39,6 @@ spec:
         forceRename: *app
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-run:
-            image:
-              repository: busybox
-              tag: 1.38.0@sha256:fd8d9aa63ba2f0982b5304e1ee8d3b90a210bc1ffb5314d980eb6962f1a9715d
-            command:
-              - chown
-              - -R
-              - 1000:1000
-              - /run
-            securityContext:
-              runAsUser: 0
-              runAsGroup: 0
-              runAsNonRoot: false
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
-                add:
-                  - CHOWN
         containers:
           app:
             args: ["gateway", "run"]
@@ -81,7 +60,6 @@ spec:
               HERMES_DASHBOARD: "1"
               HOME: &home /opt/data
               HERMES_HOME: *home
-              S6_READ_ONLY_ROOT: "1"
             envFrom:
               - secretRef:
                   name: ${APP}-secret
@@ -139,8 +117,6 @@ spec:
         type: emptyDir
         advancedMounts:
           hermes:
-            init-run:
-              - path: /run
             app:
               - path: /run
       tmp:
