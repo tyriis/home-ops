@@ -81,6 +81,7 @@ spec:
               HERMES_DASHBOARD: "1"
               HOME: &home /opt/data
               HERMES_HOME: *home
+              S6_READ_ONLY_ROOT: "1"
             envFrom:
               - secretRef:
                   name: ${APP}-secret
