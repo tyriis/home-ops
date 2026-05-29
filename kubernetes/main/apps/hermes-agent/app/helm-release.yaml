@@ -39,6 +39,27 @@ spec:
         forceRename: *app
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          init-run:
+            image:
+              repository: public.ecr.aws/docker/library/alpine
+              tag: 3.21.0
+            command:
+              - chown
+              - -R
+              - 1000:1000
+              - /run
+            securityContext:
+              runAsUser: 0
+              runAsGroup: 0
+              runAsNonRoot: false
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+                add:
+                  - CHOWN
         containers:
           app:
             args: ["gateway", "run"]
@@ -117,6 +138,8 @@ spec:
         type: emptyDir
         advancedMounts:
           hermes:
+            init-run:
+              - path: /run
             app:
               - path: /run
       tmp:
