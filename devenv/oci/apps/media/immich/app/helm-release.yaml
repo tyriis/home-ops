@@ -83,7 +83,7 @@ spec:
           app:
             image:
               repository: ghcr.io/immich-app/postgres
-              tag: 17-vectorchord0.5.3@sha256:fa8e9a8570ec00488f16a55e3ab75574af24bcbb4c2f3af76ce38c7570b65527
+              tag: 18-vectorchord0.5.3@sha256:8c10f8fd501a5dadbaf0b05acd1405ed20de93e69a1a01b3174e28428d7f3e12
             env:
               POSTGRES_DB:
                 valueFrom:
