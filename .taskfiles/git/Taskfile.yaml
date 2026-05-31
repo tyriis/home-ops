@@ -9,4 +9,5 @@ tasks:
       Merges a GitHub pull request using a standard merge commit.
       Usage: task git:pr-merge -- <PR_NUMBER_OR_URL>
     cmds:
+      - gh pr checks {{.CLI_ARGS}} --watch
       - gh pr merge {{.CLI_ARGS}} --merge --delete-branch
