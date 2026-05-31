@@ -25,7 +25,6 @@ spec:
     keepHistory: false
   values:
     defaultPodOptions:
-      automountServiceAccountToken: false
       securityContext:
         fsGroup: 10000
         fsGroupChangePolicy: OnRootMismatch
@@ -110,6 +109,7 @@ spec:
                 memory: 1Gi
           dashboard:
             image: *image
+            command: ["hermes"]
             args: ["dashboard", "--host", "0.0.0.0", "--insecure"]
             ports:
               - name: dashboard
@@ -158,6 +158,10 @@ spec:
           hermes:
             app:
               - path: /run
+      run-dashboard:
+        type: emptyDir
+        advancedMounts:
+          hermes:
             dashboard:
               - path: /run
       tmp:
@@ -166,5 +170,9 @@ spec:
           hermes:
             app:
               - path: /tmp
+      tmp-dashboard:
+        type: emptyDir
+        advancedMounts:
+          hermes:
             dashboard:
               - path: /tmp
