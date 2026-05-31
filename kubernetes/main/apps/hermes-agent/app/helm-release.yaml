@@ -136,6 +136,8 @@ spec:
           hermes:
             app:
               - path: *home
+            init-config:
+              - path: *home
       run:
         type: emptyDir
         advancedMounts:
