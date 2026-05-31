@@ -87,8 +87,9 @@ spec:
         annotations:
           external-dns/unifi: "true"
           gatus.home-operations.com/endpoint: |
+            url: "https://{{ .Release.Name }}.techtales.io/olla/ollama/"
             conditions:
-              - "[STATUS] == 302"
+              - "[STATUS] == 200"
         hostnames:
           - "{{ .Release.Name }}.techtales.io"
         parentRefs:
