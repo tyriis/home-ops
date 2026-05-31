@@ -105,6 +105,7 @@ After committing and pushing a fix/feature to a branch:
 
 1. Present the commits to the user and ask if they're aligned/happy with the changes.
 2. Ask: "Ready for a PR?" — do not create a PR without confirmation.
+3. **MERGING**: When instructed to merge a PR, YOU MUST ONLY use the `task git:pr-merge -- <PR_NUMBER>` task. NEVER use `gh pr merge --squash`. Squashing is strictly forbidden and breaks repository history.
 
 ### POST-MERGE CLEANUP
 
