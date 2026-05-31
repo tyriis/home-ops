@@ -164,7 +164,7 @@ spec:
             client:
               dns-resolver: tcp://1.1.1.1:53
             conditions:
-              - "[STATUS] == 404"
+              - "[STATUS] == 405"
         hostnames:
           - "{{ .Release.Name }}-webhook.techtales.io"
         parentRefs:
