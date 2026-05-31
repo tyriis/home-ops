@@ -532,10 +532,9 @@ data:
       # - hermes-teams
       # google_chat:
       # - hermes-google_chat
-    # image_gen:
-    #   provider: openai-codex
-    #   use_gateway: false
-    #   model: gpt-image-2-medium
+    image_gen:
+      use_gateway: false
+      model: fal-ai/flux-2/klein/9b
     # known_plugin_toolsets:
     #   cli:
     #   - spotify
