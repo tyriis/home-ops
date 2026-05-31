@@ -62,6 +62,7 @@ spec:
                 containerPort: 9119
                 protocol: TCP
             env:
+              S6_KEEP_ENV: "1"
               S6_READ_ONLY_ROOT: "1"
               API_SERVER_PORT: "8642"
               API_SERVER_ENABLED: "true"
@@ -105,6 +106,7 @@ spec:
                   - SETUID
                   - SETGID
                   - CHOWN
+                  - DAC_OVERRIDE
             resources:
               requests:
                 cpu: 10m
