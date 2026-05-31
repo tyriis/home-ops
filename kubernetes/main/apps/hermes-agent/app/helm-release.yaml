@@ -33,6 +33,7 @@ spec:
     controllers:
       hermes:
         forceRename: *app
+        strategy: Recreate
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
@@ -49,6 +50,7 @@ spec:
                 chown 10000:10000 /opt/data/config.yaml
         containers:
           app:
+            command: ["hermes"]
             args: ["gateway", "run", "--no-supervise"]
             image: &image
               repository: docker.io/nousresearch/hermes-agent
