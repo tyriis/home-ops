@@ -36,6 +36,18 @@ spec:
         forceRename: *app
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          init-config:
+            image:
+              repository: docker.io/library/alpine
+              tag: "3.23"
+            command:
+              - sh
+              - -c
+              - |
+                set -euo pipefail
+                cp /tmp/config.yaml /opt/data/config.yaml
+                chown 10000:10000 /opt/data/config.yaml
         containers:
           app:
             args: ["gateway", "run"]
@@ -109,6 +121,13 @@ spec:
           dashboard:
             port: 9119
     persistence:
+      configmap:
+        type: configMap
+        name: ${APP}-config
+        defaultMode: 0755
+        globalMounts:
+          - path: /tmp/config.yaml
+            subPath: config.yaml
       data:
         existingClaim: ${APP}-data
         advancedMounts:
