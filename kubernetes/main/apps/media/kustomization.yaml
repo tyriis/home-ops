@@ -10,7 +10,7 @@ resources:
   - ./bazarr/flux-sync.yaml
   - ./filebrowser/flux-sync.yaml
   - ./immich/flux-sync.yaml
-  - ./jellyfin/flux-sync.yaml
+  # - ./jellyfin/flux-sync.yaml
   - ./nzbget/flux-sync.yaml
   - ./plex/flux-sync.yaml
   - ./prowlarr/flux-sync.yaml
