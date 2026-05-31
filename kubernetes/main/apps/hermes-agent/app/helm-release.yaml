@@ -50,16 +50,13 @@ spec:
                 chown 10000:10000 /opt/data/config.yaml
         containers:
           app:
-            args: ["gateway", "run", "--insecure"]
-            image:
+            args: ["gateway", "run", "--no-supervise"]
+            image: &image
               repository: docker.io/nousresearch/hermes-agent
               tag: v2026.5.29@sha256:192a40783e9227b5f162b76af4d133050557adebd46e1c9cb40cb79a1317a9f7
             ports:
               - name: api
                 containerPort: 8642
-                protocol: TCP
-              - name: dashboard
-                containerPort: 9119
                 protocol: TCP
             env:
               S6_KEEP_ENV: "1"
@@ -68,7 +65,6 @@ spec:
               API_SERVER_ENABLED: "true"
               API_SERVER_HOST: "0.0.0.0"
               # API_SERVER_MODEL_NAME: "${APP}"
-              HERMES_DASHBOARD: "1"
               HOME: &home /opt/data
               HERMES_HOME: *home
             envFrom:
@@ -81,7 +77,7 @@ spec:
                 spec:
                   httpGet:
                     path: /
-                    port: &port 9119
+                    port: 8642
                   initialDelaySeconds: 30
                   periodSeconds: 30
                   failureThreshold: 5
@@ -92,11 +88,11 @@ spec:
                 spec:
                   httpGet:
                     path: /
-                    port: *port
+                    port: 8642
                   initialDelaySeconds: 30
                   periodSeconds: 10
                   failureThreshold: 30
-            securityContext:
+            securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
@@ -107,11 +103,27 @@ spec:
                   - SETGID
                   - CHOWN
                   - DAC_OVERRIDE
-            resources:
+            resources: &resources
               requests:
                 cpu: 10m
               limits:
                 memory: 1Gi
+          dashboard:
+            image: *image
+            args: ["dashboard", "--host", "0.0.0.0", "--insecure"]
+            ports:
+              - name: dashboard
+                containerPort: 9119
+                protocol: TCP
+            env:
+              HOME: *home
+              HERMES_HOME: *home
+              GATEWAY_HEALTH_URL: "http://localhost:8642"
+            envFrom:
+              - secretRef:
+                  name: ${APP}-secret
+            securityContext: *securityContext
+            resources: *resources
     service:
       app:
         forceRename: *app
@@ -136,6 +148,8 @@ spec:
           hermes:
             app:
               - path: *home
+            dashboard:
+              - path: *home
             init-config:
               - path: *home
       run:
@@ -144,9 +158,13 @@ spec:
           hermes:
             app:
               - path: /run
+            dashboard:
+              - path: /run
       tmp:
         type: emptyDir
         advancedMounts:
           hermes:
             app:
+              - path: /tmp
+            dashboard:
               - path: /tmp
