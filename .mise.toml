@@ -29,7 +29,7 @@ talosctl = "1.13.2"
 # https://taskfile.dev/
 task = "3.51.1"
 # https://trivy.dev/
-trivy = "0.70.0"
+trivy = "0.71.0"
 # minio client
 "aqua:minio/mc" = "RELEASE.2025-08-13T08-35-41Z"
 # https://openbao.org/
