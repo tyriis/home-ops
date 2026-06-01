@@ -1,0 +1,30 @@
+---
+# yaml-language-server: $schema=https://schemas.tholinka.dev/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: &name immich-db
+  annotations:
+    cnpg.io/skipEmptyWalArchiveCheck: "enabled"
+spec:
+  instances: 2
+  imageName: ghcr.io/immich-app/postgres:18-vectorchord0.5.3@sha256:8c10f8fd501a5dadbaf0b05acd1405ed20de93e69a1a01b3174e28428d7f3e12
+  primaryUpdateMethod: switchover
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 20Gi
+    storageClass: local-nvme
+  enableSuperuserAccess: false
+  monitoring:
+    enablePodMonitor: true
+  bootstrap:
+    initdb:
+      database: immich
+      secret:
+        name: immich-db-init
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: *name
+        serverName: *name

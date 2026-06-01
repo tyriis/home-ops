@@ -36,24 +36,14 @@ spec:
               repository: ghcr.io/immich-app/immich-server
               tag: v2.7.5@sha256:c15bff75068effb03f4355997d03dc7e0fc58720c2b54ad6f7f10d1bc57efaa5
             envFrom:
-              - configMapRef:
-                  name: immich-config
+              - secretRef:
+                  name: immich-env
             env:
-              DB_USERNAME:
-                valueFrom:
-                  secretKeyRef:
-                    name: immich-db-init
-                    key: INIT_POSTGRES_USER
-              DB_PASSWORD:
-                valueFrom:
-                  secretKeyRef:
-                    name: immich-db-init
-                    key: INIT_POSTGRES_PASS
-              DB_DATABASE_NAME:
-                valueFrom:
-                  secretKeyRef:
-                    name: immich-db-init
-                    key: INIT_POSTGRES_DB
+              DB_HOSTNAME: immich-db-rw.media.svc.cluster.local
+              REDIS_HOSTNAME: dragonfly.dragonfly-system.svc.cluster.local
+              IMMICH_MEDIA_LOCATION: /media
+              IMMICH_MACHINE_LEARNING_ENABLED: "false"
+              IMMICH_SERVER_URL: https://immich.techtales.io
             probes:
               liveness: &probes
                 enabled: true
