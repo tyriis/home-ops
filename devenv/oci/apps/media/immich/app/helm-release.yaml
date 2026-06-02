@@ -82,8 +82,12 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/immich-app/postgres
-              tag: 17-vectorchord0.5.3@sha256:fa8e9a8570ec00488f16a55e3ab75574af24bcbb4c2f3af76ce38c7570b65527
+              repository: ghcr.io/tensorchord/vchord-postgres
+              tag: pg18-v1.1.1
+            args:
+              - postgres
+              - -c
+              - shared_preload_libraries=vchord.so
             env:
               POSTGRES_DB:
                 valueFrom:
