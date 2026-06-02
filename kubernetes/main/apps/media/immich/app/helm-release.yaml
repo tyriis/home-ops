@@ -115,7 +115,7 @@ spec:
       media:
         type: nfs
         server: nas.techtales.io
-        path: /mnt/tank/fotos
+        path: /mnt/tank/immich
         advancedMounts:
           server:
             app:
