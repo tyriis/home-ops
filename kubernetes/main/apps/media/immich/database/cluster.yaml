@@ -8,13 +8,16 @@ metadata:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
   instances: 2
-  imageName: ghcr.io/immich-app/postgres:18-vectorchord0.5.3@sha256:8c10f8fd501a5dadbaf0b05acd1405ed20de93e69a1a01b3174e28428d7f3e12
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:18.3-1.1.1@sha256:392b53675b403d6a2c72b673cc488a7c272514755dd818c622fb9ce4665193c4
   primaryUpdateMethod: switchover
   primaryUpdateStrategy: unsupervised
   storage:
     size: 20Gi
     storageClass: local-nvme
   enableSuperuserAccess: false
+  postgresql:
+    shared_preload_libraries:
+      - vchord.so
   monitoring:
     enablePodMonitor: true
   bootstrap:
@@ -22,6 +25,10 @@ spec:
       database: immich
       secret:
         name: immich-db-init
+      postInitApplicationSQL:
+        - CREATE EXTENSION IF NOT EXISTS vchord CASCADE
+        - CREATE EXTENSION IF NOT EXISTS vector CASCADE
+        - CREATE EXTENSION IF NOT EXISTS earthdistance CASCADE
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
