@@ -14,10 +14,10 @@ services:
     env_file:
       - truenas.sops.env
     # environment:
-      # MINIO_ROOT_USER: ${MINIO_ROOT_USER:-admin}
-      # MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-changeme123}
-      # MINIO_BROWSER_REDIRECT_URL: ${MINIO_BROWSER_REDIRECT_URL:-}
-      # MINIO_SERVER_URL: ${MINIO_SERVER_URL:-}
+    # MINIO_ROOT_USER: ${MINIO_ROOT_USER:-admin}
+    # MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-changeme123}
+    # MINIO_BROWSER_REDIRECT_URL: ${MINIO_BROWSER_REDIRECT_URL:-}
+    # MINIO_SERVER_URL: ${MINIO_SERVER_URL:-}
     healthcheck:
       test:
         - CMD
@@ -103,22 +103,16 @@ services:
 # x-notes: >
 #   # MinIO
 
-
 #   ## Security
-
 
 #   **Read the following security precautions to ensure that you wish to continue
 #   using this application.**
 
-
 #   ---
-
 
 #   ### Container: [minio]
 
-
 #   #### Running user/group(s)
-
 
 #   - User: 3000
 
@@ -126,18 +120,13 @@ services:
 
 #   - Supplementary Groups: apps
 
-
 #   ---
-
 
 #   ### Container: [permissions]
 
-
 #   **This container is short-lived.**
 
-
 #   #### Running user/group(s)
-
 
 #   - User: root
 
@@ -145,12 +134,9 @@ services:
 
 #   - Supplementary Groups: apps
 
-
 #   ---
 
-
 #   ## Bug Reports and Feature Requests
-
 
 #   If you find a bug in this app or have an idea for a new feature, please file
 #   an issue at
