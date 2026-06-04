@@ -42,7 +42,7 @@ spec:
           app:
             image:
               repository: ghcr.io/n8n-io/n8n
-              tag: 2.25.2@sha256:213380272bfe06f1700cdd398a6e996b496e37329c9c116d13b04811c10e7452
+              tag: 2.25.3@sha256:3dacc8d43fa736ecfc38582aa82e88212b65be484edac2396fcd7b3d2334d41f
             envFrom:
               - secretRef:
                   name: n8n-env
