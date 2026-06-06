@@ -53,8 +53,8 @@ spec:
             command: ["hermes"]
             args: ["gateway", "run", "--no-supervise"]
             image: &image
-              repository: docker.io/nousresearch/hermes-agent
-              tag: v2026.6.5@sha256:9ad3b04ec916ea2c2da22358fd43b024c788d74073210695af88bfc2e63869b4
+              repository: harbor.techtales.io/main/hermes-agent
+              tag: v2026.6.5@sha256:6128fd61d66e4cece69f50b5fb407b45f2286dd5e5ae29528bf128a1cf32681e
             ports:
               - name: api
                 containerPort: 8642
