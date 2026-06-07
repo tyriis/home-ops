@@ -127,7 +127,6 @@ data:
         session_key: ''
         adopt_existing_tab: false
         rewrite_loopback_urls: false
-        loopback_host_alias: host.docker.internal
       cloud_provider: local
       use_gateway: false
     checkpoints:
