@@ -43,7 +43,7 @@ spec:
               REDIS_HOSTNAME: dragonfly.dragonfly-system.svc.cluster.local
               IMMICH_MEDIA_LOCATION: /media
               IMMICH_MACHINE_LEARNING_ENABLED: "true"
-              IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning.media.svc.cluster.local:3003
+              IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning.media.svc.cluster.local:3003 #NOSONAR allow http
               IMMICH_SERVER_URL: https://immich.techtales.io
             probes:
               liveness: &probes
