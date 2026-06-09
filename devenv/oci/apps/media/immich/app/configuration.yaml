@@ -8,4 +8,5 @@ data:
   DB_HOSTNAME: immich-postgres
   REDIS_HOSTNAME: immich-dragonfly
   IMMICH_MEDIA_LOCATION: /media
-  IMMICH_MACHINE_LEARNING_ENABLED: "false"
+  IMMICH_MACHINE_LEARNING_ENABLED: "true"
+  IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning.media.svc.cluster.local:3003 #NOSONAR allow http
