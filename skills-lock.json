@@ -18,6 +18,12 @@
       "sourceType": "github",
       "skillPath": "skills/gitops-repo-audit/SKILL.md",
       "computedHash": "14c803efe28b157ffb0508a82eaadfbf34e3398d45af59ebeb69cb02a727768d"
+    },
+    "kubesearch": {
+      "source": "ionfury/homelab",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/kubesearch/SKILL.md",
+      "computedHash": "391f792ca24ef7a6fee6c328ab1e25230f6508d5191d13c9613c3534439ca8fe"
     }
   }
 }
