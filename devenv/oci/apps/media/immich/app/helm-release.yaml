@@ -228,12 +228,6 @@ spec:
           postgres:
             app:
               - path: /var/lib/postgresql/data
-      tmpfs:
-        type: emptyDir
-        advancedMounts:
-          server:
-            app:
-              - path: /tmp
       ml-cache:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
@@ -243,9 +237,10 @@ spec:
           machine-learning:
             app:
               - path: /cache
-      ml-tmpfs:
+                subPath: cache
+              - path: /.cache
+                subPath: dotCache
+      tmp:
         type: emptyDir
-        advancedMounts:
-          machine-learning:
-            app:
-              - path: /tmp
+        globalMounts:
+          - path: /tmp
