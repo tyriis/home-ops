@@ -83,7 +83,7 @@ spec:
           app:
             image:
               repository: ghcr.io/tensorchord/vchord-postgres
-              tag: pg18-v1.1.1
+              tag: pg18-v1.1.1@sha256:700ff05ebdc7e4afd4dd8442e0684293046c3833677fec326550000a04cf8a91
             args:
               - postgres
               - -c
@@ -135,7 +135,7 @@ spec:
           app:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v2.7.5
+              tag: v2.7.5@sha256:a2501141440f10516d329fdfba2c68082e19eb9ba6016c061ac80d23beadf7f3
             env:
               TRANSFORMERS_CACHE: /cache
               HF_XET_CACHE: /cache/huggingface-xet
