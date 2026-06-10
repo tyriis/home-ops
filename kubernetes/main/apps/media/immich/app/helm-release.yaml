@@ -185,3 +185,9 @@ spec:
           machine-learning:
             app:
               - path: /cache
+      ml-tmpfs:
+        type: emptyDir
+        advancedMounts:
+          machine-learning:
+            app:
+              - path: /tmp
