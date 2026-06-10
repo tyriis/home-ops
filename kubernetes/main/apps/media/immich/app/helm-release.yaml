@@ -42,7 +42,8 @@ spec:
               DB_HOSTNAME: immich-db-rw.media.svc.cluster.local
               REDIS_HOSTNAME: dragonfly.dragonfly-system.svc.cluster.local
               IMMICH_MEDIA_LOCATION: /media
-              IMMICH_MACHINE_LEARNING_ENABLED: "false"
+              IMMICH_MACHINE_LEARNING_ENABLED: "true"
+              IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning.media.svc.cluster.local:3003 #NOSONAR allow http
               IMMICH_SERVER_URL: https://immich.techtales.io
             probes:
               liveness: &probes
@@ -76,6 +77,50 @@ spec:
               requests:
                 cpu: 100m
                 memory: 512Mi
+      machine-learning:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/immich-app/immich-machine-learning
+              tag: v2.7.5
+            env:
+              TRANSFORMERS_CACHE: /cache
+              HF_XET_CACHE: /cache/huggingface-xet
+              MPLCONFIGDIR: /cache/matplotlib-config
+            probes:
+              liveness: &mlProbes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: &mlPort 3003
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 5
+              readiness: *mlProbes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *mlPort
+                  failureThreshold: 30
+                  periodSeconds: 5
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -90,6 +135,11 @@ spec:
         ports:
           http:
             port: *port
+      machine-learning:
+        controller: machine-learning
+        ports:
+          http:
+            port: 3003
 
     route:
       app:
@@ -126,3 +176,12 @@ spec:
           server:
             app:
               - path: /tmp
+      ml-cache:
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 10Gi
+        storageClass: ceph-block
+        advancedMounts:
+          machine-learning:
+            app:
+              - path: /cache
