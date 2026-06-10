@@ -228,12 +228,6 @@ spec:
           postgres:
             app:
               - path: /var/lib/postgresql/data
-      tmpfs:
-        type: emptyDir
-        advancedMounts:
-          server:
-            app:
-              - path: /tmp
       ml-cache:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce

@@ -170,12 +170,6 @@ spec:
           server:
             app:
               - path: /media
-      tmpfs:
-        type: emptyDir
-        advancedMounts:
-          server:
-            app:
-              - path: /tmp
       ml-cache:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
