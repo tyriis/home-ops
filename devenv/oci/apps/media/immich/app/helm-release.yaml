@@ -243,9 +243,10 @@ spec:
           machine-learning:
             app:
               - path: /cache
-      ml-tmpfs:
+                subPath: cache
+              - path: /.cache
+                subPath: dotCache
+      tmp:
         type: emptyDir
-        advancedMounts:
-          machine-learning:
-            app:
-              - path: /tmp
+        globalMounts:
+          - path: /tmp
