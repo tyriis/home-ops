@@ -94,6 +94,8 @@ nodes:
             metric: 2048
     nodeLabels:
       topology.kubernetes.io/zone: home-lab
+    nodeAnnotations:
+      tuppr.home-operations.com/factory-url: "factory.talos.dev/metal-installer-secureboot"
 
   # i9-13900H / 96GB / Samsung SSD 990 PRO 1TB / Samsung SSD 990 PRO 1TB
   - hostname: talos02
@@ -173,6 +175,8 @@ nodes:
             metric: 2048
     nodeLabels:
       topology.kubernetes.io/zone: home-lab
+    nodeAnnotations:
+      tuppr.home-operations.com/factory-url: "factory.talos.dev/metal-installer-secureboot"
 
   # i9-13900H / 96GB / Samsung SSD 990 PRO 1TB / Samsung SSD 990 PRO 1TB
   - hostname: talos03
@@ -252,6 +256,8 @@ nodes:
             metric: 2048
     nodeLabels:
       topology.kubernetes.io/zone: home
+    nodeAnnotations:
+      tuppr.home-operations.com/factory-url: "factory.talos.dev/metal-installer-secureboot"
 
 controlPlane:
   schematic:
