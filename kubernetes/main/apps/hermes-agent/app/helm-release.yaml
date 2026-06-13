@@ -132,7 +132,7 @@ spec:
               tag: 0.51.399@sha256:70b5d946af4bda7676f5ee0707b6727b5c37cb98858d96c766f63588799ec970
             command: ["/bin/sh", "-c"]
             args:
-              - uv pip install --system --no-cache -r /apptoo/requirements.txt && python3 /apptoo/server.py
+              - uv venv /opt/data/webui-venv && uv pip install --no-cache -r /apptoo/requirements.txt && /opt/data/webui-venv/bin/python3 /apptoo/server.py
             ports:
               - name: webui
                 containerPort: 8787
