@@ -23,6 +23,14 @@ spec:
       ports:
         - protocol: TCP
           port: 8642
+    # Allow incoming traffic from Envoy Gateway for Hermes WebUI
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: networking
+      ports:
+        - protocol: TCP
+          port: 8787
   egress:
     # Allow DNS resolution
     - to:
