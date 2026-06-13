@@ -191,12 +191,13 @@ spec:
         primary: true
         controller: hermes
         ports:
-          webui:
-            port: 8787
           api:
             port: 8642
           dashboard:
             port: 9119
+          webui:
+            port: 8787
+            primary: true
     route:
       webui:
         annotations:
