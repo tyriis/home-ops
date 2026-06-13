@@ -130,7 +130,9 @@ spec:
             image:
               repository: ghcr.io/nesquena/hermes-webui
               tag: 0.51.397@sha256:22af4e3a83f9e98abf46ac325a145fb3bd7d24953bccab30b3ec7928c6c6be4e
-            command: ["python3", "/apptoo/server.py"]
+            command: ["/bin/sh", "-c"]
+            args:
+              - uv pip install --system --no-cache -r /apptoo/requirements.txt && python3 /apptoo/server.py
             ports:
               - name: webui
                 containerPort: 8787
