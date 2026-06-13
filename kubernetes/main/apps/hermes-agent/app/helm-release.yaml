@@ -191,16 +191,15 @@ spec:
         primary: true
         controller: hermes
         ports:
+          webui:
+            port: 8787
           api:
             port: 8642
           dashboard:
             port: 9119
-          webui:
-            port: 8787
     route:
       webui:
         annotations:
-          external-dns/cloudflare: "true"
           external-dns/unifi: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Hermes WebUI Chat
