@@ -30,6 +30,7 @@ spec:
     substitute:
       APP: *app
       VOLSYNC_SUFFIX: data
+      HOST: euphoria
 
 ---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -63,6 +64,7 @@ spec:
     substitute:
       APP: *app
       VOLSYNC_SUFFIX: data
+      HOST: moira
 
 ---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -96,6 +98,7 @@ spec:
     substitute:
       APP: *app
       VOLSYNC_SUFFIX: data
+      HOST: titan-ai
 
 ---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -129,3 +132,4 @@ spec:
     substitute:
       APP: *app
       VOLSYNC_SUFFIX: data
+      HOST: nova

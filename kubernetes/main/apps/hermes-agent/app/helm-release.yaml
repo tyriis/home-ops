@@ -126,6 +126,60 @@ spec:
                   name: ${APP}-secret
             securityContext: *securityContext
             resources: *resources
+          webui:
+            image:
+              repository: ghcr.io/nesquena/hermes-webui
+              tag: 0.51.397@sha256:22af4e3a83f9e98abf46ac325a145fb3bd7d24953bccab30b3ec7928c6c6be4e
+            command: ["python3", "/apptoo/server.py"]
+            ports:
+              - name: webui
+                containerPort: 8787
+                protocol: TCP
+            env:
+              HERMES_WEBUI_HOST: "0.0.0.0"
+              HERMES_WEBUI_PORT: "8787"
+              HERMES_WEBUI_CHAT_BACKEND: "gateway"
+              HERMES_WEBUI_GATEWAY_BASE_URL: "http://localhost:8642"
+              HOME: *home
+              HERMES_WEBUI_STATE_DIR: /opt/data/webui
+            envFrom:
+              - secretRef:
+                  name: ${APP}-secret
+            probes:
+              liveness: &webuiProbes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8787
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness: *webuiProbes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8787
+                  initialDelaySeconds: 10
+                  periodSeconds: 5
+                  failureThreshold: 30
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
     service:
       app:
         forceRename: *app
@@ -136,6 +190,26 @@ spec:
             port: 8642
           dashboard:
             port: 9119
+          webui:
+            port: 8787
+    route:
+      webui:
+        annotations:
+          external-dns/cloudflare: "true"
+          external-dns/unifi: "true"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Hermes WebUI Chat
+          gethomepage.dev/group: AI
+          gethomepage.dev/icon: mdi-chat
+          gethomepage.dev/name: Hermes WebUI
+          gatus.home-operations.com/endpoint: |
+            group: external
+        hostnames:
+          - "${HOST}.techtales.io"
+        parentRefs:
+          - name: envoy
+            namespace: networking
+            sectionName: https
     persistence:
       configmap:
         type: configMap
@@ -154,11 +228,15 @@ spec:
               - path: *home
             init-config:
               - path: *home
+            webui:
+              - path: *home
       run:
         type: emptyDir
         advancedMounts:
           hermes:
             app:
+              - path: /run
+            webui:
               - path: /run
       run-dashboard:
         type: emptyDir
@@ -171,6 +249,8 @@ spec:
         advancedMounts:
           hermes:
             app:
+              - path: /tmp
+            webui:
               - path: /tmp
       tmp-dashboard:
         type: emptyDir
