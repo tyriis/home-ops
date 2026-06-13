@@ -43,6 +43,11 @@
       matchUpdateTypes: ["patch", "minor", "major"],
       automerge: false,
     },
+    {
+      description: "add changelog for installer image (source is siderolabs/talos)",
+      matchDepNames: ["ghcr.io/siderolabs/installer"],
+      sourceUrl: "https://github.com/siderolabs/talos",
+    },
     // separate siderolabs per cluster
     {
       matchPackageNames: ["/siderolabs/"],
