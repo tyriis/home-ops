@@ -79,6 +79,7 @@ spec:
               # API_SERVER_MODEL_NAME: "${APP}"
               HOME: &home /opt/data
               HERMES_HOME: *home
+              FIRECRAWL_API_URL: http://192.168.1.244:3002 #NOSONAR allow http
             envFrom:
               - secretRef:
                   name: ${APP}-secret
