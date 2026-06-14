@@ -48,6 +48,17 @@ spec:
                 set -euo pipefail
                 cp /tmp/config.yaml /opt/data/config.yaml
                 chown 10000:10000 /opt/data/config.yaml
+          init-agent-src:
+            image:
+              repository: harbor.techtales.io/main/hermes-agent
+              tag: v2026.6.5@sha256:6128fd61d66e4cece69f50b5fb407b45f2286dd5e5ae29528bf128a1cf32681e
+            command:
+              - sh
+              - -c
+              - |
+                set -euo pipefail
+                cp -r /opt/hermes/. /tmp/agent-src/
+                chmod -R 755 /tmp/agent-src
         containers:
           app:
             command: ["hermes"]
@@ -132,7 +143,7 @@ spec:
               tag: 0.51.399@sha256:70b5d946af4bda7676f5ee0707b6727b5c37cb98858d96c766f63588799ec970
             command: ["/bin/sh", "-c"]
             args:
-              - test -d /opt/data/webui-venv || uv venv /opt/data/webui-venv && uv pip install --python /opt/data/webui-venv/bin/python --no-cache -r /apptoo/requirements.txt && /opt/data/webui-venv/bin/python3 /apptoo/server.py
+              - test -d /opt/data/webui-venv || uv venv /opt/data/webui-venv && uv pip install --python /opt/data/webui-venv/bin/python --no-cache -r /apptoo/requirements.txt && uv pip install --python /opt/data/webui-venv/bin/python --no-cache /tmp/agent-src && /opt/data/webui-venv/bin/python3 /apptoo/server.py
             ports:
               - name: webui
                 containerPort: 8787
@@ -143,6 +154,7 @@ spec:
               HERMES_WEBUI_CHAT_BACKEND: "gateway"
               HERMES_WEBUI_GATEWAY_BASE_URL: "http://localhost:8642"
               HERMES_WEBUI_AGENT_DIR: /nonexistent
+              HERMES_WEBUI_BOT_NAME: "${AGENT_NAME}"
               HOME: *home
               HERMES_WEBUI_STATE_DIR: /opt/data/webui
             envFrom:
@@ -210,7 +222,7 @@ spec:
           gatus.home-operations.com/endpoint: |
             group: external
         hostnames:
-          - "${HOST}.techtales.io"
+          - "${AGENT_NAME}.techtales.io"
         parentRefs:
           - name: envoy
             namespace: networking
@@ -257,6 +269,14 @@ spec:
               - path: /tmp
             webui:
               - path: /tmp
+      agent-src:
+        type: emptyDir
+        advancedMounts:
+          hermes:
+            init-agent-src:
+              - path: /tmp/agent-src
+            webui:
+              - path: /tmp/agent-src
       tmp-dashboard:
         type: emptyDir
         advancedMounts:
