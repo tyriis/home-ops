@@ -155,6 +155,7 @@ spec:
               HERMES_WEBUI_GATEWAY_BASE_URL: "http://localhost:8642"
               HERMES_WEBUI_AGENT_DIR: /tmp/agent-src
               HERMES_WEBUI_BOT_NAME: "${AGENT_NAME}"
+              HERMES_WEBUI_PASSKEY: "1"
               HOME: *home
               HERMES_WEBUI_STATE_DIR: /opt/data/webui
             envFrom:
