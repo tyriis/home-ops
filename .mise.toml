@@ -33,4 +33,4 @@ trivy = "0.71.1"
 # minio client
 "aqua:minio/mc" = "RELEASE.2025-08-13T08-35-41Z"
 # https://openbao.org/
-openbao = "2.5.4"
+openbao = "2.5.5"
