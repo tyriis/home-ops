@@ -10,7 +10,7 @@ spec:
       type: string
   steps:
     - name: goodbye
-      image: ubuntu@sha256:e153663f92c94118ff22a5dc397b59b351ffd695480566debb5850e017e5937a
+      image: ubuntu@sha256:53958ec7b67c2c9355df922dd08dbf0360611f8c3cdb656875e81873db9ffdba
       script: |
         #!/bin/bash
         echo "Goodbye $(params.username)!"
