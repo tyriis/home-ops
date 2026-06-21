@@ -30,3 +30,25 @@ spec:
       ports:
         - protocol: TCP
           port: 9999
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/networkpolicy.json
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: dragonfly-allow-atlantis
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: dragonfly
+  policyTypes:
+    - Ingress
+  ingress:
+    # Allow atlantis-system pods
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: atlantis-system
+      ports:
+        - port: 6379
+          protocol: TCP
