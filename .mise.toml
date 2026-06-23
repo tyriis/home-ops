@@ -23,7 +23,7 @@ pre-commit = "4.6.0"
 # https://github.com/mozilla/sops
 sops = "3.13.1"
 # https://github.com/budimanjojo/talhelper
-talhelper = "3.1.11"
+talhelper = "3.1.12"
 # https://www.talos.dev/
 talosctl = "1.13.4"
 # https://taskfile.dev/
