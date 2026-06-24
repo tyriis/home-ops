@@ -13,6 +13,16 @@ spec:
     - from:
         - namespaceSelector:
             matchLabels:
+              kubernetes.io/metadata.name: dragonfly-system
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: dragonfly-operator
+      ports:
+        - port: 9999
+          protocol: TCP
+    - from:
+        - namespaceSelector:
+            matchLabels:
               kubernetes.io/metadata.name: observability
           podSelector:
             matchLabels:
