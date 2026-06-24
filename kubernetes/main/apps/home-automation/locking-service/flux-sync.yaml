@@ -9,6 +9,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../../components/dragonfly
   path: ./kubernetes/main/apps/home-automation/locking-service/app
   prune: true
   sourceRef:
@@ -20,5 +22,8 @@ spec:
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: dragonfly-cluster
+    - name: dragonfly-crds
       namespace: dragonfly-system
+  postBuild:
+    substitute:
+      APP: *app
