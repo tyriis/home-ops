@@ -36,7 +36,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components: ../../../../../components/dragonfly
+  components:
+    - ../../../../../components/dragonfly
   path: ./kubernetes/main/apps/media/immich/app
   prune: true
   sourceRef:
