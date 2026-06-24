@@ -41,13 +41,12 @@ subjects:
     namespace: dragonfly-system
 
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/role.json
-# privileged write access restricted to the dragonfly namespace
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/clusterrole.json
+# privileged write access to manage dragonfly resources in targeted namespaces
 apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
+kind: ClusterRole
 metadata:
-  name: dragonfly-operator
-  namespace: dragonfly-system
+  name: dragonfly-operator-write
 rules:
   - apiGroups: ["coordination.k8s.io"]
     resources: ["leases"]
@@ -82,12 +81,12 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: dragonfly-operator
+  name: dragonfly-operator-write
   namespace: dragonfly-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: dragonfly-operator
+  kind: ClusterRole
+  name: dragonfly-operator-write
 subjects:
   - kind: ServiceAccount
     name: dragonfly-operator
