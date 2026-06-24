@@ -36,6 +36,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components: ../../../../components/dragonfly
   path: ./kubernetes/main/apps/media/immich/app
   prune: true
   sourceRef:
@@ -49,7 +50,7 @@ spec:
   dependsOn:
     - name: external-secrets-stores
       namespace: secops
-    - name: dragonfly-cluster
+    - name: dragonfly-crds
       namespace: dragonfly-system
     - name: immich-database
   postBuild:

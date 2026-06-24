@@ -40,7 +40,7 @@ spec:
                   name: immich-env
             env:
               DB_HOSTNAME: immich-db-rw.media.svc.cluster.local
-              REDIS_HOSTNAME: dragonfly.dragonfly-system.svc.cluster.local
+              REDIS_HOSTNAME: immich-dragonfly.media.svc.cluster.local
               IMMICH_MEDIA_LOCATION: /media
               IMMICH_MACHINE_LEARNING_ENABLED: "true"
               IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning.media.svc.cluster.local:3003 #NOSONAR allow http
