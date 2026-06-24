@@ -257,6 +257,18 @@ spec:
         pod:
           securityContext:
             fsGroup: 999
+        initContainers:
+          init-permissions:
+            image:
+              repository: ghcr.io/firecrawl/nuq-postgres
+              tag: latest@sha256:f9388bd25ae2e1f1d034518236f993ce236173c1d8800ce24092ea6643a95a33
+            securityContext:
+              runAsUser: 0
+            command:
+              - chown
+              - -R
+              - "999:999"
+              - /var/lib/postgresql/data
         containers:
           app:
             image:
@@ -274,8 +286,6 @@ spec:
               runAsGroup: 999
               runAsNonRoot: true
               capabilities:
-                add:
-                  - FOWNER
                 drop:
                   - ALL
             resources:
@@ -312,6 +322,8 @@ spec:
         type: emptyDir
         advancedMounts:
           nuq-postgres:
+            init-permissions:
+              - path: /var/lib/postgresql/data
             app:
               - path: /var/lib/postgresql/data
 
