@@ -41,15 +41,15 @@ spec:
             env:
               FLY_PROCESS_GROUP: app
               PORT: "3002"
-              REDIS_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
-              REDIS_RATE_LIMIT_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
-              PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.ai.svc.cluster.local:3000/scrape #NOSONAR allow http
+              REDIS_URL: redis://firecrawl-dragonfly.firecrawl-system.svc.cluster.local:6379
+              REDIS_RATE_LIMIT_URL: redis://firecrawl-dragonfly.firecrawl-system.svc.cluster.local:6379
+              PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.firecrawl-system.svc.cluster.local:3000/scrape #NOSONAR allow http
               USE_DB_AUTHENTICATION: "false"
               ENV: production
               LOGGING_LEVEL: INFO
               IS_KUBERNETES: "true"
               HOST: 0.0.0.0
-              NUQ_DATABASE_URL: postgresql://postgres:password@firecrawl-nuq-postgres.ai.svc.cluster.local:5432/postgres
+              NUQ_DATABASE_URL: postgresql://postgres:password@firecrawl-nuq-postgres.firecrawl-system.svc.cluster.local:5432/postgres
             envFrom:
               - secretRef:
                   name: firecrawl-env
@@ -111,9 +111,9 @@ spec:
             env:
               FLY_PROCESS_GROUP: worker
               PORT: "3005"
-              REDIS_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
-              REDIS_RATE_LIMIT_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
-              PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.ai.svc.cluster.local:3000/scrape #NOSONAR allow http
+              REDIS_URL: redis://firecrawl-dragonfly.firecrawl-system.svc.cluster.local:6379
+              REDIS_RATE_LIMIT_URL: redis://firecrawl-dragonfly.firecrawl-system.svc.cluster.local:6379
+              PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.firecrawl-system.svc.cluster.local:3000/scrape #NOSONAR allow http
               USE_DB_AUTHENTICATION: "false"
               ENV: production
               LOGGING_LEVEL: INFO
@@ -169,15 +169,15 @@ spec:
             env:
               FLY_PROCESS_GROUP: nuq
               NUQ_WORKER_PORT: "3006"
-              REDIS_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
-              REDIS_RATE_LIMIT_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
-              PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.ai.svc.cluster.local:3000/scrape #NOSONAR allow http
+              REDIS_URL: redis://firecrawl-dragonfly.firecrawl-system.svc.cluster.local:6379
+              REDIS_RATE_LIMIT_URL: redis://firecrawl-dragonfly.firecrawl-system.svc.cluster.local:6379
+              PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.firecrawl-system.svc.cluster.local:3000/scrape #NOSONAR allow http
               USE_DB_AUTHENTICATION: "false"
               ENV: production
               LOGGING_LEVEL: INFO
               IS_KUBERNETES: "true"
               HOST: 0.0.0.0
-              NUQ_DATABASE_URL: postgresql://postgres:password@firecrawl-nuq-postgres.ai.svc.cluster.local:5432/postgres
+              NUQ_DATABASE_URL: postgresql://postgres:password@firecrawl-nuq-postgres.firecrawl-system.svc.cluster.local:5432/postgres
             envFrom:
               - secretRef:
                   name: firecrawl-env
