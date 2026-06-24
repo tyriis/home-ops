@@ -274,6 +274,8 @@ spec:
               runAsGroup: 999
               runAsNonRoot: true
               capabilities:
+                add:
+                  - FOWNER
                 drop:
                   - ALL
             resources:
