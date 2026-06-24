@@ -4,13 +4,15 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app firecrawl
-  namespace: &namespace ai
+  namespace: &namespace firecrawl-system
 spec:
   targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/ai/firecrawl/app
+  components:
+    - ../../../../../components/dragonfly
+  path: ./kubernetes/main/apps/firecrawl-system/firecrawl/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -21,7 +23,7 @@ spec:
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: dragonfly-cluster
+    - name: dragonfly-crds
       namespace: dragonfly-system
     - name: cnpg-cluster
       namespace: cnpg-system
