@@ -259,7 +259,7 @@ spec:
           init-permissions:
             image:
               repository: ghcr.io/firecrawl/nuq-postgres
-              tag: latest@sha256:f9388bd25ae2e1f1d034518236f993ce236173c1d8800ce24092ea6643a95a33
+              tag: latest@sha256:4ca6718b2cef40404b046db5cd37ae45db3e44d1a5750c80522f3587a5b193d5
             securityContext:
               runAsUser: 0
             command:
@@ -271,7 +271,7 @@ spec:
           app:
             image:
               repository: ghcr.io/firecrawl/nuq-postgres
-              tag: latest@sha256:f9388bd25ae2e1f1d034518236f993ce236173c1d8800ce24092ea6643a95a33
+              tag: latest@sha256:4ca6718b2cef40404b046db5cd37ae45db3e44d1a5750c80522f3587a5b193d5
             env:
               POSTGRES_USER: postgres
               POSTGRES_PASSWORD: password
