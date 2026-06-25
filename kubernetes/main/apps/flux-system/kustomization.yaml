@@ -9,3 +9,4 @@ resources:
   - ./namespace.yaml
   - ./flux-instance/flux-sync.yaml
   - ./flux-operator/flux-sync.yaml
+  - ./konflate/flux-sync.yaml
