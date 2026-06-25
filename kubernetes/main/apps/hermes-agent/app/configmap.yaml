@@ -108,8 +108,8 @@ data:
       lifetime_seconds: 300
     web:
       backend: firecrawl
-      search_backend: ''
-      extract_backend: ''
+      search_backend: firecrawl
+      extract_backend: firecrawl
       use_gateway: false
     browser:
       inactivity_timeout: 120
