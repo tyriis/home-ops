@@ -26,7 +26,7 @@ spec:
       prComments: true
       publicUrl: https://konflate.techtales.io
     secret:
-      existingSecret: konflate-secret
+      existingSecret: konflate-config
     httpRoute:
       enabled: true
       annotations:
