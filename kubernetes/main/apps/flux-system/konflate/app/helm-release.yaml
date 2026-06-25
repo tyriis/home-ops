@@ -29,6 +29,8 @@ spec:
     httpRoute:
       enabled: true
       annotations:
+        external-dns/cloudflare: "true"
+        external-dns/unifi: "true"
         gatus.home-operations.com/endpoint: |
           group: external
       parentRefs:
