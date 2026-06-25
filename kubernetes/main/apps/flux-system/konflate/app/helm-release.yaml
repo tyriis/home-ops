@@ -1,0 +1,47 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: konflate
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: konflate
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    config:
+      repo: github://tyriis/home-ops
+      statusChecks: true
+      prComments: true
+      publicUrl: https://konflate.techtales.io
+    secret:
+      existingSecret: konflate-secret
+    httpRoute:
+      enabled: true
+      annotations:
+        gatus.home-operations.com/endpoint: |-
+          conditions: ["[STATUS] == 200"]
+      parentRefs:
+        - name: envoy
+          namespace: networking
+      hostnames:
+        - konflate.techtales.io
+    monitoring:
+      serviceMonitor:
+        enabled: true
+    resources:
+      requests:
+        cpu: 50m
+        memory: 256Mi
+      limits:
+        memory: 1Gi
