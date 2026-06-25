@@ -29,11 +29,12 @@ spec:
     httpRoute:
       enabled: true
       annotations:
-        gatus.home-operations.com/endpoint: |-
-          conditions: ["[STATUS] == 200"]
+        gatus.home-operations.com/endpoint: |
+          group: external
       parentRefs:
         - name: envoy
           namespace: networking
+          sectionName: https
       hostnames:
         - konflate.techtales.io
     monitoring:
