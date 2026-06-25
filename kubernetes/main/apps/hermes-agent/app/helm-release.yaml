@@ -51,7 +51,7 @@ spec:
           init-agent-src:
             image:
               repository: harbor.techtales.io/main/hermes-agent
-              tag: v2026.6.5@sha256:6128fd61d66e4cece69f50b5fb407b45f2286dd5e5ae29528bf128a1cf32681e
+              tag: v2026.6.19@sha256:148002249f10aacc53a6398cf08c7dd23455ba1d32d2b93211a4b6b1a4574abf
             command:
               - sh
               - -c
@@ -65,7 +65,7 @@ spec:
             args: ["gateway", "run", "--no-supervise"]
             image: &image
               repository: harbor.techtales.io/main/hermes-agent
-              tag: v2026.6.5@sha256:6128fd61d66e4cece69f50b5fb407b45f2286dd5e5ae29528bf128a1cf32681e
+              tag: v2026.6.19@sha256:148002249f10aacc53a6398cf08c7dd23455ba1d32d2b93211a4b6b1a4574abf
             ports:
               - name: api
                 containerPort: 8642
