@@ -20,6 +20,7 @@ spec:
     keepHistory: false
   values:
     config:
+      appClientId: ""
       repo: github://tyriis/home-ops
       statusChecks: true
       prComments: true
