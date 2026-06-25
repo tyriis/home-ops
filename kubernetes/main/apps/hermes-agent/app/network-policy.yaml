@@ -45,6 +45,18 @@ spec:
           port: 53
         - protocol: TCP
           port: 53
+    # Allow egress to firecrawl-api
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: firecrawl-system
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: firecrawl
+              app.kubernetes.io/controller: api
+      ports:
+        - protocol: TCP
+          port: 3002
     # Allow Internet egress but drop internal clusters to enforce isolation
     - to:
         - ipBlock:
