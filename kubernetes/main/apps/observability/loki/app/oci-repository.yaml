@@ -11,4 +11,4 @@ spec:
     operation: copy
   url: oci://ghcr.io/grafana-community/helm-charts/loki
   ref:
-    tag: 18.1.1
+    tag: 18.2.0
