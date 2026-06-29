@@ -141,7 +141,7 @@ spec:
           webui:
             image:
               repository: ghcr.io/nesquena/hermes-webui
-              tag: 0.51.719@sha256:29eb2e1f0e1f58399ab30ddb5b00bec0773d1436f2f07d9a833abd0389358ce5
+              tag: 0.51.742@sha256:f98f9aa12ad71c34a001f71b6ede8b8e25edeaad8139dabc516fe91c2513c041
             command: ["/bin/sh", "-c"]
             args:
               - test -d /opt/data/webui-venv || uv venv /opt/data/webui-venv && uv pip install --python /opt/data/webui-venv/bin/python --no-cache -r /apptoo/requirements.txt && uv pip install --python /opt/data/webui-venv/bin/python --no-cache /tmp/agent-src && /opt/data/webui-venv/bin/python3 /apptoo/server.py
