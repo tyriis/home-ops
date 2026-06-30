@@ -75,7 +75,7 @@ spec:
           upload:
             image:
               repository: google/cloud-sdk
-              tag: 574.0.0-alpine@sha256:a358aee2368e4f5db47ef84d1e5dad9e504fb934ed7154ea1453b86a9f894103
+              tag: 575.0.0-alpine@sha256:d9b9a437391920b4395e1e040d9b78b9f82eca352e9bc9e841bdc47d1111102a
             command:
               - /bin/sh
               - -ec
