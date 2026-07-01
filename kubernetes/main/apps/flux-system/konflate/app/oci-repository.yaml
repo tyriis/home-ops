@@ -11,4 +11,4 @@ spec:
     operation: copy
   url: oci://ghcr.io/home-operations/charts/konflate
   ref:
-    tag: 0.2.32
+    tag: 0.2.33
