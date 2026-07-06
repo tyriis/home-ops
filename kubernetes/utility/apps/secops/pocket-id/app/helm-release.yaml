@@ -37,7 +37,7 @@ spec:
           litestream-restore:
             image:
               repository: litestream/litestream
-              tag: 0.5.13@sha256:63134c853e43c12bf5b08aa93f0fae4dd63c7034b0972d626817ad562e6a8609
+              tag: 0.5.14@sha256:ef0ac5958cf81725b7a85fb76f82ef71ace030db9429086eeefc59ee6ca53941
             args:
               - restore
               - -if-db-not-exists
@@ -58,7 +58,7 @@ spec:
           litestream:
             image:
               repository: litestream/litestream
-              tag: 0.5.13@sha256:63134c853e43c12bf5b08aa93f0fae4dd63c7034b0972d626817ad562e6a8609
+              tag: 0.5.14@sha256:ef0ac5958cf81725b7a85fb76f82ef71ace030db9429086eeefc59ee6ca53941
             args:
               - replicate
             restartPolicy: Always
