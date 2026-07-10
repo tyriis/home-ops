@@ -33,8 +33,6 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           app:
-            env:
-              AIRSCAN_DEVICES: '"LASER" = "http://192.168.1.8/eSCL"'
             image:
               repository: sbs20/scanservjs
               tag: 3.1.0@sha256:9436a0a7297bc7493484990ab0ff6b3c5bd23ea26d9c289ebef05be5d84f586a
@@ -96,3 +94,12 @@ spec:
           scanservjs:
             app:
               - path: /var/run/dbus
+      airscan-config:
+        type: configMap
+        name: scanservjs-airscan-config
+        advancedMounts:
+          scanservjs:
+            app:
+              - path: /etc/sane.d/airscan.conf
+                subPath: airscan.conf
+                readOnly: true
