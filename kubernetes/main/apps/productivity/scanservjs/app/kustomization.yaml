@@ -5,3 +5,9 @@ kind: Kustomization
 resources:
   - ./helm-release.yaml
   - ./storage.yaml
+configMapGenerator:
+  - name: scanservjs-airscan-config
+    files:
+      - airscan.conf=./config/airscan.conf
+generatorOptions:
+  disableNameSuffixHash: true
