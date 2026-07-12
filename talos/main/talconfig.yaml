@@ -292,6 +292,7 @@ controlPlane:
         kubelet:
           extraArgs:
             rotate-server-certificates: "true"
+            max-pods: "200"
           extraMounts:
             - destination: /var/mnt/extra
               type: bind
