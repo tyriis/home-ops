@@ -11,6 +11,7 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../../components/volsync
+    - ../../../../../components/dragonfly
   path: ./kubernetes/main/apps/home-automation/n8n/app
   prune: true
   sourceRef:
