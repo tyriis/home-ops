@@ -79,6 +79,7 @@ spec:
               # API_SERVER_MODEL_NAME: "${APP}"
               HOME: &home /opt/data
               HERMES_HOME: *home
+              WIKI_PATH: /opt/data/wiki
               FIRECRAWL_API_URL: http://firecrawl-api.firecrawl-system.svc.cluster.local:3002 #NOSONAR allow http
             envFrom:
               - secretRef:
