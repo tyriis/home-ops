@@ -177,9 +177,9 @@ data:
         trace: disabled
     auxiliary:
       vision:
-        provider: auto
-        model: ''
-        base_url: ''
+        provider: ollama
+        model: gemma4:e4b
+        base_url: http://olla.ai.svc.cluster.local:40114/olla/ollama
         api_key: ''
         timeout: 120
         extra_body: {}
