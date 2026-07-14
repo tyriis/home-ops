@@ -58,7 +58,7 @@ nodes:
           deviceSelectors:
             - permanentAddr: 58:47:ca:77:29:22
               driver: i40e
-            - permanentAddr: 58:47:ca:77:29:22
+            - permanentAddr: 58:47:ca:77:29:23
               driver: i40e
           mode: 802.3ad
           lacpRate: fast
@@ -68,11 +68,10 @@ nodes:
           downdelay: 200
         mtu: 9000
         dhcp: false
-        addresses:
-          - 192.168.101.101/24
-        routes:
-          - network: 192.168.101.0/24
-            gateway: 192.168.101.1
+        vlans:
+          - vlanId: 101
+            addresses:
+              - 192.168.101.101/24
       # Thunderbolt
       - deviceSelector:
           busPath: 0-1.0 # talos02
@@ -149,11 +148,10 @@ nodes:
           downdelay: 200
         mtu: 9000
         dhcp: false
-        addresses:
-          - 192.168.101.102/24
-        routes:
-          - network: 192.168.101.0/24
-            gateway: 192.168.101.1
+        vlans:
+          - vlanId: 101
+            addresses:
+              - 192.168.101.102/24
       # Thunderbolt
       - deviceSelector:
           busPath: 0-1.0 # talos01
@@ -230,11 +228,10 @@ nodes:
           downdelay: 200
         mtu: 9000
         dhcp: false
-        addresses:
-          - 192.168.101.103/24
-        routes:
-          - network: 192.168.101.0/24
-            gateway: 192.168.101.1
+        vlans:
+          - vlanId: 101
+            addresses:
+              - 192.168.101.103/24
       # Thunderbolt
       - deviceSelector:
           busPath: 0-1.0 # talos01
