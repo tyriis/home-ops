@@ -34,6 +34,6 @@
 # https://mise-versions.jdx.dev/tools/mc
 "aqua:minio/mc" = "RELEASE.2025-08-13T08-35-41Z"
 # https://mise-versions.jdx.dev/tools/openbao
-"aqua:openbao/openbao/bao" = "2.5.5"
+"aqua:openbao/openbao/bao" = "2.6.0"
 # https://mise-versions.jdx.dev/tools/litestream
 "aqua:benbjohnson/litestream" = "0.5.14"

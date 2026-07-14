@@ -57,6 +57,17 @@ spec:
       ports:
         - protocol: TCP
           port: 3002
+    # Allow egress to olla (Ollama proxy) in ai namespace
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ai
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/instance: olla
+      ports:
+        - protocol: TCP
+          port: 40114
     # Allow Internet egress but drop internal clusters to enforce isolation
     - to:
         - ipBlock:

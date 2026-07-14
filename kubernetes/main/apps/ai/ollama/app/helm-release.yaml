@@ -38,7 +38,7 @@ spec:
           app:
             image:
               repository: ollama/ollama
-              tag: 0.31.2@sha256:509fdf54e23bd50d87af646cb51c0a7a203d6a83cc4d6695b3b08c5be1c62c0a
+              tag: 0.32.0@sha256:57f573b47f1f71ebb445789f279fe3e596a8beab182f7cf486db9205bad87c5a
             securityContext:
               privileged: true # Needed for iGPU device access
             env:
@@ -70,7 +70,7 @@ spec:
           exporter:
             image:
               repository: lucabecker42/ollama-exporter
-              tag: 1.0.2@sha256:70d3999cbfdaf5f7575495afd165ac30243252092ea56030c2a3ec1f7373f34a
+              tag: 1.0.3@sha256:9fb1f4c5bc4ff819eb13e148debeb7fd474a4c8956d83d39928ea22d95d3de5c
     service:
       app:
         ports:
