@@ -70,7 +70,7 @@ spec:
           exporter:
             image:
               repository: lucabecker42/ollama-exporter
-              tag: 1.0.2@sha256:70d3999cbfdaf5f7575495afd165ac30243252092ea56030c2a3ec1f7373f34a
+              tag: 1.0.3@sha256:9fb1f4c5bc4ff819eb13e148debeb7fd474a4c8956d83d39928ea22d95d3de5c
     service:
       app:
         ports:
