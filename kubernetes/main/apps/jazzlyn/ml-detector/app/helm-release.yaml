@@ -48,6 +48,7 @@ spec:
           app:
             env:
               CONFIG_PATH: /config/configuration.yaml
+              MPLCONFIGDIR: /mpl
               TORCH_HOME: /torch
               TORCHINDUCTOR_CACHE_DIR: /torch
               YOLO_CACHE_DIR: /yolo
@@ -128,6 +129,9 @@ spec:
             app:
               - path: /models
                 subPath: models
+                readOnly: false
+              - path: /mpl
+                subPath: mpl
                 readOnly: false
               - path: /torch
                 subPath: torch
