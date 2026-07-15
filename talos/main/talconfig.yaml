@@ -92,7 +92,7 @@ nodes:
           - network: 169.254.255.103/32
             metric: 2048
     nodeLabels:
-      topology.kubernetes.io/zone: home-lab
+      topology.kubernetes.io/zone: home
     nodeAnnotations:
       tuppr.home-operations.com/factory-url: "factory.talos.dev/metal-installer-secureboot"
 
@@ -172,7 +172,7 @@ nodes:
           - network: 169.254.255.103/32
             metric: 2048
     nodeLabels:
-      topology.kubernetes.io/zone: home-lab
+      topology.kubernetes.io/zone: home
     nodeAnnotations:
       tuppr.home-operations.com/factory-url: "factory.talos.dev/metal-installer-secureboot"
 
