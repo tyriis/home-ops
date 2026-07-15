@@ -32,4 +32,5 @@ spec:
     substitute:
       APP: *app
       NAMESPACE: *namespace
+      CILIUM_LB_IPS: 192.168.100.214
       VOLSYNC_SUFFIX: config
