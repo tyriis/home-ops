@@ -36,7 +36,7 @@ spec:
           app:
             image:
               repository: ghcr.io/firecrawl/firecrawl
-              tag: 2.11@sha256:c60a2eebc2ac194687a0911829fa8541d1973b7b297512596fe5971a4003b58a
+              tag: 2.11@sha256:2a348a12b4ec830498409325b7b2f98b5cf27c32099725b3dab9403b05c7e847
             command: ["node", "--max-old-space-size=6144", "dist/src/index.js"]
             env:
               FLY_PROCESS_GROUP: app
@@ -100,7 +100,7 @@ spec:
           app:
             image:
               repository: ghcr.io/firecrawl/firecrawl
-              tag: 2.11@sha256:c60a2eebc2ac194687a0911829fa8541d1973b7b297512596fe5971a4003b58a
+              tag: 2.11@sha256:2a348a12b4ec830498409325b7b2f98b5cf27c32099725b3dab9403b05c7e847
             command:
               [
                 "node",
@@ -158,7 +158,7 @@ spec:
           app:
             image:
               repository: ghcr.io/firecrawl/firecrawl
-              tag: 2.11@sha256:c60a2eebc2ac194687a0911829fa8541d1973b7b297512596fe5971a4003b58a
+              tag: 2.11@sha256:2a348a12b4ec830498409325b7b2f98b5cf27c32099725b3dab9403b05c7e847
             command:
               [
                 "node",
