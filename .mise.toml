@@ -24,7 +24,7 @@
 # https://mise-versions.jdx.dev/tools/sops
 "aqua:getsops/sops" = "3.13.2"
 # https://mise-versions.jdx.dev/tools/talhelper
-"aqua:budimanjojo/talhelper" = "3.1.14"
+"aqua:budimanjojo/talhelper" = "3.1.15"
 # https://mise-versions.jdx.dev/tools/talosctl
 "aqua:siderolabs/talos" = "1.13.6"
 # https://mise-versions.jdx.dev/tools/task
