@@ -22,7 +22,7 @@
 # https://mise-versions.jdx.dev/tools/pre-commit
 "aqua:pre-commit/pre-commit" = "4.6.1"
 # https://mise-versions.jdx.dev/tools/sops
-"aqua:getsops/sops" = "3.13.2"
+"aqua:getsops/sops" = "3.13.3"
 # https://mise-versions.jdx.dev/tools/talhelper
 "aqua:budimanjojo/talhelper" = "3.1.15"
 # https://mise-versions.jdx.dev/tools/talosctl
