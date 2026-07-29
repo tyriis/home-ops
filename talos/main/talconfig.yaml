@@ -75,22 +75,22 @@ nodes:
             gateway: 192.168.101.1
       # Thunderbolt
       - deviceSelector:
-          busPath: 0-1.0 # talos02
-        dhcp: false
-        mtu: 65520
-        addresses:
-          - 169.254.255.101/32
-        routes:
-          - network: 169.254.255.102/32
-            metric: 2048
-      - deviceSelector:
-          busPath: 1-1.0 # talos03
+          busPath: 0-1.0 # talos03
         dhcp: false
         mtu: 65520
         addresses:
           - 169.254.255.101/32
         routes:
           - network: 169.254.255.103/32
+            metric: 2048
+      - deviceSelector:
+          busPath: 1-1.0 # talos02
+        dhcp: false
+        mtu: 65520
+        addresses:
+          - 169.254.255.101/32
+        routes:
+          - network: 169.254.255.102/32
             metric: 2048
     nodeLabels:
       topology.kubernetes.io/zone: home
