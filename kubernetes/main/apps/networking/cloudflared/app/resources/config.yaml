@@ -11,8 +11,6 @@ ingress:
     service: https://echo.techtales.io
     originRequest:
       httpHostHeader: echo.techtales.io
-  - hostname: auth.techtales.io
-    service: https://auth.techtales.io
   - hostname: flux-webhook.techtales.io
     service: https://flux-webhook.techtales.io
   - hostname: flux-webhook-utility.techtales.io
