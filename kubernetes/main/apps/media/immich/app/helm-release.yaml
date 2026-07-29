@@ -45,15 +45,6 @@ spec:
               IMMICH_MACHINE_LEARNING_ENABLED: "true"
               IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning.media.svc.cluster.local:3003 #NOSONAR allow http
               IMMICH_SERVER_URL: https://immich.techtales.io
-              IMMICH_OAUTH_AUTO_LAUNCH: "true"
-              IMMICH_OAUTH_AUTO_REGISTER: "true"
-              IMMICH_OAUTH_BUTTON_TEXT: "Login with Pocket ID"
-              IMMICH_OAUTH_ENABLED: "true"
-              IMMICH_OAUTH_ISSUER_URL: https://id.techtales.io/.well-known/openid-configuration
-              IMMICH_OAUTH_SCOPE: "openid email profile groups"
-              IMMICH_OAUTH_STORAGE_LABEL_CLAIM: preferred_username
-              IMMICH_OAUTH_END_SESSION_ENDPOINT: https://id.techtales.io/api/oidc/end-session
-              IMMICH_OAUTH_MOBILE_REDIRECT_URI: https://immich.techtales.io/api/oauth/mobile-redirect
             probes:
               liveness: &probes
                 enabled: true
