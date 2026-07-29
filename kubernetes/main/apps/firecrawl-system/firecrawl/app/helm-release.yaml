@@ -221,6 +221,7 @@ spec:
               PORT: "3000"
               BLOCK_MEDIA: "true"
               MAX_CONCURRENT_PAGES: "10"
+              COREPACK_HOME: /tmp/corepack
             ports:
               - name: http
                 containerPort: 3000
