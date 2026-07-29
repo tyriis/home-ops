@@ -37,6 +37,7 @@ spec:
     - admins
     - users
   launchUrl: https://immich.techtales.io
+  pkce: true
 ```
 
 The Terraform module creates the client in PocketID and stores `CLIENT_ID` and `CLIENT_SECRET` in OpenBao at `infra/pocketid/clients/immich`.
@@ -47,8 +48,8 @@ After Terraform applies, copy the credentials from the Terraform-managed path to
 
 | From | To |
 |------|-----|
-| `infra/pocketid/clients/immich` → `CLIENT_ID` | `infra/kubernetes/main/media/immich` → `IMMICH_OAUTH_CLIENT_ID` |
-| `infra/pocketid/clients/immich` → `CLIENT_SECRET` | `infra/kubernetes/main/media/immich` → `IMMICH_OAUTH_CLIENT_SECRET` |
+| `infra/pocketid/clients/immich` → `CLIENT_ID` | `infra/kubernetes/main/media/immich` → `OAUTH_CLIENT_ID` |
+| `infra/pocketid/clients/immich` → `CLIENT_SECRET` | `infra/kubernetes/main/media/immich` → `OAUTH_CLIENT_SECRET` |
 
 ## 3. ExternalSecret — Add OIDC Credentials
 
@@ -58,8 +59,8 @@ After Terraform applies, copy the credentials from the Terraform-managed path to
 Add to the `immich-env` ExternalSecret template:
 
 ```yaml
-IMMICH_OAUTH_CLIENT_ID: "{{ .IMMICH_OAUTH_CLIENT_ID }}"
-IMMICH_OAUTH_CLIENT_SECRET: "{{ .IMMICH_OAUTH_CLIENT_SECRET }}"
+IMMICH_OAUTH_CLIENT_ID: "{{ .OAUTH_CLIENT_ID }}"
+IMMICH_OAUTH_CLIENT_SECRET: "{{ .OAUTH_CLIENT_SECRET }}"
 ```
 
 These become available to the Immich server container via the existing `envFrom.secretRef` → `immich-env`.

@@ -57,9 +57,9 @@ vault kv get -mount=infra pocketid/clients/immich
 - [ ] **Step 2:** Write them to the Immich app's OpenBao path, preserving all existing keys.
 
 ```bash
-vault kv put -mount=infra kubernetes/main/media/immich \
-  IMMICH_OAUTH_CLIENT_ID=<value> \
-  IMMICH_OAUTH_CLIENT_SECRET=<value> \
+vault kv patch -mount=infra kubernetes/main/media/immich \
+  OAUTH_CLIENT_ID=<value> \
+  OAUTH_CLIENT_SECRET=<value> \
   DB_USERNAME=<existing> \
   DB_PASSWORD=<existing> \
   DB_DATABASE_NAME=<existing> \
@@ -78,8 +78,8 @@ vault kv put -mount=infra kubernetes/main/media/immich \
 Add two lines to the `immich-env` ExternalSecret template's `data:` block:
 
 ```yaml
-        IMMICH_OAUTH_CLIENT_ID: "{{ .IMMICH_OAUTH_CLIENT_ID }}"
-        IMMICH_OAUTH_CLIENT_SECRET: "{{ .IMMICH_OAUTH_CLIENT_SECRET }}"
+        IMMICH_OAUTH_CLIENT_ID: "{{ .OAUTH_CLIENT_ID }}"
+        IMMICH_OAUTH_CLIENT_SECRET: "{{ .OAUTH_CLIENT_SECRET }}"
 ```
 
 The relevant section after the change:
@@ -89,8 +89,8 @@ The relevant section after the change:
         DB_DATABASE_NAME: "{{ .DB_USERNAME }}"
         DB_USERNAME: "{{ .DB_USERNAME }}"
         DB_PASSWORD: "{{ .DB_PASSWORD }}"
-        IMMICH_OAUTH_CLIENT_ID: "{{ .IMMICH_OAUTH_CLIENT_ID }}"
-        IMMICH_OAUTH_CLIENT_SECRET: "{{ .IMMICH_OAUTH_CLIENT_SECRET }}"
+        IMMICH_OAUTH_CLIENT_ID: "{{ .OAUTH_CLIENT_ID }}"
+        IMMICH_OAUTH_CLIENT_SECRET: "{{ .OAUTH_CLIENT_SECRET }}"
 ```
 
 - [ ] **Step 1:** Edit the file to add the two new template mappings.
