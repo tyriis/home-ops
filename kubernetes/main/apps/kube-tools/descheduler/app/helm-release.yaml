@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://datreeio.github.io/CRDs-catalog/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -55,7 +55,7 @@ spec:
                 conditions:
                   - reason: PodCompleted
                     status: "True"
-                    minTimeSinceLastTransitionSeconds: 14400  # 4h
+                    minTimeSinceLastTransitionSeconds: 14400 # 4h
                 includingInitContainers: true
                 ownerKinds:
                   exclude:
@@ -71,7 +71,7 @@ spec:
                 includingInitContainers: true
                 excludeOwnerKinds:
                   - Job
-                minPodLifetimeSeconds: 1800  # 30m
+                minPodLifetimeSeconds: 1800 # 30m
             - name: RemovePodsViolatingInterPodAntiAffinity
             - name: RemovePodsViolatingNodeAffinity
               args:
