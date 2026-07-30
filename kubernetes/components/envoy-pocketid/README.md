@@ -7,7 +7,6 @@ Kustomize component that adds [Pocket ID](https://pocket-id.org) OIDC authentica
 | Variable         | Required | Default            | Description                                                                                        |
 | ---------------- | -------- | ------------------ | -------------------------------------------------------------------------------------------------- |
 | `APP`            | ✅       | —                  | Application name. Used for resource names and the redirect/logout URL.                             |
-| `NAMESPACE`      | ✅       | —                  | Kubernetes namespace to deploy into.                                                               |
 | `POCKETID_GROUP` | ❌       | `privileged-users` | Pocket ID group whose members are granted access. Must match a group name configured in Pocket ID. |
 
 ## Vault Secret
@@ -55,7 +54,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      NAMESPACE: *namespace
       POCKETID_GROUP: users # optional, defaults to privileged-users
 ```
 

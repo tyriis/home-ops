@@ -30,7 +30,6 @@ spec:
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/minecraft-bedrock/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/node-red/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/rook-ceph/catalog-info.yaml
-    - https://github.com/tyriis/home-ops/blob/main/.backstage/components/tekton/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/traefik-forward-auth/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/traefik/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/.backstage/components/unifi-controller/catalog-info.yaml
