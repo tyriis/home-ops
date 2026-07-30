@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadashboard_v1beta1.json
 # https://grafana.github.io/grafana-operator/docs/examples/dashboard/
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
@@ -19,7 +19,7 @@ spec:
     key: cilium-operator-dashboard.json
 
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadashboard_v1beta1.json
 # https://grafana.github.io/grafana-operator/docs/examples/dashboard/
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard

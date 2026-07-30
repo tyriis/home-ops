@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadashboard_v1beta1.json
 # https://grafana.github.io/grafana-operator/docs/examples/dashboard/
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
@@ -16,7 +16,7 @@ spec:
   url: https://raw.githubusercontent.com/controlplaneio-fluxcd/flux-operator/refs/heads/main/config/monitoring/dashboards/flux-k8s-api-performance.json
 
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadashboard_v1beta1.json
 # https://grafana.github.io/grafana-operator/docs/examples/dashboard/
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
@@ -33,7 +33,7 @@ spec:
   url: https://raw.githubusercontent.com/controlplaneio-fluxcd/flux-operator/refs/heads/main/config/monitoring/dashboards/flux-performance.json
 
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadashboard_v1beta1.json
 # https://grafana.github.io/grafana-operator/docs/examples/dashboard/
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
@@ -52,7 +52,7 @@ spec:
     key: flux-control-plane.json
 
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadashboard_v1beta1.json
 # https://grafana.github.io/grafana-operator/docs/examples/dashboard/
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard

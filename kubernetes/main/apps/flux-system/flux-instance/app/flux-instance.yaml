@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/fluxcd.controlplane.io/fluxinstance_v1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/fluxcd.controlplane.io/fluxinstance_v1.json
 apiVersion: fluxcd.controlplane.io/v1
 kind: FluxInstance
 metadata:
