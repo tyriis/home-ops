@@ -50,8 +50,8 @@ spec:
                 chown 10000:10000 /opt/data/config.yaml
           init-agent-src:
             image:
-              repository: harbor.techtales.io/main/hermes-agent
-              tag: v2026.6.19@sha256:148002249f10aacc53a6398cf08c7dd23455ba1d32d2b93211a4b6b1a4574abf
+              repository: ghcr.io/tyriis/hermes-agent
+              tag: v2026.7.20@sha256-264c3b6ccb87a56507c492661a4e0f634074966bfe4330b280684b84e2cb7ae4
             command:
               - sh
               - -c
@@ -64,8 +64,8 @@ spec:
             command: ["hermes"]
             args: ["gateway", "run", "--no-supervise"]
             image: &image
-              repository: harbor.techtales.io/main/hermes-agent
-              tag: v2026.6.19@sha256:148002249f10aacc53a6398cf08c7dd23455ba1d32d2b93211a4b6b1a4574abf
+              repository: ghcr.io/tyriis/hermes-agent
+              tag: v2026.7.20@sha256-264c3b6ccb87a56507c492661a4e0f634074966bfe4330b280684b84e2cb7ae4
             ports:
               - name: api
                 containerPort: 8642
