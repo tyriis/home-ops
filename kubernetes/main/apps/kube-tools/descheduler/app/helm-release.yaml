@@ -48,6 +48,18 @@ spec:
                   cpu: 50
                   memory: 50
                   pods: 50
+            - name: PodLifeTime
+              args:
+                states:
+                  - Succeeded
+                conditions:
+                  - reason: PodCompleted
+                    status: "True"
+                    minTimeSinceLastTransitionSeconds: 14400  # 4h
+                includingInitContainers: true
+                ownerKinds:
+                  exclude:
+                    - Job
             - name: RemoveFailedPods
               args:
                 reasons:
@@ -59,7 +71,7 @@ spec:
                 includingInitContainers: true
                 excludeOwnerKinds:
                   - Job
-                minPodLifetimeSeconds: 1800
+                minPodLifetimeSeconds: 1800  # 30m
             - name: RemovePodsViolatingInterPodAntiAffinity
             - name: RemovePodsViolatingNodeAffinity
               args:
@@ -74,6 +86,7 @@ spec:
                 - RemovePodsViolatingTopologySpreadConstraint
             deschedule:
               enabled:
+                - PodLifeTime
                 - RemoveFailedPods
                 - RemovePodsViolatingInterPodAntiAffinity
                 - RemovePodsViolatingNodeAffinity
