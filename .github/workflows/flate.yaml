@@ -1,0 +1,106 @@
+---
+name: flate
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - kubernetes/**.yaml
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  filter:
+    name: flate / filter
+    runs-on: ubuntu-latest
+    outputs:
+      clusters: ${{ steps.build-clusters.outputs.clusters }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@9426d40962ed5378910ee2e21d5f8c6fcbf2dd96 # v47.0.6
+        with:
+          files_yaml: |
+            main:
+              - kubernetes/main/**
+              - kubernetes/base/**
+              - kubernetes/components/**
+            utility:
+              - kubernetes/utility/**
+              - kubernetes/base/**
+              - kubernetes/components/**
+
+      - name: build clusters list
+        id: build-clusters
+        run: |
+          CLUSTERS=$(echo '${{ steps.changed-files.outputs.changed_keys }}' | jq -Rc 'split(" ") | map(select(length > 0))')
+          echo "clusters=$CLUSTERS" >> "$GITHUB_OUTPUT"
+          echo "affected clusters: $CLUSTERS"
+
+  diff:
+    if: ${{ needs.filter.outputs.clusters != '[]' }}
+    needs: filter
+    name: flate diff / ${{ matrix.cluster }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        cluster: ${{ fromJSON(needs.filter.outputs.clusters) }}
+      fail-fast: false
+    permissions:
+      contents: read
+    steps:
+      - name: generate token
+        id: generate-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+          permission-pull-requests: write
+
+      - name: clear comment
+        uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88 # v3.0.5
+        with:
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+          header: ${{ github.event.pull_request.number }}/flate-diff/${{ matrix.cluster }}
+          message: |
+            ### flate diff (${{ matrix.cluster }}) - generating...
+
+      - name: checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: setup flate
+        uses: home-operations/flate/action@bf3405a189626478b0aa6ec98dc4d6f7d419df17 # v0.4.12
+
+      - name: run flate
+        id: diff
+        run: |
+          DIFF="$(flate diff all --path kubernetes/${{ matrix.cluster }}/flux -o github)"
+          {
+            echo "message<<EOF"
+            echo "### flate diff (${{ matrix.cluster }})"
+            if [[ -n $DIFF ]]; then
+              echo '```diff'
+              echo "$DIFF"
+              echo '```'
+            else
+              echo "no changes found"
+            fi
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: add comment
+        uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88 # v3.0.5
+        with:
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+          header: ${{ github.event.pull_request.number }}/flate-diff/${{ matrix.cluster }}
+          message: ${{ steps.diff.outputs.message }}

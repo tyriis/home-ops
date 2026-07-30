@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  test:
+    desc: run flate test -- main|utility
+    cmds:
+      - flate test all --path "{{.KUBERNETES_DIR}}/{{.CLI_ARGS}}/flux"
+
+  diff:
+    desc: run flate diff -- main|utility
+    cmds:
+      - flate diff all --path "{{.KUBERNETES_DIR}}/{{.CLI_ARGS}}/flux" --base origin/HEAD

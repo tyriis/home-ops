@@ -13,6 +13,7 @@ includes:
   backstage: .taskfiles/backstage/Taskfile.yaml
   debug: .taskfiles/debug-tasks/Taskfile.yaml
   devenv: .taskfiles/devenv/Taskfile.yaml
+  flate: .taskfiles/flate/Taskfile.yaml
   flux-local: .taskfiles/flux-local/Taskfile.yaml
   git: .taskfiles/git/Taskfile.yaml
   lint: .taskfiles/lint/Taskfile.yaml
