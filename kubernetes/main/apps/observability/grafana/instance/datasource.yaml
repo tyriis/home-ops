@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadatasource_v1beta1.json
 # https://grafana.github.io/grafana-operator/docs/examples/datasource/
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
@@ -17,7 +17,7 @@ spec:
     url: http://prometheus-operated.observability.svc.cluster.local:9090 #NOSONAR allow http
 
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadatasource_v1beta1.json
 # https://grafana.github.io/grafana-operator/docs/examples/datasource/
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
@@ -36,7 +36,7 @@ spec:
     url: http://alertmanager-operated.observability.svc.cluster.local:9093 #NOSONAR allow http
 
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadatasource_v1beta1.json
 # https://grafana.github.io/grafana-operator/docs/examples/datasource/
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
@@ -54,7 +54,7 @@ spec:
 
 
 # ---
-# # yaml-language-server: $schema=https://kube-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+# # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadatasource_v1beta1.json
 # # https://grafana.github.io/grafana-operator/docs/examples/datasource/
 # apiVersion: grafana.integreatly.org/v1beta1
 # kind: GrafanaDatasource
