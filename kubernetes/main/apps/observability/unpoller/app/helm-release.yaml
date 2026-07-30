@@ -24,10 +24,7 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    global:
-      createDefaultServiceAccount: false
     defaultPodOptions:
-      automountServiceAccountToken: false
       securityContext:
         runAsNonRoot: true
         runAsUser: 568

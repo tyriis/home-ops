@@ -24,12 +24,9 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    global:
-      createDefaultServiceAccount: false
     # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
     # https://github.com/jazzlyn/ml-detector
     defaultPodOptions:
-      automountServiceAccountToken: false
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000

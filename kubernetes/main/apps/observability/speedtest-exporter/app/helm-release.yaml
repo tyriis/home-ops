@@ -24,8 +24,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    global:
-      createDefaultServiceAccount: false
     controllers:
       speedtest-exporter:
         annotations:
