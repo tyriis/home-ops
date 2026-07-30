@@ -55,7 +55,7 @@ spec:
                 conditions:
                   - reason: PodCompleted
                     status: "True"
-                    minTimeSinceLastTransitionSeconds: 14400 # 4h
+                    minTimeSinceLastTransitionSeconds: 1800 # 30m
                 includingInitContainers: true
                 ownerKinds:
                   exclude:
