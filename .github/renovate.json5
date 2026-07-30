@@ -76,5 +76,10 @@
       matchUpdateTypes: ["minor", "patch"],
       automerge: true,
     },
+    {
+      description: "Pin bootstrap .mise.toml - Helm 3.x required for bootstrap compatibility",
+      matchFileNames: ["kubernetes/utility/bootstrap/.mise.toml"],
+      enabled: false,
+    },
   ],
 }
