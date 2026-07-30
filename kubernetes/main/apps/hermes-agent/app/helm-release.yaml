@@ -50,8 +50,8 @@ spec:
                 chown 10000:10000 /opt/data/config.yaml
           init-agent-src:
             image:
-              repository: harbor.techtales.io/main/hermes-agent
-              tag: v2026.6.19@sha256:148002249f10aacc53a6398cf08c7dd23455ba1d32d2b93211a4b6b1a4574abf
+              repository: ghcr.io/tyriis/hermes-agent
+              tag: v2026.7.20@sha256:264c3b6ccb87a56507c492661a4e0f634074966bfe4330b280684b84e2cb7ae4
             command:
               - sh
               - -c
@@ -64,8 +64,8 @@ spec:
             command: ["hermes"]
             args: ["gateway", "run", "--no-supervise"]
             image: &image
-              repository: harbor.techtales.io/main/hermes-agent
-              tag: v2026.6.19@sha256:148002249f10aacc53a6398cf08c7dd23455ba1d32d2b93211a4b6b1a4574abf
+              repository: ghcr.io/tyriis/hermes-agent
+              tag: v2026.7.20@sha256:264c3b6ccb87a56507c492661a4e0f634074966bfe4330b280684b84e2cb7ae4
             ports:
               - name: api
                 containerPort: 8642
@@ -142,7 +142,7 @@ spec:
           webui:
             image:
               repository: ghcr.io/nesquena/hermes-webui
-              tag: 0.52.155@sha256:6358d4c9c072573bd8a2f37b45cd5f651d32ac1844b9ba8fd89298389b716b11
+              tag: 0.52.158@sha256:28783c1ec13cda2f65ec1249a8537d3b9353fcfe5f97f4d24865ab524d26815d
             command: ["/bin/sh", "-c"]
             args:
               - test -d /opt/data/webui-venv || uv venv /opt/data/webui-venv && uv pip install --python /opt/data/webui-venv/bin/python --no-cache -r /apptoo/requirements.txt && uv pip install --python /opt/data/webui-venv/bin/python --no-cache /tmp/agent-src && /opt/data/webui-venv/bin/python3 /apptoo/server.py

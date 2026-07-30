@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadashboard_v1beta1.json
 # https://grafana.github.io/grafana-operator/docs/examples/dashboard/
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
@@ -16,7 +16,7 @@ spec:
   url: https://grafana.com/api/dashboards/15761/revisions/21/download
 
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadashboard_v1beta1.json
 # https://grafana.github.io/grafana-operator/docs/examples/dashboard/
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
@@ -33,7 +33,7 @@ spec:
   url: https://grafana.com/api/dashboards/15762/revisions/22/download
 
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadashboard_v1beta1.json
 # https://grafana.github.io/grafana-operator/docs/examples/dashboard/
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
@@ -50,7 +50,7 @@ spec:
   url: https://grafana.com/api/dashboards/15757/revisions/43/download
 
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadashboard_v1beta1.json
 # https://grafana.github.io/grafana-operator/docs/examples/dashboard/
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
@@ -67,7 +67,7 @@ spec:
   url: https://grafana.com/api/dashboards/15758/revisions/46/download
 
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadashboard_v1beta1.json
 # https://grafana.github.io/grafana-operator/docs/examples/dashboard/
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
@@ -84,7 +84,7 @@ spec:
   url: https://grafana.com/api/dashboards/15759/revisions/40/download
 
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadashboard_v1beta1.json
 # https://grafana.github.io/grafana-operator/docs/examples/dashboard/
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
@@ -101,7 +101,7 @@ spec:
   url: https://grafana.com/api/dashboards/15760/revisions/39/download
 
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadashboard_v1beta1.json
 # https://grafana.github.io/grafana-operator/docs/examples/dashboard/
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
@@ -118,7 +118,7 @@ spec:
   url: https://grafana.com/api/dashboards/11454/revisions/14/download
 
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadashboard_v1beta1.json
 # https://grafana.github.io/grafana-operator/docs/examples/dashboard/
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
@@ -135,7 +135,7 @@ spec:
   url: https://grafana.com/api/dashboards/1860/revisions/45/download
 
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadashboard_v1beta1.json
 # https://grafana.github.io/grafana-operator/docs/examples/dashboard/
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
