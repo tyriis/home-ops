@@ -18,7 +18,6 @@
     "github>techtales-io/renovate-config//dependencies/minio.json5",
     "github>techtales-io/renovate-config//dependencies/rook-ceph.json5",
     "github>techtales-io/renovate-config//dependencies/talos.json5",
-    "github>techtales-io/renovate-config//dependencies/tektoncd.json5",
   ],
   ignorePaths: [],
   rebaseWhen: "conflicted",
