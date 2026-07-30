@@ -25,6 +25,8 @@ spec:
     keepHistory: false
   values:
     # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
+    defaultPodOptions:
+      automountServiceAccountToken: true
     serviceAccount:
       i-see-dead-pods: {}
     controllers:

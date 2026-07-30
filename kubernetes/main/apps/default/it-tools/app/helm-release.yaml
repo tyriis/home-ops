@@ -26,8 +26,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    global:
-      createDefaultServiceAccount: false
     # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
     defaultPodOptions:
       securityContext:
