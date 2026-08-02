@@ -124,23 +124,6 @@ spec:
                 cpu: 10m
               limits:
                 memory: 1Gi
-          dashboard:
-            image: *image
-            command: ["hermes"]
-            args: ["dashboard", "--host", "0.0.0.0", "--insecure"]
-            ports:
-              - name: dashboard
-                containerPort: 9119
-                protocol: TCP
-            env:
-              HOME: *home
-              HERMES_HOME: *home
-              GATEWAY_HEALTH_URL: "http://localhost:8642"
-            envFrom:
-              - secretRef:
-                  name: ${APP}-secret
-            securityContext: *securityContext
-            resources: *resources
           webui:
             image:
               repository: ghcr.io/nesquena/hermes-webui
@@ -210,8 +193,6 @@ spec:
         ports:
           api:
             port: 8642
-          dashboard:
-            port: 9119
           webui:
             port: 8787
             primary: true
@@ -246,8 +227,6 @@ spec:
           hermes:
             app:
               - path: *home
-            dashboard:
-              - path: *home
             init-config:
               - path: *home
             webui:
@@ -259,12 +238,6 @@ spec:
             app:
               - path: /run
             webui:
-              - path: /run
-      run-dashboard:
-        type: emptyDir
-        advancedMounts:
-          hermes:
-            dashboard:
               - path: /run
       tmp:
         type: emptyDir
@@ -282,9 +255,3 @@ spec:
               - path: /tmp/agent-src
             webui:
               - path: /tmp/agent-src
-      tmp-dashboard:
-        type: emptyDir
-        advancedMounts:
-          hermes:
-            dashboard:
-              - path: /tmp

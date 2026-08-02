@@ -312,19 +312,6 @@ data:
       tool_progress: all
       cleanup_progress: false
       background_process_notifications: all
-    dashboard:
-      theme: default
-      show_token_analytics: true
-      oauth:
-        client_id: ''
-        portal_url: ''
-      basic_auth:
-        username: ''
-        password_hash: ''
-        password: ''
-        secret: ''
-        session_ttl_seconds: 0
-      public_url: ''
     privacy:
       redact_pii: false
     tts:
