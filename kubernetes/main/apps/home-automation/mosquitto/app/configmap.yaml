@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.config.k8s.io/configmap_v1.json
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mosquitto-config
+data:
+  mosquitto.conf: |
+    # mosquitto.conf - managed by GitOps
+    # Plain MQTT on the LAN; TLS/MQTTS is out of scope (see ADR 0009).
+    per_listener_settings false
+    listener 1883 0.0.0.0
+    allow_anonymous true
+    password_file /mosquitto/config/passwd
+    persistence true
+    persistence_location /mosquitto/data/
+    autosave_interval 60
+    # Disable Nagle on TCP: small MQTT control packets/publishes ship immediately
+    # instead of being coalesced, which reduces latency on the LAN.
+    set_tcp_nodelay true
+    log_dest stdout
+    log_type error
+    log_type warning
+    log_type notice
+    log_type information
+    connection_messages true

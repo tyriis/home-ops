@@ -11,6 +11,7 @@ resources:
   - ./govee2mqtt/flux-sync.yaml
   - ./home-assistant/flux-sync.yaml
   - ./locking-service/flux-sync.yaml
+  - ./mosquitto/flux-sync.yaml
   # - ./matter-server/flux-sync.yaml needs additional network for pod
   - ./n8n/flux-sync.yaml
   - ./node-red/flux-sync.yaml

@@ -1,0 +1,112 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app mosquitto
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 5.0.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      mosquitto:
+        replicas: 1
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsUser: 1883
+            runAsGroup: 1883
+            fsGroup: 1883
+            fsGroupChangePolicy: OnRootMismatch
+            seccompProfile:
+              type: RuntimeDefault
+
+        containers:
+          app:
+            image:
+              repository: docker.io/library/eclipse-mosquitto
+              tag: "2.0.22"
+            env:
+              TZ: Europe/Vienna
+            ports:
+              - name: mqtt
+                containerPort: &port 1883
+                protocol: TCP
+            probes:
+              readiness: &probes
+                enabled: true
+                type: TCP
+                port: *port
+              liveness: *probes
+              startup:
+                <<: *probes
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+            resources:
+              requests:
+                cpu: 50m
+                memory: 64Mi
+              limits:
+                memory: 128Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
+    service:
+      mqtt:
+        controller: *app
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: ${CILIUM_LB_IPS}
+        ports:
+          mqtt:
+            port: *port
+            protocol: TCP
+            targetPort: mqtt
+
+    persistence:
+      data:
+        existingClaim: mosquitto-data
+        globalMounts:
+          - path: /mosquitto/data
+      config:
+        type: configMap
+        name: mosquitto-config
+        globalMounts:
+          - path: /mosquitto/config/mosquitto.conf
+            subPath: mosquitto.conf
+            readOnly: true
+      passwd:
+        type: secret
+        name: mosquitto-secret
+        # 0440: readable by group 1883; 0600 would be root-only and crash mosquitto
+        defaultMode: 0440
+        globalMounts:
+          - path: /mosquitto/config/passwd
+            subPath: MOSQUITTO_PASSWD
+            readOnly: true
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
