@@ -41,7 +41,6 @@ spec:
         containers:
           app:
             image:
-              # Renovate manages digest pinning on subsequent runs.
               repository: docker.io/library/eclipse-mosquitto
               tag: "2.0.22"
             env:
