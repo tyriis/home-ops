@@ -22,7 +22,7 @@ started. An implementation plan will be written from this spec afterwards.
 
 | Component | File / Location | Key facts |
 |---|---|---|
-| Raspberry Pi broker | `mqtt.techtales.io` → `192.168.1.180` | Single-instance Mosquitto on bare metal, plain MQTT 1883, `allow_anonymous false`, `passwd` auth. Last home-automation-critical service outside the GitOps estate. |
+| Raspberry Pi broker | `mqtt.techtales.io` → `192.168.1.180` | Single-instance Mosquitto 1.4.14 on bare metal, plain MQTT 1883. `allow_anonymous` was unset (mosquitto 1.4.14 defaults to `true`), so anonymous clients (zigbee2mqtt, govee2mqtt) connected without credentials and the `passwd` file only authenticated the `homeassistant` user. Last home-automation-critical service outside the GitOps estate. |
 | Consumer: zigbee2mqtt | `kubernetes/main/apps/home-automation/zigbee2mqtt/` | Connects to `mqtt.techtales.io:1883`. Main cluster, `home-automation` ns. |
 | Consumer: govee2mqtt | `kubernetes/main/apps/home-automation/govee2mqtt/` | Connects to `mqtt.techtales.io:1883`. Main cluster, `home-automation` ns. |
 | Consumer: ring-mqtt | `kubernetes/main/apps/home-automation/ring-mqtt/` | Connects to `mqtt.techtales.io:1883`. Main cluster, `home-automation` ns. |
@@ -75,11 +75,16 @@ digests) via `bjw-s/app-template` v5.0.1 in the `home-automation` namespace,
 
 - TCP `1883` exposed through a Cilium `LoadBalancer` service annotated
   `lbipam.cilium.io/ips: 192.168.100.201` (lowest free address in `l2-pool`).
-- Auth: `allow_anonymous false`; `password_file` mounted from
+- Auth: `allow_anonymous true`; `password_file` mounted from
   `mosquitto-secret`, an `ExternalSecret` synced from OpenBao at
   `infra/kubernetes/main/home-automation/mosquitto`, key `MOSQUITTO_PASSWD`
   holding the full `passwd` file content, mounted at
-  `/mosquitto/config/passwd` via `subPath`.
+  `/mosquitto/config/passwd` via `subPath`. Anonymous clients (zigbee2mqtt,
+  govee2mqtt) connect without credentials; the `passwd` file still authenticates
+  the `homeassistant` user. This matches the Pi's effective behavior
+  (mosquitto 1.4.14 defaulted `allow_anonymous` to true) and avoids breaking
+  the existing consumer wiring; the broker is LAN-only with no TLS, so adding
+  strict auth would be theatre without changing the real threat model.
 - Config: `mosquitto.conf` ConfigMap — `listener 1883`, `persistence true`,
   `persistence_location /mosquitto/data/`,
   `password_file /mosquitto/config/passwd`.
@@ -351,9 +356,14 @@ sessions re-establish.
 
 - Keep **plain MQTT on `1883`** over the LAN for consumer compatibility
   (zigbee2mqtt, govee2mqtt, ring-mqtt, and HA all use plain MQTT today).
-- `allow_anonymous false`; authentication via the `passwd` file delivered
+- `allow_anonymous true`; authentication via the `passwd` file delivered
   through `ExternalSecret` from OpenBao at
-  `infra/kubernetes/main/home-automation/mosquitto`.
+  `infra/kubernetes/main/home-automation/mosquitto`. Anonymous clients
+  (zigbee2mqtt, govee2mqtt) connect without credentials; the `passwd` file
+  still authenticates the `homeassistant` user. This matches the Pi's effective
+  behavior (mosquitto 1.4.14 defaulted `allow_anonymous` to true); the broker
+  is LAN-only with no TLS, so requiring auth from every client would break
+  existing consumers without changing the real threat model.
 - TLS / MQTTS (`8883`) and WebSocket listeners are deliberately out of scope for
   this migration (YAGNI for LAN-only); they can be added later behind a
   cert-manager certificate if external exposure is ever needed.
@@ -398,7 +408,7 @@ Plus a `ConfigMap` for `mosquitto.conf` (`listener 1883`, `persistence true`,
 2. **Deploy broker**: add `kubernetes/main/apps/home-automation/mosquitto/`
    (`flux-sync.yaml` + `app/{kustomization.yaml, helm-release.yaml,
    external-secret.yaml, pvc.yaml}`), `CILIUM_LB_IPS: 192.168.100.201`,
-   listener `1883`, `allow_anonymous false`, `password_file` from the
+   listener `1883`, `allow_anonymous true`, `password_file` from the
    `ExternalSecret`, `ceph-block` PVC for `mosquitto.db` (no `volsync`).
    `dependsOn`: `external-secrets-stores`, `rook-ceph-cluster`.
 3. **Verify broker**: after Flux reconcile, confirm `192.168.100.201:1883` is

@@ -168,7 +168,7 @@ This is a change from the previous draft of this ADR, which hedged with "optiona
 ### Migration plan sketch
 
 1. **Pre-stage secret**: store the Mosquitto `passwd` file contents in OpenBao at `infra/kubernetes/main/home-automation/mosquitto`.
-2. **Deploy broker**: add `kubernetes/main/apps/home-automation/mosquitto/` (`flux-sync.yaml` + `app/{kustomization.yaml, helm-release.yaml, external-secret.yaml, pvc.yaml}`), `CILIUM_LB_IPS: 192.168.100.201`, listener `1883`, `allow_anonymous false`, `password_file` from the `ExternalSecret`, `ceph-block` PVC for `mosquitto.db` (no `volsync`). `dependsOn`: `external-secrets-stores`, `rook-ceph-cluster`.
+2. **Deploy broker**: add `kubernetes/main/apps/home-automation/mosquitto/` (`flux-sync.yaml` + `app/{kustomization.yaml, helm-release.yaml, external-secret.yaml, pvc.yaml}`), `CILIUM_LB_IPS: 192.168.100.201`, listener `1883`, `allow_anonymous true`, `password_file` from the `ExternalSecret`, `ceph-block` PVC for `mosquitto.db` (no `volsync`). `dependsOn`: `external-secrets-stores`, `rook-ceph-cluster`.
 3. **Verify broker**: after Flux reconcile, confirm `192.168.100.201:1883` is reachable with `mosquitto_sub`/`mosquitto_pub` using the password file.
 4. **Re-point DNS**: edit `dns-endpoint.yaml` — `mqtt.techtales.io` A record `192.168.1.180` → `192.168.100.201`. Keep `mqtt.lan` / `mqtt.home` CNAMEs.
 5. **Verify consumers**: confirm zigbee2mqtt, govee2mqtt, ring-mqtt, and Home Assistant reconnect via `mqtt.techtales.io` (DNS TTL may cause a brief delay).
@@ -179,5 +179,5 @@ This is a change from the previous draft of this ADR, which hedged with "optiona
 ### Security / transport
 
 - Keep **plain MQTT on `1883`** over the LAN for consumer compatibility (zigbee2mqtt, govee2mqtt, ring-mqtt, and HA all use plain MQTT today).
-- `allow_anonymous false`; authentication via the `passwd` file delivered through `ExternalSecret`.
+- `allow_anonymous true`; authentication via the `passwd` file delivered through `ExternalSecret`. Anonymous clients (zigbee2mqtt, govee2mqtt) connect without credentials; the `passwd` file still authenticates the `homeassistant` user. This matches the Pi's effective behavior (mosquitto 1.4.14 defaulted `allow_anonymous` to true) and keeps the existing consumer wiring unchanged; the broker is LAN-only with no TLS, so requiring auth from every client would be theatre without changing the real threat model.
 - TLS / MQTTS (`8883`) and WebSocket listeners are deliberately out of scope for this migration (YAGNI for LAN-only); they can be added later behind a cert-manager certificate if external exposure is ever needed.

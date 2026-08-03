@@ -125,11 +125,11 @@ data:
     # Plain MQTT on the LAN; TLS/MQTTS is out of scope (see ADR 0009).
     per_listener_settings false
     listener 1883 0.0.0.0
-    allow_anonymous false
+    allow_anonymous true
     password_file /mosquitto/config/passwd
     persistence true
     persistence_location /mosquitto/data/
-    autosave_interval 1800
+    autosave_interval 60
     # Disable Nagle on TCP: small MQTT control packets/publishes ship immediately
     # instead of being coalesced, which reduces latency on the LAN.
     set_tcp_nodelay true
@@ -141,7 +141,7 @@ data:
     connection_messages true
 ```
 
-Note: `password_file` points at `/mosquitto/config/passwd`, which is the secret created in Task 3 and mounted in Task 5. `persistence_location` is the PVC mount path (Task 4).
+Note: `password_file` points at `/mosquitto/config/passwd`, which is the secret created in Task 3 and mounted in Task 5. `persistence_location` is the PVC mount path (Task 4). `allow_anonymous true` permits anonymous clients (zigbee2mqtt, govee2mqtt connect without credentials); `password_file` still authenticates the `homeassistant` user — matches the Pi's effective behavior (mosquitto 1.4.14 defaulted `allow_anonymous` to true). `autosave_interval 60` minimises retained-message loss on unclean restart.
 
 - [ ] **Step 2: Commit**
 
@@ -557,8 +557,11 @@ kubectl get pods -n home-automation -l app.kubernetes.io/name=mosquitto
 kubectl get svc -n home-automation mosquitto-mqtt
 
 # Reachability + auth (from a host with mosquitto clients on the LAN)
+# Authenticated path (homeassistant user via password_file)
 mosquitto_sub -h 192.168.100.201 -p 1883 -u homeassistant -P '<REDACTED_PASSWORD>' -t 'home-ops/test' -C 1 &
 mosquitto_pub -h 192.168.100.201 -p 1883 -u homeassistant -P '<REDACTED_PASSWORD>' -t 'home-ops/test' -m 'ok'
+# Anonymous path (no -u/-P; exercises allow_anonymous true for zigbee2mqtt/govee2mqtt)
+mosquitto_pub -h 192.168.100.201 -p 1883 -t 'home-ops/anon-test' -m 'ok'
 ```
 
 - [ ] **Step 4: Post-DNS consumer verification**
