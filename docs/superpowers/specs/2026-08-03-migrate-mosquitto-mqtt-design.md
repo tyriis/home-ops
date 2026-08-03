@@ -69,7 +69,7 @@ No Mosquitto/MQTT deployment exists anywhere in this repo (clusters or
 
 ### Approach A — Main k8s cluster (Recommended)
 
-Deploy `eclipse-mosquitto` (mosquitto 2.x, tag `2.0.20`, Renovate-managed
+Deploy `eclipse-mosquitto` (mosquitto 2.x, tag `2.0.22`, Renovate-managed
 digests) via `bjw-s/app-template` v5.0.1 in the `home-automation` namespace,
 `replicas: 1`.
 
@@ -87,8 +87,11 @@ digests) via `bjw-s/app-template` v5.0.1 in the `home-automation` namespace,
   No `volsync` backup.
 - Pod security: `runAsUser: 1883`, `readOnlyRootFilesystem: true` with the
   writable PVC at `/mosquitto/data/` and an `emptyDir` at `/tmp`.
+- Container env: `TZ: Europe/Vienna` (repo convention, matches `n8n` and other
+  home-automation apps) so log timestamps and any time-aware broker behavior
+  line up with house local time.
 - `flux-sync.yaml` with `postBuild.substitute`
-  (`APP`/`NAMESPACE`/`CILIUM_LB_IPS`); `dependsOn`:
+  (`APP`/`CILIUM_LB_IPS`); `dependsOn`:
   `external-secrets-stores`, `rook-ceph-cluster`.
 
 **Pros:**
@@ -204,7 +207,7 @@ observability stack (Loki/Prometheus), one deployment mechanism — and no new
 dependency on NAS uptime for a home-automation-critical path.
 
 The broker image stays **`eclipse-mosquitto`** (single instance, mosquitto 2.x,
-tag `2.0.20`, Renovate-managed digests). EMQX/VerneMQ clustering is not
+tag `2.0.22`, Renovate-managed digests). EMQX/VerneMQ clustering is not
 warranted at this scale — a handful of LAN home-automation clients does not
 justify a clustered broker, the operational complexity it adds, or the
 divergence from the stable single-instance model the user values.
@@ -361,10 +364,10 @@ sessions re-establish.
 
 ```
 kubernetes/main/apps/home-automation/mosquitto/
-├── flux-sync.yaml          # Kustomization CRD, postBuild.substitute {APP, NAMESPACE, CILIUM_LB_IPS}
+├── flux-sync.yaml          # Kustomization CRD, postBuild.substitute {APP, CILIUM_LB_IPS}
 └── app/
     ├── kustomization.yaml   # Lists resources
-    ├── helm-release.yaml    # bjw-s/app-template v5.0.1, eclipse-mosquitto 2.0.20
+    ├── helm-release.yaml    # bjw-s/app-template v5.0.1, eclipse-mosquitto 2.0.22
     ├── external-secret.yaml # ExternalSecret → OpenBao infra/kubernetes/main/home-automation/mosquitto (MOSQUITTO_PASSWD)
     └── pvc.yaml             # ceph-block PVC for /mosquitto/data/
 ```
