@@ -35,7 +35,7 @@
 
 ## Notes & Assumptions
 
-- **Image tag:** `eclipse-mosquitto` `2.0.20` is pinned by tag only (no digest). Renovate manages digest pinning on subsequent runs, consistent with the rest of the estate. Update to the current 2.x tag at implementation time if Renovate reports a newer one.
+- **Image tag:** `eclipse-mosquitto` `2.0.22` is pinned by tag only (no digest). Renovate manages digest pinning on subsequent runs, consistent with the rest of the estate. Update to the current 2.x tag at implementation time if Renovate reports a newer one.
 - **`passwd` mount approach:** The OpenBao secret at `infra/kubernetes/main/home-automation/mosquitto` is expected to hold a single key `MOSQUITTO_PASSWD` whose value is the full mosquitto `passwd` file content (e.g. `homeassistant:$6$...`). The `ExternalSecret` creates a Kubernetes `Secret` named `mosquitto-secret` with that key, and the Helm chart mounts it as a file at `/mosquitto/config/passwd` via `subPath: MOSQUITTO_PASSWD` (the same `type: secret` + `subPath` pattern used by `minecraft-public-velocity-proxy` `forwarding-secret` and `ring-mqtt` `credentials`). This keeps the auth file declarative, OpenBao-managed, and file-mounted without an initContainer.
 - **Security context:** The official `eclipse-mosquitto` image runs as user `mosquitto` (UID 1883). `readOnlyRootFilesystem: true` is set; `/mosquitto/data` is the PVC and `/tmp` is an `emptyDir`, both writable.
 - **No volsync:** Per the ADR, the broker's state is recreatable and the only state that matters (auth) is backed up via OpenBao. The `flux-sync.yaml` therefore omits the `components:` volsync line and the `VOLSYNC_SUFFIX` substitute, and `dependsOn` lists only `external-secrets-stores` and `rook-ceph-cluster`.
@@ -89,7 +89,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      NAMESPACE: *namespace
       CILIUM_LB_IPS: 192.168.100.201
 ```
 
@@ -131,6 +130,9 @@ data:
     persistence true
     persistence_location /mosquitto/data/
     autosave_interval 1800
+    # Disable Nagle on TCP: small MQTT control packets/publishes ship immediately
+    # instead of being coalesced, which reduces latency on the LAN.
+    set_tcp_nodelay true
     log_dest stdout
     log_type error
     log_type warning
@@ -287,7 +289,9 @@ spec:
             image:
               # Renovate manages digest pinning on subsequent runs.
               repository: docker.io/library/eclipse-mosquitto
-              tag: "2.0.20"
+              tag: "2.0.22"
+            env:
+              TZ: Europe/Vienna
             ports:
               - name: mqtt
                 containerPort: &port 1883
@@ -318,7 +322,6 @@ spec:
 
     service:
       mqtt:
-        primary: true
         controller: *app
         type: LoadBalancer
         annotations:
@@ -344,7 +347,8 @@ spec:
       passwd:
         type: secret
         name: mosquitto-secret
-        defaultMode: 0600
+        # 0440: readable by group 1883; 0600 would be root-only and crash mosquitto
+        defaultMode: 0440
         globalMounts:
           - path: /mosquitto/config/passwd
             subPath: MOSQUITTO_PASSWD
@@ -359,7 +363,7 @@ Note:
 - `runAsUser: 1883` matches the `mosquitto` user in the official image. `readOnlyRootFilesystem: true` is safe because `/mosquitto/data` (PVC) and `/tmp` (emptyDir) are writable.
 - The `mqtt` service is `type: LoadBalancer` with `lbipam.cilium.io/ips: ${CILIUM_LB_IPS}` (substituted from `flux-sync.yaml` to `192.168.100.201`), mirroring the `minecraft-public-velocity-proxy` and `home-assistant` `hisense-aircon` patterns.
 - `passwd` secret mount uses the `type: secret` + `subPath` pattern from `minecraft-public-velocity-proxy` (`forwarding-secret`) and `ring-mqtt` (`credentials`).
-- Image tag is pinned to `2.0.20` without a digest; Renovate adds the `@sha256:...` digest on its next run, consistent with the estate's Renovate config.
+- Image tag is pinned to `2.0.22` without a digest; Renovate adds the `@sha256:...` digest on its next run, consistent with the estate's Renovate config.
 
 - [ ] **Step 2: Commit**
 
