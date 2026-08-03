@@ -86,7 +86,7 @@ spec:
     - dnsName: mqtt.techtales.io
       recordType: A
       targets:
-        - 192.168.1.180
+        - 192.168.100.201
     - dnsName: mqtt.lan
       recordType: CNAME
       targets:
