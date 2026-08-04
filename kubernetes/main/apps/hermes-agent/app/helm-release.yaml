@@ -40,7 +40,7 @@ spec:
           init-config:
             image:
               repository: docker.io/library/alpine
-              tag: "3.24@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b"
+              tag: 3.24@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b
             command:
               - sh
               - -c
@@ -138,13 +138,14 @@ spec:
             env:
               HERMES_WEBUI_HOST: "0.0.0.0"
               HERMES_WEBUI_PORT: "8787"
-              HERMES_WEBUI_CHAT_BACKEND: "gateway"
-              HERMES_WEBUI_GATEWAY_BASE_URL: "http://localhost:8642"
+              HERMES_WEBUI_CHAT_BACKEND: gateway
+              HERMES_WEBUI_GATEWAY_BASE_URL: http://localhost:8642
               HERMES_WEBUI_AGENT_DIR: /tmp/agent-src
               HERMES_WEBUI_BOT_NAME: "${AGENT_NAME}"
               HERMES_WEBUI_PASSKEY: "1"
-              HOME: *home
               HERMES_WEBUI_STATE_DIR: /opt/data/webui
+              HERMES_NIX_BUILD: "1" # TODO: https://github.com/nesquena/hermes-webui/issues/6441
+              HOME: *home
             envFrom:
               - secretRef:
                   name: ${APP}-secret
