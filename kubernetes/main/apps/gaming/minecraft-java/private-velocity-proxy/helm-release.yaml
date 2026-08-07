@@ -47,7 +47,7 @@ spec:
             nameOverride: *app
             image:
               repository: itzg/mc-proxy
-              tag: java21@sha256:360f690b476f196a757c6fee9d7e958bd77df5468db068e944bfa82f66771742
+              tag: java21@sha256:6c26250a95ff49c37ad17471dccc6b64a4b7cc3ecbf5740df8fc3fad8e911975
             envFrom:
               - secretRef:
                   name: minecraft-velocity-proxy-rcon
