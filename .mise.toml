@@ -20,7 +20,7 @@
 # https://mise-versions.jdx.dev/tools/node
 # node = "24.14.0"
 # https://mise-versions.jdx.dev/tools/pre-commit
-"aqua:pre-commit/pre-commit" = "4.6.1"
+"aqua:pre-commit/pre-commit" = "4.6.2"
 # https://mise-versions.jdx.dev/tools/sops
 "aqua:getsops/sops" = "3.13.3"
 # https://mise-versions.jdx.dev/tools/talhelper
