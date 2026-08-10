@@ -43,7 +43,7 @@ spec:
           app:
             image:
               repository: ghcr.io/thushan/olla
-              tag: v0.0.28@sha256:1f369f0c5aa8392aca74271cb041dc37e580baf7fc012581eb21d790ab78ee13
+              tag: v0.0.29@sha256:4f1b871c88dbc8e7b7951aab45f5748eb8c2b5b0e862437a10cd09408b8a8673
             resources:
               requests:
                 cpu: 100m
