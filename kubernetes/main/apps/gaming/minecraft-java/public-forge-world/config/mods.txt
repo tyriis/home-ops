@@ -6,4 +6,4 @@
 # https://cdn.modrinth.com/data/p1ewR5kV/versions/xwRVtqbA/unifiedmetrics-platform-fabric-0.3.8.jar
 
 # ForgeProxy-Lite https://modrinth.com/mod/proxy-compatible-forge/versions?l=forge
-https://cdn.modrinth.com/data/vDyrHl8l/versions/K0BYby1n/proxy-compatible-forge-1.2.3.jar
+https://cdn.modrinth.com/data/vDyrHl8l/versions/uRu4jaFs/proxy-compatible-forge-1.3.0.jar
