@@ -77,7 +77,7 @@ spec:
 
               # Plugin and config
               PLUGINS_FILE: /config/plugins.txt
-              REPLACE_ENV_VARIABLES: TRUE
+              REPLACE_ENV_VARIABLES: true
 
               # Features
               ICON: "https://storage.googleapis.com/techtales-public-images/server-icon.png"
