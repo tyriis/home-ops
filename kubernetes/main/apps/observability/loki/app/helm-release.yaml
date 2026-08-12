@@ -20,7 +20,7 @@ spec:
     keepHistory: false
   values:
     # https://artifacthub.io/packages/helm/grafana-community/loki?modal=values
-    deploymentMode: SingleBinary
+    deploymentMode: Monolithic
     defaults:
       podAnnotations:
         reloader.stakater.com/auto: "true"
