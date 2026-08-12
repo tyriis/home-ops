@@ -47,17 +47,17 @@ spec:
             nameOverride: *app
             image:
               repository: itzg/mc-proxy
-              tag: java21@sha256:91de94748121ddbc465798ac0aac3d3b34b2fe81c1ddfd61dcf074161a1168b1
+              tag: java25-2026.8.0
             envFrom:
               - secretRef:
                   name: minecraft-velocity-proxy-rcon
             env:
               # for a full list of ENV vars see: https://github.com/itzg/docker-mc-proxy#environment-settings
-              UID: "1000"
-              GID: "1000"
-              TYPE: "VELOCITY"
+              UID: 1000
+              GID: 1000
+              TYPE: VELOCITY
               # renovate: depName=minecraft/velocity datasource=custom.minecraft-velocity versioning=maven
-              VELOCITY_VERSION: "3.4.0-SNAPSHOT"
+              VELOCITY_VERSION: 3.5.0-SNAPSHOT
 
               # Memory settings
               INIT_MEMORY: 128M
@@ -77,11 +77,11 @@ spec:
 
               # Plugin and config
               PLUGINS_FILE: /config/plugins.txt
-              REPLACE_ENV_VARIABLES: "TRUE"
+              REPLACE_ENV_VARIABLES: true
 
               # Features
               ICON: "https://storage.googleapis.com/techtales-public-images/server-icon.png"
-              ENABLE_RCON: "true"
+              ENABLE_RCON: true
 
             securityContext:
               allowPrivilegeEscalation: false

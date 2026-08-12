@@ -10,12 +10,12 @@ https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/lates
 https://cdn.modrinth.com/data/p1ewR5kV/versions/Dubg3nLw/unifiedmetrics-platform-velocity-0.3.8.jar
 
 # MiniMOTD https://modrinth.com/plugin/minimotd/versions?l=velocity
-https://cdn.modrinth.com/data/16vhQOQN/versions/VJZkuJ7o/minimotd-velocity-2.2.2.jar
+https://cdn.modrinth.com/data/16vhQOQN/versions/GyJL5XJ2/minimotd-velocity-2.2.4.jar
 # ViaVersion https://modrinth.com/plugin/viaversion/versions?c=release&l=velocity
-https://cdn.modrinth.com/data/P1OZGk5p/versions/Sh5z5ETl/ViaVersion-5.8.1.jar
+https://cdn.modrinth.com/data/P1OZGk5p/versions/N1tHqKId/ViaVersion-5.12.0-SNAPSHOT.jar
 # ViaBackwards https://modrinth.com/plugin/viabackwards/versions?c=release&l=velocity
-https://cdn.modrinth.com/data/NpvuJQoq/versions/6GSQXY2l/ViaBackwards-5.8.1.jar
+https://cdn.modrinth.com/data/NpvuJQoq/versions/D2klj0m6/ViaBackwards-5.12.0-SNAPSHOT.jar
 # Simple Voice Chat https://modrinth.com/plugin/simple-voice-chat/versions?l=velocity
-https://cdn.modrinth.com/data/9eGKb6K1/versions/5SU8XYFw/voicechat-velocity-2.6.13.jar
+https://cdn.modrinth.com/data/9eGKb6K1/versions/ES87t4lm/voicechat-velocity-2.6.18.jar
 # Simple Whitelist https://modrinth.com/plugin/simplewhitelist/versions?c=release&l=velocity
 https://cdn.modrinth.com/data/mGVcEBwo/versions/uw9grO7J/simplewhitelist-velocity-2.0.0.jar
