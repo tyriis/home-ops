@@ -1,5 +1,7 @@
-# UnifiedMetrics https://modrinth.com/plugin/unifiedmetrics/versions?l=fabric&c=release
-https://cdn.modrinth.com/data/p1ewR5kV/versions/xwRVtqbA/unifiedmetrics-platform-fabric-0.3.8.jar
+# FabricExporter https://modrinth.com/mod/fabricexporter/versions?l=fabric&c=release
+https://cdn.modrinth.com/data/dbVXHSlv/versions/tuPsGk8g/fabricexporter-26.2-1.0.22.jar
+# Spark https://modrinth.com/mod/spark/versions?l=fabric&c=release
+https://cdn.modrinth.com/data/l6YH9Als/versions/iYFOl6lQ/spark-1.10.173-fabric.jar
 
 # Fabric API https://modrinth.com/mod/fabric-api/versions?c=release
 https://cdn.modrinth.com/data/P7dR8mSH/versions/vmQp7ixA/fabric-api-0.157.0%2B26.2.jar
