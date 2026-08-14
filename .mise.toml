@@ -30,7 +30,7 @@
 # https://mise-versions.jdx.dev/tools/task
 "aqua:go-task/task" = "3.52.0"
 # https://mise-versions.jdx.dev/tools/trivy
-"aqua:aquasecurity/trivy" = "0.73.0"
+"aqua:aquasecurity/trivy" = "0.74.0"
 # https://mise-versions.jdx.dev/tools/mc
 "aqua:minio/mc" = "RELEASE.2025-08-13T08-35-41Z"
 # https://mise-versions.jdx.dev/tools/openbao
