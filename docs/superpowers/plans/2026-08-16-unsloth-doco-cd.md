@@ -28,7 +28,7 @@
 | File | Responsibility |
 |---|---|
 | `docker/deploy/unsloth/compose.yaml` | Shared reference compose (NOT deployed) — blueprint for other targets |
-| `docker/red/unsloth/compose.yaml` | Deployed target instance (full copy of shared, busybox-enc style) |
+| `docker/red/unsloth/compose.yaml` | Deployed target instance (symlink to shared compose, busybox-enc style) |
 | `docker/red/unsloth/sops.env` | SOPS-encrypted dotenv: JUPYTER_PASSWORD, USER_PASSWORD, UNSLOTH_STUDIO_PASSWORD |
 | `docker/red/unsloth/.env` | `TARGET=red` |
 | `docker/.doco-cd.red.yaml` | Appended workload entry for unsloth |
@@ -111,7 +111,7 @@ Expected: no errors (line-length is warning-level, max 120).
 
 - [ ] **Step 1: Write `docker/red/unsloth/compose.yaml`**
 
-Copy the EXACT content from Task 2 Step 1 (same image, same env_file, same volume). This is the file doco-cd actually deploys.
+Create a symlink pointing at the shared reference compose: `ln -s ../../deploy/unsloth/compose.yaml docker/red/unsloth/compose.yaml` (repo convention — see `docker/red/busybox-enc/compose.yaml` which is mode 120000 symlink). doco-cd resolves the symlink and deploys the shared compose with the target's local `sops.env`/`.env`.
 
 - [ ] **Step 2: Lint the file**
 
