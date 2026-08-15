@@ -18,3 +18,8 @@ working_dir: docker/deploy/node-exporter
 ---
 name: comfyui
 working_dir: docker/deploy/comfyui
+---
+name: unsloth
+working_dir: docker/red/unsloth
+env_files:
+  - .env
