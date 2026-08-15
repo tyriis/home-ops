@@ -21,7 +21,6 @@ services:
       TS_SOCKET: "/var/run/tailscale/tailscaled.sock"
       TS_STATE_DIR: "/var/lib/tailscale"
       TZ: "Europe/Vienna"
-      TS_EXTRA_FLAGS: "--advertise-routes=192.168.200.0/24 --accept-routes --snat-subnet-routes=false"
       UMASK: "002"
       UMASK_SET: "002"
     healthcheck:
