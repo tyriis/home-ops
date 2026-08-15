@@ -73,11 +73,11 @@ spec:
               # https://docker-minecraft-server.readthedocs.io/en/latest/variables
               TYPE: FABRIC
               # TODO: update with renovate
-              VERSION: 1.21.11
+              VERSION: 26.2
 
               MEMORY: 4096M
               MODS_FILE: /config/plugins.txt
-              REPLACE_ENV_DURING_SYNC: "true"
+              REPLACE_ENV_DURING_SYNC: true
               FABRIC_PROXY_SECRET:
                 valueFrom:
                   secretKeyRef:
@@ -95,7 +95,7 @@ spec:
               - name: rcon
                 containerPort: 25575
               - name: metrics
-                containerPort: 9100
+                containerPort: 25585
 
             resources:
               requests:
@@ -111,7 +111,7 @@ spec:
             port: 25565
             protocol: TCP
           metrics:
-            port: 9100
+            port: 25585
             protocol: TCP
       rcon:
         controller: minecraft

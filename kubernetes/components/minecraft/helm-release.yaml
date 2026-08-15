@@ -71,15 +71,15 @@ spec:
                   name: ${APP}-env
             env:
               # https://docker-minecraft-server.readthedocs.io/en/latest/variables
-              TYPE: "PAPER"
+              TYPE: PAPER
               # PAPER_CHANNEL: experimental
               # TODO: update with renovate
-              VERSION: 1.21.11
-              PAPER_BUILD: 116
+              VERSION: 26.2
+              PAPER_BUILD: 112
 
               MEMORY: 1024M
               MODS_FILE: /config/plugins.txt
-              REPLACE_ENV_DURING_SYNC: "true"
+              REPLACE_ENV_DURING_SYNC: true
               CFG_PROXY_SECRET:
                 valueFrom:
                   secretKeyRef:

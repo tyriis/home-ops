@@ -73,11 +73,11 @@ spec:
               # https://docker-minecraft-server.readthedocs.io/en/latest/variables
               TYPE: FORGE
               # TODO: update with renovate
-              VERSION: 1.21.11
+              VERSION: 26.2
 
               MEMORY: 4096M
               MODS_FILE: /config/mods.txt
-              REPLACE_ENV_DURING_SYNC: "true"
+              REPLACE_ENV_DURING_SYNC: true
               CFG_PROXY_SECRET:
                 valueFrom:
                   secretKeyRef:
