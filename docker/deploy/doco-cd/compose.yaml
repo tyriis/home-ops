@@ -12,6 +12,7 @@ configs:
       - url: https://github.com/tyriis/home-ops.git
         target: ${TARGET}
         interval: 180
+        reference: main
 #       # - url: https://github.com/user/repo.git
 #       #   run_once: true
 secrets:
