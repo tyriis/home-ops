@@ -29,7 +29,7 @@ services:
       TZ: ${TZ:-Europe/Vienna}
       LOG_STDOUT: "true"
       USER_NAME: ${TARGET:-linuxserver.io}
-    image: lscr.io/linuxserver/openssh-serve:10.3_p1-r0-ls233@sha256:96b9a4d3b5106746d08d43a6911650d4d21f7d5c7f2ac9660e792bdb5e63157c
+    image: lscr.io/linuxserver/openssh-server:10.3_p1-r0-ls233@sha256:96b9a4d3b5106746d08d43a6911650d4d21f7d5c7f2ac9660e792bdb5e63157c
     ports:
       - ${SSH_PORT:-2222}:2222
     restart: unless-stopped
