@@ -32,7 +32,6 @@ services:
       LOG_STDOUT: "true"
       USER_NAME: ${USER_NAME:-linuxserver.io}
       PUBLIC_KEY_URL: https://tyriis.dev/keys.txt
-      DOCKER_MODS: lscr.io/linuxserver/mods:openssh-server-rsync
     image: lscr.io/linuxserver/openssh-server:10.3_p1-r0-ls233@sha256:96b9a4d3b5106746d08d43a6911650d4d21f7d5c7f2ac9660e792bdb5e63157c
     ports:
       - ${SSH_PORT:-2222}:2222
@@ -42,6 +41,3 @@ services:
     volumes:
       - config:/config
       - data:/data
-
-
-# /root/rsync-time-backup/rsync_tmbackup.sh -p 2222 /mnt/tank/immich backup@synology.techtales.io:/data/immich
