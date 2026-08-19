@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/clusterrole.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrole_v1.json
 # cluster-level read access to discover dragonfly crs across namespaces
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -26,7 +26,7 @@ rules:
     verbs: ["get"]
 
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/clusterrolebinding.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrolebinding_v1.json
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -41,7 +41,7 @@ subjects:
     namespace: dragonfly-system
 
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/clusterrole.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrole_v1.json
 # privileged write access to manage dragonfly resources in targeted namespaces
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -77,7 +77,7 @@ rules:
     verbs: ["patch", "update"]
 
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/rolebinding.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/rolebinding_v1.json
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
