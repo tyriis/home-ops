@@ -33,3 +33,134 @@ metadata:
   annotations:
     workflows.argoproj.io/rbac-rule: "true"
     workflows.argoproj.io/rbac-rule-precedence: "0"
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/v1/secret.json
+# Required by argo-server SSO RBAC on Kubernetes v1.24+ (legacy auto-creation removed).
+# The kube-controller-manager fills in `token` / `ca.crt` once this Secret exists with
+# the right annotation+type combination. See:
+# https://argo-workflows.readthedocs.io/en/stable/service-account-secrets/
+apiVersion: v1
+kind: Secret
+metadata:
+  name: argo-admin.service-account-token
+  namespace: argo-system
+  annotations:
+    kubernetes.io/service-account.name: argo-admin
+type: kubernetes.io/service-account-token
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/v1/secret.json
+apiVersion: v1
+kind: Secret
+metadata:
+  name: argo-readonly.service-account-token
+  namespace: argo-system
+  annotations:
+    kubernetes.io/service-account.name: argo-readonly
+type: kubernetes.io/service-account-token
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrole_v1.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: argo-workflows-sso-admin
+rules:
+  - apiGroups:
+      - argoproj.io
+    resources:
+      - workflows
+      - workflowtemplates
+      - workflowtaskresults
+      - cronworkflows
+      - clusterworkflowtemplates
+      - eventsources
+      - sensors
+      - workfloweventbindings
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+      - pods/log
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - get
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - persistentvolumeclaims
+    verbs:
+      - create
+      - delete
+      - get
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrole_v1.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: argo-workflows-sso-readonly
+rules:
+  - apiGroups:
+      - argoproj.io
+    resources:
+      - workflows
+      - workflowtemplates
+      - workflowtaskresults
+      - cronworkflows
+      - clusterworkflowtemplates
+      - eventsources
+      - sensors
+      - workfloweventbindings
+    verbs:
+      - get
+      - list
+      - watch
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrolebinding_v1.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: argo-workflows-sso-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: argo-workflows-sso-admin
+subjects:
+  - kind: ServiceAccount
+    name: argo-admin
+    namespace: argo-system
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrolebinding_v1.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: argo-workflows-sso-readonly
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: argo-workflows-sso-readonly
+subjects:
+  - kind: ServiceAccount
+    name: argo-readonly
+    namespace: argo-system
