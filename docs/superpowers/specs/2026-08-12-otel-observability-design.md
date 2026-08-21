@@ -6,7 +6,7 @@
 
 ## Overview
 
-Deploy an OpenTelemetry-native observability foundation to the main cluster in **Phase 1**, running *alongside* the existing stack. This phase delivers the OTel Operator + Collector with bearer-token OTLP ingress for local opencode telemetry (traces and logs), and Tempo as the tracing backend. Promtail and Prometheus stay untouched; Loki receives an additive `otlp_config` for OTLP log ingestion. Metrics ingestion is deliberately out of scope for Phase 1.
+Deploy an OpenTelemetry-native observability foundation to the main cluster in **Phase 1**, running *alongside* the existing stack. This phase delivers the OTel Operator + Collector with bearer-token OTLP ingress for local opencode telemetry (traces, logs, and metrics), and Tempo as the tracing backend. Metrics — the primary opencode signal — flow natively via OTLP to Prometheus. Promtail stays untouched; Prometheus and Loki receive additive config (`enableOTLPReceiver` and `otlp_config` respectively).
 
 ## Phasing
 
@@ -14,8 +14,8 @@ This spec covers **Phase 1 only**. The full Promtail → OTel migration is inten
 
 | Phase | Scope | Status |
 |-------|-------|--------|
-| **Phase 1** | OTel Operator + Collector (OTLP ingress for traces/logs), Tempo, local opencode | This spec |
-| Phase 2 | filelog receiver replaces Promtail, utility-cluster collector, OTLP metrics ingestion (Prometheus remote-write) | Future |
+| **Phase 1** | OTel Operator + Collector (OTLP ingress for traces/logs/metrics), Tempo, local opencode | This spec |
+| Phase 2 | filelog receiver replaces Promtail, utility-cluster collector | Future |
 | Phase 3 | Auto-instrumentation of in-cluster apps via the operator | Future |
 
 ## Architecture
@@ -37,6 +37,7 @@ This spec covers **Phase 1 only**. The full Promtail → OTel migration is inten
 │  │ Processors: batch, memory_limiter                   │    │
 │  │                                                    │    │
 │  │ Exporters:                                         │    │
+│  │   otlphttp/prom          →  Prometheus /api/v1/otlp│    │
 │  │   otlphttp/loki          →  Loki /otlp/v1/logs     │    │
 │  │   otlp/tempo             →  Tempo (new)            │    │
 │  └──────────────────────────────────────────────────┘    │
@@ -67,7 +68,7 @@ This spec covers **Phase 1 only**. The full Promtail → OTel migration is inten
 | Collector mode | DaemonSet (all-in-one) | Rolled out as DaemonSet from Phase 1 to avoid a mode change; `/var/log/pods` access needed in Phase 2; homelab scale sufficient |
 | Tracing backend | Tempo (SingleBinary, S3-backed) | Purpose-built for traces; Loki 3.x trace support is basic only |
 | Loki log ingestion | OTLP `/otlp/v1/logs` | External sources (opencode) send logs via OTLP; native in Loki 3.7.6; Promtail continues on legacy push API in parallel |
-| Metrics ingestion | Deferred (out of Phase 1) | No OTLP metrics source in Phase 1; avoids enabling the Prometheus remote-write receiver; revisit with span metrics in Phase 2 |
+| Metrics ingestion | `otlphttp` → Prometheus native OTLP receiver | Native OTLP end-to-end (no remote-write conversion); `enableOTLPReceiver: true`; single-endpoint write accepted — 3-replica scatter revisited with VictoriaMetrics migration |
 | External access | HTTPRoute via Envoy Gateway + bearer token | Matches existing observability URL pattern; token from OpenBao; single consumer (opencode) in Phase 1 |
 | Utility cluster Prometheus | Keep both during transition | OTel Collector forwards to main; existing kube-prometheus-stack stays for now |
 
@@ -91,9 +92,11 @@ This spec covers **Phase 1 only**. The full Promtail → OTel migration is inten
   - `otlp` - gRPC `0.0.0.0:4317`, HTTP `0.0.0.0:4318` (bearer token auth on both)
 - **Processors:** `batch`, `memory_limiter`
 - **Exporters:**
+  - `otlphttp/prom` → `http://kube-prometheus-stack-prometheus.observability.svc:9090/api/v1/otlp` (native OTLP; exporter appends `/v1/metrics`)
   - `otlphttp/loki` → `http://loki-headless.observability.svc.cluster.local:3100/otlp`
   - `otlp/tempo` → `http://tempo.observability.svc.cluster.local:4317`
   - `prometheus` → `0.0.0.0:8888` (self-monitoring, scraped by ServiceMonitor)
+- **Scatter note:** single-endpoint write; the 3-replica Prometheus (no Thanos) scatters OTLP data across replicas. Accepted as a temporary limitation — resolved by the planned VictoriaMetrics migration.
 - **Extensions:** `health_check`, `bearertokenauth` (token from ExternalSecret/OpenBao)
 - **Auth token injection:** `spec.env[].valueFrom.secretKeyRef` → OpenBao-backed Secret; referenced as `${env:OTEL_BEARER_TOKEN}` in `bearertokenauth` (escape as `$${env:...}` if Flux postBuild substitutions are used)
 - **HTTPRoute (native CRD):** `otel.techtales.io` via envoy gateway, TLS, bearer token auth (annotate `gatus.home-operations.com/endpoint` per repo convention)
@@ -121,6 +124,13 @@ This spec covers **Phase 1 only**. The full Promtail → OTel migration is inten
 - **Attributes indexed:** `service.name`, `k8s.namespace.name`, `k8s.pod.name`, `k8s.container.name` (external opencode logs carry only `service.name`; `k8s.*` labels become meaningful in Phase 2 with filelog)
 - **Endpoint:** `/otlp/v1/logs` already enabled by default in Loki 3.7.6 (SingleBinary mode)
 - **No other Loki config changes needed**
+
+### kube-prometheus-stack (modified — additive)
+
+- **Change:** `prometheus.prometheusSpec.enableOTLPReceiver: true` (maps to Prometheus `--web.enable-otlp-receiver`, GA since Prometheus 3.0)
+- **Endpoint:** native OTLP at `/api/v1/otlp/v1/metrics` (HTTP only); the collector's `otlphttp/prom` exporter targets `/api/v1/otlp`
+- **No other kube-prometheus-stack changes** — no version bump, ServiceMonitors untouched
+- **Note:** Prometheus runs 3 replicas without Thanos; a single-endpoint OTLP write scatters data across replicas. Accepted temporarily; resolved by the planned VictoriaMetrics migration.
 
 ### Security
 
@@ -173,6 +183,7 @@ kubernetes/main/apps/observability/tempo/
 | `kubernetes/main/apps/observability/kustomization.yaml` | Add `./opentelemetry/flux-sync.yaml` and `./tempo/flux-sync.yaml` to resources |
 | `grafana/instance/datasource.yaml` | Add Tempo `GrafanaDatasource` (type: tempo, URL: `http://tempo.observability.svc:3200`); consider `tracesToLogsV2`/`traceToMetrics` linking to existing Loki/Prometheus |
 | `loki/app/helm-release.yaml` | Add `limits_config.otlp_config` resource attribute mapping |
+| `kube-prometheus-stack/app/helm-release.yaml` | Add `prometheusSpec.enableOTLPReceiver: true` |
 
 ### Removed
 
@@ -204,11 +215,11 @@ kube-prometheus-stack
 ## What's NOT Changing
 
 - **Promtail:** Remains deployed and continues shipping pod logs to Loki (filelog migration deferred to Phase 2)
-- **Prometheus:** Completely unchanged — no remote-write receiver enabled, no config changes; all ~40 ServiceMonitors/PodMonitors/ScrapeConfigs continue as-is
+- **Prometheus:** Only additive `enableOTLPReceiver: true` (native OTLP receiver); all ~40 ServiceMonitors/PodMonitors/ScrapeConfigs continue as-is — no other config changes
 - **Loki:** Storage, schema, retention, S3 backend all unchanged; only additive `otlp_config` added for OTLP logs
 - **Grafana:** All dashboards, datasources (Prometheus, Alertmanager, Loki) preserved; Tempo added
 - **Alertmanager:** Unchanged
-- **kube-prometheus-stack:** No version bump, no HelmRelease changes
+- **kube-prometheus-stack:** No version bump; single additive HelmRelease change (`enableOTLPReceiver`)
 - **All other observability apps:** Untouched
 
 ## Post-Deployment Verification
@@ -217,9 +228,10 @@ kube-prometheus-stack
 2. External OTLP reachable at `https://otel.techtales.io` — verify with `curl -H "Authorization: Bearer <token>"` 
 3. Tempo receiving traces — verify Tempo datasource in Grafana Explore
 4. External logs (opencode) reach Loki `/otlp/v1/logs` — verify in Grafana Explore with otlp_config labels
-5. Collector self-monitoring — verify `otel-collector` target in Prometheus (port 8888)
-6. Promtail still shipping logs — verify recent log lines in Grafana Explore
-7. All existing ServiceMonitors still functional — verify Prometheus targets and Grafana dashboards
+5. External metrics (opencode) reach Prometheus via native OTLP — verify `service.name`-labelled series in Grafana Explore
+6. Collector self-monitoring — verify `otel-collector` target in Prometheus (port 8888)
+7. Promtail still shipping logs — verify recent log lines in Grafana Explore
+8. All existing ServiceMonitors still functional — verify Prometheus targets and Grafana dashboards
 
 ## References
 
