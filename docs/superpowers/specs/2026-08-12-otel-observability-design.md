@@ -1,12 +1,22 @@
 # OpenTelemetry Observability Stack Design
 
 **Date:** 2026-08-12
-**Issues:** [#3851](https://github.com/tyriis/home-ops/issues/3851), [#7395](https://github.com/tyriis/home-ops/issues/7395)
+**Issues:** [#3851](https://github.com/tyriis/home-ops/issues/3851), [#7395](https://github.com/tyriis/home-ops/issues/7395), [#9987](https://github.com/tyriis/home-ops/issues/9987)
 **Scope:** opentelemetry, tempo
 
 ## Overview
 
-Deploy an OpenTelemetry-native observability stack to the main cluster. Replace the deprecated Promtail with the OTel Collector's filelog receiver, add OTLP ingress for external sources (local opencode, node_exporter), and deploy Tempo as the tracing backend. No existing Prometheus ServiceMonitors or Loki configuration is disrupted.
+Deploy an OpenTelemetry-native observability foundation to the main cluster in **Phase 1**, running *alongside* the existing stack. This phase delivers the OTel Operator + Collector with OTLP ingress for external sources (local opencode, node_exporter) — handling traces, metrics, and logs — and Tempo as the tracing backend. Promtail and Prometheus ServiceMonitors stay in place; Loki receives an additive `otlp_config` for OTLP log ingestion.
+
+## Phasing
+
+This spec covers **Phase 1 only**. The full Promtail → OTel migration is intentionally deferred so the existing stack keeps working untouched.
+
+| Phase | Scope | Status |
+|-------|-------|--------|
+| **Phase 1** | OTel Operator + Collector (OTLP ingress for traces/metrics/logs), Tempo, external sources (opencode, node_exporter) | This spec |
+| Phase 2 | filelog receiver replaces Promtail, utility-cluster collector forwards logs to main | Future |
+| Phase 3 | Auto-instrumentation of in-cluster apps via the operator | Future |
 
 ## Architecture
 
@@ -23,9 +33,8 @@ Deploy an OpenTelemetry-native observability stack to the main cluster. Replace 
 │  │                                                    │    │
 │  │ Receivers:                                         │    │
 │  │   otlp (gRPC :4317, HTTP :4318)                    │    │
-│  │   filelog (/var/log/pods → replaces Promtail)      │    │
 │  │                                                    │    │
-│  │ Processors: batch, memory_limiter, k8sattributes   │    │
+│  │ Processors: batch, memory_limiter                   │    │
 │  │                                                    │    │
 │  │ Exporters:                                         │    │
 │  │   prometheusremotewrite →  Prometheus (existing)    │    │
@@ -33,11 +42,11 @@ Deploy an OpenTelemetry-native observability stack to the main cluster. Replace 
 │  │   otlp/tempo             →  Tempo (new)            │    │
 │  └──────────────────────────────────────────────────┘    │
 │                                                           │
-│  Prometheus (unchanged)    Loki 3.x (unchanged)           │
-│  ServiceMonitors stay       OTLP endpoint enabled         │
+│  Prometheus (unchanged)    Loki 3.x (OTLP logs)           │
+│  ServiceMonitors stay       Promtail still ships logs     │
 │                                                           │
-│  Tempo (new)                ❌ Promtail (removed)         │
-│  SingleBinary, S3-backed      Replaced by filelog         │
+│  Tempo (new)                Promtail (unchanged)          │
+│  SingleBinary, S3-backed      Remains in place            │
 └──────────────────────────────────────────────────────────┘
 
 ┌──────────────────────────────────────────────────────────┐
@@ -55,10 +64,10 @@ Deploy an OpenTelemetry-native observability stack to the main cluster. Replace 
 | Decision | Choice | Rationale |
 |----------|--------|-----------|
 | OTel management | `opentelemetry-operator` (CRD-based) | 7 kubesearch repos vs 3 for standalone; auto-instrumentation for future app migration |
-| Log collection | OTel filelog receiver | Replaces Promtail in the same collector DaemonSet; one component instead of two; OTLP-native pipeline to Loki |
-| Collector mode | DaemonSet (all-in-one) | Needed for `/var/log/pods` access; OTLP ingress via Service; homelab scale sufficient |
+| Log collection | Promtail (unchanged) in Phase 1 | filelog receiver deferred to Phase 2; existing Promtail keeps shipping pod logs untouched |
+| Collector mode | DaemonSet (all-in-one) | Rolled out as DaemonSet from Phase 1 to avoid a mode change; `/var/log/pods` access needed in Phase 2; homelab scale sufficient |
 | Tracing backend | Tempo (SingleBinary, S3-backed) | Purpose-built for traces; Loki 3.x trace support is basic only |
-| Loki log ingestion | OTLP `/otlp/v1/logs` | Native in Loki 3.7.6 (already deployed); modern path over legacy push API |
+| Loki log ingestion | OTLP `/otlp/v1/logs` | External sources (opencode) send logs via OTLP; native in Loki 3.7.6; Promtail continues on legacy push API in parallel |
 | Prometheus metrics | prometheusremotewrite exporter | Existing Prometheus unchanged; no experimental otlp-write-receiver feature gate needed |
 | External access | HTTPRoute via Envoy Gateway + bearer token | Matches existing observability URL pattern; token from OpenBao |
 | Utility cluster Prometheus | Keep both during transition | OTel Collector forwards to main; existing kube-prometheus-stack stays for now |
@@ -77,12 +86,11 @@ Deploy an OpenTelemetry-native observability stack to the main cluster. Replace 
 ### OpenTelemetryCollector (DaemonSet CR)
 
 - **API:** `opentelemetry.io/v1beta1`
-- **Mode:** `daemonset`
+- **Mode:** `daemonset` — rolled out as DaemonSet from Phase 1 to avoid a mode change in Phase 2 (filelog needs `/var/log/pods`)
 - **Image:** `otel/opentelemetry-collector-contrib`
 - **Receivers:**
   - `otlp` - gRPC `0.0.0.0:4317`, HTTP `0.0.0.0:4318` (bearer token auth on both)
-  - `filelog` - `/var/log/pods/*/*/*.log`, container parser operator
-- **Processors:** `batch`, `memory_limiter`, `k8sattributes`
+- **Processors:** `batch`, `memory_limiter`
 - **Exporters:**
   - `prometheusremotewrite` → `http://kube-prometheus-stack-prometheus.observability.svc:9090/api/v1/write`
   - `otlphttp/loki` → `http://loki-headless.observability.svc.cluster.local:3100/otlp`
@@ -105,9 +113,9 @@ Deploy an OpenTelemetry-native observability stack to the main cluster. Replace 
 - **Security:** `readOnlyRootFilesystem: true`, capabilities `drop: [ALL]`, `seccomp: RuntimeDefault`
 - **ServiceMonitor:** enabled
 
-### Loki (modified)
+### Loki (modified — additive)
 
-- **Change:** Add `limits_config.otlp_config` block (~15 lines) to map OTLP resource attributes to Loki labels
+- **Change:** Add `limits_config.otlp_config` block (~15 lines) to map OTLP resource attributes to Loki labels for external OTLP logs (opencode). Promtail continues on the existing push API in parallel.
 - **Attributes indexed:** `service.name`, `k8s.namespace.name`, `k8s.pod.name`, `k8s.container.name`
 - **Endpoint:** `/otlp/v1/logs` already enabled by default in Loki 3.7.6 (SingleBinary mode)
 - **No other Loki config changes needed**
@@ -165,10 +173,7 @@ kubernetes/main/apps/observability/tempo/
 
 ### Removed
 
-| File/Directory | Reason |
-|---|---|
-| `promtail/` directory (app + observability + flux-sync.yaml) | Replaced by OTel Collector filelog receiver |
-| `promtail/flux-sync.yaml` reference in parent kustomization | No longer needed |
+No files are removed in Phase 1. The Promtail directory and its parent references remain in place.
 
 ### Flux Dependency Chain
 
@@ -192,8 +197,9 @@ kube-prometheus-stack
 
 ## What's NOT Changing
 
+- **Promtail:** Remains deployed and continues shipping pod logs to Loki (filelog migration deferred to Phase 2)
 - **Prometheus:** All ~40 existing ServiceMonitors/PodMonitors/ScrapeConfigs continue unchanged
-- **Loki:** Storage, schema, retention, S3 backend — all unchanged; only `otlp_config` added
+- **Loki:** Storage, schema, retention, S3 backend all unchanged; only additive `otlp_config` added for OTLP logs
 - **Grafana:** All dashboards, datasources (Prometheus, Alertmanager, Loki) preserved; Tempo added
 - **Alertmanager:** Unchanged
 - **kube-prometheus-stack:** No version bump, no HelmRelease changes
@@ -202,12 +208,12 @@ kube-prometheus-stack
 ## Post-Deployment Verification
 
 1. OTel Collector DaemonSet pods running on all nodes
-2. `filelog` receiver shipping container logs to Loki `/otlp/v1/logs` — verify logs appear in Grafana Explore
-3. Loki `otlp_config` labels present — verify `k8s_namespace_name`, `k8s_pod_name`, `k8s_container_name` labels in LogQL
-4. External OTLP reachable at `https://otel.techtales.io` — verify with `curl -H "Authorization: Bearer <token>"` 
-5. Tempo receiving traces — verify Tempo datasource in Grafana Explore
-6. Tempo MetricsGenerator producing span metrics in Prometheus
-7. Promtail removed — verify no promtail pods running
+2. External OTLP reachable at `https://otel.techtales.io` — verify with `curl -H "Authorization: Bearer <token>"` 
+3. Tempo receiving traces — verify Tempo datasource in Grafana Explore
+4. Tempo MetricsGenerator producing span metrics in Prometheus
+5. External metrics (node_exporter) visible in Prometheus via remote_write
+6. External logs (opencode) reach Loki `/otlp/v1/logs` — verify in Grafana Explore with otlp_config labels
+7. Promtail still shipping logs — verify recent log lines in Grafana Explore
 8. All existing ServiceMonitors still functional — verify Prometheus targets and Grafana dashboards
 
 ## References
@@ -219,3 +225,4 @@ kube-prometheus-stack
 - https://kubesearch.dev/hr/ghcr.io-open-telemetry-opentelemetry-helm-charts-opentelemetry-operator
 - https://github.com/tyriis/home-ops/issues/3851
 - https://github.com/tyriis/home-ops/issues/7395
+- https://github.com/tyriis/home-ops/issues/9987
