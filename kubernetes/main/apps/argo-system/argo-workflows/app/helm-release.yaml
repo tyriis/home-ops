@@ -69,7 +69,24 @@ spec:
           memory: 100Mi
 
       extraArgs:
-        - --auth-mode=server
+        - --auth-mode=sso
+
+      sso:
+        enabled: true
+        issuer: https://id.techtales.io
+        redirectUrl: https://argo-workflows.techtales.io/oauth2/callback
+        clientId:
+          name: argo-workflows-pocketid
+          key: client-id
+        clientSecret:
+          name: argo-workflows-pocketid
+          key: client-secret
+        scopes:
+          - groups
+          - email
+          - profile
+        rbac:
+          enabled: true
 
     workflow:
       serviceAccount:
