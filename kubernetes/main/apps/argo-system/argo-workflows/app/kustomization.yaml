@@ -7,5 +7,4 @@ resources:
   - ./helm-repository.yaml
   - ./http-route.yaml
   - ./rbac.yaml
-  - ./rbac-sso.yaml
   - ./external-secret.yaml
