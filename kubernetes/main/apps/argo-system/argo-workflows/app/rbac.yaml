@@ -72,6 +72,9 @@ rules:
       - workflowtaskresults
       - cronworkflows
       - clusterworkflowtemplates
+      - eventsources
+      - sensors
+      - workfloweventbindings
     verbs:
       - create
       - delete
@@ -132,6 +135,9 @@ rules:
       - workflowtaskresults
       - cronworkflows
       - clusterworkflowtemplates
+      - eventsources
+      - sensors
+      - workfloweventbindings
     verbs:
       - get
       - list
