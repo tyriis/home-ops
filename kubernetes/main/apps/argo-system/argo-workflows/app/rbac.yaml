@@ -14,7 +14,7 @@ rules:
       - list
       - watch
 ---
-# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/v1/serviceaccount.json
+# yaml-language-server: https://k8s-schemas.home-operations.com/core/serviceaccount_v1.json
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -24,7 +24,7 @@ metadata:
     workflows.argoproj.io/rbac-rule: "'privileged-users' in groups"
     workflows.argoproj.io/rbac-rule-precedence: "1"
 ---
-# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/v1/serviceaccount.json
+# yaml-language-server: https://k8s-schemas.home-operations.com/core/serviceaccount_v1.json
 apiVersion: v1
 kind: ServiceAccount
 metadata:
