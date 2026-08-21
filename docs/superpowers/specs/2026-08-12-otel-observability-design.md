@@ -42,7 +42,7 @@ This spec covers **Phase 1 only**. The full Promtail → OTel migration is inten
 │  │   otlp/tempo             →  Tempo (new)            │    │
 │  └──────────────────────────────────────────────────┘    │
 │                                                           │
-│  Prometheus (unchanged)    Loki 3.x (OTLP logs)           │
+│  Prometheus (OTLP recv)    Loki 3.x (OTLP logs)           │
 │  ServiceMonitors stay       Promtail still ships logs     │
 │                                                           │
 │  Tempo (new)                Promtail (unchanged)          │
@@ -228,7 +228,7 @@ kube-prometheus-stack
 2. External OTLP reachable at `https://otel.techtales.io` — verify with `curl -H "Authorization: Bearer <token>"` 
 3. Tempo receiving traces — verify Tempo datasource in Grafana Explore
 4. External logs (opencode) reach Loki `/otlp/v1/logs` — verify in Grafana Explore with otlp_config labels
-5. External metrics (opencode) reach Prometheus via native OTLP — verify `service.name`-labelled series in Grafana Explore
+5. External metrics (opencode) reach Prometheus via native OTLP — verify `service.name`-labelled series in Grafana Explore (appear intermittently across replicas due to accepted scatter; retry, not a bug)
 6. Collector self-monitoring — verify `otel-collector` target in Prometheus (port 8888)
 7. Promtail still shipping logs — verify recent log lines in Grafana Explore
 8. All existing ServiceMonitors still functional — verify Prometheus targets and Grafana dashboards
