@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.0.1
+      version: 5.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: ghcr.io/firecrawl/firecrawl
-              tag: 2.11@sha256:d4fef17701ca388b2f06074b0624c95d2a4dced655d9267ef0545f2231bd325f
+              tag: 2.11@sha256:ea2bd6b71d7cd13b6637bcf4578b6a46b1aca0c8e17fac0f7f9a5f1b8bb58aa3
             command: ["node", "--max-old-space-size=6144", "dist/src/index.js"]
             env:
               FLY_PROCESS_GROUP: app
@@ -97,7 +97,7 @@ spec:
           app:
             image:
               repository: ghcr.io/firecrawl/firecrawl
-              tag: 2.11@sha256:d4fef17701ca388b2f06074b0624c95d2a4dced655d9267ef0545f2231bd325f
+              tag: 2.11@sha256:ea2bd6b71d7cd13b6637bcf4578b6a46b1aca0c8e17fac0f7f9a5f1b8bb58aa3
             command:
               [
                 "node",
@@ -155,7 +155,7 @@ spec:
           app:
             image:
               repository: ghcr.io/firecrawl/firecrawl
-              tag: 2.11@sha256:d4fef17701ca388b2f06074b0624c95d2a4dced655d9267ef0545f2231bd325f
+              tag: 2.11@sha256:ea2bd6b71d7cd13b6637bcf4578b6a46b1aca0c8e17fac0f7f9a5f1b8bb58aa3
             command:
               [
                 "node",

@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.0.1
+      version: 5.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -44,7 +44,7 @@ spec:
           app:
             image:
               repository: ghcr.io/itzg/minecraft-server
-              tag: 2026.8.0@sha256:e3335993929a1565f73c30b2041bcbc1473fc9c406fdd5a0d0ea24c08ef73320
+              tag: 2026.8.1@sha256:1bfb278ea9ee9a319ff2b6ebf6e996e7217fbcd825a925f6382d05bd348c046b
             probes:
               liveness: &probes
                 enabled: true
@@ -73,11 +73,11 @@ spec:
               # https://docker-minecraft-server.readthedocs.io/en/latest/variables
               TYPE: FORGE
               # TODO: update with renovate
-              VERSION: 1.21.11
+              VERSION: 26.2
 
               MEMORY: 4096M
               MODS_FILE: /config/mods.txt
-              REPLACE_ENV_DURING_SYNC: "true"
+              REPLACE_ENV_DURING_SYNC: true
               CFG_PROXY_SECRET:
                 valueFrom:
                   secretKeyRef:

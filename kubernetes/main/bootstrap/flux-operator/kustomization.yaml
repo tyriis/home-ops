@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization.json
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 helmCharts:
@@ -8,7 +8,7 @@ helmCharts:
     releaseName: flux-operator
     repo: oci://ghcr.io/controlplaneio-fluxcd/charts
     valuesFile: values.yaml
-    version: 0.58.0
+    version: 0.58.1
 commonAnnotations:
   meta.helm.sh/release-name: flux-operator
   meta.helm.sh/release-namespace: flux-system

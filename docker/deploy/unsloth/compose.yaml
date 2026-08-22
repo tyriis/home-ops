@@ -1,0 +1,31 @@
+---
+volumes:
+  workspace:
+    external: false
+    name: unsloth_workspace
+    driver: local
+
+services:
+  unsloth:
+    scale: 1 # scale to 0 if you want to stop the service without losing data
+    container_name: unsloth
+    image: unsloth/unsloth:2026.5.9-pt2.10.0-vllm-0.16.0-cu12.8-studio-release-v0.1.43-beta-2026-MAY-31@sha256:f21629b9ae4ed11231768edfaed0f40d41d85d6ea9a71e8096a3d96ea0311772
+    env_file:
+      - ${SOPS_ENV_FILE:-sops.env}
+    environment:
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: all
+      # HF_TOKEN=${HF_TOKEN} # uncomment and add HF_TOKEN to sops.env to pull gated models
+    ports:
+      - 8000:8000 # Studio UI + OpenAI/Anthropic API (all interfaces)
+      - "127.0.0.1:8888:8888" # Jupyter Lab (localhost only)
+    restart: unless-stopped
+    volumes:
+      - workspace:/workspace
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]

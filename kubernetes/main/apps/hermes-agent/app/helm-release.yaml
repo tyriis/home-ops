@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.0.1
+      version: 5.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -51,7 +51,7 @@ spec:
           init-agent-src:
             image:
               repository: ghcr.io/tyriis/hermes-agent
-              tag: v2026.8.3@sha256:65b4901c9baf1fbe33c99ba380a35f58632ca756e64314c56d4d1accc20cce56
+              tag: v2026.8.18@sha256:4be10712a96ed594804adf66795c20e93d2fcee4a6601d994dada5a17eabfad7
             command:
               - sh
               - -c
@@ -65,7 +65,7 @@ spec:
             args: ["gateway", "run", "--no-supervise"]
             image: &image
               repository: ghcr.io/tyriis/hermes-agent
-              tag: v2026.8.3@sha256:65b4901c9baf1fbe33c99ba380a35f58632ca756e64314c56d4d1accc20cce56
+              tag: v2026.8.18@sha256:4be10712a96ed594804adf66795c20e93d2fcee4a6601d994dada5a17eabfad7
             ports:
               - name: api
                 containerPort: 8642
@@ -127,7 +127,7 @@ spec:
           webui:
             image:
               repository: ghcr.io/nesquena/hermes-webui
-              tag: 0.52.202@sha256:9991be2f8e8e8a128b81f9c9dac83c6ba73178ba14efdf2dee5e680a1b0bb2fa
+              tag: 0.52.262@sha256:52644509d2967489acec78fa70d3d3450e07dbd60e738b2b5753ba97dd166bca
             command: ["/bin/sh", "-c"]
             args:
               - test -d /opt/data/webui-venv || uv venv /opt/data/webui-venv && uv pip install --python /opt/data/webui-venv/bin/python --no-cache -r /apptoo/requirements.txt && uv pip install --python /opt/data/webui-venv/bin/python --no-cache /tmp/agent-src && /opt/data/webui-venv/bin/python3 /apptoo/server.py

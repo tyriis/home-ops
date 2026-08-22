@@ -1,3 +1,7 @@
+# [env]
+# _.source = { path = "./.envrc", tools = true }
+# can be used instead of direnv, but does not show the added/removed vars also has no allow mechanism on change
+
 [tools]
 # https://mise-versions.jdx.dev/tools/vcluster
 "aqua:loft-sh/vcluster" = "0.36.1"
@@ -6,15 +10,15 @@
 # https://mise-versions.jdx.dev/tools/direnv
 "aqua:direnv/direnv" = "2.37.1"
 # https://mise-versions.jdx.dev/tools/flux2
-"aqua:fluxcd/flux2" = "2.9.3"
+"aqua:fluxcd/flux2" = "2.9.4"
 # https://mise-versions.jdx.dev/tools/gitleaks
 "aqua:gitleaks/gitleaks" = "8.30.1"
 # https://mise-versions.jdx.dev/tools/helm
-"aqua:helm/helm" = "4.2.3"
+"aqua:helm/helm" = "4.2.4"
 # https://mise-versions.jdx.dev/tools/k9s
 "aqua:derailed/k9s" = "0.51.0"
 # https://mise-versions.jdx.dev/tools/kubectl
-"aqua:kubernetes/kubernetes/kubectl" = "1.36.3"
+"aqua:kubernetes/kubernetes/kubectl" = "1.36.4"
 # https://mise-versions.jdx.dev/tools/kustomize
 "aqua:kubernetes-sigs/kustomize" = "5.8.1"
 # https://mise-versions.jdx.dev/tools/node
@@ -26,11 +30,11 @@
 # https://mise-versions.jdx.dev/tools/talhelper
 "aqua:budimanjojo/talhelper" = "3.1.16"
 # https://mise-versions.jdx.dev/tools/talosctl
-"aqua:siderolabs/talos" = "1.13.7"
+"aqua:siderolabs/talos" = "1.13.9"
 # https://mise-versions.jdx.dev/tools/task
-"aqua:go-task/task" = "3.52.0"
+"aqua:go-task/task" = "3.53.1"
 # https://mise-versions.jdx.dev/tools/trivy
-"aqua:aquasecurity/trivy" = "0.73.0"
+"aqua:aquasecurity/trivy" = "0.74.0"
 # https://mise-versions.jdx.dev/tools/mc
 "aqua:minio/mc" = "RELEASE.2025-08-13T08-35-41Z"
 # https://mise-versions.jdx.dev/tools/openbao

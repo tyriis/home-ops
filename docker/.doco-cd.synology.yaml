@@ -19,3 +19,8 @@ name: minio
 working_dir: docker/synology/minio
 env_files:
   - .env
+---
+name: openssh-server
+working_dir: docker/synology/openssh-server
+env_files:
+  - .env

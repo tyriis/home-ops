@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: argo-workflows
-      version: 1.1.1
+      version: 2.0.2
       sourceRef:
         kind: HelmRepository
         name: argo
@@ -34,7 +34,7 @@ spec:
       image:
         registry: quay.io
         repository: argoproj/workflow-controller
-        tag: v4.1.0@sha256:183327f1bfb7d61570114e092df8bf6d8eff4417c57d2dc88e95c82c2d1c527c
+        tag: v4.1.2@sha256:466192f538abfe750157c5bb5c0b883137b19f67af27c5636ab15bc853c96668
       parallelism: 20
       resourceRateLimit:
         limit: 10
@@ -53,14 +53,14 @@ spec:
       image:
         registry: quay.io
         repository: argoproj/argoexec
-        tag: v4.1.0@sha256:12424cb9fd3eaedd3e8e1a471905a411e710ae2ddb83d9679fd246a4330a229b
+        tag: v4.1.2@sha256:4a7b9a9859b63e7aea7927c69fc336a5ef07f8dbea91ae2e175cda8788d972e9
 
     server:
       enabled: true
       image:
         registry: quay.io
         repository: argoproj/argocli
-        tag: v4.1.0@sha256:9a65f616eb2cafcbed895f19cec80781c3f9641d7e0bda3dfbb867be6ca87ace
+        tag: v4.1.2@sha256:4e47842692bb72705cb8179279989d26039e5ed318f8fa7cc77df1b246d97c67
       resources:
         requests:
           cpu: 10m
@@ -69,7 +69,24 @@ spec:
           memory: 100Mi
 
       extraArgs:
-        - --auth-mode=server
+        - --auth-mode=sso
+
+      sso:
+        enabled: true
+        issuer: https://id.techtales.io
+        redirectUrl: https://argo-workflows.techtales.io/oauth2/callback
+        clientId:
+          name: argo-workflows-pocketid
+          key: client-id
+        clientSecret:
+          name: argo-workflows-pocketid
+          key: client-secret
+        scopes:
+          - groups
+          - email
+          - profile
+        rbac:
+          enabled: true
 
     workflow:
       serviceAccount:

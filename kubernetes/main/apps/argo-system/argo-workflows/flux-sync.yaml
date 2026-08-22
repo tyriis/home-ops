@@ -12,8 +12,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../../components/envoy-pocketid
   path: ./kubernetes/main/apps/argo-system/argo-workflows/app
   prune: true
   sourceRef:

@@ -43,7 +43,7 @@ spec:
                         - name: pushsecret-name
                         - name: event-type
                     container:
-                      image: alpine/openssl:3.5.7@sha256:7ca28a8cfa05375bc0139b580654c7eec45ea322c066a5189a50f8be457f22b0
+                      image: alpine/openssl:3.5.7@sha256:19f8eb9004a1dbaec323eed6094e9b6bcc1dbf2697ecb5fb8d2fad4e3336a8f7
                       command: [sh, -c]
                       args:
                         - |

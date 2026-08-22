@@ -1,25 +1,27 @@
-# UnifiedMetrics https://modrinth.com/plugin/unifiedmetrics/versions?l=fabric&c=release
-https://cdn.modrinth.com/data/p1ewR5kV/versions/xwRVtqbA/unifiedmetrics-platform-fabric-0.3.8.jar
+# FabricExporter https://modrinth.com/mod/fabricexporter/versions?l=fabric&c=release
+https://cdn.modrinth.com/data/dbVXHSlv/versions/tuPsGk8g/fabricexporter-26.2-1.0.22.jar
+# Spark https://modrinth.com/mod/spark/versions?l=fabric&c=release
+https://cdn.modrinth.com/data/l6YH9Als/versions/iYFOl6lQ/spark-1.10.173-fabric.jar
 
 # Fabric API https://modrinth.com/mod/fabric-api/versions?c=release
-https://cdn.modrinth.com/data/P7dR8mSH/versions/i5tSkVBH/fabric-api-0.141.3%2B1.21.11.jar
+https://cdn.modrinth.com/data/P7dR8mSH/versions/vmQp7ixA/fabric-api-0.157.0%2B26.2.jar
 # Fabric Language Kotlin https://modrinth.com/mod/fabric-language-kotlin/versions?c=release
-https://cdn.modrinth.com/data/Ha28R6CL/versions/ViT4gucI/fabric-language-kotlin-1.13.9%2Bkotlin.2.3.10.jar
+https://cdn.modrinth.com/data/Ha28R6CL/versions/bdhiINYC/fabric-language-kotlin-1.13.13%2Bkotlin.2.4.10.jar
 # Polymer https://modrinth.com/mod/polymer/versions?c=release&l=fabric
-https://cdn.modrinth.com/data/xGdtZczs/versions/wugBT1fU/polymer-bundled-0.15.2%2B1.21.11.jar
+https://cdn.modrinth.com/data/xGdtZczs/versions/w0N4I45x/polymer-bundled-0.17.3%2B26.2.jar
 # FabricProxy-Lite https://modrinth.com/mod/fabricproxy-lite/versions?c=release&l=fabric
-https://cdn.modrinth.com/data/8dI2tmqs/versions/nR8AIdvx/FabricProxy-Lite-2.11.0.jar
+https://cdn.modrinth.com/data/8dI2tmqs/versions/CsEpiziv/FabricProxy-Lite-2.12.0.jar
 
 # Distant Horizons https://modrinth.com/mod/distanthorizons/versions?l=fabric
-https://cdn.modrinth.com/data/uCdwusMi/versions/GT3Bm3GN/DistantHorizons-2.4.5-b-1.21.11-fabric-neoforge.jar
+https://cdn.modrinth.com/data/uCdwusMi/versions/gBf0SaV1/DistantHorizons-3.2.0-b-26.2-fabric-neoforge.jar
 # FerriteCore https://modrinth.com/mod/ferrite-core/versions?c=release&l=fabric
-https://cdn.modrinth.com/data/uXXizFIs/versions/Ii0gP3D8/ferritecore-8.2.0-fabric.jar
+https://cdn.modrinth.com/data/uXXizFIs/versions/d5ddUdiB/ferritecore-9.0.0-fabric.jar
 # Lithium https://modrinth.com/mod/lithium/versions?c=release&l=fabric
-https://cdn.modrinth.com/data/gvQqBUqZ/versions/qvNsoO3l/lithium-fabric-0.21.3%2Bmc1.21.11.jar
+https://cdn.modrinth.com/data/gvQqBUqZ/versions/f7vZ0VWU/lithium-fabric-0.25.3%2Bmc26.2.jar
 # Sodium https://modrinth.com/mod/sodium/versions?c=release&l=fabric
-https://cdn.modrinth.com/data/AANobbMI/versions/1OWNgWVR/sodium-fabric-0.8.4%2Bmc1.21.11.jar
+https://cdn.modrinth.com/data/AANobbMI/versions/2Yom1N68/sodium-fabric-0.9.1%2Bmc26.2.jar
 
 # Farmers Delight https://modrinth.com/mod/farmers-delight-refabricated/versions?l=fabric
-https://cdn.modrinth.com/data/7vxePowz/versions/VyHaPl8C/FarmersDelight-1.21.11-3.4.8%2Brefabricated.jar
+https://cdn.modrinth.com/data/7vxePowz/versions/Mzm7vta8/FarmersDelight-26.2-3.6.15%2Brefabricated.jar
 # Universal Graves https://modrinth.com/mod/universal-graves/versions?c=release
-https://cdn.modrinth.com/data/yn9u3ypm/versions/rZeFZ5ip/graves-3.10.2%2B1.21.11.jar
+https://cdn.modrinth.com/data/yn9u3ypm/versions/BZfhXd0q/graves-3.12.0%2B26.2.jar
