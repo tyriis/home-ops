@@ -87,7 +87,7 @@ This spec covers **Phase 1 only**. The full Promtail → OTel migration is inten
 
 - **API:** `opentelemetry.io/v1beta1`
 - **Mode:** `daemonset` — rolled out as DaemonSet from Phase 1 to avoid a mode change in Phase 2 (filelog needs `/var/log/pods`)
-- **Image:** `otel/opentelemetry-collector-contrib`
+- **Image:** `otel/opentelemetry-collector-contrib` — set explicitly; the operator defaults to the distro image, which lacks the `bearertokenauth` extension (contrib-only)
 - **Receivers:**
   - `otlp` - gRPC `0.0.0.0:4317`, HTTP `0.0.0.0:4318` (bearer token auth on both)
 - **Processors:** `batch`, `memory_limiter`
@@ -98,6 +98,7 @@ This spec covers **Phase 1 only**. The full Promtail → OTel migration is inten
   - `prometheus` → `0.0.0.0:8888` (self-monitoring, scraped by ServiceMonitor)
 - **Scatter note:** single-endpoint write; the 3-replica Prometheus (no Thanos) scatters OTLP data across replicas. Accepted as a temporary limitation — resolved by the planned VictoriaMetrics migration.
 - **Extensions:** `health_check`, `bearertokenauth` (token from ExternalSecret/OpenBao)
+- **Service wiring:** list `bearertokenauth` under `service.extensions`; use separate pipelines for traces/metrics/logs; in-cluster `otlphttp` exporters use `tls.insecure: true`
 - **Auth token injection:** `spec.env[].valueFrom.secretKeyRef` → OpenBao-backed Secret; referenced as `${env:OTEL_BEARER_TOKEN}` in `bearertokenauth` (escape as `$${env:...}` if Flux postBuild substitutions are used)
 - **HTTPRoute (native CRD):** `otel.techtales.io` via envoy gateway, TLS, bearer token auth (annotate `gatus.home-operations.com/endpoint` per repo convention)
 - **Resources:** 100m CPU / 256Mi memory requests, 1Gi memory limit
@@ -122,6 +123,7 @@ This spec covers **Phase 1 only**. The full Promtail → OTel migration is inten
 
 - **Change:** Add `limits_config.otlp_config` block (~15 lines) to map OTLP resource attributes to Loki labels for external OTLP logs (opencode). Promtail continues on the existing push API in parallel.
 - **Attributes indexed:** `service.name`, `k8s.namespace.name`, `k8s.pod.name`, `k8s.container.name` (external opencode logs carry only `service.name`; `k8s.*` labels become meaningful in Phase 2 with filelog)
+- **`ignore_defaults: true`:** set in `otlp_config` so only the four attributes above are indexed (Loki otherwise adds 17 default resource-attribute labels)
 - **Endpoint:** `/otlp/v1/logs` already enabled by default in Loki 3.7.6 (SingleBinary mode)
 - **No other Loki config changes needed**
 
