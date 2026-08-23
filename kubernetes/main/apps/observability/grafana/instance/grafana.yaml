@@ -92,12 +92,8 @@ spec:
   httpRoute:
     metadata:
       annotations:
-        external-dns/cloudflare: "true"
         external-dns/unifi: "true"
         gatus.home-operations.com/endpoint: |
-          group: external
-          client:
-            dns-resolver: tcp://1.1.1.1:53
           conditions:
             - "[STATUS] == 302"
           name: grafana
