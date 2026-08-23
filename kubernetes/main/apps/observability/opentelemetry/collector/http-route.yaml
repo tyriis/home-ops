@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/gateway.networking.k8s.io/httproute_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: otel-collector
+  annotations:
+    external-dns/unifi: "true"
+spec:
+  hostnames:
+    - otel.techtales.io
+  parentRefs:
+    - name: envoy
+      namespace: networking
+      sectionName: https
+  rules:
+    - backendRefs:
+        - name: otel-collector-collector
+          port: 4318
+      matches:
+        - path:
+            type: PathPrefix
+            value: /
