@@ -30,29 +30,24 @@
 kubernetes/main/apps/observability/
 ├── kustomization.yaml                         [MODIFY] add opentelemetry + tempo flux-sync refs
 ├── opentelemetry/
-│   ├── flux-sync.yaml                         [CREATE] 3 Kustomizations: operator, collector, observability
+│   ├── flux-sync.yaml                         [CREATE] 2 Kustomizations: operator, collector
 │   ├── operator/
 │   │   ├── kustomization.yaml                 [CREATE]
 │   │   ├── oci-repository.yaml                [CREATE]
 │   │   └── helm-release.yaml                  [CREATE]
-│   ├── collector/
-│   │   ├── kustomization.yaml                 [CREATE]
-│   │   ├── collector.yaml                     [CREATE] OpenTelemetryCollector CR (DaemonSet)
-│   │   ├── external-secret.yaml               [CREATE] bearer token (OpenBao → Secret)
-│   │   └── http-route.yaml                    [CREATE] HTTPRoute otel.techtales.io
-│   └── observability/
+│   └── collector/
 │       ├── kustomization.yaml                 [CREATE]
+│       ├── collector.yaml                     [CREATE] OpenTelemetryCollector CR (DaemonSet)
+│       ├── external-secret.yaml               [CREATE] bearer token (OpenBao → Secret)
+│       ├── http-route.yaml                    [CREATE] HTTPRoute otel.techtales.io
 │       └── service-monitor.yaml               [CREATE] collector self-monitoring :8888
 ├── tempo/
-│   ├── flux-sync.yaml                         [CREATE] 2 Kustomizations: app, observability
-│   ├── app/
-│   │   ├── kustomization.yaml                 [CREATE]
-│   │   ├── oci-repository.yaml                [CREATE]
-│   │   ├── helm-release.yaml                  [CREATE] Tempo SingleBinary S3
-│   │   └── external-secret.yaml               [CREATE] tempo-s3 (OpenBao → Secret)
-│   └── observability/
+│   ├── flux-sync.yaml                         [CREATE] 1 Kustomization: app
+│   └── app/
 │       ├── kustomization.yaml                 [CREATE]
-│       └── service-monitor.yaml               [CREATE] Tempo self-monitoring
+│       ├── oci-repository.yaml                [CREATE]
+│       ├── helm-release.yaml                  [CREATE] Tempo SingleBinary S3
+│       └── external-secret.yaml               [CREATE] tempo-s3 (OpenBao → Secret)
 ├── kube-prometheus-stack/app/helm-release.yaml [MODIFY] add enableOTLPReceiver
 ├── loki/app/helm-release.yaml                  [MODIFY] add otlp_config
 └── grafana/instance/datasource.yaml            [MODIFY] add Tempo datasource
@@ -66,7 +61,7 @@ Outside Flux manifests; must exist before ExternalSecrets can sync.
 
 - [ ] **MinIO `tempo` bucket**: create a `tempo` bucket (Terraform `terraform-minio` under `atlantis-system/techtales-io/`, or manual). Mirrors the existing `loki` bucket.
 - [ ] **OpenBao secrets**:
-  - `infra/kubernetes/main/observability/otel-collector` → key `OTEL_BEARER_TOKEN` (random token; the opencode client sends it as `Authorization: Bearer <token>`).
+  - `infra/kubernetes/main/observability/opentelemetry` → key `OTEL_BEARER_TOKEN` (random token; the opencode client sends it as `Authorization: Bearer <token>`).
   - `infra/kubernetes/main/observability/tempo` → keys `S3_BUCKET_NAME`, `S3_BUCKET_HOST`, `S3_BUCKET_REGION`, `S3_ACCESS_KEY`, `S3_SECRET_KEY` (scoped MinIO creds for the `tempo` bucket, mirroring `loki`).
 
 ---
@@ -83,7 +78,7 @@ Outside Flux manifests; must exist before ExternalSecrets can sync.
 **Interfaces:**
 - Produces: Kustomization `opentelemetry-operator`, operator deployment + `opentelemetry.io/v1beta1` CRDs (consumed by Task 2's collector CR).
 
-- [ ] **Step 1: Create `opentelemetry/flux-sync.yaml`** (operator Kustomization only — collector/observability docs added in Tasks 2–3)
+- [ ] **Step 1: Create `opentelemetry/flux-sync.yaml`** (operator Kustomization only — collector doc added in Task 2)
 
 ```yaml
 ---
@@ -140,7 +135,7 @@ spec:
     operation: copy
   url: oci://ghcr.io/open-telemetry/opentelemetry-helm-charts/opentelemetry-operator
   ref:
-    tag: 0.120.1
+    tag: 0.122.0
 ```
 
 - [ ] **Step 4: Create `operator/helm-release.yaml`**
@@ -167,20 +162,20 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    # https://github.com/open-telemetry/opentelemetry-helm-charts
+    # https://artifacthub.io/packages/helm/opentelemetry-helm/opentelemetry-operator?modal=values
     admissionWebhooks:
       certManager:
         enabled: true
     manager:
       serviceMonitor:
-        enabled: false
+        enabled: true
       resources:
         requests:
           cpu: 10m
           memory: 64Mi
 ```
 
-> **Note:** verify exact chart value keys via `helm show values oci://ghcr.io/open-telemetry/opentelemetry-helm-charts/opentelemetry-operator --version 0.120.1` before finalizing; `admissionWebhooks.certManager.enabled` and `manager.resources` are the expected shapes.
+> **Note:** verify exact chart value keys via `helm show values oci://ghcr.io/open-telemetry/opentelemetry-helm-charts/opentelemetry-operator --version 0.122.0` before finalizing; `admissionWebhooks.certManager.enabled` and `manager.resources` are the expected shapes.
 
 - [ ] **Step 5: Register in parent kustomization** — add `- ./opentelemetry/flux-sync.yaml` between `./loki/flux-sync.yaml` and `./promtail/flux-sync.yaml`.
 
@@ -199,7 +194,7 @@ Expected: operator pod `Running`, `OpenTelemetryCollector` CRD present.
 
 ```bash
 git add kubernetes/main/apps/observability/opentelemetry kubernetes/main/apps/observability/kustomization.yaml
-git commit -m "feat(otel): add opentelemetry-operator"
+git commit -m "feat(otel): add opentelemetry operator and collector #9987"
 ```
 
 ## Task 2: opentelemetry-collector
@@ -212,7 +207,7 @@ git commit -m "feat(otel): add opentelemetry-operator"
 - Create: `kubernetes/main/apps/observability/opentelemetry/collector/http-route.yaml`
 
 **Interfaces:**
-- Consumes: `opentelemetry-operator` (Task 1) for the CRD; `external-secrets-stores` (secops) for the bearer-token Secret; `loki-headless.observability.svc.cluster.local:3100`, `kube-prometheus-stack-prometheus.observability.svc:9090`, `tempo.observability.svc.cluster.local:4317` (Tempo from Task 4).
+- Consumes: `opentelemetry-operator` (Task 1) for the CRD; `external-secrets-stores` (secops) for the bearer-token Secret; `loki-headless.observability.svc.cluster.local:3100`, `prometheus-operated.observability.svc.cluster.local:9090`, `tempo.observability.svc.cluster.local:4317` (Tempo from Task 4).
 - Produces: DaemonSet `otel-collector`, Service `otel-collector-collector` (4318), Secret `otel-collector`, HTTPRoute `otel.techtales.io`.
 
 - [ ] **Step 1: Append collector Kustomization to `flux-sync.yaml`** (second `---` document)
@@ -257,6 +252,7 @@ resources:
   - ./collector.yaml
   - ./external-secret.yaml
   - ./http-route.yaml
+  - ./service-monitor.yaml
 ```
 
 - [ ] **Step 3: Create `collector/collector.yaml`**
@@ -270,8 +266,8 @@ metadata:
   name: otel-collector
 spec:
   mode: daemonset
-  image: otel/opentelemetry-collector-contrib:0.158.0
-  config: |
+  image: otel/opentelemetry-collector-contrib:0.159.0
+  config:
     receivers:
       otlp:
         protocols:
@@ -292,11 +288,11 @@ spec:
         limit_mib: 1024
     exporters:
       otlphttp/prom:
-        endpoint: http://kube-prometheus-stack-prometheus.observability.svc:9090/api/v1/otlp
+        endpoint: http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/otlp #NOSONAR allow http
         tls:
           insecure: true
       otlphttp/loki:
-        endpoint: http://loki-headless.observability.svc.cluster.local:3100/otlp
+        endpoint: http://loki-headless.observability.svc.cluster.local:3100/otlp #NOSONAR allow http
         tls:
           insecure: true
       otlp/tempo:
@@ -334,18 +330,17 @@ spec:
           key: OTEL_BEARER_TOKEN
   resources:
     requests:
-      cpu: 100m
-      memory: 256Mi
-    limits:
-      memory: 1Gi
-  securityContext:
+      cpu: 10m
+      memory: 100Mi
+  podSecurityContext:
     runAsNonRoot: true
     runAsUser: 65532
     runAsGroup: 65532
     fsGroup: 65532
-    readOnlyRootFilesystem: true
     seccompProfile:
       type: RuntimeDefault
+  securityContext:
+    readOnlyRootFilesystem: true
     capabilities:
       drop: [ALL]
 ```
@@ -373,7 +368,7 @@ spec:
         OTEL_BEARER_TOKEN: "{{ .OTEL_BEARER_TOKEN }}"
   dataFrom:
     - extract:
-        key: infra/kubernetes/main/observability/otel-collector #gitleaks:allow
+        key: infra/kubernetes/main/observability/opentelemetry
 ```
 
 - [ ] **Step 5: Create `collector/http-route.yaml`**
@@ -387,10 +382,6 @@ metadata:
   name: otel-collector
   annotations:
     external-dns/unifi: "true"
-    gatus.home-operations.com/endpoint: |
-      name: otel-collector
-      headers:
-        Authorization: Bearer ${OTEL_BEARER_TOKEN}
 spec:
   hostnames:
     - otel.techtales.io
@@ -421,69 +412,13 @@ kubectl -n observability get externalsecret otel-collector
 
 Expected: DaemonSet pods `Running` on all nodes; `otel-collector` Secret `SecretSynced`.
 
-- [ ] **Step 7: Commit**
-
-```bash
-git add kubernetes/main/apps/observability/opentelemetry
-git commit -m "feat(otel): add opentelemetry-collector daemonset"
-```
+- [ ] **Step 7: Commit** — committed together with Task 1 (see Task 1, Step 7): `feat(otel): add opentelemetry operator and collector #9987`.
 
 ---
 
-## Task 3: opentelemetry-observability
+## Task 3: collector self-monitoring (no separate Kustomization)
 
-**Files:**
-- Modify: `kubernetes/main/apps/observability/opentelemetry/flux-sync.yaml` (append observability Kustomization)
-- Create: `kubernetes/main/apps/observability/opentelemetry/observability/kustomization.yaml`
-- Create: `kubernetes/main/apps/observability/opentelemetry/observability/service-monitor.yaml`
-
-**Interfaces:**
-- Consumes: `opentelemetry-operator` + `kube-prometheus-stack` (ServiceMonitor CRD) for `dependsOn`.
-- Produces: ServiceMonitor `otel-collector` scraping collector internal metrics on 8888.
-
-- [ ] **Step 1: Append observability Kustomization to `flux-sync.yaml`**
-
-```yaml
----
-# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app opentelemetry-observability
-spec:
-  targetNamespace: &namespace observability
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/observability/opentelemetry/observability
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-  dependsOn:
-    - name: opentelemetry-operator
-      namespace: *namespace
-    - name: kube-prometheus-stack
-      namespace: *namespace
-```
-
-- [ ] **Step 2: Create `observability/kustomization.yaml`**
-
-```yaml
----
-# yaml-language-server: $schema=https://json.schemastore.org/kustomization.json
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - ./service-monitor.yaml
-```
-
-- [ ] **Step 3: Create `observability/service-monitor.yaml`**
+Collector self-monitoring is a hand-rolled ServiceMonitor at `opentelemetry/collector/service-monitor.yaml`, reconciled by the `opentelemetry-collector` Flux Kustomization (Task 2) — there is no separate `opentelemetry-observability` Kustomization.
 
 ```yaml
 ---
@@ -503,24 +438,7 @@ spec:
       path: /metrics
 ```
 
-> **Note:** verify the operator's pod labels and the metrics port name with `kubectl -n observability get pods -l app.kubernetes.io/managed-by=opentelemetry-operator --show-labels` and `kubectl -n observability get svc otel-collector-collector -o yaml`. Adjust `selector.matchLabels` and `targetPort` if they differ. Fallback: set `spec.observability.metrics.enableMetricsUsingServiceMonitors: true` on the collector CR and drop this hand-rolled file.
-
-- [ ] **Step 4: Verify**
-
-```bash
-kubectl kustomize kubernetes/main/apps/observability/opentelemetry/observability
-flux get kustomization opentelemetry-observability
-kubectl -n observability get servicemonitor otel-collector
-```
-
-Expected: ServiceMonitor `otel-collector` present; Prometheus target `otel-collector` (port 8888) up.
-
-- [ ] **Step 5: Commit**
-
-```bash
-git add kubernetes/main/apps/observability/opentelemetry
-git commit -m "feat(otel): add opentelemetry-collector service monitor"
-```
+> **Note:** the ServiceMonitor is listed in `collector/kustomization.yaml` (Task 2, Step 2) and reconciled by the `opentelemetry-collector` Kustomization — no separate Flux Kustomization or commit is needed.
 
 ## Task 4: tempo app
 
@@ -536,7 +454,7 @@ git commit -m "feat(otel): add opentelemetry-collector service monitor"
 - Consumes: `external-secrets-stores` (secops) for the S3 Secret; MinIO `tempo` bucket (prerequisite).
 - Produces: Tempo SingleBinary deployment, Service `tempo` (ports 4317/4318 OTLP, 3200 query), Secret `tempo-s3`.
 
-- [ ] **Step 1: Create `tempo/flux-sync.yaml`** (app Kustomization only — observability doc added in Task 5)
+- [ ] **Step 1: Create `tempo/flux-sync.yaml`** (single app Kustomization)
 
 ```yaml
 ---
@@ -592,9 +510,9 @@ spec:
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
-  url: oci://ghcr.io/grafana/helm-charts/tempo
+  url: oci://ghcr.io/grafana-community/helm-charts/tempo
   ref:
-    tag: 1.24.4
+    tag: 2.2.4
 ```
 
 - [ ] **Step 4: Create `app/external-secret.yaml`**
@@ -651,11 +569,11 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    # https://artifacthub.io/packages/helm/grafana/tempo?modal=values
+    # https://artifacthub.io/packages/helm/grafana-community/tempo?modal=values
     fullnameOverride: tempo
     tempo:
-      usage_report:
-        reporting_enabled: false
+      tag: 2.10.8
+      reportingEnabled: false
       receivers:
         otlp:
           protocols:
@@ -672,14 +590,12 @@ spec:
             insecure: true
       metricsGenerator:
         enabled: false
+      resources:
+        requests:
+          cpu: 10m
+          memory: 100Mi
     serviceMonitor:
-      enabled: false
-    resources:
-      requests:
-        cpu: 100m
-        memory: 256Mi
-      limits:
-        memory: 2Gi
+      enabled: true
   valuesFrom:
     - kind: Secret
       name: tempo-s3
@@ -691,7 +607,7 @@ spec:
       targetPath: tempo.storage.trace.s3.endpoint
     - kind: Secret
       name: tempo-s3
-      valuesKey: S3_BUCKET_REGION
+      valuesKey: S3_BUCKET_REGION #gitleaks:allow
       targetPath: tempo.storage.trace.s3.region
     - kind: Secret
       name: tempo-s3
@@ -703,7 +619,7 @@ spec:
       targetPath: tempo.storage.trace.s3.secret_key
 ```
 
-> **Note:** verify exact chart keys via `helm show values oci://ghcr.io/grafana/helm-charts/tempo --version 1.24.4`. The `tempo.storage.trace.s3.*` and `tempo.receivers.otlp.protocols.*` paths are the expected shapes; `usage_report.reporting_enabled` disables telemetry. `metricsGenerator.enabled: false` keeps span-metrics deferred (Phase 2).
+> **Note:** verify exact chart keys via `helm show values oci://ghcr.io/grafana-community/helm-charts/tempo --version 2.2.4`. The `tempo.storage.trace.s3.*` and `tempo.receivers.otlp.protocols.*` paths are the expected shapes; `reportingEnabled` disables telemetry. `metricsGenerator.enabled: false` keeps span-metrics deferred (Phase 2).
 
 - [ ] **Step 6: Register in parent kustomization** — add `- ./tempo/flux-sync.yaml` between `./speedtest-exporter/flux-sync.yaml` and `./unpoller/flux-sync.yaml`.
 
@@ -722,101 +638,14 @@ Expected: Tempo pod `Running`; `tempo-s3` Secret `SecretSynced`.
 
 ```bash
 git add kubernetes/main/apps/observability/tempo kubernetes/main/apps/observability/kustomization.yaml
-git commit -m "feat(tempo): add tempo tracing backend"
+git commit -m "feat(tempo): add tempo deployment #9987"
 ```
 
 ---
 
-## Task 5: tempo-observability
+## Task 5: tempo self-monitoring (no separate Kustomization)
 
-**Files:**
-- Modify: `kubernetes/main/apps/observability/tempo/flux-sync.yaml` (append observability Kustomization)
-- Create: `kubernetes/main/apps/observability/tempo/observability/kustomization.yaml`
-- Create: `kubernetes/main/apps/observability/tempo/observability/service-monitor.yaml`
-
-**Interfaces:**
-- Consumes: `tempo` app (Task 4) + `kube-prometheus-stack` (ServiceMonitor CRD) for `dependsOn`.
-- Produces: ServiceMonitor `tempo` scraping Tempo self-metrics.
-
-- [ ] **Step 1: Append observability Kustomization to `flux-sync.yaml`**
-
-```yaml
----
-# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app tempo-observability
-spec:
-  targetNamespace: &namespace observability
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/observability/tempo/observability
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-  dependsOn:
-    - name: tempo
-      namespace: *namespace
-    - name: kube-prometheus-stack
-      namespace: *namespace
-```
-
-- [ ] **Step 2: Create `observability/kustomization.yaml`**
-
-```yaml
----
-# yaml-language-server: $schema=https://json.schemastore.org/kustomization.json
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - ./service-monitor.yaml
-```
-
-- [ ] **Step 3: Create `observability/service-monitor.yaml`**
-
-```yaml
----
-# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/servicemonitor_v1.json
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: tempo
-spec:
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: tempo
-  endpoints:
-    - port: http-metrics
-      interval: 30s
-      path: /metrics
-```
-
-> **Note:** verify Tempo's metrics port name/number with `kubectl -n observability get svc tempo -o yaml` (single-binary exposes metrics on the `http-metrics`/`3100` server port). Adjust `endpoints[].port` if the port name differs.
-
-- [ ] **Step 4: Verify**
-
-```bash
-kubectl kustomize kubernetes/main/apps/observability/tempo/observability
-flux get kustomization tempo-observability
-kubectl -n observability get servicemonitor tempo
-```
-
-Expected: ServiceMonitor `tempo` present; Prometheus target `tempo` up.
-
-- [ ] **Step 5: Commit**
-
-```bash
-git add kubernetes/main/apps/observability/tempo
-git commit -m "feat(tempo): add tempo service monitor"
-```
+Tempo self-monitoring uses the chart's native `serviceMonitor.enabled: true` (Task 4, Step 5) — there is no separate `tempo-observability` Kustomization or hand-rolled ServiceMonitor.
 
 ## Task 6: kube-prometheus-stack — enable native OTLP receiver
 
@@ -849,8 +678,8 @@ Expected: Prometheus pods restarted with `--web.enable-otlp-receiver` in args.
 - [ ] **Step 3: Commit**
 
 ```bash
-git add kubernetes/main/apps/observability/kube-prometheus-stack/app/helm-release.yaml
-git commit -m "feat(kube-prometheus-stack): enable native otlp receiver"
+git add kubernetes/main/apps/observability/kube-prometheus-stack/app/helm-release.yaml kubernetes/main/apps/observability/loki/app/helm-release.yaml kubernetes/main/apps/observability/grafana/instance/datasource.yaml
+git commit -m "feat(observability): wire otel and tempo backends #9987"
 ```
 
 ---
@@ -890,12 +719,7 @@ kubectl -n observability exec deploy/loki -- wget -qO- http://localhost:3100/otl
 
 Expected: Loki pods restarted; `/otlp/v1/logs` endpoint present (additive — Promtail push path unaffected).
 
-- [ ] **Step 3: Commit**
-
-```bash
-git add kubernetes/main/apps/observability/loki/app/helm-release.yaml
-git commit -m "feat(loki): add otlp log ingestion config"
-```
+- [ ] **Step 3: Commit** — committed together with Task 6 (see Task 6, Step 3): `feat(observability): wire otel and tempo backends #9987`.
 
 ---
 
@@ -937,12 +761,7 @@ kubectl -n observability get grafanadatasource tempo
 
 Expected: `tempo` GrafanaDatasource present; Tempo datasource queryable in Grafana → Explore.
 
-- [ ] **Step 3: Commit**
-
-```bash
-git add kubernetes/main/apps/observability/grafana/instance/datasource.yaml
-git commit -m "feat(grafana): add tempo datasource"
-```
+- [ ] **Step 3: Commit** — committed together with Task 6 (see Task 6, Step 3): `feat(observability): wire otel and tempo backends #9987`.
 
 ---
 
