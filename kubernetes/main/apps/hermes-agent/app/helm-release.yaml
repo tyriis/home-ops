@@ -206,8 +206,6 @@ spec:
           gethomepage.dev/group: AI
           gethomepage.dev/icon: mdi-chat
           gethomepage.dev/name: Hermes WebUI
-          gatus.home-operations.com/endpoint: |
-            group: external
         hostnames:
           - "${AGENT_NAME}.techtales.io"
         parentRefs:
