@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: ghcr.io/caronc/apprise
-              tag: v1.5.2@sha256:feb3ad42d280bca0c58fdff6f77f46e2586a65bbc6d2bff614d31245ff8a399c
+              tag: v1.5.3@sha256:6a9f18155b8ae6ae3439d4139e17946d3e0afe27340213c1dcf15f730c42a394
             env:
               # https://appriseit.com/api/reference/environment/
               APPRISE_DEFAULT_THEME: dark
