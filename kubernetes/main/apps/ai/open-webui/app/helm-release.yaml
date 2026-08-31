@@ -54,7 +54,7 @@ spec:
               # SEARXNG_QUERY_URL: http://searxng:8080/search?q=<query>
               ENABLE_WEBSOCKET_SUPPORT: "true"
               WEBSOCKET_MANAGER: "redis"
-              WEBSOCKET_REDIS_URL: "redis://dragonfly.dragonfly-system.svc.cluster.local:6379"
+              WEBSOCKET_REDIS_URL: "redis://open-webui-dragonfly.ai.svc.cluster.local:6379"
               # DATABASE_URL: # TODO
               # https://pocket-id.org/docs/client-examples/open-webui
               ENABLE_OAUTH_SIGNUP: "true"

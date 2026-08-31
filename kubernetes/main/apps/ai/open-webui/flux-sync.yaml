@@ -12,6 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../../components/volsync
+    - ../../../../../components/dragonfly
   path: ./kubernetes/main/apps/ai/open-webui/app
   prune: true
   sourceRef:
