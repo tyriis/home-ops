@@ -40,4 +40,4 @@
 # https://mise-versions.jdx.dev/tools/openbao
 "aqua:openbao/openbao/bao" = "2.6.1"
 # https://mise-versions.jdx.dev/tools/litestream
-"aqua:benbjohnson/litestream" = "0.5.16"
+"aqua:benbjohnson/litestream" = "0.5.17"
