@@ -6,7 +6,7 @@ metadata:
   name: nas
   description: Experimental TrueNAS
   annotations:
-    # backstage.io/techdocs-ref: dir:.
+    backstage.io/techdocs-ref: dir:.
     github.com/project-slug: tyriis/home-ops
   links:
     - url: https://github.com/tyriis/home-ops
@@ -20,3 +20,4 @@ metadata:
 spec:
   owner: home-ops
   domain: home
+  system: nas

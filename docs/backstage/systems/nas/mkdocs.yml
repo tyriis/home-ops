@@ -1,11 +1,12 @@
 ---
-site_name: synology
-site_description: Synology NAS
+site_name: nas
+site_description: Experimental TrueNAS
 
 nav:
   - Overview: index.md
-  - Setup: setup.md
-  - ACME DNS-01 Challenge: acme-dns01.md
+  - Installation: installation.md
+  - NFS Server: nfs-server.md
+  - ZFS: zfs.md
 
 theme:
   name: material
@@ -40,9 +41,9 @@ markdown_extensions:
   - pymdownx.snippets
   - pymdownx.superfences
   - attr_list
-  # - pymdownx.emoji:
-  #     emoji_index: !!python/name:materialx.emoji.twemoji
-  #     emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
   - def_list
   - pymdownx.tasklist
   - pymdownx.details
