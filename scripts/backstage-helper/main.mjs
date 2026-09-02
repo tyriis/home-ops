@@ -70,7 +70,10 @@ for (const item of data) {
       catalogInfo
     )
     // register the component in the docs/backstage/catalog-info.yaml file
-    const catalog = await fs.readFile("docs/backstage/catalog-info.yaml", "utf-8")
+    const catalog = await fs.readFile(
+      "docs/backstage/catalog-info.yaml",
+      "utf-8"
+    )
     const catalogJson = YAML.parse(catalog)
     catalogJson.spec.targets.push(
       `https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/${name}/catalog-info.yaml`
