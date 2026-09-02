@@ -85,7 +85,7 @@ Runtime features:   free-space-tree
 Checksum:           crc32c
 Number of devices:  1
 Devices:
-   ID        SIZE  PATH
+    ID       SIZE  PATH
     1   232.88GiB  /dev/sda1
 ```
 
