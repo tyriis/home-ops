@@ -51,7 +51,7 @@ spec:
           init-agent-src:
             image:
               repository: ghcr.io/tyriis/hermes-agent
-              tag: v2026.8.18@sha256:4be10712a96ed594804adf66795c20e93d2fcee4a6601d994dada5a17eabfad7
+              tag: v2026.8.31@sha256:08d75fc06cbaf7d714b7273a7ca05f52add8f14126ba6e2b52986d9359414a6b
             command:
               - sh
               - -c
@@ -65,7 +65,7 @@ spec:
             args: ["gateway", "run", "--no-supervise"]
             image: &image
               repository: ghcr.io/tyriis/hermes-agent
-              tag: v2026.8.18@sha256:4be10712a96ed594804adf66795c20e93d2fcee4a6601d994dada5a17eabfad7
+              tag: v2026.8.31@sha256:08d75fc06cbaf7d714b7273a7ca05f52add8f14126ba6e2b52986d9359414a6b
             ports:
               - name: api
                 containerPort: 8642
