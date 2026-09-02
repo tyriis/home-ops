@@ -99,6 +99,7 @@ repos:
         exclude: |
           (?x)^(
             devenv/.*|
+            kubernetes/main/apps/argo-system/argo-workflows/app/rbac.yaml|
             kubernetes/main/apps/secops/rbac.yaml|
             kubernetes/utility/apps/secops/rbac.yaml
           )$()

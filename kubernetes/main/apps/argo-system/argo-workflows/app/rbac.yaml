@@ -13,6 +13,7 @@ rules:
       - get
       - list
       - watch
+
 ---
 # yaml-language-server: https://k8s-schemas.home-operations.com/core/serviceaccount_v1.json
 apiVersion: v1
@@ -23,6 +24,7 @@ metadata:
   annotations:
     workflows.argoproj.io/rbac-rule: "'privileged-users' in groups"
     workflows.argoproj.io/rbac-rule-precedence: "1"
+
 ---
 # yaml-language-server: https://k8s-schemas.home-operations.com/core/serviceaccount_v1.json
 apiVersion: v1
@@ -33,8 +35,9 @@ metadata:
   annotations:
     workflows.argoproj.io/rbac-rule: "true"
     workflows.argoproj.io/rbac-rule-precedence: "0"
+
 ---
-# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/v1/secret.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/core/secret_v1.json
 # Required by argo-server SSO RBAC on Kubernetes v1.24+ (legacy auto-creation removed).
 # The kube-controller-manager fills in `token` / `ca.crt` once this Secret exists with
 # the right annotation+type combination. See:
@@ -47,8 +50,9 @@ metadata:
   annotations:
     kubernetes.io/service-account.name: argo-admin
 type: kubernetes.io/service-account-token
+
 ---
-# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/v1/secret.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/core/secret_v1.json
 apiVersion: v1
 kind: Secret
 metadata:
@@ -57,6 +61,7 @@ metadata:
   annotations:
     kubernetes.io/service-account.name: argo-readonly
 type: kubernetes.io/service-account-token
+
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrole_v1.json
 apiVersion: rbac.authorization.k8s.io/v1
@@ -114,6 +119,7 @@ rules:
       - create
       - delete
       - get
+
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrole_v1.json
 apiVersion: rbac.authorization.k8s.io/v1
@@ -136,6 +142,7 @@ rules:
       - get
       - list
       - watch
+
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrolebinding_v1.json
 apiVersion: rbac.authorization.k8s.io/v1
@@ -150,6 +157,7 @@ subjects:
   - kind: ServiceAccount
     name: argo-admin
     namespace: argo-system
+
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrolebinding_v1.json
 apiVersion: rbac.authorization.k8s.io/v1
