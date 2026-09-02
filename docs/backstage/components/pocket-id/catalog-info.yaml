@@ -5,6 +5,8 @@ kind: Component
 metadata:
   name: pocket-id
   description: Pocket ID is a simple OIDC provider for authenticating users of internal web applications.
+  annotations:
+    backstage.io/techdocs-ref: dir:.
   links:
     - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/utility/apps/secops/pocket-id
       title: Flux definition

@@ -1,0 +1,9 @@
+---
+site_name: pocket-id
+nav:
+  - Home: index.md
+  - Runbooks:
+      - Litestream Non-Contiguous LTX Files: runbooks/litestream-non-contiguous-ltx-files.md
+
+plugins:
+  - techdocs-core
