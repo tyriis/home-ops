@@ -4,7 +4,7 @@ apiVersion: backstage.io/v1alpha1
 kind: System
 metadata:
   name: nas
-  description: Experimental TrueNAS
+  description: TrueNAS storage server (NFS, ZFS, MinIO)
   annotations:
     backstage.io/techdocs-ref: dir:.
     github.com/project-slug: tyriis/home-ops

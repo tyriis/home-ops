@@ -38,4 +38,3 @@ spec:
     - component:envoy-gateway
     - component:rook-ceph
     - component:mosquitto
-    - system:zigbee-bridge

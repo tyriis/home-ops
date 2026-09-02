@@ -25,4 +25,3 @@ spec:
   owner: home-ops
   dependsOn:
     - component:envoy-gateway
-    - component:cloudnative-pg

@@ -10,7 +10,7 @@ metadata:
       title: Flux definition
       icon: github
       type: github-repository
-    - url: https://github.com/stonith404/pocket-id
+    - url: https://github.com/pocket-id/pocket-id
       title: Upstream Repository
       icon: github
       type: github-repository

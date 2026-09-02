@@ -1,6 +1,6 @@
 ---
 site_name: main-cluster
-site_description: kubernetes cluster hosted in my bassement
+site_description: Kubernetes cluster running in HA on 3 MS-01 nodes
 
 nav:
   - Overview: index.md

@@ -4,7 +4,7 @@ apiVersion: backstage.io/v1alpha1
 kind: System
 metadata:
   name: main-cluster
-  description: main kubernetes cluster (Talos Linux + Flux)
+  description: main Kubernetes cluster running in HA on 3 MS-01 nodes (Talos Linux + Flux)
   annotations:
     backstage.io/techdocs-ref: dir:.
     github.com/project-slug: tyriis/home-ops

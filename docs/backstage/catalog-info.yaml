@@ -61,4 +61,3 @@ spec:
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/synology-nas/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/main-cluster/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/utility-cluster/catalog-info.yaml
-    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/zigbee-bridge/catalog-info.yaml

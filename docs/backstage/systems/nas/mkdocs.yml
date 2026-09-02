@@ -1,6 +1,6 @@
 ---
 site_name: nas
-site_description: Experimental TrueNAS
+site_description: TrueNAS storage server
 
 nav:
   - Overview: index.md
