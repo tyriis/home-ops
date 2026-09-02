@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: bazarr
+  description: Bazarr is a companion application to Sonarr and Radarr that manages and downloads subtitles.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/media/bazarr
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/morpheus65535/bazarr
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+  tags:
+    - media
+    - subtitles
+spec:
+  type: service
+  lifecycle: production
+  system: main-cluster
+  owner: home-ops
+  dependsOn:
+    - component:envoy-gateway

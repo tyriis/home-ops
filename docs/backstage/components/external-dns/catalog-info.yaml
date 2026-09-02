@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: external-dns
+  description: ExternalDNS synchronizes exposed Kubernetes Services and Ingresses with DNS providers.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/networking/external-dns
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/kubernetes-sigs/external-dns
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+  tags:
+    - networking
+    - dns
+    - cloudflare
+spec:
+  type: service
+  lifecycle: production
+  system: main-cluster
+  owner: home-ops
+  dependsOn:
+    - component:cert-manager

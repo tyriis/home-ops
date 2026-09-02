@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: plex
+  description: Plex is a media server for streaming and organizing personal movies, TV shows, and music.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/media/plex
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/plexinc/pms-docker
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+  tags:
+    - media
+    - streaming
+    - video
+spec:
+  type: service
+  lifecycle: production
+  system: main-cluster
+  owner: home-ops
+  dependsOn:
+    - component:envoy-gateway

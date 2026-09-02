@@ -6,7 +6,7 @@ metadata:
   name: synology
   description: synology ds218+
   annotations:
-    # backstage.io/techdocs-ref: dir:.
+    backstage.io/techdocs-ref: dir:.
     github.com/project-slug: tyriis/home-ops
   links:
     - url: https://synology.techtales.io

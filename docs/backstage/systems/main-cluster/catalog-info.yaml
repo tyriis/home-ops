@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: main-cluster
+  description: main Kubernetes cluster running in HA on 3 MS-01 nodes (Talos Linux + Flux)
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: tyriis/home-ops
+  links:
+    - url: https://github.com/tyriis/home-ops
+      title: home-ops
+      icon: github
+      type: github-repository
+  tags:
+    - k8s
+    - talos
+    - flux
+spec:
+  owner: home-ops
+  domain: home

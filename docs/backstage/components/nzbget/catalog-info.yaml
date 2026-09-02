@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: nzbget
+  description: NZBGet is an efficient binary newsreader for downloading from Usenet.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/media/nzbget
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/nzbgetcom/nzbget
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+  tags:
+    - usenet
+    - download
+    - media
+spec:
+  type: service
+  lifecycle: production
+  system: main-cluster
+  owner: home-ops
+  dependsOn:
+    - component:envoy-gateway

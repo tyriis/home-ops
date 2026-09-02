@@ -1,0 +1,28 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: filebrowser
+  description: Filebrowser provides a web-based file manager for browsing and managing files on the server.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/media/filebrowser
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/filebrowser/filebrowser
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+  tags:
+    - files
+    - web
+    - management
+spec:
+  type: service
+  lifecycle: production
+  system: main-cluster
+  owner: home-ops
+  dependsOn:
+    - component:envoy-gateway
+    - system:nas

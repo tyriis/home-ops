@@ -10,7 +10,7 @@ metadata:
   annotations:
     backstage.io/techdocs-ref: dir:.
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/kube-nas/apps/secops/openbao
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/utility/apps/secops/openbao
       title: Flux definitions
       icon: github
       type: github-repository
@@ -19,5 +19,5 @@ metadata:
 spec:
   type: service
   lifecycle: experimental
-  system: kube-nas
+  system: utility-cluster
   owner: home-ops

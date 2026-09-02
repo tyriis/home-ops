@@ -6,7 +6,7 @@ metadata:
   name: esphome
   description: A component for managing ESPHome, enabling easy and efficient creation and management of smart home devices.
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/home-automation/esphome
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/home-automation/esphome
       title: Flux definition
       icon: github
       type: github-repository
@@ -26,8 +26,8 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  system: talos-flux
+  system: main-cluster
   owner: home-ops
   dependsOn:
     - component:cert-manager
-    - component:traefik
+    - component:envoy-gateway

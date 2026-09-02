@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: tuppr
+  description: Tuppr automates Kubernetes node upgrades by coordinating Talos upgrades across the cluster.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/system-upgrade/tuppr
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/home-operations/tuppr
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+  tags:
+    - kubernetes
+    - talos
+    - upgrades
+    - system
+spec:
+  type: service
+  lifecycle: production
+  system: main-cluster
+  owner: home-ops

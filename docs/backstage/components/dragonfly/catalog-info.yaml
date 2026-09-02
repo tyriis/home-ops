@@ -6,7 +6,7 @@ metadata:
   name: dragonfly
   description: Distributed, in-memory database designed as a drop-in replacement for Redis, enhancing scalability and performance.
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/database/dragonfly
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/dragonfly-system/dragonfly
       title: Flux definition
       icon: github
       type: github-repository
@@ -23,5 +23,5 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  system: talos-flux
+  system: main-cluster
   owner: home-ops

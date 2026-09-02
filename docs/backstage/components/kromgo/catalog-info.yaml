@@ -6,7 +6,7 @@ metadata:
   name: kromgo
   description: Easily expose preconfigured prometheus metrics to the outside using badges.
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/observability/kromgo
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/observability/kromgo
       title: Flux definition
       icon: github
       type: github-repository
@@ -27,10 +27,10 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  system: talos-flux
+  system: main-cluster
   owner: home-ops
   dependsOn:
     - component:cert-manager
-    - component:traefik
+    - component:envoy-gateway
     - component:kube-prometheus-stack
     - component:cloudflared

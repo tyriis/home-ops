@@ -9,7 +9,7 @@ metadata:
     # github.com/project-slug: tyriis/backstage-documentation
     backstage.io/techdocs-ref: dir:.
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/rook-ceph
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/rook-ceph/rook-ceph
       title: Flux definition
       icon: github
       type: github-repository
@@ -20,7 +20,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  system: talos-flux
+  system: main-cluster
   owner: home-ops
   # dependsOn:
   #   - resource:default/artists-db

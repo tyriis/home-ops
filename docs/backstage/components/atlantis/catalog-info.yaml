@@ -6,7 +6,7 @@ metadata:
   name: atlantis
   description: Atlantis automates Terraform workflows, enabling collaborative, version-controlled infrastructure as code deployments.
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/atlantis/atlantis
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/atlantis-system/techtales-io
       title: Flux definition
       icon: github
       type: github-repository
@@ -28,13 +28,13 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  system: talos-flux
+  system: main-cluster
   owner: home-ops
   dependsOn:
     - component:cert-manager
     - component:rook-ceph
-    - component:traefik
-    - component:traefik-forward-auth
+    - component:envoy-gateway
+    - component:pocket-id
   #  - resource:default/external-secrets
   # providesApis:
   #   - test-api

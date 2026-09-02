@@ -1,4 +1,7 @@
-const fluxKustomizations = await glob(["kubernetes/kube-lab/**/flux-sync.yaml"])
+const fluxKustomizations = await glob([
+  "kubernetes/main/**/flux-sync.yaml",
+  "kubernetes/utility/**/flux-sync.yaml",
+])
 
 // echo`${JSON.stringify(fluxKustomizations, null, 2)}`
 
@@ -38,7 +41,7 @@ for (const item of data) {
       name: backstage
       description: add some description
       links: []
-        # - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/kube-lab/apps/backstage/backstage
+        # - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/backstage/backstage
         #   title: Flux definition
         #   icon: github
         #   type: github-repository
@@ -55,11 +58,11 @@ for (const item of data) {
     spec:
       type: service
       lifecycle: production
-      system: kube-lab
+      system: main-cluster
       owner: home-ops
       # dependsOn:
       #  - component:cert-manager
-      #  - component:traefik
+      #  - component:envoy-gateway
       # providesApis:
       #   - test-api
     `

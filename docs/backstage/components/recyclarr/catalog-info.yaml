@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: recyclarr
+  description: Recyclarr synchronizes recommended TRaSH Guides configuration to the *arr applications.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/media/recyclarr
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/recyclarr/recyclarr
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+  tags:
+    - media
+    - configuration
+    - automation
+spec:
+  type: service
+  lifecycle: production
+  system: main-cluster
+  owner: home-ops
+  dependsOn:
+    - component:envoy-gateway

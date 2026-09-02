@@ -6,7 +6,7 @@ metadata:
   name: actions-runner-controller
   description: A controller for managing GitHub Actions runners on Kubernetes for efficient CI/CD operations.
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/github/actions-runner-controller
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/github/actions-runner-controller
       title: Flux definition
       icon: github
       type: github-repository
@@ -22,5 +22,5 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  system: talos-flux
+  system: main-cluster
   owner: home-ops

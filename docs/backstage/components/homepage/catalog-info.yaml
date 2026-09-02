@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: homepage
+  description: Homepage is a modern, highly customizable application dashboard for self-hosted services.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/default/homepage
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/gethomepage/homepage
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+  tags:
+    - dashboard
+    - ui
+    - self-hosted
+spec:
+  type: service
+  lifecycle: production
+  system: main-cluster
+  owner: home-ops
+  dependsOn:
+    - component:envoy-gateway

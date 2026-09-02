@@ -1,0 +1,55 @@
+---
+site_name: main-cluster
+site_description: Kubernetes cluster running in HA on 3 MS-01 nodes
+
+nav:
+  - Overview: index.md
+  - Installation: installation.md
+  - User Manual: manual.md
+  - Upgrade: upgrade.md
+  - Runbooks:
+      - ETCD Database Fragmentation Troubleshooting: runbooks/etcd-database-fragmentation-troubleshooting.md
+
+theme:
+  name: material
+  features:
+    - navigation.expand
+    - navigation.indexes
+
+plugins:
+  - techdocs-core
+  #   - kroki
+  - search
+  # - awesome-pages
+  # - macros
+  # - glightbox:
+  #     touchNavigation: false
+  #     loop: false
+  #     effect: zoom
+  #     width: 100%
+  #     height: auto
+  #     zoomable: true
+  #     draggable: false
+  # - webcontext:
+  #     context: catalog/default/component/developer-workflow
+  # - alias
+
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight:
+      # Enables linking to a specific line in a code block.
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - def_list
+  - pymdownx.tasklist
+  - pymdownx.details
+  - footnotes
+
+extra_css:
+  - stylesheets/extra.css

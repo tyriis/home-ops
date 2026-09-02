@@ -1,0 +1,28 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: syncthing
+  description: Syncthing is a continuous file synchronization program for syncing folders between devices.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/productivity/syncthing
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/syncthing/syncthing
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+  tags:
+    - sync
+    - file
+    - backup
+spec:
+  type: service
+  lifecycle: production
+  system: main-cluster
+  owner: home-ops
+  dependsOn:
+    - component:envoy-gateway
+    - system:nas

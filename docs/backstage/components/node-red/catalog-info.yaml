@@ -9,7 +9,7 @@ metadata:
   description: |
     Node-RED is a visual programming tool for wiring together devices, APIs, and online services in an intuitive flow-based interface.
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/home-automation/node-red
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/home-automation/node-red
       title: Flux definition
       icon: github
       type: github-repository
@@ -24,10 +24,8 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  system: talos-flux
+  system: main-cluster
   owner: home-ops
   dependsOn:
     - component:cert-manager
-    - component:traefik
-  consumesApis:
-    - locking-service
+    - component:envoy-gateway

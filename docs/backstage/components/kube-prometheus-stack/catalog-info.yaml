@@ -6,7 +6,7 @@ metadata:
   name: kube-prometheus-stack
   description: The kube-prometheus-stack is a collection of Kubernetes manifests, Grafana dashboards, and Prometheus rules combined with Helm charts to provide a monitoring solution for your Kubernetes cluster.
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/observability/kube-prometheus-stack
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/observability/kube-prometheus-stack
       title: Flux definition
       icon: github
       type: github-repository
@@ -29,8 +29,8 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  system: talos-flux
+  system: main-cluster
   owner: home-ops
   dependsOn:
     - component:cert-manager
-    - component:traefik
+    - component:envoy-gateway

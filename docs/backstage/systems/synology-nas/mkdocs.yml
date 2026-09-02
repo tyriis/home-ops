@@ -3,6 +3,8 @@ site_name: synology
 site_description: Synology NAS
 
 nav:
+  - Overview: index.md
+  - Setup: setup.md
   - ACME DNS-01 Challenge: acme-dns01.md
 
 theme:
