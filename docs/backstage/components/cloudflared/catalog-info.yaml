@@ -6,7 +6,7 @@ metadata:
   name: cloudflared
   description: A component for managing Cloudflare's cloudflared service, providing secure, fast networking tunnels.
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/networking/cloudflared
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/networking/cloudflared
       title: Flux definition
       icon: github
       type: github-repository

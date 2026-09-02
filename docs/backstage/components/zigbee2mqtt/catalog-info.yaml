@@ -9,7 +9,7 @@ metadata:
     backstage.io/techdocs-ref: dir:.
     github.com/project-slug: tyriis/home-ops
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/home-automation/zigbee2mqtt
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/home-automation/zigbee2mqtt
       title: Flux definition
       icon: github
       type: github-repository
@@ -35,7 +35,7 @@ spec:
   owner: home-ops
   dependsOn:
     - component:cert-manager
-    - component:traefik
+    - component:envoy-gateway
     - component:rook-ceph
     - system:mqtt.home
     - system:zigbee-bridge

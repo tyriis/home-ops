@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: hermes-agent
+  description: Hermes Agent is a lightweight agent that reports node and cluster metrics to Hermes.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/hermes-agent/app
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/tyriis/hermes-agent
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+  tags:
+    - monitoring
+    - metrics
+    - agent
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops
+  dependsOn:
+    - component:envoy-gateway

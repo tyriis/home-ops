@@ -10,10 +10,6 @@ metadata:
   annotations:
     backstage.io/techdocs-ref: dir:.
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/nas/apps/backup-system/volsync
-      title: Flux definitions
-      icon: github
-      type: github-repository
     - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/backup-system/volsync
       title: Flux definitions
       icon: github
@@ -23,5 +19,5 @@ metadata:
 spec:
   type: service
   lifecycle: experimental
-  system: kube-nas
+  system: talos-flux
   owner: home-ops

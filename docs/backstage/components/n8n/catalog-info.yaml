@@ -1,0 +1,28 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: n8n
+  description: n8n is a workflow automation platform for connecting services and automating tasks.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/home-automation/n8n
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/n8n-io/n8n
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+  tags:
+    - automation
+    - workflow
+    - integration
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops
+  dependsOn:
+    - component:envoy-gateway
+    - component:cloudnative-pg

@@ -1,0 +1,28 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: karakeep
+  description: Karakeep is a self-hosted bookmark and link archiving service for saving web content.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/productivity/karakeep
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/karakeep-app/karakeep
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+  tags:
+    - bookmarks
+    - archiving
+    - self-hosted
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops
+  dependsOn:
+    - component:envoy-gateway
+    - component:dragonfly

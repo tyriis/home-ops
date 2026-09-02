@@ -6,7 +6,7 @@ metadata:
   name: grafana
   description: Grafana is an open-source platform for monitoring and observability, with a focus on providing beautiful, interactive visualizations.
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/observability/grafana
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/observability/grafana
       title: Flux definition
       icon: github
       type: github-repository
@@ -30,4 +30,4 @@ spec:
   owner: home-ops
   dependsOn:
     - component:cert-manager
-    - component:traefik
+    - component:envoy-gateway

@@ -6,7 +6,7 @@ metadata:
   name: locking-service
   description: Simple service to create auto expiring locks between resource reference and owner reference.
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/home-automation/locking-service
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/home-automation/locking-service
       title: Flux definition
       icon: github
       type: github-repository
@@ -25,4 +25,4 @@ spec:
   dependsOn:
     - component:dragonfly
   providesApis:
-    - locking-service
+    - api:locking-service

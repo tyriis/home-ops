@@ -8,7 +8,7 @@ metadata:
   annotations:
     backstage.io/techdocs-ref: dir:.
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/database/dbman
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/cnpg-system/dbman
       title: Flux definition
       icon: github
       type: github-repository

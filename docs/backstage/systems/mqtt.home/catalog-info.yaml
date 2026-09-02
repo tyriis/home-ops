@@ -18,4 +18,4 @@ spec:
   domain: home
   type: infrastructure
   lifecycle: production
-  system: mqtt-broker
+  system: mqtt.home

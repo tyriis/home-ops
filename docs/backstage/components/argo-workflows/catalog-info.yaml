@@ -6,7 +6,7 @@ metadata:
   name: argo-workflows
   description: Argo Workflows is a Kubernetes-native workflow engine for complex job orchestration, primarily used in DevOps pipelines.
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/devops/argo-workflows
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/argo-system/argo-workflows
       title: Flux definition
       icon: github
       type: github-repository
@@ -30,4 +30,4 @@ spec:
   owner: home-ops
   dependsOn:
     - component:cert-manager
-    - component:traefik
+    - component:envoy-gateway

@@ -6,7 +6,7 @@ metadata:
   name: echo-server
   description: An HTTP and WebSocket "echo" server for testing proxies and HTTP clients.
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/default/echo-server
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/default/echo-server
       title: Flux definition
       icon: github
       type: github-repository
@@ -30,4 +30,4 @@ spec:
   owner: home-ops
   dependsOn:
     - component:cert-manager
-    - component:traefik
+    - component:envoy-gateway

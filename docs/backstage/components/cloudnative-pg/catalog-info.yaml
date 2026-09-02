@@ -6,7 +6,7 @@ metadata:
   name: cloudnative-pg
   description: A PostgreSQL operator for Kubernetes, enabling easy deployment and management of PostgreSQL databases.
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/database/cloudnative-pg
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/cnpg-system/cnpg
       title: Flux definition
       icon: github
       type: github-repository

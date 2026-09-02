@@ -6,7 +6,7 @@ metadata:
   name: loki
   description: Loki is a horizontally-scalable, highly-available, multi-tenant log aggregation system inspired by Prometheus.
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/observability/loki
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/observability/loki
       title: Flux definition
       icon: github
       type: github-repository

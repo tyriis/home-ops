@@ -1,0 +1,28 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: sonarr
+  description: Sonarr is a PVR for Usenet and BitTorrent users to automate TV show downloads.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/media/sonarr
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/Sonarr/Sonarr
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+  tags:
+    - media
+    - tv
+    - usenet
+    - torrent
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops
+  dependsOn:
+    - component:envoy-gateway

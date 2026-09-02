@@ -6,7 +6,7 @@ metadata:
   name: home-assistant
   description: Home Assistant is a component for orchestrating smart home devices, providing automation and integration capabilities.
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/home-automation/home-assistant
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/home-automation/home-assistant
       title: Flux definition
       icon: github
       type: github-repository
@@ -29,6 +29,6 @@ spec:
   owner: home-ops
   dependsOn:
     - component:cert-manager
-    - component:traefik
+    - component:envoy-gateway
     - component:cloudnative-pg
     - system:nas

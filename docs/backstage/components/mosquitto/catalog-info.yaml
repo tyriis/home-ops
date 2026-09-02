@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: mosquitto
+  description: Eclipse Mosquitto is an open-source MQTT message broker for IoT and home automation messaging.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/home-automation/mosquitto
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/eclipse-mosquitto/mosquitto
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+  tags:
+    - mqtt
+    - messaging
+    - iot
+    - home-automation
+spec:
+  type: service
+  lifecycle: production
+  system: mqtt.home
+  owner: home-ops

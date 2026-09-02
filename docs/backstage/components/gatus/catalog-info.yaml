@@ -1,0 +1,30 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: gatus
+  description: Gatus is a lightweight service health dashboard with automated alerting for endpoints.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/observability/gatus
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/TwiN/gatus
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+  tags:
+    - monitoring
+    - observability
+    - health
+    - uptime
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops
+  dependsOn:
+    - component:cert-manager
+    - component:envoy-gateway
+    - component:cloudnative-pg

@@ -23,4 +23,4 @@ spec:
   domain: home
   type: network-security
   lifecycle: production
-  system: firewall
+  system: opnsense

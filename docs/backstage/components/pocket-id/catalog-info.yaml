@@ -1,0 +1,30 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: pocket-id
+  description: Pocket ID is a simple OIDC provider for authenticating users of internal web applications.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/utility/apps/secops/pocket-id
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/stonith404/pocket-id
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+  tags:
+    - security
+    - authentication
+    - oidc
+    - identity
+spec:
+  type: service
+  lifecycle: production
+  system: talos-flux
+  owner: home-ops
+  dependsOn:
+    - component:cert-manager
+    - component:envoy-gateway
+    - component:cloudnative-pg

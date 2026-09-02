@@ -6,7 +6,7 @@ metadata:
   name: cert-manager
   description: A Kubernetes component for managing X.509 certificates, ensuring network security and encryption.
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/talos-flux/apps/cert-manager
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/cert-manager/cert-manager
       title: Flux definition
       icon: github
       type: github-repository
