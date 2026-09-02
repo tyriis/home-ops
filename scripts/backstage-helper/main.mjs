@@ -58,7 +58,7 @@ for (const item of data) {
     spec:
       type: service
       lifecycle: production
-      system: talos-flux
+      system: main-cluster
       owner: home-ops
       # dependsOn:
       #  - component:cert-manager

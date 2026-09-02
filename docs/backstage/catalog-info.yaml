@@ -38,6 +38,7 @@ spec:
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/mosquitto/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/n8n/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/node-red/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/olla/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/nzbget/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/ollama/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/open-webui/catalog-info.yaml
@@ -57,8 +58,7 @@ spec:
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/zigbee2mqtt/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/domains/home/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/nas/catalog-info.yaml
-    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/mqtt.home/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/synology-nas/catalog-info.yaml
-    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/opnsense/catalog-info.yaml
-    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/talos-flux/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/main-cluster/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/utility-cluster/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/zigbee-bridge/catalog-info.yaml

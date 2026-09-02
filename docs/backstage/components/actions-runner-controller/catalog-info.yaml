@@ -22,5 +22,5 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  system: talos-flux
+  system: main-cluster
   owner: home-ops

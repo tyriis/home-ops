@@ -3,8 +3,8 @@
 apiVersion: backstage.io/v1alpha1
 kind: System
 metadata:
-  name: talos-flux
-  description: kubernetes cluster hosted in my bassement
+  name: main-cluster
+  description: main kubernetes cluster (Talos Linux + Flux)
   annotations:
     backstage.io/techdocs-ref: dir:.
     github.com/project-slug: tyriis/home-ops

@@ -2,7 +2,7 @@
 <!-- markdownlint-disable MD046 -->
 <!-- markdownlint-disable MD013 -->
 
-# System: talos-flux
+# System: main-cluster
 
 ## Network
 

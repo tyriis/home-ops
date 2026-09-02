@@ -3,22 +3,21 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: prowlarr
-  description: Prowlarr is an indexer manager and proxy for the *arr suite, integrating with torrent and Usenet indexers.
+  name: olla
+  description: Self-contained Ollama web UI and API endpoint providing local LLM inference (consumed by karakeep).
   links:
-    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/media/prowlarr
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/ai/olla
       title: Flux definition
       icon: github
       type: github-repository
-    - url: https://github.com/Prowlarr/Prowlarr
-      title: Upstream Repository
+    - url: https://github.com/thushan/olla
+      title: Github Repository
       icon: github
       type: github-repository
   tags:
-    - media
-    - indexer
-    - usenet
-    - torrent
+    - ai
+    - llm
+    - inference
 spec:
   type: service
   lifecycle: production

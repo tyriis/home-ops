@@ -3,7 +3,7 @@
 <!-- markdownlint-disable MD013 -->
 <!-- markdownlint-disable MD029 -->
 
-# System: talos-flux
+# System: main-cluster
 
 ## User Manual
 

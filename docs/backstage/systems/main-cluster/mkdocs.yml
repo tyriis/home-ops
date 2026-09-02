@@ -1,5 +1,5 @@
 ---
-site_name: talos-flux
+site_name: main-cluster
 site_description: kubernetes cluster hosted in my bassement
 
 nav:

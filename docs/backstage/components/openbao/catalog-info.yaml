@@ -19,5 +19,5 @@ metadata:
 spec:
   type: service
   lifecycle: experimental
-  system: talos-flux
+  system: utility-cluster
   owner: home-ops
