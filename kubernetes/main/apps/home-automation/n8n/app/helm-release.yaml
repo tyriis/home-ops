@@ -60,6 +60,7 @@ spec:
               N8N_RUNNERS_ENABLED: "true"
               N8N_BLOCK_ENV_ACCESS_IN_NODE: "true"
               WEBHOOK_URL: https://n8n-webhook.techtales.io/
+              N8N_INSTANCE_AI_REASONING_EFFORT: xhigh
             ports:
               - name: http
                 containerPort: *port
