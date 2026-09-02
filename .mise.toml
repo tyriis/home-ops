@@ -10,7 +10,7 @@
 # https://mise-versions.jdx.dev/tools/direnv
 "aqua:direnv/direnv" = "2.37.1"
 # https://mise-versions.jdx.dev/tools/flux2
-"aqua:fluxcd/flux2" = "2.9.4"
+"aqua:fluxcd/flux2" = "2.9.5"
 # https://mise-versions.jdx.dev/tools/gitleaks
 "aqua:gitleaks/gitleaks" = "8.30.1"
 # https://mise-versions.jdx.dev/tools/helm
