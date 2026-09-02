@@ -68,10 +68,10 @@ catalog:
     - allow: [Component, System, API, Resource, Location, User, Group, Domain]
   locations:
     - type: url
-      target: https://github.com/tyriis/home-ops/blob/main/.backstage/catalog-info.yaml
+      target: https://github.com/tyriis/home-ops/blob/main/docs/backstage/catalog-info.yaml
     - type: url
       target: https://github.com/techtales-io/backstage-docs/blob/main/knowledge/catalog-info.yaml
     - type: file
-      target: /.backstage/catalog-info.yaml
+      target: /docs/backstage/catalog-info.yaml
       rules:
         - allow: [User, Group]
