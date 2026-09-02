@@ -1,0 +1,85 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/opentelemetry.io/opentelemetrycollector_v1beta1.json
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel-collector
+spec:
+  mode: daemonset
+  image: otel/opentelemetry-collector-contrib:0.159.0
+  config:
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+            auth:
+              authenticator: bearertokenauth
+          http:
+            endpoint: 0.0.0.0:4318
+            auth:
+              authenticator: bearertokenauth
+    processors:
+      batch:
+        send_batch_size: 1024
+        timeout: 1s
+      memory_limiter:
+        check_interval: 5s
+        limit_mib: 1024
+    exporters:
+      otlphttp/prom:
+        endpoint: http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/otlp #NOSONAR allow http
+        tls:
+          insecure: true
+      otlphttp/loki:
+        endpoint: http://loki-headless.observability.svc.cluster.local:3100/otlp #NOSONAR allow http
+        tls:
+          insecure: true
+      otlp/tempo:
+        endpoint: tempo.observability.svc.cluster.local:4317
+        tls:
+          insecure: true
+    extensions:
+      health_check: {}
+      bearertokenauth:
+        scheme: Bearer
+        token: ${env:OTEL_BEARER_TOKEN}
+    service:
+      extensions: [health_check, bearertokenauth]
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [memory_limiter, batch]
+          exporters: [otlp/tempo]
+        metrics:
+          receivers: [otlp]
+          processors: [memory_limiter, batch]
+          exporters: [otlphttp/prom]
+        logs:
+          receivers: [otlp]
+          processors: [memory_limiter, batch]
+          exporters: [otlphttp/loki]
+      telemetry:
+        metrics:
+          address: 0.0.0.0:8888
+  env:
+    - name: OTEL_BEARER_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: otel-collector
+          key: OTEL_BEARER_TOKEN
+  resources:
+    requests:
+      cpu: 10m
+      memory: 100Mi
+  podSecurityContext:
+    runAsNonRoot: true
+    runAsUser: 65532
+    runAsGroup: 65532
+    fsGroup: 65532
+    seccompProfile:
+      type: RuntimeDefault
+  securityContext:
+    readOnlyRootFilesystem: true
+    capabilities:
+      drop: [ALL]

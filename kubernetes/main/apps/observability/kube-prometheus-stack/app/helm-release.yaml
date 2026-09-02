@@ -172,6 +172,7 @@ spec:
         enableAdminAPI: true
         enableFeatures:
           - memory-snapshot-on-shutdown
+        enableOTLPReceiver: true
         externalLabels:
           cluster: ${FLUX_CLUSTER_NAME}
         externalUrl: https://prometheus.techtales.io

@@ -1,0 +1,69 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: tempo
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: tempo
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    # https://artifacthub.io/packages/helm/grafana-community/tempo?modal=values
+    fullnameOverride: tempo
+    tempo:
+      tag: 2.10.8
+      reportingEnabled: false
+      receivers:
+        otlp:
+          protocols:
+            grpc:
+              endpoint: "0.0.0.0:4317"
+            http:
+              endpoint: "0.0.0.0:4318"
+      storage:
+        trace:
+          backend: s3
+          s3:
+            bucket: tempo
+            forcepathstyle: true
+            insecure: true
+      metricsGenerator:
+        enabled: false
+      resources:
+        requests:
+          cpu: 10m
+          memory: 100Mi
+    serviceMonitor:
+      enabled: true
+  valuesFrom:
+    - kind: Secret
+      name: tempo-s3
+      valuesKey: S3_BUCKET_NAME
+      targetPath: tempo.storage.trace.s3.bucket
+    - kind: Secret
+      name: tempo-s3
+      valuesKey: S3_BUCKET_HOST
+      targetPath: tempo.storage.trace.s3.endpoint
+    - kind: Secret
+      name: tempo-s3
+      valuesKey: S3_BUCKET_REGION #gitleaks:allow
+      targetPath: tempo.storage.trace.s3.region
+    - kind: Secret
+      name: tempo-s3
+      valuesKey: S3_ACCESS_KEY
+      targetPath: tempo.storage.trace.s3.access_key
+    - kind: Secret
+      name: tempo-s3
+      valuesKey: S3_SECRET_KEY
+      targetPath: tempo.storage.trace.s3.secret_key
