@@ -37,7 +37,8 @@ spec:
           s3:
             bucket: tempo
             forcepathstyle: true
-            insecure: true
+            insecure: false
+            prefix: main/
       metricsGenerator:
         enabled: false
       resources:
