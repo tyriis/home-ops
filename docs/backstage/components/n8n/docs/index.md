@@ -75,33 +75,33 @@ be the full versioned root.
 
 Three facts, each confirmed in source:
 
-1. **The dialog always stores `openai/<name>`.** The "Self-hosted or
-   OpenAI-compatible endpoint" option uses the same `openAiApi` credential type as
-   OpenAI, and the runtime maps it via
-   `CREDENTIAL_TO_MODEL_PROVIDER = { openAiApi: 'openai', ... }`. There is no UI
-   path that produces a `custom/` prefix — the prefix is derived from the
-   credential type, never from the Base URL.
+- **Fact 1 — the dialog always stores `openai/<name>`.** The "Self-hosted or
+  OpenAI-compatible endpoint" option uses the same `openAiApi` credential type as
+  OpenAI, and the runtime maps it via
+  `CREDENTIAL_TO_MODEL_PROVIDER = { openAiApi: 'openai', ... }`. There is no UI
+  path that produces a `custom/` prefix — the prefix is derived from the
+  credential type, never from the Base URL.
 
-2. **The `openai` branch hardcodes `reasoning_effort: "high"`.** In
-   `packages/@n8n/instance-ai/src/agent/apply-agent-thinking.ts` (master):
+- **Fact 2 — the `openai` branch hardcodes `reasoning_effort: "high"`.** In
+  `packages/@n8n/instance-ai/src/agent/apply-agent-thinking.ts` (master):
 
-   ```ts
-   if (provider === "openai") {
-     agent.thinking("openai", {
-       reasoningEffort: isGpt56Model(modelId) ? "medium" : "high", // hardcoded
-     })
-     return
-   }
-   ```
+  ```ts
+  if (provider === "openai") {
+    agent.thinking("openai", {
+      reasoningEffort: isGpt56Model(modelId) ? "medium" : "high", // hardcoded
+    })
+    return
+  }
+  ```
 
-   The custom Base URL is **never consulted** at this point, and the only
-   exception is `gpt-5.6*` → `medium`.
+  The custom Base URL is **never consulted** at this point, and the only
+  exception is `gpt-5.6*` → `medium`.
 
-3. **`N8N_INSTANCE_AI_REASONING_EFFORT` only applies to `custom/*`.** In
-   `custom-model-defaults.ts` it is parsed against the enum
-   `none|minimal|low|medium|high|xhigh|max` (invalid values are **silently
-   dropped**, e.g. `default` does nothing), and it is only read on the `custom`
-   provider branch. With an `openai/` model id it is never consulted.
+- **Fact 3 — `N8N_INSTANCE_AI_REASONING_EFFORT` only applies to `custom/*`.** In
+  `custom-model-defaults.ts` it is parsed against the enum
+  `none|minimal|low|medium|high|xhigh|max` (invalid values are **silently
+  dropped**, e.g. `default` does nothing), and it is only read on the `custom`
+  provider branch. With an `openai/` model id it is never consulted.
 
 So: dialog-configured compatible endpoint → `openai/<name>` → forced `high` →
 chat-template 400 → stream error → `AI_NoOutputGeneratedError`.

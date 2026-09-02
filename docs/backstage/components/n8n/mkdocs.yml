@@ -1,0 +1,7 @@
+---
+site_name: n8n
+nav:
+  - Home: index.md
+
+plugins:
+  - techdocs-core
