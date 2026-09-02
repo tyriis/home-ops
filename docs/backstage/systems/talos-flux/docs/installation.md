@@ -105,8 +105,8 @@ On your workstation run:
 
 ```bash
 talosctl apply-config --insecure \
-   --nodes 192.168.1.51 \
-   --file clusterconfig/talos-flux-talos01.yaml
+    --nodes 192.168.1.51 \
+    --file clusterconfig/talos-flux-talos01.yaml
 ```
 
 <details><summary>Output</summary>
@@ -129,10 +129,10 @@ In order to be able to access the kubernetes cluster api, run:
 
 ```bash
 talosctl kubeconfig \
-   --talosconfig=infra/talos/clusterconfig/talosconfig \
-   --nodes 192.168.1.51 \
-   --endpoints 192.168.1.51 \
-   --force
+    --talosconfig=infra/talos/clusterconfig/talosconfig \
+    --nodes 192.168.1.51 \
+    --endpoints 192.168.1.51 \
+    --force
 ```
 
 The kubeconfig should be created and you should be able to access the cluster with the following command:
@@ -164,22 +164,22 @@ On your workstation run:
 
 ```bash
 talosctl apply-config --insecure \
-   --nodes 192.168.1.52 \
-   --file clusterconfig/talos-flux-talos02.yaml
+    --nodes 192.168.1.52 \
+    --file clusterconfig/talos-flux-talos02.yaml
 ```
 
 Repeat the steps for node 3 and 4
 
 ```bash
 talosctl apply-config --insecure \
-   --nodes 192.168.1.53 \
-   --file clusterconfig/talos-flux-talos03.yaml
+    --nodes 192.168.1.53 \
+    --file clusterconfig/talos-flux-talos03.yaml
 ```
 
 ```bash
 talosctl apply-config --insecure \
-   --nodes 192.168.1.54 \
-   --file clusterconfig/talos-flux-talos04.yaml
+    --nodes 192.168.1.54 \
+    --file clusterconfig/talos-flux-talos04.yaml
 ```
 
 Lets check our nodes:

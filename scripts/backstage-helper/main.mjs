@@ -22,7 +22,7 @@ for (const item of data) {
     const name = item.metadata.annotations["backstage.io/name"]
     // echo`${name}`
     const exists = await fs.pathExists(
-      `.backstage/components/${name}/catalog-info.yaml`
+      `docs/backstage/components/${name}/catalog-info.yaml`
     )
     if (exists) {
       echo(chalk.blue(`Component ${name} is already in Backstage`))
@@ -64,16 +64,16 @@ for (const item of data) {
       #   - test-api
     `
     catalogInfo = catalogInfo.replace(/name: .*/, `name: ${name}`)
-    await fs.ensureDir(`.backstage/components/${name}`)
+    await fs.ensureDir(`docs/backstage/components/${name}`)
     await fs.writeFile(
-      `.backstage/components/${name}/catalog-info.yaml`,
+      `docs/backstage/components/${name}/catalog-info.yaml`,
       catalogInfo
     )
-    // register the component in the .backstage/catalog-info.yaml file
-    const catalog = await fs.readFile(".backstage/catalog-info.yaml", "utf-8")
+    // register the component in the docs/backstage/catalog-info.yaml file
+    const catalog = await fs.readFile("docs/backstage/catalog-info.yaml", "utf-8")
     const catalogJson = YAML.parse(catalog)
     catalogJson.spec.targets.push(
-      `https://github.com/tyriis/home-ops/blob/main/.backstage/components/${name}/catalog-info.yaml`
+      `https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/${name}/catalog-info.yaml`
     )
     catalogJson.spec.targets = catalogJson.spec.targets.sort()
     // remove duplicates
@@ -81,7 +81,7 @@ for (const item of data) {
       (item, index) => catalogJson.spec.targets.indexOf(item) === index
     )
     await fs.writeFile(
-      ".backstage/catalog-info.yaml",
+      "docs/backstage/catalog-info.yaml",
       `---\n${YAML.stringify(catalogJson)}`
     )
   }

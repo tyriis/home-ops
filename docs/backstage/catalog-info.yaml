@@ -1,0 +1,43 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: home-ops
+spec:
+  type: url
+  targets:
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/api/adguard-home/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/api/locking-service/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/actions-runner-controller/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/argo-workflows/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/atlantis/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/backstage/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/cert-manager/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/cloudflared/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/cloudnative-pg/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/dbman/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/discord-musicbot/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/dragonfly/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/echo-server/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/esphome/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/grafana/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/hisense-aircon/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/home-assistant/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/kromgo/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/kube-prometheus-stack/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/locking-service/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/loki/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/minecraft-bedrock/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/node-red/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/rook-ceph/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/traefik-forward-auth/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/traefik/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/unifi-controller/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/zigbee2mqtt/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/domains/home/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/nas/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/mqtt.home/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/synology-nas/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/opnsense/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/talos-flux/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/zigbee-bridge/catalog-info.yaml

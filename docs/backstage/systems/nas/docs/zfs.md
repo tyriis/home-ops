@@ -131,7 +131,7 @@ chroot /host zpool import
 ```console
   pool: glacier
     id: 17419615542118046973
- state: ONLINE
+state: ONLINE
 action: The pool can be imported using its name or numeric identifier.
 config:
 
@@ -159,7 +159,7 @@ chroot /host zpool status
 
 ```console
   pool: glacier
- state: ONLINE
+state: ONLINE
   scan: resilvered 0B in 00:00:00 with 0 errors on Sat Dec 27 21:46:22 2025
 config:
 
