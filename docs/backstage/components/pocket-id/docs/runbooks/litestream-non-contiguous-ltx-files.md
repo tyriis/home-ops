@@ -7,11 +7,8 @@ This runbook covers the **Litestream v0.5.x storage model** (the cluster runs
 `litestream/litestream:0.5.16`). Two distinct failure modes produce a
 "non-contiguous ltx files" restore error:
 
-1. **A genuine gap in the replica chain** — a file is missing from the S3
-   replica, so a contiguous chain cannot be calculated.
-2. **A divergent lineage** — the litestream sidecar silently stopped
-   replicating while the live DB kept running, producing two independent TXID
-   lineages. This is the failure mode we actually hit in production.
+1. **A genuine gap in the replica chain** — a file is missing from the S3 replica, so a contiguous chain cannot be calculated.
+2. **A divergent lineage** — the litestream sidecar silently stopped replicating while the live DB kept running, producing two independent TXID lineages. This is the failure mode we actually hit in production.
 
 Both are covered below. **Do not attempt to repair either by manually deleting
 LTX files with a regex** — see [Remediation](#remediation).
@@ -66,36 +63,38 @@ fall back to an older, intact snapshot.
 
 ## Verification
 
-1. Verify S3 access:
+### Step 1: Verify S3 access
 
-   ```bash
-   mc ls <ALIAS>/
-   ```
+```bash
+mc ls <ALIAS>/
+```
 
-2. Check the restore error in the application logs:
+### Step 2: Check the restore error in the application logs
 
-   ```bash
-   kubectl logs <pod-name> -c litestream-restore --tail=50
-   ```
+```bash
+kubectl logs <pod-name> -c litestream-restore --tail=50
+```
 
-3. List the compaction levels in the S3 bucket:
+### Step 3: List the compaction levels in the S3 bucket
 
-   ```bash
-   mc ls <ALIAS>/<BUCKET>/<DB-PATH>/
-   # e.g. mc ls litestream-pocket-id-ro/litestream/pocket-id/pocket-id.db/
-   ```
+```bash
+mc ls <ALIAS>/<BUCKET>/<DB-PATH>/
+# e.g. mc ls litestream-pocket-id-ro/litestream/pocket-id/pocket-id.db/
+```
 
-   You should see `0000/`–`0003/` (compaction levels) and `0009/` (snapshots).
+You should see `0000/`–`0003/` (compaction levels) and `0009/` (snapshots).
 
-4. **Diagnose with a dry-run restore BEFORE touching anything** — this shows the
-   exact restore plan (which snapshot, which files, where the gap is):
+### Step 4: Diagnose with a dry-run restore BEFORE touching anything
 
-   ```bash
-   litestream restore -dry-run -config /etc/litestream.yml /app/data/pocket-id.db
-   ```
+This shows the exact restore plan (which snapshot, which files, where the gap
+is):
 
-   The plan lists the snapshot and LTX files it would apply, and the final
-   position. A gap appears as a "non-contiguous ltx files" error here.
+```bash
+litestream restore -dry-run -config /etc/litestream.yml /app/data/pocket-id.db
+```
+
+The plan lists the snapshot and LTX files it would apply, and the final
+position. A gap appears as a "non-contiguous ltx files" error here.
 
 ## Diagnostic Commands
 
