@@ -5,19 +5,19 @@
       "source": "fluxcd/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/gitops-cluster-debug/SKILL.md",
-      "computedHash": "db60680108a3fc03c3eeb6c4bb4528123368157e3618d951b06a30594b9fd726"
+      "computedHash": "2a34593bc0361fd06c2e7393494717348c328fafbf27665776d8ce6b472b94d6"
     },
     "gitops-knowledge": {
       "source": "fluxcd/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/gitops-knowledge/SKILL.md",
-      "computedHash": "ae5d5bdabbd5ef334ec203f943f208852ad5528eee4f42ca9b41774f05b45895"
+      "computedHash": "83897ad63134db52b6efb58ad36f6e4cdb02285aa1f891618fe67ac3120799ef"
     },
     "gitops-repo-audit": {
       "source": "fluxcd/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/gitops-repo-audit/SKILL.md",
-      "computedHash": "14c803efe28b157ffb0508a82eaadfbf34e3398d45af59ebeb69cb02a727768d"
+      "computedHash": "ebff09205acda994b3087fc7d8c52be8f717355daf7a3439a609ccc43d03a72c"
     },
     "kubesearch": {
       "source": "ionfury/homelab",
