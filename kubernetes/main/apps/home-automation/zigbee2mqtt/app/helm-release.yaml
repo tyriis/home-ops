@@ -74,7 +74,7 @@ spec:
               ZIGBEE2MQTT_CONFIG_SERIAL_PORT: /dev/ttyUSB0
             image:
               repository: ghcr.io/koenkk/zigbee2mqtt
-              tag: 2.14.0@sha256:c13d177dd7f7f396574ab00926188ad542cfb68c6a5d5f84021bebd9adf6ede9
+              tag: 2.14.1@sha256:fef0de769dcd04c27b3a6d277b61046eb96284bdd4198dcb1687c3a01b3020f3
             ports:
               - name: http
                 containerPort: *port
