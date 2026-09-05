@@ -51,7 +51,7 @@ Concrete parameters:
 
 - Deployed as `docker/deploy/olah/` shared compose plus symlinked `docker/truenas/olah/` instance, following the doco-cd layout of ADR-0004.
 - Image pinned: `xiahan2019/olah:0.5.1` (the shipped compose example references a stale typo tag `lastet`). Exactly one olah instance — it refuses multiple writers over one cache.
-- Cache on a dedicated ZFS dataset (`recordsize=1M`, `atime=off`, default `lz4`), quota **10 TB**; olah `cache-size-limit = "8TB"`,
+- Cache on a dedicated ZFS dataset (`recordsize=1M`, `atime=off`, default `lz4`), quota **5 TB**; olah `cache-size-limit = "4TB"`,
   `cache-clean-strategy = "LARGE_FIRST"`, `cache-compression = "none"`.
 - Container hardened: non-root uid/gid 3002, `cap_drop: [ALL]`, `no-new-privileges`, read-only rootfs;
   the only writable locations are the cache dataset mount plus tmpfs for logs and the image's declared `/data/mirrors` volume path.

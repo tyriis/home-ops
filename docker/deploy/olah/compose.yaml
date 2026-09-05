@@ -13,7 +13,7 @@ services:
       - --port=8090
       - --repos-path=/data/repos
       - --log-path=/tmp/olah-logs # read-only rootfs: logs go to the /tmp tmpfs
-      - --cache-size-limit=8TB # stays below the 10T ZFS quota on the dataset
+      - --cache-size-limit=4TB # stays below the 5T ZFS quota on the dataset
       - --cache-clean-strategy=LARGE_FIRST
       - --cache-compression=none # ZFS already applies lz4 at the dataset level
       - --mirror-scheme=https # TLS terminates at Nginx Proxy Manager

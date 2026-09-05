@@ -36,12 +36,12 @@ The image runs as root and ships no unprivileged user, so the compose pins the c
 Create the cache dataset (set `recordsize` BEFORE first writes) and hand ownership to the container's uid:
 
 ```bash
-zfs create -o recordsize=1M -o atime=off tank/apps/olah
-zfs set quota=10T tank/apps/olah
-chown -R 3002:3002 /mnt/tank/apps/olah
+zfs create -o recordsize=1M -o atime=off tank/olah
+zfs set quota=5T tank/olah
+chown -R 3002:3002 /mnt/tank/olah
 ```
 
-olah mounts it at `/mnt/tank/apps/olah` → container `/data/repos`, and its own `cache-size-limit` (8TB) stays below the 10T ZFS quota.
+olah mounts it at `/mnt/tank/olah` → container `/data/repos`, and its own `cache-size-limit` (4TB) stays below the 5T ZFS quota.
 
 ### Nginx Proxy Manager
 
@@ -69,6 +69,6 @@ License acceptance for gated models stays tied to the token's HF account. `trans
 - Exactly one olah instance — it refuses multiple writers over one cache dataset.
 - The vestigial `~/.olah` dir (HOME=/data/repos, so it lands on the dataset as `.olah`) holds disposable SQLite state; nothing there needs persisting beyond the cache itself.
 - v0.x upgrades may require wiping the cache dataset between versions (upstream: cached data is not migratable).
-  Pin bumps ride the existing `docker/` Renovate flow — test before promoting, then `rm -rf /mnt/tank/apps/olah/*` if the app reports CRC/format mismatches after a version change.
+  Pin bumps ride the existing `docker/` Renovate flow — test before promoting, then `rm -rf /mnt/tank/olah/*` if the app reports CRC/format mismatches after a version change.
 - The upstream compose example references the stale typo tag `lastet`; this repo pins `xiahan2019/olah:0.5.1@sha256:...` instead.
 - Acceptance test: `HF_ENDPOINT=https://hf.techtales.io hf download <public repo>` twice — the second run must complete at LAN speed with zero NAS egress.
