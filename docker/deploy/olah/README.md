@@ -19,7 +19,7 @@ None. olah holds no HF token — gated downloads use client-token pass-through a
 
 The image runs as root and ships no unprivileged user, so the compose pins the container down instead:
 
-- `user: 568:568` — the TrueNAS `apps` uid/gid; the cache dataset must be chowned to it (see provisioning below)
+- `user: 3002:3002` — the NAS run-as uid/gid; the cache dataset must be chowned to it (see provisioning below)
 - `read_only: true` — the writable set is exactly: the `/data/repos` bind mount, `/tmp` (tmpfs holding the ephemeral logs via `--log-path`),
   and `/data/mirrors` (tmpfs shadowing the image's `VOLUME` declaration so docker injects no anonymous root-owned volume)
 - `HOME=/data/repos` — the vestigial `~/.olah` SQLite dir has no path override and must land on a writable path
@@ -38,7 +38,7 @@ Create the cache dataset (set `recordsize` BEFORE first writes) and hand ownersh
 ```bash
 zfs create -o recordsize=1M -o atime=off tank/apps/olah
 zfs set quota=10T tank/apps/olah
-chown -R 568:568 /mnt/tank/apps/olah
+chown -R 3002:3002 /mnt/tank/apps/olah
 ```
 
 olah mounts it at `/mnt/tank/apps/olah` → container `/data/repos`, and its own `cache-size-limit` (8TB) stays below the 10T ZFS quota.

@@ -30,9 +30,9 @@ services:
       - ${PORT:-8090}:8090 # plain HTTP on the NAS; NPM serves https://hf.techtales.io
     restart: unless-stopped
     # hardening: the image runs as root and ships no other user; pin to the
-    # TrueNAS apps uid/gid (the dataset must be chowned to it, see README).
+    # NAS run-as uid/gid (the dataset must be chowned to it, see README).
     # olah is pure-Python FastAPI: no capabilities needed, port 8090 is unprivileged.
-    user: ${USER_ID:-568}:${GROUP_ID:-568}
+    user: ${USER_ID:-3002}:${GROUP_ID:-3002}
     cap_drop: [ALL]
     security_opt:
       - no-new-privileges:true
