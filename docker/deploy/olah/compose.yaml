@@ -1,0 +1,51 @@
+---
+networks:
+  apps:
+    name: apps
+    external: false
+
+services:
+  olah:
+    scale: 1 # scale to 0 if you want to stop the service without losing data
+    # exactly one writer is allowed over one cache dataset - do not scale up
+    command:
+      - --host=0.0.0.0
+      - --port=8090
+      - --repos-path=/data/repos
+      - --log-path=/tmp/olah-logs # read-only rootfs: logs go to the /tmp tmpfs
+      - --cache-size-limit=4TB # stays below the 5T ZFS quota on the dataset
+      - --cache-clean-strategy=LARGE_FIRST
+      - --cache-compression=none # ZFS already applies lz4 at the dataset level
+      - --mirror-scheme=https # TLS terminates at Nginx Proxy Manager
+      - --mirror-netloc=hf.techtales.io
+      - --mirror-lfs-netloc=hf.techtales.io
+      # hf-netloc stays at its default (huggingface.co); xet-passthrough and
+      # cache-redirect-model stay at their defaults (off, config-file only)
+    container_name: olah
+    # upstream compose example ships the stale typo tag "lastet" - never use it
+    image: xiahan2019/olah:0.5.1@sha256:a5fec886e874ca978a8b011a231337a3d7c8da9ae8a6c283ba2030bf5d259a6b
+    networks:
+      - apps
+    ports:
+      - ${PORT:-8090}:8090 # plain HTTP on the NAS; NPM serves https://hf.techtales.io
+    restart: unless-stopped
+    # hardening: the image runs as root and ships no other user; pin to the
+    # NAS run-as uid/gid (the dataset must be chowned to it, see README).
+    # olah is pure-Python FastAPI: no capabilities needed, port 8090 is unprivileged.
+    user: ${USER_ID:-3002}:${GROUP_ID:-3002}
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    read_only: true # writable only via the /data/repos bind mount and the tmpfs below
+    environment:
+      # the ~/.olah dir (vestigial SQLite) has no path override and must be writable
+      HOME: /data/repos
+    tmpfs:
+      - /tmp:mode=1777 # ephemeral logs (olah-logs)
+      # the image declares VOLUME /data/mirrors - shadow it with tmpfs so docker
+      # never injects an anonymous root-owned volume beside the cache mount
+      - /data/mirrors:mode=1777
+    volumes:
+      # olah holds no HF token (client-token pass-through), so there is no
+      # sops.env here - see docker/deploy/olah/README.md
+      - ${DATA_PATH:-./data}:/data/repos
