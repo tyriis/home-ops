@@ -2,7 +2,7 @@
 name: node-exporter
 working_dir: docker/deploy/node-exporter
 ---
-name: hf-cache
-working_dir: docker/truenas/hf-cache
+name: olah
+working_dir: docker/truenas/olah
 env_files:
   - .env

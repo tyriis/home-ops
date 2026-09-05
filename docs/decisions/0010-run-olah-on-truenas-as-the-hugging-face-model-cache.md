@@ -49,11 +49,13 @@ and a natural citizen of the doco-cd/TrueNAS lane established in ADR-0004.
 
 Concrete parameters:
 
-- Deployed as `docker/deploy/hf-cache/` shared compose plus per-host instance, following the doco-cd layout of ADR-0004.
-- Image pinned: `xiahan2019/olah:0.5.1` (the shipped compose example references a stale typo tag `lastet`). Exactly oneolah instance — it refuses multiple writers over one cache.
+- Deployed as `docker/deploy/olah/` shared compose plus symlinked `docker/truenas/olah/` instance, following the doco-cd layout of ADR-0004.
+- Image pinned: `xiahan2019/olah:0.5.1` (the shipped compose example references a stale typo tag `lastet`). Exactly one olah instance — it refuses multiple writers over one cache.
 - Cache on a dedicated ZFS dataset (`recordsize=1M`, `atime=off`, default `lz4`), quota **10 TB**; olah `cache-size-limit = "8TB"`,
   `cache-clean-strategy = "LARGE_FIRST"`, `cache-compression = "none"`.
-- Exposed as `https://hf.techtales.io` through the existing Nginx Proxy Manager on the NAS (Let's Encrypt via NPM; `proxy_buffering off` and extended read timeouts required for multi-GB streams).olah itself listens plain HTTP on the NAS.
+- Container hardened: non-root uid/gid 568 (TrueNAS `apps`), `cap_drop: [ALL]`, `no-new-privileges`, read-only rootfs;
+  the only writable locations are the cache dataset mount plus tmpfs for logs and the image's declared `/data/mirrors` volume path.
+- Exposed as `https://hf.techtales.io` through the existing Nginx Proxy Manager on the NAS (Let's Encrypt via NPM; `proxy_buffering off` and extended read timeouts required for multi-GB streams). olah itself listens plain HTTP on the NAS.
 - Clients set `HF_ENDPOINT=https://hf.techtales.io` and supply their own `HF_TOKEN`; olah forwards it upstream and caches gated content per-token
   (client-side entitlement decision). License acceptance for gated models remains tied to the token's account.
 - v1 is deliberately minimal: pure on-demand pull-through, no pre-warm/verify jobs; mtime-based LRU eviction is accepted. A warmer CronJob and signed pinned-commit manifests are recorded as known future extensions.
@@ -62,21 +64,21 @@ Concrete parameters:
 
 - Good, because wipe-and-re-pull on the inference systems is bounded by the LAN (~250–280 MB/s per flow on the 2.5GbE links, RAIDZ2 sequential ceiling ~400–600 MB/s), not by huggingface.co: a 200 GB re-pull is minutes, not an uplink-bound slog.
 - Good, because clients are unmodified — `hf download`, `transformers`, vLLM, TEI all work via one env var; datasets and Spaces are mirrored too.
-- Good, because no HF credential ever rests on the NAS: gated downloads use client-token pass-through, andolah's visibility cache is per-token and fail-closed (source-verified).
+- Good, because no HF credential ever rests on the NAS: gated downloads use client-token pass-through, and olah's visibility cache is per-token and fail-closed (source-verified).
 - Good, because it stays in the ADR-0004 GitOps lane, and its open consequence ("certificate handling outside Kubernetes") is already solved here by NPM + existing DNS records.
 - Good, because corruption handling is layered: ZFS checksums + scrub detect/heal bit-rot; olah CRC32-verifies every 1 MiB chunk on serve
   and drops-and-refetches bad blocks.
-- Neutral, becauseolah is invisible to Flux/Renovate's in-cluster view; image bumps ride the existing `docker/` Renovate flow.
-- Bad, becauseolah is a young v0.x project (277 stars, weekly churn): cache directories are treated as disposable across upgrades (version/CRC mismatch wipes entries), so upgrades cost a re-warm; the tag is pinned to control this.
+- Neutral, because olah is invisible to Flux/Renovate's in-cluster view; image bumps ride the existing `docker/` Renovate flow.
+- Bad, because olah is a young v0.x project (277 stars, weekly churn): cache directories are treated as disposable across upgrades (version/CRC mismatch wipes entries), so upgrades cost a re-warm; the tag is pinned to control this.
 - Bad, because there is no pinning API: a churn of one-off models can evict a favorite, which then pays a cold re-fetch; mitigated later by the recorded warmer extension.
 - Bad, because the first-ever fetch of an unknown model still runs at HF speed, and concurrent large pulls share one RAIDZ2 pool and the NAS uplink.
 - Bad, because dataset provisioning, the NPM proxy host, and the DNS record remain manual NAS-side steps outside GitOps (consistent with the ADR-0004 boundary).
 
 ### Confirmation
 
-- Acceptance test: `HF_ENDPOINT=https://hf.techtales.io hf download <public repo>` run twice — the second pull completes at LAN speed with no NAS egress, andolah's block store grew only after the first pull.
+- Acceptance test: `HF_ENDPOINT=https://hf.techtales.io hf download <public repo>` run twice — the second pull completes at LAN speed with no NAS egress, and olah's block store grew only after the first pull.
 - Gated test: download of a gated repo succeeds with a token whose account holds the grant and is refused for anonymous clients.
-- Deployment evidence: doco-cd reconciles `docker/deploy/hf-cache` on the NAS (`docker compose ps`, doco-cd logs).
+- Deployment evidence: doco-cd reconciles `docker/truenas/olah` on the NAS (`docker compose ps`, doco-cd logs).
 
 ## Pros and Cons of the Options
 
@@ -91,7 +93,7 @@ Concrete parameters:
 ### olah as in-cluster workload with NFS-backed cache
 
 - Good, because Flux, in-cluster DNS, and cert-manager would manage everything.
-- Neutral, becauseolah is NFS-safe by design (dedicated `meta.lock` sidecar; the SQLite index is vestigial and container-local) — it works fine on NFS.
+- Neutral, because olah is NFS-safe by design (dedicated `meta.lock` sidecar; the SQLite index is vestigial and container-local) — it works fine on NFS.
 - Bad, because single-writer discipline then depends on a `Recreate` deployment strategy, and every byte traverses the LAN twice (NAS→node→client).
 - Bad, because it re-entangles a NAS-resident dataset with cluster lifecycle — the exact lesson ADR-0004 retired.
 
@@ -110,7 +112,7 @@ Concrete parameters:
 
 - Good, because it is a Nexus-class artifact manager: ACLs, S3-compatible blob store, cleanup policies, documented three-way integrity verification, and first-class gated support.
 - Neutral, because it is a Java service — fine for a homelab, heavier than a single Python container, and doubles as a Docker/PyPI/npm proxy if ever wanted.
-- Bad, because the HF proxy covers models only (no datasets/spaces), and gated access needs one upstream bearer token stored server-side at rest — versusolah holding no credentials at all.
+- Bad, because the HF proxy covers models only (no datasets/spaces), and gated access needs one upstream bearer token stored server-side at rest — versus olah holding no credentials at all.
 
 ### Dragonfly (d7y.io) with hf:// backend
 
@@ -131,7 +133,7 @@ Concrete parameters:
 
 ## More Information
 
--olah (pinned v0.5.1): <https://github.com/vtuber-plan/olah>
+- olah (pinned v0.5.1): <https://github.com/vtuber-plan/olah>
 
 - doco-cd: <https://github.com/kimdre/doco-cd>
 - ADR-0004 (TrueNAS + doco-cd boundary this ADR extends)

@@ -12,6 +12,7 @@ services:
       - --host=0.0.0.0
       - --port=8090
       - --repos-path=/data/repos
+      - --log-path=/tmp/olah-logs # read-only rootfs: logs go to the /tmp tmpfs
       - --cache-size-limit=8TB # stays below the 10T ZFS quota on the dataset
       - --cache-clean-strategy=LARGE_FIRST
       - --cache-compression=none # ZFS already applies lz4 at the dataset level
@@ -28,7 +29,23 @@ services:
     ports:
       - ${PORT:-8090}:8090 # plain HTTP on the NAS; NPM serves https://hf.techtales.io
     restart: unless-stopped
+    # hardening: the image runs as root and ships no other user; pin to the
+    # TrueNAS apps uid/gid (the dataset must be chowned to it, see README).
+    # olah is pure-Python FastAPI: no capabilities needed, port 8090 is unprivileged.
+    user: ${USER_ID:-568}:${GROUP_ID:-568}
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    read_only: true # writable only via the /data/repos bind mount and the tmpfs below
+    environment:
+      # the ~/.olah dir (vestigial SQLite) has no path override and must be writable
+      HOME: /data/repos
+    tmpfs:
+      - /tmp:mode=1777 # ephemeral logs (olah-logs)
+      # the image declares VOLUME /data/mirrors - shadow it with tmpfs so docker
+      # never injects an anonymous root-owned volume beside the cache mount
+      - /data/mirrors:mode=1777
     volumes:
       # olah holds no HF token (client-token pass-through), so there is no
-      # sops.env here - see docker/deploy/hf-cache/README.md
+      # sops.env here - see docker/deploy/olah/README.md
       - ${DATA_PATH:-./data}:/data/repos
