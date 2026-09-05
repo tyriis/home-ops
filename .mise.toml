@@ -30,7 +30,7 @@
 # https://mise-versions.jdx.dev/tools/talhelper
 "aqua:budimanjojo/talhelper" = "3.1.17"
 # https://mise-versions.jdx.dev/tools/talosctl
-"aqua:siderolabs/talos" = "1.13.9"
+"aqua:siderolabs/talos" = "1.14.0"
 # https://mise-versions.jdx.dev/tools/task
 "aqua:go-task/task" = "3.53.1"
 # https://mise-versions.jdx.dev/tools/trivy
