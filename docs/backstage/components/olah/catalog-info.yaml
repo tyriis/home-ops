@@ -1,0 +1,36 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: olah
+  description: |
+    olah is a self-hosted Hugging Face mirror and pull-through cache, exposed as https://hf.techtales.io.
+    LAN clients set HF_ENDPOINT and get byte-cached models, datasets, and Spaces without any HF
+    credential stored on the NAS. Runs on TrueNAS as a native docker-compose service via doco-cd.
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/docker/deploy/olah
+      title: Compose definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/tyriis/home-ops/blob/main/docs/decisions/0010-run-olah-on-truenas-as-the-hugging-face-model-cache.md
+      title: ADR-0010 (decision record)
+      icon: article
+      type: documentation
+    - url: https://github.com/vtuber-plan/olah
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+  tags:
+    - ai
+    - hugging-face
+    - cache
+    - truenas
+    - doco-cd
+spec:
+  type: service
+  lifecycle: production
+  system: nas
+  owner: home-ops
