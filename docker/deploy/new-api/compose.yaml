@@ -1,0 +1,52 @@
+---
+volumes:
+  data:
+    external: ${VOLUME_EXTERNAL:-false}
+    name: ${VOLUME_NAME:-new-api_data}
+    driver: ${VOLUME_DRIVER:-local}
+
+services:
+  # https://github.com/QuantumNous/new-api (OpenAI-compatible API gateway, Go + SQLite)
+  # SQLite lives in /data (named volume below).
+  # Docker creates named volumes root-owned, so the service UID must own it ONCE after
+  # creation, otherwise SQLite fails with permission denied under the non-root `user:`:
+  #   docker run --rm -v new-api_data:/data alpine chown <uid>:<gid> /data
+  # SESSION_SECRET is provided via the SOPS-managed env file.
+  # First boot exposes an unauthenticated setup wizard — complete it immediately from a
+  # trusted machine; the endpoint is open to everyone who can reach WEB_HOST:WEB_PORT
+  # until the admin account exists (then enable 2FA). Read-only rootfs is covered by the
+  # /tmp tmpfs plus the writable /data volume.
+  new-api:
+    cap_drop:
+      - ALL
+    container_name: ${CONTAINER_NAME:-new-api}
+    env_file:
+      - ${SOPS_ENV_FILE:-sops.env}
+    environment:
+      TZ: Europe/Vienna
+    healthcheck:
+      # Runtime stage is Debian bookworm-slim and ships wget (verified in upstream Dockerfile)
+      test:
+        - CMD
+        - wget
+        - --spider
+        - --quiet
+        - http://127.0.0.1:3000/
+      start_period: 30s
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    image: calciumion/new-api:v1.0.0-rc.33@sha256:68feaefb421d9e862760a7a1b574087cb062b25b8a40db7929c52497bec3fb1d
+    mem_limit: 1g
+    pids_limit: 128
+    ports:
+      - ${WEB_HOST:-127.0.0.1}:${WEB_PORT:-3000}:3000
+    read_only: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges=true
+    tmpfs:
+      - /tmp
+    user: ${USER_ID:-1000}:${GROUP_ID:-1000}
+    volumes:
+      - data:/data
