@@ -13,3 +13,6 @@ creation_rules:
   - path_regex: 'docker/synology/.*/sops\.env$'
     age: >-
       age1tcjhmd54y4nx9mpwld5fu0laav06wwjscvq4adqfquxtj4fg7a7q2s95sc
+  - path_regex: 'docker/bifrost/.*/sops\.env$'
+    age: >-
+      age16fdxndp7s8fmv0r9qa2f8ymwy7gca0eleev52f3qu9mwqvsqmaaqkvj5ja
