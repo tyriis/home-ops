@@ -4,6 +4,12 @@ networks:
     name: apps
     external: false
 
+volumes:
+  data:
+    external: ${VOLUME_EXTERNAL:-false}
+    name: ${VOLUME_NAME:-traefik_data}
+    driver: ${VOLUME_DRIVER:-local}
+
 services:
   traefik:
     image: traefik:v3.7.13
@@ -46,5 +52,5 @@ services:
     security_opt:
       - no-new-privileges=true
     volumes:
-      - ./certs/acme.json:/certs/acme.json
+      - data:/certs/acme.json
       - /var/run/docker.sock:/var/run/docker.sock:ro
