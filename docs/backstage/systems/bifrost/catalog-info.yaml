@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: bifrost
+  description: Intel N250 mini-server — LLM API gateway (new-api) host
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: tyriis/home-ops
+  links:
+    - url: https://ai.techtales.io
+      title: new-api gateway
+      icon: dashboard
+      type: other
+  tags:
+    - docker
+    - lightwale
+    - llm
+    - gateway
+spec:
+  owner: home-ops
+  domain: home
+  type: server
+  lifecycle: production
+  system: bifrost
