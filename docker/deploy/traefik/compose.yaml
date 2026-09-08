@@ -5,9 +5,9 @@ networks:
     external: false
 
 volumes:
-  data:
+  config:
     external: ${VOLUME_EXTERNAL:-false}
-    name: ${VOLUME_NAME:-traefik_data}
+    name: ${VOLUME_NAME:-traefik_config}
     driver: ${VOLUME_DRIVER:-local}
 
 services:
@@ -52,5 +52,5 @@ services:
     security_opt:
       - no-new-privileges=true
     volumes:
-      - data:/certs/acme.json
+      - config:/certs
       - /var/run/docker.sock:/var/run/docker.sock:ro
