@@ -8,6 +8,8 @@
     Root cause: the host's static `/etc/resolv.conf` lists a Cloudflare **malware-filter** resolver (`1.1.1.2`) **before** the LAN resolver,
     and the filter answers local names with a hard negative - resolvers never fall through to the next server on a negative answer.
 
+    Applied fix: per-container `dns:` block at **docker compose level** (PR #10375) - no host change.
+
 ## Symptoms
 
 Containers fail resolving `*.techtales.io` names. Typical new-api wording:
@@ -63,7 +65,28 @@ Resolvers do **not** fall through to the next server on a _negative answer_ — 
 
 This is **not a Docker or LightWale bug**; it is resolver-order + split-horizon DNS.
 
-## Fix (host-wide, preferred)
+## Fix (applied: per-container, compose level)
+
+[PR #10375](https://github.com/tyriis/home-ops/pull/10375) fixed this for `new-api` at **docker compose level**, in the
+bifrost include shim `docker/bifrost/new-api/compose.yaml`:
+
+```yaml
+dns:
+  - 192.168.100.1 # LAN resolver - serves techtales.io, forwards everything else
+  - 1.1.1.2 # Cloudflare malware filter - fallback only, never primary (see caveats)
+```
+
+Why the shim and not the shared `docker/deploy/new-api/compose.yaml`: the broken resolver order is a
+**bifrost host property** (LightWale's static `/etc/resolv.conf`), so the shared compose stays neutral for
+other hosts - the shim is the designated spot for host-specific overrides (it already carries the traefik labels).
+
+GitOps-managed via doco-cd and survives host reinstalls: doco-cd recreates the container on reconcile, which is
+required anyway because Docker snapshots `ExtServers` at container **creation** (see caveats). It only fixes
+**that container** - host-level lookups stay broken; use the host-wide fix below for that.
+
+## Alternative fix (host-wide, manual)
+
+Not applied - manual host change. It is lost on a LightWale reinstall and must be redone by hand.
 
 On bifrost via SSH:
 
@@ -101,16 +124,6 @@ docker compose up -d --force-recreate
 ```
 
 Or simply let doco-cd redeploy.
-
-## Alternative fix (per-container, no host change)
-
-Add to the service in `docker/deploy/new-api/compose.yaml`:
-
-```yaml
-dns: ["192.168.100.1", "1.1.1.1"]
-```
-
-GitOps-managed and survives host reinstalls, but only fixes **that container** — host-level lookups stay broken.
 
 ## Verification
 
