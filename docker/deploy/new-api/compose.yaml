@@ -1,4 +1,9 @@
 ---
+networks:
+  apps:
+    name: apps
+    external: false
+
 volumes:
   data:
     external: ${VOLUME_EXTERNAL:-false}
@@ -50,3 +55,5 @@ services:
     user: ${USER_ID:-1000}:${GROUP_ID:-1000}
     volumes:
       - data:/data
+    networks:
+      - apps

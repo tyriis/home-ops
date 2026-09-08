@@ -12,3 +12,8 @@ env_files:
 ---
 name: node-exporter
 working_dir: docker/deploy/node-exporter
+---
+name: traefik
+working_dir: docker/bifrost/traefik
+env_files:
+  - .env
