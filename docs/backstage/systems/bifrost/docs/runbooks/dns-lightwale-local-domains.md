@@ -31,15 +31,15 @@ container /etc/resolv.conf -> 127.0.0.11 (Docker embedded DNS, in dockerd)
 
 1. **Containers** get `nameserver 127.0.0.11` — Docker's embedded DNS, running inside `dockerd`.
 2. **dockerd forwards from the host network namespace** to the host's upstreams. They are visible as the `ExtServers:` comment in a container's `/etc/resolv.conf` — **snapshotted at container creation**.
-3. **The host** runs a static LightWale default `/etc/resolv.conf`:
+3. **The host** runs a static LightWale default `/etc/resolv.conf`, shown below.
 
-   ```text
-   nameserver 1.1.1.2
-   nameserver 192.168.100.1
-   ```
+```text
+nameserver 1.1.1.2
+nameserver 192.168.100.1
+```
 
-   - `192.168.100.1` = UniFi gateway — serves LAN records for `techtales.io` (written by the cluster's external-dns `unifi-records`).
-   - `1.1.1.2` = Cloudflare **malware-filter** resolver — knows nothing about split-horizon internal zones.
+- `192.168.100.1` = UniFi gateway — serves LAN records for `techtales.io` (written by the cluster's external-dns `unifi-records`).
+- `1.1.1.2` = Cloudflare **malware-filter** resolver — knows nothing about split-horizon internal zones.
 
 ## Diagnosis
 
