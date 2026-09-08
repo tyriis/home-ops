@@ -1,0 +1,50 @@
+---
+networks:
+  apps:
+    name: apps
+    external: false
+
+services:
+  traefik:
+    image: traefik:v3.7.13
+    container_name: traefik
+    command:
+      # Let's Encrypt registration email — REQUIRED. Fails fast at deploy until
+      # ACME_EMAIL is set in the stack .env (docker/bifrost/traefik/.env).
+      - --certificatesresolvers.cf.acme.email=${ACME_EMAIL:?set ACME_EMAIL in the stack .env}
+      - --certificatesresolvers.cf.acme.caserver=https://acme-v02.api.letsencrypt.org/directory
+      # Cloudflare DNS challenge — must be enabled explicitly (docs style: lowercase)
+      - --certificatesresolvers.cf.acme.dnschallenge=true
+      - --certificatesresolvers.cf.acme.dnschallenge.provider=cloudflare
+      # OPTIONAL: Explicitly use Cloudflare resolvers to verify propagation quickly
+      - --certificatesresolvers.cf.acme.dnschallenge.resolvers=1.1.1.1:53,1.0.0.1:53
+      - --certificatesresolvers.cf.acme.storage=/certs/acme.json
+      # Entry Points (Global HTTP to HTTPS Redirect)
+      - --entryPoints.web.address=:80
+      - --entryPoints.web.http.redirections.entryPoint.scheme=https
+      - --entryPoints.web.http.redirections.entryPoint.to=websecure
+      # HTTPS Entry Point
+      - --entryPoints.websecure.address=:443
+      - --entryPoints.websecure.http.tls=true
+      - --entryPoints.websecure.http.tls.certResolver=cf
+      # Wildcard Setup
+      - --entryPoints.websecure.http.tls.domains[0].main=techtales.ai
+      - --entryPoints.websecure.http.tls.domains[0].sans=*.techtales.ai
+      # Docker Provider
+      - --providers.docker=true
+      - --providers.docker.exposedByDefault=false
+    env_file:
+      # SOPS-encrypted secrets, decrypted by doco-cd at deploy time (CF_DNS_API_TOKEN;
+      # token auth needs no CF_API_EMAIL / CF_API_KEY)
+      - ${SOPS_ENV_FILE:-sops.env}
+    networks:
+      - apps
+    ports:
+      - ${WEB_IP:-0.0.0.0}:${HTTP_PORT:-80}:80
+      - ${WEB_IP:-0.0.0.0}:${HTTPS_PORT:-443}:443
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges=true
+    volumes:
+      - ./certs/acme.json:/certs/acme.json
+      - /var/run/docker.sock:/var/run/docker.sock:ro

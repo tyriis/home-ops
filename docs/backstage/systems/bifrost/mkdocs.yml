@@ -1,0 +1,31 @@
+---
+site_name: bifrost
+site_description: bifrost — LLM API gateway host (LightWale OS)
+
+nav:
+  - Overview: index.md
+  - DNS runbook: runbooks/dns-lightwale-local-domains.md
+
+theme:
+  name: material
+  features:
+    - navigation.expand
+    - navigation.indexes
+
+plugins:
+  - techdocs-core
+  - search
+
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight:
+      # Enables linking to a specific line in a code block.
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - attr_list
+  - def_list
+  - pymdownx.tasklist
+  - pymdownx.details
+  - footnotes
