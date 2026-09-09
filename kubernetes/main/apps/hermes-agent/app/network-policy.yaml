@@ -68,6 +68,13 @@ spec:
       ports:
         - protocol: TCP
           port: 40114
+    # Allow egress to new-api gateway on bifrost (techtales.ai -> 192.168.100.10)
+    - to:
+        - ipBlock:
+            cidr: 192.168.100.10/32
+      ports:
+        - protocol: TCP
+          port: 443
     # Allow Internet egress but drop internal clusters to enforce isolation
     - to:
         - ipBlock:
