@@ -56,8 +56,7 @@ spec:
               UID: 1000
               GID: 1000
               TYPE: VELOCITY
-              # renovate: depName=minecraft/velocity datasource=custom.minecraft-velocity versioning=maven
-              VELOCITY_VERSION: 3.5.0-SNAPSHOT
+              VELOCITY_VERSION: 3.5.1
 
               # Memory settings
               INIT_MEMORY: 128M

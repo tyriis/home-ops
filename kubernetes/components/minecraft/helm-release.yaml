@@ -72,10 +72,9 @@ spec:
             env:
               # https://docker-minecraft-server.readthedocs.io/en/latest/variables
               TYPE: PAPER
-              # PAPER_CHANNEL: experimental
-              # TODO: update with renovate
               VERSION: 26.2
-              PAPER_BUILD: 112
+              # https://fill.papermc.io/v3/projects/paper/versions/26.2/builds (channel STABLE)
+              PAPER_BUILD: 123
 
               MEMORY: 1024M
               MODS_FILE: /config/plugins.txt
