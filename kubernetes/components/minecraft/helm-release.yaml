@@ -76,6 +76,7 @@ spec:
               VERSION: 26.2
 
               MEMORY: 1024M
+              JVM_XX_OPTS: "-XX:+UseZGC -XX:+AlwaysPreTouch"
               MODS_FILE: /config/plugins.txt
               REPLACE_ENV_DURING_SYNC: true
               CFG_PROXY_SECRET:
