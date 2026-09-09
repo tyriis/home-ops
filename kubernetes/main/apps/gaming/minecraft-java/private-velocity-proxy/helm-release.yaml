@@ -56,6 +56,7 @@ spec:
               UID: 1000
               GID: 1000
               TYPE: VELOCITY
+              # TODO: update with renovate
               VELOCITY_VERSION: 3.5.1
 
               # Memory settings
