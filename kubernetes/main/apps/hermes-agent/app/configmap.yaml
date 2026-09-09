@@ -230,7 +230,7 @@ data:
         extra_body: {}
       title_generation:
         provider: techtales
-        model: gemma3:1b
+        model: qwen3.8-flash-next
         base_url: ''
         api_key: ''
         timeout: 30
