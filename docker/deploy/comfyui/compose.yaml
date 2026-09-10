@@ -79,7 +79,7 @@ services:
       fix-permissions:
         condition: service_completed_successfully
   comfyui-gallery:
-    image: mmartial/smart-comfyui-gallery:2.23@sha256:b71dd1565e8d6030bbc0ef02654a7701098106d5f04bc298cace100f5be8d88c
+    image: mmartial/smart-comfyui-gallery:2.24@sha256:041897c24f347dab0ee7f1ed90626f91fd8c9d743f6b366522c59650d946b6a5
     container_name: comfyui-gallery
     restart: unless-stopped
     ports:
