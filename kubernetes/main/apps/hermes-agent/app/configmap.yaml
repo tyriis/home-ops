@@ -16,6 +16,14 @@ data:
         api_mode: chat_completions
         key_env: TECHTALES_API_KEY
         default_model: qwen3.8-flash-next
+    custom_providers:
+    - name: techtales
+      base_url: https://techtales.ai/v1
+      api_mode: chat_completions
+      model: qwen3.8-flash-next
+      models:
+      - qwen3.8-flash-next
+      key_env: TECHTALES_API_KEY
     fallback_providers:
     - provider: opencode-go
       model: glm-5.3-flash
