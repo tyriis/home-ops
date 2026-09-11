@@ -35,7 +35,7 @@ spec:
           app:
             image:
               repository: rhasspy/wyoming-piper
-              tag: 2.4.3@sha256:f7aaafe325d18979f43a9fe8bb4db494ba28ce8c109cb982983157817705ff87
+              tag: 2.5.1@sha256:a61b12575e5a05b307983c3172bdf03ef7dd68a6f6093f3b6105a0c65004d0a3
             args:
               - --voice
               - en_US-lessac-medium
