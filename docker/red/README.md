@@ -31,10 +31,8 @@ are scraped directly on the LAN.
 
 ## First deploy
 
-1. Create UniFi (UDM SE) local DNS A records → `192.168.1.22` for `unsloth`, `comfyui`,
-   `gallery`, `ollama` `.tyriis.dev`.
-2. Put the real Cloudflare token (Zone:DNS:Edit on the `tyriis.dev` zone) into the encrypted
-   file: `sops docker/red/traefik/sops.env`, replace `CF_DNS_API_TOKEN=REPLACE_ME`.
+1. Create UniFi (UDM SE) local DNS A records → `192.168.1.22` for `unsloth`, `comfyui`, `gallery`, `ollama` `.tyriis.dev`.
+2. Put the real Cloudflare token (Zone:DNS:Edit on the `tyriis.dev` zone) into the encrypted file: `sops docker/red/traefik/sops.env`, replace `CF_DNS_API_TOKEN=REPLACE_ME`.
 3. Confirm `ACME_EMAIL` in `docker/red/traefik/.env`.
 4. Ensure red's doco-cd has the red age key (`SOPS_AGE_KEY_FILE`) so `sops.env` decrypts.
 5. Let doco-cd apply `docker/.doco-cd.red.yaml` (Traefik first).
