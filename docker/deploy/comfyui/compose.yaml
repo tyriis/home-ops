@@ -16,10 +16,13 @@ volumes:
 
 services:
   comfyui-nvidia:
-    # Use latest tag which points to ubuntu24_cuda12.6.3-latest
-    # For Blackwell (RTX 50xx) GPUs, use: mmartial/comfyui-nvidia-docker:ubuntu24_cuda12.8-latest
-    # For GTX 10xx GPUs, use: mmartial/comfyui-nvidia-docker:ubuntu24_cuda12.6.3-latest
-    image: mmartial/comfyui-nvidia-docker:ubuntu24_cuda13.1-20260121@sha256:6e94003fd94766e315ae85398957737a1c835a0e2fe5629b447c372da7769eda
+    # Pinned to the Ubuntu 24.04 + CUDA 12.6.3 line for GTX 10xx GPUs:
+    #   mmartial/comfyui-nvidia-docker:ubuntu24_cuda12.6.3-latest
+    # Pinned to the Ubuntu 24.04 + CUDA 12.8 line for Blackwell (RTX 50xx) GPUs:
+    #   mmartial/comfyui-nvidia-docker:ubuntu24_cuda12.8-latest
+    # The trailing date is the upstream GitHub release. Renovate tracks new dates
+    # within the Ubuntu 26.04 + CUDA 13.3 line (see .github/renovate.json5).
+    image: mmartial/comfyui-nvidia-docker:ubuntu26_cuda13.3-20260805@sha256:1599aaff2e72a6f33faf10e0ec8f9ec704fc88f304ce7c30e0c17a97a19c986b
     container_name: comfyui-nvidia
     restart: unless-stopped
     ports:
