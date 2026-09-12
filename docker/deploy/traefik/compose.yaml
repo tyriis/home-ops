@@ -36,6 +36,8 @@ services:
       # Wildcard Setup
       - --entryPoints.websecure.http.tls.domains[0].main=techtales.ai
       - --entryPoints.websecure.http.tls.domains[0].sans=*.techtales.ai
+      # Arcane UI on bifrost (LAN-only) — requires the Cloudflare token to cover techtales.io
+      - --entryPoints.websecure.http.tls.domains[1].main=arcane.techtales.io
       # Docker Provider
       - --providers.docker=true
       - --providers.docker.exposedByDefault=false
