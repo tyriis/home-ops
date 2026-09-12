@@ -22,11 +22,17 @@ services:
     # No host ports: Traefik reaches Studio (:8000) and Jupyter (:8888) over the
     # shared `apps` network. `!reset` drops the ports inherited from the include.
     ports: !reset []
+    # This container exposes TWO Traefik services (`unsloth` and `jupyter`), so each router
+    # must name its service explicitly — Traefik refuses to auto-link a router when the
+    # container declares more than one service ("cannot be linked automatically with multiple
+    # Services"), which otherwise leaves both routers without a service and returns 404.
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.unsloth.rule=Host(`unsloth.tyriis.dev`)"
       - "traefik.http.routers.unsloth.entrypoints=websecure"
+      - "traefik.http.routers.unsloth.service=unsloth"
       - "traefik.http.services.unsloth.loadbalancer.server.port=8000"
       - "traefik.http.routers.jupyter.rule=Host(`jupyter.tyriis.dev`)"
       - "traefik.http.routers.jupyter.entrypoints=websecure"
+      - "traefik.http.routers.jupyter.service=jupyter"
       - "traefik.http.services.jupyter.loadbalancer.server.port=8888"
