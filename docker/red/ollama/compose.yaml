@@ -53,6 +53,13 @@ services:
     image: caddy:2.11-alpine@sha256:5f5c8640aae01df9654968d946d8f1a56c497f1dd5c5cda4cf95ab7c14d58648
     cap_drop:
       - ALL
+    # The official Caddy image ships /usr/bin/caddy with the file capability
+    # cap_net_bind_service=ep. With an empty capability bounding set (cap_drop: ALL) the
+    # kernel refuses to execve it ("exec /usr/bin/caddy: operation not permitted"), so exactly
+    # that one capability is added back. The listener is :8080 (unprivileged) — nothing more
+    # is needed.
+    cap_add:
+      - NET_BIND_SERVICE
     container_name: ollama-auth
     env_file:
       - ${SOPS_ENV_FILE:-sops.env}
