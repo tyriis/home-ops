@@ -23,3 +23,8 @@ name: unsloth
 working_dir: docker/red/unsloth
 env_files:
   - .env
+---
+name: arcane-agent
+working_dir: docker/red/arcane-agent
+env_files:
+  - .env
