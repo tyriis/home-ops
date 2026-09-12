@@ -5,19 +5,26 @@
 # env_files:
 #   - red.env
 ---
+# Traefik first: it creates the shared `apps` network and the TLS entry points before
+# the labelled services attach.
+name: traefik
+working_dir: docker/red/traefik
+env_files:
+  - .env
+---
 name: busybox-enc
 working_dir: docker/red/busybox-enc
 env_files:
   - .env
 ---
 name: ollama
-working_dir: docker/deploy/ollama
+working_dir: docker/red/ollama
 ---
 name: node-exporter
 working_dir: docker/deploy/node-exporter
 ---
 name: comfyui
-working_dir: docker/deploy/comfyui
+working_dir: docker/red/comfyui
 ---
 name: unsloth
 working_dir: docker/red/unsloth

@@ -1,0 +1,41 @@
+---
+# Include shim — the actual service definition is shared: docker/deploy/comfyui/compose.yaml.
+# doco-cd runs compose in working_dir and hard-fails ("no compose files found") unless a
+# compose file is resolvable there; this real file provides it. Symlinks are deliberately
+# avoided (redeploy-hash churn, doco-cd #954; path-escape false positives, v0.74
+# regressions #1142/#1086/#1152).
+# project_directory: . is REQUIRED so relative paths inside the shared compose
+# (volumes) resolve against this host directory, not the deploy dir.
+include:
+  - path: ../../deploy/comfyui/compose.yaml
+    project_directory: .
+
+networks:
+  apps:
+    name: apps
+    external: false
+
+services:
+  comfyui-nvidia:
+    networks:
+      - apps
+    # Loopback-only: LAN access goes through Traefik TLS (comfyui.tyriis.dev).
+    ports: !override
+      - "127.0.0.1:8188:8188"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.comfyui.rule=Host(`comfyui.tyriis.dev`)"
+      - "traefik.http.routers.comfyui.entrypoints=websecure"
+      - "traefik.http.services.comfyui.loadbalancer.server.port=8188"
+
+  comfyui-gallery:
+    networks:
+      - apps
+    # Loopback-only: LAN access goes through Traefik TLS (gallery.tyriis.dev).
+    ports: !override
+      - "127.0.0.1:8189:8189"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gallery.rule=Host(`gallery.tyriis.dev`)"
+      - "traefik.http.routers.gallery.entrypoints=websecure"
+      - "traefik.http.services.gallery.loadbalancer.server.port=8189"
