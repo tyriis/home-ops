@@ -9,3 +9,22 @@
 include:
   - path: ../../deploy/unsloth/compose.yaml
     project_directory: .
+
+networks:
+  apps:
+    name: apps
+    external: false
+
+services:
+  unsloth:
+    networks:
+      - apps
+    # Loopback-only: LAN access goes through Traefik TLS (unsloth.tyriis.dev).
+    ports: !override
+      - "127.0.0.1:8000:8000"
+      - "127.0.0.1:8888:8888"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.unsloth.rule=Host(`unsloth.tyriis.dev`)"
+      - "traefik.http.routers.unsloth.entrypoints=websecure"
+      - "traefik.http.services.unsloth.loadbalancer.server.port=8000"
