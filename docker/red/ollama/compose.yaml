@@ -40,11 +40,36 @@ services:
           ollama pull "$$m" || echo "pull failed: $$m"
         done
         wait "$$pid"
-    # No host ports: Traefik reaches ollama:11434 over the shared `apps` network
-    # (https://ollama.tyriis.dev). `!reset` drops the ports inherited from the include.
+    # No host ports and no Traefik labels: the API-key gate (ollama-auth) is the only
+    # LAN/TLS entrypoint and reaches ollama over the shared `apps` network.
+    # `!reset` drops the ports inherited from the include.
     ports: !reset []
+
+  # Transparent OpenAI-style `Authorization: Bearer` gate in front of Ollama.
+  # Ollama has no auth of its own; this rejects requests without the shared key.
+  # The key comes from the SOPS-encrypted sops.env (doco-cd decrypts at deploy time and
+  # exports SOPS_ENV_FILE), never from a committed label.
+  ollama-auth:
+    image: caddy:2.11-alpine@sha256:5f5c8640aae01df9654968d946d8f1a56c497f1dd5c5cda4cf95ab7c14d58648
+    cap_drop:
+      - ALL
+    container_name: ollama-auth
+    env_file:
+      - ${SOPS_ENV_FILE:-sops.env}
+    read_only: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges=true
+    tmpfs:
+      - /tmp
+      - /config
+      - /data
+    networks:
+      - apps
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.ollama.rule=Host(`ollama.tyriis.dev`)"
       - "traefik.http.routers.ollama.entrypoints=websecure"
-      - "traefik.http.services.ollama.loadbalancer.server.port=11434"
+      - "traefik.http.services.ollama.loadbalancer.server.port=8080"

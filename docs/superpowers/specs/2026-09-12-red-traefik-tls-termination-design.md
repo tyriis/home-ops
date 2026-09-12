@@ -4,6 +4,9 @@
 - **Date:** 2026-09-12
 - **Amended:** 2026-09-13 — no proxied service publishes host ports (`ports: !reset []`); Jupyter is
   additionally routed at `jupyter.tyriis.dev` → `unsloth:8888`.
+- **Amended:** 2026-09-13 — `ollama.tyriis.dev` now requires an OpenAI-style `Authorization: Bearer`
+  key (ADR-0011); the "No authentication/authorization middleware" non-goal is superseded for
+  `ollama` only.
 - **Scope:** `docker/red/**`, `docker/deploy/node-exporter/compose.yaml`, `docker/.doco-cd.red.yaml`
 - **Supersedes:** the "Reverse proxy or TLS termination" non-goal in `docs/superpowers/specs/2026-08-16-unsloth-doco-cd-design.md`
 
@@ -43,7 +46,9 @@ should get the same treatment for the domain `tyriis.dev`.
   load-bearing: `/proc/net` resolves against the reader's netns, so moving it to a bridge silently
   breaks `netdev`/`netstat`/`sockstat`/`arp`/`conntrack` (see `prometheus/node_exporter` #2007,
   #3381). It stays as-is.
-- No authentication/authorization middleware. Traefik provides TLS, not auth.
+- No authentication/authorization middleware for `unsloth`, Jupyter, `comfyui`, or `gallery`; Traefik
+  provides TLS, not auth, and those services stay LAN-only. `ollama` is the exception: it is gated by
+  an OpenAI-style bearer key (ADR-0011).
 - No public exposure (LAN-only, private-IP DNS records).
 - No changes to `docker/deploy/traefik/compose.yaml` (bifrost-safe).
 
@@ -179,8 +184,9 @@ the SOPS-encrypted `docker/red/traefik/sops.env`, decrypted by doco-cd at deploy
 - **Bifrost isolation:** because red overrides `command` in its own shim, the shared Traefik
   definition is not modified; a `docker compose config` comparison for
   `docker/deploy/traefik/compose.yaml` guards this.
-- **TLS ≠ auth:** `ollama`, `comfyui`, `gallery` have no authentication; they remain LAN-only via
-  private-IP DNS.
+- **TLS ≠ auth:** `comfyui` and `gallery` have no authentication; they remain LAN-only via
+  private-IP DNS. `ollama` is gated by an OpenAI-style bearer key (ADR-0011), so requests without it
+  return `401`.
 - **Jupyter Host/remote access:** the May image's entrypoint came from a now-private repo, so its
   default Jupyter config is not fully auditable. If Jupyter rejects the proxied `Host` header
   (`jupyter.tyriis.dev`), the fallback is to mount a `jupyter_lab_config.py` setting
