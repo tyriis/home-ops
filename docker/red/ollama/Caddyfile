@@ -1,0 +1,13 @@
+# OpenAI-style `Authorization: Bearer` gate for red's Ollama.
+# Caddy is a transparent pass-through: Ollama itself serves the OpenAI-compatible /v1 API;
+# this only rejects requests that do not present the shared key.
+# The key is injected at container start from the env (doco-cd decrypts
+# docker/red/ollama/sops.env -> OLLAMA_API_KEY); it is never committed in plaintext.
+# The `:__unset__` default makes the gate fail CLOSED if the env var is ever missing
+# (no client can present "Bearer __unset__").
+:8080 {
+    @denied not header Authorization "Bearer {$OLLAMA_API_KEY:__unset__}"
+    respond @denied "Unauthorized" 401
+
+    reverse_proxy ollama:11434
+}
