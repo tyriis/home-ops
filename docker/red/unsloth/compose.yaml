@@ -1,1 +1,11 @@
-../../deploy/unsloth/compose.yaml
+---
+# Include shim — the actual service definition is shared: docker/deploy/unsloth/compose.yaml.
+# doco-cd runs compose in working_dir and hard-fails ("no compose files found") unless a
+# compose file is resolvable there; this real file provides it. Symlinks are deliberately
+# avoided (redeploy-hash churn, doco-cd #954; path-escape false positives, v0.74
+# regressions #1142/#1086/#1152).
+# project_directory: . is REQUIRED so relative paths inside the shared compose
+# (env_file) resolve against this host directory, not the deploy dir.
+include:
+  - path: ../../deploy/unsloth/compose.yaml
+    project_directory: .
