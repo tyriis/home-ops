@@ -19,6 +19,27 @@ services:
   ollama:
     networks:
       - apps
+    # Pre-script: start the server, wait until it accepts connections, pull the red models
+    # once (idempotent — fast no-op when already present), then stay in the foreground.
+    # Replaces a separate model-puller container.
+    environment:
+      # Space-separated models pulled on container start. Override per host by uncommenting
+      # OLLAMA_PULL_MODELS in docker/red/ollama/.env (compose example default below).
+      OLLAMA_PULL_MODELS: ${OLLAMA_PULL_MODELS:-gemma3:1b gemma4:e2b}
+    init: true
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        set -e
+        ollama serve &
+        pid=$$!
+        trap 'kill -TERM "$$pid" 2>/dev/null || true' TERM INT
+        until ollama list >/dev/null 2>&1; do sleep 1; done
+        for m in $${OLLAMA_PULL_MODELS:-}; do
+          echo "pulling $$m"
+          ollama pull "$$m" || echo "pull failed: $$m"
+        done
+        wait "$$pid"
     # Loopback-only: LAN access goes through Traefik TLS (ollama.tyriis.dev).
     ports: !override
       - "127.0.0.1:11434:11434"

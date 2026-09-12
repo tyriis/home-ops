@@ -16,7 +16,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.newapi.rule=Host(`techtales.ai`)"
       - "traefik.http.routers.newapi.entrypoints=websecure"
-      # Replace '8080' with the internal port your API application actually listens on
       - "traefik.http.services.newapi.loadbalancer.server.port=3000"
 
     dns:
