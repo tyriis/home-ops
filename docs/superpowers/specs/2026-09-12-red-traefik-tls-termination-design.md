@@ -2,6 +2,9 @@
 
 - **Status:** Accepted
 - **Date:** 2026-09-12
+- **Amended:** 2026-09-13 — `ollama` and `unsloth` now publish no host ports (`ports: !reset []`)
+  and Jupyter is additionally routed at `jupyter.tyriis.dev` → `unsloth:8888`; `comfyui`/`gallery`
+  still bind loopback pending a follow-up.
 - **Scope:** `docker/red/**`, `docker/deploy/node-exporter/compose.yaml`, `docker/.doco-cd.red.yaml`
 - **Supersedes:** the "Reverse proxy or TLS termination" non-goal in `docs/superpowers/specs/2026-08-16-unsloth-doco-cd-design.md`
 
@@ -28,11 +31,11 @@ should get the same treatment for the domain `tyriis.dev`.
 ## Goals
 
 - TLS termination (Let's Encrypt, HTTP→HTTPS redirect) in front of red's browser/HTTP workloads:
-  `unsloth`, `comfyui`, `gallery`, `ollama`.
+  `unsloth` (Studio), Jupyter, `comfyui`, `gallery`, `ollama`.
 - Hostnames under `tyriis.dev`, one wildcard certificate.
 - Reuse the existing shared Traefik definition without changing the working `bifrost` instance.
 - Follow the established `docker/deploy/<svc>` shared-compose + per-host include-shim convention.
-- Restrict direct plaintext host ports of the now-proxied services to loopback.
+- Publish no host ports for `ollama` and `unsloth`; keep LAN access behind Traefik (TLS).
 
 ## Non-goals
 
@@ -44,7 +47,6 @@ should get the same treatment for the domain `tyriis.dev`.
 - No authentication/authorization middleware. Traefik provides TLS, not auth.
 - No public exposure (LAN-only, private-IP DNS records).
 - No changes to `docker/deploy/traefik/compose.yaml` (bifrost-safe).
-- Jupyter (`:8888`) stays internal (loopback only), not published.
 
 ## Decisions
 
@@ -74,12 +76,15 @@ backends through Docker-provider labels (`traefik.enable`, `traefik.http.routers
 `traefik.http.services.*.loadbalancer.server.port`), exactly as bifrost does. `apps` is
 host-local (`name: apps`, `external: false`), so red's is independent of bifrost's.
 
-### D4 — Direct ports restricted to loopback
+### D4 — `ollama` and `unsloth` publish no host ports; Jupyter routed
 
-Proxied services override their published ports to `127.0.0.1` (`!override` on the list). Traefik
-reaches containers over `apps`, so host ports are only for local debugging. This applies to
-`unsloth` (`8000`, `8888`), `comfyui-nvidia` (`8188`), `comfyui-gallery` (`8189`), `ollama`
-(`11434`). Metrics services are excluded (non-goal).
+`docker/red/ollama` (`11434`) and `docker/red/unsloth` (Studio `8000`, Jupyter `8888`) reset their
+published ports to none (`ports: !reset []`), dropping the ports inherited from the shared include.
+Traefik reaches them purely over the `apps` network, so the red host publishes no plaintext ports
+for these two services. Jupyter is additionally routed at `jupyter.tyriis.dev` → `unsloth:8888`
+(router/service `jupyter`), alongside Studio at `unsloth.tyriis.dev` → `unsloth:8000`.
+`comfyui-nvidia` (`8188`) and `comfyui-gallery` (`8189`) still override their ports to loopback
+(`!override`); removing those is a follow-up. Metrics services are excluded (non-goal).
 
 ### D5 — smartctl-exporter image change (independent)
 
@@ -93,6 +98,7 @@ Shared across hosts; behaviour unchanged apart from the image.
 LAN client ──TLS──> red:443 (Traefik, `apps`)
                       │  Host(...) rules via Docker labels
                       ├── unsloth.tyriis.dev   → unsloth:8000        (apps)
+                      ├── jupyter.tyriis.dev   → unsloth:8888        (apps)
                       ├── comfyui.tyriis.dev   → comfyui-nvidia:8188 (apps)
                       ├── gallery.tyriis.dev   → comfyui-gallery:8189(apps)
                       └── ollama.tyriis.dev    → ollama:11434        (apps)
@@ -105,6 +111,7 @@ node-exporter (host net 9100) / smartctl-exporter (9633)  ← unchanged, not pro
 | Hostname | Backend (apps) | Container port | Router | Service |
 | --- | --- | --- | --- | --- |
 | `unsloth.tyriis.dev` | `unsloth` | `8000` | `unsloth` | `unsloth` |
+| `jupyter.tyriis.dev` | `unsloth` | `8888` | `jupyter` | `jupyter` |
 | `comfyui.tyriis.dev` | `comfyui-nvidia` | `8188` | `comfyui` | `comfyui` |
 | `gallery.tyriis.dev` | `comfyui-gallery` | `8189` | `gallery` | `gallery` |
 | `ollama.tyriis.dev` | `ollama` | `11434` | `ollama` | `ollama` |
@@ -125,13 +132,14 @@ the SOPS-encrypted `docker/red/traefik/sops.env`, decrypted by doco-cd at deploy
 - `docker/red/traefik/compose.yaml` — include shim + `command:` override (wildcard `tyriis.dev`).
 - `docker/red/traefik/.env` — `TARGET=red`, `TLS_DOMAIN=tyriis.dev`, `ACME_EMAIL=…`.
 - `docker/red/traefik/sops.env` — SOPS-encrypted `CF_DNS_API_TOKEN` (red age key).
-- `docker/red/ollama/compose.yaml` — shim: `apps` + labels + loopback port.
+- `docker/red/ollama/compose.yaml` — shim: `apps` + labels + no host ports.
 - `docker/red/comfyui/compose.yaml` — shim: `apps` + labels + loopback ports for both web UIs.
 - `docker/red/README.md` — host documentation, routing table, DNS runbook, first-deploy notes.
 
 **Modified**
 
-- `docker/red/unsloth/compose.yaml` — add `apps`, labels, loopback ports.
+- `docker/red/unsloth/compose.yaml` — add `apps`, labels, the `jupyter` router; reset `ports` to
+  none.
 - `docker/.doco-cd.red.yaml` — add `traefik` workload (first), repoint `ollama`/`comfyui` to
   `docker/red/*`; `node-exporter` stays at `docker/deploy/node-exporter`.
 - `docker/deploy/node-exporter/compose.yaml` — smartctl-exporter image (D5).
@@ -152,15 +160,16 @@ the SOPS-encrypted `docker/red/traefik/sops.env`, decrypted by doco-cd at deploy
 
 ## Verification
 
-- `docker compose config` succeeds for `docker/red/traefik`, `docker/red/unsloth`,
-  `docker/red/ollama`, `docker/red/comfyui` and shows the expected command, labels, `apps`
-  membership, and loopback ports.
+- `docker compose config` on `docker/red/ollama` and `docker/red/unsloth` emits no `ports` for the
+  service; it shows the expected labels, `apps` membership, and (for unsloth) both the `unsloth`
+  and `jupyter` routers/services.
 - `docker compose config` on `docker/deploy/traefik` is unchanged (no diff).
 - `pre-commit run --files <changed files>` passes (yamllint, prettier, check-symlinks, etc.).
 - `sops --decrypt docker/red/traefik/sops.env` prints `CF_DNS_API_TOKEN` (operator, with red key).
-- Post-deploy (operator): `curl -sI https://unsloth.tyriis.dev` returns a valid LE certificate for
-  `*.tyriis.dev`; HTTP redirects to HTTPS; loopback direct ports are not reachable from another
-  LAN host.
+- Post-deploy (operator): `curl -sI https://unsloth.tyriis.dev` and
+  `https://jupyter.tyriis.dev` return a valid LE certificate for `*.tyriis.dev`; HTTP redirects to
+  HTTPS; `https://jupyter.tyriis.dev` loads JupyterLab (kernel/WebSocket works); no host ports are
+  published on the LAN.
 
 ## Risks
 
@@ -173,3 +182,7 @@ the SOPS-encrypted `docker/red/traefik/sops.env`, decrypted by doco-cd at deploy
   `docker/deploy/traefik/compose.yaml` guards this.
 - **TLS ≠ auth:** `ollama`, `comfyui`, `gallery` have no authentication; they remain LAN-only via
   private-IP DNS.
+- **Jupyter Host/remote access:** the May image's entrypoint came from a now-private repo, so its
+  default Jupyter config is not fully auditable. If Jupyter rejects the proxied `Host` header
+  (`jupyter.tyriis.dev`), the fallback is to mount a `jupyter_lab_config.py` setting
+  `allow_remote_access`/`local_hostnames`.

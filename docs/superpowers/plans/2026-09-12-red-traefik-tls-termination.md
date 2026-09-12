@@ -1,5 +1,9 @@
 # red Traefik TLS Termination Implementation Plan
 
+> **Historical note (2026-09-13):** This plan is retained as a historical record. The loopback host
+> ports described below were later removed and Jupyter now routes at `jupyter.tyriis.dev`, per the
+> amended design spec (`docs/superpowers/specs/2026-09-12-red-traefik-tls-termination-design.md`).
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Terminate TLS for red's `unsloth`, `comfyui`, `gallery`, and `ollama` services with a Traefik instance on `tyriis.dev`, without touching the working bifrost Traefik.
