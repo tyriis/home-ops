@@ -1,0 +1,59 @@
+---
+networks:
+  apps:
+    name: apps
+    external: false
+
+volumes:
+  data:
+    external: ${VOLUME_EXTERNAL:-false}
+    name: ${VOLUME_NAME:-arcane_data}
+    driver: ${VOLUME_DRIVER:-local}
+
+services:
+  # https://github.com/getarcaneapp/arcane — self-hosted Docker management UI (Manager).
+  # Needs the host Docker socket (read-write) for local Docker control and a persistent
+  # /app/data volume (SQLite). Arcane runs its startup as root and chowns /app/data to
+  # PUID/PGID before dropping privileges, so no manual volume chown is needed.
+  # ENCRYPTION_KEY is provided via the SOPS-managed env file and MUST be 32 bytes.
+  # First login: arcane / arcane-admin (forced change) — rotate immediately and enable 2FA.
+  # LAN-only: reached through the host's Traefik over the `apps` network; the published
+  # port below is bound to loopback for debugging only.
+  # Do NOT add `cap_drop`, `user:`, or `read_only: true`: the root startup phase needs
+  # CAP_CHOWN/CAP_SETUID/CAP_SETGID to chown /app/data and drop to PUID/PGID (verified
+  # against v2.11.0 — cap_drop:ALL makes it exit 1 with "chown ... operation not permitted").
+  arcane:
+    cgroup: host
+    container_name: ${CONTAINER_NAME:-arcane}
+    env_file:
+      - ${SOPS_ENV_FILE:-sops.env}
+    environment:
+      TZ: Europe/Vienna
+      APP_URL: ${APP_URL:-http://localhost:3552}
+      TRUSTED_PROXIES: ${TRUSTED_PROXIES:-}
+      PUID: ${USER_ID:-1000}
+      PGID: ${GROUP_ID:-1000}
+    healthcheck:
+      test:
+        - CMD
+        - ./arcane
+        - health
+        - --timeout
+        - 2s
+      start_period: 15s
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    image: ghcr.io/getarcaneapp/manager:v2.11.0@sha256:a7005e4be1740ae7f3c0aa694ef825552271cb320b3906a98a5e8a642faa163a
+    mem_limit: 1g
+    pids_limit: 256
+    ports:
+      - ${WEB_HOST:-127.0.0.1}:${WEB_PORT:-3552}:3552
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges=true
+    volumes:
+      - data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - apps
