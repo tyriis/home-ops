@@ -17,3 +17,8 @@ name: traefik
 working_dir: docker/bifrost/traefik
 env_files:
   - .env
+---
+name: arcane
+working_dir: docker/bifrost/arcane
+env_files:
+  - .env

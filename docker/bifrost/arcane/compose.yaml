@@ -1,0 +1,22 @@
+---
+# Include shim — the actual service definition is shared: docker/deploy/arcane/compose.yaml.
+# doco-cd runs compose in working_dir and hard-fails ("no compose files found") unless a
+# compose file is resolvable there; this real file provides it. Symlinks are deliberately
+# avoided (redeploy-hash churn, doco-cd #954; path-escape false positives, v0.74
+# regressions #1142/#1086/#1152).
+# project_directory: . is REQUIRED so relative paths inside the shared compose
+# (env_file, the /app/data volume) resolve against this host directory, not the deploy dir.
+include:
+  - path: ../../deploy/arcane/compose.yaml
+    project_directory: .
+
+services:
+  arcane:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.arcane.rule=Host(`arcane.techtales.io`)"
+      - "traefik.http.routers.arcane.entrypoints=websecure"
+      - "traefik.http.services.arcane.loadbalancer.server.port=3552"
+    dns:
+      - 192.168.100.1
+      - 1.1.1.2
