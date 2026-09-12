@@ -42,8 +42,7 @@ are scraped directly on the LAN.
 2. Put the real Cloudflare token (Zone:DNS:Edit on the `tyriis.dev` zone) into the encrypted file: `sops docker/red/traefik/sops.env`, replace `CF_DNS_API_TOKEN=REPLACE_ME`.
 3. Confirm `ACME_EMAIL` in `docker/red/traefik/.env`.
 4. Ensure red's doco-cd has the red age key (`SOPS_AGE_KEY_FILE`) so `sops.env` decrypts.
-5. Ensure `docker/red/ollama/sops.env` holds the encrypted `OLLAMA_API_KEY` (committed encrypted;
-   rotate with `sops docker/red/ollama/sops.env`).
+5. Ensure `docker/red/ollama/sops.env` holds the encrypted `OLLAMA_API_KEY` (committed encrypted; rotate with `sops docker/red/ollama/sops.env`).
 6. Let doco-cd apply `docker/.doco-cd.red.yaml` (Traefik first).
 
 Verify: `curl -sI https://unsloth.tyriis.dev` serves a valid `*.tyriis.dev` certificate, HTTP
