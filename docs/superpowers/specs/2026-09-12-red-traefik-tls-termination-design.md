@@ -142,7 +142,8 @@ the SOPS-encrypted `docker/red/traefik/sops.env`, decrypted by doco-cd at deploy
 
 ## Manual prerequisites (outside the repo / by operator)
 
-1. Cloudflare A records → `192.168.1.22`: `unsloth`, `comfyui`, `gallery`, `ollama`.tyriis.dev.
+1. UniFi (UDM SE) local DNS A records → `192.168.1.22`: `unsloth`, `comfyui`, `gallery`,
+   `ollama`.tyriis.dev.
 2. Cloudflare API token scoped **Zone:DNS:Edit** on the `tyriis.dev` zone.
 3. Encrypt `docker/red/traefik/sops.env` with the red age recipient
    (`age16pcjw9pvhx2lnx382hrgcpydpjvjz6r8u22wflm228cakedrlgdqzlwx4s`, already covered by

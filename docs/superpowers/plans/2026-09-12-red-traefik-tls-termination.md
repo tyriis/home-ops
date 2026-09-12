@@ -477,8 +477,8 @@ are scraped directly on the LAN.
 
 ## First deploy
 
-1. Create Cloudflare A records → `192.168.1.22` for `unsloth`, `comfyui`, `gallery`, `ollama`
-   `.tyriis.dev`.
+1. Create UniFi (UDM SE) local DNS A records → `192.168.1.22` for `unsloth`, `comfyui`,
+   `gallery`, `ollama` `.tyriis.dev`.
 2. Put the real Cloudflare token (Zone:DNS:Edit on the `tyriis.dev` zone) into the encrypted
    file: `sops docker/red/traefik/sops.env`, replace `CF_DNS_API_TOKEN=REPLACE_ME`.
 3. Confirm `ACME_EMAIL` in `docker/red/traefik/.env`.
