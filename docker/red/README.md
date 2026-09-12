@@ -47,3 +47,4 @@ redirects to HTTPS, and the loopback ports are unreachable from another LAN host
 - Per-service layout follows the bifrost pattern: a real thin `compose.yaml` include shim plus the
   host's `.env`/`sops.env`. Symlinks are avoided (doco-cd redeploy-hash churn and path-escape
   false positives).
+- `ollama` auto-pulls the models in `OLLAMA_PULL_MODELS` (compose default `gemma3:1b gemma4:e2b`) on container start; repeat runs are no-ops.
