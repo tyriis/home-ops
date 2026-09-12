@@ -19,9 +19,9 @@ services:
   comfyui-nvidia:
     networks:
       - apps
-    # Loopback-only: LAN access goes through Traefik TLS (comfyui.tyriis.dev).
-    ports: !override
-      - "127.0.0.1:8188:8188"
+    # No host ports: Traefik reaches comfyui-nvidia:8188 over the shared `apps` network
+    # (https://comfyui.tyriis.dev). `!reset` drops the ports inherited from the include.
+    ports: !reset []
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.comfyui.rule=Host(`comfyui.tyriis.dev`)"
@@ -31,9 +31,9 @@ services:
   comfyui-gallery:
     networks:
       - apps
-    # Loopback-only: LAN access goes through Traefik TLS (gallery.tyriis.dev).
-    ports: !override
-      - "127.0.0.1:8189:8189"
+    # No host ports: Traefik reaches comfyui-gallery:8189 over the shared `apps` network
+    # (https://gallery.tyriis.dev). `!reset` drops the ports inherited from the include.
+    ports: !reset []
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.gallery.rule=Host(`gallery.tyriis.dev`)"

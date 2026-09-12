@@ -2,9 +2,8 @@
 
 - **Status:** Accepted
 - **Date:** 2026-09-12
-- **Amended:** 2026-09-13 — `ollama` and `unsloth` now publish no host ports (`ports: !reset []`)
-  and Jupyter is additionally routed at `jupyter.tyriis.dev` → `unsloth:8888`; `comfyui`/`gallery`
-  still bind loopback pending a follow-up.
+- **Amended:** 2026-09-13 — no proxied service publishes host ports (`ports: !reset []`); Jupyter is
+  additionally routed at `jupyter.tyriis.dev` → `unsloth:8888`.
 - **Scope:** `docker/red/**`, `docker/deploy/node-exporter/compose.yaml`, `docker/.doco-cd.red.yaml`
 - **Supersedes:** the "Reverse proxy or TLS termination" non-goal in `docs/superpowers/specs/2026-08-16-unsloth-doco-cd-design.md`
 
@@ -35,7 +34,7 @@ should get the same treatment for the domain `tyriis.dev`.
 - Hostnames under `tyriis.dev`, one wildcard certificate.
 - Reuse the existing shared Traefik definition without changing the working `bifrost` instance.
 - Follow the established `docker/deploy/<svc>` shared-compose + per-host include-shim convention.
-- Publish no host ports for `ollama` and `unsloth`; keep LAN access behind Traefik (TLS).
+- Publish no host ports for the proxied services; keep LAN access behind Traefik (TLS).
 
 ## Non-goals
 
@@ -76,15 +75,15 @@ backends through Docker-provider labels (`traefik.enable`, `traefik.http.routers
 `traefik.http.services.*.loadbalancer.server.port`), exactly as bifrost does. `apps` is
 host-local (`name: apps`, `external: false`), so red's is independent of bifrost's.
 
-### D4 — `ollama` and `unsloth` publish no host ports; Jupyter routed
+### D4 — Proxied services publish no host ports; Jupyter routed
 
-`docker/red/ollama` (`11434`) and `docker/red/unsloth` (Studio `8000`, Jupyter `8888`) reset their
-published ports to none (`ports: !reset []`), dropping the ports inherited from the shared include.
-Traefik reaches them purely over the `apps` network, so the red host publishes no plaintext ports
-for these two services. Jupyter is additionally routed at `jupyter.tyriis.dev` → `unsloth:8888`
-(router/service `jupyter`), alongside Studio at `unsloth.tyriis.dev` → `unsloth:8000`.
-`comfyui-nvidia` (`8188`) and `comfyui-gallery` (`8189`) still override their ports to loopback
-(`!override`); removing those is a follow-up. Metrics services are excluded (non-goal).
+`docker/red/ollama` (`11434`), `docker/red/unsloth` (Studio `8000`, Jupyter `8888`), and
+`docker/red/comfyui` (`comfyui-nvidia` `8188`, `comfyui-gallery` `8189`) all reset their published
+ports to none (`ports: !reset []`), dropping the ports inherited from the shared include. Traefik
+reaches the containers purely over the `apps` network, so the red host publishes no plaintext ports
+for any proxied service. Jupyter is additionally routed at `jupyter.tyriis.dev` → `unsloth:8888`
+(router/service `jupyter`), alongside Studio at `unsloth.tyriis.dev` → `unsloth:8000`. Metrics
+services are excluded (non-goal).
 
 ### D5 — smartctl-exporter image change (independent)
 
@@ -133,7 +132,7 @@ the SOPS-encrypted `docker/red/traefik/sops.env`, decrypted by doco-cd at deploy
 - `docker/red/traefik/.env` — `TARGET=red`, `TLS_DOMAIN=tyriis.dev`, `ACME_EMAIL=…`.
 - `docker/red/traefik/sops.env` — SOPS-encrypted `CF_DNS_API_TOKEN` (red age key).
 - `docker/red/ollama/compose.yaml` — shim: `apps` + labels + no host ports.
-- `docker/red/comfyui/compose.yaml` — shim: `apps` + labels + loopback ports for both web UIs.
+- `docker/red/comfyui/compose.yaml` — shim: `apps` + labels + no host ports.
 - `docker/red/README.md` — host documentation, routing table, DNS runbook, first-deploy notes.
 
 **Modified**
@@ -160,9 +159,9 @@ the SOPS-encrypted `docker/red/traefik/sops.env`, decrypted by doco-cd at deploy
 
 ## Verification
 
-- `docker compose config` on `docker/red/ollama` and `docker/red/unsloth` emits no `ports` for the
-  service; it shows the expected labels, `apps` membership, and (for unsloth) both the `unsloth`
-  and `jupyter` routers/services.
+- `docker compose config` on `docker/red/ollama`, `docker/red/unsloth`, and `docker/red/comfyui`
+  emits no `ports` for the services; it shows the expected labels, `apps` membership, and both the
+  `unsloth`/`jupyter` and `comfyui`/`gallery` routers/services.
 - `docker compose config` on `docker/deploy/traefik` is unchanged (no diff).
 - `pre-commit run --files <changed files>` passes (yamllint, prettier, check-symlinks, etc.).
 - `sops --decrypt docker/red/traefik/sops.env` prints `CF_DNS_API_TOKEN` (operator, with red key).

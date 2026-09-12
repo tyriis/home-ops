@@ -11,8 +11,8 @@ LLM/image tooling and an Arcane edge agent. GitOps via doco-cd with `TARGET=red`
 | traefik                 | —                    | —                             | `80`/`443` (LAN) |
 | unsloth (Studio UI/API) | `unsloth.tyriis.dev` | `unsloth:8000`                | —                |
 | unsloth Jupyter         | `jupyter.tyriis.dev` | `unsloth:8888`                | —                |
-| comfyui                 | `comfyui.tyriis.dev` | `comfyui-nvidia:8188`         | `127.0.0.1:8188` |
-| comfyui-gallery         | `gallery.tyriis.dev` | `comfyui-gallery:8189`        | `127.0.0.1:8189` |
+| comfyui                 | `comfyui.tyriis.dev` | `comfyui-nvidia:8188`         | —                |
+| comfyui-gallery         | `gallery.tyriis.dev` | `comfyui-gallery:8189`        | —                |
 | ollama                  | `ollama.tyriis.dev`  | `ollama:11434`                | —                |
 | node-exporter           | not proxied          | host net `:9100`              | `:9100`          |
 | smartctl-exporter       | not proxied          | `:9633`                       | `:9633`          |
@@ -39,8 +39,8 @@ are scraped directly on the LAN.
 5. Let doco-cd apply `docker/.doco-cd.red.yaml` (Traefik first).
 
 Verify: `curl -sI https://unsloth.tyriis.dev` serves a valid `*.tyriis.dev` certificate, HTTP
-redirects to HTTPS, and `ollama`/`unsloth` no longer publish host ports (Traefik reaches containers
-over the `apps` network). `comfyui`/`gallery` still bind loopback for now.
+redirects to HTTPS, and no proxied service publishes host ports (Traefik reaches all containers
+over the `apps` network).
 
 ## Notes
 
