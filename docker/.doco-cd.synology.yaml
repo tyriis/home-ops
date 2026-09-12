@@ -24,3 +24,8 @@ name: openssh-server
 working_dir: docker/synology/openssh-server
 env_files:
   - .env
+---
+name: arcane-agent
+working_dir: docker/synology/arcane-agent
+env_files:
+  - .env
