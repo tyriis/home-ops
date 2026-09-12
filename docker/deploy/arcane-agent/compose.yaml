@@ -1,0 +1,31 @@
+---
+volumes:
+  data:
+    external: ${VOLUME_EXTERNAL:-false}
+    name: ${VOLUME_NAME:-arcane-agent_data}
+    driver: ${VOLUME_DRIVER:-local}
+
+services:
+  # https://getarcane.app — Arcane Agent: pairs this Docker host to the bifrost Manager.
+  # Edge mode (outbound-only, no published port): the agent connects to the Manager through
+  # Traefik at MANAGER_API_URL over the poll transport, so no inbound firewall opening and no
+  # Traefik gRPC/h2c setup is needed.
+  # The image starts as root only to chown /app/data and drop to the non-root runtime user, so
+  # do NOT add cap_drop / user: / read_only: — that breaks startup.
+  # AGENT_TOKEN comes from the SOPS-managed env file.
+  arcane-agent:
+    container_name: ${CONTAINER_NAME:-arcane-agent}
+    env_file:
+      - ${SOPS_ENV_FILE:-sops.env}
+    environment:
+      TZ: Europe/Vienna
+      EDGE_AGENT: "true"
+      EDGE_TRANSPORT: ${EDGE_TRANSPORT:-poll}
+      MANAGER_API_URL: ${MANAGER_API_URL:?set MANAGER_API_URL in the stack .env}
+    image: ghcr.io/getarcaneapp/agent:v2.11.0@sha256:baa0ab51f0da430fb0704b2e1d6442874dfc3027019731375921e602ae7f7a00
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges=true
+    volumes:
+      - data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
