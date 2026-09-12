@@ -7,7 +7,7 @@ See ADR 0010 (this service) and ADR 0004 (TrueNAS + doco-cd lane).
 ## Layout
 
 - `docker/deploy/olah/compose.yaml`: shared compose definition (olah CLI flags + security hardening; no env_file needed)
-- `docker/truenas/olah/compose.yaml`: symlink to the shared compose (repo convention, same as every other instance)
+- `docker/truenas/olah/compose.yaml`: real include shim into the shared compose (`project_directory: .`)
 - `docker/truenas/olah/.env`: target identifier, host cache dataset path, run-as uid/gid
 - `docker/.doco-cd.truenas.yaml`: doco-cd registration for the truenas target
 
