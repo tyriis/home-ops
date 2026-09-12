@@ -65,7 +65,11 @@ Concrete parameters:
 - The Caddyfile uses the `:__unset__` default (`{$OLLAMA_API_KEY:__unset__}`) so the gate fails
   closed if the env var is ever absent.
 - The gate is hardened like the rest of the host: `cap_drop: ALL`, `read_only`,
-  `no-new-privileges`, tmpfs for `/tmp`, `/config`, `/data`.
+  `no-new-privileges`, tmpfs for `/tmp`, `/config`, `/data`. `NET_BIND_SERVICE` is added back via
+  `cap_add` because the official Caddy image ships `/usr/bin/caddy` with the file capability
+  `cap_net_bind_service=ep`; with an empty bounding set the kernel refuses to `execve` it
+  (`operation not permitted`). The listener is `:8080` (unprivileged), so no other capability is
+  needed.
 
 ### Consequences
 
