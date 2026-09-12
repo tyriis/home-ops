@@ -16,3 +16,6 @@ creation_rules:
   - path_regex: 'docker/bifrost/.*/sops\.env$'
     age: >-
       age16fdxndp7s8fmv0r9qa2f8ymwy7gca0eleev52f3qu9mwqvsqmaaqkvj5ja
+  - path_regex: 'docker/purple/.*/sops\.env$'
+    age: >-
+      age1rkck8xgdpzruefrulr68p86mx3dmkcm2l7eegah625t69qtw7vaqea4hs2
