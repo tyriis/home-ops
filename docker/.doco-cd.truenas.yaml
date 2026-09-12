@@ -6,3 +6,8 @@ name: olah
 working_dir: docker/truenas/olah
 env_files:
   - .env
+---
+name: arcane-agent
+working_dir: docker/truenas/arcane-agent
+env_files:
+  - .env

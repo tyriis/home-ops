@@ -19,3 +19,6 @@ creation_rules:
   - path_regex: 'docker/purple/.*/sops\.env$'
     age: >-
       age1rkck8xgdpzruefrulr68p86mx3dmkcm2l7eegah625t69qtw7vaqea4hs2
+  - path_regex: 'docker/truenas/.*/sops\.env$'
+    age: >-
+      age100cn6akezmw23neaxkw54sgde9yladg5ttjlc6cf2hd3sl7055mqapkysw
