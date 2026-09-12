@@ -1,0 +1,98 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app talosctl-oidc
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 5.0.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    global:
+      createDefaultServiceAccount: false
+    controllers:
+      talosctl-oidc:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        replicas: 1
+        strategy: Recreate
+        containers:
+          app:
+            image:
+              repository: ghcr.io/qjoly/talosctl-oidc-server
+              tag: 0.0.4@sha256:ff55155e0f0af646239815bc3e015cb22cfaf05472b0a5e58dc8c22b12a60baa
+            command: ["/talosctl-oidc", "serve"]
+            env:
+              TALOSCTL_OIDC_ISSUER_URL: https://id.techtales.io
+              TALOSCTL_OIDC_CLIENT_ID: <CLIENT_ID>
+              TALOSCTL_OIDC_ENDPOINTS: "192.168.100.101,192.168.100.102,192.168.100.103"
+              TALOSCTL_OIDC_CERT_TTL: 60m
+              TALOSCTL_OIDC_ROLES: os:reader
+              TALOSCTL_OIDC_LISTEN: ":8443"
+              TALOSCTL_OIDC_DATA_DIR: /data
+              TALOSCTL_OIDC_CA_CERT: /config/ca.crt
+              TALOSCTL_OIDC_CA_KEY: /config/ca.key
+            ports:
+              - name: https
+                containerPort: &port 8443
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: *port
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+        pod:
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            runAsNonRoot: true
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 65534
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        controller: *app
+        type: LoadBalancer
+        ports:
+          https:
+            port: 8443
+    persistence:
+      config:
+        type: secret
+        name: talosctl-oidc-ca
+        globalMounts:
+          - path: /config
+            readOnly: true
+      data:
+        type: emptyDir
+        globalMounts:
+          - path: /data
