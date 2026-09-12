@@ -121,6 +121,7 @@ repos:
         exclude: |
           (?x)^(
             devenv/.*|
+            docker/.*/compose\.ya?ml|
             kubernetes/main/apps/atlantis-system/.+/helm-release.patch.yaml |
             kubernetes/main/apps/media/recyclarr/app/recyclarr.yaml |
           )$()
