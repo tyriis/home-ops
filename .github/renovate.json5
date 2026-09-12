@@ -43,6 +43,15 @@
       automerge: false,
     },
     {
+      description: "ComfyUI Nvidia: date-suffixed OS+CUDA tags (ubuntu26_cuda13.3-YYYYMMDD)",
+      // Tag layout: <ubuntuNN>_cuda<X.Y>-<YYYYMMDD>, e.g. ubuntu26_cuda13.3-20260906.
+      // compatibility pins the OS+CUDA line so Renovate only bumps the date (and digest),
+      // never silently jumps to a different Ubuntu/CUDA line (which may need a newer driver).
+      matchDatasources: ["docker"],
+      matchPackageNames: ["mmartial/comfyui-nvidia-docker"],
+      versioning: "regex:^(?<compatibility>ubuntu[0-9]+_cuda[0-9.]+)-(?<major>\\d{4})(?<minor>\\d{2})(?<patch>\\d{2})$",
+    },
+    {
       description: "add changelog for installer image (source is siderolabs/talos)",
       matchDepNames: ["ghcr.io/siderolabs/installer"],
       sourceUrl: "https://github.com/siderolabs/talos",
