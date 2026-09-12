@@ -9,3 +9,7 @@
 include:
   - path: ../../deploy/busybox-enc/compose.yaml
     project_directory: .
+
+services:
+  busybox-enc:
+    scale: 0
