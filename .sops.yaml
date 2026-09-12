@@ -21,4 +21,4 @@ creation_rules:
       age1rkck8xgdpzruefrulr68p86mx3dmkcm2l7eegah625t69qtw7vaqea4hs2
   - path_regex: 'docker/truenas/.*/sops\.env$'
     age: >-
-      age100cn6akezmw23neaxkw54sgde9yladg5ttjlc6cf2hd3sl7055mqapkysw
+      age1gd4f4gu474snw3ay8njtvga56uuf4sxwzvuhk5c9h3adlfmx3yps08fhyh
