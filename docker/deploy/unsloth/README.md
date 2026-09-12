@@ -11,8 +11,12 @@ Unsloth — LLM fine-tuning toolkit with Unsloth Studio (web UI + OpenAI/Anthrop
 
 ## Ports
 
-- `8000`: Unsloth Studio UI + API — bound on all interfaces (LAN).
-- `8888`: Jupyter Lab — bound to `127.0.0.1` only.
+- `8000`: Unsloth Studio UI + API — the shared-compose baseline binds it on all interfaces (LAN).
+- `8888`: Jupyter Lab — the shared-compose baseline binds it to `127.0.0.1` only.
+
+The red shim (`docker/red/unsloth/compose.yaml`) resets `ports` to none, so the host publishes no
+ports. Traefik fronts Studio at `unsloth.tyriis.dev` (`:8000`) and Jupyter at `jupyter.tyriis.dev`
+(`:8888`) over the shared `apps` network.
 
 ## Secrets
 

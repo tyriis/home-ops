@@ -40,9 +40,9 @@ services:
           ollama pull "$$m" || echo "pull failed: $$m"
         done
         wait "$$pid"
-    # Loopback-only: LAN access goes through Traefik TLS (ollama.tyriis.dev).
-    ports: !override
-      - "127.0.0.1:11434:11434"
+    # No host ports: Traefik reaches ollama:11434 over the shared `apps` network
+    # (https://ollama.tyriis.dev). `!reset` drops the ports inherited from the include.
+    ports: !reset []
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.ollama.rule=Host(`ollama.tyriis.dev`)"

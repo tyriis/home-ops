@@ -19,12 +19,14 @@ services:
   unsloth:
     networks:
       - apps
-    # Loopback-only: LAN access goes through Traefik TLS (unsloth.tyriis.dev).
-    ports: !override
-      - "127.0.0.1:8000:8000"
-      - "127.0.0.1:8888:8888"
+    # No host ports: Traefik reaches Studio (:8000) and Jupyter (:8888) over the
+    # shared `apps` network. `!reset` drops the ports inherited from the include.
+    ports: !reset []
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.unsloth.rule=Host(`unsloth.tyriis.dev`)"
       - "traefik.http.routers.unsloth.entrypoints=websecure"
       - "traefik.http.services.unsloth.loadbalancer.server.port=8000"
+      - "traefik.http.routers.jupyter.rule=Host(`jupyter.tyriis.dev`)"
+      - "traefik.http.routers.jupyter.entrypoints=websecure"
+      - "traefik.http.services.jupyter.loadbalancer.server.port=8888"
