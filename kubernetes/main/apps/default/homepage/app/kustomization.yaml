@@ -6,6 +6,7 @@ namespace: default
 resources:
   - ./helm-release.yaml
   - ./rbac.yaml
+  - ./external-secret.yaml
 configMapGenerator:
   - name: homepage-config
     files:
