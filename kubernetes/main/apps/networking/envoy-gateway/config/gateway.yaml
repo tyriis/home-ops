@@ -5,7 +5,7 @@ kind: Gateway
 metadata:
   name: envoy
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname lab-gateway.techtales.io
+    external-dns.kubernetes.io/target: &hostname main-gateway.techtales.io
     gatus.home-operations.com/endpoint: |
       group: internal
       ui:
@@ -15,7 +15,7 @@ spec:
   gatewayClassName: envoy
   infrastructure:
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: *hostname
+      external-dns.kubernetes.io/hostname: *hostname
       lbipam.cilium.io/ips: 192.168.100.200
   listeners:
     - name: http

@@ -3,13 +3,13 @@
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
-  name: lab-gateway-cloudflare
+  name: main-gateway-cloudflare
   annotations:
-    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+    external-dns.kubernetes.io/cloudflare-proxied: "true"
     external-dns/cloudflare: "true"
 spec:
   endpoints:
-    - dnsName: lab-gateway.techtales.io
+    - dnsName: main-gateway.techtales.io
       recordType: CNAME
       targets:
         - 1d1865c6-c0dd-4236-8d7d-79722940886f.cfargotunnel.com
@@ -21,7 +21,7 @@ kind: DNSEndpoint
 metadata:
   name: external-cloudflare
   annotations:
-    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+    external-dns.kubernetes.io/cloudflare-proxied: "true"
     external-dns/cloudflare: "true"
 spec:
   endpoints:
@@ -37,7 +37,7 @@ kind: DNSEndpoint
 metadata:
   name: nas-gateway-cloudflare
   annotations:
-    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+    external-dns.kubernetes.io/cloudflare-proxied: "true"
     external-dns/cloudflare: "true"
 spec:
   endpoints:
@@ -53,7 +53,7 @@ kind: DNSEndpoint
 metadata:
   name: utility-gateway-cloudflare
   annotations:
-    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+    external-dns.kubernetes.io/cloudflare-proxied: "true"
     external-dns/cloudflare: "true"
 spec:
   endpoints:
