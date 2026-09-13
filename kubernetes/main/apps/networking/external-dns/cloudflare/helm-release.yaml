@@ -50,7 +50,6 @@ spec:
     policy: sync
     sources:
       - gateway-httproute
-      - crd
     txtOwnerId: main
     txtPrefix: main.
     domainFilters:
