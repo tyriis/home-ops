@@ -5,7 +5,7 @@ kind: Gateway
 metadata:
   name: envoy
   annotations:
-    external-dns.kubernetes.io/target: &hostname lab-gateway.techtales.io
+    external-dns.kubernetes.io/target: &hostname main-gateway.techtales.io
     gatus.home-operations.com/endpoint: |
       group: internal
       ui:
