@@ -33,12 +33,12 @@ data:
           - kimi-k3
           - kimi-k2.7-code
           - minimax-m3
-          - mimo-2.5
-          - mimo-2.5-pro
+          - mimo-v2.5
+          - mimo-v2.5-pro
           - longcat-2.0
           - hy3
           - hy4-preview
-          - gpt 5.6-luna
+          - gpt-5.6-luna
           - grok-4.6
 
     custom_providers:
