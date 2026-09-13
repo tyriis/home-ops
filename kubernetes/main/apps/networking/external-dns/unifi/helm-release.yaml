@@ -59,8 +59,8 @@ spec:
     sources:
       - gateway-httproute
       - crd
-    txtOwnerId: kube-lab
-    txtPrefix: kube-lab.
+    txtOwnerId: main
+    txtPrefix: main.
     domainFilters:
       - techtales.io
       - lan
