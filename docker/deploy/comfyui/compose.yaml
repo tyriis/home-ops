@@ -22,7 +22,7 @@ services:
     #   mmartial/comfyui-nvidia-docker:ubuntu24_cuda12.8-latest
     # The trailing date is the upstream GitHub release. Renovate tracks new dates
     # within the Ubuntu 26.04 + CUDA 13.3 line (see .github/renovate.json5).
-    image: mmartial/comfyui-nvidia-docker:ubuntu26_cuda13.3-20260906@sha256:ef14e1837a078ba04690f6c0f1caaa1ea82f0300383b13d5316a9182c681cb8a
+    image: mmartial/comfyui-nvidia-docker:ubuntu26_cuda13.3-20260913@sha256:98e6e3fa8ae4fd5971380c1b677a86ab61ac1f3bf059edb299d86ed428ebb80d
     container_name: comfyui-nvidia
     restart: unless-stopped
     ports:
