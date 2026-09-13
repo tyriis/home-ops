@@ -5,7 +5,7 @@ kind: DNSEndpoint
 metadata:
   name: lab-gateway-cloudflare
   annotations:
-    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+    external-dns.kubernetes.io/cloudflare-proxied: "true"
     external-dns/cloudflare: "true"
 spec:
   endpoints:
@@ -21,7 +21,7 @@ kind: DNSEndpoint
 metadata:
   name: external-cloudflare
   annotations:
-    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+    external-dns.kubernetes.io/cloudflare-proxied: "true"
     external-dns/cloudflare: "true"
 spec:
   endpoints:
@@ -37,7 +37,7 @@ kind: DNSEndpoint
 metadata:
   name: nas-gateway-cloudflare
   annotations:
-    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+    external-dns.kubernetes.io/cloudflare-proxied: "true"
     external-dns/cloudflare: "true"
 spec:
   endpoints:
@@ -53,7 +53,7 @@ kind: DNSEndpoint
 metadata:
   name: utility-gateway-cloudflare
   annotations:
-    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+    external-dns.kubernetes.io/cloudflare-proxied: "true"
     external-dns/cloudflare: "true"
 spec:
   endpoints:
