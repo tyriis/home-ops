@@ -1,0 +1,32 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/volsync.backube/replicationsource_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: &name forgejo-data
+spec:
+  sourcePVC: *name
+  trigger:
+    schedule: "*/15 * * * *" # every 15 minutes (ADR RPO)
+  restic:
+    copyMethod: Snapshot
+    pruneIntervalDays: 14
+    repository: forgejo-data-volsync-minio
+    volumeSnapshotClassName: local-nvme
+    cacheCapacity: 2Gi
+    cacheStorageClassName: local-nvme
+    cacheAccessModes:
+      - ReadWriteOnce
+    storageClassName: local-nvme
+    accessModes:
+      - ReadWriteOnce
+    capacity: 50Gi
+    moverSecurityContext:
+      runAsUser: 1001
+      runAsGroup: 1001
+      fsGroup: 1001
+    retain:
+      hourly: 12
+      daily: 7
+      weekly: 4
+      monthly: 3

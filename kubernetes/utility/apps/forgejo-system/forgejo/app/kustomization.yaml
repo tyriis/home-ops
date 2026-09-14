@@ -5,6 +5,10 @@ kind: Kustomization
 resources:
   - ./ocirepository.yaml
   - ./external-secret.yaml
+  - ./pvc.yaml
+  - ./replication-destination.yaml
+  - ./replication-source.yaml
   - ./helm-release.yaml
   - ./http-route.yaml
   - ./ssh-tcp-route.yaml
+  - ./dump/cronjob.yaml
