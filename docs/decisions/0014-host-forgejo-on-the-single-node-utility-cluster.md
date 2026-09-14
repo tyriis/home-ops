@@ -62,10 +62,11 @@ Concrete parameters:
   No Rook-Ceph, no Longhorn, no NFS mount of the NAS into the forge pod.
 - **1 app replica. Zero mail** (OIDC-only auth, `DISABLE_REGISTRATION`, `mailer.ENABLED=false`).
   Notifications via native Discord webhooks. No Valkey/Redis needed at 1 replica.
-- **Backup = the real HA strategy**, three one-way legs to MinIO/S3 on the DS218+ at the remote
-  site: barman (DB, WAL, ~sec RPO), VolSync restic of `/data` (≤15 min RPO), nightly forgejo dump
-  (24h RPO, whole-app escape hatch). Append-only/restic-repo-key credentials. **Acceptance gate:
-  one timed restore drill on scratch hardware.**
+- **Backup = the real HA strategy**, three one-way legs to S3 (MinIO at `s3.techtales.io`) backed
+  by the Aostar NAS, with the Synology DS218 as the offsite copy of the buckets: barman (DB, WAL,
+  ~sec RPO), VolSync restic of `/data` (≤15 min RPO), nightly forgejo dump (24h RPO, whole-app
+  escape hatch). Append-only/restic-repo-key credentials. **Acceptance gate: one timed restore
+  drill on scratch hardware.**
 - **CI runners (`act_runner`) on ms01**, separate namespace, quotas, treated as untrusted-exec.
   Pull-based, so forge outages only pause new jobs.
 - **Optional per-repo GitHub push mirrors** — cloud becomes the convenience copy; the forge is
