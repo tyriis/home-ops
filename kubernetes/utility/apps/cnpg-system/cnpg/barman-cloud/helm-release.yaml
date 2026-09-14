@@ -8,14 +8,9 @@ spec:
   interval: 30m
   driftDetection:
     mode: enabled
-  chart:
-    spec:
-      chart: app-template
-      version: 5.1.0
-      sourceRef:
-        kind: HelmRepository
-        name: bjw-s-charts
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: cnpg-barman-cloud
   install:
     remediation:
       retries: -1
