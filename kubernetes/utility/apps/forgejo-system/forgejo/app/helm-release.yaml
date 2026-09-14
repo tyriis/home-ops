@@ -44,7 +44,7 @@ spec:
     gitea:
       admin:
         existingSecret: forgejo-admin-secret
-        passwordMode: initialOnlyRequireReset
+        passwordMode: initialOnlyRequireReset # NOSONAR - chart config enum, not a credential
       oauth:
         - name: pocket-id
           provider: openidConnect
