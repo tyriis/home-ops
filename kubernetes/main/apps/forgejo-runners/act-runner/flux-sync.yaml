@@ -12,7 +12,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/github/forgejo-runners/act-runner/app
+  path: ./kubernetes/main/apps/forgejo-runners/act-runner/app
   prune: true
   sourceRef:
     kind: GitRepository
