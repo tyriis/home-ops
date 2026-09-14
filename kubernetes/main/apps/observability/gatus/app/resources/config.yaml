@@ -36,7 +36,7 @@ endpoints:
     conditions:
       - "[STATUS] == 404"
   - name: forgejo-health
-    group: external
+    group: infrastructure
     url: https://git.utility.techtales.io/api/healthz
     interval: 5m
     client:
