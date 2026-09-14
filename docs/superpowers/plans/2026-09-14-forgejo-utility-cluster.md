@@ -79,10 +79,9 @@ TCP listener (name `ssh`, port 22, protocol TCP, `allowedRoutes: {namespaces: {f
 `forgejo/app/{kustomization.yaml,helm-repository.yaml,helm-release.yaml,external-secret.yaml,
 http-route.yaml,ssh-tcp-route.yaml}`.
 
-- **Chart:** `code.forgejo.org/forgejo-helm/forgejo` (HelmRepository, interval 30m). Pin the latest
-  chart version mechanically at impl time:
-  `curl -s https://code.forgejo.org/forgejo-helm/index.yaml | yq '.entries.forgejo | .[0].version'`
-  and pin image `code.forgejo.org/forgejo/forgejo:16.0.4-rootless` (community-dominant tag).
+- **Chart:** `oci://code.forgejo.org/forgejo-helm/forgejo` tag **17.1.6** via OCIRepository
+  (joryirving pattern: `ocirepository.yaml` + chartRef) — pinned 2026-09-14. Image:
+  `code.forgejo.org/forgejo/forgejo:16.0.4-rootless` (community-dominant tag).
 - **Values:** copy structure from https://raw.githubusercontent.com/bjw-s-labs/home-ops/main/k
   ubernetes/apps/dev/forgejo/app/helmrelease.yaml (adapt, don't adopt their infra):
   disable `postgresql-ha/postgresql/memcached/redis-cluster`; NO cache/queue/session blocks
@@ -135,9 +134,8 @@ act-runner/flux-sync.yaml, act-runner/app/{kustomization.yaml,helm-release.yaml,
 external-secret.yaml}}` — main cluster folder per §9 wiring.
 
 - app-template 5.1.0 Deployment, ns `forgejo-runners`: container `runner`
-  (`code.forgejo.org/forgejo/runner:6.3.1`? pin via
-  `curl -s https://gitlab.com/api/v4/projects/forgejo%2Frunner/releases/permalink/latest` at impl —
-  fall back to `6.2.0`) command `act_runner daemon --config /etc/act-runner/config.yaml`;
+  (`code.forgejo.org/forgejo/runner:v13.1.0` — latest release, verified 2026-09-14)
+  command `act_runner daemon --config /etc/act-runner/config.yaml`;
   container `docker-daemon` (`docker:28-dind`), both **privileged**, shared emptyDir `/run`
   (mountPropagation HostToContainer on runner). NOTE privileged = docker runner class per ADR —
   isolated ns, own SA (default), no other-ns secrets.
