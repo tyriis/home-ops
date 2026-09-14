@@ -7,7 +7,6 @@ resources:
   - ./external-secret.yaml
   - ./helm-release.yaml
   - ./http-route.yaml
-  - ./ssh-tcp-route.yaml
   - ./dump/helm-release.yaml
 patches:
   # 15-minute RPO per spec (component default is every 2 hours). Kind-only

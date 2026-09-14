@@ -33,9 +33,3 @@ spec:
             name: techtales-io-tls
           - kind: Secret
             name: utility-techtales-io-tls
-    - name: ssh
-      protocol: TCP
-      port: 22
-      allowedRoutes:
-        namespaces:
-          from: All

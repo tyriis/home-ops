@@ -85,14 +85,10 @@ spec:
         repository:
           DEFAULT_REPO_UNITS: repo.code,repo.releases,repo.issues,repo.pulls,repo.actions
         server:
-          DISABLE_SSH: false
+          DISABLE_SSH: true
           LANDING_PAGE: homepage
           OFFLINE_MODE: true
           ROOT_URL: https://git.utility.techtales.io
-          SSH_DOMAIN: git.utility.techtales.io
-          SSH_LISTEN_PORT: 2222
-          SSH_PORT: 22
-          START_SSH_SERVER: true
         service:
           ALLOW_ONLY_EXTERNAL_REGISTRATION: true
           DISABLE_REGISTRATION: true
@@ -104,10 +100,7 @@ spec:
     service:
       http:
         port: 80
-      ssh:
-        type: ClusterIP
-        port: 22
-    ## Routes are plain manifests (http-route.yaml / ssh-tcp-route.yaml).
+    ## Routes are plain manifests (http-route.yaml).
     ingress:
       enabled: false
     httpRoute:
