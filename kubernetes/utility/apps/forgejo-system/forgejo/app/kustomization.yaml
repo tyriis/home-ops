@@ -8,7 +8,7 @@ resources:
   - ./helm-release.yaml
   - ./http-route.yaml
   - ./ssh-tcp-route.yaml
-  - ./dump/cronjob.yaml
+  - ./dump/helm-release.yaml
 patches:
   # 15-minute RPO per spec (component default is every 2 hours). Kind-only
   # target: names are still ${APP}-placeholders at kustomize time (Flux
