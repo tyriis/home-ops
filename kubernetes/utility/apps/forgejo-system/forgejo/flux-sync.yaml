@@ -5,10 +5,12 @@ kind: Kustomization
 metadata:
   name: &app forgejo
 spec:
-  targetNamespace: forgejo-system
+  targetNamespace: &namespace forgejo-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../../components/volsync
   path: ./kubernetes/utility/apps/forgejo-system/forgejo/app
   prune: true
   sourceRef:
@@ -26,6 +28,16 @@ spec:
       namespace: networking
     - name: external-secrets-stores
       namespace: secops
+    - name: volsync
+      namespace: backup-system
   postBuild:
     substitute:
       APP: *app
+      NAMESPACE: *namespace
+      VOLSYNC_SECRETS_PATH: infra/kubernetes/utility/volsync
+      VOLSYNC_CAPACITY: 50Gi
+      VOLSYNC_STORAGECLASS: local-nvme
+      VOLSYNC_SNAPSHOTCLASS: local-nvme
+      VOLSYNC_CACHE_SNAPSHOTCLASS: local-nvme
+      VOLSYNC_PUID: "1001"
+      VOLSYNC_PGID: "1001"
