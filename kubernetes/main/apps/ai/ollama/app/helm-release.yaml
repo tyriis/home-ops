@@ -36,7 +36,7 @@ spec:
           app:
             image:
               repository: ollama/ollama
-              tag: 0.34.0@sha256:684d8674b4315fa18f4f0e973a118ec2652ed96f67563277839985175858e0ba
+              tag: 0.34.1@sha256:0c0a83210471fb50226bcdc2d6611d20ab13ae87e024cc304c94a6a5765c5e65
             securityContext:
               privileged: true # Needed for iGPU device access
             env:
