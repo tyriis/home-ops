@@ -78,10 +78,10 @@ Port of the proven main pattern (`kubernetes/main/apps/cnpg-system/...` and
   `infra/kubernetes/utility/cnpg-system/forgejo-db-s3`.
 
 App connectivity: Forgejo uses the direct service `forgejo-db-rw.cnpg-system.svc:5432` (no pooler —
-1 replica, 2 users). DB role bootstrap uses the **init-db postRenderer** swap to
-`ghcr.io/home-operations/postgres-init` (drag0n141 pattern) with an app Secret
-`forgejo-db-app` (USER/PASSWORD/DATABASE/URI) sourced from ExternalSecret
-`infra/kubernetes/utility/forgejo-system/forgejo/db`.
+1 replica, 2 users). DB bootstrap is CNPG-native: `spec.bootstrap.initdb` (database `forgejo`,
+owner `forgejo`) reads the conventional `<cluster>-app` secret, provisioned as ExternalSecret
+`forgejo-db-app` from `infra/kubernetes/utility/forgejo-system/forgejo/db`. No pooler, no
+postgres-init job, no postRenderers.
 
 ## 5. Forgejo app
 
