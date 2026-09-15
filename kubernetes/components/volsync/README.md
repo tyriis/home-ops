@@ -49,17 +49,18 @@ You can customize the backup behavior using environment variables:
 
 ## Configuration Variables
 
-| Variable                      | Default              | Description                                |
-| ----------------------------- | -------------------- | ------------------------------------------ |
-| `APP`                         | **Required**         | Application name used for naming resources |
-| `VOLSYNC_SUFFIX`              | `data`               | Suffix for generated resource names        |
-| `VOLSYNC_CAPACITY`            | `5Gi`                | Size of the backup PVC                     |
-| `VOLSYNC_STORAGECLASS`        | `ceph-block`         | Storage class for backup volumes           |
-| `VOLSYNC_SNAPSHOTCLASS`       | `csi-ceph-blockpool` | Volume snapshot class                      |
-| `VOLSYNC_CACHE_CAPACITY`      | `2Gi`                | Cache size for backup operations           |
-| `VOLSYNC_CACHE_SNAPSHOTCLASS` | `ceph-block`         | Storage class for cache volumes            |
-| `VOLSYNC_PUID`                | `1000`               | User ID for backup processes               |
-| `VOLSYNC_PGID`                | `1000`               | Group ID for backup processes              |
+| Variable                      | Default                         | Description                                                                                             |
+| ----------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `APP`                         | **Required**                    | Application name used for naming resources                                                              |
+| `VOLSYNC_SUFFIX`              | `data`                          | Suffix for generated resource names                                                                     |
+| `VOLSYNC_CAPACITY`            | `5Gi`                           | Size of the backup PVC                                                                                  |
+| `VOLSYNC_STORAGECLASS`        | `ceph-block`                    | Storage class for backup volumes                                                                        |
+| `VOLSYNC_SNAPSHOTCLASS`       | `csi-ceph-blockpool`            | Volume snapshot class                                                                                   |
+| `VOLSYNC_CACHE_CAPACITY`      | `2Gi`                           | Cache size for backup operations                                                                        |
+| `VOLSYNC_CACHE_SNAPSHOTCLASS` | `ceph-block`                    | Storage class for cache volumes                                                                         |
+| `VOLSYNC_PUID`                | `1000`                          | User ID for backup processes                                                                            |
+| `VOLSYNC_PGID`                | `1000`                          | Group ID for backup processes                                                                           |
+| `VOLSYNC_SECRETS_PATH`        | `infra/kubernetes/main/volsync` | Prefix of the OpenBao secret path (set e.g. to `infra/kubernetes/utility/volsync` off the main cluster) |
 
 ## OpenBao Secret Structure
 
@@ -70,6 +71,9 @@ The component expects secrets to be stored in OpenBao with the following structu
 ```text
 infra/kubernetes/main/volsync/${APP}-${VOLSYNC_SUFFIX}
 ```
+
+The path prefix is configurable via `VOLSYNC_SECRETS_PATH` for consumers outside
+the main cluster.
 
 ### Required Secret Keys
 
