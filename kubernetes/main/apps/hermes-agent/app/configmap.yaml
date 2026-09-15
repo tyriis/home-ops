@@ -16,30 +16,6 @@ data:
         api_mode: chat_completions
         key_env: TECHTALES_API_KEY
         default_model: qwen3.8-flash-next
-      # Picker allowlist: overrides the stale built-in opencode-go catalog
-      # in nesquena/hermes-webui (skips live /v1/models probe, see #5311).
-      # IDs verified against https://opencode.ai/zen/go/v1/models 2026-09-13.
-      opencode-go:
-        base_url: https://opencode.ai/zen/go/v1
-        api_mode: chat_completions
-        key_env: OPENCODE_GO_API_KEY
-        models:
-          - deepseek-v4.1-flash
-          - deepseek-v4-flash-vision-exp
-          - glm-5.3-flash
-          - glm-5.3
-          - qwen3.8-flash
-          - qwen3.8-max
-          - kimi-k3
-          - kimi-k2.7-code
-          - minimax-m3
-          - mimo-v2.5
-          - mimo-v2.5-pro
-          - longcat-2.0
-          - hy3
-          - hy4-preview
-          - gpt-5.6-luna
-          - grok-4.6
 
     custom_providers:
     - name: techtales
@@ -54,15 +30,7 @@ data:
       - deepseek-v4-flash
       - deepseek-v4-flash-vision-exp
       key_env: TECHTALES_API_KEY
-    fallback_providers:
-    - provider: opencode-go
-      model: glm-5.3-flash
-      base_url: https://opencode.ai/zen/go/v1
-      api_mode: chat_completions
-    - provider: opencode-zen
-      model: big-pickle
-      base_url: https://opencode.ai/zen/v1
-      api_mode: chat_completions
+    fallback_providers: []
     credential_pool_strategies: {}
     toolsets:
     - hermes-cli
@@ -253,14 +221,14 @@ data:
         timeout: 30
         extra_body: {}
       approval:
-        provider: auto
+        provider: techtales
         model: ''
         base_url: ''
         api_key: ''
         timeout: 30
         extra_body: {}
       mcp:
-        provider: auto
+        provider: techtales
         model: ''
         base_url: ''
         api_key: ''
@@ -274,7 +242,7 @@ data:
         timeout: 30
         extra_body: {}
       triage_specifier:
-        provider: auto
+        provider: techtales
         model: ''
         base_url: ''
         api_key: ''
@@ -288,7 +256,7 @@ data:
         timeout: 180
         extra_body: {}
       profile_describer:
-        provider: auto
+        provider: techtales
         model: ''
         base_url: ''
         api_key: ''
@@ -302,7 +270,7 @@ data:
         timeout: 600
         extra_body: {}
       session_search:
-        provider: auto
+        provider: techtales
         model: ''
         base_url: ''
         api_key: ''
