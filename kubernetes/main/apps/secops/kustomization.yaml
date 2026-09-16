@@ -9,3 +9,4 @@ resources:
   - ./namespace.yaml
   - ./rbac.yaml
   - ./external-secrets/flux-sync.yaml
+  - ./talosctl-oidc/flux-sync.yaml
