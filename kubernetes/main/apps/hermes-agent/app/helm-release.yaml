@@ -140,6 +140,7 @@ spec:
               HERMES_WEBUI_PORT: "8787"
               HERMES_WEBUI_CHAT_BACKEND: gateway
               HERMES_WEBUI_GATEWAY_BASE_URL: http://localhost:8642
+              HERMES_WEBUI_GATEWAY_USE_RUNS_API: "true"
               HERMES_WEBUI_AGENT_DIR: /tmp/agent-src
               HERMES_WEBUI_BOT_NAME: "${AGENT_NAME}"
               HERMES_WEBUI_PASSKEY: "1"
