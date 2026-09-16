@@ -72,14 +72,44 @@ Manual file surgery under `/opt/data` can now be done from either container.
 ## agent image upgrades
 
 The WebUI's virtualenv (`/opt/data/webui-venv`) is rebuilt whenever the agent source or the WebUI requirements
-change: `init-agent-src` stamps a content hash of the agent source into `/tmp/agent-src/.source-rev`, and the WebUI
-compares that plus a hash of `/apptoo/requirements.txt` against `$VENV/.build-rev`. Previously the venv was built
-only when the directory was missing, so a `ghcr.io/tyriis/hermes-agent` bump never reached the WebUI's Python
-environment.
+change: `init-agent-src` stamps the agent image's build time (`stat -c %Y /opt/hermes`) into
+`/tmp/agent-src/.source-rev`, and the WebUI compares that plus the mtime of `/apptoo/requirements.txt` against
+`$VENV/.build-rev`. Both files are stamped at image build time and are not copied at runtime, so they are stable
+fingerprints. `requirements.txt` is used rather than `README.md` or `uv.lock` on purpose: it changes only when the
+venv actually needs rebuilding, so unrelated image rebuilds don't trigger a needless multi-minute reinstall.
+Previously the venv was built only when the directory was missing, so a `ghcr.io/tyriis/hermes-agent` bump never
+reached the WebUI's Python environment.
 
 Trade-off: a rebuild deletes and recreates the venv, so a failed `uv pip install` (registry or network trouble)
 CrashLoops the WebUI instead of booting with a stale-but-working venv. That matches first-boot behaviour, and the
 image tags are pinned by digest, so it should be rare.
+
+## editing this manifest: keep shell variables unbraced
+
+The `hermes-agent` HelmRelease contains shell scripts (`init-agent-src`, the `webui` args), and it is also subject
+to Flux `postBuild` variable substitution. **Write shell variables unbraced — `$VAR`, never `${VAR}`.** The
+substitution pass rewrites the braced form before the shell ever sees it, so `${VAR}` is either blanked (silent
+corruption) or, with strict substitutions enabled — the default since kustomize-controller v1.9 — fails the entire
+HelmRelease:
+
+```text
+post build failed for 'HelmRelease...': envsubst error: variable substitution failed: variable not set (strict mode): "REV"
+```
+
+Only the braced form is affected: `$VAR`, `$(command)`, `$1` and `$@` are all left alone. The only `${...}` that
+should appear in this file are the real placeholders (`${APP}`, `${AGENT_NAME}`). Note that `$$` collapses to `$`,
+so a shell PID must be written `$$$$` if it is ever needed.
+
+Verify any edit before merging — this reproduces the cluster's build locally:
+
+```shell
+flux build kustomization hermes-agent-tyriis \
+  --path kubernetes/main/apps/hermes-agent/app \
+  --kustomization-file kubernetes/main/apps/hermes-agent/flux-sync.yaml \
+  --strict-substitute --dry-run
+```
+
+`--strict-substitute` is required: without it the CLI substitutes empty strings and the corruption is invisible.
 
 ## approvals
 
