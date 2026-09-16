@@ -34,12 +34,7 @@ Wipe in order (shell into the relevant container):
 1. Remove the credential pool entry on the gateway side: `hermes auth list` then `hermes auth remove <provider> <index>` (index required, from the list). This also suppresses env-var re-seeding for that provider.
 2. Frontend cache: `rm /opt/data/webui/models_cache.json` (webui container).
 3. Gateway model-discovery cache: `rm /opt/data/provider_models_cache.json`.
-4. Bounce the pod — a running process may hold a stale cache in memory and rewrite deleted files:
-
-   ```shell
-   kubectl rollout restart deployment/hermes-agent-tyriis -n hermes-agent
-   ```
-
+4. Bounce the pod — a running process may hold a stale cache in memory and rewrite deleted files: `kubectl rollout restart deployment/hermes-agent-tyriis -n hermes-agent`
 5. Hard-reload the picker page; caches rebuild lazily on next picker request.
 
 Caches are safe to delete: they regenerate. If a deleted cache reappears with old content, an uncleaned source is still feeding it (shadow `auth.json` is the usual suspect).
