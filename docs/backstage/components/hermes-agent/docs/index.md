@@ -93,6 +93,10 @@ The WebUI `startup` probe is deliberately generous (`periodSeconds: 10`, `failur
 the rebuild runs in the foreground before the server starts, and deletes the venv first, a probe timeout would kill
 the build halfway and loop on it rather than recovering.
 
+The WebUI memory limit is `320Mi`, raised from `256Mi` after the rebuild was OOMKilled at 256 Mi (exit 137, ~53 s
+in). A completed rebuild has been observed to fit within 256 Mi, so this is headroom for the install spike rather
+than a new steady-state requirement — if OOMKills recur, raise it further rather than suspecting the rebuild.
+
 ## editing this manifest: keep shell variables unbraced
 
 The `hermes-agent` HelmRelease contains shell scripts (`init-agent-src`, the `webui` args), and it is also subject
