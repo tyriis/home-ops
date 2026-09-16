@@ -48,6 +48,27 @@ spec:
                 set -euo pipefail
                 cp /tmp/config.yaml /opt/data/config.yaml
                 chown 10000:10000 /opt/data/config.yaml
+          init-fix-ownership:
+            image:
+              repository: docker.io/library/alpine
+              tag: 3.24@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b
+            command:
+              - sh
+              - -c
+              - |
+                set -euo pipefail
+                # Migration: webui ran as root until now and left root-owned files
+                # in the shared PVC. The gateway has always run as uid 10000, so
+                # every root-owned entry under /opt/data was written by webui.
+                # Only root-owned entries are selected (never a blind recursive
+                # chown of the whole PVC), lost+found is left untouched, and
+                # 10000-owned gateway data is not traversed.
+                find /opt/data -mindepth 1 -maxdepth 1 -user 0 ! -name lost+found \
+                  -print -exec chown -R 10000:10000 {} \;
+                find /opt/data -mindepth 2 -maxdepth 2 -user 0 \
+                  ! -path '/opt/data/lost+found/*' \
+                  -print -exec chown -R 10000:10000 {} \;
+                echo "ownership fix complete"
           init-agent-src:
             image:
               repository: ghcr.io/tyriis/hermes-agent
@@ -185,11 +206,12 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              runAsUser: 10000
+              runAsGroup: 10000
               capabilities:
                 drop:
                   - ALL
-                add:
-                  - DAC_OVERRIDE
             resources:
               requests:
                 cpu: 10m
@@ -237,6 +259,8 @@ spec:
             app:
               - path: *home
             init-config:
+              - path: *home
+            init-fix-ownership:
               - path: *home
             webui:
               - path: *home
