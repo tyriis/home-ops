@@ -222,14 +222,14 @@ data:
         extra_body: {}
       approval:
         provider: techtales
-        model: ''
+        model: qwen3.8-flash-next
         base_url: ''
         api_key: ''
         timeout: 30
         extra_body: {}
       mcp:
         provider: techtales
-        model: ''
+        model: qwen3.8-flash-next
         base_url: ''
         api_key: ''
         timeout: 30
@@ -243,7 +243,7 @@ data:
         extra_body: {}
       triage_specifier:
         provider: techtales
-        model: ''
+        model: qwen3.8-flash-next
         base_url: ''
         api_key: ''
         timeout: 120
@@ -257,7 +257,7 @@ data:
         extra_body: {}
       profile_describer:
         provider: techtales
-        model: ''
+        model: qwen3.8-flash-next
         base_url: ''
         api_key: ''
         timeout: 60
@@ -271,7 +271,7 @@ data:
         extra_body: {}
       session_search:
         provider: techtales
-        model: ''
+        model: qwen3.8-flash-next
         base_url: ''
         api_key: ''
         timeout: 30
