@@ -35,10 +35,13 @@ All model inference in hermes flows exclusively through the self-hosted
 
 - NetworkPolicy changes: the broad internet-egress rule stays as-is
   ("models only" scope decision).
-- Non-model external services stay unchanged:
-  - TTS via `edge` (Microsoft online voices)
-  - Image generation via `fal-ai` (FAL_KEY stays)
-  - `x_search` (grok model reference)
+- Non-model external services stay unchanged. Ordered by privacy impact:
+  - **TTS via `edge` — highest-priority follow-up.** Assistant response
+    text is sent to Microsoft's online voices, so generated content still
+    leaves the house after this change.
+  - Image generation via `fal-ai` (FAL_KEY stays; prompts only)
+  - `x_search` (grok model reference; no `XAI_API_KEY` in the Secret, so
+    currently inert)
   - Model catalog fetch from `hermes-agent.nousresearch.com`
   - firecrawl web search/extract (already in-cluster; scraping the web is
     its function)
@@ -59,9 +62,10 @@ Config-only, GitOps-first. Two files change in
   `opencode-go` and `opencode-zen` entries. This is the core privacy fix.
 - **Pin auxiliary `provider: auto` → `provider: techtales`** for:
   `approval`, `mcp`, `triage_specifier`, `profile_describer`,
-  `session_search`. Their `model:`/`base_url:`/`api_key:` fields stay empty
-  (inherit provider default), matching the other auxiliary entries that
-  already pin `techtales`.
+  `session_search`. Their `model:` is set explicitly to
+  `qwen3.8-flash-next` (matching the other auxiliary entries that already
+  pin `techtales`), so resolution never depends on provider-default
+  inheritance; `base_url:`/`api_key:` stay empty.
 
 Note: `config.yaml` is rendered from the ConfigMap and re-copied to
 `/opt/data/config.yaml` by the `init-config` initContainer on every pod
@@ -97,9 +101,15 @@ edits.
   picker shows only the `techtales` model list.
 - On the bifrost/new-api gateway: the chat request appears in gateway
   logs for `qwen3.8-flash-next`.
-- Privacy evidence from inside the app pod: no DNS resolution/connections
-  to `opencode.ai` (e.g., resolve attempt fails via config absence; no
-  gateway-side hits on opencode).
+- Privacy evidence: no outbound *connections* to `opencode.ai` — check the
+  gateway/new-api logs plus an egress observation for the pod. DNS is not a
+  valid signal: the NetworkPolicy allows `0.0.0.0/0` and kube-dns, so
+  `opencode.ai` still resolves normally.
+- Secret check: `kubectl -n hermes-agent get secret <app>-secret -o
+  jsonpath='{.data}'` lists no `OPENCODE_*` keys. This holds because ESO
+  `target.template.mergePolicy` defaults to `Replace` — the template's key
+  set is the Secret's key set, so unlisted `dataFrom.extract` keys are
+  dropped.
 - Negative check: force a primary-provider failure (if practical) — no
   request should land on any non-techtales endpoint, since
   `fallback_providers` is now empty.
