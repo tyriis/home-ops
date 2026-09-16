@@ -80,6 +80,11 @@ spec:
                 set -euo pipefail
                 cp -r /opt/hermes/. /tmp/agent-src/
                 chmod -R 755 /tmp/agent-src
+                # The WebUI runs as uid 10000 and setuptools writes
+                # hermes_agent.egg-info into the staged tree while building the
+                # wheel, so the copy has to be writable by that uid. This is only
+                # an ephemeral emptyDir.
+                chown -R 10000:10000 /tmp/agent-src
                 # Build-time stamp of the agent source, so the WebUI can tell when
                 # the agent image changed. The emptyDir is repopulated on every
                 # start, so this is derived from the image, not from the copy.
@@ -218,8 +223,12 @@ spec:
                     path: /health
                     port: 8787
                   initialDelaySeconds: 10
-                  periodSeconds: 5
-                  failureThreshold: 30
+                  # The first start after an agent or WebUI image change rebuilds the
+                  # virtualenv (venv create plus a full dependency install), which
+                  # takes minutes. Keep a generous window so the kubelet cannot kill
+                  # the build halfway and loop on it.
+                  periodSeconds: 10
+                  failureThreshold: 60
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true

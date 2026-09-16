@@ -84,6 +84,15 @@ Trade-off: a rebuild deletes and recreates the venv, so a failed `uv pip install
 CrashLoops the WebUI instead of booting with a stale-but-working venv. That matches first-boot behaviour, and the
 image tags are pinned by digest, so it should be rare.
 
+The staged agent source must be **writable by uid 10000**: `setuptools` writes `hermes_agent.egg-info` into the
+source tree while building the wheel, so `init-agent-src` ends with `chown -R 10000:10000 /tmp/agent-src`. Without
+that the build dies with `error: Cannot update time stamp of directory 'hermes_agent.egg-info'` and the WebUI
+CrashLoops. Upstream hits the same trap and stages into a writable `/app` for the same reason.
+
+The WebUI `startup` probe is deliberately generous (`periodSeconds: 10`, `failureThreshold: 60`, ~10 min). Because
+the rebuild runs in the foreground before the server starts, and deletes the venv first, a probe timeout would kill
+the build halfway and loop on it rather than recovering.
+
 ## editing this manifest: keep shell variables unbraced
 
 The `hermes-agent` HelmRelease contains shell scripts (`init-agent-src`, the `webui` args), and it is also subject
