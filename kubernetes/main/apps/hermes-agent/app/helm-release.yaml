@@ -80,6 +80,11 @@ spec:
                 set -euo pipefail
                 cp -r /opt/hermes/. /tmp/agent-src/
                 chmod -R 755 /tmp/agent-src
+                # Content stamp of the agent source, so the WebUI can tell when the
+                # agent image changed. The emptyDir is repopulated on every start;
+                # this file is written after hashing so it is never self-included.
+                rev="$(find /tmp/agent-src -type f -exec sha256sum {} + | sort | sha256sum | cut -d' ' -f1)" || rev=unknown
+                printf '%s\n' "$rev" > /tmp/agent-src/.source-rev
         containers:
           app:
             command: ["hermes"]
@@ -153,12 +158,22 @@ spec:
             args:
               - |-
                 set -e
-                if [ ! -d /opt/data/webui-venv ]; then
-                  uv venv /opt/data/webui-venv
-                  uv pip install --python /opt/data/webui-venv/bin/python --no-cache -r /apptoo/requirements.txt
-                  uv pip install --python /opt/data/webui-venv/bin/python --no-cache /tmp/agent-src
+                # Rebuild the virtualenv when the agent source or the WebUI
+                # requirements change. Keying only on the venv's existence meant an
+                # agent image bump never reached the WebUI's Python environment.
+                VENV=/opt/data/webui-venv
+                REV="$(cat /tmp/agent-src/.source-rev 2>/dev/null || echo unknown)"
+                REQ_REV="$(sha256sum /apptoo/requirements.txt 2>/dev/null | cut -d' ' -f1 || true)"
+                WANT="${REV}:${REQ_REV}"
+                if [ ! -x "$VENV/bin/python3" ] || [ "$(cat "$VENV/.build-rev" 2>/dev/null)" != "$WANT" ]; then
+                  echo "building webui venv (${WANT})"
+                  rm -rf "$VENV"
+                  uv venv "$VENV"
+                  uv pip install --python "$VENV/bin/python" --no-cache -r /apptoo/requirements.txt
+                  uv pip install --python "$VENV/bin/python" --no-cache /tmp/agent-src
+                  printf '%s\n' "$WANT" > "$VENV/.build-rev"
                 fi
-                exec /opt/data/webui-venv/bin/python3 /apptoo/server.py
+                exec "$VENV/bin/python3" /apptoo/server.py
             ports:
               - name: webui
                 containerPort: 8787
