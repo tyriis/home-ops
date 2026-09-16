@@ -130,7 +130,14 @@ spec:
               tag: 0.52.303@sha256:bd59de1f7375611845cb730a0f9b16c51c83337ae951e6aafea32b5277e3394f
             command: ["/bin/sh", "-c"]
             args:
-              - test -d /opt/data/webui-venv || uv venv /opt/data/webui-venv && uv pip install --python /opt/data/webui-venv/bin/python --no-cache -r /apptoo/requirements.txt && uv pip install --python /opt/data/webui-venv/bin/python --no-cache /tmp/agent-src && /opt/data/webui-venv/bin/python3 /apptoo/server.py
+              - |-
+                set -e
+                if [ ! -d /opt/data/webui-venv ]; then
+                  uv venv /opt/data/webui-venv
+                  uv pip install --python /opt/data/webui-venv/bin/python --no-cache -r /apptoo/requirements.txt
+                  uv pip install --python /opt/data/webui-venv/bin/python --no-cache /tmp/agent-src
+                fi
+                exec /opt/data/webui-venv/bin/python3 /apptoo/server.py
             ports:
               - name: webui
                 containerPort: 8787
