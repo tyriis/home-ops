@@ -80,11 +80,10 @@ spec:
                 set -euo pipefail
                 cp -r /opt/hermes/. /tmp/agent-src/
                 chmod -R 755 /tmp/agent-src
-                # Content stamp of the agent source, so the WebUI can tell when the
-                # agent image changed. The emptyDir is repopulated on every start;
-                # this file is written after hashing so it is never self-included.
-                rev="$(find /tmp/agent-src -type f -exec sha256sum {} + | sort | sha256sum | cut -d' ' -f1)" || rev=unknown
-                printf '%s\n' "$rev" > /tmp/agent-src/.source-rev
+                # Build-time stamp of the agent source, so the WebUI can tell when
+                # the agent image changed. The emptyDir is repopulated on every
+                # start, so this is derived from the image, not from the copy.
+                printf '%s\n' "$(stat -c %Y /opt/hermes 2>/dev/null || echo unknown)" > /tmp/agent-src/.source-rev
         containers:
           app:
             command: ["hermes"]
@@ -161,12 +160,15 @@ spec:
                 # Rebuild the virtualenv when the agent source or the WebUI
                 # requirements change. Keying only on the venv's existence meant an
                 # agent image bump never reached the WebUI's Python environment.
+                # Keep shell variables UNBRACED here: the braced form is consumed by
+                # the Flux postBuild substitution pass, which either blanks it or
+                # fails the whole HelmRelease in strict mode.
                 VENV=/opt/data/webui-venv
                 REV="$(cat /tmp/agent-src/.source-rev 2>/dev/null || echo unknown)"
-                REQ_REV="$(sha256sum /apptoo/requirements.txt 2>/dev/null | cut -d' ' -f1 || true)"
-                WANT="${REV}:${REQ_REV}"
+                REQ_REV="$(stat -c %Y /apptoo/requirements.txt 2>/dev/null || echo 0)"
+                WANT="$REV:$REQ_REV"
                 if [ ! -x "$VENV/bin/python3" ] || [ "$(cat "$VENV/.build-rev" 2>/dev/null)" != "$WANT" ]; then
-                  echo "building webui venv (${WANT})"
+                  echo "building webui venv ($WANT)"
                   rm -rf "$VENV"
                   uv venv "$VENV"
                   uv pip install --python "$VENV/bin/python" --no-cache -r /apptoo/requirements.txt
