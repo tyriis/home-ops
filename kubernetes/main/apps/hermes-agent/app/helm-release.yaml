@@ -155,6 +155,7 @@ spec:
               HERMES_NIX_BUILD: "1" # TODO: https://github.com/nesquena/hermes-webui/issues/6441
               HOME: *home
               HERMES_CONFIG_PATH: /opt/data/config.yaml
+              HERMES_HOME: /opt/data
             envFrom:
               - secretRef:
                   name: ${APP}-secret
