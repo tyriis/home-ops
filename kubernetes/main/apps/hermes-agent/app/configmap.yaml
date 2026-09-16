@@ -24,11 +24,6 @@ data:
       model: qwen3.8-flash-next
       models:
       - qwen3.8-flash-next
-      - gemma3:1b
-      - gemma4:e2b
-      - unsloth/gemma-4-E2B-it-GGUF
-      - deepseek-v4-flash
-      - deepseek-v4-flash-vision-exp
       key_env: TECHTALES_API_KEY
     fallback_providers: []
     credential_pool_strategies: {}
@@ -529,10 +524,13 @@ data:
       max_size_mb: 5
       backup_count: 3
     model_catalog:
-      enabled: true
+      enabled: false
       url: https://hermes-agent.nousresearch.com/docs/api/model-catalog.json
       ttl_hours: 24
       providers: {}
+      excluded_providers:
+        - openrouter
+        - opencode-free
     network:
       force_ipv4: false
     gateway:
