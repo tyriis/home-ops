@@ -22,7 +22,7 @@ services:
       EDGE_AGENT: "true"
       EDGE_TRANSPORT: ${EDGE_TRANSPORT:-poll}
       MANAGER_API_URL: ${MANAGER_API_URL:?set MANAGER_API_URL in the stack .env}
-    image: ghcr.io/getarcaneapp/agent:v2.11.1@sha256:16790fc106293271f6d021bc0c1ec0f2181118b1246d1959b9c3d6c419722627
+    image: ghcr.io/getarcaneapp/agent:v2.12.0@sha256:2c33ba31ebc7bbc063ebe8aafa462c4da61684f6a75493654c33d05d529c49ab
     restart: unless-stopped
     security_opt:
       - no-new-privileges=true
