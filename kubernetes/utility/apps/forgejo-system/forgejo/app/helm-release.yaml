@@ -1,0 +1,109 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app forgejo
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: *app
+  driftDetection:
+    mode: enabled
+  interval: 30m
+  timeout: 15m
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  # https://code.forgejo.org/forgejo-helm/forgejo
+  # NOTE: chart 17.x ships no bundled postgresql/redis/memcached subcharts —
+  # nothing to disable here (verified against Chart.yaml of 17.1.6).
+  values:
+    image:
+      registry: code.forgejo.org
+      repository: forgejo/forgejo
+      tag: 16.0.4-rootless
+      rootless: true
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        memory: 1Gi
+    ## PVC lifecycle is owned by VolSync (pvc.yaml), not the chart.
+    persistence:
+      enabled: true
+      create: false
+      claimName: forgejo-data
+    gitea:
+      admin:
+        existingSecret: forgejo-admin-secret
+        passwordMode: initialOnlyRequireReset # NOSONAR - chart config enum, not a credential
+      oauth:
+        - name: pocket-id
+          provider: openidConnect
+          autoDiscoverUrl: https://id.techtales.io/
+          existingSecret: forgejo-oidc
+          groupClaimName: groups
+          adminGroup: forgejo_admins
+          scopes: openid profile email groups
+      ## USER/PASSWD come from the DB secret; priority-1 env overrides,
+      ## uppercase section/key per the chart's own config_environment.sh.
+      additionalConfigFromEnvs:
+        - name: FORGEJO__DATABASE__USER
+          valueFrom:
+            secretKeyRef:
+              name: forgejo-db-app
+              key: username
+        - name: FORGEJO__DATABASE__PASSWD
+          valueFrom:
+            secretKeyRef:
+              name: forgejo-db-app
+              key: password
+      config:
+        actions:
+          ENABLED: true
+        database:
+          DB_TYPE: postgres
+          HOST: forgejo-db-rw.cnpg-system.svc.cluster.local:5432
+          NAME: forgejo
+          SSL_MODE: disable
+        indexer:
+          ISSUE_INDEXER_TYPE: bleve
+          REPO_INDEXER_ENABLED: true
+        mailer:
+          ENABLED: false
+        openid:
+          ENABLE_OPENID_SIGNIN: false
+          ENABLE_OPENID_SIGNUP: false
+        repository:
+          DEFAULT_REPO_UNITS: repo.code,repo.releases,repo.issues,repo.pulls,repo.actions
+        server:
+          DISABLE_SSH: true
+          LANDING_PAGE: homepage
+          OFFLINE_MODE: true
+          ROOT_URL: https://git.utility.techtales.io
+        service:
+          ALLOW_ONLY_EXTERNAL_REGISTRATION: true
+          DISABLE_REGISTRATION: true
+          ENABLE_INTERNAL_SIGNIN: false
+          ENABLE_NOTIFY_MAIL: false
+          ENABLE_PASSWORD_SIGNIN_FORM: false
+          REQUIRE_SIGNIN_VIEW: true
+          SHOW_REGISTRATION_BUTTON: false
+    service:
+      http:
+        port: 80
+    ## Routes are plain manifests (http-route.yaml).
+    ingress:
+      enabled: false
+    httpRoute:
+      enabled: false
+    tcpRoute:
+      enabled: false

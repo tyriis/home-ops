@@ -1,0 +1,108 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# Nightly `forgejo dump` -> upload to s3://forgejo-dump/ (spec 6.3).
+# The forgejo CLI runs without the image entrypoint, so the custom config
+# path and DB connection are provided explicitly.
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app forgejo-dump
+spec:
+  interval: 30m
+  driftDetection:
+    mode: enabled
+  chart:
+    spec:
+      chart: app-template
+      version: 5.1.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      forgejo-dump:
+        type: cronjob
+        cronjob:
+          concurrencyPolicy: Forbid
+          schedule: "@daily"
+          backoffLimit: 2
+          activeDeadlineSeconds: 3600
+        pod:
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
+            fsGroup: 1001
+        initContainers:
+          forgejo-dump:
+            image:
+              repository: code.forgejo.org/forgejo/forgejo
+              tag: 16.0.4-rootless
+            command:
+              - /bin/sh
+              - -c
+              - |
+                forgejo dump --file "/dump/forgejo-dump-$(date +%F).zip" --skip-logs
+            env:
+              - name: HOME
+                value: /data/gitea/git
+              - name: GITEA_CUSTOM
+                value: /data/gitea
+              - name: FORGEJO_CUSTOM
+                value: /data/gitea
+              - name: FORGEJO__DATABASE__DB_TYPE
+                value: postgres
+              - name: FORGEJO__DATABASE__HOST
+                value: forgejo-db-rw.cnpg-system.svc.cluster.local:5432
+              - name: FORGEJO__DATABASE__NAME
+                value: forgejo
+              - name: FORGEJO__DATABASE__SSL_MODE
+                value: disable
+              - name: FORGEJO__DATABASE__USER
+                valueFrom:
+                  secretKeyRef:
+                    name: forgejo-db-app
+                    key: username
+              - name: FORGEJO__DATABASE__PASSWD
+                valueFrom:
+                  secretKeyRef:
+                    name: forgejo-db-app
+                    key: password
+        containers:
+          upload:
+            image:
+              repository: minio/mc
+              tag: RELEASE.2025-08-13T08-35-41Z
+            command:
+              - /bin/sh
+              - -c
+              - |
+                mc alias set s3 "$S3_URL" "$S3_ACCESS_KEY_ID" "$S3_SECRET_ACCESS_KEY"
+                mc cp /dump/*.zip s3/forgejo-dump/
+            env:
+              - name: HOME
+                value: /tmp
+            envFrom:
+              - secretRef:
+                  name: forgejo-dump-s3
+    persistence:
+      data:
+        type: persistentVolumeClaim
+        existingClaim: forgejo-data
+        advancedMounts:
+          forgejo-dump:
+            forgejo-dump:
+              - path: /data
+      dump:
+        type: emptyDir
+        globalMounts:
+          - path: /dump

@@ -35,6 +35,14 @@ endpoints:
       dns-resolver: tcp://192.168.1.1:53
     conditions:
       - "[STATUS] == 404"
+  - name: forgejo-health
+    group: infrastructure
+    url: https://git.utility.techtales.io/api/healthz
+    interval: 5m
+    client:
+      dns-resolver: tcp://192.168.1.1:53
+    conditions:
+      - "[STATUS] == 200"
   # infrastructure
   - name: FRITZ!Box
     group: infrastructure

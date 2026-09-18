@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization.json
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./ocirepository.yaml
+  - ./external-secret.yaml
+  - ./helm-release.yaml
+  - ./http-route.yaml
+  - ./dump/helm-release.yaml
+patches:
+  # 15-minute RPO per spec (component default is every 2 hours). Kind-only
+  # target: names are still ${APP}-placeholders at kustomize time (Flux
+  # substitutes post-build), and this build has exactly one ReplicationSource.
+  - target:
+      group: volsync.backube
+      version: v1alpha1
+      kind: ReplicationSource
+    patch: |-
+      - op: replace
+        path: /spec/trigger/schedule
+        value: "*/15 * * * *"
