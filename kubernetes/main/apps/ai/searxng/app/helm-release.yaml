@@ -42,7 +42,7 @@ spec:
               tag: 2026.9.19-e831fc2a1@sha256:547fdc19b45510ea1c0bc65ffadab3fcdde1ab1efd7fe696602284ba54d795ca
             env:
               TZ: Europe/Vienna
-              SEARXNG_BASE_URL: https://search.techtales.io
+              SEARXNG_BASE_URL: https://search.techtales.io/
               SEARXNG_PORT: &port 8080
               GRANIAN_HOST: 0.0.0.0
             envFrom:
