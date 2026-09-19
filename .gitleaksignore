@@ -9,3 +9,4 @@ faff40a117b8ff3137ef9c7a38fa6dd4e98be51c:kubernetes/main/apps/observability/graf
 faff40a117b8ff3137ef9c7a38fa6dd4e98be51c:kubernetes/main/apps/observability/grafana/instance/external-secret.yaml:generic-api-key:45
 c6308e3d984a3f4ab090195ff66d3f5ad32af4b3:docs/superpowers/plans/2026-05-16-firecrawl-deployment.md:generic-api-key:110
 c6308e3d984a3f4ab090195ff66d3f5ad32af4b3:docs/superpowers/plans/2026-05-16-firecrawl-deployment.md:generic-api-key:135
+kubernetes/main/apps/ai/searxng/app/external-secret.yaml:generic-api-key:21
