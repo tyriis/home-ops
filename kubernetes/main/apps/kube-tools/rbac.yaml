@@ -52,6 +52,10 @@ rules:
   - apiGroups: [apiextensions.k8s.io]
     resources: [customresourcedefinitions]
     verbs: [get, list, watch]
+  - apiGroups: [fluxcd.controlplane.io]
+    resources:
+      [fluxinstances, fluxreports, resourcesets, resourcesetinputproviders]
+    verbs: [get, list, watch]
 
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrolebinding_v1.json
