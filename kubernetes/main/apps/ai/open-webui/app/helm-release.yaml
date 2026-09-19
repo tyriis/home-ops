@@ -50,7 +50,7 @@ spec:
               OLLAMA_BASE_URL: http://olla:40114/olla/ollama #NOSONAR allow http
               ENABLE_WEB_SEARCH: "true"
               WEB_SEARCH_ENGINE: searxng
-              SEARXNG_QUERY_URL: http://searxng.ai.svc.cluster.local:8080/search
+              SEARXNG_QUERY_URL: http://searxng.ai.svc.cluster.local:8080/search #NOSONAR allow http
               SEARXNG_LANGUAGE: en-US
               WEB_SEARCH_RESULT_COUNT: "5"
               ENABLE_WEBSOCKET_SUPPORT: "true"
