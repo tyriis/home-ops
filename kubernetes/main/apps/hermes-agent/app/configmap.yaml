@@ -114,7 +114,7 @@ data:
       lifetime_seconds: 300
     web:
       backend: firecrawl
-      search_backend: firecrawl
+      search_backend: searxng
       extract_backend: firecrawl
       use_gateway: false
     browser:
