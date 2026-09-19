@@ -47,7 +47,7 @@ spec:
               GRANIAN_HOST: 0.0.0.0
             envFrom:
               - secretRef:
-                  name: *app
+                  name: searxng-env
             probes:
               readiness: &probes
                 enabled: true
