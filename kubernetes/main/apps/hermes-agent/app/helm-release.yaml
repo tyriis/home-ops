@@ -113,6 +113,7 @@ spec:
               HERMES_WRITE_SAFE_ROOT: /opt/data
               WIKI_PATH: /opt/data/wiki
               FIRECRAWL_API_URL: http://firecrawl-api.firecrawl-system.svc.cluster.local:3002 #NOSONAR allow http
+              SEARXNG_URL: http://searxng.ai.svc.cluster.local:8080 #NOSONAR allow http
             envFrom:
               - secretRef:
                   name: ${APP}-secret
