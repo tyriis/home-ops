@@ -11,4 +11,4 @@ spec:
     operation: copy
   url: oci://ghcr.io/open-telemetry/opentelemetry-helm-charts/opentelemetry-operator
   ref:
-    tag: 0.122.1
+    tag: 0.123.0
