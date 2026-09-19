@@ -89,16 +89,6 @@
         # ping: openbao.techtales.io
         siteMonitor: https://secrets.techtales.io
 - Web:
-    - Perplexity AI:
-        icon: si-perplexity
-        href: https://perplexity.ai
-        description: AI Search Engine
-        ping: perplexity.ai
-    - Kubesearch:
-        icon: kubernetes
-        href: https://kubesearch.dev/
-        description: Search Flux HelmReleases
-        siteMonitor: https://kubesearch.dev/
     - Cloudflare Dashboard:
         icon: cloudflare
         href: https://dash.cloudflare.com
