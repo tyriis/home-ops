@@ -1,0 +1,33 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/core/configmap_v1.json
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: searxng-config
+data:
+  settings.yml: |
+    use_default_settings: true
+
+    general:
+      instance_name: SearXNG
+
+    search:
+      safe_search: 0
+      autocomplete: duckduckgo
+      default_lang: en-US
+      formats:
+        - html
+        - json
+
+    server:
+      base_url: https://search.techtales.io/
+      limiter: false
+      public_instance: false
+      image_proxy: true
+      method: GET
+
+    ui:
+      default_locale: en
+      default_theme: simple
+      theme_args:
+        simple_style: auto

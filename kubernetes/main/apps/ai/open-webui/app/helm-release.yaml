@@ -48,10 +48,11 @@ spec:
               # IMAGE_STEPS: 8
               # COMFYUI_BASE_URL: http://comfyui:8188
               OLLAMA_BASE_URL: http://olla:40114/olla/ollama #NOSONAR allow http
-              # ENABLE_RAG_WEB_SEARCH: true
-              # ENABLE_SEARCH_QUERY: true
-              # RAG_WEB_SEARCH_ENGINE: searxng
-              # SEARXNG_QUERY_URL: http://searxng:8080/search?q=<query>
+              ENABLE_WEB_SEARCH: "true"
+              WEB_SEARCH_ENGINE: searxng
+              SEARXNG_QUERY_URL: http://searxng.ai.svc.cluster.local:8080/search #NOSONAR allow http
+              SEARXNG_LANGUAGE: en-US
+              WEB_SEARCH_RESULT_COUNT: "5"
               ENABLE_WEBSOCKET_SUPPORT: "true"
               WEBSOCKET_MANAGER: "redis"
               WEBSOCKET_REDIS_URL: "redis://open-webui-dragonfly.ai.svc.cluster.local:6379"
