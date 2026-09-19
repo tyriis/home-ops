@@ -263,8 +263,8 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Hermes WebUI Chat
           gethomepage.dev/group: AI
-          gethomepage.dev/icon: mdi-chat
-          gethomepage.dev/name: Hermes WebUI
+          gethomepage.dev/icon: hermes-agent
+          gethomepage.dev/name: ${AGENT_NAME} Agent
         hostnames:
           - "${AGENT_NAME}.techtales.io"
         parentRefs:
