@@ -11,6 +11,7 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
+    - ../../../../components/home-assistant-egress
   path: ./kubernetes/main/apps/hermes-agent/app
   prune: true
   sourceRef:
