@@ -16,9 +16,9 @@ Its primary mission is to serve as the hosting platform for a comprehensive suit
 
 <!-- This section describes the high-level design of the system, including its components, their interactions, and the system's functionality. -->
 
-The `main-cluster` operates on Intel NUC hardware, a decision influenced by the preferences of the [kubernetes@home community](https://discord.com/invite/k8s-at-home) and the imperative consideration of minimizing 24/7 power consumption. This choice strikes a balance between computing power to handle resource-intensive tasks and the desire to keep energy expenses in check.
+The `main-cluster` operates on three MS-01 nodes, a decision influenced by the preferences of the [kubernetes@home community](https://discord.com/invite/k8s-at-home) and the imperative consideration of minimizing 24/7 power consumption. This choice strikes a balance between computing power to handle resource-intensive tasks and the desire to keep energy expenses in check.
 
-Within the `main-cluster`, a robust storage infrastructure is provided by a [Rook-Ceph cluster](https://rook.io/) comprising three 500GB NVMe drives. This configuration serves as the default storage solution for the entire cluster, ensuring efficient data management.
+Within the `main-cluster`, a robust storage infrastructure is provided by a [Rook-Ceph cluster](https://rook.io/) comprising three 500 GB NVMe drives. This configuration serves as the default storage solution for the entire cluster, ensuring efficient data management.
 
 Currently, the network layer, Container Network Interface (CNI), is implemented using Flannel. However, there are plans to transition to Cilium in the upcoming iteration, further enhancing network performance and security.
 
@@ -32,12 +32,11 @@ For the Kubernetes operating system, the deliberate choice is [Talos Linux](http
 
 <!-- This section provides detailed information about the system's hardware. -->
 
-| Device           | CPU       | OS    | OS Disk   | Data Disk              | RAM  | Purpose               |
-| ---------------- | --------- | ----- | --------- | ---------------------- | ---- | --------------------- |
-| Intel NUC7i7DNHE | i7-8650U  | Talos | 500GB SSD | 500GB NVMe (rook-ceph) | 32GB | control-plane, worker |
-| Intel NUC7i7DNHE | i7-8650U  | Talos | 500GB SSD | 500GB NVMe (rook-ceph) | 32GB | control-plane, worker |
-| Intel NUC7i7DNHE | i7-8650U  | Talos | 500GB SSD | 500GB NVMe (rook-ceph) | 32GB | control-plane, worker |
-| Intel NUC10I7FNH | i7-10710U | Talos | 500GB SSD | -                      | 32GB | worker                |
+| Device | CPU/SoC         | OS    | OS Disk   | Data Disk               | RAM   | Purpose               |
+| ------ | --------------- | ----- | --------- | ----------------------- | ----- | --------------------- |
+| MS-01  | Intel i9-13900H | Talos | 1 TB NVMe | 500 GB NVMe (rook-ceph) | 96 GB | control-plane, worker |
+| MS-01  | Intel i9-13900H | Talos | 1 TB NVMe | 500 GB NVMe (rook-ceph) | 96 GB | control-plane, worker |
+| MS-01  | Intel i9-13900H | Talos | 1 TB NVMe | 500 GB NVMe (rook-ceph) | 96 GB | control-plane, worker |
 
 ### Cloud Services
 

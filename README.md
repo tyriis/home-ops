@@ -116,15 +116,19 @@ Here is the list of tools and technologies I am using in this project.
 
 #### Hardware
 
-| Device                | CPU       | OS      | OS Disk     | Data Disk              | RAM  | Purpose    |
-| --------------------- | --------- | ------- | ----------- | ---------------------- | ---- | ---------- |
-| MS-01                 | i9-13900H | Talos   | 1 TB NVMe   | 500GB NVMe (rook-ceph) | 96GB | Kubernetes |
-| MS-01                 | i9-13900H | Talos   | 1 TB NVMe   | 500GB NVMe (rook-ceph) | 96GB | Kubernetes |
-| MS-01                 | i9-13900H | Talos   | 1 TB NVMe   | 500GB NVMe (rook-ceph) | 96GB | Kubernetes |
-| Intel NUC7i7DNHE      | i7-8650U  | Talos   | 500 GB SSD  | -                      | 32GB | Utility    |
-| AOSTAR WTR Pro        | N100      | TrueNAS | 250 GB NVMe | 4x 8 TB HDD            | 32GB | NAS        |
-| UniFi UDM SE          | -         | -       | 128GB SSD   | -                      | -    | Router     |
-| UniFi USW Aggregation | -         | -       | -           | -                      | -    | Switch     |
+| Device                | CPU/SoC           | OS         | OS Disk       | Data Disk               | RAM    | Purpose    |
+| --------------------- | ----------------- | ---------- | ------------- | ----------------------- | ------ | ---------- |
+| MS-01                 | Intel i9-13900H   | Talos      | 1 TB NVMe     | 500 GB NVMe (rook-ceph) | 96 GB  | Kubernetes |
+| MS-01                 | Intel i9-13900H   | Talos      | 1 TB NVMe     | 500 GB NVMe (rook-ceph) | 96 GB  | Kubernetes |
+| MS-01                 | Intel i9-13900H   | Talos      | 1 TB NVMe     | 500 GB NVMe (rook-ceph) | 96 GB  | Kubernetes |
+| Intel NUC7i7DNHE      | Intel i7-8650U    | Talos      | 500 GB SSD    | -                       | 32 GB  | Utility    |
+| AOOSTAR WTR Pro       | Intel N100        | TrueNAS    | 250 GB NVMe   | 4× 8 TB HDD             | 32 GB  | NAS        |
+| ASUS NUC 14 Essential | Intel N250        | Lightwhale | 32 GB SD card | 1 TB NVMe               | 16 GB  | AI-Edge    |
+| ASUS Ascent GX10      | NVIDIA GB10       | DGX OS     | 1 TB NVMe     | -                       | 128 GB | Inference  |
+| ASUS Ascent GX10      | NVIDIA GB10       | DGX OS     | 1 TB NVMe     | -                       | 128 GB | Inference  |
+| UniFi UDM SE          | AL-324 Cortex-A57 | UniFi OS   | 16 GB eMMC    | 128 GB SSD              | 4 GB   | Router     |
+| UniFi USW Aggregation | -                 | -          | -             | -                       | -      | Switch     |
+| UniFi Pro HD 24 PoE   | -                 | -          | -             | -                       | -      | Switch     |
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

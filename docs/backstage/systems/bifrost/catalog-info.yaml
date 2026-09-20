@@ -4,7 +4,7 @@ apiVersion: backstage.io/v1alpha1
 kind: System
 metadata:
   name: bifrost
-  description: Intel N250 mini-server — LLM API gateway (new-api) host
+  description: ASUS NUC 14 Essential (Intel N250) mini-server — LLM API gateway (new-api) host
   annotations:
     backstage.io/techdocs-ref: dir:.
     github.com/project-slug: tyriis/home-ops
@@ -15,7 +15,7 @@ metadata:
       type: other
   tags:
     - docker
-    - lightwale
+    - lightwhale
     - llm
     - gateway
 spec:

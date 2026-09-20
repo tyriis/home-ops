@@ -1,10 +1,10 @@
 ---
 site_name: bifrost
-site_description: bifrost — LLM API gateway host (LightWale OS)
+site_description: bifrost — LLM API gateway host (Lightwhale OS)
 
 nav:
   - Overview: index.md
-  - DNS runbook: runbooks/dns-lightwale-local-domains.md
+  - DNS runbook: runbooks/dns-lightwhale-local-domains.md
 
 theme:
   name: material
