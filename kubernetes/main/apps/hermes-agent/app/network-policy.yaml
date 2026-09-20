@@ -68,6 +68,17 @@ spec:
       ports:
         - protocol: TCP
           port: 40114
+    # Allow egress to Home Assistant web UI/API (in-cluster URL only, e.g. http://home-assistant-app.home-automation.svc.cluster.local:8123)
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: home-automation
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: home-assistant
+      ports:
+        - protocol: TCP
+          port: 8123
     # Allow egress to searxng in the ai namespace
     - to:
         - namespaceSelector:

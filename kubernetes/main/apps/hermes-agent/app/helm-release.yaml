@@ -47,8 +47,7 @@ spec:
               - |
                 set -euo pipefail
                 cp /tmp/config.yaml /opt/data/config.yaml
-                # Append the optional per-instance MCP overlay when mounted.
-                # See kubernetes/components/hermes-home-assistant-mcp.
+                # Append the optional MCP overlay when mounted (from the ${APP}-mcp-overlay ConfigMap).
                 if [ -f /tmp/mcp-overlay.yaml ]; then
                   printf '\n' >> /opt/data/config.yaml
                   cat /tmp/mcp-overlay.yaml >> /opt/data/config.yaml
@@ -285,6 +284,13 @@ spec:
         globalMounts:
           - path: /tmp/config.yaml
             subPath: config.yaml
+      mcp-overlay:
+        type: configMap
+        name: ${APP}-mcp-overlay
+        defaultMode: 0444
+        globalMounts:
+          - path: /tmp/mcp-overlay.yaml
+            subPath: overlay.yaml
       data:
         existingClaim: ${APP}-data
         advancedMounts:
