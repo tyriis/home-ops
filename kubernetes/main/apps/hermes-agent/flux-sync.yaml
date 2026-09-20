@@ -12,6 +12,7 @@ spec:
   components:
     - ../../../../components/volsync
     - ../../../../components/home-assistant-egress
+    - ../../../../components/hermes-home-assistant-mcp
   path: ./kubernetes/main/apps/hermes-agent/app
   prune: true
   sourceRef:

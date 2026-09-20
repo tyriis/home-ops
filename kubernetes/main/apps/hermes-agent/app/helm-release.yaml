@@ -47,6 +47,12 @@ spec:
               - |
                 set -euo pipefail
                 cp /tmp/config.yaml /opt/data/config.yaml
+                # Append the optional per-instance MCP overlay when mounted.
+                # See kubernetes/components/hermes-home-assistant-mcp.
+                if [ -f /tmp/mcp-overlay.yaml ]; then
+                  printf '\n' >> /opt/data/config.yaml
+                  cat /tmp/mcp-overlay.yaml >> /opt/data/config.yaml
+                fi
                 chown 10000:10000 /opt/data/config.yaml
           init-fix-ownership:
             image:
