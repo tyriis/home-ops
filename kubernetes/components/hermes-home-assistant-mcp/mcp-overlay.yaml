@@ -14,6 +14,6 @@ data:
       home-assistant:
         url: "http://home-assistant-app.home-automation.svc.cluster.local:8123/api/mcp"
         headers:
-          Authorization: "$${HA_TOKEN}"
+          Authorization: "Bearer $${HA_TOKEN}"
         timeout: 180
         connect_timeout: 30
