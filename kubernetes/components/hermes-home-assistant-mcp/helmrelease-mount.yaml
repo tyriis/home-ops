@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ${APP}
+spec:
+  values:
+    persistence:
+      mcp-overlay:
+        type: configMap
+        name: ${APP}-mcp-overlay
+        defaultMode: 0444
+        globalMounts:
+          - path: /tmp/mcp-overlay.yaml
+            subPath: overlay.yaml
