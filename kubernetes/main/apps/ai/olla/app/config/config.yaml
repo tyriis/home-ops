@@ -26,7 +26,7 @@ discovery:
   static:
     endpoints:
       # Primary workstation GPU
-      - url: http://192.168.1.22:11434
+      - url: http://red-gateway.tyriis.dev:11434
         name: red-rtx2060
         type: ollama
         priority: 100
