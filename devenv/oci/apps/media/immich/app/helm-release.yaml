@@ -117,7 +117,7 @@ spec:
           app:
             image:
               repository: ghcr.io/dragonflydb/dragonfly
-              tag: v1.40.2@sha256:18afa43e911f1dff18c7d1eb452361876d9702bb1cdff5c5d75c69617a4065c9
+              tag: v2.0.0@sha256:7426fdb31ddcf7bd9499b4205f36ebaa83b26149ba1609a0d5f8f474b3631233
             args:
               - --cluster_mode=emulated
               - --default_lua_flags=allow-undeclared-keys
