@@ -25,11 +25,14 @@ discovery:
     concurrent_workers: 5 # Parallel discovery workers
   static:
     endpoints:
-      # Primary workstation GPU
-      - url: http://red-gateway.tyriis.dev:11434
+      # Primary workstation GPU (TLS via Traefik, bearer-authenticated)
+      - url: https://ollama.tyriis.dev
         name: red-rtx2060
         type: ollama
         priority: 100
+        auth:
+          type: bearer
+          token: "${RED_OLLAMA_API_KEY}"
         model_url: /api/tags
         health_check_url: /
         check_interval: 5s

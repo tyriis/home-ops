@@ -44,6 +44,9 @@ spec:
             image:
               repository: ghcr.io/thushan/olla
               tag: v0.0.29@sha256:4f1b871c88dbc8e7b7951aab45f5748eb8c2b5b0e862437a10cd09408b8a8673
+            envFrom:
+              - secretRef:
+                  name: olla-env
             resources:
               requests:
                 cpu: 100m
