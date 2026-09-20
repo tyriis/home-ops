@@ -4,7 +4,7 @@
 
 !!! abstract
 
-    Containers on **bifrost** (LightWale OS) fail to resolve LAN-only names such as `ai.techtales.io`, while public domains resolve fine.
+    Containers on **bifrost** (Lightwhale OS) fail to resolve LAN-only names such as `ai.techtales.io`, while public domains resolve fine.
     Root cause: the host's static `/etc/resolv.conf` lists a Cloudflare **malware-filter** resolver (`1.1.1.2`) **before** the LAN resolver,
     and the filter answers local names with a hard negative - resolvers never fall through to the next server on a negative answer.
 
@@ -33,7 +33,7 @@ container /etc/resolv.conf -> 127.0.0.11 (Docker embedded DNS, in dockerd)
 
 1. **Containers** get `nameserver 127.0.0.11` — Docker's embedded DNS, running inside `dockerd`.
 2. **dockerd forwards from the host network namespace** to the host's upstreams. They are visible as the `ExtServers:` comment in a container's `/etc/resolv.conf` — **snapshotted at container creation**.
-3. **The host** runs a static LightWale default `/etc/resolv.conf`, shown below.
+3. **The host** runs a static Lightwhale default `/etc/resolv.conf`, shown below.
 
 ```text
 nameserver 1.1.1.2
@@ -49,7 +49,7 @@ nameserver 192.168.100.1
 | ---------------------------------------------------- | --------------------------------------------------------------------------------------- |
 | `docker exec new-api cat /etc/resolv.conf`           | `nameserver 127.0.0.11` + `ExtServers:` comment = **normal** (Docker embedded DNS)      |
 | `ip -4 addr show` (host)                             | Host is `192.168.100.10/24` - same subnet as the gateway; no cross-subnet issue         |
-| `cat /etc/resolv.conf` (host)                        | Static LightWale default: `1.1.1.2` first, `192.168.100.1` second                       |
+| `cat /etc/resolv.conf` (host)                        | Static Lightwhale default: `1.1.1.2` first, `192.168.100.1` second                      |
 | `docker exec new-api getent hosts openai.com`        | Resolves = container -> dockerd -> host chain is healthy                                |
 | `time nslookup ai.techtales.io 1.1.1.2` (host)       | **Fails fast** (instant NXDOMAIN-style negative, no timeout) - the discriminator        |
 | `time nslookup ai.techtales.io 192.168.100.1` (host) | **Resolves** - the LAN resolver has the record all along                                |
@@ -63,7 +63,7 @@ The public first resolver (`1.1.1.2`) answers an authoritative-style **NXDOMAIN*
 
 Resolvers do **not** fall through to the next server on a _negative answer_ — only on timeout/refusal — so the LAN resolver (`192.168.100.1`) that actually has the record is never consulted.
 
-This is **not a Docker or LightWale bug**; it is resolver-order + split-horizon DNS.
+This is **not a Docker or Lightwhale bug**; it is resolver-order + split-horizon DNS.
 
 ## Fix (applied: per-container, compose level)
 
@@ -77,7 +77,7 @@ dns:
 ```
 
 Why the shim and not the shared `docker/deploy/new-api/compose.yaml`: the broken resolver order is a
-**bifrost host property** (LightWale's static `/etc/resolv.conf`), so the shared compose stays neutral for
+**bifrost host property** (Lightwhale's static `/etc/resolv.conf`), so the shared compose stays neutral for
 other hosts - the shim is the designated spot for host-specific overrides (it already carries the traefik labels).
 
 GitOps-managed via doco-cd and survives host reinstalls: doco-cd recreates the container on reconcile, which is
@@ -86,7 +86,7 @@ required anyway because Docker snapshots `ExtServers` at container **creation** 
 
 ## Alternative fix (host-wide, manual)
 
-Not applied - manual host change. It is lost on a LightWale reinstall and must be redone by hand.
+Not applied - manual host change. It is lost on a Lightwhale reinstall and must be redone by hand.
 
 On bifrost via SSH:
 
@@ -102,11 +102,11 @@ nameserver 1.1.1.1
 - `192.168.100.1`: LAN — serves `techtales.io`, forwards everything else.
 - `1.1.1.1`: fallback — plain Cloudflare, **not** the `.2` malware-filter variant.
 
-On LightWale this is a **static file** — the change persists across reboot.
+On Lightwhale this is a **static file** — the change persists across reboot.
 
 ### 2. Restart dockerd
 
-There is no systemd on LightWale (busybox `S*NN` scripts):
+There is no systemd on Lightwhale (busybox `S*NN` scripts):
 
 ```bash
 sudo /etc/init.d/S60dockerd restart

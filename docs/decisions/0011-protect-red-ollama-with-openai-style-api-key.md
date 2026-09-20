@@ -8,7 +8,7 @@ decision-makers: [tyriis]
 
 ## Context and Problem Statement
 
-`red` (the GPU workstation at `192.168.1.22`) serves Ollama at `https://ollama.tyriis.dev`
+`red` (the GPU workstation at `red-gateway.tyriis.dev`) serves Ollama at `https://ollama.tyriis.dev`
 through its LAN Traefik instance. The 2026-09-12 TLS design deliberately shipped without
 authentication: Traefik terminates TLS, but anything that can reach the LAN can call the API,
 consume the GPU, and list/pull models.
