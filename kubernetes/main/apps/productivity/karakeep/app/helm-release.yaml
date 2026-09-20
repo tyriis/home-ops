@@ -67,6 +67,7 @@ spec:
               EMBEDDING_DIMENSIONS: 1024
               EMBEDDING_ENABLE_AUTO_INDEXING: true
               EMBEDDING_CONTEXT_LENGTH: 8192
+              EMBEDDING_TEXT_MODEL_DIMENSION_OVERRIDE: 1024
             envFrom:
               - secretRef:
                   name: karakeep-env
