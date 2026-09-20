@@ -47,6 +47,10 @@ spec:
             envFrom:
               - secretRef:
                   name: olla-env
+            env:
+              # v0.0.29+ ships /app/config/config.yaml which outranks /app/config.yaml;
+              # pin the config path explicitly so the ConfigMap is always used.
+              OLLA_CONFIG_FILE: /config/config.yaml
             resources:
               requests:
                 cpu: 100m
@@ -101,5 +105,5 @@ spec:
         type: configMap
         name: "{{ .Release.Name }}-config"
         globalMounts:
-          - path: /app/config.yaml
+          - path: /config/config.yaml
             subPath: config.yaml
