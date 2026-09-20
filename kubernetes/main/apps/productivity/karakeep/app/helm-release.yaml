@@ -58,9 +58,11 @@ spec:
               DISABLE_PASSWORD_AUTH: true
               OAUTH_ALLOW_DANGEROUS_EMAIL_ACCOUNT_LINKING: true
               NEXTAUTH_URL: https://karakeep.techtales.io
-              OLLAMA_BASE_URL: http://olla.ai.svc.cluster.local:40114/olla/ollama #NOSONAR allow http
-              INFERENCE_TEXT_MODEL: gemma3:1b
-              INFERENCE_IMAGE_MODEL: llava
+              OPENAI_BASE_URL: https://techtales.ai/v1
+              INFERENCE_TEXT_MODEL: qwen3.8-flash-next
+              INFERENCE_IMAGE_MODEL: qwen3.8-flash-next
+              INFERENCE_CONTEXT_LENGTH: 16384
+              INFERENCE_JOB_TIMEOUT_SEC: 120
             envFrom:
               - secretRef:
                   name: karakeep-env
