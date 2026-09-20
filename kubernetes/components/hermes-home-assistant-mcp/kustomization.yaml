@@ -1,9 +1,0 @@
----
-# yaml-language-server: $schema=https://json.schemastore.org/kustomization.json
-apiVersion: kustomize.config.k8s.io/v1alpha1
-kind: Component
-resources:
-  - ./mcp-overlay.yaml
-patches:
-  - path: ./helmrelease-mount.patch.yaml
-  - path: ./external-secret.patch.yaml
