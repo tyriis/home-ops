@@ -32,7 +32,8 @@ discovery:
         priority: 100
         auth:
           type: bearer
-          token: "${RED_OLLAMA_API_KEY}"
+          # $$ is escaped for the Flux postBuild envsubst pass; olla expands $${RED_OLLAMA_API_KEY} at runtime
+          token: "$${RED_OLLAMA_API_KEY}"
         model_url: /api/tags
         health_check_url: /
         check_interval: 5s
