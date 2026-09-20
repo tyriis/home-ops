@@ -63,6 +63,10 @@ spec:
               INFERENCE_IMAGE_MODEL: qwen3.8-flash-next
               INFERENCE_CONTEXT_LENGTH: 16384
               INFERENCE_JOB_TIMEOUT_SEC: 120
+              EMBEDDING_TEXT_MODEL: qwen3-embedding:0.6b
+              EMBEDDING_DIMENSIONS: 1024
+              EMBEDDING_ENABLE_AUTO_INDEXING: true
+              EMBEDDING_CONTEXT_LENGTH: 8192
             envFrom:
               - secretRef:
                   name: karakeep-env
