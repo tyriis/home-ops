@@ -5,5 +5,5 @@ kind: Component
 resources:
   - ./mcp-overlay.yaml
 patches:
-  - path: ./helmrelease-mount.yaml
-  - path: ./external-secret.yaml
+  - path: ./helmrelease-mount.patch.yaml
+  - path: ./external-secret.patch.yaml
