@@ -1,0 +1,78 @@
+---
+# https://tokentelemetry.com — dashboard for AI coding-agent token and cost usage.
+# Pull-only deployment of the published GHCR images. CI bakes NEXT_PUBLIC_API_PORT=18000
+# into the frontend bundle, so the browser always reaches the API on host port 18000
+# regardless of the published backend port.
+# Default exposure is loopback-only. Host-specific overrides (reverse proxy, LAN bind,
+# read-only agent-log mounts) live in the per-host include shim under
+# docker/<host>/tokentelemetry, so this definition can serve several doco-cd hosts.
+volumes:
+  data:
+    external: ${VOLUME_EXTERNAL:-false}
+    name: ${VOLUME_NAME:-tokentelemetry_data}
+    driver: ${VOLUME_DRIVER:-local}
+
+services:
+  backend:
+    cap_drop:
+      - ALL
+    container_name: tokentelemetry-backend
+    environment:
+      TT_HOST: 0.0.0.0
+      TT_API_PORT: "8000"
+      TOKENTELEMETRY_DATA_DIR: /tt-data
+      TOKENTELEMETRY_HOME: /tt-data
+      PYTHONDONTWRITEBYTECODE: "1"
+      TZ: ${TZ:-Europe/Vienna}
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - python3 -c "import socket; s=socket.socket(); s.settimeout(3); s.connect(('localhost', 8000)); s.close()"
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    image: ghcr.io/vasihemanth/tokentelemetry-backend:latest@sha256:aad657ae0cab5a0f5db437d70636f0ff508fa82fa8ea864eea245ea595bbffed
+    mem_limit: 512m
+    pids_limit: 128
+    ports:
+      - "127.0.0.1:18000:8000" # host port is fixed at 18000 by the frontend bundle's baked NEXT_PUBLIC_API_PORT
+    read_only: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges=true
+    tmpfs:
+      - /tmp
+    volumes:
+      - data:/tt-data
+
+  frontend:
+    cap_drop:
+      - ALL
+    container_name: tokentelemetry-frontend
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - wget
+        - --spider
+        - --quiet
+        - http://127.0.0.1:3000/
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    image: ghcr.io/vasihemanth/tokentelemetry-frontend:latest@sha256:f3fe20e925af901eb4e0ae1f29ada7acd526179386b5f1353d29f5f9ead44d0a
+    mem_limit: 256m
+    pids_limit: 64
+    ports:
+      - "127.0.0.1:13000:3000"
+    read_only: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges=true
+    tmpfs:
+      - /tmp
+      - /app/.next/cache

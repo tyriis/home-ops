@@ -9,3 +9,8 @@ name: arcane-agent
 working_dir: docker/purple/arcane-agent
 env_files:
   - .env
+---
+name: tokentelemetry
+working_dir: docker/purple/tokentelemetry
+env_files:
+  - .env
