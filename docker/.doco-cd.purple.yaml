@@ -12,5 +12,3 @@ env_files:
 ---
 name: tokentelemetry
 working_dir: docker/purple/tokentelemetry
-env_files:
-  - .env
