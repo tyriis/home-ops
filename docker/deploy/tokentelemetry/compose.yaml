@@ -23,7 +23,7 @@ services:
       TOKENTELEMETRY_DATA_DIR: /tt-data
       TOKENTELEMETRY_HOME: /tt-data
       PYTHONDONTWRITEBYTECODE: "1"
-      TZ: ${TZ:-Europe/Vienna}
+      TZ: Europe/Vienna
     healthcheck:
       test:
         - CMD-SHELL
