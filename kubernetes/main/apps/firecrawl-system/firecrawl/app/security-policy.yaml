@@ -19,4 +19,4 @@ spec:
           - firecrawl
         localJWKS:
           type: Inline
-          inline: '{"keys":[{"kty":"RSA","use":"sig","alg":"RS256","kid":"firecrawl-edge-2026","n":"CSCBUCUGgJaCZxgDhnZyFnmFaYVXREZiY2JhNBB2WUNDBmJxRRGUA5gAiXAkRQiIM3c0SGIZB0cRaTJFWJJBmAdmEFEycmklASgzIDI5OSV5eHVlCABxJwMyRmU0V3lniDVHWSkUJCJkEgSIYglmR5h4ARUCVnAWFilmk0lBhlNYZiNndHZHKCdJFYV2MgGHVUAIdlWHIFJSQHg1SRJRhVNJ","e":"AQAB"}]}'
+          inline: '{"keys":[{"kty":"RSA","use":"sig","alg":"RS256","kid":"firecrawl-edge-2026","n":"yp3yDIFdvwK1sL_W2Alo0mtxgNuuw8hrdnK8qrFnzJuF5pqFV85ERm2ib_PvayahNBB_9l7-qUNDDW5icUtRoZQDmACJcCRFCIgzdzr0T_-GIdkHSnEWy7k8JKXFjJL0GpgH62bdEOutUTJ6LWnaL1DuHi-DMgPCOTvrklfZeH9WxQroAN9xJ6CsM9JGplNPWtfXlniLNUdd69nyuRQkImSxIN7r_EqI5iCWZHmLt_gBGsXQL7XWq3AWG8YsqWaT1JQcqGXDql6oa2LONndLt6-u3WRygnScobWFdjLK6wHI3-e8VUDwyHar5dXItyD99S5fJAeDXkqRKr1RjF9TSQ","e":"AQAB"}]}'
