@@ -112,3 +112,13 @@ Deployment is managed via a Flux Kustomization (`flux-sync.yaml`) that depends o
 - CNPG database is managed via `dbman.hef.sh/v1alpha3` Database CR pointing at the `postgres17` cluster in `cnpg-system`
 - Dragonfly is deployed in the `dragonfly-system` namespace, accessible at `dragonfly.dragonfly-system.svc.cluster.local:6379`
 - Secrets are provisioned via ExternalSecret from OpenBao at path `infra/kubernetes/main/ai/firecrawl`
+
+## Update (2026-09-22): edge exposure with JWT auth (external clients only)
+
+- Firecrawl is now reachable at `https://firecrawl.techtales.io` via an HTTPRoute plus an Envoy Gateway
+  SecurityPolicy (`jwt` with inline `localJWKS`, RS256) that rejects requests without a valid
+  `Authorization: Bearer` JWT with a 401 at the edge.
+- The public route exists solely for clients outside the cluster. In-cluster clients keep using `firecrawl-api.firecrawl-system.svc.cluster.local:3002` directly, bypassing the route and its auth — the edge only guards the public path.
+- `USE_DB_AUTHENTICATION` stays `false`; authorization of public traffic is enforced entirely at the gateway.
+- JWT signing key is stored in OpenBao at `infra/kubernetes/main/firecrawl-system/firecrawl` (merged keys, next to the
+  existing firecrawl env); only the public JWKS is committed inline in the SecurityPolicy (git-safe).

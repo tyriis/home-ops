@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/gateway.envoyproxy.io/securitypolicy_v1alpha1.json
+# Verifies opaque JWT "API keys" signed by the firecrawl-edge RS256 key.
+# Public key only (JWKS below); signing key: OpenBao infra/kubernetes/main/firecrawl-system/firecrawl.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: firecrawl
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: firecrawl
+  jwt:
+    providers:
+      - name: api-key
+        issuer: firecrawl-edge
+        audiences:
+          - firecrawl
+        localJWKS:
+          type: Inline
+          inline: '{"keys":[{"kty":"RSA","use":"sig","alg":"RS256","kid":"firecrawl-edge-2026","n":"CSCBUCUGgJaCZxgDhnZyFnmFaYVXREZiY2JhNBB2WUNDBmJxRRGUA5gAiXAkRQiIM3c0SGIZB0cRaTJFWJJBmAdmEFEycmklASgzIDI5OSV5eHVlCABxJwMyRmU0V3lniDVHWSkUJCJkEgSIYglmR5h4ARUCVnAWFilmk0lBhlNYZiNndHZHKCdJFYV2MgGHVUAIdlWHIFJSQHg1SRJRhVNJ","e":"AQAB"}]}'
