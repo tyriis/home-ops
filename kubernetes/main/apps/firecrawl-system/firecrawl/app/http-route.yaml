@@ -6,7 +6,6 @@ metadata:
   name: firecrawl
   annotations:
     external-dns/unifi: "true"
-    external-dns/cloudflare: "true"
 spec:
   hostnames:
     - firecrawl.techtales.io
