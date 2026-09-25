@@ -46,6 +46,7 @@ spec:
               LOGGING_LEVEL: INFO
               IS_KUBERNETES: "true"
               HOST: 0.0.0.0
+              SEARXNG_ENDPOINT: http://searxng.ai.svc.cluster.local:8080 #NOSONAR allow http
             envFrom:
               - secretRef:
                   name: firecrawl-env
