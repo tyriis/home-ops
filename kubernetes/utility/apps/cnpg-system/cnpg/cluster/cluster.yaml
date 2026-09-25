@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: &name forgejo-db
+  annotations:
+    cnpg.io/skipEmptyWalArchiveCheck: "enabled"
+spec:
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.5-22
+  primaryUpdateMethod: switchover
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 20Gi
+    storageClass: local-nvme
+  superuserSecret:
+    name: forgejo-db-superuser
+  enableSuperuserAccess: true
+  monitoring:
+    enablePodMonitor: true
+  bootstrap:
+    initdb:
+      database: forgejo
+      owner: forgejo
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: *name
+        serverName: *name
