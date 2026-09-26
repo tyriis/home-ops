@@ -7,3 +7,4 @@ resources:
   - ./external-secret.yaml
   - ./http-route.yaml
   - ./security-policy.yaml
+  - ./network-policy.yaml

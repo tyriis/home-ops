@@ -1,0 +1,33 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/networking.k8s.io/networkpolicy_v1.json
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ${APP}
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: ${APP}
+  policyTypes:
+    - Ingress
+  ingress:
+    # hermes-agent: in-cluster API consumer (direct Service DNS by design)
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: hermes-agent
+      ports:
+        - protocol: TCP
+          port: 3002
+    # Envoy Gateway data plane: JWT-authenticated edge traffic for firecrawl.techtales.io
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: networking
+      ports:
+        - protocol: TCP
+          port: 3002
+    # firecrawl inter-controller traffic: api/worker/nuq-worker to playwright-service and
+    # nuq-postgres; co-located dragonfly is covered by the dragonfly component policies
+    - from:
+        - podSelector: {}
