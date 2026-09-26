@@ -56,6 +56,9 @@ rules:
     resources:
       [fluxinstances, fluxreports, resourcesets, resourcesetinputproviders]
     verbs: [get, list, watch]
+  - apiGroups: [tuppr.home-operations.com]
+    resources: [kubernetesupgrades, talosupgrades]
+    verbs: [get, list, watch]
 
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrolebinding_v1.json
