@@ -56,7 +56,7 @@ spec:
               - -ec
               - |
                 mkdir -p /data/snapshots
-                export BAO_TOKEN=$(bao write -format=json auth/utility/login role=snapshot jwt="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" | awk -F'"' '/client_token/{print $4}')
+                export BAO_TOKEN=$(bao write -format=json auth/utility/login role=openbao-snapshots jwt="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" | awk -F'"' '/client_token/{print $4}')
                 bao operator raft snapshot save /data/snapshots/openbao-raft.snap
                 ls -l /data/snapshots
             env:
