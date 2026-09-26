@@ -25,6 +25,18 @@ spec:
       ports:
         - protocol: TCP
           port: 8080
+    # firecrawl-system: firecrawl api uses searxng as its search backend
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: firecrawl-system
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: firecrawl
+              app.kubernetes.io/controller: api
+      ports:
+        - protocol: TCP
+          port: 8080
     # Envoy Gateway data plane for the browser UI
     - from:
         - namespaceSelector:
