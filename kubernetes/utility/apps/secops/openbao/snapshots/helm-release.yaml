@@ -28,8 +28,7 @@ spec:
   # https://github.com/bjw-s/helm-charts/blob/main/charts/library/common/values.yaml
   values:
     serviceAccount:
-      snapshot:
-        forceRename: openbao-snapshot
+      openbao-snapshots: {}
     controllers:
       openbao-snapshots:
         type: cronjob
@@ -40,7 +39,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         serviceAccount:
-          identifier: snapshot
+          identifier: openbao-snapshots
         pod:
           automountServiceAccountToken: true
           securityContext:
@@ -57,8 +56,7 @@ spec:
               - -ec
               - |
                 mkdir -p /data/snapshots
-                BAO_TOKEN=$(bao write -format=json auth/utility/login role=snapshot jwt="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" | awk -F'"' '/client_token/{print $4}')
-                export BAO_TOKEN
+                export BAO_TOKEN=$(bao write -format=json auth/utility/login role=snapshot jwt="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" | awk -F'"' '/client_token/{print $4}')
                 bao operator raft snapshot save /data/snapshots/openbao-raft.snap
                 ls -l /data/snapshots
             env:
