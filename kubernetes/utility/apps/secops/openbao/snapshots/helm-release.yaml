@@ -27,6 +27,9 @@ spec:
     keepHistory: false
   # https://github.com/bjw-s/helm-charts/blob/main/charts/library/common/values.yaml
   values:
+    serviceAccount:
+      snapshot:
+        forceRename: openbao-snapshot
     controllers:
       openbao-snapshots:
         type: cronjob
@@ -36,7 +39,10 @@ spec:
           timeZone: Europe/Vienna
         annotations:
           reloader.stakater.com/auto: "true"
+        serviceAccount:
+          identifier: snapshot
         pod:
+          automountServiceAccountToken: true
           securityContext:
             runAsUser: 65534
             runAsGroup: 65534
@@ -44,23 +50,21 @@ spec:
         containers:
           snapshot:
             image:
-              repository: vault
-              tag: 1.13.3@sha256:f98ac9dd97b0612746630033771bc7a8c86408a44a056f3f4be47fc576ec3744
+              repository: quay.io/openbao/openbao
+              tag: 2.7.0@sha256:71156a1c6623a5fa3f5e61b0c6a8ead0faf0df29a778339188443551995d1315
             command:
               - /bin/sh
               - -ec
               - |
                 mkdir -p /data/snapshots
-                export VAULT_TOKEN=$(vault write -format=json auth/approle/login role_id=$APPROLE_ROLE_ID secret_id=$APPROLE_SECRET_ID | awk -F'"' '/client_token/{print $4}')
-                vault operator raft snapshot save /data/snapshots/openbao-raft.snap
+                BAO_TOKEN=$(bao write -format=json auth/utility/login role=snapshot jwt="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" | awk -F'"' '/client_token/{print $4}')
+                export BAO_TOKEN
+                bao operator raft snapshot save /data/snapshots/openbao-raft.snap
                 ls -l /data/snapshots
-            envFrom:
-              - secretRef:
-                  name: openbao-snapshot-agent-credentials
             env:
               - name: TZ
                 value: Europe/Vienna
-              - name: VAULT_ADDR
+              - name: BAO_ADDR
                 value: http://openbao-active.secops.svc.cluster.local:8200 #NOSONAR allow http
             securityContext:
               allowPrivilegeEscalation: false
