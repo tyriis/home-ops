@@ -65,6 +65,9 @@ rules:
   - apiGroups: [snapshot.storage.k8s.io]
     resources: [volumesnapshots]
     verbs: [get, list, watch]
+  - apiGroups: [barmancloud.cnpg.io]
+    resources: [objectstores]
+    verbs: [get, list, watch]
 
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrolebinding_v1.json
