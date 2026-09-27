@@ -62,3 +62,30 @@ spec:
           for: 1m
           labels:
             severity: warning
+        - alert: CNPGBackupStale
+          annotations:
+            description: Cluster {{ $labels.job }} has no successful backup in over 48 hours (172800 seconds).
+            summary: The last successful backup of a CNPG cluster is older than 48 hours.
+          expr: |-
+            time() - max by (job, namespace) (barman_cloud_cloudnative_pg_io_last_available_backup_timestamp) > 172800
+          for: 1m
+          labels:
+            severity: warning
+        - alert: CNPGBackupStaleCritical
+          annotations:
+            description: Cluster {{ $labels.job }} has no successful backup in over 7 days (604800 seconds).
+            summary: The last successful backup of a CNPG cluster is older than 7 days.
+          expr: |-
+            time() - max by (job, namespace) (barman_cloud_cloudnative_pg_io_last_available_backup_timestamp) > 604800
+          for: 1m
+          labels:
+            severity: critical
+        - alert: CNPGBackupMetricAbsent
+          annotations:
+            description: No CNPG backup metric is being reported, making backup staleness monitoring blind.
+            summary: The barman-cloud plugin backup metric is missing entirely.
+          expr: |-
+            absent(barman_cloud_cloudnative_pg_io_last_available_backup_timestamp)
+          for: 5m
+          labels:
+            severity: critical
