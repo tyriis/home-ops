@@ -1,4 +1,4 @@
 # UnifiedMetrics https://modrinth.com/plugin/unifiedmetrics
 https://cdn.modrinth.com/data/p1ewR5kV/versions/Ypqt7eH1/unifiedmetrics-platform-bukkit-0.3.8.jar
 # FancyNpcs https://modrinth.com/plugin/fancynpcs/versions?c=release&l=paper
-https://cdn.modrinth.com/data/EeyAn23L/versions/rTPgRFzP/FancyNpcs-2.11.0%2B372.jar
+https://cdn.modrinth.com/data/EeyAn23L/versions/te0dnlGO/FancyNpcs-2.12.1%2B376.jar
