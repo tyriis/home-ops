@@ -56,7 +56,7 @@ rules:
     resources: [kubernetesupgrades, talosupgrades]
     verbs: [get, list, watch]
   - apiGroups: [postgresql.cnpg.io]
-    resources: [clusters]
+    resources: [backups, clusters, scheduledbackups]
     verbs: [get, list, watch]
   - apiGroups: [snapshot.storage.k8s.io]
     resources: [volumesnapshots]
