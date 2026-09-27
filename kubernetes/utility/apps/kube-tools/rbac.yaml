@@ -44,7 +44,7 @@ rules:
     resources: [nodes, pods]
     verbs: [get, list, watch]
   - apiGroups: [storage.k8s.io]
-    resources: [storageclasses]
+    resources: [storageclasses, volumeattachments]
     verbs: [get, list, watch]
   - apiGroups: [rbac.authorization.k8s.io]
     resources: [clusterroles, clusterrolebindings]
@@ -54,6 +54,12 @@ rules:
     verbs: [get, list, watch]
   - apiGroups: [tuppr.home-operations.com]
     resources: [kubernetesupgrades, talosupgrades]
+    verbs: [get, list, watch]
+  - apiGroups: [postgresql.cnpg.io]
+    resources: [clusters]
+    verbs: [get, list, watch]
+  - apiGroups: [snapshot.storage.k8s.io]
+    resources: [volumesnapshots]
     verbs: [get, list, watch]
 
 ---
