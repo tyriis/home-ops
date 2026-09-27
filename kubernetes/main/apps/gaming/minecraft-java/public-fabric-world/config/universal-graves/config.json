@@ -8,7 +8,7 @@
     "use_real_time": false
   },
   "interactions": {
-    "unlocking_cost": {},
+    "unlocking_cost": { "type": "free", "count": 0 },
     "give_death_compass": true,
     "enable_click_to_open_gui": true,
     "shift_and_use_quick_pickup": true,
