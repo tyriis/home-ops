@@ -7,7 +7,7 @@ metadata:
 spec:
   retentionPolicy: 30d
   configuration:
-    destinationPath: s3://cnpg/main/immich/
+    destinationPath: s3://cnpg/main/immich
     endpointURL: https://s3.techtales.io
     s3Credentials:
       accessKeyId:
