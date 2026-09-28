@@ -6,6 +6,9 @@ metadata:
   name: firecrawl
   annotations:
     external-dns/unifi: "true"
+    gatus.home-operations.com/endpoint: |
+      conditions:
+        - "[STATUS] == 401"
 spec:
   hostnames:
     - firecrawl.techtales.io
