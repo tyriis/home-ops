@@ -107,10 +107,11 @@ spec:
           gatus.home-operations.com/endpoint: |
             name: n8n-webhook
             group: external
+            url: https://n8n-webhook.techtales.io/webhook
             client:
               dns-resolver: tcp://1.1.1.1:53
             conditions:
-              - "[STATUS] == 404"
+              - "[STATUS] == 200"
         hostnames:
           - n8n-webhook.techtales.io
         parentRefs:
