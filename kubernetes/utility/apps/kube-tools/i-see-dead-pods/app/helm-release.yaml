@@ -1,0 +1,91 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app i-see-dead-pods
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: i-see-dead-pods
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
+  # https://github.com/tyriis/i-see-dead-pods
+  values:
+    defaultPodOptions:
+      automountServiceAccountToken: true
+    serviceAccount:
+      i-see-dead-pods: {}
+    controllers:
+      cron:
+        serviceAccount:
+          identifier: *app
+        type: cronjob
+        cronjob:
+          concurrencyPolicy: Forbid
+          schedule: "*/5 * * * *"
+        pod:
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            fsGroup: 65534
+            runAsNonRoot: true
+        containers:
+          cron:
+            image:
+              repository: alpine/kubectl
+              tag: 1.37.1@sha256:7b4cc9a9ce0d064cedeb85550266c11f2b32f010ca299525518646261e4d955e
+            command:
+              - /bin/sh
+              - -ec
+              - |
+                kubectl get pods \
+                  --all-namespaces \
+                  -o go-template \
+                  --template='{{range .items}}{{printf "%s %s %s\n" .metadata.namespace .metadata.name .status.message}}{{end}}' \
+                  | grep "Pod was terminated in response to imminent node shutdown." \
+                  | awk '{print $1, $2}' \
+                  | xargs -r -n2 kubectl delete pod -n || true
+            resources:
+              requests:
+                cpu: 10m
+                memory: 10Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+    rbac:
+      roles:
+        i-see-dead-pods:
+          type: ClusterRole
+          rules:
+            - apiGroups:
+                - ""
+              resources:
+                - pods
+              verbs:
+                - get
+                - list
+                - delete
+      bindings:
+        i-see-dead-pods:
+          type: ClusterRoleBinding
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            identifier: *app
+          subjects:
+            - kind: ServiceAccount
+              identifier: *app
+              namespace: kube-tools
