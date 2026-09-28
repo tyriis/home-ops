@@ -94,6 +94,7 @@ spec:
       annotations:
         external-dns/unifi: "true"
         gatus.home-operations.com/endpoint: |
+          name: grafana
           url: https://grafana.techtales.io/login
           conditions:
             - "[STATUS] == 200"
