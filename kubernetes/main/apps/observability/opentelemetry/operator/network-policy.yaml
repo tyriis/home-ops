@@ -1,10 +1,11 @@
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/networking.k8s.io/networkpolicy_v1.json
 #
-# Egress rule (a) below - why it exists:
-# Cilium evaluates ipBlock egress rules pre-DNAT. The in-cluster API server is reached via the
-# kubernetes Service ClusterIP 10.96.0.1:443 (KUBERNETES_SERVICE_HOST/PORT), not the node IPs on
-# port 6443. Without this rule the operator cannot reach the API and crash-loops.
+# NOTE: the kubernetes API server is NOT reachable via ipBlock egress rules under Cilium -
+# ClusterIP traffic is DNAT'd before the policy verdict and node IPs carry the reserved
+# kube-apiserver identity (excluded from CIDR matching by default). API egress is granted by the
+# sibling CiliumNetworkPolicy opentelemetry-operator-apiserver (toEntities: kube-apiserver).
+# Keep this NetworkPolicy for the egress default-deny posture + DNS allow; rules aggregate.
 #
 # ADOPTION WARNING: the live object for this policy was previously created out-of-band with an
 # ownerReference pointing at the opentelemetry-operator Deployment and was not tracked by Flux.
@@ -35,25 +36,8 @@ spec:
         - protocol: TCP
           port: 8443
   egress:
-    # (a) Kubernetes API via the default "kubernetes" Service ClusterIP - see header comment
-    - to:
-        - ipBlock:
-            cidr: 10.96.0.1/32
-      ports:
-        - protocol: TCP
-          port: 443
-    # (b) API server node endpoints (kept from the previous policy)
-    - to:
-        - ipBlock:
-            cidr: 192.168.100.101/32
-        - ipBlock:
-            cidr: 192.168.100.102/32
-        - ipBlock:
-            cidr: 192.168.100.103/32
-      ports:
-        - protocol: TCP
-          port: 6443
-    # (c) DNS resolution (CoreDNS in kube-system)
+    # DNS resolution (CoreDNS in kube-system). API server egress lives in the
+    # CiliumNetworkPolicy - ipBlock rules can never match it under Cilium.
     - to:
         - namespaceSelector:
             matchLabels:

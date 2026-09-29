@@ -1,0 +1,30 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+#
+# WHY this CiliumNetworkPolicy exists (replaces the dead ipBlock API rules):
+# Cilium enforces egress policy post-service-DNAT, and ipBlock peers only match identity-less
+# destinations. The kubernetes API is therefore unreachable via ipBlock rules:
+#   - ClusterIP 10.96.0.1:443 is translated to a backend before the policy verdict, so the VIP
+#     never appears as the match target.
+#   - The control-plane node IPs :6443 carry the reserved kube-apiserver identity, which CIDR
+#     matching excludes by default (policyCIDRMatchMode=none).
+# Result without this policy: client-go dials time out and the operator crash-loops.
+#
+# This is the canonical Cilium pattern (docs: security/policy/language, "Access to/from
+# kube-apiserver"). No toPorts: the entity implies the apiserver endpoints. If ports were added,
+# they must be the post-DNAT backend port (6443), never the 443 frontend.
+#
+# Rules here aggregate with the sibling NetworkPolicy opentelemetry-operator (whitelist union):
+# that one keeps the default-deny posture + DNS egress; this one adds API access.
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: opentelemetry-operator-apiserver
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/component: controller-manager
+      app.kubernetes.io/name: opentelemetry-operator
+  egress:
+    - toEntities:
+        - kube-apiserver
