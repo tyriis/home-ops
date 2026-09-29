@@ -1,0 +1,65 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/networking.k8s.io/networkpolicy_v1.json
+#
+# Egress rule (a) below - why it exists:
+# Cilium evaluates ipBlock egress rules pre-DNAT. The in-cluster API server is reached via the
+# kubernetes Service ClusterIP 10.96.0.1:443 (KUBERNETES_SERVICE_HOST/PORT), not the node IPs on
+# port 6443. Without this rule the operator cannot reach the API and crash-loops.
+#
+# ADOPTION WARNING: the live object for this policy was previously created out-of-band with an
+# ownerReference pointing at the opentelemetry-operator Deployment and was not tracked by Flux.
+# This manifest deliberately reuses the same name (and lands in the same namespace via the parent
+# Kustomization targetNamespace: observability) so server-side apply takes over field ownership on
+# first reconcile. The stale Deployment ownerReference may still trigger garbage collection if the
+# Deployment is recreated; that may need kubectl patch adoption attention (removing/adjusting
+# metadata.ownerReferences) on first reconcile.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: opentelemetry-operator
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: controller-manager
+      app.kubernetes.io/name: opentelemetry-operator
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    # Admission webhook
+    - ports:
+        - protocol: TCP
+          port: 9443
+    # Metrics
+    - ports:
+        - protocol: TCP
+          port: 8443
+  egress:
+    # (a) Kubernetes API via the default "kubernetes" Service ClusterIP - see header comment
+    - to:
+        - ipBlock:
+            cidr: 10.96.0.1/32
+      ports:
+        - protocol: TCP
+          port: 443
+    # (b) API server node endpoints (kept from the previous policy)
+    - to:
+        - ipBlock:
+            cidr: 192.168.100.101/32
+        - ipBlock:
+            cidr: 192.168.100.102/32
+        - ipBlock:
+            cidr: 192.168.100.103/32
+      ports:
+        - protocol: TCP
+          port: 6443
+    # (c) DNS resolution (CoreDNS in kube-system)
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
