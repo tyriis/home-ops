@@ -23,19 +23,14 @@ spec:
   # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
   # https://github.com/tyriis/i-see-dead-pods
   values:
-    defaultPodOptions:
-      automountServiceAccountToken: true
-    serviceAccount:
-      i-see-dead-pods: {}
     controllers:
       cron:
-        serviceAccount:
-          identifier: *app
         type: cronjob
         cronjob:
           concurrencyPolicy: Forbid
           schedule: "*/5 * * * *"
         pod:
+          automountServiceAccountToken: true
           securityContext:
             runAsUser: 65534
             runAsGroup: 65534
@@ -52,8 +47,8 @@ spec:
               - |
                 kubectl get pods \
                   --all-namespaces \
-                  -o go-template \
-                  --template='{{range .items}}{{printf "%s %s %s\n" .metadata.namespace .metadata.name .status.message}}{{end}}' \
+                  -o custom-columns=NS:.metadata.namespace,NAME:.metadata.name,MSG:.status.message \
+                  --no-headers \
                   | grep "Pod was terminated in response to imminent node shutdown." \
                   | awk '{print $1, $2}' \
                   | xargs -r -n2 kubectl delete pod -n || true
@@ -65,6 +60,10 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+        serviceAccount:
+          identifier: i-see-dead-pods
+    serviceAccount:
+      i-see-dead-pods: {}
     rbac:
       roles:
         i-see-dead-pods:

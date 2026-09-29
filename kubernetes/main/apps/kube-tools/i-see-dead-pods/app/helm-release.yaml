@@ -6,45 +6,38 @@ metadata:
   name: &app i-see-dead-pods
 spec:
   interval: 30m
-  chart:
-    spec:
-      chart: app-template
-      version: 5.2.1
-      sourceRef:
-        kind: HelmRepository
-        name: bjw-s-charts
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: i-see-dead-pods
   install:
+    crds: CreateReplace
     remediation:
       retries: -1
   upgrade:
     cleanupOnFail: true
+    crds: CreateReplace
     remediation:
       retries: 3
   uninstall:
     keepHistory: false
+  # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
+  # https://github.com/tyriis/i-see-dead-pods
   values:
-    # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
-    defaultPodOptions:
-      automountServiceAccountToken: true
-    serviceAccount:
-      i-see-dead-pods: {}
     controllers:
       cron:
-        serviceAccount:
-          identifier: *app
         type: cronjob
         cronjob:
           concurrencyPolicy: Forbid
           schedule: "* * * * *"
         pod:
+          automountServiceAccountToken: true
           securityContext:
             runAsUser: 65534
             runAsGroup: 65534
             fsGroup: 65534
             runAsNonRoot: true
         containers:
-          i-see-dead-pods:
+          cron:
             image:
               repository: alpine/kubectl
               tag: 1.37.1@sha256:7b4cc9a9ce0d064cedeb85550266c11f2b32f010ca299525518646261e4d955e
@@ -54,28 +47,11 @@ spec:
               - |
                 kubectl get pods \
                   --all-namespaces \
-                  -o go-template \
-                  --template='{{range .items}}{{printf "%s %s %s\n" .metadata.namespace .metadata.name .status.message}}{{end}}' \
+                  -o custom-columns=NS:.metadata.namespace,NAME:.metadata.name,MSG:.status.message \
+                  --no-headers \
                   | grep "Pod was terminated in response to imminent node shutdown." \
                   | awk '{print $1, $2}' \
                   | xargs -r -n2 kubectl delete pod -n || true
-            #
-            # kubectl get pods \
-            #   --all-namespaces \
-            #   -o go-template \
-            #   --template='{{range .items}}{{printf "%s %s %s\n" .metadata.namespace .metadata.name .status.message}}{{end}}' \
-            #   | grep "Pod was rejected: Pod was rejected as the node is shutting down." \
-            #   | awk '{print $1, $2}' \
-            #   | xargs -r -n2 kubectl delete pod -n || true
-            #
-            #
-            # kubectl get pods \
-            #  --all-namespaces \
-            #  -o go-template \
-            #  --template='{{range .items}}{{printf "%s %s %s\n" .metadata.namespace .metadata.name .status.conditions}}{{end}}' \
-            #  | grep "Pod was terminated in response to imminent node shutdown." \
-            #  | awk '{print $1, $2}' \
-            #  | xargs -r -n2 kubectl delete pod -n
             resources:
               requests:
                 cpu: 10m
@@ -83,9 +59,11 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
+              capabilities: { drop: ["ALL"] }
+        serviceAccount:
+          identifier: i-see-dead-pods
+    serviceAccount:
+      i-see-dead-pods: {}
     rbac:
       roles:
         i-see-dead-pods:
