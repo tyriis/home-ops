@@ -58,10 +58,6 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-        serviceAccount:
-          identifier: i-see-dead-pods
-    serviceAccount:
-      i-see-dead-pods: {}
     rbac:
       roles:
         i-see-dead-pods:
