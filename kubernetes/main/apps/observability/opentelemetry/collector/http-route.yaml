@@ -7,7 +7,8 @@ metadata:
   annotations:
     external-dns/unifi: "true"
     gatus.home-operations.com/endpoint: |
-      url: http://otel-collector-collector.observability.svc.cluster.local:4318
+      conditions:
+        - "[STATUS] == 401"
 spec:
   hostnames:
     - otel.techtales.io
