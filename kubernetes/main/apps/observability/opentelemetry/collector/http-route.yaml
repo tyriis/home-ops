@@ -6,6 +6,8 @@ metadata:
   name: otel-collector
   annotations:
     external-dns/unifi: "true"
+    gatus.home-operations.com/endpoint: |
+      url: http://otel-collector-collector.observability.svc.cluster.local:4318
 spec:
   hostnames:
     - otel.techtales.io
