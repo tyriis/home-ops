@@ -12,7 +12,7 @@ spec:
       namespace: networking
       sectionName: https
   hostnames:
-    - git.utility.techtales.io
+    - git.techtales.io
   rules:
     - backendRefs:
         - name: forgejo-http

@@ -11,4 +11,4 @@ spec:
     operation: copy
   url: oci://ghcr.io/bjw-s-labs/helm/app-template
   ref:
-    tag: 5.1.0
+    tag: 5.2.1
