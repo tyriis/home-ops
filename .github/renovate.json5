@@ -43,6 +43,12 @@
       automerge: false,
     },
     {
+      description: "OpenBao: minors may break (openbao/openbao#4101)",
+      matchPackageNames: ["/openbao/"],
+      matchUpdateTypes: ["minor", "major"],
+      automerge: false,
+    },
+    {
       description: "ComfyUI Nvidia: date-suffixed OS+CUDA tags (ubuntu26_cuda13.3-YYYYMMDD)",
       // Tag layout: <ubuntuNN>_cuda<X.Y>-<YYYYMMDD>, e.g. ubuntu26_cuda13.3-20260906.
       // compatibility pins the OS+CUDA line so Renovate only bumps the date (and digest),
