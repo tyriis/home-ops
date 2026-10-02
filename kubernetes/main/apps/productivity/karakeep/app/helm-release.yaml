@@ -88,18 +88,14 @@ spec:
         containers:
           app:
             image:
-              repository: gcr.io/zenika-hub/alpine-chrome
-              tag: 124@sha256:1a0046448e0bb6c275c88f86e01faf0de62b02ec8572901256ada0a8c08be23f
-            command:
-              - chromium-browser
+              repository: ghcr.io/karakeep-app/karakeep-chrome
+              tag: 151.0.7922.47-r1@sha256:5b19bbb160e9ff60681a3abd97e1c4ec9f64212301410de658c3900ab7ef31e7
             args:
-              - --headless
-              - --no-sandbox
               - --disable-gpu
               - --disable-dev-shm-usage
-              - --remote-debugging-address=0.0.0.0
-              - --remote-debugging-port=9222
               - --hide-scrollbars
+              - --disable-blink-features=AutomationControlled
+              - --window-size=1440,900
             securityContext:
               capabilities:
                 drop:
