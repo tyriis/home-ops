@@ -3,7 +3,7 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: dragonfly-allow
+  name: dragonfly-allow-metrics
 spec:
   podSelector:
     matchLabels:
@@ -11,14 +11,6 @@ spec:
   policyTypes:
     - Ingress
   ingress:
-    # Allow atlantis-system pods (locking backend)
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: atlantis-system
-      ports:
-        - port: 6379
-          protocol: TCP
     # Allow dragonfly-operator to perform health checks on port 9999
     - from:
         - podSelector:
@@ -38,3 +30,25 @@ spec:
       ports:
         - protocol: TCP
           port: 9999
+
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/networking.k8s.io/networkpolicy_v1.json
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: dragonfly-allow-atlantis
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: dragonfly
+  policyTypes:
+    - Ingress
+  ingress:
+    # Allow atlantis-system pods
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: atlantis-system
+      ports:
+        - port: 6379
+          protocol: TCP
