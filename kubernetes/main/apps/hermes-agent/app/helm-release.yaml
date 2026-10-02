@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.1.0
+      version: 5.2.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -40,18 +40,44 @@ spec:
           init-config:
             image:
               repository: docker.io/library/alpine
-              tag: 3.24@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b
+              tag: 3.24@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6
             command:
               - sh
               - -c
               - |
                 set -euo pipefail
                 cp /tmp/config.yaml /opt/data/config.yaml
+                # Append the optional MCP overlay when mounted (from the ${APP}-mcp-overlay ConfigMap).
+                if [ -f /tmp/mcp-overlay.yaml ]; then
+                  printf '\n' >> /opt/data/config.yaml
+                  cat /tmp/mcp-overlay.yaml >> /opt/data/config.yaml
+                fi
                 chown 10000:10000 /opt/data/config.yaml
+          init-fix-ownership:
+            image:
+              repository: docker.io/library/alpine
+              tag: 3.24@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6
+            command:
+              - sh
+              - -c
+              - |
+                set -euo pipefail
+                # Migration: webui ran as root until now and left root-owned files
+                # in the shared PVC. The gateway has always run as uid 10000, so
+                # every root-owned entry under /opt/data was written by webui.
+                # Only root-owned entries are selected (never a blind recursive
+                # chown of the whole PVC), lost+found is left untouched, and
+                # 10000-owned gateway data is not traversed.
+                find /opt/data -mindepth 1 -maxdepth 1 -user 0 ! -name lost+found \
+                  -print -exec chown -R 10000:10000 {} \;
+                find /opt/data -mindepth 2 -maxdepth 2 -user 0 \
+                  ! -path '/opt/data/lost+found/*' \
+                  -print -exec chown -R 10000:10000 {} \;
+                echo "ownership fix complete"
           init-agent-src:
             image:
               repository: ghcr.io/tyriis/hermes-agent
-              tag: v2026.9.11@sha256:9ebb6113d0e386b44e8619a405b97a6accadc8475bab7410d1cc949a4bd769ce
+              tag: v2026.9.24@sha256:4f2312122f1976c220a8ba1ec77619176e288ebc16f2c55d7b7eaa72e041d8bf
             command:
               - sh
               - -c
@@ -59,13 +85,22 @@ spec:
                 set -euo pipefail
                 cp -r /opt/hermes/. /tmp/agent-src/
                 chmod -R 755 /tmp/agent-src
+                # The WebUI runs as uid 10000 and setuptools writes
+                # hermes_agent.egg-info into the staged tree while building the
+                # wheel, so the copy has to be writable by that uid. This is only
+                # an ephemeral emptyDir.
+                chown -R 10000:10000 /tmp/agent-src
+                # Build-time stamp of the agent source, so the WebUI can tell when
+                # the agent image changed. The emptyDir is repopulated on every
+                # start, so this is derived from the image, not from the copy.
+                printf '%s\n' "$(stat -c %Y /opt/hermes 2>/dev/null || echo unknown)" > /tmp/agent-src/.source-rev
         containers:
           app:
             command: ["hermes"]
             args: ["gateway", "run", "--no-supervise"]
             image: &image
               repository: ghcr.io/tyriis/hermes-agent
-              tag: v2026.9.11@sha256:9ebb6113d0e386b44e8619a405b97a6accadc8475bab7410d1cc949a4bd769ce
+              tag: v2026.9.24@sha256:4f2312122f1976c220a8ba1ec77619176e288ebc16f2c55d7b7eaa72e041d8bf
             ports:
               - name: api
                 containerPort: 8642
@@ -83,6 +118,7 @@ spec:
               HERMES_WRITE_SAFE_ROOT: /opt/data
               WIKI_PATH: /opt/data/wiki
               FIRECRAWL_API_URL: http://firecrawl-api.firecrawl-system.svc.cluster.local:3002 #NOSONAR allow http
+              SEARXNG_URL: http://searxng.ai.svc.cluster.local:8080 #NOSONAR allow http
             envFrom:
               - secretRef:
                   name: ${APP}-secret
@@ -127,10 +163,30 @@ spec:
           webui:
             image:
               repository: ghcr.io/nesquena/hermes-webui
-              tag: 0.52.303@sha256:bd59de1f7375611845cb730a0f9b16c51c83337ae951e6aafea32b5277e3394f
+              tag: 0.52.404@sha256:005718b9dc5249f385ab30ccf968b00830791ea59379d26210cde085075f94a5
             command: ["/bin/sh", "-c"]
             args:
-              - test -d /opt/data/webui-venv || uv venv /opt/data/webui-venv && uv pip install --python /opt/data/webui-venv/bin/python --no-cache -r /apptoo/requirements.txt && uv pip install --python /opt/data/webui-venv/bin/python --no-cache /tmp/agent-src && /opt/data/webui-venv/bin/python3 /apptoo/server.py
+              - |-
+                set -e
+                # Rebuild the virtualenv when the agent source or the WebUI
+                # requirements change. Keying only on the venv's existence meant an
+                # agent image bump never reached the WebUI's Python environment.
+                # Keep shell variables UNBRACED here: the braced form is consumed by
+                # the Flux postBuild substitution pass, which either blanks it or
+                # fails the whole HelmRelease in strict mode.
+                VENV=/opt/data/webui-venv
+                REV="$(cat /tmp/agent-src/.source-rev 2>/dev/null || echo unknown)"
+                REQ_REV="$(stat -c %Y /apptoo/requirements.txt 2>/dev/null || echo 0)"
+                WANT="$REV:$REQ_REV"
+                if [ ! -x "$VENV/bin/python3" ] || [ "$(cat "$VENV/.build-rev" 2>/dev/null)" != "$WANT" ]; then
+                  echo "building webui venv ($WANT)"
+                  rm -rf "$VENV"
+                  uv venv "$VENV"
+                  uv pip install --python "$VENV/bin/python" --no-cache -r /apptoo/requirements.txt
+                  uv pip install --python "$VENV/bin/python" --no-cache /tmp/agent-src
+                  printf '%s\n' "$WANT" > "$VENV/.build-rev"
+                fi
+                exec "$VENV/bin/python3" /apptoo/server.py
             ports:
               - name: webui
                 containerPort: 8787
@@ -140,6 +196,7 @@ spec:
               HERMES_WEBUI_PORT: "8787"
               HERMES_WEBUI_CHAT_BACKEND: gateway
               HERMES_WEBUI_GATEWAY_BASE_URL: http://localhost:8642
+              HERMES_WEBUI_GATEWAY_USE_RUNS_API: "true"
               HERMES_WEBUI_AGENT_DIR: /tmp/agent-src
               HERMES_WEBUI_BOT_NAME: "${AGENT_NAME}"
               HERMES_WEBUI_PASSKEY: "1"
@@ -147,6 +204,7 @@ spec:
               HERMES_NIX_BUILD: "1" # TODO: https://github.com/nesquena/hermes-webui/issues/6441
               HOME: *home
               HERMES_CONFIG_PATH: /opt/data/config.yaml
+              HERMES_HOME: /opt/data
             envFrom:
               - secretRef:
                   name: ${APP}-secret
@@ -171,22 +229,27 @@ spec:
                     path: /health
                     port: 8787
                   initialDelaySeconds: 10
-                  periodSeconds: 5
-                  failureThreshold: 30
+                  # The first start after an agent or WebUI image change rebuilds the
+                  # virtualenv (venv create plus a full dependency install), which
+                  # takes minutes. Keep a generous window so the kubelet cannot kill
+                  # the build halfway and loop on it.
+                  periodSeconds: 10
+                  failureThreshold: 60
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              runAsUser: 10000
+              runAsGroup: 10000
               capabilities:
                 drop:
                   - ALL
-                add:
-                  - DAC_OVERRIDE
             resources:
               requests:
                 cpu: 10m
                 memory: 64Mi
               limits:
-                memory: 256Mi
+                memory: 512Mi
     service:
       app:
         forceRename: *app
@@ -205,8 +268,8 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Hermes WebUI Chat
           gethomepage.dev/group: AI
-          gethomepage.dev/icon: mdi-chat
-          gethomepage.dev/name: Hermes WebUI
+          gethomepage.dev/icon: sh-hermes-agent-light
+          gethomepage.dev/name: ${AGENT_NAME} agent
         hostnames:
           - "${AGENT_NAME}.techtales.io"
         parentRefs:
@@ -221,6 +284,13 @@ spec:
         globalMounts:
           - path: /tmp/config.yaml
             subPath: config.yaml
+      mcp-overlay:
+        type: configMap
+        name: ${APP}-mcp-overlay
+        defaultMode: 0444
+        globalMounts:
+          - path: /tmp/mcp-overlay.yaml
+            subPath: overlay.yaml
       data:
         existingClaim: ${APP}-data
         advancedMounts:
@@ -228,6 +298,8 @@ spec:
             app:
               - path: *home
             init-config:
+              - path: *home
+            init-fix-ownership:
               - path: *home
             webui:
               - path: *home

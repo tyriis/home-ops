@@ -83,7 +83,7 @@ repos:
           - .markdownlint.yaml
 
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.9.6
+    rev: v3.9.9
     hooks:
       - id: prettier
         args:
@@ -100,7 +100,9 @@ repos:
           (?x)^(
             devenv/.*|
             kubernetes/main/apps/argo-system/argo-workflows/app/rbac.yaml|
+            kubernetes/main/apps/kube-tools/rbac.yaml|
             kubernetes/main/apps/secops/rbac.yaml|
+            kubernetes/utility/apps/kube-tools/rbac.yaml|
             kubernetes/utility/apps/secops/rbac.yaml
           )$()
 
@@ -113,15 +115,3 @@ repos:
     rev: v1.7.12
     hooks:
       - id: actionlint
-
-  - repo: https://github.com/tarioch/flux-check-hook
-    rev: v0.8.0
-    hooks:
-      - id: check-flux-helm-values
-        exclude: |
-          (?x)^(
-            devenv/.*|
-            docker/.*/compose\.ya?ml|
-            kubernetes/main/apps/atlantis-system/.+/helm-release.patch.yaml |
-            kubernetes/main/apps/media/recyclarr/app/recyclarr.yaml |
-          )$()

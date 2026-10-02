@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.1.0
+      version: 5.2.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -44,6 +44,13 @@ spec:
             image:
               repository: ghcr.io/thushan/olla
               tag: v0.0.29@sha256:4f1b871c88dbc8e7b7951aab45f5748eb8c2b5b0e862437a10cd09408b8a8673
+            envFrom:
+              - secretRef:
+                  name: olla-env
+            env:
+              # v0.0.29+ ships /app/config/config.yaml which outranks /app/config.yaml;
+              # pin the config path explicitly so the ConfigMap is always used.
+              OLLA_CONFIG_FILE: /config/config.yaml
             resources:
               requests:
                 cpu: 100m
@@ -98,5 +105,5 @@ spec:
         type: configMap
         name: "{{ .Release.Name }}-config"
         globalMounts:
-          - path: /app/config.yaml
+          - path: /config/config.yaml
             subPath: config.yaml

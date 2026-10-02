@@ -1,6 +1,6 @@
 # System: nas
 
-The `nas` system is a dedicated TrueNAS storage server (AOSTAR WTR Pro — Intel N100, 32 GB RAM, 250 GB NVMe OS disk, 4x 8 TB HDD data pool).
+The `nas` system is a dedicated TrueNAS storage server (AOOSTAR WTR Pro — Intel N100, 32 GB RAM, 250 GB NVMe OS disk, 4× 8 TB HDD data pool).
 
 ## What it provides
 

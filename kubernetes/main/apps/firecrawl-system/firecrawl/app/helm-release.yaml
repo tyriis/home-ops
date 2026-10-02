@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.1.0
+      version: 5.2.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: ghcr.io/firecrawl/firecrawl
-              tag: 2.11@sha256:780592f58b4a99beee4424f1acadacf34bcefb02d5893f4bd1a9cb2554bf0a19
+              tag: 2.11@sha256:cc3f938cb543c2e1b9d8a2cefedc26a290ce4901c2576a77ed89fd412c9fd84a
             command: ["node", "--max-old-space-size=6144", "dist/src/index.js"]
             env:
               FLY_PROCESS_GROUP: app
@@ -46,6 +46,7 @@ spec:
               LOGGING_LEVEL: INFO
               IS_KUBERNETES: "true"
               HOST: 0.0.0.0
+              SEARXNG_ENDPOINT: http://searxng.ai.svc.cluster.local:8080 #NOSONAR allow http
             envFrom:
               - secretRef:
                   name: firecrawl-env
@@ -97,7 +98,7 @@ spec:
           app:
             image:
               repository: ghcr.io/firecrawl/firecrawl
-              tag: 2.11@sha256:780592f58b4a99beee4424f1acadacf34bcefb02d5893f4bd1a9cb2554bf0a19
+              tag: 2.11@sha256:cc3f938cb543c2e1b9d8a2cefedc26a290ce4901c2576a77ed89fd412c9fd84a
             command:
               [
                 "node",
@@ -155,7 +156,7 @@ spec:
           app:
             image:
               repository: ghcr.io/firecrawl/firecrawl
-              tag: 2.11@sha256:780592f58b4a99beee4424f1acadacf34bcefb02d5893f4bd1a9cb2554bf0a19
+              tag: 2.11@sha256:cc3f938cb543c2e1b9d8a2cefedc26a290ce4901c2576a77ed89fd412c9fd84a
             command:
               [
                 "node",
@@ -213,7 +214,7 @@ spec:
           app:
             image:
               repository: ghcr.io/firecrawl/playwright-service
-              tag: latest@sha256:df1a393ce8bfc3801570a826a9b0dcc400ae48789adb4a0ad9d6cbf0229b059b
+              tag: latest@sha256:47da52c036b55580d5d0812fa530eacfe03533ebad9449a50858ff697db04f71
             env:
               PORT: "3000"
               BLOCK_MEDIA: "true"
@@ -257,7 +258,7 @@ spec:
           init-permissions:
             image:
               repository: ghcr.io/firecrawl/nuq-postgres
-              tag: latest@sha256:4ca6718b2cef40404b046db5cd37ae45db3e44d1a5750c80522f3587a5b193d5
+              tag: latest@sha256:a582bc385702f3a93cafe2d8c749d55b6676e7c2761e94923113badf7af4b54f
             securityContext:
               runAsUser: 0
             command:
@@ -269,7 +270,7 @@ spec:
           app:
             image:
               repository: ghcr.io/firecrawl/nuq-postgres
-              tag: latest@sha256:4ca6718b2cef40404b046db5cd37ae45db3e44d1a5750c80522f3587a5b193d5
+              tag: latest@sha256:a582bc385702f3a93cafe2d8c749d55b6676e7c2761e94923113badf7af4b54f
             env:
               POSTGRES_USER: postgres
               POSTGRES_PASSWORD: password

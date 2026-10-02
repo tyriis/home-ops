@@ -6,4 +6,5 @@ resources:
   - ./configmap.yaml
   - ./external-secret.yaml
   - ./helm-release.yaml
+  - ./mcp-overlay.yaml
   - ./network-policy.yaml

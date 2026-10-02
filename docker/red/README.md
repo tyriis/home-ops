@@ -1,6 +1,6 @@
 # red
 
-LAN-only Docker host: GPU workstation (`192.168.1.22`, NVIDIA RTX 2060 Super 8 GB) running local
+LAN-only Docker host: GPU workstation (`red-gateway.tyriis.dev`, NVIDIA RTX 2060 Super 8 GB) running local
 LLM/image tooling and an Arcane edge agent. GitOps via doco-cd with `TARGET=red`
 (`docker/.doco-cd.red.yaml`).
 
@@ -38,7 +38,7 @@ are scraped directly on the LAN.
 
 ## First deploy
 
-1. Create UniFi (UDM SE) local DNS A records → `192.168.1.22` for `unsloth`, `jupyter`, `comfyui`, `gallery`, `ollama` `.tyriis.dev`.
+1. Create UniFi (UDM SE) local DNS A records → `192.168.30.20` for `unsloth`, `jupyter`, `comfyui`, `gallery`, `ollama` `.tyriis.dev`.
 2. Put the real Cloudflare token (Zone:DNS:Edit on the `tyriis.dev` zone) into the encrypted file: `sops docker/red/traefik/sops.env`, replace `CF_DNS_API_TOKEN=REPLACE_ME`.
 3. Confirm `ACME_EMAIL` in `docker/red/traefik/.env`.
 4. Ensure red's doco-cd has the red age key (`SOPS_AGE_KEY_FILE`) so `sops.env` decrypts.

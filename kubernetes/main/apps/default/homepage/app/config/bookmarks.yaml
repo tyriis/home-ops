@@ -20,12 +20,6 @@
     - devhints.io:
         - icon: mdi-code-block-tags
           href: https://devhints.io/
-    - labs4grabs:
-        - icon: kubernetes
-          href: https://labs4grabs.io
-    - stackoverflow:
-        - icon: si-stackoverflow
-          href: https://stackoverflow.com/
 
 - Badges:
     - shields.io:
@@ -54,17 +48,3 @@
     - Dashboard Icons:
         - icon: homarr
           href: https://dashboardicons.com/
-
-- Entertainment:
-    - YouTube:
-        - icon: youtube
-          href: https://www.youtube.com/
-    - Netflix:
-        - icon: netflix
-          href: https://www.netflix.com/
-    - Spotify:
-        - icon: spotify
-          href: https://open.spotify.com/
-    - Disney+:
-        - icon: disney-plus-light
-          href: https://www.disneyplus.com/

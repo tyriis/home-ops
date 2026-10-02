@@ -41,3 +41,11 @@ kubernetes/**/bootstrap/**/charts
 .slim/worktrees/
 .slim/worktrees.json
 # END oh-my-opencode-slim worktrees
+
+# Graphify (local tool artifacts, regenerated)
+# output folder (graph.json, graph.html, GRAPH_REPORT.md)
+graphify-out/
+# cache
+.graphify/
+# internal state files
+.graphify_*.json

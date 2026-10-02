@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.1.0
+      version: 5.2.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -27,6 +27,8 @@ spec:
     keepHistory: false
   # https://github.com/bjw-s/helm-charts/blob/main/charts/library/common/values.yaml
   values:
+    serviceAccount:
+      openbao-snapshots: {}
     controllers:
       openbao-snapshots:
         type: cronjob
@@ -36,7 +38,10 @@ spec:
           timeZone: Europe/Vienna
         annotations:
           reloader.stakater.com/auto: "true"
+        serviceAccount:
+          identifier: openbao-snapshots
         pod:
+          automountServiceAccountToken: true
           securityContext:
             runAsUser: 65534
             runAsGroup: 65534
@@ -44,23 +49,20 @@ spec:
         containers:
           snapshot:
             image:
-              repository: vault
-              tag: 1.13.3@sha256:f98ac9dd97b0612746630033771bc7a8c86408a44a056f3f4be47fc576ec3744
+              repository: quay.io/openbao/openbao
+              tag: 2.6.2@sha256:11fd73a2102cda9c55d5d881a8c3210303146a7ec1e8ac76f526e175c6d24641
             command:
               - /bin/sh
               - -ec
               - |
                 mkdir -p /data/snapshots
-                export VAULT_TOKEN=$(vault write -format=json auth/approle/login role_id=$APPROLE_ROLE_ID secret_id=$APPROLE_SECRET_ID | awk -F'"' '/client_token/{print $4}')
-                vault operator raft snapshot save /data/snapshots/openbao-raft.snap
+                export BAO_TOKEN=$(bao write -format=json auth/utility/login role=openbao-snapshots jwt="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" | awk -F'"' '/client_token/{print $4}')
+                bao operator raft snapshot save /data/snapshots/openbao-raft.snap
                 ls -l /data/snapshots
-            envFrom:
-              - secretRef:
-                  name: openbao-snapshot-agent-credentials
             env:
               - name: TZ
                 value: Europe/Vienna
-              - name: VAULT_ADDR
+              - name: BAO_ADDR
                 value: http://openbao-active.secops.svc.cluster.local:8200 #NOSONAR allow http
             securityContext:
               allowPrivilegeEscalation: false
@@ -73,7 +75,7 @@ spec:
           upload:
             image:
               repository: google/cloud-sdk
-              tag: 584.0.0-alpine@sha256:4b234ddfee95d6201971335a530f9d82466ac212b742b9d346a2cbb312fd2820
+              tag: 587.0.0-alpine@sha256:ef78619c8239711d94705ddd3e29d2b24b7482b865ca347c938da6f9bf8b6e92
             command:
               - /bin/sh
               - -ec

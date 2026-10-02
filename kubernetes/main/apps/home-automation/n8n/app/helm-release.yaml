@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.1.0
+      version: 5.2.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -40,7 +40,7 @@ spec:
           app:
             image:
               repository: ghcr.io/n8n-io/n8n
-              tag: 2.39.5@sha256:cfa04788a34ae6f5d59d9086c5761315be2457a9608969553bd0add9a94959d1
+              tag: 2.42.2@sha256:4867554ea7e90d996debeed6cdcdae676e66d949dbd0a05176b87792843d59f5
             envFrom:
               - secretRef:
                   name: n8n-env
@@ -107,10 +107,11 @@ spec:
           gatus.home-operations.com/endpoint: |
             name: n8n-webhook
             group: external
+            url: https://n8n-webhook.techtales.io/webhook
             client:
               dns-resolver: tcp://1.1.1.1:53
             conditions:
-              - "[STATUS] == 404"
+              - "[STATUS] == 200"
         hostnames:
           - n8n-webhook.techtales.io
         parentRefs:

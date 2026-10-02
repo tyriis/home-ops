@@ -1,0 +1,7 @@
+---
+site_name: hermes-agent
+nav:
+  - Home: index.md
+
+plugins:
+  - techdocs-core

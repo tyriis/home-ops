@@ -24,6 +24,8 @@ spec:
       certManager:
         enabled: true
     manager:
+      featureGatesMap:
+        operator.networkpolicy: false
       serviceMonitor:
         enabled: true
       resources:

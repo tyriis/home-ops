@@ -1,8 +1,14 @@
 # System: bifrost
 
-The `bifrost` system is an Intel N250 mini-server. Purpose: **LLM API gateway** (new-api) and **sparkDash host** (monitoring for the DGX Sparks).
+The `bifrost` system is an ASUS NUC 14 Essential (Intel N250) mini-server. Purpose: **LLM API gateway** (new-api) and **sparkDash host** (monitoring for the DGX Sparks).
 
-It is **LAN-only** — Tailscale is deliberately not deployed on this host — and runs **LightWale OS** (Buildroot-based, busybox init, **no systemd**): services are managed with `/etc/init.d/S*NN` scripts, so there is no `systemctl`.
+It is **LAN-only** — Tailscale is deliberately not deployed on this host — and runs **Lightwhale OS** (Buildroot-based, busybox init, **no systemd**): services are managed with `/etc/init.d/S*NN` scripts, so there is no `systemctl`.
+
+## Hardware
+
+| Device                | CPU/SoC    | OS         | OS Disk       | Data Disk | RAM   | Purpose |
+| --------------------- | ---------- | ---------- | ------------- | --------- | ----- | ------- |
+| ASUS NUC 14 Essential | Intel N250 | Lightwhale | 32 GB SD card | 1 TB NVMe | 16 GB | AI-Edge |
 
 ## What it hosts
 
@@ -18,4 +24,4 @@ paths (`env_file`, bind mounts) resolve against the host directory.
 
 ## Documentation
 
-- [Runbook: DNS resolution of local domains](runbooks/dns-lightwale-local-domains.md) — containers fail to resolve `*.techtales.io` names.
+- [Runbook: DNS resolution of local domains](runbooks/dns-lightwhale-local-domains.md) — containers fail to resolve `*.techtales.io` names.

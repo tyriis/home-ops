@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.1.0
+      version: 5.2.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -58,9 +58,16 @@ spec:
               DISABLE_PASSWORD_AUTH: true
               OAUTH_ALLOW_DANGEROUS_EMAIL_ACCOUNT_LINKING: true
               NEXTAUTH_URL: https://karakeep.techtales.io
-              OLLAMA_BASE_URL: http://olla.ai.svc.cluster.local:40114/olla/ollama #NOSONAR allow http
-              INFERENCE_TEXT_MODEL: gemma3:1b
-              INFERENCE_IMAGE_MODEL: llava
+              OPENAI_BASE_URL: https://techtales.ai/v1
+              INFERENCE_TEXT_MODEL: qwen3.8-flash-next
+              INFERENCE_IMAGE_MODEL: qwen3.8-flash-next
+              INFERENCE_CONTEXT_LENGTH: 16384
+              INFERENCE_JOB_TIMEOUT_SEC: 120
+              EMBEDDING_TEXT_MODEL: qwen3-embedding:0.6b
+              EMBEDDING_DIMENSIONS: 1024
+              EMBEDDING_ENABLE_AUTO_INDEXING: true
+              EMBEDDING_CONTEXT_LENGTH: 8192
+              EMBEDDING_TEXT_MODEL_DIMENSION_OVERRIDE: 1024
             envFrom:
               - secretRef:
                   name: karakeep-env
@@ -81,18 +88,14 @@ spec:
         containers:
           app:
             image:
-              repository: gcr.io/zenika-hub/alpine-chrome
-              tag: 124@sha256:1a0046448e0bb6c275c88f86e01faf0de62b02ec8572901256ada0a8c08be23f
-            command:
-              - chromium-browser
+              repository: ghcr.io/karakeep-app/karakeep-chrome
+              tag: 151.0.7922.47-r1@sha256:5b19bbb160e9ff60681a3abd97e1c4ec9f64212301410de658c3900ab7ef31e7
             args:
-              - --headless
-              - --no-sandbox
               - --disable-gpu
               - --disable-dev-shm-usage
-              - --remote-debugging-address=0.0.0.0
-              - --remote-debugging-port=9222
               - --hide-scrollbars
+              - --disable-blink-features=AutomationControlled
+              - --window-size=1440,900
             securityContext:
               capabilities:
                 drop:
@@ -125,7 +128,7 @@ spec:
           app:
             image:
               repository: docker.io/getmeili/meilisearch
-              tag: v1.53.2@sha256:c94e58ca09662dd6e65e8f1b0fd145767be3da7d5422a863a27b8d2b68e090c9
+              tag: v1.54.3@sha256:e68913ab7d6f5b159529e472cfd362ce3c741fafd3c127961b2142abbe41b3c9
             args:
               - /bin/meilisearch
               - --upgrade-db

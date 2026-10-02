@@ -12,7 +12,7 @@
 
 <!-- This section describes the steps required to bootstrap the talos nodes, including any prerequisites and dependencies. -->
 
-To inital install Talos Linux on the NUC devices, I currently use an USB thumb drive. For further details check the official [getting-started guide](https://www.talos.dev/v1.5/introduction/getting-started/)
+To inital install Talos Linux on the MS-01 devices, I currently use an USB thumb drive. For further details check the official [getting-started guide](https://www.talos.dev/v1.5/introduction/getting-started/)
 
 ### Setup SOPS key
 

@@ -25,11 +25,15 @@ discovery:
     concurrent_workers: 5 # Parallel discovery workers
   static:
     endpoints:
-      # Primary workstation GPU
-      - url: http://192.168.1.22:11434
+      # Primary workstation GPU (TLS via Traefik, bearer-authenticated)
+      - url: https://ollama.tyriis.dev
         name: red-rtx2060
         type: ollama
         priority: 100
+        auth:
+          type: bearer
+          # $$ is escaped for the Flux postBuild envsubst pass; olla expands $${RED_OLLAMA_API_KEY} at runtime
+          token: "$${RED_OLLAMA_API_KEY}"
         model_url: /api/tags
         health_check_url: /
         check_interval: 5s

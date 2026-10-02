@@ -22,7 +22,6 @@ spec:
     # https://artifacthub.io/packages/helm/grafana-community/tempo?modal=values
     fullnameOverride: tempo
     tempo:
-      tag: 2.10.8
       reportingEnabled: false
       receivers:
         otlp:

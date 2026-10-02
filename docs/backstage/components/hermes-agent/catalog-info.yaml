@@ -4,7 +4,9 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: hermes-agent
-  description: Hermes Agent is a lightweight agent that reports node and cluster metrics to Hermes.
+  description: Hermes AI agent gateway with community WebUI (api_server, Discord, approvals).
+  annotations:
+    backstage.io/techdocs-ref: dir:.
   links:
     - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/hermes-agent/app
       title: Flux definition
@@ -15,9 +17,9 @@ metadata:
       icon: github
       type: github-repository
   tags:
-    - monitoring
-    - metrics
+    - ai
     - agent
+    - llm
 spec:
   type: service
   lifecycle: production

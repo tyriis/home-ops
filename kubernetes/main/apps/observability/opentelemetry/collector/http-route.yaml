@@ -6,6 +6,9 @@ metadata:
   name: otel-collector
   annotations:
     external-dns/unifi: "true"
+    gatus.home-operations.com/endpoint: |
+      conditions:
+        - "[STATUS] == 401"
 spec:
   hostnames:
     - otel.techtales.io

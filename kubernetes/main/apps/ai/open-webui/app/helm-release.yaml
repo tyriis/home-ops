@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.1.0
+      version: 5.2.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -36,7 +36,7 @@ spec:
           app:
             image:
               repository: ghcr.io/open-webui/open-webui
-              tag: v0.11.3@sha256:41daa0cf2561a5d4c8d1ff31ee2a98d93ab4d3ac2605cac69366ff6a3374a933
+              tag: v0.11.4@sha256:9591b13f13843c7721c2b8eaf7382846c81b3ffe126526d1888d1fed50c6a33f
             env:
               ENABLE_OPENAI_API: False
               ENABLE_OLLAMA_API: True
@@ -48,10 +48,11 @@ spec:
               # IMAGE_STEPS: 8
               # COMFYUI_BASE_URL: http://comfyui:8188
               OLLAMA_BASE_URL: http://olla:40114/olla/ollama #NOSONAR allow http
-              # ENABLE_RAG_WEB_SEARCH: true
-              # ENABLE_SEARCH_QUERY: true
-              # RAG_WEB_SEARCH_ENGINE: searxng
-              # SEARXNG_QUERY_URL: http://searxng:8080/search?q=<query>
+              ENABLE_WEB_SEARCH: "true"
+              WEB_SEARCH_ENGINE: searxng
+              SEARXNG_QUERY_URL: http://searxng.ai.svc.cluster.local:8080/search #NOSONAR allow http
+              SEARXNG_LANGUAGE: en-US
+              WEB_SEARCH_RESULT_COUNT: "5"
               ENABLE_WEBSOCKET_SUPPORT: "true"
               WEBSOCKET_MANAGER: "redis"
               WEBSOCKET_REDIS_URL: "redis://open-webui-dragonfly.ai.svc.cluster.local:6379"
