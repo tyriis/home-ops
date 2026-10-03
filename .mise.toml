@@ -32,7 +32,7 @@
 # https://mise-versions.jdx.dev/tools/talosctl
 "aqua:siderolabs/talos" = "1.14.2"
 # https://mise-versions.jdx.dev/tools/task
-"aqua:go-task/task" = "3.53.1"
+"aqua:go-task/task" = "3.54.0"
 # https://mise-versions.jdx.dev/tools/trivy
 "aqua:aquasecurity/trivy" = "0.75.0"
 # https://mise-versions.jdx.dev/tools/mc
