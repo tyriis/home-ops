@@ -5,6 +5,8 @@ kind: Component
 metadata:
   name: cloudnative-pg
   description: A PostgreSQL operator for Kubernetes, enabling easy deployment and management of PostgreSQL databases.
+  annotations:
+    backstage.io/techdocs-ref: dir:.
   links:
     - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/cnpg-system/cnpg
       title: Flux definition
