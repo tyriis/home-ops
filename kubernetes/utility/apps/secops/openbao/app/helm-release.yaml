@@ -33,7 +33,7 @@ spec:
       image:
         registry: quay.io
         repository: openbao/openbao
-        tag: 2.6.2@sha256:11fd73a2102cda9c55d5d881a8c3210303146a7ec1e8ac76f526e175c6d24641
+        tag: 2.7.1@sha256:6d2b93856e3fcf7b18ad855a0b51eaba474dc8b79cf554379ea32034797d2acf
       updateStrategyType: RollingUpdate
       logLevel: info
       logFormat: json
