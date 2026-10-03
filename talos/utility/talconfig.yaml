@@ -15,7 +15,7 @@ cniConfig:
   name: none
 
 nodes:
-  # i7-8650U / 32GB / SAMSUNG EVO 870 500GB SSD / Samsung SSD 990 PRO 1TB
+  # i7-8650U / 32GB / SAMSUNG EVO 870 500GB SSD
   - hostname: util01
     ipAddress: 192.168.100.31
     controlPlane: true
