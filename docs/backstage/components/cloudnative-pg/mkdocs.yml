@@ -1,0 +1,9 @@
+---
+site_name: cloudnative-pg
+nav:
+  - Home: index.md
+  - Runbooks:
+      - Restore Verification: runbooks/restore-verification.md
+
+plugins:
+  - techdocs-core
