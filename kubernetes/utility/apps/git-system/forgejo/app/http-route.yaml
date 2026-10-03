@@ -6,14 +6,6 @@ metadata:
   name: forgejo
   annotations:
     external-dns/unifi: "true"
-    gatus.home-operations.com/endpoint: |
-      group: infrastructure
-      interval: 5m
-      path: /api/healthz
-      client:
-        dns-resolver: tcp://192.168.1.1:53
-      conditions:
-        - "[STATUS] == 200"
 spec:
   parentRefs:
     - name: envoy
