@@ -70,6 +70,16 @@ sonarr:
           - name: Remux-1080p - Anime
             score: 10000
 
+      - trash_ids:
+          - dbe00161b08a25ac6154c55f95e6318d # Dolby Digital Audio
+        assign_scores_to:
+          - name: WEB-1080p
+            score: 1000
+          - name: HD Bluray + WEB (GER)
+            score: 1000
+          - name: UHD Bluray + WEB (GER)
+            score: 1000
+
 radarr:
   movies:
     base_url: http://radarr:7878
@@ -92,6 +102,10 @@ radarr:
       - trash_id: 722b624f9af1e492284c4bc842153a38 # [Anime] Remux-1080p
         reset_unmatched_scores:
           enabled: true
+
+    custom_format_groups:
+      skip:
+        - 9d5acd8f1da78dfbae788182f7605200 # [Audio] Audio Formats
 
     custom_formats:
       - trash_ids:
@@ -125,3 +139,11 @@ radarr:
             score: 10000
           - name: UHD Bluray + WEB (GER)
             score: 10000
+
+      - trash_ids:
+          - c2998bd0d90ed5621d8df281e839436e # Dolby Digital
+        assign_scores_to:
+          - name: HD Bluray + WEB (GER)
+            score: 1000
+          - name: UHD Bluray + WEB (GER)
+            score: 1000
