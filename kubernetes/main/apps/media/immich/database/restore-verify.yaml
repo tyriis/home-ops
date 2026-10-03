@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: immich-db-restore
+  namespace: media
+spec:
+  instances: 1
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:18.3-1.1.1@sha256:392b53675b403d6a2c72b673cc488a7c272514755dd818c622fb9ce4665193c4
+  storage:
+    size: 20Gi
+    storageClass: local-nvme
+  enableSuperuserAccess: true
+  postgresql:
+    shared_preload_libraries:
+      - vchord.so
+  bootstrap:
+    recovery:
+      source: source
+  externalClusters:
+    - name: source
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: immich-db
+          serverName: immich-db
