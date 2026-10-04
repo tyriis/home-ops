@@ -75,6 +75,7 @@ spec:
           ENABLED: false
         oauth2_client:
           ENABLE_AUTO_REGISTRATION: true
+          UPDATE_AVATAR: true
         openid:
           ENABLE_OPENID_SIGNIN: false
           ENABLE_OPENID_SIGNUP: false
