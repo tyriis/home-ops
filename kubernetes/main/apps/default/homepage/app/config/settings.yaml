@@ -30,6 +30,10 @@ layout:
     style: columns
     # columns: 1
     tab: Services
+  Media:
+    style: columns
+    # columns: 1
+    tab: Services
   Productivity:
     style: columns
     # columns: 1

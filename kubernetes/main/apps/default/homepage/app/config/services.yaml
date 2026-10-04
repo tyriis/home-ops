@@ -77,6 +77,11 @@
         href: https://plex.techtales.io
         description: Plex Media Server
         siteMonitor: https://plex.techtales.io
+    - Immich:
+        icon: immich
+        href: https://immich.techtales.io
+        description: Photo and Video Management
+        siteMonitor: https://immich.techtales.io
     - IT-Tools:
         icon: it-tools-light
         href: https://tools.techtales.io
