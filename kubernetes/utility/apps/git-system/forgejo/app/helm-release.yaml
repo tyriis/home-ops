@@ -25,8 +25,19 @@ spec:
     image:
       registry: code.forgejo.org
       repository: forgejo/forgejo
-      tag: 16.0.4-rootless
-      rootless: true
+      # The digest MUST stay inline in `tag` (Renovate pinDigests appends `@sha256:...`) while
+      # `rootless` MUST stay false. Otherwise forgejo-helm appends a second `-rootless` AFTER
+      # the digest and the image ref becomes invalid (`...@sha256:...-rootless`). The rootless
+      # variant is already selected by the tag suffix. `rootless: false` only drops the HOME
+      # env, which is restored below (SSH is disabled). See #10836 for the full analysis and
+      # the alternatives; custom Renovate managers / postRenderers were rejected as too invasive.
+      tag: 16.0.4-rootless@sha256:a263a1298e89e0bdf019005ce1927e9aadaa8f1bd2a94a3e66ad94e2a89e19ce
+      rootless: false
+    # Normally injected by the chart when image.rootless=true (see #10836).
+    deployment:
+      env:
+        - name: HOME
+          value: /data/gitea/git
     resources:
       requests:
         cpu: 100m
