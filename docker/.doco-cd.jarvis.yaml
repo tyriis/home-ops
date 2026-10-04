@@ -1,0 +1,11 @@
+# ---
+# Host: jarvis (192.168.30.100). Deployed by doco-cd with TARGET=jarvis
+# (docker/deploy/doco-cd/jarvis.env).
+---
+# Traefik first: it creates the shared `apps` network and the TLS entry points before
+# any labelled service attaches. The openchamber route is a file-provider entry inside
+# this stack (docker/jarvis/traefik/dynamic/), not a separate stack.
+name: traefik
+working_dir: docker/jarvis/traefik
+env_files:
+  - .env
