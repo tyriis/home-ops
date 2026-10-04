@@ -72,11 +72,6 @@
         href: https://hass.techtales.io
         description: Home Automation Platform
         siteMonitor: https://hass.techtales.io
-    - Plex:
-        icon: plex
-        href: https://plex.techtales.io
-        description: Plex Media Server
-        siteMonitor: https://plex.techtales.io
     - IT-Tools:
         icon: it-tools-light
         href: https://tools.techtales.io
