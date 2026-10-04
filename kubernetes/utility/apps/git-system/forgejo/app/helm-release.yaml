@@ -31,7 +31,7 @@ spec:
       # variant is already selected by the tag suffix. `rootless: false` only drops the HOME
       # env, which is restored below (SSH is disabled). See #10836 for the full analysis and
       # the alternatives; custom Renovate managers / postRenderers were rejected as too invasive.
-      tag: 16.0.4-rootless@sha256:a263a1298e89e0bdf019005ce1927e9aadaa8f1bd2a94a3e66ad94e2a89e19ce
+      tag: 16.0.5-rootless@sha256:5effb7305584aca479b29fde6f9631a6dbe86ae798ae02eeea33a3666f0c0bf8
       rootless: false
     # Normally injected by the chart when image.rootless=true (see #10836).
     deployment:
