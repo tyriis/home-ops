@@ -114,8 +114,8 @@
       customType: "regex",
       description: "Forgejo (git-system): update image `tag` and `digest` together, preserving the -rootless suffix (#10836)",
       // Scoped to this single file so the repo-wide generic YAML regex managers cannot collide.
-      fileMatch: [
-        "kubernetes/utility/apps/git-system/forgejo/app/helm-release\\.yaml$",
+      managerFilePatterns: [
+        "/kubernetes/utility/apps/git-system/forgejo/app/helm-release\\.yaml$/",
       ],
       // One match spanning the whole image block: `currentValue` is the full tag (incl. `-rootless`)
       // and `currentDigest` is the full `sha256:<hex>` (the prefix MUST be captured; a bare hex would
