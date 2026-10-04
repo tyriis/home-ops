@@ -17,7 +17,7 @@
     "allow_remote_unlocking": false
   },
   "storage": {
-    "experience_type": "percent_level",
+    "experience_type": "percent_points",
     "experience_percent:setting_value": 100.0,
     "can_store_only_xp": false,
     "alternative_experience_entity": false,
