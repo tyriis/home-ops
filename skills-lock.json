@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "asd-ste100": {
+      "source": "danyuchn/asd-ste100-skill",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "ca622bd559242641eaf52d8cd94faa0de51fff26ef87127777598ed3fa410eae"
+    },
     "gitops-cluster-debug": {
       "source": "fluxcd/agent-skills",
       "sourceType": "github",
