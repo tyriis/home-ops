@@ -25,20 +25,12 @@ the LAN. Do not port-forward `:3000` — access it via the TLS route.
 ## First deploy
 
 1. Create the UniFi (UDM SE) local DNS A record `openchamber.tyriis.dev` → `192.168.30.100`.
-2. Put the real Cloudflare token (Zone:DNS:Edit on the `tyriis.dev` zone) into the encrypted
-   file: `sops docker/jarvis/traefik/sops.env`, replace `CF_DNS_API_TOKEN=REPLACE_ME`.
-3. The age private key lives at `~/.config/sops/age/keys.txt` (standard sops CLI
-   location — plain `sops docker/jarvis/traefik/sops.env` just works) and doco-cd reads
-   the same file via `jarvis.env`
-   (public: `age1hpqz0wylrtaf5evn844jkq039wv2cye7cux9gkta9kd5na87yass4yd2k8`,
-   matching the `.sops.yaml` rule for `docker/jarvis/.*/sops\.env$`).
-4. Create the doco-cd webhook secret file (contents unused unless webhooks are wired up):
-   `mkdir -p ~/.config/doco-cd && openssl rand -hex 16 > ~/.config/doco-cd/webhook_secret`
-5. Start the doco-cd agent (polls `main` every 180s, applies `docker/.doco-cd.jarvis.yaml`):
-   `docker compose --project-directory docker/deploy/doco-cd --env-file jarvis.env up -d`
-   Or without GitOps, apply the stack directly:
-   `docker compose --project-directory docker/jarvis/traefik up -d`
-6. Ensure the host OpenChamber runs with `--lan --ui-password` and survives reboots if desired.
+2. Put the real Cloudflare token (Zone:DNS:Edit on the `tyriis.dev` zone) into the encrypted file: `sops docker/jarvis/traefik/sops.env`, replace `CF_DNS_API_TOKEN=REPLACE_ME`.
+3. The age private key is at `~/.config/sops/age/keys.txt`; doco-cd reads the same path via `jarvis.env`. Public key: `age1hpqz0wylrtaf5evn844jkq039wv2cye7cux9gkta9kd5na87yass4yd2k8` (rule in `.sops.yaml`).
+4. Create the doco-cd webhook secret file (contents unused unless webhooks are wired up): `mkdir -p ~/.config/doco-cd && openssl rand -hex 16 > ~/.config/doco-cd/webhook_secret`
+5. Start the doco-cd agent (polls `main` every 180s, applies `docker/.doco-cd.jarvis.yaml`): `docker compose --project-directory docker/deploy/doco-cd --env-file jarvis.env up -d`
+6. Or without GitOps, apply the stack directly: `docker compose --project-directory docker/jarvis/traefik up -d`
+7. Ensure the host OpenChamber runs with `--lan --ui-password` and survives reboots if desired.
 
 Verify: `curl -sI https://openchamber.tyriis.dev` serves a valid `*.tyriis.dev` certificate and
 redirects HTTP→HTTPS; `docker run --rm --network apps --add-host host.docker.internal:host-gateway
