@@ -73,6 +73,8 @@ spec:
           REPO_INDEXER_ENABLED: true
         mailer:
           ENABLED: false
+        oauth2_client:
+          ENABLE_AUTO_REGISTRATION: true
         openid:
           ENABLE_OPENID_SIGNIN: false
           ENABLE_OPENID_SIGNUP: false
