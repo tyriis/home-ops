@@ -27,5 +27,11 @@ spec:
   values:
     controller:
       replicaCount: 1
+      args:
+        # Stamp VSCs with snapshot.storage.kubernetes.io/managed-by=<node> so the
+        # node-side external-snapshotter sidecars (democratic-csi runs with
+        # --node-deployment=true) pick up snapshots for locally provisioned PVCs.
+        # See https://github.com/tyriis/home-ops/issues/10824
+        enableDistributedSnapshotting: true
       serviceMonitor:
         create: true
