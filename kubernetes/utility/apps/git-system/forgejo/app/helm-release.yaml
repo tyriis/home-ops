@@ -89,9 +89,8 @@ spec:
         service:
           ALLOW_ONLY_EXTERNAL_REGISTRATION: true
           DISABLE_REGISTRATION: true
-          ENABLE_INTERNAL_SIGNIN: false
+          ENABLE_INTERNAL_SIGNIN: true
           ENABLE_NOTIFY_MAIL: false
-          ENABLE_PASSWORD_SIGNIN_FORM: false
           REQUIRE_SIGNIN_VIEW: true
           SHOW_REGISTRATION_BUTTON: false
     service:
