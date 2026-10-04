@@ -89,7 +89,7 @@ spec:
               - '[STATUS] == 401'
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Media Streaming Server
-          gethomepage.dev/group: Arr
+          gethomepage.dev/group: Media
           gethomepage.dev/icon: plex
           gethomepage.dev/name: Plex
         hostnames:
