@@ -44,7 +44,7 @@ spec:
       oauth:
         - name: pocket-id
           provider: openidConnect
-          autoDiscoverUrl: https://id.techtales.io/
+          autoDiscoverUrl: https://id.techtales.io/.well-known/openid-configuration
           existingSecret: forgejo-oidc
           groupClaimName: groups
           adminGroup: admins
