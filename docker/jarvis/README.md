@@ -5,10 +5,10 @@ GitOps via doco-cd with `TARGET=jarvis` (`docker/.doco-cd.jarvis.yaml`).
 
 ## Services
 
-| Service            | Hostname               | Backend (target)                              | Direct host port |
-| ------------------ | ---------------------- | --------------------------------------------- | ---------------- |
-| traefik            | —                      | —                                             | `80`/`443` (LAN) |
-| openchamber (host) | `openchamber.tyriis.dev` | Docker-host process `:3000` (file provider)   | `:3000` (host)   |
+| Service            | Hostname                 | Backend (target)                            | Direct host port |
+| ------------------ | ------------------------ | ------------------------------------------- | ---------------- |
+| traefik            | —                        | —                                           | `80`/`443` (LAN) |
+| openchamber (host) | `openchamber.tyriis.dev` | Docker-host process `:3000` (file provider) | `:3000` (host)   |
 
 Traefik terminates TLS for proxied routes. It obtains a single wildcard certificate
 (`tyriis.dev` + `*.tyriis.dev`) from Let's Encrypt via the Cloudflare DNS-01 challenge
@@ -16,7 +16,7 @@ Traefik terminates TLS for proxied routes. It obtains a single wildcard certific
 an include shim overriding only `command:`/`volumes:` — see `docker/jarvis/traefik/compose.yaml`).
 
 **`openchamber.tyriis.dev` is the one non-Docker backend on this host.** It is served by the
-Traefik *file provider* (`docker/jarvis/traefik/dynamic/openchamber.yaml`): OpenChamber runs as
+Traefik _file provider_ (`docker/jarvis/traefik/dynamic/openchamber.yaml`): OpenChamber runs as
 a host process and Traefik reaches it at `http://host.docker.internal:3000` (host-gateway).
 Requirements: the process must listen on a non-loopback address (currently `0.0.0.0:3000`) and
 must run with its built-in UI password (`--ui-password`), since raw `:3000` is plain HTTP on
