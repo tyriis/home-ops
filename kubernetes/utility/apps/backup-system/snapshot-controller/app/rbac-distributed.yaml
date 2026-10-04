@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrole_v1.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: snapshot-controller:distributed
+rules:
+  # Required by --enable-distributed-snapshotting so the controller can map
+  # local PVs to their owning node. The piraeus chart's ClusterRole omits it
+  # (upstream rbac-snapshot-controller.yaml keeps it commented/opt-in).
+  - apiGroups: [""]
+    resources: ["nodes"]
+    verbs: ["get", "list", "watch"]
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrolebinding_v1.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: snapshot-controller:distributed
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: snapshot-controller:distributed
+subjects:
+  - kind: ServiceAccount
+    name: snapshot-controller
+    namespace: backup-system
