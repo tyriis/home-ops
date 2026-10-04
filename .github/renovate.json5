@@ -1,7 +1,7 @@
 {
   enabled: true,
   extends: [
-    "github>tyriis/renovate-config//generic-regex-manager.json5",
+    "github>tyriis/renovate-config//generic-regex-manager.json5", //  TODO: reconfigure
     "github>techtales-io/renovate-config:base.json5",
     "github>techtales-io/renovate-config:flux-infra.json5",
     "github>techtales-io/renovate-config//dependencies/argo.json5",
@@ -50,6 +50,9 @@
     },
     {
       description: "ComfyUI Nvidia: date-suffixed OS+CUDA tags (ubuntu26_cuda13.3-YYYYMMDD)",
+      // Tag layout: <ubuntuNN>_cuda<X.Y>-<YYYYMMDD>, e.g. ubuntu26_cuda13.3-20260906.
+      // compatibility pins the OS+CUDA line so Renovate only bumps the date (and digest),
+      // never silently jumps to a different Ubuntu/CUDA line (which may need a newer driver).
       matchDatasources: ["docker"],
       matchPackageNames: ["mmartial/comfyui-nvidia-docker"],
       versioning: "regex:^(?<compatibility>ubuntu[0-9]+_cuda[0-9.]+)-(?<major>\\d{4})(?<minor>\\d{2})(?<patch>\\d{2})$",
@@ -59,6 +62,7 @@
       matchDepNames: ["siderolabs/talos"],
       sourceUrl: "https://github.com/siderolabs/talos",
     },
+    // separate siderolabs per cluster
     {
       matchPackageNames: ["/siderolabs/"],
       matchFileNames: ["**/main/**"],
@@ -69,6 +73,7 @@
       matchFileNames: ["**/utility/**"],
       additionalBranchPrefix: "utility-",
     },
+    // separate app-template per cluster
     {
       matchPackageNames: ["/app-template/"],
       matchFileNames: ["**/main/**"],
@@ -79,6 +84,7 @@
       matchFileNames: ["**/utility/**"],
       additionalBranchPrefix: "utility-",
     },
+    // automerge devenv
     {
       matchFileNames: ["devenv/**"],
       matchUpdateTypes: ["minor", "patch"],
@@ -89,6 +95,11 @@
       matchFileNames: ["kubernetes/utility/bootstrap/.mise.toml"],
       enabled: false,
     },
+    // Forgejo: helm-values appends the digest to `tag` (`16.0.6-rootless@sha256:...`), which breaks
+    // forgejo-helm's `hasSuffix "-rootless"` check and yields an invalid image ref. Renovate's `flux`
+    // manager reuses the same helm-values extractor on HelmRelease `spec.values`, so it collides too
+    // (tag-only update, digest left stale). Both are disabled for this file; the dedicated custom.regex
+    // manager below owns it, updating `tag` and `digest` together. See #10836.
     {
       description: "Forgejo image is managed by a scoped custom.regex manager (tag + digest)",
       matchFileNames: [
@@ -102,9 +113,15 @@
     {
       customType: "regex",
       description: "Forgejo (git-system): update image `tag` and `digest` together, preserving the -rootless suffix (#10836)",
+      // Scoped to this single file so the repo-wide generic YAML regex managers cannot collide.
       managerFilePatterns: [
         "/kubernetes/utility/apps/git-system/forgejo/app/helm-release\\.yaml$/",
       ],
+      // One match spanning the whole image block: `currentValue` is the full tag (incl. `-rootless`)
+      // and `currentDigest` is the full `sha256:<hex>` (the prefix MUST be captured; a bare hex would
+      // be re-prefixed to `sha256:sha256:...` by the replacement path). The default replaceString is
+      // this full match, so both fields are rewritten in one PR while `registry`/`repository` and
+      // `rootless` stay untouched. No extractVersion: the suffix must remain part of the value.
       matchStrings: [
         "image:[ \\t]*\\r?\\n[ \\t]+registry:[ \\t]*code\\.forgejo\\.org[ \\t]*\\r?\\n[ \\t]+repository:[ \\t]*forgejo/forgejo[ \\t]*\\r?\\n[ \\t]+tag:[ \\t]*(?<currentValue>[^\\s]+)[ \\t]*\\r?\\n[ \\t]+digest:[ \\t]*(?<currentDigest>sha256:[a-f0-9]{64})",
       ],
