@@ -50,7 +50,7 @@ services:
   # The key comes from the SOPS-encrypted sops.env (doco-cd decrypts at deploy time and
   # exports SOPS_ENV_FILE), never from a committed label.
   ollama-auth:
-    image: caddy:2.11-alpine@sha256:d44355d3c2149dc580ce2cac735955d1c08d3d00882c30489c241aa51a5c10d9
+    image: caddy:2.11-alpine@sha256:1a81ac3d1a49b2b385a5bfafb8bd39fb40fa1d717461d825ee0d65df91a6e97b
     cap_drop:
       - ALL
     # The official Caddy image ships /usr/bin/caddy with the file capability
