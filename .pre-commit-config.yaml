@@ -12,6 +12,17 @@ repos:
     hooks:
       - id: check-useless-excludes
 
+  # barman ObjectStore destinationPath must not end with '/':
+  # MinIO rejects the double-slash prefix barman builds from it, silently
+  # breaking backup retention. See tyriis/home-ops#10860.
+  - repo: local
+    hooks:
+      - id: check-cnpg-barman-destinationpath
+        name: cnpg barman destinationPath has no trailing slash
+        language: script
+        entry: scripts/hooks/check-cnpg-barman-destinationpath.sh
+        files: ^(kubernetes|devenv)/.*\.ya?ml$
+
   - repo: https://github.com/thlorenz/doctoc
     rev: v2.5.0
     hooks:
