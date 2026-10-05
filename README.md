@@ -27,7 +27,7 @@
 <!-- [![cloudflare][cloudflare-shield]][cloudflare-url] -->
 <!-- PROJECT LOGO -->
 <br />
-  <img src="https://storage.googleapis.com/techtales-public-images/groot-home-ops.png" alt="Logo" width="250" height="250" style="display:block;">
+  <img src="https://storage.googleapis.com/techtales-public-images/transparent-captain-art.png" alt="Logo" width="250" height="250" style="display:block;">
 <br />
 <br />
 
