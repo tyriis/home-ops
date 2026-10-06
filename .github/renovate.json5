@@ -38,8 +38,6 @@
   packageRules: [
     {
       description: "do not automerge silo",
-      // pgsty/minio was renamed to pgsty/silo; the old name is frozen at
-      // RELEASE.2026-08-04. See #10718.
       matchDepNames: ["pgsty/silo"],
       matchUpdateTypes: ["patch", "minor", "major", "digest"],
       automerge: false,
