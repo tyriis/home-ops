@@ -1,0 +1,94 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: opengist
+spec:
+  driftDetection:
+    mode: enabled
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 5.2.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    controllers:
+      opengist:
+        replicas: 1
+        strategy: RollingUpdate
+        containers:
+          app:
+            image:
+              repository: ghcr.io/thomiceli/opengist
+              tag: 1.15.2@sha256:7edc91273ee7d10a17406da8a08c803158baaff984c39b789c1313473d068f21
+            env:
+              OG_EXTERNAL_URL: https://gist.techtales.io
+              OG_HTTP_PORT: "6157"
+              OG_SSH_GIT_ENABLED: disabled
+              OG_OIDC_PROVIDER_NAME: Pocket ID
+              OG_OIDC_DISCOVERY_URL: https://id.techtales.io/.well-known/openid-configuration
+              OG_OIDC_GROUP_CLAIM_NAME: groups
+              OG_OIDC_ADMIN_GROUP: admins
+            envFrom:
+              - secretRef:
+                  name: opengist
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthcheck
+                    port: 6157
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 5m
+                memory: 64Mi
+              limits:
+                memory: 512Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: ["ALL"]
+              readOnlyRootFilesystem: true
+
+    service:
+      app:
+        controller: opengist
+        ports:
+          http:
+            port: 6157
+
+    persistence:
+      data:
+        type: persistentVolumeClaim
+        existingClaim: opengist-data
+        globalMounts:
+          - path: /opengist
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
