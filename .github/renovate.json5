@@ -15,8 +15,8 @@
     "github>techtales-io/renovate-config//dependencies/minecraft-luckperms-plugin.json5",
     "github>techtales-io/renovate-config//dependencies/minecraft-paper-builds.json5",
     "github>techtales-io/renovate-config//dependencies/minecraft-velocity.json5",
-    "github>techtales-io/renovate-config//dependencies/minio.json5",
     "github>techtales-io/renovate-config//dependencies/rook-ceph.json5",
+    "github>techtales-io/renovate-config//dependencies/silo.json5",
     "github>techtales-io/renovate-config//dependencies/talos.json5",
   ],
   ignorePaths: [],
@@ -37,9 +37,9 @@
   },
   packageRules: [
     {
-      description: "do not automerge minio",
-      matchDepNames: ["quay.io/minio/minio"],
-      matchUpdateTypes: ["patch", "minor", "major"],
+      description: "do not automerge silo",
+      matchDepNames: ["pgsty/silo"],
+      matchUpdateTypes: ["major", "minor", "patch", "digest"],
       automerge: false,
     },
     {
