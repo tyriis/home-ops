@@ -164,7 +164,7 @@
         siteMonitor: https://harbor.techtales.io
 - Observability:
     - sparkDash:
-        icon: nvidia
+        icon: https://raw.githubusercontent.com/MiaAI-Lab/sparkDash/main/assets/bolt.svg
         href: https://sparkdash.techtales.ai
         description: DGX Spark Monitoring Dashboard
         siteMonitor: https://sparkdash.techtales.ai
