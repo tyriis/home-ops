@@ -36,14 +36,17 @@ spec:
 
     controllers:
       opengist:
+        annotations:
+          reloader.stakater.com/auto: "true"
         replicas: 1
-        strategy: RollingUpdate
+        strategy: Recreate
         containers:
           app:
             image:
               repository: ghcr.io/thomiceli/opengist
               tag: 1.15.2@sha256:7edc91273ee7d10a17406da8a08c803158baaff984c39b789c1313473d068f21
             env:
+              TZ: Europe/Vienna
               OG_EXTERNAL_URL: https://gist.techtales.io
               OG_HTTP_PORT: "6157"
               OG_SSH_GIT_ENABLED: disabled
@@ -55,6 +58,15 @@ spec:
               - secretRef:
                   name: opengist
             probes:
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthcheck
+                    port: 6157
+                  failureThreshold: 30
+                  periodSeconds: 10
               liveness: &probes
                 enabled: true
                 custom: true
