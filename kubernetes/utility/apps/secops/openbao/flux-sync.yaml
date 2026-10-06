@@ -51,8 +51,8 @@ spec:
   healthCheckExprs:
     - apiVersion: external-secrets.io/v1
       kind: ExternalSecret
-      current: has(status.conditions) && status.conditions.exists(e, e.type == 'Ready' && e.status == 'True')
       failed: has(status.conditions) && status.conditions.exists(e, e.type == 'Ready' && e.status == 'False')
+      current: has(status.conditions) && status.conditions.exists(e, e.type == 'Ready' && e.status == 'True')
 
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
