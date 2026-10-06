@@ -267,7 +267,7 @@ spec:
           external-dns/unifi: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Hermes WebUI Chat
-          gethomepage.dev/group: AI
+          gethomepage.dev/group: Agents
           gethomepage.dev/icon: sh-hermes-agent-light
           gethomepage.dev/name: ${AGENT_NAME} agent
         hostnames:

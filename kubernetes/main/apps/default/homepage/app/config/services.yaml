@@ -93,6 +93,12 @@
         description: OpenBao Secrets Management
         # ping: openbao.techtales.io
         siteMonitor: https://secrets.techtales.io
+- Development:
+    - Forgejo:
+        icon: si-forgejo
+        href: https://git.techtales.io
+        description: Self-hosted Git for Agents
+        siteMonitor: https://git.techtales.io/api/healthz
 - Web:
     - Cloudflare Dashboard:
         icon: cloudflare

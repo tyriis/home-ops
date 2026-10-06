@@ -84,7 +84,7 @@ spec:
           external-dns/unifi: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/name: SearXNG
-          gethomepage.dev/group: AI
+          gethomepage.dev/group: Agents
           gethomepage.dev/icon: searxng
           gethomepage.dev/description: Privacy-respecting metasearch
         hostnames:
