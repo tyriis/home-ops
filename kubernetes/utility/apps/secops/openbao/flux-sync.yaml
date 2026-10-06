@@ -30,6 +30,35 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: &appname openbao-unseal
+spec:
+  targetNamespace: secops
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  path: ./kubernetes/utility/apps/secops/openbao/unseal
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: external-secrets-stores
+  healthCheckExprs:
+    - apiVersion: external-secrets.io/v1
+      kind: ExternalSecret
+      failed: has(status.conditions) && status.conditions.exists(e, e.type == 'Ready' && e.status == 'False')
+      current: has(status.conditions) && status.conditions.exists(e, e.type == 'Ready' && e.status == 'True')
+
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: &appname openbao-snapshots
   namespace: flux-system
 spec:
