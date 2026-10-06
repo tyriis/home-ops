@@ -15,7 +15,6 @@
     "github>techtales-io/renovate-config//dependencies/minecraft-luckperms-plugin.json5",
     "github>techtales-io/renovate-config//dependencies/minecraft-paper-builds.json5",
     "github>techtales-io/renovate-config//dependencies/minecraft-velocity.json5",
-    "github>techtales-io/renovate-config//dependencies/minio.json5",
     "github>techtales-io/renovate-config//dependencies/rook-ceph.json5",
     "github>techtales-io/renovate-config//dependencies/talos.json5",
   ],
@@ -37,12 +36,6 @@
   },
   packageRules: [
     {
-      description: "do not automerge minio",
-      matchDepNames: ["quay.io/minio/minio"],
-      matchUpdateTypes: ["patch", "minor", "major"],
-      automerge: false,
-    },
-    {
       description: "do not automerge silo",
       // pgsty/minio was renamed to pgsty/silo; the old name is frozen at
       // RELEASE.2026-08-04. See #10718.
@@ -51,7 +44,7 @@
       automerge: false,
     },
     {
-      description: "silo: versioning (RELEASE.<date>T<time>Z tags, mirrors the minio preset)",
+      description: "silo: versioning (RELEASE.<date>T<time>Z date tags)",
       matchDatasources: ["docker"],
       matchDepNames: ["pgsty/silo"],
       versioning: "regex:^RELEASE\\.(?<major>\\d+)-(?<minor>\\d+)-(?<patch>\\d+)T.*Z(-(?<compatibility>.*))?$",
