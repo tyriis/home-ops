@@ -1,0 +1,39 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: opengist
+  description: Self-hosted gist service where every gist is a real git repository, cloned and pushed over HTTP.
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/utility/apps/git-system/opengist
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/thomiceli/opengist
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+    - url: https://gist.techtales.io
+      title: Opengist
+      icon: dashboard
+      type: dashboard
+  tags:
+    - git
+    - snippets
+    - gist
+    - development
+spec:
+  type: service
+  lifecycle: production
+  system: utility-cluster
+  owner: home-ops
+  dependsOn:
+    - component:cert-manager
+    - component:envoy-gateway
+    - component:external-dns
+    - component:volsync
+    - component:pocket-id
+    - component:openbao
