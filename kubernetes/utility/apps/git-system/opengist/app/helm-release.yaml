@@ -50,6 +50,7 @@ spec:
               OG_EXTERNAL_URL: https://gist.techtales.io
               OG_HTTP_PORT: "6157"
               OG_SSH_GIT_ENABLED: disabled
+              OG_LOG_OUTPUT: stdout
               OG_OIDC_PROVIDER_NAME: Pocket ID
               OG_OIDC_DISCOVERY_URL: https://id.techtales.io/.well-known/openid-configuration
               OG_OIDC_GROUP_CLAIM_NAME: groups
