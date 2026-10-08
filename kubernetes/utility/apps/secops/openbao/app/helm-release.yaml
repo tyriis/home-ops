@@ -55,12 +55,6 @@ spec:
         size: 2Gi
         mountPath: /openbao/audit
         storageClass: local-nvme
-      extraEnvironmentVars:
-        GOOGLE_APPLICATION_CREDENTIALS: /openbao/userconfig/kms-openbao-unseal/serviceaccount.json
-      extraVolumes:
-        - type: secret
-          name: kms-openbao-unseal
-          path: /openbao/userconfig
       extraSecretEnvironmentVars:
         - envName: STATIC_UNSEAL_KEY
           secretName: openbao-unseal-key
@@ -85,13 +79,6 @@ spec:
               }
             }
 
-            seal "gcpckms" {
-              disabled    = "true"
-              project     = "techtales"
-              region      = "europe-west3"
-              key_ring    = "home-infra"
-              crypto_key  = "vault-unseal"
-            }
             seal "static" {
               current_key_id = "20261004-1"
               current_key    = "env://STATIC_UNSEAL_KEY"
