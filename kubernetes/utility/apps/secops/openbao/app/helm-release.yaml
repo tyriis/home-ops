@@ -61,6 +61,10 @@ spec:
         - type: secret
           name: kms-openbao-unseal
           path: /openbao/userconfig
+      extraSecretEnvironmentVars:
+        - envName: STATIC_UNSEAL_KEY
+          secretName: openbao-unseal-key
+          secretKey: key
       ha:
         enabled: true
         replicas: 1
@@ -82,11 +86,15 @@ spec:
             }
 
             seal "gcpckms" {
-              disabled    = "false"
+              disabled    = "true"
               project     = "techtales"
               region      = "europe-west3"
               key_ring    = "home-infra"
               crypto_key  = "vault-unseal"
+            }
+            seal "static" {
+              current_key_id = "20261004-1"
+              current_key    = "env://STATIC_UNSEAL_KEY"
             }
 
             # storage "file" {
