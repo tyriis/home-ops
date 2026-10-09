@@ -64,7 +64,7 @@ services:
       timeout: 5s
       retries: 3
       start_period: 15s
-    image: ghcr.io/vasihemanth/tokentelemetry-frontend:latest@sha256:e4ce31ee90a3ecb88732a48c5cd029b7fb77e1ce9a3248a9e682251003764b44
+    image: ghcr.io/vasihemanth/tokentelemetry-frontend:latest@sha256:d126e28ec56cedb5078634b10dc82ec47d6dfefe15b2916622f5c2e7507d1f1e
     mem_limit: 256m
     pids_limit: 64
     ports:
