@@ -1,66 +1,58 @@
 ---
 app:
-  # Should be the same as backend.baseUrl when using the `app-backend` plugin.
-  # baseUrl: http://localhost:7007
   baseUrl: ${BASE_URL}
+  title: TechTales Backstage
 
+# Explicit plugin root — no reliance on the relative-path default.
+dynamicPlugins:
+  rootDirectory: /opt/app-root/src/dynamic-plugins-root
+
+# Pocket-ID OIDC via the oidc module compiled into the RHDH image.
 auth:
-  enableExperimentalRedirectFlow: true
   environment: production
+  session:
+    secret: ${AUTH_SESSION_SECRET}
   providers:
-    google:
+    oidc:
       production:
-        clientId: ${AUTH_GOOGLE_CLIENT_ID}
-        clientSecret: ${AUTH_GOOGLE_CLIENT_SECRET}
+        metadataUrl: https://id.techtales.io/.well-known/openid-configuration
+        clientId: ${AUTH_OIDC_CLIENT_ID}
+        clientSecret: ${AUTH_OIDC_CLIENT_SECRET}
+        prompt: auto
+        signIn:
+          resolvers:
+            - resolver: emailLocalPartMatchingUserEntityName
 
+signInPage: oidc
+
+# Local builder: /opt/techdocs-venv (mkdocs + mkdocs-techdocs-core) ships in the image.
 techdocs:
-  builder: "local" # Alternatives - 'external'
+  builder: local
   generator:
-    runIn: "local" # Alternatives - 'local'
+    runIn: local
   publisher:
-    type: "local" # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
+    type: local
+    local:
+      publishDirectory: /var/backstage-data/techdocs
 
 backend:
-  # Note that the baseUrl should be the URL that the browser and other clients
-  # should use when communicating with the backend, i.e. it needs to be
-  # reachable not just from within the backend host, but from all of your
-  # callers. When its value is "http://localhost:7007", it's strictly private
-  # and can't be reached by others.
   baseUrl: ${BASE_URL}
-  # The listener can also be expressed as a single <host>:<port> string. In this case we bind to
-  # all interfaces, the most permissive setting. The right value depends on your specific deployment.
   listen: ":7007"
-
+  cors:
+    origin: ${BASE_URL}
   csp:
     connect-src: ["'self'", "http:", "https:"]
-    img-src: ["'self'", "storage.googleapis.com"]
-
-  # config options: https://node-postgres.com/api/client
+    img-src: ["'self'", "data:", "https:"]
+  # SQLite on the data PVC: catalog survives pod restarts; a lost PVC just re-ingests.
   database:
     client: better-sqlite3
-    connection: ":memory:"
-  # database:
-  #   client: pg
-  #   connection:
-  #     host: ${POSTGRES_HOST}
-  #     port: ${POSTGRES_PORT}
-  #     user: ${POSTGRES_USER}
-  #     password: ${POSTGRES_PASSWORD}
-  # https://node-postgres.com/features/ssl
-  # you can set the sslmode configuration option via the `PGSSLMODE` environment variable
-  # see https://www.postgresql.org/docs/current/libpq-ssl.html Table 33.1. SSL Mode Descriptions (e.g. require)
-  # ssl:
-  #   ca: # if you have a CA file and want to verify it you can uncomment this section
-  #     $file: <file-path>/ca/server.crt
+    connection: /var/backstage-data/db/backstage.db
   reading:
     allow:
       - host: raw.githubusercontent.com
         path: /tyriis/locking-service/main/openapi.yaml
 
 catalog:
-  # Overrides the default list locations from app-config.yaml as these contain example data.
-  # See https://backstage.io/docs/features/software-catalog/#adding-components-to-the-catalog for more details
-  # on how to get entities into the catalog.
   import:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
@@ -71,7 +63,3 @@ catalog:
       target: https://github.com/tyriis/home-ops/blob/main/docs/backstage/catalog-info.yaml
     - type: url
       target: https://github.com/techtales-io/backstage-docs/blob/main/knowledge/catalog-info.yaml
-    - type: file
-      target: /docs/backstage/catalog-info.yaml
-      rules:
-        - allow: [User, Group]

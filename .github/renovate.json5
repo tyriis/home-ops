@@ -43,6 +43,13 @@
       automerge: false,
     },
     {
+      description: "RHDH community image: tag+digest pin, no automerge (#10917)",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["quay.io/rhdh-community/rhdh"],
+      matchUpdateTypes: ["major", "minor", "patch", "digest"],
+      automerge: false,
+    },
+    {
       description: "OpenBao: minors may break (openbao/openbao#4101)",
       matchPackageNames: ["/openbao/"],
       matchUpdateTypes: ["minor", "major"],
