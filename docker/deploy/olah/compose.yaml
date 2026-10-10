@@ -23,7 +23,7 @@ services:
       # cache-redirect-model stay at their defaults (off, config-file only)
     container_name: olah
     # upstream compose example ships the stale typo tag "lastet" - never use it
-    image: xiahan2019/olah:0.5.2@sha256:143873776b9d41955763c0ef02e589949ab16b793aebdcde209317262da185cf
+    image: xiahan2019/olah:0.5.4@sha256:802ec30637bc37c2766e39d66a6c57e2ba1c97eb6fc2db14c459f7b174372baf
     networks:
       - apps
     ports:
