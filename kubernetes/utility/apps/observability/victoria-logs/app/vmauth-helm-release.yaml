@@ -1,0 +1,223 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: vmauth
+spec:
+  driftDetection:
+    mode: enabled
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 5.2.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    defaultPodOptions:
+      annotations:
+        reloader.stakater.com/auto: "true"
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        fsGroup: 65534
+
+    configMaps:
+      vmauth:
+        forceRename: vmauth
+        data:
+          vmauth.yaml: |-
+            users:
+              # ---- write users: /insert/.* only, 403 on everything else ----
+              - name: ms01
+                bearer_token: "%{VMAUTH_TOKEN_MS01}"
+                url_map:
+                  - src_paths: ["/insert/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    # required by vmauth v1.153.0 on every entry; deny short-circuits with 403 first
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+
+              - name: utility
+                bearer_token: "%{VMAUTH_TOKEN_UTILITY}"
+                url_map:
+                  - src_paths: ["/insert/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    # required by vmauth v1.153.0 on every entry; deny short-circuits with 403 first
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+
+              - name: nas
+                bearer_token: "%{VMAUTH_TOKEN_NAS}"
+                url_map:
+                  - src_paths: ["/insert/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    # required by vmauth v1.153.0 on every entry; deny short-circuits with 403 first
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+
+              - name: bifrost
+                bearer_token: "%{VMAUTH_TOKEN_BIFROST}"
+                url_map:
+                  - src_paths: ["/insert/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    # required by vmauth v1.153.0 on every entry; deny short-circuits with 403 first
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+
+              - name: workstation
+                bearer_token: "%{VMAUTH_TOKEN_WORKSTATION}"
+                url_map:
+                  - src_paths: ["/insert/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    # required by vmauth v1.153.0 on every entry; deny short-circuits with 403 first
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+
+              - name: remote
+                bearer_token: "%{VMAUTH_TOKEN_REMOTE}"
+                url_map:
+                  - src_paths: ["/insert/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    # required by vmauth v1.153.0 on every entry; deny short-circuits with 403 first
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+
+              # ---- read user: Grafana victoriametrics-logs-datasource + vmui ----
+              - name: grafana-readonly
+                bearer_token: "%{VMAUTH_TOKEN_GRAFANA}"
+                url_map:
+                  - src_paths: ["/select/.*", "/api/v1/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    # required by vmauth v1.153.0 on every entry; deny short-circuits with 403 first
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+
+            # NOTE: no `unauthorized_user:` block — requests with an unknown token get 401,
+            # they are never proxied.
+
+            # ---- GRADUATION BLOCK (do not enable yet) --------------------------------
+            # Phase 2/3 changes are vmauth-config-only:
+            #
+            # 1) Metrics backend on the same front door (ADR 0016 consequences):
+            #    add a vm-single/vm-cluster HelmRelease, then one user per unit like:
+            #      - name: ms01-metrics
+            #        bearer_token: "%{VMAUTH_TOKEN_MS01_METRICS}"
+            #        url_map:
+            #          - src_paths: ["/api/v1/write"]
+            #            url_prefix: "http://victoria-metrics.observability.svc.cluster.local:8428"
+            #          - src_paths: ["/api/v1/query.*", "/api/v1/series.*", "/api/v1/labels.*"]
+            #            url_prefix: "http://victoria-metrics.observability.svc.cluster.local:8428"
+            #
+            # 2) Option B (vlcluster) tenant rewrite — per-unit hard tenancy:
+            #    swap VL for vlinsert/vmselect and rewrite tenant per user via headers:
+            #      - name: ms01
+            #        bearer_token: "%{VMAUTH_TOKEN_MS01}"
+            #        url_map:
+            #          - src_paths: ["/insert/.*"]
+            #            url_prefix: "http://vlinsert.observability.svc.cluster.local:9491/insert/1"
+            #            headers: ["AccountID: 1", "ProjectID: 0"]
+            #    (Grafana source swap = datasource URL change only.)
+            # --------------------------------------------------------------------------
+
+    controllers:
+      vmauth:
+        type: deployment
+        replicas: 1
+        containers:
+          app:
+            image:
+              repository: docker.io/victoriametrics/vmauth
+              tag: v1.153.0
+            args:
+              - -auth.config=/etc/vmauth/vmauth.yaml
+              - -httpListenAddr=:8427
+              - -configCheckInterval=1m
+            env:
+              VMAUTH_TOKEN_MS01:
+                valueFrom:
+                  secretKeyRef:
+                    name: vmauth-token-ms01
+                    key: token
+              VMAUTH_TOKEN_UTILITY:
+                valueFrom:
+                  secretKeyRef:
+                    name: vmauth-token-utility
+                    key: token
+              VMAUTH_TOKEN_NAS:
+                valueFrom:
+                  secretKeyRef:
+                    name: vmauth-token-nas
+                    key: token
+              VMAUTH_TOKEN_BIFROST:
+                valueFrom:
+                  secretKeyRef:
+                    name: vmauth-token-bifrost
+                    key: token
+              VMAUTH_TOKEN_WORKSTATION:
+                valueFrom:
+                  secretKeyRef:
+                    name: vmauth-token-workstation
+                    key: token
+              VMAUTH_TOKEN_REMOTE:
+                valueFrom:
+                  secretKeyRef:
+                    name: vmauth-token-remote
+                    key: token
+              VMAUTH_TOKEN_GRAFANA:
+                valueFrom:
+                  secretKeyRef:
+                    name: vmauth-token-grafana
+                    key: token
+            probes:
+              readiness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /metrics
+                    port: http
+              liveness: *probes
+            resources:
+              requests:
+                cpu: 25m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+
+    service:
+      vmauth:
+        controller: vmauth
+        ports:
+          http:
+            port: 8427
+
+    persistence:
+      config:
+        type: configMap
+        name: vmauth
+        advancedMounts:
+          vmauth:
+            app:
+              - path: /etc/vmauth
+                readOnly: true

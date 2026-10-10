@@ -5,15 +5,7 @@ kind: Kustomization
 resources:
   - ./helm-repository.yaml
   - ./helm-release.yaml
-  - ./vmauth-configmap.yaml
-  - ./vmauth-deployment.yaml
-  - ./vmauth-service.yaml
+  - ./vmauth-helm-release.yaml
   - ./network-policy.yaml
   - ./http-route.yaml
-  - ./secrets/vmauth-token-ms01.sops.yaml
-  - ./secrets/vmauth-token-utility.sops.yaml
-  - ./secrets/vmauth-token-nas.sops.yaml
-  - ./secrets/vmauth-token-bifrost.sops.yaml
-  - ./secrets/vmauth-token-workstation.sops.yaml
-  - ./secrets/vmauth-token-remote.sops.yaml
-  - ./secrets/vmauth-token-grafana.sops.yaml
+  - ./secrets.sops.yaml

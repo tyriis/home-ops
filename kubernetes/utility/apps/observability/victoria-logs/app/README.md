@@ -1,14 +1,15 @@
 # VictoriaLogs central log ingestion (utility cluster)
 
 VictoriaLogs single-node (HelmRelease `victoria-logs`, chart `victoria-logs-single` 0.13.10, VL
-v1.53.0) fronted by **vmauth** with per-unit bearer tokens. Everything reaches VL through vmauth
+v1.53.0) fronted by **vmauth** (HelmRelease `vmauth`, deployed via the bjw-s app-template chart)
+with per-unit bearer tokens. Everything reaches VL through vmauth
 on `logs.techtales.io`; VL itself is not routable (NetworkPolicy locks `:9428` to vmauth pods).
 See ADR 0016 (`docs/decisions/0016-central-log-platform-victorialogs-on-utility.md`).
 
 ## Unit tokens
 
-Each unit authenticates with its own token, stored as a separate Sops-encrypted Secret (key
-`token`):
+Each unit authenticates with its own token. All seven tokens live in one Sops-encrypted file
+(`secrets.sops.yaml`, seven Secret documents, key `token`):
 
 | Unit        | Secret name                | Role                              |
 | ----------- | -------------------------- | --------------------------------- |
@@ -70,7 +71,8 @@ Expected: `204`. Bad/unknown token → `401`. Write token on `/select/*` → `40
 - The read user's `/api/v1/.*` allowance is speculative breadth (the datasource plugin only calls
   `/select/logsql/*`); it is read-only and harmless, trim later if never used.
 - Denied paths return `403` because of the per-user `deny_paths` catch-all in
-  `vmauth-configmap.yaml`; without it vmauth returns `400` ("missing route").
+  `vmauth-helm-release.yaml` (the app-template `configMaps` section); without it vmauth returns
+  `400` ("missing route").
 - On this single-node cluster, host-local processes bypass NetworkPolicy and could reach
   `VL:9428` directly — acceptable at lab trust level.
 
@@ -82,5 +84,5 @@ _(filled after deploy)_
 
 From ADR 0016: graduate to Option B (vlcluster) when there is a need for true tenant isolation,
 per-unit retention/quota, or ingest beyond single-node comfort. The vmauth config carries over
-unchanged (adds tenant path rewrite — see the graduation block in `vmauth-configmap.yaml`), and
+unchanged (adds tenant path rewrite — see the graduation block in `vmauth-helm-release.yaml`), and
 the Grafana source swap is a URL change.

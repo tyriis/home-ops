@@ -61,10 +61,10 @@ App tree under `kubernetes/utility/apps/observability/victoria-logs/`:
    observability namespace kustomization.
 2. **HelmRelease `victoria-logs`**: victoria-logs-single chart, persistence
    enabled on `local-nvme`, 20Gi, retention 30d, resources per above.
-3. **vmauth**: Deployment + Service + ConfigMap (`vmauth.yaml`), consuming
-   7 Sops secrets (6 unit write tokens + 1 Grafana read token) as env vars
-   templated into the config; hot-reload via vmauth's built-in config check
-   (config-check + SIGHUP or config-reloader if needed).
+3. **vmauth**: app-template HelmRelease (repo pattern) deploying Deployment +
+   Service + generated ConfigMap (`vmauth.yaml`), consuming 7 Sops secrets (6
+   unit write tokens + 1 Grafana read token) as env vars templated into the
+   config; hot-reload via `-configCheckInterval`.
 4. **NetworkPolicy**: VL pod ingress only from the vmauth pod selector on
    9428. vmui served through the same read user (no extra allowance).
 5. **HTTPRoute**: `logs.techtales.io` → vmauth Service, following the
