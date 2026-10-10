@@ -1,0 +1,44 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/networking.k8s.io/networkpolicy_v1.json
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: victoria-logs
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: victoria-logs-single
+  policyTypes:
+    - Ingress
+  ingress:
+    # only vmauth may reach VL
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: vmauth
+      ports:
+        - protocol: TCP
+          port: 9428
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/networking.k8s.io/networkpolicy_v1.json
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: vmauth
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: vmauth
+  policyTypes:
+    - Ingress
+  ingress:
+    # Envoy Gateway data plane lives in ns networking (Deployment `envoy`).
+    # Repo pattern (searxng): namespaceSelector only — broader than the envoy
+    # pods alone, consistent and proven.
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: networking
+      ports:
+        - protocol: TCP
+          port: 8427
