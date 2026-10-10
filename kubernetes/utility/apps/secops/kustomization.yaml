@@ -12,3 +12,4 @@ resources:
   - ./external-secrets/flux-sync.yaml
   - ./openbao/flux-sync.yaml
   - ./pocket-id/flux-sync.yaml
+  - ./talosctl-oidc/flux-sync.yaml
