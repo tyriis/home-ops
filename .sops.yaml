@@ -10,6 +10,9 @@ creation_rules:
   - path_regex: 'docker/red/.*/sops\.env$'
     age: >-
       age16pcjw9pvhx2lnx382hrgcpydpjvjz6r8u22wflm228cakedrlgdqzlwx4s
+  - path_regex: 'docker/jarvis/.*/sops\.env$'
+    age: >-
+      age1hpqz0wylrtaf5evn844jkq039wv2cye7cux9gkta9kd5na87yass4yd2k8
   - path_regex: 'docker/synology/.*/sops\.env$'
     age: >-
       age1tcjhmd54y4nx9mpwld5fu0laav06wwjscvq4adqfquxtj4fg7a7q2s95sc
