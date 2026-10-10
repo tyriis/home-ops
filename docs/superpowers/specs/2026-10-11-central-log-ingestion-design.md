@@ -56,8 +56,8 @@ read-only Grafana token. Phase 1 is utility-side only — no shipper rollouts.
 
 App tree under `kubernetes/utility/apps/observability/victoria-logs/`:
 
-1. **Flux wiring**: new `HelmRepository victoriametrics-charts` in
-   `kubernetes/base/flux/repositories/helm/`; app registered in the
+1. **Flux wiring**: app-local `HelmRepository victoria-metrics-charts` in the app
+   dir (harbor convention); app registered in the
    observability namespace kustomization.
 2. **HelmRelease `victoria-logs`**: victoria-logs-single chart, persistence
    enabled on `local-nvme`, 20Gi, retention 30d, resources per above.
