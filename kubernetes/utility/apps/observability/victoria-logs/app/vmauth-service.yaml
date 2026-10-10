@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/core/service_v1.json
+apiVersion: v1
+kind: Service
+metadata:
+  name: vmauth
+  labels:
+    app.kubernetes.io/name: vmauth
+spec:
+  selector:
+    app.kubernetes.io/name: vmauth
+  ports:
+    - name: http
+      port: 8427
+      targetPort: http
