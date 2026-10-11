@@ -18,7 +18,7 @@ read-only Grafana token. Phase 1 is utility-side only — no shipper rollouts.
   config stays extensible so a metrics backend can be added as extra users.
 - **Front door**: `vmauth` Deployment + Service in front of VL. VL gets no
   Ingress route. A NetworkPolicy allows only vmauth to reach VL on 9428.
-- **Per-unit credentials (R2)**: one vmauth user per unit — `main-cluster`,
+- **Per-unit credentials (R2)**: one vmauth user per unit — `main`,
   `utility`, `nas`, `bifrost`, `red`, `purple`, `synology` — bearer token,
   write-only, `src_paths` locked to `/insert/.*` only. One read-only user
   `grafana-readonly` locked to `/select/.*` + `/api/v1/.*` for the

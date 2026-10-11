@@ -9,15 +9,9 @@ spec:
   timeout: 10m
   driftDetection:
     mode: enabled
-  chart:
-    spec:
-      chart: victoria-logs-single
-      version: 0.13.10
-      sourceRef:
-        kind: HelmRepository
-        name: victoria-metrics-charts
-        namespace: observability
-      interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: victoria-logs
   install:
     remediation:
       retries: -1

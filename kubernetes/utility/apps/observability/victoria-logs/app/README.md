@@ -16,16 +16,16 @@ Each unit authenticates with its own token. All eight tokens live in one Sops-en
 `VMAUTH_TOKEN_*` env name
 vmauth reads, so the Deployment maps them with a single `envFrom` block:
 
-| Unit         | Secret key                  | Role                              |
-| ------------ | --------------------------- | --------------------------------- |
-| main-cluster | `VMAUTH_TOKEN_MAIN_CLUSTER` | write (`/insert/.*` only)         |
-| utility      | `VMAUTH_TOKEN_UTILITY`      | write (`/insert/.*` only)         |
-| nas          | `VMAUTH_TOKEN_NAS`          | write (`/insert/.*` only)         |
-| bifrost      | `VMAUTH_TOKEN_BIFROST`      | write (`/insert/.*` only)         |
-| red          | `VMAUTH_TOKEN_RED`          | write (`/insert/.*` only)         |
-| purple       | `VMAUTH_TOKEN_PURPLE`       | write (`/insert/.*` only)         |
-| synology     | `VMAUTH_TOKEN_SYNOLOGY`     | write (`/insert/.*` only)         |
-| grafana      | `VMAUTH_TOKEN_GRAFANA`      | read (`/select/.*`, `/api/v1/.*`) |
+| Unit     | Secret key              | Role                              |
+| -------- | ----------------------- | --------------------------------- |
+| main     | `VMAUTH_TOKEN_MAIN`     | write (`/insert/.*` only)         |
+| utility  | `VMAUTH_TOKEN_UTILITY`  | write (`/insert/.*` only)         |
+| nas      | `VMAUTH_TOKEN_NAS`      | write (`/insert/.*` only)         |
+| bifrost  | `VMAUTH_TOKEN_BIFROST`  | write (`/insert/.*` only)         |
+| red      | `VMAUTH_TOKEN_RED`      | write (`/insert/.*` only)         |
+| purple   | `VMAUTH_TOKEN_PURPLE`   | write (`/insert/.*` only)         |
+| synology | `VMAUTH_TOKEN_SYNOLOGY` | write (`/insert/.*` only)         |
+| grafana  | `VMAUTH_TOKEN_GRAFANA`  | read (`/select/.*`, `/api/v1/.*`) |
 
 Retrieve a unit's token (`<KEY>` = secret key from the table):
 
@@ -42,13 +42,13 @@ plain path):
 - LAN: `https://logs.techtales.io/insert/jsonline?_stream_fields=host,cluster,unit&_msg_field=msg`
 - Tailscale: same hostname — `logs.techtales.io` resolves to the LAN IP over the tunnel.
 
-Per-unit smoke test (example for `main-cluster`, one jsonline line):
+Per-unit smoke test (example for `main`, one jsonline line):
 
 ```sh
 T=$(kubectl --context readonly@utility -n observability get secret vmauth-tokens \
-      -o "jsonpath={.data.VMAUTH_TOKEN_MAIN_CLUSTER}" | base64 -d)
+      -o "jsonpath={.data.VMAUTH_TOKEN_MAIN}" | base64 -d)
 curl -s -o /dev/null -w '%{http_code}\n' -X POST -H "Authorization: Bearer $T" \
-  --data-binary '{"msg":"smoke","host":"test","cluster":"utility","unit":"main-cluster","_time":"'"$(date +%s%N)"'"}' \
+  --data-binary '{"msg":"smoke","host":"test","cluster":"utility","unit":"main","_time":"'"$(date +%s%N)"'"}' \
   'https://logs.techtales.io/insert/jsonline?_stream_fields=host,cluster,unit&_msg_field=msg&_time_field=_time'
 ```
 
@@ -80,7 +80,7 @@ Expected: `204`. Bad/unknown token → `401`. Write token on `/select/*` → `40
 - The read user's `/api/v1/.*` allowance is speculative breadth (the datasource plugin only calls
   `/select/logsql/*`); it is read-only and harmless, trim later if never used.
 - Denied paths return `403` because of the per-user `deny_paths` catch-all in
-  `../victoria-auth/app/vmauth-helm-release.yaml` (the app-template `configMaps` section); without
+  `../victoria-auth/app/helm-release.yaml` (the app-template `configMaps` section); without
   it vmauth returns
   `400` ("missing route").
 - On this single-node cluster, host-local processes bypass NetworkPolicy and could reach
@@ -100,8 +100,8 @@ Metrics backend on the same front door — add a VictoriaMetrics HelmRelease, th
 per unit:
 
 ```yaml
-- name: main-cluster-metrics
-  bearer_token: "%{VMAUTH_TOKEN_MAIN_CLUSTER_METRICS}"
+- name: main-metrics
+  bearer_token: "%{VMAUTH_TOKEN_MAIN_METRICS}"
   url_map:
     - src_paths: ["/api/v1/write"]
       url_prefix: "http://victoria-metrics.observability.svc.cluster.local:8428"
@@ -112,8 +112,8 @@ per unit:
 Option B tenant rewrite — swap VL for vlinsert and pin a tenant per user:
 
 ```yaml
-- name: main-cluster
-  bearer_token: "%{VMAUTH_TOKEN_MAIN_CLUSTER}"
+- name: main
+  bearer_token: "%{VMAUTH_TOKEN_MAIN}"
   url_map:
     - src_paths: ["/insert/.*"]
       url_prefix: "http://vlinsert.observability.svc.cluster.local:9491/insert/1"

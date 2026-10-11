@@ -36,8 +36,8 @@ spec:
         data:
           vmauth.yaml: |-
             users:
-              - name: main-cluster
-                bearer_token: "%{VMAUTH_TOKEN_MAIN_CLUSTER}"
+              - name: main
+                bearer_token: "%{VMAUTH_TOKEN_MAIN}"
                 url_map:
                   - src_paths: ["/insert/.*"]
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
