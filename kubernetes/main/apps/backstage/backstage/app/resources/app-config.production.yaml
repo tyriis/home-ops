@@ -46,7 +46,8 @@ backend:
   # SQLite on the data PVC: catalog survives pod restarts; a lost PVC just re-ingests.
   database:
     client: better-sqlite3
-    connection: /var/backstage-data/db/backstage.db
+    connection:
+      directory: /var/backstage-data/db
   reading:
     allow:
       - host: raw.githubusercontent.com
