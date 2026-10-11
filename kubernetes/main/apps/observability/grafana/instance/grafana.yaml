@@ -116,3 +116,6 @@ spec:
               port: 3000
   disableDefaultAdminSecret: true
   disableDefaultSecurityContext: All
+  plugins:
+    - name: victoriametrics-logs-datasource
+      version: 0.32.0
