@@ -23,6 +23,11 @@ auth:
           resolvers:
             - resolver: emailLocalPartMatchingUserEntityName
 
+# Sign in with a full-page redirect instead of the auth popup. The popup flow
+# against Pocket-ID fails with `login_required`; the redirect flow reaches the
+# Pocket-ID sign-in page and completes.
+enableExperimentalRedirectFlow: true
+
 signInPage: oidc
 
 # Local builder: /opt/techdocs-venv (mkdocs + mkdocs-techdocs-core) ships in the image.
