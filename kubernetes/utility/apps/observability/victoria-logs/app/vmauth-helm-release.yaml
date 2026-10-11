@@ -158,47 +158,11 @@ spec:
               - -auth.config=/etc/vmauth/vmauth.yaml
               - -httpListenAddr=:8427
               - -configCheckInterval=1m
-            env:
-              VMAUTH_TOKEN_MAIN_CLUSTER:
-                valueFrom:
-                  secretKeyRef:
-                    name: vmauth-tokens
-                    key: main-cluster
-              VMAUTH_TOKEN_UTILITY:
-                valueFrom:
-                  secretKeyRef:
-                    name: vmauth-tokens
-                    key: utility
-              VMAUTH_TOKEN_NAS:
-                valueFrom:
-                  secretKeyRef:
-                    name: vmauth-tokens
-                    key: nas
-              VMAUTH_TOKEN_BIFROST:
-                valueFrom:
-                  secretKeyRef:
-                    name: vmauth-tokens
-                    key: bifrost
-              VMAUTH_TOKEN_RED:
-                valueFrom:
-                  secretKeyRef:
-                    name: vmauth-tokens
-                    key: red
-              VMAUTH_TOKEN_PURPLE:
-                valueFrom:
-                  secretKeyRef:
-                    name: vmauth-tokens
-                    key: purple
-              VMAUTH_TOKEN_SYNOLOGY:
-                valueFrom:
-                  secretKeyRef:
-                    name: vmauth-tokens
-                    key: synology
-              VMAUTH_TOKEN_GRAFANA:
-                valueFrom:
-                  secretKeyRef:
-                    name: vmauth-tokens
-                    key: grafana
+            envFrom:
+              - secretRef:
+                  name: vmauth-tokens
+            # Secret keys are the VMAUTH_TOKEN_* env names used by vmauth.yaml,
+            # so the whole mapping is this one block.
             probes:
               readiness: &probes
                 enabled: true
