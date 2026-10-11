@@ -25,14 +25,12 @@ read-only Grafana token. Phase 1 is utility-side only — no shipper rollouts.
   `victoriametrics-logs-datasource` Grafana plugin.
 - **Tokens (answers ADR open question #4)**: distinct random tokens, one key
   per unit inside a single Sops-encrypted Secret (`vmauth-tokens`), rotated
-  per key; vmauth consumes them via `secretKeyRef` env entries. Owner
+  per key; vmauth loads them with one `envFrom: secretRef` block (each key is the env name). Owner
   decision during review, replacing the earlier one-secret-per-unit shape.
 - **Source labeling (R3\*)**: shippers self-set `host=`/`cluster=` labels;
   vmauth proves the key, not the payload. Spoof trade-off accepted —
   documented, not engineered around.
-- **Graduation path**: the vmauth ConfigMap carries a commented block showing
-  the later metrics-backend users and vlcluster tenant-rewrite changes.
-  Not implemented now.
+- **Graduation path**: the app README carries a Graduation section showing the later metrics-backend users and vlcluster tenant-rewrite changes. Not implemented now.
 
 ## Resolved open questions
 
@@ -55,7 +53,7 @@ read-only Grafana token. Phase 1 is utility-side only — no shipper rollouts.
 
 ## Deliverables (phase 1)
 
-App tree under `kubernetes/utility/apps/observability/victoria-logs/`:
+App tree under `kubernetes/utility/apps/observability/`: `victoria-logs/` (backend) and `victoria-auth/` (vmauth front door, its NetworkPolicy and the token Secret) — split during review:
 
 1. **Flux wiring**: app-local `HelmRepository victoria-metrics-charts` in the app
    dir (harbor convention); app registered in the
@@ -63,15 +61,11 @@ App tree under `kubernetes/utility/apps/observability/victoria-logs/`:
 2. **HelmRelease `victoria-logs`**: victoria-logs-single chart, persistence
    enabled on `local-nvme`, 20Gi, retention 30d, resources per above.
 3. **vmauth**: app-template HelmRelease (repo pattern) deploying Deployment +
-   Service + generated ConfigMap (`vmauth.yaml`), consuming 7 Sops secrets (6
-   unit write tokens + 1 Grafana read token) as env vars templated into the
-   config; hot-reload via `-configCheckInterval`.
+   Service + generated ConfigMap (`vmauth.yaml`), consuming one Sops Secret with 8 `VMAUTH_TOKEN_*` keys via `envFrom`; hot-reload via `-configCheckInterval`.
 4. **NetworkPolicy**: VL pod ingress only from the vmauth pod selector on 9428. vmui served through the same read user (no extra allowance).
 5. **HTTPRoute**: `logs.techtales.io` → vmauth Service, following the
    existing envoy-gateway pattern (`external-dns/unifi` annotation).
-6. **vmauth user map**: 6 write users (`/insert/.*` only) + 1 read user
-   (`/select/.*`, `/api/v1/.*`), plus the commented graduation block
-   (metrics users, vlcluster tenant rewrite).
+6. **vmauth user map**: 7 write users (`/insert/.*` only) + 1 read user (`/select/.*`, `/api/v1/.*`); the graduation config lives in the README.
 7. **README** in the app dir: unit → token-secret-name table, insert URL per
    network path (LAN / Tailscale), curl examples per unit, Grafana datasource
    config (URL + read token), ADR graduation triggers.

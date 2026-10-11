@@ -2,7 +2,9 @@
 
 VictoriaLogs single-node (HelmRelease `victoria-logs`, chart `victoria-logs-single` 0.13.10, VL
 v1.53.0) fronted by **vmauth** (HelmRelease `vmauth`, deployed via the bjw-s app-template chart,
-OCI-sourced `app-template` 5.2.1) with per-unit bearer tokens. Everything reaches VL through vmauth
+OCI-sourced `app-template` 5.2.1) with per-unit bearer tokens. The front door is its own app:
+`kubernetes/utility/apps/observability/victoria-auth/` holds the vmauth HelmRelease, its
+NetworkPolicy, and the token Secret. Everything reaches VL through vmauth
 on `logs.techtales.io`; VL itself is not routable (NetworkPolicy locks `:9428` to vmauth pods).
 The `vmauth` HTTPRoute is rendered by the vmauth HelmRelease itself (app-template `route` section).
 See ADR 0016 (`docs/decisions/0016-central-log-platform-victorialogs-on-utility.md`).
@@ -10,7 +12,8 @@ See ADR 0016 (`docs/decisions/0016-central-log-platform-victorialogs-on-utility.
 ## Unit tokens
 
 Each unit authenticates with its own token. All eight tokens live in one Sops-encrypted file
-(`secrets.sops.yaml`) as ONE Secret `vmauth-tokens`; each key is the `VMAUTH_TOKEN_*` env name
+(`../victoria-auth/app/secrets.sops.yaml`) as ONE Secret `vmauth-tokens`; each key is the
+`VMAUTH_TOKEN_*` env name
 vmauth reads, so the Deployment maps them with a single `envFrom` block:
 
 | Unit         | Secret key                  | Role                              |
@@ -77,44 +80,45 @@ Expected: `204`. Bad/unknown token → `401`. Write token on `/select/*` → `40
 - The read user's `/api/v1/.*` allowance is speculative breadth (the datasource plugin only calls
   `/select/logsql/*`); it is read-only and harmless, trim later if never used.
 - Denied paths return `403` because of the per-user `deny_paths` catch-all in
-  `vmauth-helm-release.yaml` (the app-template `configMaps` section); without it vmauth returns
+  `../victoria-auth/app/vmauth-helm-release.yaml` (the app-template `configMaps` section); without
+  it vmauth returns
   `400` ("missing route").
 - On this single-node cluster, host-local processes bypass NetworkPolicy and could reach
   `VL:9428` directly — acceptable at lab trust level.
 
 ## Verification transcript
 
-_(filled after deploy)_
+Filled after deploy.
 
 ## Graduation
 
 From ADR 0016: graduate to Option B (vlcluster) when there is a need for true tenant isolation,
 per-unit retention/quota, or ingest beyond single-node comfort. The vmauth config carries over;
-only these config changes are needed:
+only these config changes are needed.
 
-1. Metrics backend on the same front door — add a VictoriaMetrics HelmRelease, then one user
-   per unit:
+Metrics backend on the same front door — add a VictoriaMetrics HelmRelease, then one user
+per unit:
 
-   ```yaml
-   - name: main-cluster-metrics
-     bearer_token: "%{VMAUTH_TOKEN_MAIN_CLUSTER_METRICS}"
-     url_map:
-       - src_paths: ["/api/v1/write"]
-         url_prefix: "http://victoria-metrics.observability.svc.cluster.local:8428"
-       - src_paths: ["/api/v1/query.*", "/api/v1/series.*", "/api/v1/labels.*"]
-         url_prefix: "http://victoria-metrics.observability.svc.cluster.local:8428"
-   ```
+```yaml
+- name: main-cluster-metrics
+  bearer_token: "%{VMAUTH_TOKEN_MAIN_CLUSTER_METRICS}"
+  url_map:
+    - src_paths: ["/api/v1/write"]
+      url_prefix: "http://victoria-metrics.observability.svc.cluster.local:8428"
+    - src_paths: ["/api/v1/query.*", "/api/v1/series.*", "/api/v1/labels.*"]
+      url_prefix: "http://victoria-metrics.observability.svc.cluster.local:8428"
+```
 
-2. Option B tenant rewrite — swap VL for vlinsert and pin a tenant per user:
+Option B tenant rewrite — swap VL for vlinsert and pin a tenant per user:
 
-   ```yaml
-   - name: main-cluster
-     bearer_token: "%{VMAUTH_TOKEN_MAIN_CLUSTER}"
-     url_map:
-       - src_paths: ["/insert/.*"]
-         url_prefix: "http://vlinsert.observability.svc.cluster.local:9491/insert/1"
-         headers: ["AccountID: 1", "ProjectID: 0"]
-   ```
+```yaml
+- name: main-cluster
+  bearer_token: "%{VMAUTH_TOKEN_MAIN_CLUSTER}"
+  url_map:
+    - src_paths: ["/insert/.*"]
+      url_prefix: "http://vlinsert.observability.svc.cluster.local:9491/insert/1"
+      headers: ["AccountID: 1", "ProjectID: 0"]
+```
 
 The Grafana source swap is a URL change. The config has no `unauthorized_user:` block, so
 unknown tokens get `401`; the per-user `deny_paths` catch-alls answer `403` (they carry a
