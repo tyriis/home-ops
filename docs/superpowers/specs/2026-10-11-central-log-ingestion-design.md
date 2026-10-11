@@ -18,14 +18,15 @@ read-only Grafana token. Phase 1 is utility-side only — no shipper rollouts.
   config stays extensible so a metrics backend can be added as extra users.
 - **Front door**: `vmauth` Deployment + Service in front of VL. VL gets no
   Ingress route. A NetworkPolicy allows only vmauth to reach VL on 9428.
-- **Per-unit credentials (R2)**: one vmauth user per unit — `ms01`, `utility`,
-  `nas`, `bifrost`, `workstation`, `remote` — bearer token, write-only,
-  `src_paths` locked to `/insert/.*` only. One read-only user
+- **Per-unit credentials (R2)**: one vmauth user per unit — `main-cluster`,
+  `utility`, `nas`, `bifrost`, `red`, `purple`, `synology` — bearer token,
+  write-only, `src_paths` locked to `/insert/.*` only. One read-only user
   `grafana-readonly` locked to `/select/.*` + `/api/v1/.*` for the
   `victoriametrics-logs-datasource` Grafana plugin.
-- **Tokens (answers ADR open question #4)**: distinct random tokens, each
-  stored as a Sops secret in the owning unit's config area (not one
-  mega-secret); vmauth consumes them via a projected Secret mount.
+- **Tokens (answers ADR open question #4)**: distinct random tokens, one key
+  per unit inside a single Sops-encrypted Secret (`vmauth-tokens`), rotated
+  per key; vmauth consumes them via `secretKeyRef` env entries. Owner
+  decision during review, replacing the earlier one-secret-per-unit shape.
 - **Source labeling (R3\*)**: shippers self-set `host=`/`cluster=` labels;
   vmauth proves the key, not the payload. Spoof trade-off accepted —
   documented, not engineered around.

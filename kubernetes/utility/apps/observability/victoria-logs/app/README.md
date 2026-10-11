@@ -1,31 +1,33 @@
 # VictoriaLogs central log ingestion (utility cluster)
 
 VictoriaLogs single-node (HelmRelease `victoria-logs`, chart `victoria-logs-single` 0.13.10, VL
-v1.53.0) fronted by **vmauth** (HelmRelease `vmauth`, deployed via the bjw-s app-template chart)
-with per-unit bearer tokens. Everything reaches VL through vmauth
+v1.53.0) fronted by **vmauth** (HelmRelease `vmauth`, deployed via the bjw-s app-template chart,
+OCI-sourced `app-template` 5.2.1) with per-unit bearer tokens. Everything reaches VL through vmauth
 on `logs.techtales.io`; VL itself is not routable (NetworkPolicy locks `:9428` to vmauth pods).
+The `vmauth` HTTPRoute is rendered by the vmauth HelmRelease itself (app-template `route` section).
 See ADR 0016 (`docs/decisions/0016-central-log-platform-victorialogs-on-utility.md`).
 
 ## Unit tokens
 
-Each unit authenticates with its own token. All seven tokens live in one Sops-encrypted file
-(`secrets.sops.yaml`, seven Secret documents, key `token`):
+Each unit authenticates with its own token. All eight tokens live in one Sops-encrypted file
+(`secrets.sops.yaml`) as ONE Secret `vmauth-tokens`; the key is the unit name:
 
-| Unit        | Secret name                | Role                              |
-| ----------- | -------------------------- | --------------------------------- |
-| ms01        | `vmauth-token-ms01`        | write (`/insert/.*` only)         |
-| utility     | `vmauth-token-utility`     | write (`/insert/.*` only)         |
-| nas         | `vmauth-token-nas`         | write (`/insert/.*` only)         |
-| bifrost     | `vmauth-token-bifrost`     | write (`/insert/.*` only)         |
-| workstation | `vmauth-token-workstation` | write (`/insert/.*` only)         |
-| remote      | `vmauth-token-remote`      | write (`/insert/.*` only)         |
-| grafana     | `vmauth-token-grafana`     | read (`/select/.*`, `/api/v1/.*`) |
+| Unit         | Role                              |
+| ------------ | --------------------------------- |
+| main-cluster | write (`/insert/.*` only)         |
+| utility      | write (`/insert/.*` only)         |
+| nas          | write (`/insert/.*` only)         |
+| bifrost      | write (`/insert/.*` only)         |
+| red          | write (`/insert/.*` only)         |
+| purple       | write (`/insert/.*` only)         |
+| synology     | write (`/insert/.*` only)         |
+| grafana      | read (`/select/.*`, `/api/v1/.*`) |
 
-Retrieve a unit's token:
+Retrieve a unit's token (`<unit>` = key from the table):
 
 ```sh
-kubectl --context readonly@utility -n observability get secret vmauth-token-UNIT \
-  -o 'jsonpath={.data.token}' | base64 -d
+kubectl --context readonly@utility -n observability get secret vmauth-tokens \
+  -o "jsonpath={.data.<unit>}" | base64 -d
 ```
 
 ## Insert endpoint
@@ -36,13 +38,13 @@ plain path):
 - LAN: `https://logs.techtales.io/insert/jsonline?_stream_fields=host,cluster,unit&_msg_field=msg`
 - Tailscale: same hostname — `logs.techtales.io` resolves to the LAN IP over the tunnel.
 
-Per-unit smoke test (example for `ms01`, one jsonline line):
+Per-unit smoke test (example for `main-cluster`, one jsonline line):
 
 ```sh
-T=$(kubectl --context readonly@utility -n observability get secret vmauth-token-ms01 \
-      -o 'jsonpath={.data.token}' | base64 -d)
+T=$(kubectl --context readonly@utility -n observability get secret vmauth-tokens \
+      -o "jsonpath={.data.main-cluster}" | base64 -d)
 curl -s -o /dev/null -w '%{http_code}\n' -X POST -H "Authorization: Bearer $T" \
-  --data-binary '{"msg":"smoke","host":"test","cluster":"utility","unit":"ms01","_time":"'"$(date +%s%N)"'"}' \
+  --data-binary '{"msg":"smoke","host":"test","cluster":"utility","unit":"main-cluster","_time":"'"$(date +%s%N)"'"}' \
   'https://logs.techtales.io/insert/jsonline?_stream_fields=host,cluster,unit&_msg_field=msg&_time_field=_time'
 ```
 
@@ -53,17 +55,18 @@ Expected: `204`. Bad/unknown token → `401`. Write token on `/select/*` → `40
 
 - Type: **Victoria Logs** (`victoriametrics-logs-datasource`)
 - URL: `https://logs.techtales.io`
-- Custom HTTP header: `Authorization: Bearer <grafana token>` (from `vmauth-token-grafana`)
+- Custom HTTP header: `Authorization: Bearer <grafana token>` (key `grafana` in `vmauth-tokens`)
 - Example LogsQL query: `{cluster="utility"}`
 
 ## vmui
 
 `https://logs.techtales.io/select/vmui/` — authenticate with the read token
-(`vmauth-token-grafana`).
+(key `grafana` in `vmauth-tokens`).
 
 ## Operational notes
 
-- **Token rotation**: edit + re-encrypt the unit's sops Secret and push; Stakater reloader restarts
+- **Token rotation**: per-unit revocation = rotate that unit's key in the single
+  `secrets.sops.yaml` Secret (`vmauth-tokens`), re-encrypt, and push; Stakater reloader restarts
   the vmauth pod (env is fixed at container start, `%{VAR}` is resolved at config parse —
   hot-reload alone does NOT pick up rotated tokens).
 - **Bad config**: vmauth keeps serving its last good config if a reloaded `vmauth.yaml` has a typo

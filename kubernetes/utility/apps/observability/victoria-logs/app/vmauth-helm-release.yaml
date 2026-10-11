@@ -8,14 +8,9 @@ spec:
   driftDetection:
     mode: enabled
   interval: 30m
-  chart:
-    spec:
-      chart: app-template
-      version: 5.2.1
-      sourceRef:
-        kind: HelmRepository
-        name: bjw-s-charts
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: vmauth
   install:
     remediation:
       retries: -1
@@ -42,8 +37,8 @@ spec:
           vmauth.yaml: |-
             users:
               # ---- write users: /insert/.* only, 403 on everything else ----
-              - name: ms01
-                bearer_token: "%{VMAUTH_TOKEN_MS01}"
+              - name: main-cluster
+                bearer_token: "%{VMAUTH_TOKEN_MAIN_CLUSTER}"
                 url_map:
                   - src_paths: ["/insert/.*"]
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
@@ -82,8 +77,8 @@ spec:
                     # required by vmauth v1.153.0 on every entry; deny short-circuits with 403 first
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
 
-              - name: workstation
-                bearer_token: "%{VMAUTH_TOKEN_WORKSTATION}"
+              - name: red
+                bearer_token: "%{VMAUTH_TOKEN_RED}"
                 url_map:
                   - src_paths: ["/insert/.*"]
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
@@ -92,8 +87,18 @@ spec:
                     # required by vmauth v1.153.0 on every entry; deny short-circuits with 403 first
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
 
-              - name: remote
-                bearer_token: "%{VMAUTH_TOKEN_REMOTE}"
+              - name: purple
+                bearer_token: "%{VMAUTH_TOKEN_PURPLE}"
+                url_map:
+                  - src_paths: ["/insert/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    # required by vmauth v1.153.0 on every entry; deny short-circuits with 403 first
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+
+              - name: synology
+                bearer_token: "%{VMAUTH_TOKEN_SYNOLOGY}"
                 url_map:
                   - src_paths: ["/insert/.*"]
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
@@ -121,8 +126,8 @@ spec:
             #
             # 1) Metrics backend on the same front door (ADR 0016 consequences):
             #    add a vm-single/vm-cluster HelmRelease, then one user per unit like:
-            #      - name: ms01-metrics
-            #        bearer_token: "%{VMAUTH_TOKEN_MS01_METRICS}"
+            #      - name: main-cluster-metrics
+            #        bearer_token: "%{VMAUTH_TOKEN_MAIN_CLUSTER_METRICS}"
             #        url_map:
             #          - src_paths: ["/api/v1/write"]
             #            url_prefix: "http://victoria-metrics.observability.svc.cluster.local:8428"
@@ -131,8 +136,8 @@ spec:
             #
             # 2) Option B (vlcluster) tenant rewrite — per-unit hard tenancy:
             #    swap VL for vlinsert/vmselect and rewrite tenant per user via headers:
-            #      - name: ms01
-            #        bearer_token: "%{VMAUTH_TOKEN_MS01}"
+            #      - name: main-cluster
+            #        bearer_token: "%{VMAUTH_TOKEN_MAIN_CLUSTER}"
             #        url_map:
             #          - src_paths: ["/insert/.*"]
             #            url_prefix: "http://vlinsert.observability.svc.cluster.local:9491/insert/1"
@@ -154,41 +159,46 @@ spec:
               - -httpListenAddr=:8427
               - -configCheckInterval=1m
             env:
-              VMAUTH_TOKEN_MS01:
+              VMAUTH_TOKEN_MAIN_CLUSTER:
                 valueFrom:
                   secretKeyRef:
-                    name: vmauth-token-ms01
-                    key: token
+                    name: vmauth-tokens
+                    key: main-cluster
               VMAUTH_TOKEN_UTILITY:
                 valueFrom:
                   secretKeyRef:
-                    name: vmauth-token-utility
-                    key: token
+                    name: vmauth-tokens
+                    key: utility
               VMAUTH_TOKEN_NAS:
                 valueFrom:
                   secretKeyRef:
-                    name: vmauth-token-nas
-                    key: token
+                    name: vmauth-tokens
+                    key: nas
               VMAUTH_TOKEN_BIFROST:
                 valueFrom:
                   secretKeyRef:
-                    name: vmauth-token-bifrost
-                    key: token
-              VMAUTH_TOKEN_WORKSTATION:
+                    name: vmauth-tokens
+                    key: bifrost
+              VMAUTH_TOKEN_RED:
                 valueFrom:
                   secretKeyRef:
-                    name: vmauth-token-workstation
-                    key: token
-              VMAUTH_TOKEN_REMOTE:
+                    name: vmauth-tokens
+                    key: red
+              VMAUTH_TOKEN_PURPLE:
                 valueFrom:
                   secretKeyRef:
-                    name: vmauth-token-remote
-                    key: token
+                    name: vmauth-tokens
+                    key: purple
+              VMAUTH_TOKEN_SYNOLOGY:
+                valueFrom:
+                  secretKeyRef:
+                    name: vmauth-tokens
+                    key: synology
               VMAUTH_TOKEN_GRAFANA:
                 valueFrom:
                   secretKeyRef:
-                    name: vmauth-token-grafana
-                    key: token
+                    name: vmauth-tokens
+                    key: grafana
             probes:
               readiness: &probes
                 enabled: true
@@ -211,6 +221,23 @@ spec:
         ports:
           http:
             port: 8427
+
+    # HTTPRoute in-cluster: logs.techtales.io -> vmauth service (chart key is
+    # `route`, kind defaults to HTTPRoute; single route => name = release name).
+    route:
+      main:
+        hostnames:
+          - logs.techtales.io
+        parentRefs:
+          - name: envoy
+            namespace: networking
+            sectionName: https
+        annotations:
+          external-dns/unifi: "true"
+        rules:
+          - backendRefs:
+              - identifier: vmauth
+                port: http
 
     persistence:
       config:
