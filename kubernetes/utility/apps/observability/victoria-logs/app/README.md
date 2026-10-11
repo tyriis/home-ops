@@ -45,15 +45,22 @@ plain path):
 Per-unit smoke test (example for `main`, one jsonline line):
 
 ```sh
-T=$(kubectl --context readonly@utility -n observability get secret vmauth-tokens \
+T=$(kubectl --context admin@utility -n observability get secret vmauth-tokens \
       -o "jsonpath={.data.VMAUTH_TOKEN_MAIN}" | base64 -d)
-curl -s -o /dev/null -w '%{http_code}\n' -X POST -H "Authorization: Bearer $T" \
+curl -s -o /dev/null -w '%{http_code}\n' -X POST -H "Authorization: Bearer ***" \
+  -H "Content-Type: application/json" \
   --data-binary '{"msg":"smoke","host":"test","cluster":"utility","unit":"main","_time":"'"$(date +%s%N)"'"}' \
   'https://logs.techtales.io/insert/jsonline?_stream_fields=host,cluster,unit&_msg_field=msg&_time_field=_time'
 ```
 
-Expected: `204`. Bad/unknown token → `401`. Write token on `/select/*` → `403`. Read token on
+Expected: `200`. Bad/unknown token → `401`. Write token on `/select/*` → `403`. Read token on
 `/insert/*` → `403`.
+
+NOTE: The `Content-Type: application/json` header is REQUIRED. VL parses ingestion query args
+with Go's `r.FormValue`, which consumes the request body when the content type is
+`application/x-www-form-urlencoded` (the curl `--data-binary` default). The request then
+returns `200` with zero rows ingested — a silent data-loss trap. Verify writes with
+`vl_rows_ingested_total{type="jsonline"}` if unsure.
 
 ## Grafana datasource
 
