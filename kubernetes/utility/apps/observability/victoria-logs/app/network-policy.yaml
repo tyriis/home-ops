@@ -11,7 +11,6 @@ spec:
   policyTypes:
     - Ingress
   ingress:
-    # only vmauth may reach VL
     - from:
         - podSelector:
             matchLabels:
@@ -32,9 +31,6 @@ spec:
   policyTypes:
     - Ingress
   ingress:
-    # Envoy Gateway data plane lives in ns networking (Deployment `envoy`).
-    # Repo pattern (searxng): namespaceSelector only — broader than the envoy
-    # pods alone, consistent and proven.
     - from:
         - namespaceSelector:
             matchLabels:

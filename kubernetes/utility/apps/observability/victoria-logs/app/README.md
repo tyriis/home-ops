@@ -86,9 +86,36 @@ Expected: `204`. Bad/unknown token → `401`. Write token on `/select/*` → `40
 
 _(filled after deploy)_
 
-## Graduation triggers
+## Graduation
 
 From ADR 0016: graduate to Option B (vlcluster) when there is a need for true tenant isolation,
-per-unit retention/quota, or ingest beyond single-node comfort. The vmauth config carries over
-unchanged (adds tenant path rewrite — see the graduation block in `vmauth-helm-release.yaml`), and
-the Grafana source swap is a URL change.
+per-unit retention/quota, or ingest beyond single-node comfort. The vmauth config carries over;
+only these config changes are needed:
+
+1. Metrics backend on the same front door — add a VictoriaMetrics HelmRelease, then one user
+   per unit:
+
+   ```yaml
+   - name: main-cluster-metrics
+     bearer_token: "%{VMAUTH_TOKEN_MAIN_CLUSTER_METRICS}"
+     url_map:
+       - src_paths: ["/api/v1/write"]
+         url_prefix: "http://victoria-metrics.observability.svc.cluster.local:8428"
+       - src_paths: ["/api/v1/query.*", "/api/v1/series.*", "/api/v1/labels.*"]
+         url_prefix: "http://victoria-metrics.observability.svc.cluster.local:8428"
+   ```
+
+2. Option B tenant rewrite — swap VL for vlinsert and pin a tenant per user:
+
+   ```yaml
+   - name: main-cluster
+     bearer_token: "%{VMAUTH_TOKEN_MAIN_CLUSTER}"
+     url_map:
+       - src_paths: ["/insert/.*"]
+         url_prefix: "http://vlinsert.observability.svc.cluster.local:9491/insert/1"
+         headers: ["AccountID: 1", "ProjectID: 0"]
+   ```
+
+The Grafana source swap is a URL change. The config has no `unauthorized_user:` block, so
+unknown tokens get `401`; the per-user `deny_paths` catch-alls answer `403` (they carry a
+mandatory `url_prefix` that a deny short-circuits before dialing).

@@ -36,7 +36,6 @@ spec:
         data:
           vmauth.yaml: |-
             users:
-              # ---- write users: /insert/.* only, 403 on everything else ----
               - name: main-cluster
                 bearer_token: "%{VMAUTH_TOKEN_MAIN_CLUSTER}"
                 url_map:
@@ -44,7 +43,6 @@ spec:
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
                   - src_paths: ["/.*"]
                     deny_paths: ["/.*"]
-                    # required by vmauth v1.153.0 on every entry; deny short-circuits with 403 first
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
 
               - name: utility
@@ -54,7 +52,6 @@ spec:
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
                   - src_paths: ["/.*"]
                     deny_paths: ["/.*"]
-                    # required by vmauth v1.153.0 on every entry; deny short-circuits with 403 first
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
 
               - name: nas
@@ -64,7 +61,6 @@ spec:
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
                   - src_paths: ["/.*"]
                     deny_paths: ["/.*"]
-                    # required by vmauth v1.153.0 on every entry; deny short-circuits with 403 first
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
 
               - name: bifrost
@@ -74,7 +70,6 @@ spec:
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
                   - src_paths: ["/.*"]
                     deny_paths: ["/.*"]
-                    # required by vmauth v1.153.0 on every entry; deny short-circuits with 403 first
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
 
               - name: red
@@ -84,7 +79,6 @@ spec:
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
                   - src_paths: ["/.*"]
                     deny_paths: ["/.*"]
-                    # required by vmauth v1.153.0 on every entry; deny short-circuits with 403 first
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
 
               - name: purple
@@ -94,7 +88,6 @@ spec:
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
                   - src_paths: ["/.*"]
                     deny_paths: ["/.*"]
-                    # required by vmauth v1.153.0 on every entry; deny short-circuits with 403 first
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
 
               - name: synology
@@ -104,10 +97,8 @@ spec:
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
                   - src_paths: ["/.*"]
                     deny_paths: ["/.*"]
-                    # required by vmauth v1.153.0 on every entry; deny short-circuits with 403 first
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
 
-              # ---- read user: Grafana victoriametrics-logs-datasource + vmui ----
               - name: grafana-readonly
                 bearer_token: "%{VMAUTH_TOKEN_GRAFANA}"
                 url_map:
@@ -115,35 +106,7 @@ spec:
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
                   - src_paths: ["/.*"]
                     deny_paths: ["/.*"]
-                    # required by vmauth v1.153.0 on every entry; deny short-circuits with 403 first
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
-
-            # NOTE: no `unauthorized_user:` block — requests with an unknown token get 401,
-            # they are never proxied.
-
-            # ---- GRADUATION BLOCK (do not enable yet) --------------------------------
-            # Phase 2/3 changes are vmauth-config-only:
-            #
-            # 1) Metrics backend on the same front door (ADR 0016 consequences):
-            #    add a vm-single/vm-cluster HelmRelease, then one user per unit like:
-            #      - name: main-cluster-metrics
-            #        bearer_token: "%{VMAUTH_TOKEN_MAIN_CLUSTER_METRICS}"
-            #        url_map:
-            #          - src_paths: ["/api/v1/write"]
-            #            url_prefix: "http://victoria-metrics.observability.svc.cluster.local:8428"
-            #          - src_paths: ["/api/v1/query.*", "/api/v1/series.*", "/api/v1/labels.*"]
-            #            url_prefix: "http://victoria-metrics.observability.svc.cluster.local:8428"
-            #
-            # 2) Option B (vlcluster) tenant rewrite — per-unit hard tenancy:
-            #    swap VL for vlinsert/vmselect and rewrite tenant per user via headers:
-            #      - name: main-cluster
-            #        bearer_token: "%{VMAUTH_TOKEN_MAIN_CLUSTER}"
-            #        url_map:
-            #          - src_paths: ["/insert/.*"]
-            #            url_prefix: "http://vlinsert.observability.svc.cluster.local:9491/insert/1"
-            #            headers: ["AccountID: 1", "ProjectID: 0"]
-            #    (Grafana source swap = datasource URL change only.)
-            # --------------------------------------------------------------------------
 
     controllers:
       vmauth:
@@ -161,8 +124,6 @@ spec:
             envFrom:
               - secretRef:
                   name: vmauth-tokens
-            # Secret keys are the VMAUTH_TOKEN_* env names used by vmauth.yaml,
-            # so the whole mapping is this one block.
             probes:
               readiness: &probes
                 enabled: true
@@ -186,8 +147,6 @@ spec:
           http:
             port: 8427
 
-    # HTTPRoute in-cluster: logs.techtales.io -> vmauth service (chart key is
-    # `route`, kind defaults to HTTPRoute; single route => name = release name).
     route:
       main:
         hostnames:

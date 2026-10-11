@@ -66,8 +66,7 @@ App tree under `kubernetes/utility/apps/observability/victoria-logs/`:
    Service + generated ConfigMap (`vmauth.yaml`), consuming 7 Sops secrets (6
    unit write tokens + 1 Grafana read token) as env vars templated into the
    config; hot-reload via `-configCheckInterval`.
-4. **NetworkPolicy**: VL pod ingress only from the vmauth pod selector on
-   9428. vmui served through the same read user (no extra allowance).
+4. **NetworkPolicy**: VL pod ingress only from the vmauth pod selector on 9428. vmui served through the same read user (no extra allowance).
 5. **HTTPRoute**: `logs.techtales.io` → vmauth Service, following the
    existing envoy-gateway pattern (`external-dns/unifi` annotation).
 6. **vmauth user map**: 6 write users (`/insert/.*` only) + 1 read user
