@@ -121,6 +121,10 @@ spec:
               - -auth.config=/etc/vmauth/vmauth.yaml
               - -httpListenAddr=:8427
               - -configCheckInterval=1m
+            ports:
+              - name: http
+                containerPort: 8427
+                protocol: TCP
             envFrom:
               - secretRef:
                   name: vmauth-tokens
