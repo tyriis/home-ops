@@ -69,3 +69,13 @@ catalog:
       target: https://github.com/tyriis/home-ops/blob/main/docs/backstage/catalog-info.yaml
     - type: url
       target: https://github.com/techtales-io/backstage-docs/blob/main/knowledge/catalog-info.yaml
+    # User entities live outside this repo, in a private Forgejo instance.
+    - type: url
+      target: https://git.techtales.io/jarvis/backstage-users/src/branch/main/catalog-info.yaml
+
+# Forgejo integration: the instance requires sign-in, so Backstage reads the
+# users catalog with a read-only API token.
+integrations:
+  gitea:
+    - host: git.techtales.io
+      password: ${FORGEJO_TOKEN}
