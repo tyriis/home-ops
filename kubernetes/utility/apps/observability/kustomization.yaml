@@ -9,3 +9,4 @@ resources:
   - ./namespace.yaml
   - ./kube-prometheus-stack/flux-sync.yaml
   - ./smartctl-exporter/flux-sync.yaml
+  - ./victoria-logs/flux-sync.yaml
