@@ -27,36 +27,76 @@ spec:
     keepHistory: false
   values:
     # https://github.com/bjw-s-labs/helm-charts/tree/main/charts/other/app-template
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+        fsGroupChangePolicy: OnRootMismatch
     controllers:
       backstage:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          dynamic-plugins:
+            image:
+              repository: quay.io/rhdh-community/rhdh
+              tag: 1.10.5@sha256:ef7b9c8278e3ec2fb329ae1bb889bcce274411c7681e38e9e1743ef8a3e8b0f3
+            workingDir: /opt/app-root/src
+            command:
+              - ./install-dynamic-plugins.sh
+            args:
+              - /dynamic-plugins-root
         containers:
           app:
             image:
-              repository: harbor.techtales.io/library/techtales/backstage
-              tag: v0.2.2@sha256:3c557807f82774554e5d12eb4590ab19311544c8fb662ad64b0680198c17bd5d
+              repository: quay.io/rhdh-community/rhdh
+              tag: 1.10.5@sha256:ef7b9c8278e3ec2fb329ae1bb889bcce274411c7681e38e9e1743ef8a3e8b0f3
+            # RHDH entrypoint is exec-form: these append after its own --config flags and win.
+            args:
+              - --config
+              - /opt/app-root/src/dynamic-plugins-root/app-config.dynamic-plugins.yaml
+              - --config
+              - /app-config/app-config.production.yaml
             resources:
               requests:
-                cpu: 24m
-                memory: 413Mi
+                cpu: 50m
+                memory: 512Mi
               limits:
-                memory: 413Mi
+                memory: 2Gi
             probes:
-              liveness: &probes
+              liveness:
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /health
+                    path: /.backstage/health/v1/liveness
                     port: &port 7007
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 3
-              readiness: *probes
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /.backstage/health/v1/readiness
+                    port: 7007
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
               startup:
-                enabled: false
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /.backstage/health/v1/liveness
+                    port: 7007
+                  periodSeconds: 5
+                  failureThreshold: 24
             envFrom:
               - secretRef:
                   name: backstage-secrets
@@ -86,10 +126,29 @@ spec:
 
     persistence:
       config:
-        enabled: true
         type: configMap
         name: app-config
+        advancedMounts:
+          backstage:
+            dynamic-plugins:
+              - path: /opt/app-root/src/dynamic-plugins.yaml
+                subPath: dynamic-plugins.yaml
+                readOnly: true
+            app:
+              - path: /app-config
+                readOnly: true
+      dynamic-plugins:
+        type: emptyDir
+        advancedMounts:
+          backstage:
+            dynamic-plugins:
+              - path: /dynamic-plugins-root
+            app:
+              - path: /opt/app-root/src/dynamic-plugins-root
+      data:
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        storageClass: ceph-block
+        size: 5Gi
         globalMounts:
-          - path: /app/app-config.production.yaml
-            subPath: app-config.production.yaml
-            readOnly: true
+          - path: /var/backstage-data
