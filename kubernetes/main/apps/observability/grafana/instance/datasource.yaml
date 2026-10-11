@@ -69,6 +69,33 @@ spec:
     access: proxy
     url: http://tempo.observability.svc.cluster.local:3200 #NOSONAR allow http
 
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadatasource_v1beta1.json
+# https://grafana.github.io/grafana-operator/docs/examples/datasource/
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: victorialogs
+spec:
+  valuesFrom:
+    - targetPath: "secureJsonData.httpHeaderValue1"
+      valueFrom:
+        secretKeyRef:
+          name: grafana-env
+          key: VMAUTH_AUTHORIZATION
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  datasource:
+    type: victoriametrics-logs-datasource
+    name: victorialogs
+    access: proxy
+    url: https://logs.techtales.io
+    jsonData:
+      httpHeaderName1: Authorization
+    secureJsonData:
+      httpHeaderValue1: ${VMAUTH_AUTHORIZATION}
+
 
 # ---
 # # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadatasource_v1beta1.json
