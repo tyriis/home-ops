@@ -96,7 +96,6 @@ spec:
     secureJsonData:
       httpHeaderValue1: ${VMAUTH_AUTHORIZATION}
 
-
 # ---
 # # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadatasource_v1beta1.json
 # # https://grafana.github.io/grafana-operator/docs/examples/datasource/
