@@ -19,3 +19,4 @@ resources:
   - ./speedtest-exporter/flux-sync.yaml
   - ./tempo/flux-sync.yaml
   - ./unpoller/flux-sync.yaml
+  - ./victoria-logs-collector/flux-sync.yaml
