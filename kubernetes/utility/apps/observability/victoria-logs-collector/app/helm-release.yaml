@@ -34,7 +34,9 @@ spec:
       - url: >-
           http://vmauth.observability.svc.cluster.local:8427/insert/jsonline?_stream_fields=kubernetes.pod_namespace,kubernetes.pod_name,kubernetes.container_name&_msg_field=message
         format: jsonline
-        maxDiskUsagePerURL: 1Gi
+        # vlagent parses this as a count of BYTES, not a k8s quantity ("1Gi" crashes it).
+        # Quoted so the chart renders the flag literally instead of 1.073741824e+09.
+        maxDiskUsagePerURL: "1073741824"
         headers:
           Authorization: Bearer %{VL_TOKEN}
     collector:
