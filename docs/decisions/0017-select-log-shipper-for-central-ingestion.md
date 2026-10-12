@@ -4,7 +4,7 @@ date: 2026-10-13
 decision-makers: [tyriis]
 ---
 
-# Use victoria-logs-collector (vlagent) as the log shipper for central VictoriaLogs ingestion
+# Use victoria-logs-collector (vlagent) as the central log shipper
 
 ## Context and Problem Statement
 
@@ -41,12 +41,12 @@ Evidence:
   tried).
 - Benchmark (VictoriaMetrics, 2026; vendor-run, 1 CPU / 1 GiB limit, default configs, 100 pods):
 
-  | Collector | Peak logs/s | CPU @ 10k logs/s | Memory @ 10k logs/s |
-  |---|---|---|---|
-  | vlagent | 143,000 | 0.062 cores | 27.9 MiB |
-  | Fluent Bit | 31,300 | 0.260 cores | 78.1 MiB |
-  | Vector | 25,000 | 0.412 cores | 153.5 MiB |
-  | Promtail | 13,400 | 0.655 cores | 63.0 MiB |
+  | Collector  | Peak logs/s | CPU @ 10k logs/s | Memory @ 10k logs/s |
+  | ---------- | ----------- | ---------------- | ------------------- |
+  | vlagent    | 143,000     | 0.062 cores      | 27.9 MiB            |
+  | Fluent Bit | 31,300      | 0.260 cores      | 78.1 MiB            |
+  | Vector     | 25,000      | 0.412 cores      | 153.5 MiB           |
+  | Promtail   | 13,400      | 0.655 cores      | 63.0 MiB            |
 
   Fluent Bit and Vector produced split records during file rotation in the benchmark.
 
@@ -56,11 +56,13 @@ keep the existing collector or add a second one.
 ## Consequences
 
 Positive:
+
 - Lowest footprint of the tested shippers, which suits utility.
 - Automatic JSON and Kubernetes system log parsing, no extra config.
 - Disk buffering when the backend is down (meets ADR 0016 R6).
 
 Negative / accepted risks:
+
 - Vendor benchmark: numbers are indicative until reproduced (`github.com/VictoriaMetrics/log-collectors-benchmark`).
 - No multiline or custom parsing; a second shipper is needed for those cases.
 
