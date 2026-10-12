@@ -11,12 +11,21 @@ See ADR 0016 (`docs/decisions/0016-central-log-platform-victorialogs-on-utility.
 
 ## Shippers deployed
 
+- **main cluster** — `victoria-logs-collector` (vlagent v1.53.0, chart 0.3.8, app
+  `kubernetes/main/apps/observability/victoria-logs-collector/`): DaemonSet shipping the
+  talos01-03 pod + node logs over WAN/VPN to `https://logs.techtales.io/insert/jsonline`
+  (main has no in-cluster vmauth; envoy terminates TLS and proxies to utility vmauth). The
+  write token is NOT a Sops secret here: an ExternalSecret pulls it from OpenBao at
+  `infra/kubernetes/main/observability/victoria-logs-collector` (key `VMAUTH_TOKEN`) into
+  Secret `victoria-logs-collector` (key `VL_TOKEN`). On-disk send buffer at
+  `/var/lib/vl-collector` (1GB cap), every line tagged `cluster="main"`, the collector's own
+  logs excluded.
 - **utility cluster** — `victoria-logs-collector` (vlagent v1.53.0, chart 0.3.8, app
   `kubernetes/utility/apps/observability/victoria-logs-collector/`): DaemonSet shipping util01's
   pod + node logs through the in-cluster vmauth service with key `VMAUTH_TOKEN_UTILITY`. On-disk
-  send buffer at `/var/lib/vl-collector` (1Gi cap), every line tagged `cluster="utility"`, the
+  send buffer at `/var/lib/vl-collector` (1GB cap), every line tagged `cluster="utility"`, the
   collector's own logs excluded.
-- main cluster, NAS, bifrost, workstations, remote site — pending; each reuses this pattern with
+- NAS, bifrost, workstations, remote site — pending; each reuses this pattern with
   its own token.
 
 ## Unit tokens
