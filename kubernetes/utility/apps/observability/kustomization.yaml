@@ -11,3 +11,4 @@ resources:
   - ./smartctl-exporter/flux-sync.yaml
   - ./victoria-auth/flux-sync.yaml
   - ./victoria-logs/flux-sync.yaml
+  - ./victoria-logs-collector/flux-sync.yaml
