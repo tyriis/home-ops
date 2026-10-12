@@ -31,12 +31,14 @@ spec:
             name: vmauth-tokens
             key: VMAUTH_TOKEN_UTILITY
     remoteWrite:
+      # Commas must be percent-encoded: vlagent splits -remoteWrite.url on
+      # raw commas and fails with "unsupported scheme" on the fragments.
       - url: >-
-          http://vmauth.observability.svc.cluster.local:8427/insert/jsonline?_stream_fields=kubernetes.pod_namespace,kubernetes.pod_name,kubernetes.container_name&_msg_field=message
+          http://vmauth.observability.svc.cluster.local:8427/insert/jsonline?_stream_fields=kubernetes.pod_namespace%2Ckubernetes.pod_name%2Ckubernetes.container_name&_msg_field=message
         format: jsonline
-        # vlagent parses this as a count of BYTES, not a k8s quantity ("1Gi" crashes it).
-        # Quoted so the chart renders the flag literally instead of 1.073741824e+09.
-        maxDiskUsagePerURL: "1073741824"
+        # vlagent accepts VM-style sizes (GB) but not k8s quantities (Gi).
+        # Quoted so the chart renders the value verbatim.
+        maxDiskUsagePerURL: "1GB"
         headers:
           Authorization: Bearer %{VL_TOKEN}
     collector:
