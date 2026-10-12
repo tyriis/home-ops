@@ -9,6 +9,16 @@ on `logs.techtales.io`; VL itself is not routable (NetworkPolicy locks `:9428` t
 The `vmauth` HTTPRoute is rendered by the vmauth HelmRelease itself (app-template `route` section).
 See ADR 0016 (`docs/decisions/0016-central-log-platform-victorialogs-on-utility.md`).
 
+## Shippers deployed
+
+- **utility cluster** — `victoria-logs-collector` (vlagent v1.53.0, chart 0.3.8, app
+  `kubernetes/utility/apps/observability/victoria-logs-collector/`): DaemonSet shipping util01's
+  pod + node logs through the in-cluster vmauth service with key `VMAUTH_TOKEN_UTILITY`. On-disk
+  send buffer at `/var/lib/vl-collector` (1Gi cap), every line tagged `cluster="utility"`, the
+  collector's own logs excluded.
+- main cluster, NAS, bifrost, workstations, remote site — pending; each reuses this pattern with
+  its own token.
+
 ## Unit tokens
 
 Each unit authenticates with its own token. All eight tokens live in one Sops-encrypted file
