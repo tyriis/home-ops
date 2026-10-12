@@ -55,5 +55,7 @@ spec:
       requests:
         cpu: 50m
         memory: 64Mi
+      # 242 pods on 3 nodes: the pod-metadata cache plus log buffers OOM the
+      # 256Mi utility-cluster sizing here (utility runs 64 pods, 114Mi used).
       limits:
-        memory: 256Mi
+        memory: 512Mi
