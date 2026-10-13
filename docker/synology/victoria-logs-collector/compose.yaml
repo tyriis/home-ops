@@ -24,7 +24,7 @@ services:
       - -remoteWrite.tmpDataPath=/var/lib/vlagent/pending
       - -remoteWrite.maxDiskUsagePerURL=1GB
       - -fileCollector.checkpointsPath=/var/lib/vlagent/file-checkpoints.json
-      - -fileCollector.streamFields=hostname,app
+      - -fileCollector.streamFields=hostname,app,attrs.com.docker.compose.service
       # DSM core syslog (no .log extension)
       - -fileCollector.glob=/var/log/messages
       - '-fileCollector.extraFields={"app":"system"}'

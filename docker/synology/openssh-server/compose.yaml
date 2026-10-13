@@ -12,7 +12,6 @@ include:
 
 services:
   openssh-server:
-    hostname: synology
     logging:
       driver: json-file
       options:
