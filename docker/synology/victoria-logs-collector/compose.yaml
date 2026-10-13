@@ -43,13 +43,13 @@ services:
       - -fileCollector.glob=/var/log/packages/*.log
       - '-fileCollector.extraFields={"app":"packages"}'
       # Container stdout (json-file driver on shipped services)
-      - -fileCollector.glob=/var/log/containers/*/*-json.log
+      - -fileCollector.glob=/host/containers/*/*-json.log
       - '-fileCollector.extraFields={"app":"containers"}'
     volumes:
       # Whole DSM log directory, read-only (root-owned files; container runs as root)
       - /var/log:/var/log:ro
       # Container Manager data root (symlink target of /var/packages/ContainerManager/var/docker)
-      - /volume1/@docker/containers:/var/log/containers:ro
+      - /volume1/@docker/containers:/host/containers:ro
       - data:/var/lib/vlagent
 
 volumes:
