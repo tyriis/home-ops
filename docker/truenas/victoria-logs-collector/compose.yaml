@@ -1,0 +1,71 @@
+---
+services:
+  vlagent:
+    extends:
+      file: ../../deploy/victoria-logs-collector/compose.yaml
+      service: vlagent
+    env_file:
+      - ${SOPS_ENV_FILE:-sops.env}
+    command:
+      - -envflag.enable=true
+      - -httpListenAddr=:9500
+      - -remoteWrite.url=https://logs.techtales.io/insert/jsonline?_stream_fields=hostname%2Capp&_msg_field=log
+      - -remoteWrite.format=jsonline
+      - "-remoteWrite.headers=Authorization: Bearer %{VL_TOKEN}"
+      - -remoteWrite.tmpDataPath=/var/lib/vlagent/pending
+      - -remoteWrite.maxDiskUsagePerURL=1GB
+      - -fileCollector.checkpointsPath=/var/lib/vlagent/file-checkpoints.json
+      - -fileCollector.streamFields=hostname,app
+      # System logs (host perms: root-owned, group adm)
+      - -fileCollector.glob=/var/log/messages
+      - '-fileCollector.extraFields={"unit":"truenas","app":"system"}'
+      - -fileCollector.glob=/var/log/middlewared.log
+      - '-fileCollector.extraFields={"unit":"truenas","app":"system"}'
+      - -fileCollector.glob=/var/log/app_lifecycle.log
+      - '-fileCollector.extraFields={"unit":"truenas","app":"system"}'
+      - -fileCollector.glob=/var/log/syslog
+      - '-fileCollector.extraFields={"unit":"truenas","app":"system"}'
+      - -fileCollector.glob=/var/log/kern.log
+      - '-fileCollector.extraFields={"unit":"truenas","app":"system"}'
+      - -fileCollector.glob=/var/log/auth.log
+      - '-fileCollector.extraFields={"unit":"truenas","app":"system"}'
+      - -fileCollector.glob=/var/log/daemon.log
+      - '-fileCollector.extraFields={"unit":"truenas","app":"system"}'
+      - -fileCollector.glob=/var/log/cron.log
+      - '-fileCollector.extraFields={"unit":"truenas","app":"system"}'
+      - -fileCollector.glob=/var/log/user.log
+      - '-fileCollector.extraFields={"unit":"truenas","app":"system"}'
+      - -fileCollector.glob=/var/log/zettarepl.log
+      - '-fileCollector.extraFields={"unit":"truenas","app":"system"}'
+      - -fileCollector.glob=/var/log/docker_image.log
+      - '-fileCollector.extraFields={"unit":"truenas","app":"system"}'
+      - -fileCollector.glob=/var/log/audit/audit.log
+      - '-fileCollector.extraFields={"unit":"truenas","app":"audit"}'
+      - -fileCollector.glob=/var/log/nginx/error.log
+      - '-fileCollector.extraFields={"unit":"truenas","app":"nginx"}'
+      # Docker container json logs (host: /mnt/.ix-apps/docker, root-owned 640)
+      - -fileCollector.glob=/var/log/containers/*/*-json.log
+      - '-fileCollector.extraFields={"unit":"truenas","app":"containers"}'
+    volumes:
+      - /var/log/messages:/var/log/messages:ro
+      - /var/log/middlewared.log:/var/log/middlewared.log:ro
+      - /var/log/app_lifecycle.log:/var/log/app_lifecycle.log:ro
+      - /var/log/syslog:/var/log/syslog:ro
+      - /var/log/kern.log:/var/log/kern.log:ro
+      - /var/log/auth.log:/var/log/auth.log:ro
+      - /var/log/daemon.log:/var/log/daemon.log:ro
+      - /var/log/cron.log:/var/log/cron.log:ro
+      - /var/log/user.log:/var/log/user.log:ro
+      - /var/log/zettarepl.log:/var/log/zettarepl.log:ro
+      - /var/log/docker_image.log:/var/log/docker_image.log:ro
+      - /var/log/audit/audit.log:/var/log/audit/audit.log:ro
+      - /var/log/nginx/error.log:/var/log/nginx/error.log:ro
+      # Host path is the TrueNAS docker data dir; /var/log/containers is a container-internal target only.
+      - /mnt/.ix-apps/docker/containers:/var/log/containers:ro
+      - data:/var/lib/vlagent
+
+volumes:
+  data:
+    external: ${VOLUME_EXTERNAL:-false}
+    name: ${VOLUME_NAME:-victoria-logs-collector_data}
+    driver: ${VOLUME_DRIVER:-local}
