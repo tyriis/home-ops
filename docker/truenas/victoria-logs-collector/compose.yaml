@@ -4,6 +4,8 @@ services:
     extends:
       file: ../../deploy/victoria-logs-collector/compose.yaml
       service: vlagent
+    cap_add:
+      - DAC_READ_SEARCH
     env_file:
       - ${SOPS_ENV_FILE:-sops.env}
     command:
