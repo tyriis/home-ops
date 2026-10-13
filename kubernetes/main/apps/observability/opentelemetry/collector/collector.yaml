@@ -31,10 +31,6 @@ spec:
         endpoint: http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/otlp #NOSONAR allow http
         tls:
           insecure: true
-      otlphttp/loki:
-        endpoint: http://loki-headless.observability.svc.cluster.local:3100/otlp #NOSONAR allow http
-        tls:
-          insecure: true
       otlp/tempo:
         endpoint: tempo.observability.svc.cluster.local:4317
         tls:
@@ -55,10 +51,7 @@ spec:
           receivers: [otlp]
           processors: [memory_limiter, batch]
           exporters: [otlphttp/prom]
-        logs:
-          receivers: [otlp]
-          processors: [memory_limiter, batch]
-          exporters: [otlphttp/loki]
+        # logs pipeline removed with loki; OTLP ingestion to VictoriaLogs tracked in #10987
       telemetry:
         metrics:
           level: detailed
