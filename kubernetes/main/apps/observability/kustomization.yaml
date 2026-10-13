@@ -12,7 +12,6 @@ resources:
   - ./grafana/flux-sync.yaml
   - ./kromgo/flux-sync.yaml
   - ./kube-prometheus-stack/flux-sync.yaml
-  - ./loki/flux-sync.yaml
   - ./opentelemetry/flux-sync.yaml
   - ./smartctl-exporter/flux-sync.yaml
   - ./speedtest-exporter/flux-sync.yaml
