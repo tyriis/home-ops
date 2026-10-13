@@ -1,0 +1,9 @@
+---
+include:
+  - path: ../../deploy/node-exporter/compose.yaml
+    project_directory: .
+
+services:
+  smartctl-exporter:
+    command:
+      - --smartctl.device-exclude=sde
