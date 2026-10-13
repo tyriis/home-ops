@@ -42,7 +42,7 @@ spec:
         format: jsonline
         maxDiskUsagePerURL: "1GB"
         headers:
-          Authorization: Bearer ***
+          Authorization: Bearer %{VL_TOKEN}
     collector:
       extraFields: '{"cluster":"main"}'
       excludeFilter: kubernetes.pod_name:=%{HOSTNAME}
