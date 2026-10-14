@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: dgx-sparks
+  description: NVIDIA DGX Spark (GB10) workstations on the home network
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: tyriis/home-ops
+  tags:
+    - nvidia
+    - gpu
+    - dgx-spark
+spec:
+  owner: home-ops
+  domain: home
+  type: server
+  lifecycle: production

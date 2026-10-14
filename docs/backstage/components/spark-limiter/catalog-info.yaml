@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: spark-limiter
+  description: |
+    Caps the NVIDIA GPU graphics clock (default 0,2200 MHz) on DGX Spark hosts and re-applies it at boot
+    through the systemd unit spark-gpu-clock-limit.service. Upstream tool: MiaAI-Lab/sparkLimiter.
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+  links:
+    - url: https://github.com/MiaAI-Lab/sparkLimiter
+      title: Upstream repository
+      icon: github
+      type: github-repository
+  tags:
+    - nvidia
+    - gpu
+    - systemd
+    - dgx-spark
+spec:
+  type: service
+  lifecycle: production
+  system: dgx-sparks
+  owner: home-ops
