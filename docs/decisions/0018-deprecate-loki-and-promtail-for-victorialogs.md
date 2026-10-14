@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-10-13
 decision-makers: [tyriis]
 ---
@@ -35,12 +35,16 @@ evaluation.
 - Backend under evaluation: VictoriaLogs single-node behind vmauth, per ADR 0016.
 - Grafana: `victoriametrics-logs-datasource` added alongside the Loki datasource.
 
+2026-10-14: Retirement executed in issue #11000. Loki and Promtail are removed from the main
+cluster; VictoriaLogs (ADR 0016) is the sole log backend. Acceptance evidence:
+`vl_rows_ingested_total` on logs.techtales.io must hold steady for 7 days after removal.
+
 ## Consequences
 
 - Positive: a reversible step; the evaluation produces real data before any removal.
 - Negative: two stacks run in parallel for the length of the evaluation.
-- The OTLP log path (opencode, OTel spec 2026-08-12) stays on Loki for now. Moving it to
-  VictoriaLogs is a later iteration (follow-up ticket).
+- The OTLP log path (opencode, OTel spec 2026-08-12) had its Loki pipeline removed with the
+  retirement. Ingestion to VictoriaLogs is a later iteration (tracked in #10987).
 - Tempo is unaffected.
 
 ## More Information
