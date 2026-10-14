@@ -52,6 +52,7 @@ spec:
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/sabnzbd/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/seerr/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/sonarr/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/spark-limiter/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/syncthing/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/tuppr/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/volsync/catalog-info.yaml
@@ -60,5 +61,6 @@ spec:
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/nas/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/synology-nas/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/bifrost/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/dgx-sparks/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/main-cluster/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/utility-cluster/catalog-info.yaml
