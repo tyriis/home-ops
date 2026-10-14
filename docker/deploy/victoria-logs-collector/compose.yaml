@@ -20,7 +20,7 @@ services:
       - -fileCollector.checkpointsPath=/var/lib/vlagent/file-checkpoints.json
       - -fileCollector.streamFields=hostname,app
     container_name: victoria-logs-collector
-    image: victoriametrics/vlagent:v1.53.0
+    image: victoriametrics/vlagent:v1.53.0@sha256:a82f93ffecc153fb068606903e512368b070272739d823abe99fad0eff6e1849
     # Bridge network: the collector only needs outbound HTTPS to logs.techtales.io.
     # Metrics/health port is published on localhost only, so it is not exposed on the LAN.
     ports:
