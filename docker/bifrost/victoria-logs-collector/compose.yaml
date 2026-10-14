@@ -16,6 +16,8 @@ services:
     dns:
       - 192.168.100.1
       - 1.1.1.2
+    environment:
+      - TZ=Europe/Vienna
     env_file:
       - ${SOPS_ENV_FILE:-sops.env}
     command:
