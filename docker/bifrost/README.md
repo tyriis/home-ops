@@ -18,7 +18,10 @@ is made (see [Future: tailnet + YubiKey ssh-agent](#future-tailnet--yubikey-ssh-
 
 **Log shipping:** `victoria-logs-collector/` tails the Lightwhale host syslog
 (`/var/log/messages`, BusyBox `syslogd`) and ships it to VictoriaLogs (`https://logs.techtales.io`)
-through vmauth with the bifrost unit token. Docker runs with `--log-driver=syslog`, so container logs
+through vmauth with the bifrost unit token. `TZ=Europe/Vienna` is REQUIRED: BusyBox syslogd stamps
+the file in local CEST and vlagent parses those timestamps in the container timezone — without it
+the lines ship with a 2h-future timestamp and fall outside every default Grafana time range.
+Docker runs with `--log-driver=syslog`, so container logs
 are in the same file, tagged `docker:<name>#<id>`. There are no `json-file` logs on this host. The
 `sops.env` there must hold `VL_TOKEN` = the `VMAUTH_TOKEN_BIFROST` value from the `vmauth-tokens`
 secret (`kubernetes/utility/apps/observability/victoria-auth/app/secrets.sops.yaml`). Encrypt it with
