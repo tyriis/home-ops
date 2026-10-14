@@ -13,8 +13,6 @@ include:
 services:
   vlagent:
     hostname: bifrost
-    # LAN resolver: logs.techtales.io is a LAN record (192.168.100.40). The host default
-    # resolver (1.1.1.2) does not answer for it, so the forwarder cannot reach the backend.
     dns:
       - 192.168.100.1
       - 1.1.1.2
