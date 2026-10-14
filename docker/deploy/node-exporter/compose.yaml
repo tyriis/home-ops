@@ -25,7 +25,7 @@ services:
     # container_name: ${CONTAINER_NAME:-doco-cd}
 
     container_name: smartctl-exporter
-    image: ghcr.io/prometheus-community/smartctl-exporter:master@sha256:b0b79980f5c054445aec0ccc09e452fd573877725c18b779bff58670e199055b
+    image: ghcr.io/prometheus-community/smartctl-exporter:master@sha256:0fda6b575177f4aa38b86b98badf0d455313d87b96414b4902ce6d94c416caf3
     ports:
       - 9633:9633
     privileged: true
