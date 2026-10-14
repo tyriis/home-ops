@@ -44,7 +44,7 @@ services:
       interval: 10s
       timeout: 3s
       retries: 5
-    image: ghcr.io/getarcaneapp/manager:v2.15.1@sha256:540c01198ca3e58dfd398d25c57c8dc241fa7e7f3d1d8d646c8268f19525b1a8
+    image: ghcr.io/getarcaneapp/manager:v2.16.0@sha256:55c408366127a1f104834557124e06c96ca746fd02de86ce6b6c143001b4d182
     mem_limit: 1g
     pids_limit: 256
     ports:
