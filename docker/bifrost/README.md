@@ -8,12 +8,22 @@ is made (see [Future: tailnet + YubiKey ssh-agent](#future-tailnet--yubikey-ssh-
 
 ## Services
 
-| Service   | Host port   | Deploy config           | Compose                                                      |
-| --------- | ----------- | ----------------------- | ------------------------------------------------------------ |
-| new-api   | `3000`      | `.doco-cd.bifrost.yaml` | `deploy/new-api` (digest-pinned image)                       |
-| traefik   | `80`/`443`  | `.doco-cd.bifrost.yaml` | `deploy/traefik` (tag-pinned image, bifrost include shim)    |
-| sparkDash | `8080`      | `.doco-cd.bifrost.yaml` | `deploy/sparkdash` (built from local clone — see its README) |
-| arcane    | — (Traefik) | `.doco-cd.bifrost.yaml` | `deploy/arcane` (digest-pinned image)                        |
+| Service   | Host port        | Deploy config           | Compose                                                      |
+| --------- | ---------------- | ----------------------- | ------------------------------------------------------------ |
+| new-api   | `3000`           | `.doco-cd.bifrost.yaml` | `deploy/new-api` (digest-pinned image)                       |
+| traefik   | `80`/`443`       | `.doco-cd.bifrost.yaml` | `deploy/traefik` (tag-pinned image, bifrost include shim)    |
+| sparkDash | `8080`           | `.doco-cd.bifrost.yaml` | `deploy/sparkdash` (built from local clone — see its README) |
+| arcane    | — (Traefik)      | `.doco-cd.bifrost.yaml` | `deploy/arcane` (digest-pinned image)                        |
+| vlagent   | `127.0.0.1:9500` | `.doco-cd.bifrost.yaml` | `deploy/victoria-logs-collector` (log shipper, see below)    |
+
+**Log shipping:** `victoria-logs-collector/` tails the Lightwhale host syslog
+(`/var/log/messages`, BusyBox `syslogd`) and ships it to VictoriaLogs (`https://logs.techtales.io`)
+through vmauth with the bifrost unit token. Docker runs with `--log-driver=syslog`, so container logs
+are in the same file, tagged `docker:<name>#<id>`. There are no `json-file` logs on this host. The
+`sops.env` there must hold `VL_TOKEN` = the `VMAUTH_TOKEN_BIFROST` value from the `vmauth-tokens`
+secret (`kubernetes/utility/apps/observability/victoria-auth/app/secrets.sops.yaml`). Encrypt it with
+the bifrost recipient (`docker/bifrost/.*/sops\.env`). Rotated files (`messages.0`, …) are not
+shipped, so the file is only read live.
 
 Per-service layout: each service dir holds a **real** thin `compose.yaml` **include shim** plus its
 host state. The shim `include:`s the shared service definition from `docker/deploy/<svc>/` with

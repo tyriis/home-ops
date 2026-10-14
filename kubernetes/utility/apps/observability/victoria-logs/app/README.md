@@ -25,8 +25,11 @@ See ADR 0016 (`docs/decisions/0016-central-log-platform-victorialogs-on-utility.
   pod + node logs through the in-cluster vmauth service with key `VMAUTH_TOKEN_UTILITY`. On-disk
   send buffer at `/var/lib/vl-collector` (1GB cap), every line tagged `cluster="utility"`, the
   collector's own logs excluded.
-- NAS, bifrost, workstations, remote site — pending; each reuses this pattern with
-  its own token.
+- **bifrost** — `vlagent` compose stack (`docker/bifrost/victoria-logs-collector/`, doco-cd target
+  `bifrost`): Lightwhale host syslog `/var/log/messages` (sshd, host daemons, Docker syslog-driver
+  container logs), `hostname=bifrost`, token `VMAUTH_TOKEN_BIFROST` in the bifrost `sops.env` as
+  `VL_TOKEN`.
+- NAS, workstations, remote site — pending; each reuses this pattern with its own token.
 
 ## Unit tokens
 

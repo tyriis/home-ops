@@ -22,3 +22,8 @@ name: arcane
 working_dir: docker/bifrost/arcane
 env_files:
   - .env
+---
+name: victoria-logs-collector
+working_dir: docker/bifrost/victoria-logs-collector
+env_files:
+  - .env
