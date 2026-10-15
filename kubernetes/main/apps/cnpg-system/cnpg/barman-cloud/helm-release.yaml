@@ -87,13 +87,9 @@ spec:
       server:
         type: secret
         name: *serverCert
-        globalMounts:
-          - path: /server
       client:
         type: secret
         name: *clientCert
-        globalMounts:
-          - path: /client
 
     serviceAccount:
       cnpg-barman-cloud:
@@ -258,7 +254,6 @@ spec:
         leader-election-rolebinding:
           type: RoleBinding
           roleRef:
-            apiGroup: rbac.authorization.k8s.io
             kind: Role
             identifier: leader-election-role
           subjects: &subject
@@ -268,7 +263,6 @@ spec:
         metrics-auth-rolebinding:
           type: ClusterRoleBinding
           roleRef: &roleRef
-            apiGroup: rbac.authorization.k8s.io
             kind: ClusterRole
             identifier: metrics-auth-role
           subjects: *subject

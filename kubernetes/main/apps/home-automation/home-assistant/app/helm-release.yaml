@@ -88,7 +88,6 @@ spec:
 
     service:
       app:
-        primary: true
         ports:
           http:
             port: 8123

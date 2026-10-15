@@ -173,8 +173,6 @@ spec:
     persistence:
       tmp:
         type: emptyDir
-        globalMounts:
-          - path: /tmp
       data:
         type: persistentVolumeClaim
         existingClaim: minecraft-velocity-proxy-data

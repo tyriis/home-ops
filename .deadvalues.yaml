@@ -6,7 +6,13 @@ kubeVersion: "1.37"
 # APIs beyond stock Kubernetes that the clusters serve, spelled exactly as
 # charts check them (.Capabilities.APIVersions.Has "..."). Tune from the
 # CONDITIONAL notes in `task deadvalues:check-values` output.
-apiVersions: []
+apiVersions:
+  # Prometheus Operator ServiceMonitor CRD. Both clusters run the monitoring
+  # stack, so ServiceMonitor-gated values are live. Spell each entry exactly as
+  # the chart checks it: argo-workflows gates on the group/version, while
+  # external-secrets gates on the group/version/Kind.
+  - monitoring.coreos.com/v1
+  - monitoring.coreos.com/v1/ServiceMonitor
 
 failOn: dead
 

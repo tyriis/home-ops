@@ -81,8 +81,6 @@ spec:
     persistence:
       data:
         existingClaim: ring-mqtt-data
-        globalMounts:
-          - path: /data
       credentials:
         type: secret
         name: ring-mqtt-config

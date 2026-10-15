@@ -128,5 +128,3 @@ spec:
         type: nfs
         server: nas.techtales.io
         path: /mnt/tank/syncthing
-        globalMounts:
-          - path: /data

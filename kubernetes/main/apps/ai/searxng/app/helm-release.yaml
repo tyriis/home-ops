@@ -107,5 +107,3 @@ spec:
           - path: /var/cache/searxng
       tmp:
         type: emptyDir
-        globalMounts:
-          - path: /tmp

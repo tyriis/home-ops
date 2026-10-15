@@ -125,25 +125,9 @@ spec:
             probes:
               liveness: &probes
                 enabled: false
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: 8642
-                  initialDelaySeconds: 30
-                  periodSeconds: 30
-                  failureThreshold: 5
               readiness: *probes
               startup:
                 enabled: false
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: 8642
-                  initialDelaySeconds: 30
-                  periodSeconds: 10
-                  failureThreshold: 30
             securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -253,7 +237,6 @@ spec:
     service:
       app:
         forceRename: *app
-        primary: true
         controller: hermes
         ports:
           api:

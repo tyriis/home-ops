@@ -102,8 +102,6 @@ spec:
     persistence:
       data:
         type: emptyDir
-        globalMounts:
-          - path: /data
       credentials:
         type: secret
         name: openbao-snapshots-gcp-sa

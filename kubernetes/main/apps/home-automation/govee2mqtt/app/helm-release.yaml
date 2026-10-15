@@ -98,5 +98,3 @@ spec:
     persistence:
       data:
         type: emptyDir
-        globalMounts:
-          - path: /data

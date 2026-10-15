@@ -161,10 +161,6 @@ spec:
             sectionName: https
         annotations:
           external-dns/unifi: "true"
-        rules:
-          - backendRefs:
-              - identifier: vmauth
-                port: http
 
     persistence:
       config:
