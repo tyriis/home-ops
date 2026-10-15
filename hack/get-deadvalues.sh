@@ -61,7 +61,8 @@ tmp_dir="$(mktemp -d)"
 trap 'rm -rf "${tmp_dir}"' EXIT
 
 echo "downloading ${BASE_URL}/checksums.txt"
-curl -fsSL --retry 3 -o "${tmp_dir}/checksums.txt" "${BASE_URL}/checksums.txt"
+# --proto/--proto-redir keep the transfer on HTTPS even across redirects (Sonar S6506).
+curl -fsSL --retry 3 --proto '=https' --proto-redir '=https' -o "${tmp_dir}/checksums.txt" "${BASE_URL}/checksums.txt"
 
 expected="$(sha256_cmd "${tmp_dir}/checksums.txt" | awk '{print $1}')"
 if [[ "${expected}" != "${CHECKSUMS_SHA256}" ]]; then
@@ -76,7 +77,7 @@ if [[ -z "${asset_sha}" ]]; then
 fi
 
 echo "downloading ${BASE_URL}/${asset}"
-curl -fsSL --retry 3 -o "${tmp_dir}/${asset}" "${BASE_URL}/${asset}"
+curl -fsSL --retry 3 --proto '=https' --proto-redir '=https' -o "${tmp_dir}/${asset}" "${BASE_URL}/${asset}"
 
 echo "${asset_sha}  ${tmp_dir}/${asset}" | sha256_cmd -c -
 
