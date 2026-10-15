@@ -31,6 +31,4 @@ spec:
             deploy:
               type: GatewayNamespace
     global:
-      images:
-        envoyGateway:
-          imageRegistry: mirror.gcr.io
+      imageRegistry: mirror.gcr.io
