@@ -25,8 +25,16 @@ Docker runs with `--log-driver=syslog`, so container logs
 are in the same file, tagged `docker:<name>#<id>`. There are no `json-file` logs on this host. The
 `sops.env` there must hold `VL_TOKEN` = the `VMAUTH_TOKEN_BIFROST` value from the `vmauth-tokens`
 secret (`kubernetes/utility/apps/observability/victoria-auth/app/secrets.sops.yaml`). Encrypt it with
-the bifrost recipient (`docker/bifrost/.*/sops\.env`). Rotated files (`messages.0`, …) are not
-shipped, so the file is only read live.
+the bifrost recipient (`docker/bifrost/.*/sops\.env`). **The glob is `/var/log/messages*`, not a
+single path, and `/var/log` is mounted as a directory — this is a bug fix, not style.** BusyBox
+`syslogd` rotates by rename+recreate: `messages` becomes `messages.0` (fresh inode, ~every 200KB of
+load). A tailer pinned to the exact path keeps tracking the old inode and silently stops tailing at
+every rotation — the vlagent process stays healthy, so Docker never restarts it and nothing alerts
+(2026-10-15: two wedges, 44 min and 2 min after start; stream dark ~10h each time, only a VL-side
+gap analysis caught it). Pattern-based discovery follows the rotation chain and cannot wedge
+(verified locally against vlagent v1.53.0 with rename+recreate). Restarting a wedged collector
+logs `rotated log file not found (inode=...)` and skips the gap — lines in rotated files already
+deleted/compressed (.gz is unreadable to vlagent) are lost for good; keep rotation frequency low.
 
 Per-service layout: each service dir holds a **real** thin `compose.yaml` **include shim** plus its
 host state. The shim `include:`s the shared service definition from `docker/deploy/<svc>/` with
