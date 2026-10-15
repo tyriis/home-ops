@@ -36,3 +36,12 @@ tasks:
     deps: [setup]
     cmds:
       - "{{.PROJECT_DIR}}/hack/bin/deadvalues scan {{.KUBERNETES_DIR}} -o markdown --details --fail-on none"
+
+  check-values-changed:
+    desc: Scan only apps whose files changed vs a base ref (what CI runs on PRs)
+    summary: |
+      Pass a base ref, e.g. task deadvalues:check-values-changed -- origin/main.
+      Mirrors the PR-mode report job; full scans stay in check-values-details.
+    deps: [setup]
+    cmds:
+      - '{{.PROJECT_DIR}}/hack/bin/deadvalues scan {{.KUBERNETES_DIR}} --changed-since {{or .CLI_ARGS "origin/main"}} -o markdown --details --fail-on none'
