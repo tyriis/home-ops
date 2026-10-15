@@ -80,6 +80,3 @@ spec:
             sectionName: https
         hostnames:
           - "{{ .Release.Name }}.techtales.io"
-        rules:
-          - backendRefs:
-              - port: *port
