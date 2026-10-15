@@ -20,7 +20,8 @@ jobs:
   report:
     name: deadvalues / report
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # first full run took ~14min on the 4-vCPU runner; keep headroom
+    timeout-minutes: 25
     # non-blocking: findings are reported, not enforced
     continue-on-error: true
     steps:
