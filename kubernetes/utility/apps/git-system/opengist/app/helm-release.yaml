@@ -103,5 +103,3 @@ spec:
           - path: /opengist
       tmp:
         type: emptyDir
-        globalMounts:
-          - path: /tmp

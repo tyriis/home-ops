@@ -98,7 +98,5 @@ spec:
         type: nfs
         server: nas.techtales.io
         path: /mnt/tank/media
-        globalMounts:
-          - path: /media
       tmpfs:
         type: emptyDir
