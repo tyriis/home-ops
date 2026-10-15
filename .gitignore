@@ -30,6 +30,9 @@ crash.log
 # megalinter
 megalinter-reports/
 
+# downloaded tooling binaries (hack/get-deadvalues.sh)
+hack/bin/
+
 # bootstrap helm charts
 kubernetes/**/bootstrap/**/charts
 

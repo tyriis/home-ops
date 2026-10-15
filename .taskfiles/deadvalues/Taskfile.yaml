@@ -1,0 +1,38 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  default:
+    desc: Show available deadvalues tasks
+    silent: true
+    cmds:
+      - task --list
+
+  setup:
+    desc: Download the pinned deadvalues binary into hack/bin/
+    sources:
+      - "{{.PROJECT_DIR}}/hack/get-deadvalues.sh"
+    status:
+      - '{{.PROJECT_DIR}}/hack/bin/deadvalues --version | grep -q "{{.DEADVALUES_VERSION}}"'
+    cmds:
+      - "{{.PROJECT_DIR}}/hack/get-deadvalues.sh"
+
+  check-values:
+    desc: Scan all Flux HelmReleases for values keys with no effect (exit 1 on findings at or above failOn)
+    summary: |
+      Runs deadvalues scan over kubernetes/ (auto-detects Flux HelmReleases,
+      honors fail-on from .deadvalues.yaml). Exit code 1 means findings, so it
+      works as a CI gate.
+    deps: [setup]
+    cmds:
+      - "{{.PROJECT_DIR}}/hack/bin/deadvalues scan {{.KUBERNETES_DIR}} -o markdown"
+
+  check-values-details:
+    desc: Same scan with per-key findings, for triage
+    summary: |
+      Adds --details so every key is listed with its verdict (DEAD / REDUNDANT
+      / CONDITIONAL / notes), not just the per-app summary table.
+    deps: [setup]
+    cmds:
+      - "{{.PROJECT_DIR}}/hack/bin/deadvalues scan {{.KUBERNETES_DIR}} -o markdown --details --fail-on none"
