@@ -1,0 +1,15 @@
+---
+# deadvalues configuration: https://github.com/guarnz/deadvalues
+# Both Talos clusters run Kubernetes v1.37.1 (talos/*/talconfig.yaml).
+kubeVersion: "1.37"
+
+# APIs beyond stock Kubernetes that the clusters serve, spelled exactly as
+# charts check them (.Capabilities.APIVersions.Has "..."). Tune from the
+# CONDITIONAL notes in `task deadvalues:check-values` output.
+apiVersions: []
+
+failOn: dead
+
+# Baseline for findings we deliberately keep (keys injected or consumed
+# externally). One entry per finding, most specific node wins.
+ignore: []
