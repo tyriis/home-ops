@@ -82,13 +82,9 @@ spec:
       server:
         type: secret
         name: *serverCert
-        globalMounts:
-          - path: /server
       client:
         type: secret
         name: *clientCert
-        globalMounts:
-          - path: /client
 
     serviceAccount:
       cnpg-barman-cloud:
