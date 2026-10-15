@@ -30,7 +30,8 @@ spec:
   values:
     # https://artifacthub.io/packages/helm/argo/argo-events?modal=values
     # https://github.com/argoproj/argo-helm/blob/main/charts/argo-events/values.yaml
-    metrics:
-      enabled: true
-    serviceMonitor:
-      enabled: true
+    controller:
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true

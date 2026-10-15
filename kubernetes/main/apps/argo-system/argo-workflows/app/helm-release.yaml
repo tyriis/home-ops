@@ -49,6 +49,11 @@ spec:
         limits:
           memory: 100Mi
 
+      metricsConfig:
+        enabled: false
+      serviceMonitor:
+        enabled: true
+
     executor:
       image:
         registry: quay.io
@@ -94,7 +99,3 @@ spec:
         name: argo-workflow
       rbac:
         create: true
-    metricsConfig:
-      enabled: false
-    serviceMonitor:
-      enabled: true
