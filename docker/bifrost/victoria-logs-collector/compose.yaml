@@ -32,8 +32,9 @@ services:
       - -fileCollector.streamFields=hostname,app
       # Lightwhale host syslog (BusyBox syslogd via /dev/log). Carries sshd, host daemons,
       # and every container's logs (Docker syslog driver, tag docker:<name>#<id>).
-      - -fileCollector.glob=/var/log/messages
+      # Glob pattern (messages*) is REQUIRED — see bifrost README, "Log shipping".
+      - -fileCollector.glob=/var/log/messages*
       - '-fileCollector.extraFields={"app":"syslog"}'
     volumes:
-      - /var/log/messages:/var/log/messages:ro
+      - /var/log:/var/log:ro
       - data:/var/lib/vlagent
