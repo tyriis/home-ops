@@ -28,5 +28,3 @@ spec:
   values:
     installCRDs: true
     replicaCount: 1
-    grafana:
-      enabled: false
