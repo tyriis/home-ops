@@ -95,8 +95,8 @@ spec:
     ui:
       enabled: true
       publishNotReadyAddresses: true
-      # The service should only contain selectors for active Vault pod
-      activeVaultPodOnly: true
+      # The service should only contain selectors for active OpenBao pod
+      activeOpenbaoPodOnly: true
       serviceType: ClusterIP
       serviceNodePort: null
       externalPort: 8200
