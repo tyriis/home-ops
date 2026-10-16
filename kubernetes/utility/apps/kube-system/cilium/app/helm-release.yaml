@@ -25,7 +25,9 @@ spec:
   values:
     # https://artifacthub.io/packages/helm/cilium/cilium?modal=values
     cluster:
-      name: ${FLUX_CLUSTER_NAME}
+      # literal per-cluster name (chart validate.yaml rejects unsubstituted
+      # ${VAR} offline); matches clusterName in the talos machineconfig
+      name: utility
       id: 1
     k8sServiceHost: localhost
     k8sServicePort: 7445
@@ -36,8 +38,6 @@ spec:
     bpf:
       masquerade: true
       tproxy: true
-    bgp:
-      enabled: false
     cgroup:
       autoMount:
         enabled: false
@@ -69,10 +69,6 @@ spec:
       relay:
         # FIXME
         enabled: false
-        rollOutPods: true
-        prometheus:
-          serviceMonitor:
-            enabled: true
     ipam:
       mode: kubernetes
     ipv4NativeRoutingCIDR: 10.244.0.0/16
@@ -103,7 +99,6 @@ spec:
       enabled: true
       serviceMonitor:
         enabled: true
-        trustCRDsExist: true
     dashboards:
       enabled: true
       annotations:
@@ -112,22 +107,3 @@ spec:
     routingMode: native
     securityContext:
       privileged: true
-      capabilities:
-        ciliumAgent:
-          - CHOWN
-          - KILL
-          - NET_ADMIN
-          - NET_RAW
-          - IPC_LOCK
-          - SYS_ADMIN
-          - SYS_RESOURCE
-          - PERFMON
-          - BPF
-          - DAC_OVERRIDE
-          - FOWNER
-          - SETGID
-          - SETUID
-        cleanCiliumState:
-          - NET_ADMIN
-          - SYS_ADMIN
-          - SYS_RESOURCE
