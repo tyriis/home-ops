@@ -36,8 +36,6 @@ spec:
     bpf:
       masquerade: true
       tproxy: true
-    bgp:
-      enabled: false
     cgroup:
       autoMount:
         enabled: false
@@ -69,10 +67,6 @@ spec:
       relay:
         # FIXME
         enabled: false
-        rollOutPods: true
-        prometheus:
-          serviceMonitor:
-            enabled: true
     ipam:
       mode: kubernetes
     ipv4NativeRoutingCIDR: 10.244.0.0/16
@@ -112,22 +106,22 @@ spec:
     routingMode: native
     securityContext:
       privileged: true
-      capabilities:
-        ciliumAgent:
-          - CHOWN
-          - KILL
-          - NET_ADMIN
-          - NET_RAW
-          - IPC_LOCK
-          - SYS_ADMIN
-          - SYS_RESOURCE
-          - PERFMON
-          - BPF
-          - DAC_OVERRIDE
-          - FOWNER
-          - SETGID
-          - SETUID
-        cleanCiliumState:
-          - NET_ADMIN
-          - SYS_ADMIN
-          - SYS_RESOURCE
+      # capabilities:
+      #   ciliumAgent:
+      #     - CHOWN
+      #     - KILL
+      #     - NET_ADMIN
+      #     - NET_RAW
+      #     - IPC_LOCK
+      #     - SYS_ADMIN
+      #     - SYS_RESOURCE
+      #     - PERFMON
+      #     - BPF
+      #     - DAC_OVERRIDE
+      #     - FOWNER
+      #     - SETGID
+      #     - SETUID
+      #   cleanCiliumState:
+      #     - NET_ADMIN
+      #     - SYS_ADMIN
+      #     - SYS_RESOURCE
