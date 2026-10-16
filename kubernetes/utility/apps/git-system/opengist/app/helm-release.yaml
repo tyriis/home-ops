@@ -38,8 +38,6 @@ spec:
       opengist:
         annotations:
           reloader.stakater.com/auto: "true"
-        replicas: 1
-        strategy: Recreate
         containers:
           app:
             image:
@@ -90,14 +88,12 @@ spec:
 
     service:
       app:
-        controller: opengist
         ports:
           http:
             port: 6157
 
     persistence:
       data:
-        type: persistentVolumeClaim
         existingClaim: opengist-data
         globalMounts:
           - path: /opengist

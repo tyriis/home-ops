@@ -23,11 +23,8 @@ spec:
     keepHistory: false
   values:
     image:
-      registry: code.forgejo.org
-      repository: forgejo/forgejo
       tag: 16.0.6-rootless
       digest: sha256:51b47921660e1ec7127f094208fe06901ba57df4fe6d59fcccc3a2419514a77f
-      rootless: true
     resources:
       requests:
         cpu: 100m
@@ -35,7 +32,6 @@ spec:
       limits:
         memory: 1Gi
     persistence:
-      enabled: true
       create: false
       claimName: forgejo-data
     gitea:
@@ -97,9 +93,3 @@ spec:
     service:
       http:
         port: 80
-    ingress:
-      enabled: false
-    httpRoute:
-      enabled: false
-    tcpRoute:
-      enabled: false

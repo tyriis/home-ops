@@ -32,7 +32,6 @@ spec:
 
     configMaps:
       vmauth:
-        forceRename: vmauth
         data:
           vmauth.yaml: |-
             users:
@@ -110,8 +109,6 @@ spec:
 
     controllers:
       vmauth:
-        type: deployment
-        replicas: 1
         containers:
           app:
             image:
@@ -146,7 +143,6 @@ spec:
 
     service:
       vmauth:
-        controller: vmauth
         ports:
           http:
             port: 8427

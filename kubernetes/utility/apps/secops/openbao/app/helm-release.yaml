@@ -29,10 +29,7 @@ spec:
     injector:
       enabled: false
     server:
-      enabled: true
       image:
-        registry: quay.io
-        repository: openbao/openbao
         tag: 2.7.1@sha256:6d2b93856e3fcf7b18ad855a0b51eaba474dc8b79cf554379ea32034797d2acf
       updateStrategyType: RollingUpdate
       logLevel: info
@@ -46,14 +43,11 @@ spec:
       extraLabels:
         reloader.stakater.com/auto: "true"
       dataStorage:
-        enabled: true
         size: 2Gi
-        mountPath: /openbao/data
         storageClass: local-nvme
       auditStorage:
         enabled: true
         size: 2Gi
-        mountPath: /openbao/audit
         storageClass: local-nvme
       extraSecretEnvironmentVars:
         - envName: STATIC_UNSEAL_KEY
@@ -94,10 +88,5 @@ spec:
 
     ui:
       enabled: true
-      publishNotReadyAddresses: true
       # The service should only contain selectors for active OpenBao pod
       activeOpenbaoPodOnly: true
-      serviceType: ClusterIP
-      serviceNodePort: null
-      externalPort: 8200
-      targetPort: 8200

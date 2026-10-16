@@ -25,6 +25,4 @@ spec:
   uninstall:
     keepHistory: false
   # https://artifacthub.io/packages/helm/external-secrets-operator/external-secrets?modal=values
-  values:
-    installCRDs: true
-    replicaCount: 1
+  values: {}

@@ -23,12 +23,8 @@ spec:
     keepHistory: false
   values:
     server:
-      replicaCount: 1
       retentionPeriod: 30d
-      image:
-        tag: v1.53.0
       persistentVolume:
-        enabled: true
         size: 20Gi
         storageClassName: local-nvme
       resources:

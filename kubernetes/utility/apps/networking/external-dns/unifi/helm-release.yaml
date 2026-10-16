@@ -25,7 +25,6 @@ spec:
   # https://kubernetes-sigs.github.io/external-dns/latest/
   values:
     # https://artifacthub.io/packages/helm/external-dns/external-dns?modal=values
-    fullnameOverride: *app
     env:
       - name: TZ
         value: Europe/Vienna
@@ -43,18 +42,10 @@ spec:
               secretKeyRef:
                 name: &secret external-dns-unifi-credentials
                 key: UNIFI_API_KEY
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: http-webhook
-          initialDelaySeconds: 10
-          timeoutSeconds: 5
         readinessProbe:
           httpGet:
             path: /readyz
-            port: http-webhook
           initialDelaySeconds: 10
-          timeoutSeconds: 5
     triggerLoopOnEvent: true
     extraArgs:
       - --annotation-filter=external-dns/unifi in (true)

@@ -25,7 +25,6 @@ spec:
       cron:
         type: cronjob
         cronjob:
-          concurrencyPolicy: Forbid
           schedule: "*/5 * * * *"
         pod:
           automountServiceAccountToken: true
@@ -75,7 +74,6 @@ spec:
         i-see-dead-pods:
           type: ClusterRoleBinding
           roleRef:
-            kind: ClusterRole
             identifier: *app
           subjects:
             - kind: ServiceAccount

@@ -27,19 +27,14 @@ spec:
     keepHistory: false
   # https://github.com/bjw-s/helm-charts/blob/main/charts/library/common/values.yaml
   values:
-    serviceAccount:
-      openbao-snapshots: {}
     controllers:
       openbao-snapshots:
         type: cronjob
         cronjob:
-          concurrencyPolicy: Forbid
           schedule: "0 6 * * *" # daily at 6am
           timeZone: Europe/Vienna
         annotations:
           reloader.stakater.com/auto: "true"
-        serviceAccount:
-          identifier: openbao-snapshots
         pod:
           automountServiceAccountToken: true
           securityContext:

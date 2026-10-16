@@ -25,6 +25,5 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    manageCRDs: true
     metrics:
       disableAuth: true
