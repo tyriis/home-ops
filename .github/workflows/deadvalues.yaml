@@ -45,8 +45,7 @@ jobs:
         with:
           app-id: "${{ secrets.BOT_APP_ID }}"
           private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
-          # read: download the pinned release; pull-requests: post/update the report comment
-          permission-contents: read
+          # post/update the report comment (release download is public read)
           permission-pull-requests: write
 
       # https://github.com/marketplace/actions/deadvalues
