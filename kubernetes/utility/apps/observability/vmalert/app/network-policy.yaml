@@ -1,0 +1,32 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/networking.k8s.io/networkpolicy_v1.json
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: vmalert
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: vmalert
+  policyTypes:
+    - Ingress
+  ingress:
+    # Allow the envoy gateway in the networking namespace to serve the alerts UI
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: networking
+      ports:
+        - protocol: TCP
+          port: 8880
+    # Allow kube-prometheus to scrape vmalert metrics
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: observability
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: prometheus
+      ports:
+        - protocol: TCP
+          port: 8880

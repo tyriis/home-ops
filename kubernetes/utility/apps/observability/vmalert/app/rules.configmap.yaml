@@ -1,0 +1,34 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/core/configmap_v1.json
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vmalert-rules
+data:
+  # LogsQL alert rules evaluated by vmalert against VictoriaLogs.
+  # Grow these per-app over time, like prometheus-rule.yaml files elsewhere in the repo.
+  rules.yaml: |
+    groups:
+      - name: log-error-rate
+        type: vlogs
+        rules:
+          - alert: LogErrorRateHigh
+            expr: '_time:5m level:ERROR | stats by (app) count() as errors | filter errors:>100'
+            for: 5m
+            labels:
+              severity: warning
+            annotations:
+              summary: "High error log rate for app {{ $labels.app }}"
+              description: "App {{ $labels.app }} logged more than 100 ERROR lines over the last 5 minutes."
+
+      - name: log-critical-fatal
+        type: vlogs
+        rules:
+          - alert: CriticalLogDetected
+            expr: '_time:5m level:CRITICAL OR level:FATAL | stats by (app) count() as criticals | filter criticals:>0'
+            for: 1m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Critical/fatal log lines from app {{ $labels.app }}"
+              description: "App {{ $labels.app }} logged CRITICAL or FATAL lines over the last 5 minutes."
