@@ -99,6 +99,10 @@ spec:
       enabled: true
       serviceMonitor:
         enabled: true
+        # flate renders without monitoring.coreos.com/v1 apiVersions; cilium's
+        # validate.yaml then hard-requires this flag (deadvalues would call it
+        # dead, hence the ignore entry in .deadvalues.yaml)
+        trustCRDsExist: true
     dashboards:
       enabled: true
       annotations:

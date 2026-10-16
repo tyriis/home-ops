@@ -18,4 +18,9 @@ failOn: dead
 
 # Baseline for findings we deliberately keep (keys injected or consumed
 # externally). One entry per finding, most specific node wins.
-ignore: []
+ignore:
+  # flate (and any render without our apiVersions) hard-requires this flag via
+  # cilium's validate.yaml; it is only dead when ServiceMonitor CRDs are present.
+  - app: cilium
+    keys:
+      - prometheus.serviceMonitor.trustCRDsExist
