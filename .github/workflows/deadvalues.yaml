@@ -36,10 +36,20 @@ jobs:
         with:
           fetch-depth: 0
 
+      # https://github.com/marketplace/actions/create-github-app-token
+      - name: generate token
+        id: generate-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+          permission-pull-requests: write
+
       # https://github.com/marketplace/actions/deadvalues
       - name: deadvalues
         uses: guarnz/deadvalues@d99503861ec2ef7604fe1e6e4c75090190a203f2 # v0.1.5
         with:
+          github-token: ${{ steps.generate-token.outputs.token }}
           path: kubernetes
           mode: all
           fail-on-scan: dead
