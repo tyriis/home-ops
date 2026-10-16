@@ -46,24 +46,31 @@ spec:
           memory: 100Mi
     serviceMonitor:
       enabled: true
+  # optional: the Secret is created at runtime by ExternalSecret (no manifest in
+  # repo); offline tooling (deadvalues) may not see it. ESO refreshes every 5m.
   valuesFrom:
     - kind: Secret
       name: tempo-s3
+      optional: true
       valuesKey: S3_BUCKET_NAME
       targetPath: tempo.storage.trace.s3.bucket
     - kind: Secret
       name: tempo-s3
+      optional: true
       valuesKey: S3_BUCKET_HOST
       targetPath: tempo.storage.trace.s3.endpoint
     - kind: Secret
       name: tempo-s3
+      optional: true
       valuesKey: S3_BUCKET_REGION #gitleaks:allow
       targetPath: tempo.storage.trace.s3.region
     - kind: Secret
       name: tempo-s3
+      optional: true
       valuesKey: S3_ACCESS_KEY
       targetPath: tempo.storage.trace.s3.access_key
     - kind: Secret
       name: tempo-s3
+      optional: true
       valuesKey: S3_SECRET_KEY
       targetPath: tempo.storage.trace.s3.secret_key
