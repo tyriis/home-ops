@@ -10,8 +10,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  # the envoy-pocketid component moved into app/kustomization.yaml so the
-  # directory builds standalone for offline tooling (deadvalues)
   path: ./kubernetes/main/apps/default/echo-server/app
   prune: true
   sourceRef:

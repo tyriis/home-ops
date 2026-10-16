@@ -16,6 +16,10 @@ apiVersions:
 
 failOn: dead
 
+flux:
+  substitute:
+    FLUX_CLUSTER_NAME: placeholder
+
 # Baseline for findings we deliberately keep (keys injected or consumed
 # externally). One entry per finding, most specific node wins.
 ignore:

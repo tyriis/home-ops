@@ -46,8 +46,6 @@ spec:
           memory: 100Mi
     serviceMonitor:
       enabled: true
-  # optional: the Secret is created at runtime by ExternalSecret (no manifest in
-  # repo); offline tooling (deadvalues) may not see it. ESO refreshes every 5m.
   valuesFrom:
     - kind: Secret
       name: tempo-s3

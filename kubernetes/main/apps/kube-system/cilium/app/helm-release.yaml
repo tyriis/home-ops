@@ -25,9 +25,7 @@ spec:
   values:
     # https://artifacthub.io/packages/helm/cilium/cilium?modal=values
     cluster:
-      # literal per-cluster name (chart validate.yaml rejects unsubstituted
-      # ${VAR} offline); matches clusterName in the talos machineconfig
-      name: kube-lab
+      name: ${FLUX_CLUSTER_NAME}
       id: 1
     k8sServiceHost: localhost
     k8sServicePort: 7445
@@ -126,17 +124,11 @@ spec:
       enabled: true
       serviceMonitor:
         enabled: true
-        # flate renders without monitoring.coreos.com/v1 apiVersions; cilium's
-        # validate.yaml then hard-requires this flag (deadvalues would call it
-        # dead, hence the ignore entry in .deadvalues.yaml)
         trustCRDsExist: true
     rollOutCiliumPods: true
     routingMode: native
     securityContext:
       privileged: true
-      # non-privileged mode: drop privileged and set these (chart 1.20.3 defaults
-      # shown; they are DEAD while privileged=true). Requires bpffs pre-mounted
-      # on every node -- a missing mount CrashLoops the CNI.
       # capabilities:
       #   ciliumAgent:
       #     - CHOWN

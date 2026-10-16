@@ -7,10 +7,6 @@
 # Gates the PR: scan fails on dead keys (fail-on-scan: dead), diff fails on
 # BREAKING chart bumps (fail-on-diff: breaking, catches the Renovate case).
 # Render errors exit 2 and fail the run too.
-# NOTE: the action has no --skip input, and --skip matching is broken upstream
-# for apps discovered via kustomize overlays, so PRs touching
-# default/echo-server or kube-system/cilium fail with render errors (tempo
-# needs its valuesFrom Secret in-repo). Revisit when upstream ships skip.
 name: deadvalues
 
 on:
@@ -35,13 +31,10 @@ jobs:
     timeout-minutes: 25
     steps:
       - name: checkout
-        # the action needs history down to the base commit for diff/changed-since
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
 
-      # pinned to the commit behind tag v0.1.5 (tag object a45fe41 -> commit);
-      # .deadvalues.yaml (kubeVersion, apiVersions, failOn) is read from the repo root
       - name: deadvalues
         uses: guarnz/deadvalues@d99503861ec2ef7604fe1e6e4c75090190a203f2 # v0.1.5
         with:
