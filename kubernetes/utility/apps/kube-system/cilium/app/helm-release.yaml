@@ -58,8 +58,9 @@ spec:
           - port-distribution
           - icmp
           - http
-        serviceMonitor:
-          enabled: true
+        # Read only when hubble.enabled is true; re-enable together with it.
+        # serviceMonitor:
+        #   enabled: true
         dashboards:
           enabled: true
           annotations:
