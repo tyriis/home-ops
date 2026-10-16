@@ -11,7 +11,7 @@ spec:
   scrapeInterval: 15s
   staticConfigs:
     - labels:
-        job: truenas-node
+        job: node-exporter
       targets:
         - nas.techtales.io:9100
     - labels:
