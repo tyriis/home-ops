@@ -1,8 +1,16 @@
 ---
 # deadvalues: Helm values dead-code checker (https://github.com/guarnz/deadvalues)
-# PRs scan only apps whose files changed (--changed-since, fast); manual
-# workflow_dispatch runs the full scan on demand.
-# Non-blocking reports: findings land in the job summary, neither job gates the PR.
+# Uses the upstream composite action: installs the pinned release, then runs
+# `diff --base` + `scan --changed-since` on PRs (fast, scoped) and a full scan
+# on workflow_dispatch (no base). Report lands in the job summary and a sticky
+# PR comment.
+# Gates the PR: scan fails on dead keys (fail-on-scan: dead), diff fails on
+# BREAKING chart bumps (fail-on-diff: breaking, catches the Renovate case).
+# Render errors exit 2 and fail the run too.
+# NOTE: the action has no --skip input, and --skip matching is broken upstream
+# for apps discovered via kustomize overlays, so PRs touching
+# default/echo-server or kube-system/cilium fail with render errors (tempo
+# needs its valuesFrom Secret in-repo). Revisit when upstream ships skip.
 name: deadvalues
 
 on:
@@ -13,86 +21,31 @@ on:
 
 permissions:
   contents: read
+  pull-requests: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
-  report:
-    name: deadvalues / report
+  deadvalues:
+    name: deadvalues / check
     runs-on: ubuntu-latest
     # first full run took ~14min on the 4-vCPU runner; manual-dispatch full scans keep headroom
     timeout-minutes: 25
-    # non-blocking: findings are reported, not enforced
-    continue-on-error: true
     steps:
       - name: checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          # --changed-since needs history down to the base commit
-          fetch-depth: 0
-
-      - name: download deadvalues
-        run: ./hack/get-deadvalues.sh
-
-      - name: scan
-        shell: bash
-        env:
-          EVENT_NAME: ${{ github.event_name }}
-          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        run: |
-          # PRs: only apps whose files changed (fast). Manual dispatch: full scan (on-demand).
-          rc=0
-          if [[ "${EVENT_NAME}" == "pull_request" ]]; then
-            scan_args=(--changed-since "${PR_BASE_SHA}")
-            echo "scoping scan to apps changed since ${PR_BASE_SHA}"
-          else
-            scan_args=()
-            echo "running full scan"
-          fi
-          hack/bin/deadvalues scan kubernetes "${scan_args[@]}" -o markdown --details --fail-on none > report.md || rc=$?
-          {
-            echo "## deadvalues scan"
-            if [[ ${rc} -ne 0 ]]; then
-              echo ""
-              echo "_scan finished with findings or errors (exit ${rc}, non-blocking)_"
-            fi
-            cat report.md
-          } >> "${GITHUB_STEP_SUMMARY}"
-          exit 0
-
-  diff:
-    name: deadvalues / diff
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    # non-blocking: ALIVE -> DEAD regressions are reported for review
-    continue-on-error: true
-    steps:
-      - name: checkout
+        # the action needs history down to the base commit for diff/changed-since
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
 
-      - name: download deadvalues
-        run: ./hack/get-deadvalues.sh
-
-      - name: diff chart bumps
-        shell: bash
-        env:
-          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        run: |
-          base="${PR_BASE_SHA:-origin/main}"
-          rc=0
-          hack/bin/deadvalues diff kubernetes --base "${base}" -o markdown > diff.md || rc=$?
-          {
-            echo "## deadvalues diff (${base})"
-            echo ""
-            echo "BREAKING = a key that used to work is now DEAD after the chart bump."
-            if [[ ${rc} -ne 0 ]]; then
-              echo ""
-              echo "_diff finished with findings or errors (exit ${rc}, non-blocking)_"
-            fi
-            cat diff.md
-          } >> "${GITHUB_STEP_SUMMARY}"
-          exit 0
+      # pinned to the commit behind tag v0.1.5 (tag object a45fe41 -> commit);
+      # .deadvalues.yaml (kubeVersion, apiVersions, failOn) is read from the repo root
+      - name: deadvalues
+        uses: guarnz/deadvalues@d99503861ec2ef7604fe1e6e4c75090190a203f2 # v0.1.5
+        with:
+          path: kubernetes
+          mode: all
+          fail-on-scan: dead
+          fail-on-diff: breaking
