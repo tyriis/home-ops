@@ -111,3 +111,25 @@ spec:
     routingMode: native
     securityContext:
       privileged: true
+      # non-privileged mode: drop privileged and set these (chart 1.20.3 defaults
+      # shown; they are DEAD while privileged=true). Requires bpffs pre-mounted
+      # on every node -- a missing mount CrashLoops the CNI.
+      # capabilities:
+      #   ciliumAgent:
+      #     - CHOWN
+      #     - KILL
+      #     - NET_ADMIN
+      #     - NET_RAW
+      #     - IPC_LOCK
+      #     - SYS_ADMIN
+      #     - SYS_RESOURCE
+      #     - PERFMON
+      #     - BPF
+      #     - DAC_OVERRIDE
+      #     - FOWNER
+      #     - SETGID
+      #     - SETUID
+      #   cleanCiliumState:
+      #     - NET_ADMIN
+      #     - SYS_ADMIN
+      #     - SYS_RESOURCE
