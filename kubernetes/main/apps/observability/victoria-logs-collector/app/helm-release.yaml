@@ -22,8 +22,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      tag: v1.53.0
     env:
       - name: VL_TOKEN
         valueFrom:
@@ -50,7 +48,6 @@ spec:
       reloader.stakater.com/auto: "true"
     podMonitor:
       enabled: true
-      vm: false # main runs kube-prometheus-stack, not VM-operator
     resources:
       requests:
         cpu: 50m

@@ -68,7 +68,6 @@ spec:
 
     service:
       app:
-        controller: *app
         ports:
           wyoming:
             port: *port
@@ -82,6 +81,5 @@ spec:
         size: 10Gi
 
       tmp:
-        enabled: true
         type: emptyDir
         medium: Memory

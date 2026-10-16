@@ -20,9 +20,6 @@ spec:
     keepHistory: false
   values:
     # https://artifacthub.io/packages/helm/opentelemetry-helm/opentelemetry-operator?modal=values
-    admissionWebhooks:
-      certManager:
-        enabled: true
     manager:
       featureGatesMap:
         operator.networkpolicy: false

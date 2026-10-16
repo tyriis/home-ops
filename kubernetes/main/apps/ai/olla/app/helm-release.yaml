@@ -36,7 +36,6 @@ spec:
           type: RuntimeDefault
     controllers:
       main:
-        replicas: 1 # Single node
         annotations:
           reloader.stakater.com/auto: "true"
         containers:

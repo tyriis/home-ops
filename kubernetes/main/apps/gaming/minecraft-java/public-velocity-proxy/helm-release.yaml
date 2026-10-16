@@ -38,7 +38,6 @@ spec:
           type: RuntimeDefault
     controllers:
       velocity:
-        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -107,7 +106,6 @@ spec:
             probes:
               readiness: &probes
                 enabled: true
-                type: TCP
                 port: *port
               liveness: *probes
               startup:
@@ -123,7 +121,6 @@ spec:
 
     service:
       velocity:
-        controller: velocity
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: ${CILIUM_LB_IPS}
@@ -141,7 +138,6 @@ spec:
         ports:
           velocity-proxy:
             port: *port
-            protocol: TCP
             targetPort: velocity
           bedrock-proxy:
             port: *bedrockPort
@@ -152,23 +148,18 @@ spec:
             protocol: UDP
             targetPort: simplevoicechat
       rcon:
-        controller: velocity
         ports:
           rcon:
             port: *rconPort
-            protocol: TCP
             targetPort: rcon
       metrics:
-        controller: velocity
         ports:
           metrics:
             port: *metricsPort
-            protocol: TCP
             targetPort: metrics
 
     serviceMonitor:
       metrics:
-        enabled: true
         serviceName: minecraft-public-velocity-proxy-metrics
         endpoints:
           - port: metrics
@@ -180,7 +171,6 @@ spec:
       tmp:
         type: emptyDir
       data:
-        type: persistentVolumeClaim
         existingClaim: minecraft-public-velocity-proxy-data
         globalMounts:
           - path: /server

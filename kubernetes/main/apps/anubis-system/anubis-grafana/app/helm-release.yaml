@@ -81,19 +81,14 @@ spec:
 
     service:
       anubis:
-        controller: anubis
-        type: ClusterIP
         ports:
           http:
             port: *httpPort
-            protocol: TCP
           metrics:
             port: *metricsPort
-            protocol: TCP
 
     serviceMonitor:
       metrics:
-        enabled: true
         serviceName: anubis
         endpoints:
           - port: metrics

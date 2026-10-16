@@ -43,10 +43,11 @@ spec:
     # devices: bond+
     endpointRoutes:
       enabled: true
-    gatewayAPI:
-      enabled: false
-      enableAlpn: true
-      xffNumTrustedHops: 1
+    # Read only when gatewayAPI.enabled is true; re-enable together with it.
+    # gatewayAPI:
+    #   enabled: false
+    #   enableAlpn: true
+    #   xffNumTrustedHops: 1
     hubble:
       # FIXME
       enabled: false
@@ -59,15 +60,13 @@ spec:
           - port-distribution
           - icmp
           - http
-        serviceMonitor:
-          enabled: true
+        # Read only when hubble.enabled is true; re-enable together with it.
+        # serviceMonitor:
+        #   enabled: true
         dashboards:
           enabled: true
           annotations:
             grafana_folder: Cilium
-      relay:
-        # FIXME
-        enabled: false
       # ui:
       #   enabled: false
       #   rollOutPods: false
@@ -115,7 +114,6 @@ spec:
       dashboards:
         enabled: true
       prometheus:
-        enabled: true
         serviceMonitor:
           enabled: true
     dashboards:

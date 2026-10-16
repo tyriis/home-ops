@@ -24,8 +24,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    serviceAccount:
-      gatus: {}
     controllers:
       gatus:
         annotations:
@@ -92,13 +90,11 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: gatus
         ports:
           http:
             port: *port
     serviceMonitor:
       app:
-        serviceName: gatus
         endpoints:
           - port: http
 

@@ -169,7 +169,6 @@ spec:
             app:
               - path: /media
       ml-cache:
-        type: persistentVolumeClaim
         accessMode: ReadWriteOnce
         size: 10Gi
         storageClass: ceph-block

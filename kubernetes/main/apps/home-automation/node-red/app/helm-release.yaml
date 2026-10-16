@@ -26,7 +26,6 @@ spec:
   values:
     controllers:
       node-red:
-        strategy: Recreate
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -62,7 +61,6 @@ spec:
 
     service:
       app:
-        controller: *app
         ports:
           http:
             port: 1880
@@ -87,10 +85,6 @@ spec:
     persistence:
       data:
         existingClaim: node-red-data
-        advancedMounts:
-          node-red:
-            app:
-              - path: /data
       gitconfig:
         type: configMap
         name: node-red-gitconfig

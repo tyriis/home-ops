@@ -105,26 +105,18 @@ spec:
 
     service:
       minecraft:
-        controller: minecraft
-        type: ClusterIP
         ports:
           java:
             port: 25565
-            protocol: TCP
           metrics:
             port: 25585
-            protocol: TCP
       rcon:
-        controller: minecraft
-        type: ClusterIP
         ports:
           rcon:
             port: 25575
-            protocol: TCP
 
     serviceMonitor:
       metrics:
-        enabled: true
         serviceName: ${APP}-minecraft
         endpoints:
           - port: metrics
@@ -135,10 +127,6 @@ spec:
     persistence:
       data:
         existingClaim: ${APP}-data
-        advancedMounts:
-          minecraft:
-            app:
-              - path: /data
       config:
         type: configMap
         name: ${APP}-config

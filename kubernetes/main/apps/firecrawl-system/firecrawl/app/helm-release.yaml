@@ -26,7 +26,6 @@ spec:
   values:
     controllers:
       api:
-        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -91,7 +90,6 @@ spec:
                 memory: 6Gi
 
       worker:
-        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -149,7 +147,6 @@ spec:
                 memory: 4Gi
 
       nuq-worker:
-        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -207,7 +204,6 @@ spec:
                 memory: 4Gi
 
       playwright-service:
-        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -250,7 +246,6 @@ spec:
                 memory: 4Gi
 
       nuq-postgres:
-        replicas: 1
         pod:
           securityContext:
             fsGroup: 999

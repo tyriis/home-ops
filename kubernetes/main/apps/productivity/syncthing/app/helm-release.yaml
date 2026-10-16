@@ -72,27 +72,21 @@ spec:
     service:
       app:
         forceRename: "{{ .Release.Name }}"
-        controller: syncthing
         ports:
           http:
             port: *port
 
       listen:
-        controller: syncthing
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: ${CILIUM_LB_IPS}
         ports:
           discovery:
-            enabled: true
             port: 21027
             protocol: UDP
           listen:
-            enabled: true
             port: 22000
-            protocol: TCP
           listen-udp:
-            enabled: true
             port: 22000
             protocol: UDP
 

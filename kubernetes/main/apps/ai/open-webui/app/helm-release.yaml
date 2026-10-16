@@ -29,7 +29,6 @@ spec:
     # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
     controllers:
       main:
-        replicas: 1 # Single node
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -111,7 +110,6 @@ spec:
             sectionName: https
     persistence:
       data:
-        enabled: true
         existingClaim: "{{ .Release.Name }}-data"
         globalMounts:
           - path: /app/backend/data

@@ -30,7 +30,6 @@ spec:
       ml-detector:
         annotations:
           reloader.stakater.com/auto: "true"
-        replicas: 1
         strategy: RollingUpdate
         containers:
           app:
@@ -98,11 +97,9 @@ spec:
                   app.kubernetes.io/name: *app
     service:
       app:
-        controller: *app
         ports:
           http:
             port: *port
-            protocol: TCP
     persistence:
       config:
         type: configMap

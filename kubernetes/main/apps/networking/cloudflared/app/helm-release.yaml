@@ -77,14 +77,12 @@ spec:
 
     service:
       app:
-        controller: cloudflared
         ports:
           http:
             port: *port
 
     serviceMonitor:
       app:
-        enabled: true
         endpoints:
           - port: http
             scheme: http

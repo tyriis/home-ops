@@ -96,14 +96,12 @@ spec:
 
     service:
       app:
-        controller: *app
         ports:
           metrics:
             port: *port
 
     serviceMonitor:
       metrics:
-        serviceName: *app
         endpoints:
           - port: metrics
             scheme: http

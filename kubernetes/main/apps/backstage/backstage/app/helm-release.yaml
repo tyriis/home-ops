@@ -103,7 +103,6 @@ spec:
 
     service:
       app:
-        controller: backstage
         ports:
           http:
             port: *port
@@ -146,7 +145,6 @@ spec:
             app:
               - path: /opt/app-root/src/dynamic-plugins-root
       data:
-        type: persistentVolumeClaim
         accessMode: ReadWriteOnce
         storageClass: ceph-block
         size: 5Gi

@@ -37,7 +37,6 @@ spec:
 
     controllers:
       it-tools:
-        replicas: 1
         strategy: RollingUpdate
 
         containers:
@@ -60,7 +59,6 @@ spec:
 
     service:
       app:
-        controller: it-tools
         ports:
           http:
             port: 8080

@@ -95,7 +95,6 @@ spec:
             port: *port
     serviceMonitor:
       app:
-        enabled: true
         serviceName: app
         endpoints:
           - port: http
