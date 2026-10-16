@@ -11,10 +11,10 @@ spec:
   scrapeInterval: 15s
   staticConfigs:
     - labels:
-        job: truenas-node
+        job: node-exporter
       targets:
         - nas.techtales.io:9100
     - labels:
-        job: truenas-smartctl
+        job: smartctl-exporter
       targets:
         - nas.techtales.io:9633
