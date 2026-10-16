@@ -49,7 +49,6 @@ spec:
 
     service:
       app:
-        controller: *app
         ports:
           http:
             port: *port
@@ -74,10 +73,6 @@ spec:
     persistence:
       config:
         existingClaim: esphome-config
-        advancedMounts:
-          esphome:
-            app:
-              - path: /config
       secrets:
         type: secret
         name: esphome-secrets

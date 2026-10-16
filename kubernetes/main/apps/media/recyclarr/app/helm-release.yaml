@@ -27,7 +27,6 @@ spec:
     # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
     controllers:
       recyclarr:
-        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:

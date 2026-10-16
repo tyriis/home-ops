@@ -69,7 +69,6 @@ spec:
           grafana.internal/instance: grafana
 
     kubeApiServer:
-      enabled: true
       serviceMonitor:
         metricRelabelings:
           # Drop high cardinality labels by onedr0p
@@ -81,18 +80,15 @@ spec:
             regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
 
     kubeControllerManager:
-      enabled: true
       endpoints: &cp
         - 192.168.100.101
         - 192.168.100.102
         - 192.168.100.103
 
     kubeEtcd:
-      enabled: true
       endpoints: *cp
 
     kubelet:
-      enabled: true
       serviceMonitor:
         metricRelabelings:
           # Drop high cardinality labels by onedr0p
@@ -108,11 +104,7 @@ spec:
       enabled: false
 
     kubeScheduler:
-      enabled: true
       endpoints: *cp
-
-    kubeStateMetrics:
-      enabled: true
 
     kube-state-metrics:
       fullnameOverride: kube-state-metrics
@@ -124,7 +116,6 @@ spec:
         - persistentvolumeclaims=[*]
       prometheus:
         monitor:
-          enabled: true
           relabelings:
             - action: replace
               regex: (.*)
@@ -139,7 +130,6 @@ spec:
         - --collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs|tmpfs)$
       prometheus:
         monitor:
-          enabled: true
           relabelings:
             - action: replace
               regex: (.*)
@@ -192,7 +182,6 @@ spec:
         scrapeConfigSelectorNilUsesHelmValues: false
         scrapeInterval: 1m # Must match interval in Grafana Helm chart
         securityContext:
-          runAsNonRoot: true
           runAsUser: 64535
           runAsGroup: 64535
           fsGroup: 64535

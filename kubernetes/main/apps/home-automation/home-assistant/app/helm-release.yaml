@@ -107,12 +107,6 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}-config"
-        advancedMounts:
-          home-assistant:
-            app:
-              - path: /config
-            code-server:
-              - path: /config
       # ring-snapshots:
       #   existingClaim: home-assistant-ring-snapshots
       #   advancedMounts:

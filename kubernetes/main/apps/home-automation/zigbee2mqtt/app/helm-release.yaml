@@ -29,7 +29,6 @@ spec:
         pod:
           nodeSelector:
             zigbee.feature.node.kubernetes.io/slae.sh: "true"
-        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -103,14 +102,12 @@ spec:
                 protocol: TCP
     service:
       app:
-        controller: zigbee2mqtt
         ports:
           http:
             port: *port
 
     serviceMonitor:
       app:
-        serviceName: zigbee2mqtt
         endpoints:
           - port: http-prom
             scheme: http
@@ -142,7 +139,6 @@ spec:
             app:
               - path: /config
       usb:
-        enabled: true
         type: hostPath
         hostPathType: CharDevice
         hostPath: /dev/serial/by-id/usb-Silicon_Labs_slae.sh_cc2652rb_stick_-_slaesh_s_iot_stuff_00_12_4B_00_21_4F_24_18-if00-port0

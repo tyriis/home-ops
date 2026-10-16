@@ -27,8 +27,6 @@ spec:
     keepHistory: false
   values:
     # https://bjw-s-labs.github.io/helm-charts/docs/app-template/
-    serviceAccount:
-      ${APP}: {}
     defaultPodOptions:
       automountServiceAccountToken: true
       securityContext:
@@ -43,8 +41,6 @@ spec:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
-        serviceAccount:
-          identifier: ${APP}
         containers:
           app:
             image:
@@ -124,14 +120,12 @@ spec:
 
     service:
       main:
-        controller: main
         ports:
           http:
             port: *port
 
     serviceMonitor:
       metrics:
-        enabled: true
         serviceName: ${APP}
         endpoints:
           - port: http

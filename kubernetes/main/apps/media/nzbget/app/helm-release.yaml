@@ -28,7 +28,6 @@ spec:
     # https://github.com/nzbgetcom/nzbget
     controllers:
       nzbget:
-        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -42,12 +41,6 @@ spec:
               - name: http
                 containerPort: *port
                 protocol: TCP
-            probes:
-              # TODO: debug
-              liveness:
-                enabled: false
-              readiness:
-                enabled: false
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -64,7 +57,6 @@ spec:
         fsGroup: 1000
     service:
       app:
-        controller: *app
         ports:
           http:
             port: *port

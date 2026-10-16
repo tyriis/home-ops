@@ -32,8 +32,6 @@ spec:
           type: RuntimeDefault
     controllers:
       hermes:
-        forceRename: *app
-        strategy: Recreate
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
@@ -122,12 +120,6 @@ spec:
             envFrom:
               - secretRef:
                   name: ${APP}-secret
-            probes:
-              liveness: &probes
-                enabled: false
-              readiness: *probes
-              startup:
-                enabled: false
             securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -236,8 +228,6 @@ spec:
                 memory: 512Mi
     service:
       app:
-        forceRename: *app
-        controller: hermes
         ports:
           api:
             port: 8642

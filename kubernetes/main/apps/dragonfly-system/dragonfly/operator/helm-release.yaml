@@ -29,13 +29,8 @@ spec:
     defaultPodOptions:
       automountServiceAccountToken: true
     # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
-    serviceAccount:
-      dragonfly-operator: {}
     controllers:
       dragonfly-operator:
-        serviceAccount:
-          identifier: dragonfly-operator
-        replicas: 1
         strategy: RollingUpdate
         containers:
           app:
@@ -95,7 +90,6 @@ spec:
                   app.kubernetes.io/name: *app
     service:
       app:
-        controller: *app
         ports:
           http:
             port: *port
@@ -103,7 +97,6 @@ spec:
             port: 8080
     serviceMonitor:
       app:
-        serviceName: *app
         endpoints:
           - port: metrics
             scheme: http

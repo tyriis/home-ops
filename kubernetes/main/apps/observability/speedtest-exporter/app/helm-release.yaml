@@ -53,16 +53,12 @@ spec:
 
     service:
       app:
-        controller: speedtest-exporter
         ports:
           metrics:
-            enabled: true
-            protocol: TCP
             port: 9798
 
     serviceMonitor:
       app:
-        serviceName: *app
         endpoints:
           - port: metrics
             scheme: http

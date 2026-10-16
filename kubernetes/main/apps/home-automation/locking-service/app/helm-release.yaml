@@ -69,7 +69,6 @@ spec:
 
     service:
       app:
-        controller: *app
         ports:
           http:
             port: 3000

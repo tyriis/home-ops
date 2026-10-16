@@ -26,7 +26,6 @@ spec:
   values:
     controllers:
       mosquitto:
-        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
@@ -52,7 +51,6 @@ spec:
             probes:
               readiness: &probes
                 enabled: true
-                type: TCP
                 port: *port
               liveness: *probes
               startup:
@@ -75,14 +73,12 @@ spec:
 
     service:
       mqtt:
-        controller: *app
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: ${CILIUM_LB_IPS}
         ports:
           mqtt:
             port: *port
-            protocol: TCP
             targetPort: mqtt
 
     persistence:

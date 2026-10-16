@@ -23,8 +23,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    crds:
-      create: true
     monitoring:
       grafanaDashboard:
         create: true

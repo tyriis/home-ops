@@ -20,16 +20,8 @@ spec:
     keepHistory: false
   values:
     # https://artifacthub.io/packages/helm/grafana-community/tempo?modal=values
-    fullnameOverride: tempo
     tempo:
       reportingEnabled: false
-      receivers:
-        otlp:
-          protocols:
-            grpc:
-              endpoint: "0.0.0.0:4317"
-            http:
-              endpoint: "0.0.0.0:4318"
       storage:
         trace:
           backend: s3
@@ -38,8 +30,6 @@ spec:
             forcepathstyle: true
             insecure: false
             prefix: main/
-      metricsGenerator:
-        enabled: false
       resources:
         requests:
           cpu: 10m

@@ -29,9 +29,6 @@ spec:
     # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
     controllers:
       homepage:
-        serviceAccount:
-          identifier: *app
-        replicas: 1
         # strategy: RollingUpdate not multi target capable
         pod:
           annotations:
@@ -76,7 +73,6 @@ spec:
               capabilities: { drop: ["ALL"] }
     service:
       main:
-        controller: homepage
         ports:
           http:
             port: &port 3000
@@ -94,7 +90,6 @@ spec:
 
     persistence:
       config:
-        enabled: true
         type: configMap
         name: homepage-config
         globalMounts:
@@ -116,5 +111,3 @@ spec:
             path: /app/config/custom.js
           - subPath: proxmox.yaml
             path: /app/config/proxmox.yaml
-    serviceAccount:
-      homepage: {}

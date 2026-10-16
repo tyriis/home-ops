@@ -61,7 +61,6 @@ spec:
           type: RuntimeDefault
     service:
       *app :
-        type: ClusterIP
         ports:
           http:
             port: 8080
