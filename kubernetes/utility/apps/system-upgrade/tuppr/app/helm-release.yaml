@@ -23,7 +23,6 @@ spec:
     env:
       - name: TZ
         value: Europe/Vienna
-    replicaCount: 1
     monitoring:
       serviceMonitor:
         enabled: true

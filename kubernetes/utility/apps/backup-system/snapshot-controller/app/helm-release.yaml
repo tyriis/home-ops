@@ -26,7 +26,6 @@ spec:
     keepHistory: false
   values:
     controller:
-      replicaCount: 1
       args:
         # Stamp VSCs with snapshot.storage.kubernetes.io/managed-by=<node> so the
         # node-side external-snapshotter sidecars (democratic-csi runs with

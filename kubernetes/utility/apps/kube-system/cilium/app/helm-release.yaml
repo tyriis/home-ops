@@ -64,9 +64,6 @@ spec:
           enabled: true
           annotations:
             grafana_folder: Cilium
-      relay:
-        # FIXME
-        enabled: false
     ipam:
       mode: kubernetes
     ipv4NativeRoutingCIDR: 10.244.0.0/16
@@ -86,7 +83,6 @@ spec:
       replicas: 1
       rollOutPods: true
       prometheus:
-        enabled: true
         serviceMonitor:
           enabled: true
       dashboards:

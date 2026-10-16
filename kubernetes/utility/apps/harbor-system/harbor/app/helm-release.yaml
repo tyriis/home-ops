@@ -28,14 +28,7 @@ spec:
   # https://github.com/goharbor/harbor-helm
   values:
     externalURL: https://harbor.techtales.io
-    redis:
-      type: internal
-    database:
-      type: internal
-    trivy:
-      enabled: true
     persistence:
-      enabled: true
       persistentVolumeClaim:
         registry:
           storageClass: nfs-truenas
@@ -43,13 +36,10 @@ spec:
         jobservice:
           jobLog:
             storageClass: nfs-truenas
-            size: 1Gi
         database:
           storageClass: local-nvme
-          size: 1Gi
         redis:
           storageClass: local-nvme
-          size: 1Gi
         trivy:
           storageClass: nfs-truenas
           size: 10Gi
