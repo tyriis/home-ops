@@ -10,4 +10,3 @@ resources:
   - ./olla/flux-sync.yaml
   - ./open-webui/flux-sync.yaml
   - ./searxng/flux-sync.yaml
-  - ./tei/flux-sync.yaml
