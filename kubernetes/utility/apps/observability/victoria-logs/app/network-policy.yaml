@@ -15,6 +15,9 @@ spec:
         - podSelector:
             matchLabels:
               app.kubernetes.io/name: vmauth
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: vmalert
       ports:
         - protocol: TCP
           port: 9428

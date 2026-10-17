@@ -1,0 +1,38 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/core/configmap_v1.json
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vmalert-rules
+data:
+  # LogsQL alert rules evaluated by vmalert against VictoriaLogs.
+  # Grow these per-app over time, like prometheus-rule.yaml files elsewhere in the repo.
+  # vmalert auto-appends `_time: <group interval>` to vlogs exprs, so rules must NOT
+  # carry their own time filter (docs.victoriametrics.com/victorialogs/vmalert/#time-filter).
+  rules.yaml: |
+    groups:
+      - name: log-error-rate
+        type: vlogs
+        interval: 5m
+        rules:
+          - alert: LogErrorRateHigh
+            expr: 'level:in(ERROR, error) | stats by (cluster, kubernetes.pod_namespace, kubernetes.pod_name) count() as errors | filter errors:>100'
+            for: 5m
+            labels:
+              severity: warning
+            annotations:
+              summary: 'High error log rate in {{ $labels.cluster }}: {{ index .Labels "kubernetes.pod_namespace" }}/{{ index .Labels "kubernetes.pod_name" }}'
+              description: 'Pod {{ index .Labels "kubernetes.pod_name" }} in namespace {{ index .Labels "kubernetes.pod_namespace" }} of cluster {{ $labels.cluster }} logged more than 100 ERROR lines over the last 5 minutes ({{ $value }}).'
+
+      - name: log-critical-fatal
+        type: vlogs
+        interval: 5m
+        rules:
+          - alert: CriticalLogDetected
+            expr: 'level:in(CRITICAL, FATAL, critical, fatal) | stats by (cluster, kubernetes.pod_namespace, kubernetes.pod_name) count() as criticals | filter criticals:>0'
+            for: 1m
+            labels:
+              severity: critical
+            annotations:
+              summary: 'Critical/fatal log lines in {{ $labels.cluster }}: {{ index .Labels "kubernetes.pod_namespace" }}/{{ index .Labels "kubernetes.pod_name" }}'
+              description: 'Pod {{ index .Labels "kubernetes.pod_name" }} in namespace {{ index .Labels "kubernetes.pod_namespace" }} of cluster {{ $labels.cluster }} logged CRITICAL or FATAL lines over the last 5 minutes ({{ $value }}).'
