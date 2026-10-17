@@ -60,7 +60,7 @@ One user breaks the pattern: `vmalert-readonly` authenticates with **Basic auth*
 password) instead of a bearer token — the only mechanism a browser can present natively, since it
 gates the vmalert UI at `vmalert.techtales.io/vmalert`. Its credentials are NOT in the Sops file: an
 ExternalSecret `vmauth-vmalert-credentials` pulls them from OpenBao at
-`infra/kubernetes/utility/observability/vmauth-vmalert` as a separate Secret, added to the
+`infra/kubernetes/utility/observability/vmalert` as a separate Secret, added to the
 Deployment via a second `envFrom` entry.
 
 ## Insert endpoint
