@@ -21,7 +21,7 @@ data:
 
     server:
       base_url: https://search.techtales.io/
-      limiter: false
+      limiter: true
       public_instance: false
       image_proxy: true
       method: GET
