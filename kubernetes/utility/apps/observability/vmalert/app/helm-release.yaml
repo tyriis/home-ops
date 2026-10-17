@@ -43,6 +43,7 @@ spec:
               - --rule=/config/rules.yaml
               - --rule.defaultRuleType=vlogs
               - --httpListenAddr=:8880
+              - --configCheckInterval=1m
               - --external.url=https://vmalert.techtales.io
             ports:
               - name: http
@@ -91,7 +92,8 @@ spec:
           main:
             app:
               # Mount the whole ConfigMap volume (no subPath): kubelet updates
-              # whole-volume configMap mounts atomically, and vmalert hot-reloads
-              # rule files natively. subPath mounts would never see rule edits.
+              # whole-volume configMap mounts atomically, and vmalert picks up
+              # changes via -configCheckInterval polling. subPath mounts would
+              # never see rule edits at all.
               - path: /config
                 readOnly: true
