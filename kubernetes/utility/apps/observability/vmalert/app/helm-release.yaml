@@ -23,8 +23,6 @@ spec:
   values:
     # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
     defaultPodOptions:
-      annotations:
-        reloader.stakater.com/auto: "true"
       securityContext:
         runAsNonRoot: true
         runAsUser: 65534
@@ -92,6 +90,8 @@ spec:
         advancedMounts:
           main:
             app:
-              - path: /config/rules.yaml
-                subPath: rules.yaml
+              # Mount the whole ConfigMap volume (no subPath): kubelet updates
+              # whole-volume configMap mounts atomically, and vmalert hot-reloads
+              # rule files natively. subPath mounts would never see rule edits.
+              - path: /config
                 readOnly: true
