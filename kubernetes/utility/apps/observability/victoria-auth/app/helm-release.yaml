@@ -135,6 +135,8 @@ spec:
             envFrom:
               - secretRef:
                   name: vmauth-tokens
+              - secretRef:
+                  name: vmauth-vmalert-credentials
             probes:
               readiness: &probes
                 enabled: true
