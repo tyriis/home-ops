@@ -109,7 +109,7 @@ spec:
 
               - name: vmalert-readonly
                 username: "%{VMAUTH_VMALERT_USER}"
-                password: "%{VMAUTH_VMALERT_PASS}"
+                password: "%{VMAUTH_VMALERT_PASS}" # gg:ignore
                 url_map:
                   - src_paths: ["/vmalert/.*"]
                     url_prefix: "http://vmalert.observability.svc.cluster.local:8880"
