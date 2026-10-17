@@ -62,11 +62,12 @@ spec:
               INFERENCE_IMAGE_MODEL: qwen3.8-flash-next
               INFERENCE_CONTEXT_LENGTH: 16384
               INFERENCE_JOB_TIMEOUT_SEC: 120
-              EMBEDDING_TEXT_MODEL: qwen3-embedding:0.6b
+              EMBEDDING_OPENAI_BASE_URL: http://tei.ai.svc.cluster.local:8080/v1 #NOSONAR allow http
+              EMBEDDING_OPENAI_API_KEY: tei
+              EMBEDDING_TEXT_MODEL: Qwen/Qwen3-Embedding-0.6B
               EMBEDDING_DIMENSIONS: 1024
               EMBEDDING_ENABLE_AUTO_INDEXING: true
               EMBEDDING_CONTEXT_LENGTH: 8192
-              EMBEDDING_TEXT_MODEL_DIMENSION_OVERRIDE: 1024
             envFrom:
               - secretRef:
                   name: karakeep-env
