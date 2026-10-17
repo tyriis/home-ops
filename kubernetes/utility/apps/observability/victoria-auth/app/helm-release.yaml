@@ -107,6 +107,16 @@ spec:
                     deny_paths: ["/.*"]
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
 
+              - name: vmalert-readonly
+                username: "%{VMAUTH_VMALERT_USER}"
+                password: "%{VMAUTH_VMALERT_PASS}"
+                url_map:
+                  - src_paths: ["/vmalert/.*"]
+                    url_prefix: "http://vmalert.observability.svc.cluster.local:8880"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://vmalert.observability.svc.cluster.local:8880"
+
     controllers:
       vmauth:
         containers:
@@ -151,6 +161,15 @@ spec:
       main:
         hostnames:
           - logs.techtales.io
+        parentRefs:
+          - name: envoy
+            namespace: networking
+            sectionName: https
+        annotations:
+          external-dns/unifi: "true"
+      vmalert:
+        hostnames:
+          - vmalert.techtales.io
         parentRefs:
           - name: envoy
             namespace: networking

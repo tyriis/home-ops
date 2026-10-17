@@ -45,6 +45,7 @@ spec:
               - --rule=/config/rules.yaml
               - --rule.defaultRuleType=vlogs
               - --httpListenAddr=:8880
+              - --external.url=https://vmalert.techtales.io
             ports:
               - name: http
                 containerPort: 8880
@@ -83,17 +84,6 @@ spec:
             scheme: http
             path: /metrics
             interval: 1m
-
-    route:
-      main:
-        hostnames:
-          - alerts.techtales.io
-        parentRefs:
-          - name: envoy
-            namespace: networking
-            sectionName: https
-        annotations:
-          external-dns/unifi: "true"
 
     persistence:
       config:

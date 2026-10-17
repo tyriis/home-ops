@@ -11,11 +11,11 @@ spec:
   policyTypes:
     - Ingress
   ingress:
-    # Allow the envoy gateway in the networking namespace to serve the alerts UI
+    # Allow the vmauth proxy in this namespace to serve the alerts UI
     - from:
-        - namespaceSelector:
+        - podSelector:
             matchLabels:
-              kubernetes.io/metadata.name: networking
+              app.kubernetes.io/name: vmauth
       ports:
         - protocol: TCP
           port: 8880
