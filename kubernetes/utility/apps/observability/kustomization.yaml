@@ -12,3 +12,4 @@ resources:
   - ./victoria-auth/flux-sync.yaml
   - ./victoria-logs/flux-sync.yaml
   - ./victoria-logs-collector/flux-sync.yaml
+  - ./vmalert/flux-sync.yaml
