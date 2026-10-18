@@ -1,8 +1,10 @@
 ---
-status: proposed
+status: accepted
 date: 2026-10-11
 decision-makers: [tyriis]
 ---
+
+<!-- markdownlint-disable MD013 -->
 
 # Use VictoriaLogs single-node with vmauth per-unit keys as the central log platform
 
@@ -16,15 +18,15 @@ Goal: one central log sink for the whole estate (both clusters, NAS, bifrost, wo
 
 ## Requirements
 
-| # | Requirement |
-|---|-------------|
-| R1 | Single central ingest+query endpoint for all units across both sites |
-| R2 | Per-unit write credential (main cluster, workstation(s), NAS, bifrost, remote site); revocable independently |
-| R3 | Hard source labeling: identity of writer enforced by the platform, not claimed by the client |
-| R4 | Low ops burden on 1-node utility; no S3/MinIO dependency |
-| R5 | Queryable from Grafana (datasource plugin) and CLI/vmui |
-| R6 | Shippers tolerate utility restarts/network blips (buffer, don't drop silently) |
-| R7 | Small footprint — utility is not a storage/IO-heavy node |
+| #   | Requirement                                                                                                  |
+| --- | ------------------------------------------------------------------------------------------------------------ |
+| R1  | Single central ingest+query endpoint for all units across both sites                                         |
+| R2  | Per-unit write credential (main cluster, workstation(s), NAS, bifrost, remote site); revocable independently |
+| R3  | Hard source labeling: identity of writer enforced by the platform, not claimed by the client                 |
+| R4  | Low ops burden on 1-node utility; no S3/MinIO dependency                                                     |
+| R5  | Queryable from Grafana (datasource plugin) and CLI/vmui                                                      |
+| R6  | Shippers tolerate utility restarts/network blips (buffer, don't drop silently)                               |
+| R7  | Small footprint — utility is not a storage/IO-heavy node                                                     |
 
 ## Findings (source-checked 2026-10-10)
 
@@ -37,17 +39,17 @@ Goal: one central log sink for the whole estate (both clusters, NAS, bifrost, wo
 
 ## Options considered
 
-| Option | R2 keys | R3 hard labels | R4/R7 ops+footprint | Verdict |
-|---|---|---|---|---|
-| A. Alloy + Loki on utility | ✓ (vmauth/reverse proxy) | ✗ labels client-set; Loki label-indexed, weak full-text | ingester memory + chunk/index storage + MinIO for real HA — heaviest ops | Standard Grafana path, but re-adopts the complexity the move is escaping |
-| B. VL **cluster** + vmauth on utility | ✓ | ✓✓ tenant-per-unit, proxy-enforced; per-tenant retention | 3 components on a 1-node cluster; overprovisioned for lab ingest | The "hard labeling" purist answer; pays cluster tax for a feature set we won't use |
-| C. VL single-node + vmauth per-unit keys (recommended) | ✓ vmauth users, write-only path-locked | ✓\* key proves writer identity; `host=`/`cluster=` labels shipper-set (soft in body) | 2 tiny deployments, 1-2 PVCs, no S3 | Meets R1-R7 at minimal cost; graduation path to B is vmauth-config-only |
-| D. Stay per-cluster (VL on ms01 + scattered agents) | n/a | n/a | No central answer; NAS/workstations/remote have no sink | Fails R1 |
-| E. Vector everywhere + VL | ✓ | same as C | Best pipeline language (VRL), but zero kubesearch traction, heavier agents; single backend already decided | No advantage over fluent-bit/vlagent at this scale |
+| Option                                                 | R2 keys                                | R3 hard labels                                                                       | R4/R7 ops+footprint                                                                                        | Verdict                                                                            |
+| ------------------------------------------------------ | -------------------------------------- | ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| A. Alloy + Loki on utility                             | ✓ (vmauth/reverse proxy)               | ✗ labels client-set; Loki label-indexed, weak full-text                              | ingester memory + chunk/index storage + MinIO for real HA — heaviest ops                                   | Standard Grafana path, but re-adopts the complexity the move is escaping           |
+| B. VL **cluster** + vmauth on utility                  | ✓                                      | ✓✓ tenant-per-unit, proxy-enforced; per-tenant retention                             | 3 components on a 1-node cluster; overprovisioned for lab ingest                                           | The "hard labeling" purist answer; pays cluster tax for a feature set we won't use |
+| C. VL single-node + vmauth per-unit keys (recommended) | ✓ vmauth users, write-only path-locked | ✓\* key proves writer identity; `host=`/`cluster=` labels shipper-set (soft in body) | 2 tiny deployments, 1-2 PVCs, no S3                                                                        | Meets R1-R7 at minimal cost; graduation path to B is vmauth-config-only            |
+| D. Stay per-cluster (VL on ms01 + scattered agents)    | n/a                                    | n/a                                                                                  | No central answer; NAS/workstations/remote have no sink                                                    | Fails R1                                                                           |
+| E. Vector everywhere + VL                              | ✓                                      | same as C                                                                            | Best pipeline language (VRL), but zero kubesearch traction, heavier agents; single backend already decided | No advantage over fluent-bit/vlagent at this scale                                 |
 
-\* Spoof window: a compromised unit could *claim* a different `host=` label inside its own insert stream. vmauth proves the key, not the payload. Accepted risk at homelab trust level (see Consequences for mitigation).
+\* Spoof window: a compromised unit could _claim_ a different `host=` label inside its own insert stream. vmauth proves the key, not the payload. Accepted risk at homelab trust level (see Consequences for mitigation).
 
-## Decision (proposed)
+## Decision
 
 **Option C.** Deploy on **utility**:
 
@@ -70,7 +72,7 @@ Graduation trigger to Option B (vlcluster): need for true tenant isolation, per-
 ## Consequences (when accepted)
 
 - utility gains a stateful, write-heavy-ish service — PVC sizing is trivial at this ingest (few GB / 30d) but needs a disk alert once.
-- Spoof-window on labels (Option C footnote): acceptable because a compromised unit that forges labels can only pollute *its own stream's* history, and its key still can't write elsewhere. If this ever matters, Option B's tenants close it without rework.
+- Spoof-window on labels (Option C footnote): acceptable because a compromised unit that forges labels can only pollute _its own stream's_ history, and its key still can't write elsewhere. If this ever matters, Option B's tenants close it without rework.
 - Single sink = single place to look when everything is broken, including when utility itself is. Node-local `journalctl` remains the escape hatch.
 - PR #1155 (S3 tiering, still open, cold reads slow): revisit after merge only if long-term archive to NAS/DS218+ becomes a requirement.
 - Metrics-on-the-same-front-door remains config-compatible: later means one more Deployment + vmauth user entries, no rework.
