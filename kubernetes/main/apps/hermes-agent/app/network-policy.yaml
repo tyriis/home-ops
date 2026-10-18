@@ -12,17 +12,6 @@ spec:
     - Ingress
     - Egress
   ingress:
-    # Allow incoming traffic only from open-webui in the ai namespace
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: ai
-          podSelector:
-            matchLabels:
-              app.kubernetes.io/name: open-webui
-      ports:
-        - protocol: TCP
-          port: 8642
     # Allow incoming traffic from Envoy Gateway for Hermes WebUI
     - from:
         - namespaceSelector:
@@ -57,17 +46,6 @@ spec:
       ports:
         - protocol: TCP
           port: 3002
-    # Allow egress to olla (Ollama proxy) in ai namespace
-    - to:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: ai
-          podSelector:
-            matchLabels:
-              app.kubernetes.io/instance: olla
-      ports:
-        - protocol: TCP
-          port: 40114
     # Allow egress to Home Assistant web UI/API (in-cluster URL only, e.g. http://home-assistant-app.home-automation.svc.cluster.local:8123)
     - to:
         - namespaceSelector:
