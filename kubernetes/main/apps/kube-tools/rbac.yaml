@@ -95,6 +95,32 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
+  name: kubectl-readonly-dbman
+rules:
+  - apiGroups: [dbman.hef.sh]
+    resources: [databases, databaseservers]
+    verbs: [get, list, watch]
+
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrolebinding_v1.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kubectl-readonly:dbman
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kubectl-readonly-dbman
+subjects:
+  - kind: ServiceAccount
+    name: kubectl-readonly
+    namespace: kube-tools
+
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrole_v1.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
   name: kubectl-readonly-grafana
 rules:
   - apiGroups: [grafana.integreatly.org]
