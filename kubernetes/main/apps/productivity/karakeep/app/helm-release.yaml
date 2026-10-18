@@ -57,6 +57,7 @@ spec:
               DISABLE_PASSWORD_AUTH: true
               OAUTH_ALLOW_DANGEROUS_EMAIL_ACCOUNT_LINKING: true
               NEXTAUTH_URL: https://karakeep.techtales.io
+              AUTH_TRUSTED_ORIGINS: https://karakeep.techtales.io
               OPENAI_BASE_URL: https://techtales.ai/v1
               INFERENCE_TEXT_MODEL: qwen3.8-flash-next
               INFERENCE_IMAGE_MODEL: qwen3.8-flash-next
