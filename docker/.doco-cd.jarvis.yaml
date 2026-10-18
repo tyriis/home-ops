@@ -1,7 +1,10 @@
-# Stacks managed by doco-cd on jarvis are added here as they are onboarded.
-# Traefik on this host is intentionally NOT managed by doco-cd (see docker/jarvis).
 # ---
 # name: <stack>
 # working_dir: docker/jarvis/<stack>
 # env_files:
 #   - .env
+---
+name: arcane-agent
+working_dir: docker/jarvis/arcane-agent
+env_files:
+  - .env

@@ -14,6 +14,8 @@ Thumbs.db
 *.env
 !docker/deploy/**/red.env
 !docker/deploy/**/jarvis.env
+!docker/jarvis/**/.env
+!docker/jarvis/**/sops.env
 !docker/bifrost/**/.env
 !docker/bifrost/**/sops.env
 !docker/purple/**/.env
