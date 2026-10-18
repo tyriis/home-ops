@@ -1,2 +1,2 @@
 tyriis
-tyriis-automation[bot]
+tyriis-bot[bot]
