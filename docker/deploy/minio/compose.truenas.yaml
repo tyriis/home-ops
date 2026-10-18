@@ -9,7 +9,7 @@ services:
       - --console-address
       - :${CONSOLE_PORT:-9001}
     container_name: ${CONTAINER_NAME:-minio}
-    image: pgsty/silo:RELEASE.2026-10-15T00-00-00Z@sha256:aaac6bce13eb99316b3c88bd20143fc3c38ab607585256a411a095c44ee57f62
+    image: pgsty/silo:RELEASE.2026-10-18T00-00-00Z@sha256:2636fc4155d9a7e41ff58cdb65ddd13ba9304e67184e13c25bc5cb34016269d7
 
     env_file:
       - truenas.sops.env
