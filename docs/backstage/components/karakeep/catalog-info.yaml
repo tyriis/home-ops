@@ -26,4 +26,3 @@ spec:
   dependsOn:
     - component:envoy-gateway
     - component:dragonfly
-    - component:olla
