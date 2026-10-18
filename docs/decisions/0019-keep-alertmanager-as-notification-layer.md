@@ -35,13 +35,13 @@ treat rule evaluation (Prometheus rules today, vmalert later) as a separate, swa
 
 ## Decision Drivers
 
-- 1. Every alert path in either ecosystem terminates at an Alertmanager or an
-     AM-compatible receiver — there is no "no notifier" option.
-- 1. Alertmanager is cheap to keep: stateless, one config file, ~20 MB RSS.
-- 1. One notifier for both clusters keeps the public endpoints, the Telegram route and the
-     Grafana OnCall integration stable.
-- 1. Rule evaluation should still be able to move to vmalert (and to VictoriaLogs LogsQL
-     rules) later, without touching notification config.
+- Every alert path in either ecosystem terminates at an Alertmanager or an
+  AM-compatible receiver — there is no "no notifier" option.
+- Alertmanager is cheap to keep: stateless, one config file, ~20 MB RSS.
+- One notifier for both clusters keeps the public endpoints, the Telegram route and the
+  Grafana OnCall integration stable.
+- Rule evaluation should still be able to move to vmalert (and to VictoriaLogs LogsQL
+  rules) later, without touching notification config.
 
 ## Considered Options
 
@@ -64,12 +64,12 @@ iteration; when it does, only each PrometheusRule source and vmalert's `-datasou
 
 Acceptance criteria for a later vmalert migration:
 
-- 1. vmalert runs on each cluster with `-datasource.url` pointed at that cluster's
-     VictoriaMetrics and `-notifier.url` at the existing in-cluster Alertmanager.
-- 1. A test alert fires end to end to Telegram from each cluster before any Prometheus rule
-     group is disabled.
-- 1. Prometheus rule evaluation is removed only after 7 days with both evaluators quiet or
-     equivalent.
+- vmalert runs on each cluster with `-datasource.url` pointed at that cluster's
+  VictoriaMetrics and `-notifier.url` at the existing in-cluster Alertmanager.
+- A test alert fires end to end to Telegram from each cluster before any Prometheus rule
+  group is disabled.
+- Prometheus rule evaluation is removed only after 7 days with both evaluators quiet or
+  equivalent.
 
 ## Consequences
 
