@@ -14,6 +14,12 @@ After skills are installed, ask the user to restart the coding assistant.
 
 ## Section 1: Core Directives & Rules
 
+### BRANCH_NAMING
+
+- Branch names MUST be `<bugfix|feature>/<kebab-case-name>`, max 40 chars.
+- `bugfix/` = bugfix, `feature/` = feature — NEVER `fix/`, `hotfix/`, `chore/`, or bare names.
+- This applies to every branch created in this repo, including one-off agent/PR branches.
+
 ### RESPONSES
 
 - Keep responses concise and to the point - unless the user asks otherwise.
