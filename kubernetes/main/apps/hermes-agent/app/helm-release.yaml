@@ -74,8 +74,8 @@ spec:
                 echo "ownership fix complete"
           init-agent-src:
             image:
-              repository: ghcr.io/tyriis/hermes-agent
-              tag: v2026.9.24@sha256:4f2312122f1976c220a8ba1ec77619176e288ebc16f2c55d7b7eaa72e041d8bf
+              repository: docker.io/nousresearch/hermes-agent
+              tag: v0.22.2@sha256:36099926da316742423544e055d4734777105ffe6341873af5459b957d0c2919
             command:
               - sh
               - -c
@@ -97,8 +97,8 @@ spec:
             command: ["hermes"]
             args: ["gateway", "run", "--no-supervise"]
             image: &image
-              repository: ghcr.io/tyriis/hermes-agent
-              tag: v2026.9.24@sha256:4f2312122f1976c220a8ba1ec77619176e288ebc16f2c55d7b7eaa72e041d8bf
+              repository: docker.io/nousresearch/hermes-agent
+              tag: v0.22.2@sha256:36099926da316742423544e055d4734777105ffe6341873af5459b957d0c2919
             ports:
               - name: api
                 containerPort: 8642
