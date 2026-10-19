@@ -1,7 +1,11 @@
 ---
-server:
+http:
   port: 8080
-  database: /data/database.db
+  trustProxyHeaders: true
+server:
+  database:
+    path: /data/filebrowser.sqlite
+    migrateFrom: /data/database.db.old
   sources:
     - path: /mnt/media
       config:
@@ -17,8 +21,6 @@ server:
         defaultEnabled: true
         createUserDir: true
 auth:
-  # adminUsername: admin
-  # adminPassword: admin
   methods:
     password:
       enabled: false
