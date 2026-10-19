@@ -98,6 +98,15 @@ spec:
                     deny_paths: ["/.*"]
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
 
+              - name: jarvis
+                bearer_token: "%{VMAUTH_TOKEN_JARVIS}"
+                url_map:
+                  - src_paths: ["/insert/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+
               - name: grafana-readonly
                 bearer_token: "%{VMAUTH_TOKEN_GRAFANA}"
                 url_map:
