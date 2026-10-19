@@ -8,3 +8,8 @@ name: arcane-agent
 working_dir: docker/jarvis/arcane-agent
 env_files:
   - .env
+---
+name: victoria-logs-collector
+working_dir: docker/jarvis/victoria-logs-collector
+env_files:
+  - .env
