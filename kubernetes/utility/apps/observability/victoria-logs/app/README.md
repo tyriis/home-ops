@@ -33,9 +33,9 @@ See ADR 0016 (`docs/decisions/0016-central-log-platform-victorialogs-on-utility.
 
 ## Unit tokens
 
-Each unit authenticates with its own token. All eight tokens live in one Sops-encrypted file
-(`../victoria-auth/app/secrets.sops.yaml`) as ONE Secret `vmauth-tokens`; each key is the
-`VMAUTH_TOKEN_*` env name
+Each unit authenticates with its own token. All eight tokens live in OpenBao at
+`infra/kubernetes/utility/observability/victoria-auth` and are synced to ONE Secret
+`vmauth-tokens` by ExternalSecret `vmauth-tokens`; each key is the `VMAUTH_TOKEN_*` env name
 vmauth reads, so the Deployment maps them with a single `envFrom` block:
 
 | Unit     | Secret key              | Role                              |
@@ -58,9 +58,10 @@ kubectl --context readonly@utility -n observability get secret vmauth-tokens \
 
 One user breaks the pattern: `vmalert-readonly` authenticates with **Basic auth** (username +
 password) instead of a bearer token — the only mechanism a browser can present natively, since it
-gates the vmalert UI at `vmalert.techtales.io/vmalert`. Its credentials are NOT in the Sops file: an
-ExternalSecret `vmauth-vmalert-credentials` pulls them from OpenBao at
-`infra/kubernetes/utility/observability/victoria-auth` as a separate Secret, added to the
+gates the vmalert UI at `vmalert.techtales.io/vmalert`. Its credentials are NOT part of the
+token set above: a separate ExternalSecret
+`vmauth-vmalert-credentials` pulls them from the same OpenBao path
+`infra/kubernetes/utility/observability/victoria-auth` into its own Secret, added to the
 Deployment via a second `envFrom` entry.
 
 ## Insert endpoint
@@ -106,8 +107,8 @@ returns `200` with zero rows ingested — a silent data-loss trap. Verify writes
 
 ## Operational notes
 
-- **Token rotation**: per-unit revocation = rotate that unit's `VMAUTH_TOKEN_*` key in the
-  single `secrets.sops.yaml` Secret (`vmauth-tokens`), re-encrypt, and push; Stakater reloader
+- **Token rotation**: per-unit revocation = rotate that unit's `VMAUTH_TOKEN_*` key in OpenBao
+  (`bao kv patch infra/kubernetes/utility/observability/victoria-auth ...`); Stakater reloader
   restarts
   the vmauth pod (env is fixed at container start, `%{VAR}` is resolved at config parse —
   hot-reload alone does NOT pick up rotated tokens).

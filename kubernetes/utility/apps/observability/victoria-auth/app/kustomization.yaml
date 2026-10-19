@@ -7,4 +7,4 @@ resources:
   - ./oci-repository.yaml
   - ./helm-release.yaml
   - ./network-policy.yaml
-  - ./secrets.sops.yaml
+  - ./external-secret-tokens.yaml
