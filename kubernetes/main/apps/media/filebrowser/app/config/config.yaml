@@ -5,7 +5,6 @@ http:
 server:
   database:
     path: /data/filebrowser.sqlite
-    migrateFrom: /data/database.db.old
   sources:
     - path: /mnt/media
       config:
