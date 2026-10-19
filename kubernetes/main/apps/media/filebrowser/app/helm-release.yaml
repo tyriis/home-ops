@@ -108,5 +108,8 @@ spec:
               - path: /config/config.yaml
                 subPath: config.yaml
                 readOnly: true
+              - path: /config/xplorer.css
+                subPath: xplorer.css
+                readOnly: true
       data:
         existingClaim: ${APP}-data
