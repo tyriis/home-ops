@@ -9,3 +9,45 @@
 include:
   - path: ../../deploy/victoria-logs-collector/compose.yaml
     project_directory: .
+
+# Host override — the shared compose ships a command with no -fileCollector.glob;
+# every host replaces the command with its own sources (pattern: bifrost/truenas/synology).
+# jarvis sources: docker container json-file logs, pacman.log, cups.
+# journald (binary) and host syslog are NOT shipped here — rsyslog is installed but
+# inactive; enabling it (sudo) or a journal-remote pipe is a follow-up.
+services:
+  vlagent:
+    hostname: jarvis
+    env_file:
+      - ${SOPS_ENV_FILE:-sops.env}
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+        labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
+    command:
+      - -envflag.enable=true
+      - -httpListenAddr=:9500
+      - -remoteWrite.url=https://logs.techtales.io/insert/jsonline?_stream_fields=hostname%2Capp&_msg_field=log
+      - -remoteWrite.format=jsonline
+      - "-remoteWrite.headers=Authorization: Bearer ***"
+      - -remoteWrite.tmpDataPath=/var/lib/vlagent/pending
+      - -remoteWrite.maxDiskUsagePerURL=1GB
+      - -fileCollector.checkpointsPath=/var/lib/vlagent/file-checkpoints.json
+      - -fileCollector.streamFields=hostname,app,attrs.com.docker.compose.service
+      # Container stdout (json-file driver; rotation chain covered by the wildcard)
+      - -fileCollector.glob=/host/containers/*/*-json.log
+      - '-fileCollector.extraFields={"app":"containers"}'
+      # Pacman transactions
+      - -fileCollector.glob=/var/log/pacman.log
+      - '-fileCollector.extraFields={"app":"system"}'
+      # CUPS
+      - -fileCollector.glob=/var/log/cups/*.log
+      - '-fileCollector.extraFields={"app":"cups"}'
+    volumes:
+      # Docker container log root (root-owned 711 tree; vlagent runs as root)
+      - /var/lib/docker/containers:/host/containers:ro
+      # Host log dir, read-only (only the globs above are read; journal binary files ignored)
+      - /var/log:/var/log:ro
+      - data:/var/lib/vlagent
