@@ -104,6 +104,11 @@
         href: https://git.techtales.io
         description: Self-hosted Git for Agents
         siteMonitor: https://git.techtales.io/api/healthz
+    - OpenGist:
+        icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/opengist-light.svg
+        href: https://gist.techtales.io
+        description: Self-hosted Git Snippet Sharing
+        siteMonitor: https://gist.techtales.io
 - Web:
     - Cloudflare Dashboard:
         icon: cloudflare
