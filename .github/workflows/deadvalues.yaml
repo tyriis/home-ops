@@ -47,7 +47,7 @@ jobs:
 
       # https://github.com/marketplace/actions/deadvalues
       - name: deadvalues
-        uses: guarnz/deadvalues@26d332b7352c853199a57ccf25353219e396bfdf # v0.1.6
+        uses: guarnz/deadvalues@eac40e4919709b2450e1f7eae5d60d401a278fb5 # v0.1.7
         with:
           github-token: ${{ steps.generate-token.outputs.token }}
           path: kubernetes
