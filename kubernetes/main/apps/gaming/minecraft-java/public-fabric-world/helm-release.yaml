@@ -73,7 +73,7 @@ spec:
               # https://docker-minecraft-server.readthedocs.io/en/latest/variables
               TYPE: FABRIC
               # TODO: update with renovate
-              VERSION: 26.2
+              VERSION: 26.3
 
               MEMORY: 4096M
               JVM_XX_OPTS: "-XX:+UseZGC -XX:+AlwaysPreTouch"
