@@ -36,7 +36,7 @@ spec:
           app:
             image:
               repository: docker.io/victoriametrics/vmalert
-              tag: v1.154.0@sha256:f11d77f9ff68dfd63c871d0e59ae7b479f9c3fd0e8a685fef690fb88b794d938
+              tag: v1.154.1@sha256:aafb962b5a5713c71f0d697d629416f9cccf23aecb74f0ec5e829ddbf3f221f2
             args:
               - --datasource.url=http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428
               - --notifier.url=http://kube-prometheus-stack-alertmanager.observability.svc.cluster.local:9093
