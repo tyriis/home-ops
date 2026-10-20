@@ -38,7 +38,7 @@ spec:
           app:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v3.3.3@sha256:bae7664ff3aa4c2c1fcbdcdd86b40b105643c5f861f3e6a770fc760089f25862
+              tag: v3.3.4@sha256:f6475c58b07a8d89ec845aa8782731d36656c3c17d943e0a101dc6ed99a2e53f
             envFrom:
               - configMapRef:
                   name: immich-config
@@ -135,7 +135,7 @@ spec:
           app:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v3.3.3@sha256:73915f07e1f4289ba45b174c58443db74cef47ddf502613f475fc5e52458ea42
+              tag: v3.3.4@sha256:1ab8674e7cec41009abb3812de62a16cc1917e73d486233a5471b048d26fc14d
             env:
               TRANSFORMERS_CACHE: /cache
               HF_XET_CACHE: /cache/huggingface-xet
