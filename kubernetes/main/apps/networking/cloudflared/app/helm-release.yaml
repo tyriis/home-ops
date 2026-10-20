@@ -35,7 +35,7 @@ spec:
           app:
             image:
               repository: cloudflare/cloudflared
-              tag: 2026.10.1-amd64@sha256:3c0502d2da137286136b44f5b1d0d0be7030cc4833db9f53cff86beadad6cefa
+              tag: 2026.10.2-amd64@sha256:66b0b9c71c0a1b2febe8e4ef2988ff5fb9cf90ff8d3cc69e25b572d4bf5adce0
             args:
               - tunnel
               - --loglevel
