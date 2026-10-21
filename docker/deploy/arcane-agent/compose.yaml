@@ -15,6 +15,15 @@ services:
   # AGENT_TOKEN comes from the SOPS-managed env file.
   arcane-agent:
     container_name: ${CONTAINER_NAME:-arcane-agent}
+    # json-file with label passthrough — embeds compose/doco/OCI labels as `attrs`
+    # in the log file so victoria-logs-collector can ship them (synology pattern).
+    # Requires rotation management since the default driver would be unbounded.
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+        labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
     env_file:
       - ${SOPS_ENV_FILE:-sops.env}
     environment:
