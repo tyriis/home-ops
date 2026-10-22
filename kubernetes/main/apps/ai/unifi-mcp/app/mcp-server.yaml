@@ -23,6 +23,11 @@ spec:
       value: "true"
     - name: UNIFI_PORT
       value: "443"
+    # UDM SE runs UniFi OS, whose API lives behind the /proxy path. Auto-detection
+    # is inconclusive on this network; the app's own warning recommends "proxy".
+    # Values: proxy (UniFi OS), direct (standalone), auto.
+    - name: UNIFI_CONTROLLER_TYPE
+      value: proxy
     # The MCP SDK answers 421 to reverse-proxied requests unless DNS-rebinding
     # protection is off.
     - name: UNIFI_MCP_ENABLE_DNS_REBINDING_PROTECTION
