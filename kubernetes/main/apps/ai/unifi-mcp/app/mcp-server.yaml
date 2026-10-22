@@ -164,6 +164,13 @@ spec:
       memory: 128Mi
     limits:
       memory: 256Mi
+  # The operator stamps the backend pod template with mcpserver-generation only, so a
+  # Secret refresh never restarts the backend. Reloader watches this StatefulSet and
+  # rolls it when unifi-mcp-env changes.
+  podTemplateSpec:
+    metadata:
+      annotations:
+        reloader.stakater.com/auto: "true"
   # Read-only, layer 2 of 2. The proxy evaluates Cedar before forwarding a
   # tools/call. Cedar denies by default, so the permit is required and the
   # forbid overrides it. The names are the 44 mutating tools at network/v0.7.0
