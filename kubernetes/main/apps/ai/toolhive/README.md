@@ -15,11 +15,12 @@ kubernetes/main/apps/ai/
     ├── README.md
     ├── flux-sync.yaml            # Flux Kustomization that reconciles ./app
     └── app/
-        ├── kustomization.yaml          # lists the four manifests below
+        ├── kustomization.yaml          # lists the five manifests below
         ├── oci-repository-crds.yaml    # OCIRepository for the toolhive-operator-crds chart (0.56.0)
         ├── helm-release-crds.yaml      # HelmRelease installing the CRDs, no values overrides
         ├── oci-repository.yaml         # OCIRepository for the toolhive-operator chart (0.56.0)
-        └── helm-release.yaml           # operator HelmRelease: resources, gc.gomemlimit, dependsOn CRDs
+        ├── helm-release.yaml           # operator HelmRelease: rbac scope, resources, dependsOn CRDs
+        └── rbac-events.yaml            # Role + RoleBinding: core v1 events for the operator SA
 ```
 
 ## Notes
@@ -41,6 +42,10 @@ kubernetes/main/apps/ai/
   (it holds the rules) but grants nothing without a binding. Because upstream rejects the
   combination, `features.storageVersionMigrator` is set to `false` — that controller requires
   cluster scope.
+- An extra `Role`/`RoleBinding` pair (`rbac-events.yaml`) grants the operator core `v1` `events`
+  create/patch in `ai`. The chart only grants `events.k8s.io/events`, so the manager logs
+  `events is forbidden` at startup and its events never show in `kubectl describe`. Drop these two
+  objects once upstream grants the core group.
 - 14 CRDs are installed: MCPServer, MCPGroup, MCPRegistry, MCPRemoteProxy, VirtualMCPServer,
   VirtualMCPCompositeToolDefinition, MCPOIDCConfig, MCPAuthzConfig, MCPExternalAuthConfig,
   MCPToolConfig, MCPTelemetryConfig, MCPWebhookConfig, MCPServerEntry, EmbeddingServer.

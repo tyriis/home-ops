@@ -7,3 +7,4 @@ resources:
   - ./helm-release-crds.yaml
   - ./oci-repository.yaml
   - ./helm-release.yaml
+  - ./rbac-events.yaml
