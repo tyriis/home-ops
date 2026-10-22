@@ -8,3 +8,4 @@ components:
 resources:
   - ./namespace.yaml
   - ./searxng/flux-sync.yaml
+  - ./toolhive/flux-sync.yaml
