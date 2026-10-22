@@ -35,8 +35,12 @@ kubernetes/main/apps/ai/
   the CRDs first.
 - CRDs and operator must stay in the same namespace: Helm stamps managed CRDs with
   `meta.helm.sh/release-namespace`, so moving one without the other breaks adoption.
-- The operator runs with cluster-scoped RBAC and `features.storageVersionMigrator` enabled. Upstream
-  hard-fails if the RBAC is namespace-scoped, so keep the default.
+- The operator runs namespace-scoped: `rbac.scope: namespace` with `allowedNamespaces: [ai]`. The chart
+  then emits a `RoleBinding` in `ai` instead of a `ClusterRoleBinding` and sets `WATCH_NAMESPACE=ai` on
+  the manager, so it stops watching secrets cluster-wide. The `ClusterRole` object is still rendered
+  (it holds the rules) but grants nothing without a binding. Because upstream rejects the
+  combination, `features.storageVersionMigrator` is set to `false` — that controller requires
+  cluster scope.
 - 14 CRDs are installed: MCPServer, MCPGroup, MCPRegistry, MCPRemoteProxy, VirtualMCPServer,
   VirtualMCPCompositeToolDefinition, MCPOIDCConfig, MCPAuthzConfig, MCPExternalAuthConfig,
   MCPToolConfig, MCPTelemetryConfig, MCPWebhookConfig, MCPServerEntry, EmbeddingServer.
@@ -47,7 +51,9 @@ kubernetes/main/apps/ai/
 
 Deliberately out of scope for this bootstrap: no `MCPRegistry`, no `MCPServer` / `MCPRemoteProxy` /
 `VirtualMCPServer` CRs, and no OIDC or authz configuration are created here. When that work starts,
-follow the upstream Kubernetes operator docs at <https://docs.stacklok.com/toolhive> and inspect the
+note that the operator is namespace-scoped to `ai`: an MCP server CR placed in any other namespace is
+not reconciled until that namespace is added to `operator.rbac.allowedNamespaces`. Follow the upstream
+Kubernetes operator docs at <https://docs.stacklok.com/toolhive> and inspect the
 CRDs actually installed on the cluster with:
 
 ```sh

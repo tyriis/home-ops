@@ -24,6 +24,14 @@ spec:
     keepHistory: false
   values:
     operator:
+      features:
+        # namespace-scoped RBAC and cluster-wide RBAC are mutually exclusive upstream:
+        # the chart fails the render if the migrator stays on while scope is namespace
+        storageVersionMigrator: false
+      rbac:
+        scope: namespace
+        allowedNamespaces:
+          - ai
       resources:
         requests:
           cpu: 20m
