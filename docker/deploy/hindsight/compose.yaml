@@ -1,0 +1,80 @@
+---
+# https://hindsight.vectorize.io — Hindsight: agent memory server (API + control plane).
+# Structured facts/entities/relations over an embedded PostgreSQL, multi-strategy
+# retrieval, reflect consolidation. Consumed by Hermes via the hindsight memory
+# provider plugin (mode: local_external).
+#
+# Storage note: the FULL image (ghcr.io/vectorize-io/hindsight) embeds its own
+# PostgreSQL under /home/hindsight/.pg0 — the named volume below is that path.
+# Requires shm_size >= 1g for the embedded database (upstream docker run docs).
+#
+# Hardening: this template attempts the full posture — fixed uid, no-new-privileges,
+# cap_drop ALL, read_only rootfs with tmpfs scratch. If the embedded PostgreSQL
+# entrypoint needs more (compare the arcane-agent template, which cannot be
+# hardened past no-new-privileges), relax ONLY what testing proves necessary
+# and update this comment to say which and why.
+volumes:
+  data:
+    external: ${VOLUME_EXTERNAL:-false}
+    name: ${VOLUME_NAME:-hindsight_data}
+    driver: ${VOLUME_DRIVER:-local}
+
+services:
+  hindsight:
+    container_name: ${CONTAINER_NAME:-hindsight}
+    # renovate: datasource=docker
+    image: ghcr.io/vectorize-io/hindsight:1.1.0@sha256:50311d02b4d5d2b7c5242bd336edf8735df8374eaad496a92f49c83b37d2aa06
+    user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
+    group_add:
+      - "${GROUP_ID:-1000}"
+    restart: unless-stopped
+    shm_size: "1g"
+    ports:
+      # API (:8888) and control-plane UI (:9999) — loopback-only by default;
+      # this host's agent talks to 127.0.0.1, nothing else is exposed.
+      - "${HOST_BIND:-127.0.0.1}:${API_PORT:-8888}:8888"
+      - "${HOST_BIND:-127.0.0.1}:${CP_PORT:-9999}:9999"
+    env_file:
+      # Secrets only. NOTE: the stack .env is a COMPOSE interpolation file (ports,
+      # volume names, uid) — nothing from it reaches the container unless it is
+      # ALSO named here in environment:. Any app var that must reach hindsight
+      # has to be listed in this block (arcane-agent pattern).
+      - ${SOPS_ENV_FILE:-sops.env}
+    environment:
+      TZ: Europe/Vienna
+      HINDSIGHT_API_LLM_PROVIDER: ${HINDSIGHT_API_LLM_PROVIDER:?set in stack .env}
+      HINDSIGHT_API_LLM_MODEL: ${HINDSIGHT_API_LLM_MODEL:?set in stack .env}
+      HINDSIGHT_API_LLM_BASE_URL: ${HINDSIGHT_API_LLM_BASE_URL:?set in stack .env}
+      HINDSIGHT_API_TENANT_EXTENSION: ${HINDSIGHT_API_TENANT_EXTENSION:?set in stack .env}
+      # Embeddings + reranker intentionally stay on image defaults (local,
+      # in-process). To override, add explicit pass-through lines above.
+    healthcheck:
+      # startup includes first-time model init/download; upstream's own
+      # HINDSIGHT_API_STARTUP_WAIT_SECONDS default is 300s — mirror it.
+      # No wget/curl in the image; use its own Python.
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8888/health', timeout=4)"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 300s
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+        labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
+    read_only: true
+    tmpfs:
+      - /tmp
+      # PG socket/run dir — see the entrypoint: the embedded cluster listens here.
+      - /var/run/postgresql
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges=true
+    volumes:
+      - data:/home/hindsight/.pg0
