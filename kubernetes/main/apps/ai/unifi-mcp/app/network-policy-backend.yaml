@@ -1,0 +1,24 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/networking.k8s.io/networkpolicy_v1.json
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ${APP}-backend
+spec:
+  # The MCP backend StatefulSet created by the ToolHive operator. Only the proxy
+  # runner may reach it, so a caller cannot bypass the Cedar policy in
+  # spec.authzConfig by dialling the backend Service mcp-${APP}:3000 directly.
+  podSelector:
+    matchLabels:
+      app: unifi-network-mcp
+      toolhive: "true"
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              toolhive-name: unifi-network-mcp
+      ports:
+        - protocol: TCP
+          port: 3000
