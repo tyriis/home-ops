@@ -23,6 +23,8 @@ spec:
   dependsOn:
     - name: external-secrets-stores
       namespace: secops
+    - name: toolhive
+      namespace: ai
   postBuild:
     substitute:
       APP: *app
