@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmsingle_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMSingle
+metadata:
+  name: vmsingle
+spec:
+  retentionPeriod: 30d
+  storage:
+    storageClassName: local-nvme
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 50Gi
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+  # vmsingle is a single-node store: extraArgs are passed to the vmstorage process.
+  # search.maxConcurrentRequests caps concurrent query load from vmselect/vmalert/Grafana
+  # so a burst of dashboards cannot starve ingestion.
+  # search.maxQueueDuration bounds how long a query waits in that queue before failing
+  # instead of hanging a dashboard request indefinitely.
+  extraArgs:
+    search.maxConcurrentRequests: "16"
+    search.maxQueueDuration: 30s
