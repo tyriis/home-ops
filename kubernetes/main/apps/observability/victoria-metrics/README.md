@@ -68,7 +68,9 @@ in the metrics path.
 kube-prometheus-stack on main is reduced to a rump: `prometheus.enabled: false`, while
 Alertmanager, its CRDs (`Alertmanager`, `AlertmanagerConfig`) and the alertmanager config/routes
 stay exactly as they were. kube-state-metrics and node-exporter still come from the
-kube-prometheus-stack subcharts and are scraped by the native VM objects in `app/scrapes/`.
+kube-prometheus-stack subcharts and are scraped by the native VM objects in `app/scrapes/` — as
+are Alertmanager itself and the prometheus-operator, which still run and still emit the metrics
+their vendored alert rules select.
 
 ## Unit tokens
 
@@ -163,6 +165,69 @@ File conventions:
 4. No `generated-*` objects and no `kind: ServiceMonitor` anywhere: the converter is disabled, so
    a Prometheus-operator object would be inert rather than translated.
 
+## Vendored kube-prometheus-stack rules (`app/rules/kps/`)
+
+kube-prometheus-stack still ships its default alert/recording rules, but the chart no longer
+renders them: `defaultRules.create: false` in
+`kubernetes/main/apps/observability/kube-prometheus-stack/app/helm-release.yaml`. With Prometheus
+gone and the operator's Prometheus → VM converter off, a rendered `PrometheusRule` would be inert,
+so the rules are vendored next to this app instead.
+
+- `app/rules/kps/` holds one `VMRule` per source `PrometheusRule` of **chart 92.11.0**, 33 files,
+  all pulled in by `app/rules/kps/kustomization.yaml`. Group and alert names, expressions,
+  `for:` and labels are unchanged; `spec.groups` is the only structural difference.
+- The file name is the source `PrometheusRule` name in kebab case
+  (`kube-prometheus-stack-kubernetes-apps.yaml` ← `kube-prometheus-stack-kubernetes-apps`), so a
+  file can be traced back to the chart template that produced it.
+- Regenerate by re-rendering the chart at the pinned version (`helm template` with this app's
+  values, then `defaultRules.create: true`), and re-applying the `PrometheusRule` → `VMRule`
+  translation one file per object. Do not hand-edit an expression: a diverged copy is invisible
+  until the next regeneration.
+- **The Prometheus self-monitoring rules are excluded on purpose.** The chart's
+  `kube-prometheus-stack-prometheus` rule file (23 alerts) selects only the scrape job of the
+  Prometheus server itself, which does not exist here, so it is not vendored and its kustomization
+  entry and file are gone.
+- Two rule groups that _do_ still have a producer needed scraping before they could work: the
+  Alertmanager rules (`kube-prometheus-stack-alertmanager.rules.yaml`) and the operator rules
+  (`kube-prometheus-stack-prometheus-operator.yaml`). Their scrapes are
+  `app/scrapes/vm-alertmanager.yaml` and `app/scrapes/vm-prometheus-operator.yaml`, both of which
+  force the `job` label the expressions select:
+
+  | Object            | Service (namespace)                                    | Port                       | Job label (= `metadata.name`)        |
+  | ----------------- | ------------------------------------------------------ | -------------------------- | ------------------------------------ |
+  | `VMServiceScrape` | `kube-prometheus-stack-alertmanager` (`observability`) | `http-web`, `reloader-web` | `kube-prometheus-stack-alertmanager` |
+  | `VMServiceScrape` | `kube-prometheus-stack-operator` (`observability`)     | `https` (TLS)              | `kube-prometheus-stack-operator`     |
+
+  The Alertmanager scrape targets the config Service, not the headless
+  `alertmanager-operated` one: both select the same pods, so scraping both would duplicate every
+  `alertmanager_*` series under two job names. The operator is scraped over TLS with
+  `insecureSkipVerify` (its serving CA is generated in-cluster and cannot be mounted into
+  `vmagent`) and without a bearer token — it exposes `/metrics` unauthenticated on the same TLS
+  port as its web server, exactly like the removed `ServiceMonitor`.
+
+## CNPG and Rook
+
+Both storage stacks used to publish `monitoring.coreos.com` objects at runtime. Those generators
+are off and the objects are native VM ones:
+
+| Owner                  | Generator turned off                                        | Native objects                                                   |
+| ---------------------- | ----------------------------------------------------------- | ---------------------------------------------------------------- |
+| CNPG operator (0.29.1) | `monitoring.podMonitorEnabled: false`                       | `cnpg-system/cnpg/operator/` (`vm-pod-scrape`, `vm-rule`)        |
+| CNPG `Cluster`         | `spec.monitoring.enablePodMonitor: false`                   | `cnpg-system/cnpg/cluster/vm-pod-scrape.yaml`                    |
+| Immich database        | same field on its own `Cluster`                             | `media/immich/database/vm-pod-scrape.yaml`                       |
+| rook-ceph-cluster      | `monitoring.enabled: false`, `createPrometheusRules: false` | `rook-ceph/rook-ceph/cluster/` (`vm-service-scrape-*`, `rules/`) |
+
+Both CNPG `Cluster`s (`postgres17` in `cnpg-system`, Immich's database in `media/immich`) set
+`monitoring.enablePodMonitor: false`; the field is deprecated upstream since CNPG 1.30 and would
+only produce a `PodMonitor` nobody evaluates. The operator's own `PodMonitor` is off via the chart
+value instead, and its alert rules are the `VMRule` `cnpg-system/cnpg/operator/vm-rule.yaml`.
+
+Rook keeps the Ceph `prometheus` mgr module and `ceph-exporter` running — only the ServiceMonitor
+generation is off — so `vm-service-scrape-mgr.yaml` and `vm-service-scrape-exporter.yaml` find
+real targets. Its alert rules are vendored as
+`rook-ceph/rook-ceph/cluster/rules/prometheus-ceph-rules.yaml` for the same reason as the
+kube-prometheus-stack set: the chart would otherwise render a `PrometheusRule` nobody evaluates.
+
 ## Adding a new scrape target
 
 1. Confirm the target exposes `/metrics` on a **named** Service port (a `targetPort` number alone
@@ -234,6 +299,19 @@ File conventions:
   the metric history.
 - `metrics.techtales.io` is a WAN dependency for main's ingestion. It is buffered, but a long
   outage grows the queue until `VMAgent` starts dropping the oldest samples.
+- kromgo still points its `PROMETHEUS_URL` at the in-cluster
+  `prometheus-operated.observability.svc.cluster.local:9090`, which no longer has a backend.
+  Repointing it at `https://metrics.techtales.io` is not possible as-is: kromgo sends no
+  `Authorization` header, and vmauth answers `401`/`403` without a read token.
+- The Ceph dashboard (`https://rook.techtales.io`) has no Prometheus integration any more. It
+  could only reach the removed in-cluster Prometheus; the central endpoint needs a bearer token,
+  which the Ceph dashboard cannot send.
+- The `apiserver_request(|_sli|_slo)_duration_seconds_bucket` drops inherited from the KPS values
+  in `app/scrapes/vm-kube-apiserver.yaml` leave the apiserver burn-rate and SLO rules in
+  `rules/kps/` without their input series. That is pre-existing — Prometheus dropped the same
+  buckets — so those rules are unusable either way, not a VictoriaMetrics regression.
+- Utility's Prometheus is untouched (see the dual-run note above): its history, its
+  `ServiceMonitor`s and its `PrometheusRule`s stay where they are until that migration happens.
 
 ## Operational notes
 
