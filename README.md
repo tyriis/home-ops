@@ -74,7 +74,7 @@
 
 ## Statistics
 
-![Alt](https://repobeats.axiom.co/api/embed/bcccc4d3f022bf36870bd9bcc2397eecaea695c7.svg "Repobeats analytics image")
+![Alt](https://repobeats.axiom.co/api/embed/25887931663e437c4520c46f26640fe2c54b4471.svg "Repobeats analytics image")
 
 ## About The Project
 
