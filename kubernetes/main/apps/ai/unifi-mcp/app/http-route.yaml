@@ -6,6 +6,12 @@ metadata:
   name: unifi-network-mcp
   annotations:
     external-dns/unifi: "true"
+    # ToolHive serves the MCP proxy only under /mcp, so a probe of `/` is
+    # answered by envoy-gateway with a 404 instead of by the app.
+    gatus.home-operations.com/endpoint: |
+      url: https://unifi-mcp.techtales.io/health
+      conditions:
+        - "[STATUS] == 200"
 spec:
   hostnames:
     - unifi-mcp.techtales.io
