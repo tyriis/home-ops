@@ -65,8 +65,10 @@ services:
       HINDSIGHT_API_LLM_MAX_RETRIES: ${HINDSIGHT_API_LLM_MAX_RETRIES:-2}
       HINDSIGHT_API_LLM_INITIAL_BACKOFF: ${HINDSIGHT_API_LLM_INITIAL_BACKOFF:-2}
       HINDSIGHT_API_LLM_MAX_BACKOFF: ${HINDSIGHT_API_LLM_MAX_BACKOFF:-30}
-      # Image default is 32 concurrent LLM calls against 10 worker slots.
-      HINDSIGHT_API_LLM_MAX_CONCURRENT: ${HINDSIGHT_API_LLM_MAX_CONCURRENT:-4}
+      # Image default is 32 concurrent LLM calls against 10 worker slots. Two keeps
+      # a lane free for consolidation while retain drains, so one slow call cannot
+      # stall the queue behind it. Retain is async — nothing waits on the answer.
+      HINDSIGHT_API_LLM_MAX_CONCURRENT: ${HINDSIGHT_API_LLM_MAX_CONCURRENT:-2}
       # Embeddings + reranker intentionally stay on image defaults (local,
       # in-process). To override, add explicit pass-through lines above.
     healthcheck:
