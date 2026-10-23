@@ -46,6 +46,27 @@ services:
       HINDSIGHT_API_LLM_MODEL: ${HINDSIGHT_API_LLM_MODEL:?set in stack .env}
       HINDSIGHT_API_LLM_BASE_URL: ${HINDSIGHT_API_LLM_BASE_URL:?set in stack .env}
       HINDSIGHT_API_TENANT_EXTENSION: ${HINDSIGHT_API_TENANT_EXTENSION:?set in stack .env}
+      # --- LLM call budget (retain extract + consolidation) ---------------------
+      # Measured 2026-10-23: with the model's default reasoning, fact extraction
+      # took 93-472s per call (input 3.5-4.6k tokens, ~1k thinking tokens for
+      # ~300 tokens of answer) against the image's 120s llm_timeout. Every call
+      # was cancelled mid-generation and retried (3 in-call retries, then
+      # unbounded task-level retries via _schedule_retry), and each cancelled
+      # call kept generating on the vLLM upstream — request_success_total
+      # {finished_reason="abort"} stayed 0 — so a handful of ops pinned ~18-25
+      # concurrent streams on the cluster.
+      #
+      # enable_thinking=false makes the same call return in ~1s with 0 reasoning
+      # tokens (verified through the new-api gateway, which forwards
+      # chat_template_kwargs to vLLM). The timeout and the caps below are the
+      # safety net: one slow call must never amplify into a retry storm again.
+      HINDSIGHT_API_LLM_EXTRA_BODY: ${HINDSIGHT_API_LLM_EXTRA_BODY:-{"chat_template_kwargs":{"enable_thinking":false}}}
+      HINDSIGHT_API_LLM_TIMEOUT: ${HINDSIGHT_API_LLM_TIMEOUT:-600}
+      HINDSIGHT_API_LLM_MAX_RETRIES: ${HINDSIGHT_API_LLM_MAX_RETRIES:-2}
+      HINDSIGHT_API_LLM_INITIAL_BACKOFF: ${HINDSIGHT_API_LLM_INITIAL_BACKOFF:-2}
+      HINDSIGHT_API_LLM_MAX_BACKOFF: ${HINDSIGHT_API_LLM_MAX_BACKOFF:-30}
+      # Image default is 32 concurrent LLM calls against 10 worker slots.
+      HINDSIGHT_API_LLM_MAX_CONCURRENT: ${HINDSIGHT_API_LLM_MAX_CONCURRENT:-4}
       # Embeddings + reranker intentionally stay on image defaults (local,
       # in-process). To override, add explicit pass-through lines above.
     healthcheck:
