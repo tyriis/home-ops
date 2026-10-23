@@ -1,0 +1,24 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: zigbee2mqtt
+spec:
+  namespaceSelector:
+    matchNames:
+      - home-automation
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: zigbee2mqtt
+      app.kubernetes.io/instance: zigbee2mqtt
+  endpoints:
+    # The exporter listens on container port 3000 (name http-prom), but the
+    # zigbee2mqtt Service only exposes port http (8080), so the previous
+    # monitor's `port: http-prom` never resolved and this target was dead.
+    # Scrape the container port directly instead of the Service port.
+    - targetPort: 3000
+      scheme: http
+      path: /metrics
+      interval: 5m
+      scrapeTimeout: 15s

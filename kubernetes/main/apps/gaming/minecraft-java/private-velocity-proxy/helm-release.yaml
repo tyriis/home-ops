@@ -152,15 +152,6 @@ spec:
             port: *metricsPort
             targetPort: metrics
 
-    serviceMonitor:
-      metrics:
-        serviceName: minecraft-velocity-proxy-metrics
-        endpoints:
-          - port: metrics
-            scheme: http
-            path: /
-            interval: 1m
-
     persistence:
       tmp:
         type: emptyDir

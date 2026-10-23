@@ -33,5 +33,3 @@ spec:
         - /dev/nvme1n1
     nodeSelector:
       node-role.kubernetes.io/control-plane: ""
-    serviceMonitor:
-      enabled: true

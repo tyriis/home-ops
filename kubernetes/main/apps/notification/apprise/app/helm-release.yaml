@@ -93,14 +93,6 @@ spec:
         ports:
           http:
             port: *port
-    serviceMonitor:
-      app:
-        serviceName: app
-        endpoints:
-          - port: http
-            scheme: http
-            path: /metrics
-            interval: 1m
     route:
       app:
         annotations:

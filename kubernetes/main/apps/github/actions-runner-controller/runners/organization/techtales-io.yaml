@@ -226,8 +226,9 @@ spec:
             ]
 
 ---
-apiVersion: monitoring.coreos.com/v1
-kind: PodMonitor
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmpodscrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
 metadata:
   name: &app techtales-io-runner
 spec:

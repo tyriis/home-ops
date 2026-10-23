@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization.json
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: observability
+resources:
+  - ./external-secret.yaml
+  - ./vmagent.yaml
+  - ./scrapes/vm-node-exporter.yaml
+  - ./scrapes/vm-kube-state-metrics.yaml
+  - ./scrapes/vm-kube-apiserver.yaml
+  - ./scrapes/vm-kube-controller-manager.yaml
+  - ./scrapes/vm-kube-scheduler.yaml
+  - ./scrapes/vm-kube-etcd.yaml
+  - ./scrapes/vm-kubelet.yaml

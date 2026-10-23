@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: descheduler
+spec:
+  namespaceSelector:
+    matchNames:
+      - kube-tools
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: descheduler
+      app.kubernetes.io/instance: descheduler
+  endpoints:
+    # The descheduler chart template hardcodes `scheme: https` for its
+    # ServiceMonitor, but the descheduler runs without TLS flags and serves
+    # plain HTTP on 10258, so that target never worked.
+    - port: http-metrics
+      scheme: http
+      honorLabels: true
+      path: /metrics

@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: argo-events-controller
+spec:
+  namespaceSelector:
+    matchNames:
+      - argo-system
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argo-events-controller-manager-metrics
+      app.kubernetes.io/instance: argo-events
+      app.kubernetes.io/component: controller-manager
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: 30s

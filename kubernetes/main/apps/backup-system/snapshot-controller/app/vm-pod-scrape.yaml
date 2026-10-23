@@ -1,0 +1,20 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmpodscrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
+metadata:
+  name: snapshot-controller
+spec:
+  namespaceSelector:
+    matchNames:
+      - backup-system
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: snapshot-controller
+      app.kubernetes.io/instance: snapshot-controller
+  podMetricsEndpoints:
+    # The chart creates its headless metrics Service only when its
+    # (Prometheus) ServiceMonitor is enabled, so scrape the pod port instead.
+    - port: http
+      scheme: http
+      path: /metrics

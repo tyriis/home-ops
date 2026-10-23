@@ -6,4 +6,4 @@ resources:
   - ./grafana-dashboard.yaml
   - ./prometheus-rule-node-memory.yaml
   - ./prometheus-rule.yaml
-  - ./scrape-config.yaml
+  - ./vm-static-scrape.yaml

@@ -115,15 +115,6 @@ spec:
           rcon:
             port: 25575
 
-    serviceMonitor:
-      metrics:
-        serviceName: ${APP}-minecraft
-        endpoints:
-          - port: metrics
-            scheme: http
-            path: /
-            interval: 1m
-
     persistence:
       data:
         existingClaim: ${APP}-data

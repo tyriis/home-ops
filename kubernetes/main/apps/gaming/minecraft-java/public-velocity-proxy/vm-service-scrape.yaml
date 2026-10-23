@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: minecraft-public-velocity-proxy-metrics
+spec:
+  namespaceSelector:
+    matchNames:
+      - gaming
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: minecraft-public-velocity-proxy
+      app.kubernetes.io/name: minecraft-public-velocity-proxy
+  endpoints:
+    - port: metrics
+      scheme: http
+      path: /
+      interval: 1m

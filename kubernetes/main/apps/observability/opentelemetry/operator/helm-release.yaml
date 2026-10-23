@@ -23,8 +23,6 @@ spec:
     manager:
       featureGatesMap:
         operator.networkpolicy: false
-      serviceMonitor:
-        enabled: true
       resources:
         requests:
           cpu: 10m

@@ -108,15 +108,6 @@ spec:
           http-prom:
             port: 3000
 
-    serviceMonitor:
-      app:
-        endpoints:
-          - port: http-prom
-            scheme: http
-            path: /metrics
-            interval: 5m
-            scrapeTimeout: 15s
-
     route:
       app:
         annotations:

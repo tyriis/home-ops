@@ -6,7 +6,7 @@ resources:
   - ./grafana-dashboard.yaml
   - ./prometheus-rule.yaml
   - ./service.yaml
-  - ./service-monitor.yaml
+  - ./vm-service-scrape.yaml
 configMapGenerator:
   - name: flux-dashboards
     files:

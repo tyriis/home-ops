@@ -1,12 +1,15 @@
 ---
-# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/podmonitor_v1.json
-apiVersion: monitoring.coreos.com/v1
-kind: PodMonitor
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmpodscrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
 metadata:
   name: &app dragonfly
   labels:
     app.kubernetes.io/name: *app
 spec:
+  namespaceSelector:
+    matchNames:
+      - dragonfly-system
   podMetricsEndpoints:
     - port: admin
       interval: 30s

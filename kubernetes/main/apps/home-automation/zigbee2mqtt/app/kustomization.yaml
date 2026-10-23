@@ -6,3 +6,4 @@ resources:
   # - ./external-secret.yaml not in use currently
   - ./helm-release.yaml
   - ./prometheus-rule.yaml
+  - ./vm-service-scrape.yaml

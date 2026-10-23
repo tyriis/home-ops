@@ -6,5 +6,6 @@ components:
   - ../../../../../components/envoy-pocketid
 resources:
   - ./helm-release.yaml
+  - ./vm-service-scrape.yaml
 patches:
   - path: ./security-policy.patch.yaml

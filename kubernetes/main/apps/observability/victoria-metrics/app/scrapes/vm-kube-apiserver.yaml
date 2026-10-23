@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: kube-apiserver
+spec:
+  # The API server Service lives in the "default" namespace, so discovery has to
+  # be pointed there explicitly (the operator defaults to its own namespace).
+  namespaceSelector:
+    matchNames:
+      - default
+  selector:
+    matchLabels:
+      component: apiserver
+      provider: kubernetes
+  endpoints:
+    - port: https
+      path: /metrics
+      interval: 1m
+      scheme: https
+      bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      tlsConfig:
+        caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        serverName: kubernetes
+        insecureSkipVerify: false
+      relabelConfigs:
+        # Force the job name the Prometheus ServiceMonitor uses, so existing
+        # dashboards and alert rules that select job="apiserver" keep working.
+        - action: replace
+          targetLabel: job
+          replacement: apiserver
+      metricRelabelConfigs:
+        # Drop high cardinality histogram buckets, same as the KPS values.
+        - action: drop
+          sourceLabels:
+            - __name__
+          regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
+        - action: drop
+          sourceLabels:
+            - __name__
+          regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)

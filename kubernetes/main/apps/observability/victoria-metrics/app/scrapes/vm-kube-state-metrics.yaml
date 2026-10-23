@@ -1,0 +1,36 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: kube-state-metrics
+spec:
+  namespaceSelector:
+    matchNames:
+      - observability
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kube-state-metrics
+  endpoints:
+    # Cluster state metrics.
+    - port: http
+      path: /metrics
+      interval: 1m
+      relabelConfigs:
+        - action: replace
+          sourceLabels:
+            - __meta_kubernetes_pod_node_name
+          regex: (.*)
+          replacement: $1
+          targetLabel: kubernetes_node
+    # kube-state-metrics' own telemetry (selfMonitor: true in the chart values).
+    - port: metrics
+      path: /metrics
+      interval: 1m
+      relabelConfigs:
+        - action: replace
+          sourceLabels:
+            - __meta_kubernetes_pod_node_name
+          regex: (.*)
+          replacement: $1
+          targetLabel: kubernetes_node
