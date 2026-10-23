@@ -68,8 +68,20 @@ spec:
         matchLabels:
           grafana.internal/instance: grafana
 
+    # The chart fails to render when prometheus.enabled is false and any
+    # control-plane ServiceMonitor keeps the default authorization, because that
+    # authorization points at the token Secret which is only rendered together
+    # with the Prometheus service account. Scraping on this cluster is done by
+    # the VMNodeScrape/VMServiceScrape objects in the victoria-metrics app
+    # (bearerTokenFile from the vmagent pod), so these ServiceMonitors are
+    # inert and authorization is cleared to null.
+    coreDns:
+      serviceMonitor:
+        authorization: null
+
     kubeApiServer:
       serviceMonitor:
+        authorization: null
         metricRelabelings:
           # Drop high cardinality labels by onedr0p
           - action: drop
@@ -84,12 +96,17 @@ spec:
         - 192.168.100.101
         - 192.168.100.102
         - 192.168.100.103
+      serviceMonitor:
+        authorization: null # token Secret only exists with prometheus.enabled
 
     kubeEtcd:
       endpoints: *cp
+      serviceMonitor:
+        authorization: null # token Secret only exists with prometheus.enabled
 
     kubelet:
       serviceMonitor:
+        authorization: null # token Secret only exists with prometheus.enabled
         metricRelabelings:
           # Drop high cardinality labels by onedr0p
           - action: labeldrop
@@ -105,6 +122,8 @@ spec:
 
     kubeScheduler:
       endpoints: *cp
+      serviceMonitor:
+        authorization: null # token Secret only exists with prometheus.enabled
 
     kube-state-metrics:
       fullnameOverride: kube-state-metrics
@@ -158,6 +177,14 @@ spec:
             memory: 100Mi
 
     prometheus:
+      # Prometheus server disabled after the VictoriaMetrics cutover: metrics
+      # are scraped by vmagent and stored centrally, so the Prometheus
+      # StatefulSet, Service and HTTPRoute are gone. Alertmanager and the
+      # prometheus-operator CRDs (ServiceMonitor, PrometheusRule, Alertmanager)
+      # stay enabled - vmagent and the alert pipeline still consume them.
+      # Re-enable by flipping this to true; prometheusSpec below is kept so a
+      # rollback is a one-line change (it is inert while disabled).
+      enabled: false
       prometheusSpec:
         enableAdminAPI: true
         enableFeatures:
