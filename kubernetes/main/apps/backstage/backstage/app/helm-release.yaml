@@ -42,7 +42,7 @@ spec:
           dynamic-plugins:
             image:
               repository: quay.io/rhdh-community/rhdh
-              tag: 1.10.5@sha256:ef7b9c8278e3ec2fb329ae1bb889bcce274411c7681e38e9e1743ef8a3e8b0f3
+              tag: 1.10.6@sha256:3a25ca5f58faf3433431a5f41eb44829e3a9eb4620e65707510b202b2ddc9798
             workingDir: /opt/app-root/src
             command:
               - ./install-dynamic-plugins.sh
@@ -52,7 +52,7 @@ spec:
           app:
             image:
               repository: quay.io/rhdh-community/rhdh
-              tag: 1.10.5@sha256:ef7b9c8278e3ec2fb329ae1bb889bcce274411c7681e38e9e1743ef8a3e8b0f3
+              tag: 1.10.6@sha256:3a25ca5f58faf3433431a5f41eb44829e3a9eb4620e65707510b202b2ddc9798
             # RHDH entrypoint is exec-form: these append after its own --config flags and win.
             args:
               - --config
