@@ -10,8 +10,8 @@ metadata:
       title: Flux definition
       icon: github
       type: github-repository
-    - url: https://prometheus.techtales.io/
-      title: Prometheus Internal
+    - url: https://metrics.techtales.io/
+      title: Metrics Internal
       icon: dashboard
       type: dashboard
     - url: https://alertmanager.techtales.io/
