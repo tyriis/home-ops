@@ -153,6 +153,15 @@ spec:
                     deny_paths: ["/.*"]
                     url_prefix: "http://vmsingle.observability.svc.cluster.local:8428"
 
+              - name: vmalert-read
+                bearer_token: "%{VMAUTH_TOKEN_VMALERT_METRICS}"
+                url_map:
+                  - src_paths: ["/api/v1/.*", "/prometheus/.*", "/select/.*"]
+                    url_prefix: "http://vmsingle.observability.svc.cluster.local:8428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://vmsingle.observability.svc.cluster.local:8428"
+
     controllers:
       vmauth:
         containers:

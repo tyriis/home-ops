@@ -5,5 +5,5 @@ kind: Kustomization
 namespace: observability
 resources:
   - ./helm-release.yaml
-  - ./prometheus-rule.yaml
+  - ./vm-rule.yaml
   - ./vm-service-scrape.yaml

@@ -1,0 +1,24 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: vmalert-datasource
+spec:
+  refreshInterval: 5m
+  secretStoreRef:
+    name: openbao-backend
+    kind: ClusterSecretStore
+  target:
+    name: vmalert-datasource
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        # Bearer token for the vmauth read user in front of the central store.
+        token: "{{ .VMAUTH_TOKEN_VMALERT_METRICS }}"
+  dataFrom:
+    # Every vmauth-issued token lives in the vmauth config's own OpenBao path,
+    # so each token is stored in exactly one place.
+    - extract:
+        key: infra/kubernetes/utility/observability/victoria-auth #gitleaks:allow

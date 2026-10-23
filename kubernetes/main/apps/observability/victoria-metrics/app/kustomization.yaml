@@ -6,6 +6,8 @@ namespace: observability
 resources:
   - ./external-secret.yaml
   - ./vmagent.yaml
+  - ./vmalert.yaml
+  - ./vmalert-datasource.yaml
   - ./scrapes/vm-node-exporter.yaml
   - ./scrapes/vm-kube-state-metrics.yaml
   - ./scrapes/vm-kube-apiserver.yaml

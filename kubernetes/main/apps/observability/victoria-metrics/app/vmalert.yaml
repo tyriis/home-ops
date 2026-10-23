@@ -1,0 +1,34 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmalert_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMAlert
+metadata:
+  name: vmalert
+spec:
+  replicaCount: 1
+  # Prometheus' global default was 1m and no rule group sets its own interval,
+  # so 1m keeps evaluation cadence identical to the old Prometheus setup.
+  evaluationInterval: 1m
+  # Pick up every VMRule in the cluster, matching the old Prometheus ruleSelector
+  # (ruleSelectorNilUsesHelmValues: false). With selectAllByDefault: true and
+  # both ruleSelector/ruleNamespaceSelector unset, the operator selects all
+  # VMRules in all namespaces. A "ruleNamespaceSelector: {any: true}" form does
+  # not exist in this CRD version (the field is a plain LabelSelector with
+  # additionalProperties: false), so it must stay unset.
+  selectAllByDefault: true
+  externalLabels:
+    cluster: main
+  datasource:
+    url: https://metrics.techtales.io
+    bearerTokenSecret:
+      name: vmalert-datasource
+      key: token
+  notifier:
+    # Use the headless alertmanager-operated Service: it is created by the
+    # Alertmanager StatefulSet itself, so the URL survives a HelmRelease rename
+    # of kube-prometheus-stack (kube-prometheus-stack-alertmanager would not).
+    url: http://alertmanager-operated.observability.svc.cluster.local:9093
+  resources:
+    requests:
+      cpu: 25m
+      memory: 64Mi

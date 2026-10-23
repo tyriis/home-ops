@@ -5,6 +5,6 @@ kind: Kustomization
 resources:
   - ./external-secret.yaml
   - ./helm-release.yaml
-  - ./prometheus-rule.yaml
+  - ./vm-rule.yaml
   - ./pvc.yaml
   - ./vm-static-scrape.yaml
