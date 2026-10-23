@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
+# Native replacement for the ServiceMonitor the cert-manager chart renders from
+# `prometheus.servicemonitor.enabled`. The chart selected only the controller
+# Service, so this keeps that target set unchanged. The job label is forced to
+# `cert-manager` because certmanager_* rules (CertManagerAbsent) select it.
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: cert-manager
+spec:
+  namespaceSelector:
+    matchNames:
+      - cert-manager
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cert-manager
+      app.kubernetes.io/component: controller
+      app.kubernetes.io/instance: cert-manager
+  endpoints:
+    - port: http-metrics
+      path: /metrics
+      relabelConfigs:
+        - action: replace
+          targetLabel: job
+          replacement: cert-manager
