@@ -46,7 +46,6 @@ spec:
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/radarr/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/recyclarr/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/rook-ceph/catalog-info.yaml
-    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/sabnzbd/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/seerr/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/sonarr/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/spark-limiter/catalog-info.yaml
