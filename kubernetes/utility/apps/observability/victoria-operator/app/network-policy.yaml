@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/networking.k8s.io/networkpolicy_v1.json
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: victoria-operator
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: victoria-metrics-operator
+  policyTypes:
+    - Ingress
+  ingress:
+    # Operator metrics endpoint
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: observability
+      ports:
+        - protocol: TCP
+          port: 8080
+    # Admission webhook: called by kube-apiserver from the host network, so no
+    # `from` selector is set (a podSelector/namespaceSelector cannot match it)
+    - ports:
+        - protocol: TCP
+          port: 9443

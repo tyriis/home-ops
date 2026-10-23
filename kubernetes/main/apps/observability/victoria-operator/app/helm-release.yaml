@@ -1,0 +1,35 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: victoria-operator
+spec:
+  interval: 30m
+  timeout: 10m
+  driftDetection:
+    mode: enabled
+  chartRef:
+    kind: OCIRepository
+    name: victoria-operator
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    crds:
+      enabled: true
+    global:
+      versions:
+        metrics: v1.154.1
+    operator:
+      disable_prometheus_converter: true
+    resources:
+      requests:
+        cpu: 10m
+        memory: 64Mi
