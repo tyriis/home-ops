@@ -27,10 +27,13 @@ spec:
         check_interval: 5s
         limit_mib: 1024
     exporters:
+      # VictoriaMetrics single-node ingests OTLP/HTTP at /opentelemetry/v1/metrics
+      # behind vmauth (metrics.techtales.io). The exporter appends the
+      # signal path (/v1/metrics) to this base URL, so it must not be repeated.
       otlphttp/prom:
-        endpoint: http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/otlp #NOSONAR allow http
-        tls:
-          insecure: true
+        endpoint: https://metrics.techtales.io/opentelemetry
+        headers:
+          Authorization: "Bearer ${env:VM_METRICS_TOKEN}"
       otlp/tempo:
         endpoint: tempo.observability.svc.cluster.local:4317
         tls:
@@ -67,6 +70,11 @@ spec:
         secretKeyRef:
           name: otel-collector
           key: OTEL_BEARER_TOKEN
+    - name: VM_METRICS_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: otel-collector
+          key: VM_METRICS_TOKEN
   resources:
     requests:
       cpu: 10m

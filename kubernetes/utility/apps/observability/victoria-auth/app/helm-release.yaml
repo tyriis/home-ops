@@ -129,7 +129,7 @@ spec:
               - name: main-metrics
                 bearer_token: "%{VMAUTH_TOKEN_MAIN_METRICS}"
                 url_map:
-                  - src_paths: ["/insert/.*"]
+                  - src_paths: ["/insert/.*", "/opentelemetry/.*"]
                     url_prefix: "http://vmsingle.observability.svc.cluster.local:8428"
                   - src_paths: ["/.*"]
                     deny_paths: ["/.*"]
