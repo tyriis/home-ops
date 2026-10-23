@@ -1,0 +1,37 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/networking.k8s.io/networkpolicy_v1.json
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: &name ${APP}-serve-policy
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: ${APP}
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    # Allow the Envoy Gateway to reach the `hermes serve` backend. The base
+    # policy only opens the webui port (8787); NetworkPolicies are additive
+    # for a pod, so this policy adds the serve port without touching the
+    # base one.
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: networking
+      ports:
+        - protocol: TCP
+          port: 9119
+  egress:
+    # OIDC discovery, JWKS and token exchange against Pocket-ID.
+    # id.techtales.io resolves to the utility-cluster gateway
+    # (utility-gateway.techtales.io -> 192.168.100.40). The base policy
+    # allows internet egress but excludes 192.168.0.0/16, so this internal
+    # address needs an explicit rule.
+    - to:
+        - ipBlock:
+            cidr: 192.168.100.40/32
+      ports:
+        - protocol: TCP
+          port: 443
