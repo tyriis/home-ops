@@ -30,7 +30,7 @@
   lockFileMaintenance: {
     enabled: true,
     extends: ["schedule:weekly"],
-    automerge: true,
+    automerge: false,
   },
   vulnerabilityAlerts: {
     enabled: false,
@@ -91,12 +91,6 @@
       matchFileNames: ["**/utility/**"],
       additionalBranchPrefix: "utility-",
     },
-    // automerge devenv
-    {
-      matchFileNames: ["devenv/**"],
-      matchUpdateTypes: ["minor", "patch"],
-      automerge: true,
-    },
     {
       description: "Pin bootstrap .mise.toml - Helm 3.x required for bootstrap compatibility",
       matchFileNames: ["kubernetes/utility/bootstrap/.mise.toml"],
@@ -114,6 +108,19 @@
       ],
       matchManagers: ["helm-values", "flux"],
       enabled: false,
+    },
+    {
+      description: "disable all automerge",
+      matchUpdateTypes: [
+        "major",
+        "minor",
+        "patch",
+        "digest",
+        "pin",
+        "pinDigest",
+        "lockFileMaintenance",
+      ],
+      automerge: false,
     },
   ],
   customManagers: [
