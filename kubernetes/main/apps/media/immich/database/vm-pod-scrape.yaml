@@ -1,0 +1,20 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmpodscrape_v1beta1.json
+# Native replacement for the PodMonitor that spec.monitoring.enablePodMonitor used to
+# generate (deprecated upstream in CNPG 1.30). Selector and port mirror
+# pkg/specs/podmonitor.go of cloudnative-pg v1.30.1.
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
+metadata:
+  name: immich-db
+spec:
+  namespaceSelector:
+    matchNames:
+      - media
+  selector:
+    matchLabels:
+      cnpg.io/podRole: instance
+  podMetricsEndpoints:
+    - port: metrics
+      path: /metrics
+      interval: 30s

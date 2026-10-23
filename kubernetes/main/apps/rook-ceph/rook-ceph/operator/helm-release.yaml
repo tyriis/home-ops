@@ -25,7 +25,11 @@ spec:
       enableCephfsSnapshotter: false
       enableLiveness: true
       serviceMonitor:
-        enabled: true
+        # Rook's CSI metrics Service (app=csi-metrics) is never created when
+        # rookUseCsiOperator is true and the CSI drivers expose no liveness metrics
+        # port, so this monitor selected no targets even under Prometheus.
+        # VictoriaMetrics scrapes Ceph natively now (see cluster/vm-service-scrape-*.yaml).
+        enabled: false
     # enableDiscoveryDaemon: true
     image:
       repository: ghcr.io/rook/ceph

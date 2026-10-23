@@ -26,4 +26,6 @@ spec:
     monitoring:
       grafanaDashboard:
         create: true
-      podMonitorEnabled: true
+      # Scraping is native now (vm-pod-scrape.yaml); the chart's PodMonitor would
+      # never be evaluated by the VictoriaMetrics operator.
+      podMonitorEnabled: false

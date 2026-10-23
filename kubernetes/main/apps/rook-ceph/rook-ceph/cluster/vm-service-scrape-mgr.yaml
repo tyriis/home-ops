@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
+# Native replacement for the ServiceMonitor the rook-ceph-operator creates at runtime
+# while CephCluster.spec.monitoring.enabled is true
+# (pkg/operator/ceph/cluster/mgr/mgr.go, k8sutil.GetServiceMonitor).
+#
+# Upstream's ServiceMonitor also relabeled `cluster: rook-ceph`; that is dropped on
+# purpose, because vmagent already writes the fleet-wide
+# externalLabels.cluster: main and an endpoint-provided label would shadow it.
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: rook-ceph-mgr
+spec:
+  namespaceSelector:
+    matchNames:
+      - rook-ceph
+  selector:
+    matchLabels:
+      app: rook-ceph-mgr
+      rook_cluster: rook-ceph
+  endpoints:
+    - port: http-metrics
+      path: /metrics
+      interval: 30s
+      honorLabels: true
