@@ -27,6 +27,15 @@ spec:
   # https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack?modal=values
   values:
     cleanPrometheusOperatorObjectNames: true
+    # Every PrometheusRule this chart renders is vendored as a native VMRule in
+    # the victoria-metrics app (app/rules/kps), because the Prometheus server is
+    # disabled and the operator's Prometheus -> VM rule converter is off, which
+    # would leave the chart's rules as dead objects. Turning defaultRules off
+    # stops the chart from re-creating them. ServiceMonitors, dashboards and the
+    # Alertmanager are unaffected. Re-enable together with prometheus.enabled
+    # when rolling back, otherwise the rules will be duplicated.
+    defaultRules:
+      create: false
     alertmanager:
       route:
         main:

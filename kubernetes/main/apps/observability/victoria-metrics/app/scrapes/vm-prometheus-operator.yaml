@@ -1,0 +1,40 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: kube-prometheus-stack-operator
+spec:
+  namespaceSelector:
+    matchNames:
+      - observability
+  selector:
+    matchLabels:
+      # The Service the operator chart renders (port "https", 443 → 10250).
+      app: kube-prometheus-stack-operator
+      release: kube-prometheus-stack
+  endpoints:
+    - port: https
+      path: /metrics
+      interval: 1m
+      scheme: https
+      # The ServiceMonitor dropped by the chart used a serverName plus the CA out
+      # of the admission webhook Secret. That CA is generated and rotated in the
+      # cluster and cannot be mounted into the vmagent pod, so certificate
+      # verification is skipped instead: the target is a ClusterIP inside the
+      # mesh, not an external endpoint.
+      tlsConfig:
+        insecureSkipVerify: true
+      # No bearerTokenFile: the operator serves metrics on the same TLS port as
+      # its web server (--web.enable-tls, --web.listen-address=:10250) with no
+      # kube-rbac-proxy sidecar and no --web.config auth, so /metrics is
+      # anonymous behind TLS. This matches the chart's ServiceMonitor, which
+      # carried no authorization either.
+      # Carried over from the chart's ServiceMonitor: keep labels exported by
+      # the operator instead of letting the target labels overwrite them.
+      honorLabels: true
+      relabelConfigs:
+        # Force the job the vendored alerts select (job="kube-prometheus-stack-operator").
+        - action: replace
+          targetLabel: job
+          replacement: kube-prometheus-stack-operator

@@ -1,0 +1,29 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmrule_v1beta1.json
+# Generated from kube-prometheus-stack 92.11.0 PrometheusRule kube-prometheus-stack-kubernetes-system-scheduler - regenerate by re-rendering the chart.
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+  name: kube-prometheus-stack-kubernetes-system-scheduler
+spec:
+  groups:
+    - name: kubernetes-system-scheduler
+      rules:
+        - alert: KubeSchedulerDown
+          annotations:
+            description: KubeScheduler has disappeared from Prometheus target discovery.
+            runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeschedulerdown
+            summary: Target disappeared from Prometheus target discovery.
+          expr: absent(up{job="kube-scheduler"})
+          for: 15m
+          labels:
+            severity: critical
+        - alert: KubeSchedulerInstanceUnreachable
+          annotations:
+            description: A KubeScheduler instance has been unreachable for more than 15 minutes.
+            runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeschedulerinstanceunreachable
+            summary: KubeScheduler instance is unreachable.
+          expr: up{job="kube-scheduler"} == 0
+          for: 15m
+          labels:
+            severity: warning

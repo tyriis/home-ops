@@ -15,3 +15,6 @@ resources:
   - ./scrapes/vm-kube-scheduler.yaml
   - ./scrapes/vm-kube-etcd.yaml
   - ./scrapes/vm-kubelet.yaml
+  - ./scrapes/vm-alertmanager.yaml
+  - ./scrapes/vm-prometheus-operator.yaml
+  - ./rules/kps

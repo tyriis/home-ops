@@ -1,0 +1,49 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization.json
+# kube-prometheus-stack 92.11.0 default rules, vendored as native VMRules because
+# the chart runs with defaultRules.create: false and the operator's Prometheus ->
+# VictoriaMetrics converter is disabled.
+#
+# The Prometheus self-monitoring rules (chart PrometheusRule
+# "kube-prometheus-stack-prometheus", 23 alerts) are intentionally excluded: they
+# all select the scrape job of the Prometheus server itself
+# (kube-prometheus-stack-prometheus), and that server no longer exists on this
+# cluster (prometheus.enabled: false), so those series are never produced and the
+# alerts can never fire. Do not re-add the file while Prometheus stays disabled;
+# re-render it from the chart if it is ever turned back on.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./kube-prometheus-stack-alertmanager.rules.yaml
+  - ./kube-prometheus-stack-config-reloaders.yaml
+  - ./kube-prometheus-stack-etcd.yaml
+  - ./kube-prometheus-stack-general.rules.yaml
+  - ./kube-prometheus-stack-k8s.rules.container-cpu-usage-seconds-tot.yaml
+  - ./kube-prometheus-stack-k8s.rules.container-memory-cache.yaml
+  - ./kube-prometheus-stack-k8s.rules.container-memory-rss.yaml
+  - ./kube-prometheus-stack-k8s.rules.container-memory-swap.yaml
+  - ./kube-prometheus-stack-k8s.rules.container-memory-working-set-by.yaml
+  - ./kube-prometheus-stack-k8s.rules.container-resource.yaml
+  - ./kube-prometheus-stack-k8s.rules.pod-owner.yaml
+  - ./kube-prometheus-stack-kube-apiserver-availability.rules.yaml
+  - ./kube-prometheus-stack-kube-apiserver-burnrate.rules.yaml
+  - ./kube-prometheus-stack-kube-apiserver-histogram.rules.yaml
+  - ./kube-prometheus-stack-kube-apiserver-slos.yaml
+  - ./kube-prometheus-stack-kube-prometheus-general.rules.yaml
+  - ./kube-prometheus-stack-kube-prometheus-node-recording.rules.yaml
+  - ./kube-prometheus-stack-kube-scheduler.rules.yaml
+  - ./kube-prometheus-stack-kube-state-metrics.yaml
+  - ./kube-prometheus-stack-kubelet.rules.yaml
+  - ./kube-prometheus-stack-kubernetes-apps.yaml
+  - ./kube-prometheus-stack-kubernetes-resources.yaml
+  - ./kube-prometheus-stack-kubernetes-storage.yaml
+  - ./kube-prometheus-stack-kubernetes-system.yaml
+  - ./kube-prometheus-stack-kubernetes-system-apiserver.yaml
+  - ./kube-prometheus-stack-kubernetes-system-controller-manager.yaml
+  - ./kube-prometheus-stack-kubernetes-system-kubelet.yaml
+  - ./kube-prometheus-stack-kubernetes-system-scheduler.yaml
+  - ./kube-prometheus-stack-node-exporter.yaml
+  - ./kube-prometheus-stack-node-exporter.rules.yaml
+  - ./kube-prometheus-stack-node-network.yaml
+  - ./kube-prometheus-stack-node.rules.yaml
+  - ./kube-prometheus-stack-prometheus-operator.yaml

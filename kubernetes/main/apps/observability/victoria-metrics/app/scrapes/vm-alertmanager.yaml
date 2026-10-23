@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: kube-prometheus-stack-alertmanager
+spec:
+  namespaceSelector:
+    matchNames:
+      - observability
+  selector:
+    matchLabels:
+      # The alertmanager config Service, not the headless "alertmanager-operated"
+      # one. Both select the same pods, so scraping both would put every
+      # Alertmanager sample in the central store twice under two job names. The
+      # chart's own ServiceMonitor (kube-prometheus-stack-alertmanager) selected
+      # this Service too; the labels below are the ones it matched on.
+      app: kube-prometheus-stack-alertmanager
+      release: kube-prometheus-stack
+      self-monitor: "true"
+  endpoints:
+    # Alertmanager's own metrics (alertmanager_*). Everything the vendored
+    # kube-prometheus-stack-alertmanager.rules alerts select.
+    - port: http-web
+      path: /metrics
+      interval: 1m
+      relabelConfigs:
+        # Force the job the vendored alerts select (job="kube-prometheus-stack-alertmanager").
+        - action: replace
+          targetLabel: job
+          replacement: kube-prometheus-stack-alertmanager
+    # The config-reloader sidecar, same as the removed ServiceMonitor's second
+    # endpoint: without it reloader_last_reload_successful disappears and
+    # ConfigReloaderSidecarErrors (rules/kps/kube-prometheus-stack-config-reloaders.yaml)
+    # has nothing to evaluate.
+    - port: reloader-web
+      path: /metrics
+      interval: 1m
+      relabelConfigs:
+        - action: replace
+          targetLabel: job
+          replacement: kube-prometheus-stack-alertmanager

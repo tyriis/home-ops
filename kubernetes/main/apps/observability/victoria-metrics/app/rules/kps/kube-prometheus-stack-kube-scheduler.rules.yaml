@@ -1,0 +1,47 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmrule_v1beta1.json
+# Generated from kube-prometheus-stack 92.11.0 PrometheusRule kube-prometheus-stack-kube-scheduler.rules - regenerate by re-rendering the chart.
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+  name: kube-prometheus-stack-kube-scheduler.rules
+spec:
+  groups:
+    - name: kube-scheduler.rules
+      rules:
+        - expr: histogram_quantile(0.99, sum(rate(scheduler_scheduling_attempt_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
+          labels:
+            quantile: "0.99"
+          record: cluster_quantile:scheduler_scheduling_attempt_duration_seconds:histogram_quantile
+        - expr: histogram_quantile(0.99, sum(rate(scheduler_scheduling_algorithm_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
+          labels:
+            quantile: "0.99"
+          record: cluster_quantile:scheduler_scheduling_algorithm_duration_seconds:histogram_quantile
+        - expr: histogram_quantile(0.99, sum(rate(scheduler_pod_scheduling_sli_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
+          labels:
+            quantile: "0.99"
+          record: cluster_quantile:scheduler_pod_scheduling_sli_duration_seconds:histogram_quantile
+        - expr: histogram_quantile(0.9, sum(rate(scheduler_scheduling_attempt_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
+          labels:
+            quantile: "0.9"
+          record: cluster_quantile:scheduler_scheduling_attempt_duration_seconds:histogram_quantile
+        - expr: histogram_quantile(0.9, sum(rate(scheduler_scheduling_algorithm_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
+          labels:
+            quantile: "0.9"
+          record: cluster_quantile:scheduler_scheduling_algorithm_duration_seconds:histogram_quantile
+        - expr: histogram_quantile(0.9, sum(rate(scheduler_pod_scheduling_sli_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
+          labels:
+            quantile: "0.9"
+          record: cluster_quantile:scheduler_pod_scheduling_sli_duration_seconds:histogram_quantile
+        - expr: histogram_quantile(0.5, sum(rate(scheduler_scheduling_attempt_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
+          labels:
+            quantile: "0.5"
+          record: cluster_quantile:scheduler_scheduling_attempt_duration_seconds:histogram_quantile
+        - expr: histogram_quantile(0.5, sum(rate(scheduler_scheduling_algorithm_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
+          labels:
+            quantile: "0.5"
+          record: cluster_quantile:scheduler_scheduling_algorithm_duration_seconds:histogram_quantile
+        - expr: histogram_quantile(0.5, sum(rate(scheduler_pod_scheduling_sli_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
+          labels:
+            quantile: "0.5"
+          record: cluster_quantile:scheduler_pod_scheduling_sli_duration_seconds:histogram_quantile
