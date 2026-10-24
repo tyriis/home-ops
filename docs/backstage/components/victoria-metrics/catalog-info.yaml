@@ -4,7 +4,9 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: victoria-metrics
-  description: VictoriaMetrics is the central metrics store for both clusters. A single VMSingle on the utility cluster, fronted by vmauth, receives remote writes from a headless VMAgent on the main cluster.
+  description: VictoriaMetrics is the metrics platform for both clusters. A single VMSingle on the utility cluster, fronted by vmauth, receives remote writes from a headless VMAgent on the main cluster. It runs in dual-run alongside the main Prometheus and becomes the source of truth at cutover, when Prometheus is disabled and the Grafana datasource is switched.
+  annotations:
+    home-ops.io/rollout-phase: dual-run (phase 1 of 2) — owns the central store, becomes the source of truth at cutover
   links:
     - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/utility/apps/observability/victoria-metrics
       title: Flux definition (central store)

@@ -54,6 +54,9 @@ described?**
 
 Chosen option: **C**.
 
+The outcome below describes the end state. It is implemented in two rollout phases (see
+[Rollout phases](#rollout-phases)): the first runs both stacks side by side and removes nothing.
+
 1. **Native VictoriaMetrics custom resources only.** Both clusters run the
    `victoria-metrics-operator` (chart `victoria-metrics-operator` 0.68.1, operator v0.75.0,
    `crds.enabled: true`, `global.versions.metrics: v1.154.1`) with
@@ -74,20 +77,45 @@ Chosen option: **C**.
    cluster's `ClusterSecretStore` only grants its own tree, the main-side consumers carry copies
    under `infra/kubernetes/main/observability/`, with rotation touching both. Revoking the main
    cluster's write access is one key rotation; no other unit is affected.
-5. **Alerting stays on main.** The 11 `PrometheusRule` manifests became 11 `VMRule`s, evaluated by
+5. **Alerting stays on main.** The 11 `PrometheusRule` manifests become 11 `VMRule`s (twin copies
+   during phase 1), evaluated by
    a `VMAlert` CR on main whose datasource is the central store (through vmauth, `vmalert-read`)
    and whose notifier is the in-cluster, headless Alertmanager
    (`alertmanager-operated.observability.svc.cluster.local:9093`). Alertmanager, its CRDs and its
    routes are unchanged — consistent with ADR 0019.
-6. **kube-prometheus-stack on main is reduced, not removed.** `prometheus.enabled: false`; the
+6. **kube-prometheus-stack on main ends up reduced, not removed** (from phase 2 on).
+   `prometheus.enabled: false`; the
    chart still supplies Alertmanager, the Alertmanager CRDs, kube-state-metrics and node-exporter,
    which the native VM scrapes target.
 7. **Grafana keeps its datasource identity.** The datasource named `prometheus` keeps its name and
-   `type: prometheus`; only `url` changed to `https://metrics.techtales.io` with a bearer header
-   taken from `VMAUTH_METRICS_AUTHORIZATION`. Dashboards were deliberately not edited.
+   `type: prometheus`; only `url` changes to `https://metrics.techtales.io` with a bearer header
+   taken from `VMAUTH_METRICS_AUTHORIZATION`. Dashboards are deliberately not edited, in phase 1 or
+   at cutover.
 8. **Utility's own kube-prometheus-stack is untouched.** It keeps running Prometheus,
    ServiceMonitors and PrometheusRules until a follow-up migrates that cluster too; the
    `utility-metrics` token exists so that migration is a config-only change.
+
+### Rollout phases
+
+The decision is unchanged by the sequencing; it is reached in two steps so that no metric, alert or
+dashboard depends on an unproven path.
+
+1. **Phase 1 — dual-run (this change).** Both stacks run and store in parallel on main.
+   Added: the operator on both clusters, the central `VMSingle` behind `vmauth`, the headless
+   `VMAgent` on main, the native VM scrape objects, a `VMRule` twin for every app `PrometheusRule`,
+   and a `VMAlert` that evaluates those rules from the central store **with no notifier**, so it
+   pages nobody. Unchanged: `kube-prometheus-stack` on main keeps `prometheus.enabled` at its
+   default (3 replicas, 14d TSDB, `prometheus.techtales.io`), its `ServiceMonitor`s,
+   `PodMonitor`s and `PrometheusRule`s, the CNPG/Rook/cert-manager monitor generators, the
+   `prometheus` Grafana datasource pointing at `prometheus-operated`, and Alertmanager with its
+   routes. Prometheus therefore remains the source of truth and the only paging path, while the VM
+   copy is compared against it for a retention window. Reversing phase 1 is deleting the VM app.
+2. **Phase 2 — cutover.** `prometheus.enabled: false` and `defaultRules.create: false`, the
+   ServiceMonitor `authorization` overrides that exist only with the Prometheus service account,
+   the Grafana `prometheus` datasource repointed at `https://metrics.techtales.io` (same name,
+   same type), the `VMAlert` notifier enabled at `alertmanager-operated`, the `PrometheusRule`s and
+   the generator-produced monitor objects removed, and main's Prometheus PVC deleted by hand after
+   a retention cycle.
 
 ## Consequences
 
@@ -123,7 +151,8 @@ Chosen option: **C**.
 - Migrate utility's kube-prometheus-stack to the VM dialect (native scrape objects, `VMRule`,
   `utility-metrics` writer token) and delete its Prometheus. Until then, two stacks remain.
 - Delete main's leftover Prometheus PVC once the cutover has been observed for a retention cycle.
-- Clean up Gatus / public status checks that still assert on the removed Prometheus endpoint.
+- Clean up Gatus / public status checks that assert on main's Prometheus endpoint before phase 2
+  removes it.
 - Optional: add the VictoriaMetrics Grafana datasource plugin for MetricsQL completion and
   `vmselect` links; keep the plain `prometheus` datasource name either way.
 

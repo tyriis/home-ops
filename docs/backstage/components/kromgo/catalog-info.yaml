@@ -32,5 +32,5 @@ spec:
   dependsOn:
     - component:cert-manager
     - component:envoy-gateway
-    - component:victoria-metrics
+    - component:kube-prometheus-stack
     - component:cloudflared
