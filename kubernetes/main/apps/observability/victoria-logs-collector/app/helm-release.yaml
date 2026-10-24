@@ -46,6 +46,8 @@ spec:
       excludeFilter: kubernetes.pod_name:=%{HOSTNAME}
     podAnnotations:
       reloader.stakater.com/auto: "true"
+    podMonitor:
+      enabled: true
     resources:
       requests:
         cpu: 50m

@@ -28,17 +28,5 @@ spec:
     # https://artifacthub.io/packages/helm/external-secrets-operator/external-secrets?modal=values
     grafanaDashboard:
       enabled: true
-    # The chart creates the metrics Services only when its ServiceMonitor is
-    # enabled (or these flags are set). vmagent scrapes them through
-    # VMServiceScrape now, so keep the Services but not the ServiceMonitors.
-    metrics:
-      service:
-        enabled: true
-    certController:
-      metrics:
-        service:
-          enabled: true
-    webhook:
-      metrics:
-        service:
-          enabled: true
+    serviceMonitor:
+      enabled: true

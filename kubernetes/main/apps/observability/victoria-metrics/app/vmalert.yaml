@@ -23,11 +23,12 @@ spec:
     bearerTokenSecret:
       name: vmalert-datasource
       key: token
-  notifier:
-    # Use the headless alertmanager-operated Service: it is created by the
-    # Alertmanager StatefulSet itself, so the URL survives a HelmRelease rename
-    # of kube-prometheus-stack (kube-prometheus-stack-alertmanager would not).
-    url: http://alertmanager-operated.observability.svc.cluster.local:9093
+  # No notifier during the dual-run: Prometheus keeps evaluating its own
+  # PrometheusRules and routing through Alertmanager, so a notifier here would
+  # page twice for the same alert. The notifier block
+  # (url: http://alertmanager-operated.observability.svc.cluster.local:9093) is
+  # enabled in the cutover PR that disables Prometheus and moves Alertmanager
+  # routing to vmalert.
   resources:
     requests:
       cpu: 25m

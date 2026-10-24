@@ -4,6 +4,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./helm-release.yaml
+  - ./prometheus-rule.yaml
   - ./vm-rule.yaml
   - ./vm-service-scrape.yaml
 configMapGenerator:

@@ -19,9 +19,7 @@ spec:
     shared_preload_libraries:
       - vchord.so
   monitoring:
-    # Scraping is native now (vm-pod-scrape.yaml); a generated PodMonitor would
-    # never be evaluated. The field is deprecated upstream since CNPG 1.30.
-    enablePodMonitor: false
+    enablePodMonitor: true
   bootstrap:
     initdb:
       database: immich

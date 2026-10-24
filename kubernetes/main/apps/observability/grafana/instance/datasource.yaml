@@ -6,12 +6,6 @@ kind: GrafanaDatasource
 metadata:
   name: prometheus
 spec:
-  valuesFrom:
-    - targetPath: "secureJsonData.httpHeaderValue1"
-      valueFrom:
-        secretKeyRef:
-          name: grafana-env
-          key: VMAUTH_METRICS_AUTHORIZATION
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -20,11 +14,7 @@ spec:
     name: prometheus
     access: proxy
     isDefault: true
-    url: https://metrics.techtales.io
-    jsonData:
-      httpHeaderName1: Authorization
-    secureJsonData:
-      httpHeaderValue1: ${VMAUTH_METRICS_AUTHORIZATION}
+    url: http://prometheus-operated.observability.svc.cluster.local:9090 #NOSONAR allow http
 
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadatasource_v1beta1.json

@@ -22,6 +22,8 @@ spec:
     keepHistory: false
   values:
     # https://artifacthub.io/packages/helm/flux-operator/flux-operator?modal=values
+    serviceMonitor:
+      create: true
     resources:
       requests:
         cpu: 10m

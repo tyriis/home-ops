@@ -99,3 +99,11 @@ spec:
         ports:
           metrics:
             port: *port
+
+    serviceMonitor:
+      metrics:
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 30s

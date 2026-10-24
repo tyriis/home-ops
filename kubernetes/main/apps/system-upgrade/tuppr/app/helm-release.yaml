@@ -21,6 +21,9 @@ spec:
   values:
     # https://github.com/home-operations/tuppr/blob/main/charts/tuppr/values.yaml
     replicaCount: 2
+    monitoring:
+      serviceMonitor:
+        enabled: true
     resources:
       requests:
         cpu: 10m

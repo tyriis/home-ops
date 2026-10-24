@@ -46,6 +46,10 @@ spec:
       fsGroup: 65534
       runAsNonRoot: true
 
+    # create Prometheus Operator monitor
+    serviceMonitor:
+      enabled: true
+
     resources:
       limits:
         memory: 256Mi

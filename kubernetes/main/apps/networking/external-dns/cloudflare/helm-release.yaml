@@ -53,6 +53,8 @@ spec:
     txtPrefix: main.
     domainFilters:
       - techtales.io
+    serviceMonitor:
+      enabled: true
     podAnnotations:
       secret.reloader.stakater.com/reload: *secret
     gatewayNamespace: networking

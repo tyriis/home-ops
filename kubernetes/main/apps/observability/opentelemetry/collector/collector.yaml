@@ -27,10 +27,16 @@ spec:
         check_interval: 5s
         limit_mib: 1024
     exporters:
-      # VictoriaMetrics single-node ingests OTLP/HTTP at /opentelemetry/v1/metrics
-      # behind vmauth (metrics.techtales.io). The exporter appends the
-      # signal path (/v1/metrics) to this base URL, so it must not be repeated.
+      # Dual export during the dual-run migration: Prometheus keeps receiving
+      # OTLP metrics over the in-cluster Service while VictoriaMetrics receives
+      # the same metrics through vmauth (metrics.techtales.io). The otlphttp
+      # exporter appends the signal path (/v1/metrics) to the base URL, so the
+      # VM endpoint must not repeat it.
       otlphttp/prom:
+        endpoint: http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/otlp #NOSONAR allow http
+        tls:
+          insecure: true
+      otlphttp/vm:
         endpoint: https://metrics.techtales.io/opentelemetry
         headers:
           Authorization: "Bearer ${env:VM_METRICS_TOKEN}"
@@ -53,7 +59,7 @@ spec:
         metrics:
           receivers: [otlp]
           processors: [memory_limiter, batch]
-          exporters: [otlphttp/prom]
+          exporters: [otlphttp/prom, otlphttp/vm]
         # logs pipeline removed with loki; OTLP ingestion to VictoriaLogs tracked in #10987
       telemetry:
         metrics:

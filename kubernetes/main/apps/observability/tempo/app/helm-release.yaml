@@ -34,6 +34,8 @@ spec:
         requests:
           cpu: 10m
           memory: 100Mi
+    serviceMonitor:
+      enabled: true
   valuesFrom:
     - kind: Secret
       name: tempo-s3

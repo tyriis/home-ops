@@ -56,3 +56,12 @@ spec:
         ports:
           metrics:
             port: 9798
+
+    serviceMonitor:
+      app:
+        endpoints:
+          - port: metrics
+            scheme: http
+            interval: 60m
+            scrapeTimeout: 1m
+            path: /metrics

@@ -25,6 +25,8 @@ spec:
     dashboard:
       enabled: true
     defaultResyncPeriod: 1m
+    serviceMonitor:
+      enabled: true
     resources:
       requests:
         cpu: 10m

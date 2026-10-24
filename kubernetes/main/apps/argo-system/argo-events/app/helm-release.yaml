@@ -33,3 +33,5 @@ spec:
     controller:
       metrics:
         enabled: true
+        serviceMonitor:
+          enabled: true

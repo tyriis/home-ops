@@ -35,11 +35,9 @@ spec:
     podDnsConfig:
       nameservers:
         - "1.1.1.1"
-    # Scraping is native now (vm-service-scrape.yaml); the chart's ServiceMonitor
-    # would not be read by vmagent because the prometheus converter is disabled.
     prometheus:
       servicemonitor:
-        enabled: false
+        enabled: true
     resources:
       requests:
         cpu: 10m

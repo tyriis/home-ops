@@ -81,6 +81,15 @@ spec:
           http:
             port: *port
 
+    serviceMonitor:
+      app:
+        endpoints:
+          - port: http
+            scheme: http
+            interval: 30s
+            scrapeTimeout: 5s
+            path: /metrics
+
     persistence:
       config:
         type: configMap

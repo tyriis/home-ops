@@ -6,4 +6,5 @@ resources:
   - ./collector.yaml
   - ./external-secret.yaml
   - ./http-route.yaml
+  - ./service-monitor.yaml
   - ./vm-service-scrape.yaml

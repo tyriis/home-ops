@@ -87,6 +87,15 @@ spec:
           metrics:
             port: *metricsPort
 
+    serviceMonitor:
+      metrics:
+        serviceName: anubis
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 1m
+
     route:
       app:
         annotations:

@@ -39,3 +39,6 @@ spec:
           sectionName: https
       hostnames:
         - konflate.techtales.io
+    monitoring:
+      serviceMonitor:
+        enabled: true

@@ -70,3 +70,30 @@ spec:
     securityContext:
       capabilities:
         add: ["NET_RAW"]
+
+    serviceMonitor:
+      enabled: true
+      defaults:
+        labels:
+          release: prometheus
+        interval: 1m
+      targets:
+        # Vacuum robot upstairs
+        - module: icmp
+          name: roborock-upstairs-icmp
+          url: roborock-upstairs.localdomain
+
+        # Vacuum robot downstairs
+        - module: icmp
+          name: roborock-downstairs-icmp
+          url: roborock-downstairs.localdomain
+
+        # Vacuum robot basement
+        - module: icmp
+          name: roborock-basement-icmp
+          url: roborock-basement.localdomain
+
+        - module: icmp
+          name: ping-cloudflare
+          url: 1.1.1.1
+          scrape_interval: 30s
