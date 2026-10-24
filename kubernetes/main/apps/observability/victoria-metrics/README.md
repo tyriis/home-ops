@@ -86,9 +86,23 @@ control is the `src_paths` allowlist — the hostname is not a boundary: any tok
 | `grafana-read`    | `VMAUTH_TOKEN_GRAFANA_METRICS` | `/api/v1/.*`, `/prometheus/.*`, `/select/.*` | Grafana `prometheus` datasource, dashboards, `vmselect` |
 | `vmalert-read`    | `VMAUTH_TOKEN_VMALERT_METRICS` | `/api/v1/.*`, `/prometheus/.*`, `/select/.*` | main `VMAlert` datasource                               |
 
-All four keys live in **one** OpenBao path, `infra/kubernetes/utility/observability/victoria-auth`,
-so no token exists in two places. Three ExternalSecrets read it through the shared
-`openbao-backend` ClusterSecretStore:
+All four keys exist in **two** OpenBao paths, with the same value in each, because a cluster's
+`ClusterSecretStore` policy only grants its own path — main cannot read the utility tree:
+
+- `infra/kubernetes/utility/observability/victoria-auth` — read by `vmauth-tokens` (utility,
+  `victoria-auth`), which feeds the `VMAUTH_TOKEN_*` env vars vmauth validates. This is the
+  authoritative copy: rotating a key here is what changes what vmauth accepts.
+- `infra/kubernetes/main/observability/victoria-metrics` — read by the two main-side
+  ExternalSecrets below (`VMAUTH_TOKEN_MAIN_METRICS`, `VMAUTH_TOKEN_VMALERT_METRICS`).
+- `infra/kubernetes/main/observability/grafana` — `VMAUTH_TOKEN_GRAFANA_METRICS` for the Grafana
+  datasource, next to the existing Grafana OAuth keys.
+- `infra/kubernetes/main/observability/opentelemetry` — `VM_METRICS_TOKEN`, the same value as
+  `VMAUTH_TOKEN_MAIN_METRICS`, for the OTel collector's OTLP export.
+
+**Rotating a token means patching both copies.** If they diverge, vmauth rejects the cluster-side
+consumer with `401` while the utility side keeps working.
+
+The ExternalSecrets involved:
 
 - `vmauth-tokens` (utility, in `victoria-auth`) → Secret `vmauth-tokens`, one key per user, each
   key the literal `VMAUTH_TOKEN_*` env name vmauth reads via `envFrom`.
@@ -97,7 +111,7 @@ so no token exists in two places. Three ExternalSecrets read it through the shar
 - `vmalert-datasource` (main, this app) → Secret `vmalert-datasource`, the `vmalert-read` bearer
   token for `VMAlert`'s datasource.
 
-The existing log users on the same path are untouched.
+The existing log users on the utility path are untouched.
 
 Retrieve a token (`<KEY>` = column 2):
 
@@ -315,8 +329,9 @@ kube-prometheus-stack set: the chart would otherwise render a `PrometheusRule` n
 
 ## Operational notes
 
-- **Token rotation**: patch the `VMAUTH_TOKEN_*` key in OpenBao
-  (`bao kv patch infra/kubernetes/utility/observability/victoria-auth ...`). Stakater reloader
+- **Token rotation**: patch the `VMAUTH_TOKEN_*` key in **both** copies — the utility path
+  (`bao kv patch infra/kubernetes/utility/observability/victoria-auth ...`) and the matching
+  main-cluster path from the table above. Stakater reloader
   restarts `vmauth`, `vmagent` and `vmalert` (env is fixed at container start, `%{VAR}` is
   resolved at config parse, so hot-reload alone does not pick up a rotated token).
 - **Denied paths return `403`**, not `400`: every metrics user has the `deny_paths: ["/.*"]`

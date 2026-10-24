@@ -69,9 +69,11 @@ Chosen option: **C**.
    `metrics.techtales.io`, which already fronts `logs.techtales.io` and `vmalert.techtales.io`.
 4. **Per-cluster tokens, per-cluster revocation.** `main-metrics` and `utility-metrics` are
    write-only (`/insert/.*`), `grafana-read` and `vmalert-read` are read-only
-   (`/api/v1/.*`, `/prometheus/.*`, `/select/.*`). All live in one OpenBao path,
-   `infra/kubernetes/utility/observability/victoria-auth`. Revoking the main cluster's write
-   access is one key rotation; no other unit is affected.
+   (`/api/v1/.*`, `/prometheus/.*`, `/select/.*`). The values live in the utility path
+   `infra/kubernetes/utility/observability/victoria-auth`, which `vmauth` reads; because a
+   cluster's `ClusterSecretStore` only grants its own tree, the main-side consumers carry copies
+   under `infra/kubernetes/main/observability/`, with rotation touching both. Revoking the main
+   cluster's write access is one key rotation; no other unit is affected.
 5. **Alerting stays on main.** The 11 `PrometheusRule` manifests became 11 `VMRule`s, evaluated by
    a `VMAlert` CR on main whose datasource is the central store (through vmauth, `vmalert-read`)
    and whose notifier is the in-cluster, headless Alertmanager
