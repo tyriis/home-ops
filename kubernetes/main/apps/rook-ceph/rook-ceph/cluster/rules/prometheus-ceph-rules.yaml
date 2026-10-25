@@ -448,7 +448,7 @@ spec:
           annotations:
             description: |-
               The number of placement groups per OSD is too high (exceeds the mon_max_pg_per_osd setting).
-               Check that the pg_autoscaler has not been disabled for any pools with 'ceph osd pool autoscale-status', and that the profile selected is appropriate. You may also adjust the target_size_ratio of a pool to guide the autoscaler based on the expected relative size of the pool ('ceph osd pool set cephfs.cephfs.meta target_size_ratio .1') or set the pg_autoscaler mode to 'warn' and adjust pg_num appropriately for one or more pools.
+              Check that the pg_autoscaler has not been disabled for any pools with 'ceph osd pool autoscale-status', and that the profile selected is appropriate. You may also adjust the target_size_ratio of a pool to guide the autoscaler based on the expected relative size of the pool ('ceph osd pool set cephfs.cephfs.meta target_size_ratio .1') or set the pg_autoscaler mode to 'warn' and adjust pg_num appropriately for one or more pools.
             documentation: https://docs.ceph.com/en/latest/rados/operations/health-checks/#too-many-pgs
             summary: Placement groups per OSD is too high on cluster {{ $labels.cluster }}
           expr: ceph_health_detail{name="TOO_MANY_PGS"} == 1

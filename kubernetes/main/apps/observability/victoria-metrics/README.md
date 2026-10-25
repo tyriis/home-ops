@@ -61,18 +61,19 @@ moves.
 
 ### Run 2 — cutover
 
-1. `prometheus.enabled: false` and `defaultRules.create: false` in
-   `kubernetes/main/apps/observability/kube-prometheus-stack/app/helm-release.yaml`, plus the
-   ServiceMonitor `authorization` overrides that only exist because the Prometheus service account
-   (and its token Secret) goes away with it.
-2. Grafana's `prometheus` datasource repointed at `https://metrics.techtales.io` with a bearer
-   header — same name, same `type: prometheus`, same `isDefault` — so no dashboard needs an edit.
-3. `VMAlert` given its `notifier` (`alertmanager-operated`), so rule evaluation starts to page
-   through the unchanged Alertmanager.
-4. The app `PrometheusRule`s deleted once their `VMRule` twin is the only copy, and the CNPG, Rook
-   and cert-manager monitor generators switched off.
-5. Main's Prometheus PVC deleted by hand after a retention cycle. The 14d TSDB is not imported:
-   dashboards start at the cutover timestamp.
+- **1.** `prometheus.enabled: false` and `defaultRules.create: false` in
+  `kubernetes/main/apps/observability/kube-prometheus-stack/app/helm-release.yaml`, plus the
+  ServiceMonitor `authorization` overrides that only exist because the Prometheus service account
+  (and its token Secret) goes away with it.
+- **2.** Grafana's `prometheus` datasource repointed at `https://metrics.techtales.io` with a
+  bearer header — same name, same `type: prometheus`, same `isDefault` — so no dashboard needs an
+  edit.
+- **3.** `VMAlert` given its `notifier` (`alertmanager-operated`), so rule evaluation starts to
+  page through the unchanged Alertmanager.
+- **4.** The app `PrometheusRule`s deleted once their `VMRule` twin is the only copy, and the
+  CNPG, Rook and cert-manager monitor generators switched off.
+- **5.** Main's Prometheus PVC deleted by hand after a retention cycle. The 14d TSDB is not
+  imported: dashboards start at the cutover timestamp.
 
 ## Architecture
 
@@ -86,11 +87,11 @@ VMNodeScrape / VMStaticScrape
         │ discovered by
         ▼
     VMAgent  ───── HTTPS + bearer token ─────▶  envoy   metrics.techtales.io
-    headless                                         │
-    persistent queue 5Gi ceph-block                  ▼
+    headless                                          │
+    persistent queue 5Gi ceph-block                   ▼
     externalLabels.cluster=main                  vmauth :8427   (victoria-auth)
-                                                     │ user main-metrics → /insert/.*
-                                                     ▼
+                                                      │ user main-metrics → /insert/.*
+                                                      ▼
                                                   VMSingle :8428
                                                   30d retention, 50Gi local-nvme
 ```
@@ -198,8 +199,8 @@ observing what `vmagent` reports and what lands in the store, not with a hand-bu
 T=$(kubectl --context readonly@utility -n observability get secret vmauth-tokens \
       -o "jsonpath={.data.VMAUTH_TOKEN_GRAFANA_METRICS}" | base64 -d)
 for q in 'vmagent_remotewrite_requests_total{cluster="main"}' \
-         'vmagent_remotewrite_pending_data_bytes{cluster="main"}' \
-         'count(up{cluster="main"})'; do
+        'vmagent_remotewrite_pending_data_bytes{cluster="main"}' \
+        'count(up{cluster="main"})'; do
   curl -s -G -H "Authorization: Bearer $T" --data-urlencode "query=$q" \
     'https://metrics.techtales.io/prometheus/api/v1/query' | head -c 200; echo
 done
@@ -234,18 +235,19 @@ stacks scrape the same thing; the right-hand column is what disappears at cutove
 
 File conventions:
 
-1. **Cluster-wide platform scrapes** live in this app: `app/scrapes/vm-<target>.yaml`
-   (`vm-kube-apiserver.yaml`, `vm-kubelet.yaml`, `vm-node-exporter.yaml`, …). One object per file,
-   pulled in by `app/kustomization.yaml`.
-2. **App-owned scrapes** live next to the app that owns the Service, exactly where the
-   `ServiceMonitor` lives: `<app>/app/vm-service-scrape.yaml`, or `<app>/app/vm-pod-scrape.yaml`
-   when the target is pod-level. One object per file, file name = kind in kebab case.
-3. `metadata.name` is the **job label**, not the file name. It must be the name the
-   `ServiceMonitor`/`PodMonitor` it mirrors has (`cleanPrometheusOperatorObjectNames: true` made
-   those the plain component names).
-4. No `generated-*` objects, and no new `kind: ServiceMonitor` / `PodMonitor` / `PrometheusRule` is
-   added for the VM path: the converter is disabled, so such an object would be inert rather than
-   translated. The Prometheus-operator objects that already exist stay, for Prometheus.
+- **1. Cluster-wide platform scrapes** live in this app: `app/scrapes/vm-<target>.yaml`
+  (`vm-kube-apiserver.yaml`, `vm-kubelet.yaml`, `vm-node-exporter.yaml`, …). One object per file,
+  pulled in by `app/kustomization.yaml`.
+- **2. App-owned scrapes** live next to the app that owns the Service, exactly where the
+  `ServiceMonitor` lives: `<app>/app/vm-service-scrape.yaml`, or `<app>/app/vm-pod-scrape.yaml`
+  when the target is pod-level. One object per file, file name = kind in kebab case.
+- **3.** `metadata.name` is the **job label**, not the file name. It must be the name the
+  `ServiceMonitor`/`PodMonitor` it mirrors has (`cleanPrometheusOperatorObjectNames: true` made
+  those the plain component names).
+- **4.** No `generated-*` objects, and no new `kind: ServiceMonitor` / `PodMonitor` /
+  `PrometheusRule` is added for the VM path: the converter is disabled, so such an object would be
+  inert rather than translated. The Prometheus-operator objects that already exist stay, for
+  Prometheus.
 
 ## Vendored kube-prometheus-stack rules (`app/rules/kps/`)
 
@@ -317,45 +319,46 @@ kube-prometheus-stack set: the VM side needs a `VMRule`, and the converter is of
 
 ## Adding a new scrape target
 
-1. Confirm the target exposes `/metrics` on a **named** Service port (a `targetPort` number alone
-   is enough for `VMServiceScrape`, but naming it keeps the object readable).
-2. Copy the shape of a neighbour (`kubernetes/main/apps/observability/smartctl-exporter/app/vm-service-scrape.yaml`
-   is the smallest complete example), including the `# yaml-language-server` schema comment:
+- **1.** Confirm the target exposes `/metrics` on a **named** Service port (a `targetPort` number
+  alone is enough for `VMServiceScrape`, but naming it keeps the object readable).
+- **2.** Copy the shape of a neighbour
+  (`kubernetes/main/apps/observability/smartctl-exporter/app/vm-service-scrape.yaml` is the
+  smallest complete example), including the `# yaml-language-server` schema comment:
 
-   ```yaml
-   ---
-   # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
-   apiVersion: operator.victoriametrics.com/v1beta1
-   kind: VMServiceScrape
-   metadata:
-     name: my-app # = job label; reuse the old ServiceMonitor name
-   spec:
-     namespaceSelector:
-       matchNames:
-         - <namespace>
-     selector:
-       matchLabels: # the labels on the Service, not on the Deployment
-         app.kubernetes.io/name: my-app
-         app.kubernetes.io/instance: my-app
-     endpoints:
-       - port: http
-         path: /metrics
-         interval: 1m
-   ```
+  ```yaml
+  ---
+  # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
+  apiVersion: operator.victoriametrics.com/v1beta1
+  kind: VMServiceScrape
+  metadata:
+    name: my-app # = job label; reuse the old ServiceMonitor name
+  spec:
+    namespaceSelector:
+      matchNames:
+        - <namespace>
+    selector:
+      matchLabels: # the labels on the Service, not on the Deployment
+        app.kubernetes.io/name: my-app
+        app.kubernetes.io/instance: my-app
+    endpoints:
+      - port: http
+        path: /metrics
+        interval: 1m
+  ```
 
-3. Add the file to that directory's `kustomization.yaml`.
-4. Nothing else: `selectAllByDefault: true` on the `VMAgent` means every VM scrape object in the
-   cluster is picked up on the next config reconcile — no Helm values, no `vmagent` restart.
-5. Verify: `kubectl --context admin@main -n <ns> get vmservicescrape my-app`, then query
-   `up{job="my-app", cluster="main"}` against `https://metrics.techtales.io` (read token). A new
-   target that is up but has no samples usually means a wrong `port` name or `matchLabels`.
-6. If the metric set is large, copy the `metricRelabelConfigs` drops from the `ServiceMonitor`
-   verbatim — they are cardinality control for the **central** store, and copying them keeps both
-   stacks dropping exactly the same series.
-7. If the target needs alerts, add a `vm-rule.yaml` (`VMRule`) next to the app's
-   `prometheus-rule.yaml` — same directory, same owning unit. In run 1 both copies must exist and
-   stay in step: Prometheus evaluates the `PrometheusRule`, the VM side can only evaluate the
-   `VMRule` because the converter is off. Run 2 deletes the `PrometheusRule`.
+- **3.** Add the file to that directory's `kustomization.yaml`.
+- **4.** Nothing else: `selectAllByDefault: true` on the `VMAgent` means every VM scrape object in
+  the cluster is picked up on the next config reconcile — no Helm values, no `vmagent` restart.
+- **5.** Verify: `kubectl --context admin@main -n <ns> get vmservicescrape my-app`, then query
+  `up{job="my-app", cluster="main"}` against `https://metrics.techtales.io` (read token). A new
+  target that is up but has no samples usually means a wrong `port` name or `matchLabels`.
+- **6.** If the metric set is large, copy the `metricRelabelConfigs` drops from the
+  `ServiceMonitor` verbatim — they are cardinality control for the **central** store, and copying
+  them keeps both stacks dropping exactly the same series.
+- **7.** If the target needs alerts, add a `vm-rule.yaml` (`VMRule`) next to the app's
+  `prometheus-rule.yaml` — same directory, same owning unit. In run 1 both copies must exist and
+  stay in step: Prometheus evaluates the `PrometheusRule`, the VM side can only evaluate the
+  `VMRule` because the converter is off. Run 2 deletes the `PrometheusRule`.
 
 ## Dual-run notes
 

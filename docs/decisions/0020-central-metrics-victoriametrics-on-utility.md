@@ -57,65 +57,65 @@ Chosen option: **C**.
 The outcome below describes the end state. It is implemented in two rollout phases (see
 [Rollout phases](#rollout-phases)): the first runs both stacks side by side and removes nothing.
 
-1. **Native VictoriaMetrics custom resources only.** Both clusters run the
-   `victoria-metrics-operator` (chart `victoria-metrics-operator` 0.68.1, operator v0.75.0,
-   `crds.enabled: true`, `global.versions.metrics: v1.154.1`) with
-   `operator.disable_prometheus_converter: true`. Every scrape target and every rule is a
-   `VMServiceScrape` / `VMPodScrape` / `VMNodeScrape` / `VMStaticScrape` / `VMProbe` / `VMRule`.
-   No `generated-*` objects exist, and a leftover `ServiceMonitor` would be inert rather than
-   silently translated — explicit is the point.
-2. **Headless `VMAgent` on main.** No local store and no query path: `statefulMode` with a 5Gi
-   `ceph-block` persistent queue, `externalLabels.cluster: main`, remote-writing to
-   `https://metrics.techtales.io/insert/prometheus/api/v1/write` with the `main-metrics` token.
-3. **One `VMSingle` on utility** (30d retention, 50Gi `local-nvme`, 100m/512Mi requests), not
-   routable on its own: everything goes through `vmauth` (`victoria-auth`) on
-   `metrics.techtales.io`, which already fronts `logs.techtales.io` and `vmalert.techtales.io`.
-4. **Per-cluster tokens, per-cluster revocation.** `main-metrics` and `utility-metrics` are
-   write-only (`/insert/.*`), `grafana-read` and `vmalert-read` are read-only
-   (`/api/v1/.*`, `/prometheus/.*`, `/select/.*`). The values live in the utility path
-   `infra/kubernetes/utility/observability/victoria-auth`, which `vmauth` reads; because a
-   cluster's `ClusterSecretStore` only grants its own tree, the main-side consumers carry copies
-   under `infra/kubernetes/main/observability/`, with rotation touching both. Revoking the main
-   cluster's write access is one key rotation; no other unit is affected.
-5. **Alerting stays on main.** The 11 `PrometheusRule` manifests become 11 `VMRule`s (twin copies
-   during phase 1), evaluated by
-   a `VMAlert` CR on main whose datasource is the central store (through vmauth, `vmalert-read`)
-   and whose notifier is the in-cluster, headless Alertmanager
-   (`alertmanager-operated.observability.svc.cluster.local:9093`). Alertmanager, its CRDs and its
-   routes are unchanged — consistent with ADR 0019.
-6. **kube-prometheus-stack on main ends up reduced, not removed** (from phase 2 on).
-   `prometheus.enabled: false`; the
-   chart still supplies Alertmanager, the Alertmanager CRDs, kube-state-metrics and node-exporter,
-   which the native VM scrapes target.
-7. **Grafana keeps its datasource identity.** The datasource named `prometheus` keeps its name and
-   `type: prometheus`; only `url` changes to `https://metrics.techtales.io` with a bearer header
-   taken from `VMAUTH_METRICS_AUTHORIZATION`. Dashboards are deliberately not edited, in phase 1 or
-   at cutover.
-8. **Utility's own kube-prometheus-stack is untouched.** It keeps running Prometheus,
-   ServiceMonitors and PrometheusRules until a follow-up migrates that cluster too; the
-   `utility-metrics` token exists so that migration is a config-only change.
+- **1. Native VictoriaMetrics custom resources only.** Both clusters run the
+  `victoria-metrics-operator` (chart `victoria-metrics-operator` 0.68.1, operator v0.75.0,
+  `crds.enabled: true`, `global.versions.metrics: v1.154.1`) with
+  `operator.disable_prometheus_converter: true`. Every scrape target and every rule is a
+  `VMServiceScrape` / `VMPodScrape` / `VMNodeScrape` / `VMStaticScrape` / `VMProbe` / `VMRule`.
+  No `generated-*` objects exist, and a leftover `ServiceMonitor` would be inert rather than
+  silently translated — explicit is the point.
+- **2. Headless `VMAgent` on main.** No local store and no query path: `statefulMode` with a 5Gi
+  `ceph-block` persistent queue, `externalLabels.cluster: main`, remote-writing to
+  `https://metrics.techtales.io/insert/prometheus/api/v1/write` with the `main-metrics` token.
+- **3. One `VMSingle` on utility** (30d retention, 50Gi `local-nvme`, 100m/512Mi requests), not
+  routable on its own: everything goes through `vmauth` (`victoria-auth`) on
+  `metrics.techtales.io`, which already fronts `logs.techtales.io` and `vmalert.techtales.io`.
+- **4. Per-cluster tokens, per-cluster revocation.** `main-metrics` and `utility-metrics` are
+  write-only (`/insert/.*`), `grafana-read` and `vmalert-read` are read-only
+  (`/api/v1/.*`, `/prometheus/.*`, `/select/.*`). The values live in the utility path
+  `infra/kubernetes/utility/observability/victoria-auth`, which `vmauth` reads; because a
+  cluster's `ClusterSecretStore` only grants its own tree, the main-side consumers carry copies
+  under `infra/kubernetes/main/observability/`, with rotation touching both. Revoking the main
+  cluster's write access is one key rotation; no other unit is affected.
+- **5. Alerting stays on main.** The 11 `PrometheusRule` manifests become 11 `VMRule`s (twin copies
+  during phase 1), evaluated by
+  a `VMAlert` CR on main whose datasource is the central store (through vmauth, `vmalert-read`)
+  and whose notifier is the in-cluster, headless Alertmanager
+  (`alertmanager-operated.observability.svc.cluster.local:9093`). Alertmanager, its CRDs and its
+  routes are unchanged — consistent with ADR 0019.
+- **6. kube-prometheus-stack on main ends up reduced, not removed** (from phase 2 on).
+  `prometheus.enabled: false`; the
+  chart still supplies Alertmanager, the Alertmanager CRDs, kube-state-metrics and node-exporter,
+  which the native VM scrapes target.
+- **7. Grafana keeps its datasource identity.** The datasource named `prometheus` keeps its name and
+  `type: prometheus`; only `url` changes to `https://metrics.techtales.io` with a bearer header
+  taken from `VMAUTH_METRICS_AUTHORIZATION`. Dashboards are deliberately not edited, in phase 1 or
+  at cutover.
+- **8. Utility's own kube-prometheus-stack is untouched.** It keeps running Prometheus,
+  ServiceMonitors and PrometheusRules until a follow-up migrates that cluster too; the
+  `utility-metrics` token exists so that migration is a config-only change.
 
 ### Rollout phases
 
 The decision is unchanged by the sequencing; it is reached in two steps so that no metric, alert or
 dashboard depends on an unproven path.
 
-1. **Phase 1 — dual-run (this change).** Both stacks run and store in parallel on main.
-   Added: the operator on both clusters, the central `VMSingle` behind `vmauth`, the headless
-   `VMAgent` on main, the native VM scrape objects, a `VMRule` twin for every app `PrometheusRule`,
-   and a `VMAlert` that evaluates those rules from the central store **with no notifier**, so it
-   pages nobody. Unchanged: `kube-prometheus-stack` on main keeps `prometheus.enabled` at its
-   default (3 replicas, 14d TSDB, `prometheus.techtales.io`), its `ServiceMonitor`s,
-   `PodMonitor`s and `PrometheusRule`s, the CNPG/Rook/cert-manager monitor generators, the
-   `prometheus` Grafana datasource pointing at `prometheus-operated`, and Alertmanager with its
-   routes. Prometheus therefore remains the source of truth and the only paging path, while the VM
-   copy is compared against it for a retention window. Reversing phase 1 is deleting the VM app.
-2. **Phase 2 — cutover.** `prometheus.enabled: false` and `defaultRules.create: false`, the
-   ServiceMonitor `authorization` overrides that exist only with the Prometheus service account,
-   the Grafana `prometheus` datasource repointed at `https://metrics.techtales.io` (same name,
-   same type), the `VMAlert` notifier enabled at `alertmanager-operated`, the `PrometheusRule`s and
-   the generator-produced monitor objects removed, and main's Prometheus PVC deleted by hand after
-   a retention cycle.
+- **Phase 1 — dual-run (this change).** Both stacks run and store in parallel on main.
+  Added: the operator on both clusters, the central `VMSingle` behind `vmauth`, the headless
+  `VMAgent` on main, the native VM scrape objects, a `VMRule` twin for every app `PrometheusRule`,
+  and a `VMAlert` that evaluates those rules from the central store **with no notifier**, so it
+  pages nobody. Unchanged: `kube-prometheus-stack` on main keeps `prometheus.enabled` at its
+  default (3 replicas, 14d TSDB, `prometheus.techtales.io`), its `ServiceMonitor`s,
+  `PodMonitor`s and `PrometheusRule`s, the CNPG/Rook/cert-manager monitor generators, the
+  `prometheus` Grafana datasource pointing at `prometheus-operated`, and Alertmanager with its
+  routes. Prometheus therefore remains the source of truth and the only paging path, while the VM
+  copy is compared against it for a retention window. Reversing phase 1 is deleting the VM app.
+- **Phase 2 — cutover.** `prometheus.enabled: false` and `defaultRules.create: false`, the
+  ServiceMonitor `authorization` overrides that exist only with the Prometheus service account,
+  the Grafana `prometheus` datasource repointed at `https://metrics.techtales.io` (same name,
+  same type), the `VMAlert` notifier enabled at `alertmanager-operated`, the `PrometheusRule`s and
+  the generator-produced monitor objects removed, and main's Prometheus PVC deleted by hand after
+  a retention cycle.
 
 ## Consequences
 
