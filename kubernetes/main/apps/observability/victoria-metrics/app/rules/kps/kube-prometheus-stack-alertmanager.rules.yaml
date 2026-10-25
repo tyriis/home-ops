@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmrule_v1beta1.json
-# Generated from kube-prometheus-stack 92.11.0 PrometheusRule kube-prometheus-stack-alertmanager.rules - regenerate by re-rendering the chart.
+# Ref: chart kube-prometheus-stack 92.13.1, PrometheusRule kube-prometheus-stack-alertmanager.rules
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMRule
 metadata:

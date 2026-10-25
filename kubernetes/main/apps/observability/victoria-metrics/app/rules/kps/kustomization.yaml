@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization.json
-# kube-prometheus-stack 92.11.0 default rules, vendored as native VMRules because
+# kube-prometheus-stack 92.13.1 default rules, vendored as native VMRules because
 # the chart runs with defaultRules.create: false and the operator's Prometheus ->
 # VictoriaMetrics converter is disabled.
 #

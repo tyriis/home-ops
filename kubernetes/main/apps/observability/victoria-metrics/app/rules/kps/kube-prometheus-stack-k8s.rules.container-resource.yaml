@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmrule_v1beta1.json
-# Generated from kube-prometheus-stack 92.11.0 PrometheusRule kube-prometheus-stack-k8s.rules.container-resource - regenerate by re-rendering the chart.
+# Ref: chart kube-prometheus-stack 92.13.1, PrometheusRule kube-prometheus-stack-k8s.rules.container-resource
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMRule
 metadata:
@@ -63,7 +63,7 @@ spec:
         - expr: |-
             kube_pod_container_resource_limits{resource="cpu",job="kube-state-metrics"}  * on (namespace, pod, cluster)
             group_left() max by (namespace, pod, cluster) (
-              (kube_pod_status_phase{phase=~"Pending|Running"} == 1)
+            (kube_pod_status_phase{phase=~"Pending|Running"} == 1)
             )
           record: cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits
         - expr: |-

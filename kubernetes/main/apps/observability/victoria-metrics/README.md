@@ -271,10 +271,10 @@ chart renders them exactly as before — Prometheus evaluates the chart's own co
 the same rules as native `VMRule`s, and the operator's Prometheus → VM converter is off, so a
 `PrometheusRule` cannot be borrowed: the rules are vendored next to this app instead.
 
-- `app/rules/kps/` holds one `VMRule` per source `PrometheusRule` of **chart 92.11.0**, 33 files,
+- `app/rules/kps/` holds one `VMRule` per source `PrometheusRule` of **chart 92.13.1**, 33 files,
   all pulled in by `app/rules/kps/kustomization.yaml`. Group and alert names, expressions,
   `for:` and labels are unchanged; `spec.groups` is the only structural difference.
-- The vendored set was rendered from chart 92.11.0. If the version pinned in `helm-release.yaml`
+- The vendored set was rendered from chart 92.13.1. If the version pinned in `helm-release.yaml`
   moves, these copies are stale — re-render instead of trusting a diff between the two stacks.
 - The file name is the source `PrometheusRule` name in kebab case
   (`kube-prometheus-stack-kubernetes-apps.yaml` ← `kube-prometheus-stack-kubernetes-apps`), so a
