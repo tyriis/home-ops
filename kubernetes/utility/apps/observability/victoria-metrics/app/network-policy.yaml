@@ -26,4 +26,4 @@ spec:
               app.kubernetes.io/name: victoria-metrics-operator
       ports:
         - protocol: TCP
-          port: 8428
+          port: 8429 # policy matches post-DNAT target port; Service http-alias 8428 -> 8429
