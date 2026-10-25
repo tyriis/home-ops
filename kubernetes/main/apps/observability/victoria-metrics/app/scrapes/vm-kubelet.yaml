@@ -8,7 +8,7 @@ spec:
   selector:
     matchLabels:
       kubernetes.io/os: linux
-  port: 10250
+  port: "10250"
   path: /metrics
   scheme: https
   interval: 1m
@@ -40,7 +40,7 @@ spec:
   selector:
     matchLabels:
       kubernetes.io/os: linux
-  port: 10250
+  port: "10250"
   path: /metrics/cadvisor
   scheme: https
   interval: 1m
@@ -84,7 +84,7 @@ spec:
   selector:
     matchLabels:
       kubernetes.io/os: linux
-  port: 10250
+  port: "10250"
   path: /metrics/probes
   scheme: https
   interval: 1m
