@@ -222,32 +222,47 @@ curl -s -H "Authorization: Bearer $T" \
 
 ## Native monitor objects and naming rules
 
-| VictoriaMetrics   | mirrors (replaces at cutover)            | `metadata.name` (= job label) rule                                                                      |
-| ----------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `VMServiceScrape` | `ServiceMonitor`                         | the `ServiceMonitor` name it mirrors — dashboards, `VMRule` expressions and panels keep matching `job=` |
-| `VMPodScrape`     | `PodMonitor`                             | the workload name                                                                                       |
-| `VMNodeScrape`    | node-level target (one per node)         | target purpose, e.g. `kubelet`, `kubelet-cadvisor`                                                      |
-| `VMStaticScrape`  | `additionalScrapeConfigs` static targets | the component, e.g. `kube-scheduler`                                                                    |
-| `VMProbe`         | `Probe` (blackbox exporter)              | the probe name                                                                                          |
+| VictoriaMetrics   | mirrors (replaces at cutover)            | `metadata.name` (= job label) rule                                                                             |
+| ----------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `VMServiceScrape` | `ServiceMonitor`                         | the `ServiceMonitor` name it mirrors — the default job label dashboards, `VMRule` expressions and panels match |
+| `VMPodScrape`     | `PodMonitor`                             | the workload name                                                                                              |
+| `VMNodeScrape`    | node-level target (one per node)         | target purpose, e.g. `kubelet`, `kubelet-cadvisor`                                                             |
+| `VMStaticScrape`  | `additionalScrapeConfigs` static targets | the component, e.g. `kube-scheduler`                                                                           |
+| `VMProbe`         | `Probe` (blackbox exporter)              | the probe name                                                                                                 |
 
 In run 1 every VM object mirrors a live Prometheus-operator object of the same purpose, so both
-stacks scrape the same thing; the right-hand column is what disappears at cutover.
+stacks scrape the same thing; the right-hand column is what disappears at cutover. CoreDNS is one of
+them: Prometheus scrapes it through the chart's `kube-prometheus-stack-coredns` `ServiceMonitor`
+(`kube-system`, port `http-metrics`/`9153`, job `coredns`), and the VM path mirrors that target in
+`app/scrapes/vm-coredns.yaml`, job label included.
 
 File conventions:
 
 - **1. Cluster-wide platform scrapes** live in this app: `app/scrapes/vm-<target>.yaml`
-  (`vm-kube-apiserver.yaml`, `vm-kubelet.yaml`, `vm-node-exporter.yaml`, …). One object per file,
-  pulled in by `app/kustomization.yaml`.
+  (`vm-coredns.yaml`, `vm-kube-apiserver.yaml`, `vm-kubelet.yaml`, `vm-node-exporter.yaml`, …). One
+  object per file, pulled in by `app/kustomization.yaml`.
 - **2. App-owned scrapes** live next to the app that owns the Service, exactly where the
   `ServiceMonitor` lives: `<app>/app/vm-service-scrape.yaml`, or `<app>/app/vm-pod-scrape.yaml`
   when the target is pod-level. One object per file, file name = kind in kebab case.
-- **3.** `metadata.name` is the **job label**, not the file name. It must be the name the
+- **3.** `metadata.name` is the **default job label**, not the file name: normally the name the
   `ServiceMonitor`/`PodMonitor` it mirrors has (`cleanPrometheusOperatorObjectNames: true` made
-  those the plain component names).
+  those the plain component names). Where the live job differs — operator-generated monitors
+  namespace-prefix it (`cnpg-system/postgres17`, `media/immich-db`), chart-rendered ones derive it
+  from the chart or the Service (`grafana-service`, `external-secrets-metrics`), and one target
+  split across several objects shares a single job (`kubelet-cadvisor` → `kubelet`) — an explicit
+  `action: replace` relabel on `job` carries the historical name. The object name and that forced
+  value then live apart and must be kept in sync by hand.
 - **4.** No `generated-*` objects, and no new `kind: ServiceMonitor` / `PodMonitor` /
   `PrometheusRule` is added for the VM path: the converter is disabled, so such an object would be
   inert rather than translated. The Prometheus-operator objects that already exist stay, for
   Prometheus.
+
+## Scrape objects
+
+Counted from the files under `kubernetes/main` (a multi-document file counts once per object):
+1 `VMAgent`, 1 `VMAlert`, 47 `VMServiceScrape`, 12 `VMPodScrape`, 3 `VMNodeScrape`, 5
+`VMStaticScrape`, 4 `VMProbe`, 45 `VMRule`. The `VMRule` total is 33 vendored
+kube-prometheus-stack rules plus 12 app-owned ones.
 
 ## Vendored kube-prometheus-stack rules (`app/rules/kps/`)
 
@@ -269,8 +284,8 @@ the same rules as native `VMRule`s, and the operator's Prometheus → VM convert
   hand-edit an expression: a diverged copy is invisible until the next regeneration.
 - **The Prometheus self-monitoring rules are not vendored on purpose.** The chart's
   `kube-prometheus-stack-prometheus` rule file (23 alerts) selects only the scrape job of the
-  Prometheus server itself, and the VM side does not scrape Prometheus — the agent exposes its own
-  metrics. The chart's copy stays with Prometheus; there is no `VMRule` twin and no kustomization
+  Prometheus server itself, and `vmagent` does not scrape that server — it exports its own metrics
+  instead. The chart's copy stays with Prometheus; there is no `VMRule` twin and no kustomization
   entry for it.
 - Two rule groups needed a scrape before they could work on the VM side: the Alertmanager rules
   (`kube-prometheus-stack-alertmanager.rules.yaml`) and the operator rules
@@ -283,10 +298,10 @@ the same rules as native `VMRule`s, and the operator's Prometheus → VM convert
   | `VMServiceScrape` | `kube-prometheus-stack-alertmanager` (`observability`) | `http-web`, `reloader-web` | `kube-prometheus-stack-alertmanager` |
   | `VMServiceScrape` | `kube-prometheus-stack-operator` (`observability`)     | `https` (TLS)              | `kube-prometheus-stack-operator`     |
 
-  The Alertmanager scrape targets the config Service, not the headless one
-  (`alertmanager-operated`): in run 1 Prometheus scrapes the headless Service through the chart's
-  ServiceMonitor, so targeting it here too would duplicate every `alertmanager_*` series under two
-  job names in the central store. The operator is scraped over TLS with `insecureSkipVerify` (its
+  The Alertmanager scrape targets the config Service the chart's `ServiceMonitor` selects
+  (`kube-prometheus-stack-alertmanager`), not the headless `alertmanager-operated`, whose labels no
+  `ServiceMonitor` matches: scraping both would put every `alertmanager_*` series in the central
+  store twice, once per `service` value. The operator is scraped over TLS with `insecureSkipVerify` (its
   serving CA is generated in-cluster and cannot be mounted into `vmagent`) and without a bearer
   token — it exposes `/metrics` unauthenticated on the same TLS port as its web server, exactly
   like the `ServiceMonitor` Prometheus uses.
@@ -331,7 +346,7 @@ kube-prometheus-stack set: the VM side needs a `VMRule`, and the converter is of
   apiVersion: operator.victoriametrics.com/v1beta1
   kind: VMServiceScrape
   metadata:
-    name: my-app # = job label; reuse the old ServiceMonitor name
+    name: my-app # = default job label; reuse the old ServiceMonitor name
   spec:
     namespaceSelector:
       matchNames:
@@ -389,8 +404,9 @@ kube-prometheus-stack set: the VM side needs a `VMRule`, and the converter is of
 
 ## Known gaps
 
-- CoreDNS is not scraped by the VM side: its Service never exposed `9153`, so there is nothing to
-  mirror. Prometheus does not scrape it either.
+- `kube-prometheus-stack-prometheus` is a gap by design: `vmagent` does not scrape the Prometheus
+  server's own `/metrics`, so the chart's 23 self-monitoring alerts have no `VMRule` twin and no
+  series to evaluate. See the vendored-rules section.
 - Main has no local store, so a utility outage means **no metrics on main** (and no queries at
   all). The 5Gi queue protects writes only; dashboards fail during the outage.
 - `VMSingle` is single-node, no replication: `local-nvme` on util01 means losing the node loses

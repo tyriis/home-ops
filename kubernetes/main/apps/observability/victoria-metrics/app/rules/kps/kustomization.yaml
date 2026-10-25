@@ -4,13 +4,7 @@
 # the chart runs with defaultRules.create: false and the operator's Prometheus ->
 # VictoriaMetrics converter is disabled.
 #
-# The Prometheus self-monitoring rules (chart PrometheusRule
-# "kube-prometheus-stack-prometheus", 23 alerts) are intentionally excluded: they
-# all select the scrape job of the Prometheus server itself
-# (kube-prometheus-stack-prometheus), and that server no longer exists on this
-# cluster (prometheus.enabled: false), so those series are never produced and the
-# alerts can never fire. Do not re-add the file while Prometheus stays disabled;
-# re-render it from the chart if it is ever turned back on.
+# kube-prometheus-stack-prometheus is excluded: VMAgent does not scrape the Prometheus server's own job.
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
