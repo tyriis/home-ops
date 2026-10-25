@@ -5,11 +5,12 @@ kind: Kustomization
 metadata:
   name: &app radarr
 spec:
-  targetNamespace: media
+  targetNamespace: &namespace media
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   components:
+    - ../../../../../components/envoy-pocketid
     - ../../../../../components/volsync
   path: ./kubernetes/main/apps/media/radarr/app
   prune: true
@@ -22,6 +23,8 @@ spec:
   retryInterval: 1m
   timeout: 5m
   dependsOn:
+    - name: envoy-gateway
+      namespace: networking
     - name: external-secrets-stores
       namespace: secops
     - name: volsync
@@ -31,4 +34,5 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      NAMESPACE: *namespace
       VOLSYNC_SUFFIX: config
