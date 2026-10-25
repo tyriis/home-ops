@@ -10,7 +10,7 @@ spec:
   scrapeTimeout: 30s
   module: icmp
   vmProberSpec:
-    url: http://prometheus-blackbox-exporter.observability.svc.cluster.local:9115
+    url: http://blackbox-exporter.observability.svc.cluster.local:9115
     path: /probe
   # targets.staticConfig is deprecated in operator v0.68.0+, targets.static replaces it
   targets:
@@ -37,7 +37,7 @@ spec:
   scrapeTimeout: 30s
   module: icmp
   vmProberSpec:
-    url: http://prometheus-blackbox-exporter.observability.svc.cluster.local:9115
+    url: http://blackbox-exporter.observability.svc.cluster.local:9115
     path: /probe
   targets:
     static:
@@ -63,7 +63,7 @@ spec:
   scrapeTimeout: 30s
   module: icmp
   vmProberSpec:
-    url: http://prometheus-blackbox-exporter.observability.svc.cluster.local:9115
+    url: http://blackbox-exporter.observability.svc.cluster.local:9115
     path: /probe
   targets:
     static:
@@ -89,7 +89,7 @@ spec:
   scrapeTimeout: 30s
   module: icmp
   vmProberSpec:
-    url: http://prometheus-blackbox-exporter.observability.svc.cluster.local:9115
+    url: http://blackbox-exporter.observability.svc.cluster.local:9115
     path: /probe
   targets:
     static:
