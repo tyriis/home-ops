@@ -17,8 +17,9 @@ spec:
       name: vmalert-datasource
       key: token
   # Recording rules require this; without it vmalert refuses to load any rules.
+  # vmalert appends /api/v1/write itself; a full write URL here would double it.
   remoteWrite:
-    url: https://metrics.techtales.io/api/v1/write
+    url: https://metrics.techtales.io
     bearerTokenSecret:
       name: vmalert-remote-write
       key: token
