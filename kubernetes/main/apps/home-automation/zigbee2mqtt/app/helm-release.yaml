@@ -95,7 +95,7 @@ spec:
               ZIGBEE2MQTT_WS: ws://127.0.0.1:8080/api
             image:
               repository: ghcr.io/tyriis/zigbee2mqtt-exporter
-              tag: v0.2.7@sha256:27563503a27da9a4e64c2a5fd2f75967af95b8e54452d576a20364efa56c8321
+              tag: v0.4.0@sha256:0bae8a153d22bd5f2a21543e046f9376b295ee8faa64e992a9ef25375c1e4417
             ports:
               - name: http-prom
                 containerPort: 3000
