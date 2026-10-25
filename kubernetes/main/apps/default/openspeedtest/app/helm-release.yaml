@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: openspeedtest/latest
-              tag: v2.0.7@sha256:a44c4789798fd975f25cfd0cdd6515d6349775cecca9dd9d3285919db9303509
+              tag: v2.0.8@sha256:1127de0693c36bcf8c297c73d09891df8ec243680d027a6b6fab13fa0954ff46
             probes:
               liveness: &probes
                 enabled: true
