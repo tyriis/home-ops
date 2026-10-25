@@ -435,6 +435,9 @@ kube-prometheus-stack set: the VM side needs a `VMRule`, and the converter is of
   main-cluster path from the table above. Stakater reloader
   restarts `vmauth`, `vmagent` and `vmalert` (env is fixed at container start, `%{VAR}` is
   resolved at config parse, so hot-reload alone does not pick up a rotated token).
+- **First-time provisioning**: `bao kv patch` does not create a path. Seed a missing path
+  (`infra/kubernetes/main/observability/victoria-metrics` initially) with `bao kv put`; use
+  `patch` only once the path exists, otherwise it reports `No value found` and writes nothing.
 - **Denied paths return `403`**, not `400`: every metrics user has the `deny_paths: ["/.*"]`
   catch-all in
   `kubernetes/utility/apps/observability/victoria-auth/app/helm-release.yaml`.
