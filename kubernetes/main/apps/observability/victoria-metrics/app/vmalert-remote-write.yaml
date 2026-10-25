@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: vmalert-remote-write
+spec:
+  refreshInterval: 5m
+  secretStoreRef:
+    name: openbao-backend
+    kind: ClusterSecretStore
+  target:
+    name: vmalert-remote-write
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        token: "{{ .VMAUTH_TOKEN_MAIN_METRICS }}"
+  dataFrom:
+    # Recording-rule results are written; the vmalert datasource token is read-only.
+    - extract:
+        key: infra/kubernetes/main/observability/victoria-metrics #gitleaks:allow

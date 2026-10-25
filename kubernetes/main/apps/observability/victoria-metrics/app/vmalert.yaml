@@ -16,6 +16,12 @@ spec:
     bearerTokenSecret:
       name: vmalert-datasource
       key: token
+  # Recording rules require this; without it vmalert refuses to load any rules.
+  remoteWrite:
+    url: https://metrics.techtales.io/api/v1/write
+    bearerTokenSecret:
+      name: vmalert-remote-write
+      key: token
   # No notifier while Prometheus still routes these alerts through Alertmanager; it would page twice.
   resources:
     requests:
