@@ -1,0 +1,24 @@
+{
+  // Project-local OpenCode config. The Flux MCP server lives here instead of the
+  // global config so its tools (and prompt context) load only in sessions opened
+  // inside this repository. OpenCode discovers this file from the directory and
+  // every ancestor, so subdirectories inherit it; worktrees checked out outside
+  // this tree (for example under /tmp) do not.
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "servers": {
+      // Binary is pinned in .mise.toml (aqua backend), so `mise install` provides
+      // it on a fresh checkout. Without it the server is marked failed and its
+      // tools are simply absent; sessions still start normally.
+      // --read-only disables the mutating tools: reconcile, suspend, resume, apply, delete.
+      // KUBECONFIG env var is required by the server; the --kubeconfig flag alone is ignored.
+      "flux-operator": {
+        "type": "local",
+        "command": ["flux-operator-mcp", "serve", "--read-only"],
+        "environment": {
+          "KUBECONFIG": "{env:HOME}/.kube/config",
+        },
+      },
+    },
+  },
+}
