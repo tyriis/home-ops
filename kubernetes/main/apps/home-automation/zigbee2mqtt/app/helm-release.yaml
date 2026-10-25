@@ -105,6 +105,8 @@ spec:
         ports:
           http:
             port: *port
+          http-prom:
+            port: 3000
 
     serviceMonitor:
       app:
