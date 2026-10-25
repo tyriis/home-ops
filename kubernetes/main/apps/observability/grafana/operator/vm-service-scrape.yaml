@@ -17,3 +17,7 @@ spec:
       path: /metrics
       interval: 1m
       scrapeTimeout: 10s
+      relabelConfigs:
+        - action: replace
+          targetLabel: job
+          replacement: grafana-operator-metrics-service

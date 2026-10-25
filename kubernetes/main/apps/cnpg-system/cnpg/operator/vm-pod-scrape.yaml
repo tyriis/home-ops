@@ -1,7 +1,6 @@
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmpodscrape_v1beta1.json
-# Native replacement for the PodMonitor the cloudnative-pg chart generates when
-# monitoring.podMonitorEnabled is true (templates/podmonitor.yaml, chart 0.29.1).
+# Replaces the chart's own PodMonitor; keep monitoring.podMonitorEnabled false.
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMPodScrape
 metadata:
@@ -17,3 +16,7 @@ spec:
     - port: metrics
       path: /metrics
       interval: 30s
+      relabelConfigs:
+        - action: replace
+          targetLabel: job
+          replacement: cnpg-system/cnpg-operator-cloudnative-pg

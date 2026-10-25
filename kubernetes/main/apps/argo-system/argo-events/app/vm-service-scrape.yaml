@@ -17,3 +17,7 @@ spec:
     - port: metrics
       path: /metrics
       interval: 30s
+      relabelConfigs:
+        - action: replace
+          targetLabel: job
+          replacement: argo-events-controller-manager-metrics

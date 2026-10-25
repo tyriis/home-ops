@@ -13,3 +13,7 @@ spec:
       path: /metrics
       interval: 15s
       scrapeTimeout: 5s
+      relabelConfigs:
+        - action: replace
+          targetLabel: job
+          replacement: github/actions-runner-controller

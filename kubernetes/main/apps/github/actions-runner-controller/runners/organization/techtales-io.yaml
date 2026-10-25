@@ -240,6 +240,10 @@ spec:
       path: /metrics
       interval: 15s
       scrapeTimeout: 5s
+      relabelConfigs:
+        - action: replace
+          targetLabel: job
+          replacement: github/techtales-io-runner
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor

@@ -15,3 +15,7 @@ spec:
     - port: grafana
       path: /metrics
       honorLabels: true
+      relabelConfigs:
+        - action: replace
+          targetLabel: job
+          replacement: grafana-service

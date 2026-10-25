@@ -13,6 +13,10 @@ spec:
   podMetricsEndpoints:
     - port: admin
       interval: 30s
+      relabelConfigs:
+        - action: replace
+          targetLabel: job
+          replacement: dragonfly-system/dragonfly
   selector:
     matchLabels:
       app.kubernetes.io/name: *app

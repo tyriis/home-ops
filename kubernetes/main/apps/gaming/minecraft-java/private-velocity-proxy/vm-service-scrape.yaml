@@ -17,3 +17,7 @@ spec:
       scheme: http
       path: /
       interval: 1m
+      relabelConfigs:
+        - action: replace
+          targetLabel: job
+          replacement: minecraft-velocity-proxy

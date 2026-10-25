@@ -17,6 +17,10 @@ spec:
       path: /metrics
       interval: 30s
       scrapeTimeout: 25s
+      relabelConfigs:
+        - action: replace
+          targetLabel: job
+          replacement: external-secrets-metrics
 
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
@@ -57,3 +61,7 @@ spec:
       path: /metrics
       interval: 30s
       scrapeTimeout: 25s
+      relabelConfigs:
+        - action: replace
+          targetLabel: job
+          replacement: external-secrets-cert-controller-metrics

@@ -17,3 +17,7 @@ spec:
       path: /metrics
       interval: 30s
       scrapeTimeout: 10s
+      relabelConfigs:
+        - action: replace
+          targetLabel: job
+          replacement: tuppr-metrics-service

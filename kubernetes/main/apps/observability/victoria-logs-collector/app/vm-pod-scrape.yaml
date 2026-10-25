@@ -15,3 +15,7 @@ spec:
   podMetricsEndpoints:
     - port: http
       path: /metrics
+      relabelConfigs:
+        - action: replace
+          targetLabel: job
+          replacement: observability/victoria-logs-collector
