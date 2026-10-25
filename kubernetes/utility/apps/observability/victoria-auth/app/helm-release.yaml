@@ -129,7 +129,7 @@ spec:
               - name: main-metrics
                 bearer_token: "%{VMAUTH_TOKEN_MAIN_METRICS}"
                 url_map:
-                  - src_paths: ["/insert/.*", "/opentelemetry/.*"]
+                  - src_paths: ["/api/v1/write", "/opentelemetry/v1/metrics"]
                     url_prefix: "http://vmsingle-vmsingle.observability.svc.cluster.local:8428"
                   - src_paths: ["/.*"]
                     deny_paths: ["/.*"]
@@ -138,7 +138,7 @@ spec:
               - name: utility-metrics
                 bearer_token: "%{VMAUTH_TOKEN_UTILITY_METRICS}"
                 url_map:
-                  - src_paths: ["/insert/.*"]
+                  - src_paths: ["/api/v1/write"]
                     url_prefix: "http://vmsingle-vmsingle.observability.svc.cluster.local:8428"
                   - src_paths: ["/.*"]
                     deny_paths: ["/.*"]

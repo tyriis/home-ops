@@ -12,7 +12,7 @@ spec:
   externalLabels:
     cluster: main
   remoteWrite:
-    - url: https://metrics.techtales.io/insert/prometheus/api/v1/write
+    - url: https://metrics.techtales.io/api/v1/write
       bearerTokenSecret:
         name: vmagent-remote-write
         key: token

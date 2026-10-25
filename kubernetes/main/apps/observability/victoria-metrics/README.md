@@ -90,7 +90,7 @@ VMNodeScrape / VMStaticScrape
     headless                                          │
     persistent queue 5Gi ceph-block                   ▼
     externalLabels.cluster=main                  vmauth :8427   (victoria-auth)
-                                                      │ user main-metrics → /insert/.*
+                                                      │ user main-metrics → /api/v1/write
                                                       ▼
                                                   VMSingle :8428
                                                   30d retention, 50Gi local-nvme
@@ -118,15 +118,15 @@ the metrics path.
 
 ## Components on main
 
-| Object           | Name                                                          | Notes                                                                     |
-| ---------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| `VMAgent`        | `vmagent`                                                     | headless, `selectAllByDefault: true`, `externalLabels.cluster: main`      |
-| persistent queue | `statefulMode`, 5Gi `ceph-block`                              | replays buffered samples after a WAN blip or pod restart                  |
-| `ExternalSecret` | `vmagent-remote-write`                                        | renders the bearer token into Secret `vmagent-remote-write` (key `token`) |
-| remote write     | `https://metrics.techtales.io/insert/prometheus/api/v1/write` | token = vmauth user `main-metrics`                                        |
-| `VMRule`         | `<app>/app/vm-rule.yaml`                                      | a twin of each app `PrometheusRule`, side by side with it until cutover   |
-| `VMAlert`        | `vmalert.yaml`                                                | datasource via vmauth (`vmalert-read`), **no notifier** in run 1          |
-| `ExternalSecret` | `vmalert-datasource`                                          | renders the `VMAlert` read token into Secret `vmalert-datasource`         |
+| Object           | Name                                        | Notes                                                                     |
+| ---------------- | ------------------------------------------- | ------------------------------------------------------------------------- |
+| `VMAgent`        | `vmagent`                                   | headless, `selectAllByDefault: true`, `externalLabels.cluster: main`      |
+| persistent queue | `statefulMode`, 5Gi `ceph-block`            | replays buffered samples after a WAN blip or pod restart                  |
+| `ExternalSecret` | `vmagent-remote-write`                      | renders the bearer token into Secret `vmagent-remote-write` (key `token`) |
+| remote write     | `https://metrics.techtales.io/api/v1/write` | token = vmauth user `main-metrics`                                        |
+| `VMRule`         | `<app>/app/vm-rule.yaml`                    | a twin of each app `PrometheusRule`, side by side with it until cutover   |
+| `VMAlert`        | `vmalert.yaml`                              | datasource via vmauth (`vmalert-read`), **no notifier** in run 1          |
+| `ExternalSecret` | `vmalert-datasource`                        | renders the `VMAlert` read token into Secret `vmalert-datasource`         |
 
 kube-prometheus-stack on main is untouched in run 1: the Prometheus server, its CRDs
 (`ServiceMonitor`, `PodMonitor`, `PrometheusRule`, `Alertmanager`), the Alertmanager and its
@@ -145,8 +145,8 @@ control is the `src_paths` allowlist — the hostname is not a boundary: any tok
 
 | User              | Token env (Secret key)         | Allowed paths                                | Purpose                                                                           |
 | ----------------- | ------------------------------ | -------------------------------------------- | --------------------------------------------------------------------------------- |
-| `main-metrics`    | `VMAUTH_TOKEN_MAIN_METRICS`    | `/insert/.*`                                 | main vmagent remote write                                                         |
-| `utility-metrics` | `VMAUTH_TOKEN_UTILITY_METRICS` | `/insert/.*`                                 | reserved for the utility dialect migration                                        |
+| `main-metrics`    | `VMAUTH_TOKEN_MAIN_METRICS`    | `/api/v1/write`, `/opentelemetry/v1/metrics` | main vmagent remote write                                                         |
+| `utility-metrics` | `VMAUTH_TOKEN_UTILITY_METRICS` | `/api/v1/write`                              | reserved for the utility dialect migration                                        |
 | `grafana-read`    | `VMAUTH_TOKEN_GRAFANA_METRICS` | `/api/v1/.*`, `/prometheus/.*`, `/select/.*` | manual read queries in run 1; the Grafana `prometheus` datasource from cutover on |
 | `vmalert-read`    | `VMAUTH_TOKEN_VMALERT_METRICS` | `/api/v1/.*`, `/prometheus/.*`, `/select/.*` | main `VMAlert` datasource                                                         |
 
@@ -186,8 +186,9 @@ kubectl --context readonly@utility -n observability get secret vmauth-tokens \
 
 ## Write and read endpoints
 
-- Write: `POST https://metrics.techtales.io/insert/prometheus/api/v1/write` (remote write 1.0,
-  snappy+protobuf). This is what `VMAgent` uses; `204` = accepted.
+- Write: `POST https://metrics.techtales.io/api/v1/write` (remote write 1.0, snappy+protobuf).
+  VMSingle has no `/insert/*` prefix — that is cluster-mode vminsert only. The OTLP ingest path
+  is `/opentelemetry/v1/metrics`. This is what `VMAgent` uses; `204` = accepted.
 - Read / query: `https://metrics.techtales.io/api/v1/*`, `/prometheus/api/v1/*`,
   `/select/*` with a read token — the URL the Grafana `prometheus` datasource moves to at cutover;
   until then only manual queries and `VMAlert` use it.
@@ -209,7 +210,7 @@ done
 Expected: `requests_total` climbing, `pending_data_bytes` near zero (a growing queue means the
 front door or the store is rejecting writes), and a non-empty `up` series count. HTTP statuses
 worth knowing: `204` accepted on the write path, `401` for an unknown token, `403` for a write
-token on a read path or a read token on `/insert/*`.
+token on a read path or a read token on a write path.
 
 Read/query smoke test:
 
