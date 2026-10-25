@@ -125,8 +125,9 @@ the metrics path.
 | `ExternalSecret` | `vmagent-remote-write`                      | renders the bearer token into Secret `vmagent-remote-write` (key `token`) |
 | remote write     | `https://metrics.techtales.io/api/v1/write` | token = vmauth user `main-metrics`                                        |
 | `VMRule`         | `<app>/app/vm-rule.yaml`                    | a twin of each app `PrometheusRule`, side by side with it until cutover   |
-| `VMAlert`        | `vmalert.yaml`                              | datasource via vmauth (`vmalert-read`), **no notifier** in run 1          |
+| `VMAlert`        | `vmalert.yaml`                              | rule-result writes via `main-metrics`, **no notifier** in run 1           |
 | `ExternalSecret` | `vmalert-datasource`                        | renders the `VMAlert` read token into Secret `vmalert-datasource`         |
+| `ExternalSecret` | `vmalert-remote-write`                      | renders the write token for recording-rule results                        |
 
 kube-prometheus-stack on main is untouched in run 1: the Prometheus server, its CRDs
 (`ServiceMonitor`, `PodMonitor`, `PrometheusRule`, `Alertmanager`), the Alertmanager and its

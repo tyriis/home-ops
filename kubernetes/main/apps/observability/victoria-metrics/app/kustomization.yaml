@@ -8,6 +8,7 @@ resources:
   - ./vmagent.yaml
   - ./vmalert.yaml
   - ./vmalert-datasource.yaml
+  - ./vmalert-remote-write.yaml
   - ./scrapes/vm-node-exporter.yaml
   - ./scrapes/vm-kube-state-metrics.yaml
   - ./scrapes/vm-kube-apiserver.yaml
