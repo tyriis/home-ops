@@ -37,9 +37,9 @@ spec:
             env:
               BAZARR__PORT: &port 6767
               DYNACONF_AUTH__TYPE: "@none"
-              DYNACONF_GENERAL__INSTANCE_NAME: Bazarr
-              DYNACONF_GENERAL__THEME: dark
-              DYNACONF_ANALYTICS__ENABLED: "@bool false"
+              DYNACONF_general__instance_name: Bazarr
+              DYNACONF_general__theme: dark
+              DYNACONF_analytics__enabled: "@bool false"
             ports:
               - name: http
                 containerPort: *port
