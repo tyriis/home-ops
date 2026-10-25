@@ -59,7 +59,7 @@ applies `docker/.doco-cd.bifrost.yaml`. Before the first deploy:
 
   ```bash
   git clone https://github.com/MiaAI-Lab/sparkDash.git docker/deploy/sparkdash/sparkDash
-  git -C docker/deploy/sparkdash/sparkDash checkout cc44d3527e7d
+  git -C docker/deploy/sparkdash/sparkDash checkout v2.70.0
   ```
 
 - Provision SSH keys on the Sparks (below) and place the private key at
