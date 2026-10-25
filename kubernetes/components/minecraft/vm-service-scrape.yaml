@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: ${APP}
+spec:
+  namespaceSelector:
+    matchNames:
+      - ${NAMESPACE}
+  selector:
+    matchLabels:
+      app.kubernetes.io/service: ${APP}-minecraft
+      app.kubernetes.io/name: ${APP}
+      app.kubernetes.io/instance: ${APP}
+  endpoints:
+    - port: metrics
+      path: /
+      interval: 1m
