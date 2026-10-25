@@ -54,6 +54,10 @@ Measured on 2026-10-26 with graphify 0.9.95 at commit `97eba80`, 1,099 code file
 | `ExternalSecret` nodes       | 0 (75 files)                                                        |
 | Files dropped by name filter | 65, including every `external-secret.yaml`                          |
 
+Node counts come from that build. The file counts are `kubernetes/`-scoped working-tree counts
+taken the same day, so they include uncommitted app additions and exclude the nine `devenv/`
+manifests that also carry a `HelmRelease`.
+
 The deciding finding is the edge mix: the extractor emits one edge per file, `contains`, from the
 file to its own top-level keys. It does not resolve a reference to another file, so no
 `resources:` → directory, no `sourceRef` → OCIRepository, no `secretKeyRef` → Secret edge exists.
