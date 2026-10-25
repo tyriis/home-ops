@@ -6,3 +6,5 @@ resources:
   - ./http-route.yaml
   - ./helm-release.yaml
   - ./helm-repository.yaml
+  - ./vm-probe.yaml
+  - ./vm-service-scrape.yaml

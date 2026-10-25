@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmpodscrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
+metadata:
+  name: &app actions-runner-controller
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: *app
+  podMetricsEndpoints:
+    - port: metrics
+      path: /metrics
+      interval: 15s
+      scrapeTimeout: 5s
+      relabelConfigs:
+        - action: replace
+          targetLabel: job
+          replacement: github/actions-runner-controller

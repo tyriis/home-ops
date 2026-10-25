@@ -1,0 +1,33 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: kube-prometheus-stack-alertmanager
+spec:
+  namespaceSelector:
+    matchNames:
+      - observability
+  selector:
+    matchLabels:
+      # Not the headless alertmanager-operated Service: it selects the same pods and would duplicate every sample.
+      app: kube-prometheus-stack-alertmanager
+      release: kube-prometheus-stack
+      self-monitor: "true"
+  endpoints:
+    - port: http-web
+      path: /metrics
+      interval: 1m
+      relabelConfigs:
+        # job must stay kube-prometheus-stack-alertmanager: the vendored KPS rules select it.
+        - action: replace
+          targetLabel: job
+          replacement: kube-prometheus-stack-alertmanager
+    # Required by ConfigReloaderSidecarErrors: without it reloader_last_reload_successful disappears.
+    - port: reloader-web
+      path: /metrics
+      interval: 1m
+      relabelConfigs:
+        - action: replace
+          targetLabel: job
+          replacement: kube-prometheus-stack-alertmanager

@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: node-exporter
+spec:
+  namespaceSelector:
+    matchNames:
+      - observability
+  selector:
+    matchLabels:
+      # The subchart names the Service "node-exporter" but labels it with the chart name.
+      app.kubernetes.io/name: prometheus-node-exporter
+  endpoints:
+    - port: http-metrics
+      path: /metrics
+      interval: 1m
+      relabelConfigs:
+        - action: replace
+          sourceLabels:
+            - __meta_kubernetes_pod_node_name
+          regex: (.*)
+          replacement: $1
+          targetLabel: kubernetes_node
+      metricRelabelConfigs:
+        - action: drop
+          sourceLabels:
+            - chip
+            - sensor
+          regex: platform_nct6775_2592;(temp1|temp3|temp4|temp5|temp6|temp8|temp9|temp10|temp11|temp12)

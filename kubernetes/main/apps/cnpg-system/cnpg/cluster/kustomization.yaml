@@ -8,3 +8,4 @@ resources:
   - ./cluster.yaml
   - ./database-server.yaml
   - ./scheduled-backup.yaml
+  - ./vm-pod-scrape.yaml

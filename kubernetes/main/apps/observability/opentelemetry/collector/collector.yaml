@@ -27,10 +27,15 @@ spec:
         check_interval: 5s
         limit_mib: 1024
     exporters:
+      # otlphttp appends the signal path (/v1/metrics) to the base URL; do not repeat it.
       otlphttp/prom:
         endpoint: http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/otlp #NOSONAR allow http
         tls:
           insecure: true
+      otlphttp/vm:
+        endpoint: https://metrics.techtales.io/opentelemetry
+        headers:
+          Authorization: "Bearer ${env:VM_METRICS_TOKEN}"
       otlp/tempo:
         endpoint: tempo.observability.svc.cluster.local:4317
         tls:
@@ -50,7 +55,7 @@ spec:
         metrics:
           receivers: [otlp]
           processors: [memory_limiter, batch]
-          exporters: [otlphttp/prom]
+          exporters: [otlphttp/prom, otlphttp/vm]
         # logs pipeline removed with loki; OTLP ingestion to VictoriaLogs tracked in #10987
       telemetry:
         metrics:
@@ -67,6 +72,11 @@ spec:
         secretKeyRef:
           name: otel-collector
           key: OTEL_BEARER_TOKEN
+    - name: VM_METRICS_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: otel-collector
+          key: VM_METRICS_TOKEN
   resources:
     requests:
       cpu: 10m

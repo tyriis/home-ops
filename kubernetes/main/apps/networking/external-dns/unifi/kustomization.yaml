@@ -6,3 +6,4 @@ namespace: networking
 resources:
   - ./external-secret.yaml
   - ./helm-release.yaml
+  - ./vm-service-scrape.yaml

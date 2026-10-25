@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - ./grafana-dashboard.yaml
   - ./service-monitor.yaml
+  - ./vm-service-scrape.yaml

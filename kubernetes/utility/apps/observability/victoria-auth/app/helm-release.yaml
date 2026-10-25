@@ -126,6 +126,42 @@ spec:
                     deny_paths: ["/.*"]
                     url_prefix: "http://vmalert.observability.svc.cluster.local:8880"
 
+              - name: main-metrics
+                bearer_token: "%{VMAUTH_TOKEN_MAIN_METRICS}"
+                url_map:
+                  - src_paths: ["/insert/.*", "/opentelemetry/.*"]
+                    url_prefix: "http://vmsingle.observability.svc.cluster.local:8428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://vmsingle.observability.svc.cluster.local:8428"
+
+              - name: utility-metrics
+                bearer_token: "%{VMAUTH_TOKEN_UTILITY_METRICS}"
+                url_map:
+                  - src_paths: ["/insert/.*"]
+                    url_prefix: "http://vmsingle.observability.svc.cluster.local:8428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://vmsingle.observability.svc.cluster.local:8428"
+
+              - name: grafana-read
+                bearer_token: "%{VMAUTH_TOKEN_GRAFANA_METRICS}"
+                url_map:
+                  - src_paths: ["/api/v1/.*", "/prometheus/.*", "/select/.*"]
+                    url_prefix: "http://vmsingle.observability.svc.cluster.local:8428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://vmsingle.observability.svc.cluster.local:8428"
+
+              - name: vmalert-read
+                bearer_token: "%{VMAUTH_TOKEN_VMALERT_METRICS}"
+                url_map:
+                  - src_paths: ["/api/v1/.*", "/prometheus/.*", "/select/.*"]
+                    url_prefix: "http://vmsingle.observability.svc.cluster.local:8428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://vmsingle.observability.svc.cluster.local:8428"
+
     controllers:
       vmauth:
         containers:
@@ -181,6 +217,15 @@ spec:
       vmalert:
         hostnames:
           - vmalert.techtales.io
+        parentRefs:
+          - name: envoy
+            namespace: networking
+            sectionName: https
+        annotations:
+          external-dns/unifi: "true"
+      metrics:
+        hostnames:
+          - metrics.techtales.io
         parentRefs:
           - name: envoy
             namespace: networking

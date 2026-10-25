@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: zigbee2mqtt
+spec:
+  namespaceSelector:
+    matchNames:
+      - home-automation
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: zigbee2mqtt
+      app.kubernetes.io/instance: zigbee2mqtt
+  endpoints:
+    # Scrapes the container port: the Service only exposes http (8080), so port: http-prom never resolves.
+    - targetPort: 3000
+      scheme: http
+      path: /metrics
+      interval: 5m
+      scrapeTimeout: 15s

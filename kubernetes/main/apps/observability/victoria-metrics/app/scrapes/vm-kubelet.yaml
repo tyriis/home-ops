@@ -1,0 +1,97 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmnodescrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMNodeScrape
+metadata:
+  name: kubelet
+spec:
+  selector:
+    matchLabels:
+      kubernetes.io/os: linux
+  port: 10250
+  path: /metrics
+  scheme: https
+  interval: 1m
+  bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+  tlsConfig:
+    insecureSkipVerify: true
+  relabelConfigs:
+    # job must stay "kubelet" for all three paths: dashboards and rules select it.
+    - action: replace
+      targetLabel: job
+      replacement: kubelet
+  metricRelabelConfigs:
+    - action: labeldrop
+      regex: uid
+    - action: labeldrop
+      regex: (id|name)
+    - action: drop
+      sourceLabels:
+        - __name__
+      regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
+
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmnodescrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMNodeScrape
+metadata:
+  name: kubelet-cadvisor
+spec:
+  selector:
+    matchLabels:
+      kubernetes.io/os: linux
+  port: 10250
+  path: /metrics/cadvisor
+  scheme: https
+  interval: 1m
+  bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+  tlsConfig:
+    insecureSkipVerify: true
+  relabelConfigs:
+    - action: replace
+      targetLabel: job
+      replacement: kubelet
+  metricRelabelConfigs:
+    - action: drop
+      sourceLabels:
+        - __name__
+      regex: container_cpu_(cfs_throttled_seconds_total|load_average_10s|system_seconds_total|user_seconds_total)
+    - action: drop
+      sourceLabels:
+        - __name__
+      regex: container_fs_(io_current|io_time_seconds_total|io_time_weighted_seconds_total|reads_merged_total|sector_reads_total|sector_writes_total|writes_merged_total)
+    - action: drop
+      sourceLabels:
+        - __name__
+      regex: container_memory_(mapped_file|swap)
+    - action: drop
+      sourceLabels:
+        - __name__
+      regex: container_(file_descriptors|tasks_state|threads_max)
+    - action: drop
+      sourceLabels:
+        - __name__
+        - hierarchy
+      regex: container_memory_failures_total;.+
+
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmnodescrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMNodeScrape
+metadata:
+  name: kubelet-probes
+spec:
+  selector:
+    matchLabels:
+      kubernetes.io/os: linux
+  port: 10250
+  path: /metrics/probes
+  scheme: https
+  interval: 1m
+  bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+  tlsConfig:
+    insecureSkipVerify: true
+  relabelConfigs:
+    - action: replace
+      targetLabel: job
+      replacement: kubelet

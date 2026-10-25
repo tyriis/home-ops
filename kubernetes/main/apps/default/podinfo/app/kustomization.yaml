@@ -6,3 +6,4 @@ resources:
   - ./helm-release.yaml
   - ./http-route.yaml
   - ./oci-repository.yaml
+  - ./vm-service-scrape.yaml

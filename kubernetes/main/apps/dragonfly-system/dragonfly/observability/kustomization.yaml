@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - ./grafana-dashboard.yaml
   - ./pod-monitor.yaml
+  - ./vm-pod-scrape.yaml

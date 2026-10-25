@@ -196,6 +196,25 @@ spec:
             ]
 
 ---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmpodscrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
+metadata:
+  name: &app tyriis-terraform-github-runner
+spec:
+  selector:
+    matchLabels:
+      helm.toolkit.fluxcd.io/name: *app
+  podMetricsEndpoints:
+    - port: metrics
+      path: /metrics
+      interval: 15s
+      scrapeTimeout: 5s
+      relabelConfigs:
+        - action: replace
+          targetLabel: job
+          replacement: github/tyriis-terraform-github-runner
+---
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:

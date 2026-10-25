@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./external-secret.yaml
   - ./helm-release.yaml
+  - ./vm-service-scrape.yaml
 configMapGenerator:
   - name: minecraft-public-velocity-proxy-config
     files:

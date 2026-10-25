@@ -7,6 +7,8 @@ resources:
   - ./prometheus-rule.yaml
   - ./service.yaml
   - ./service-monitor.yaml
+  - ./vm-rule.yaml
+  - ./vm-service-scrape.yaml
 configMapGenerator:
   - name: flux-dashboards
     files:

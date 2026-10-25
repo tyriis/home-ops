@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: kube-prometheus-stack-operator
+spec:
+  namespaceSelector:
+    matchNames:
+      - observability
+  selector:
+    matchLabels:
+      app: kube-prometheus-stack-operator
+      release: kube-prometheus-stack
+  endpoints:
+    - port: https
+      path: /metrics
+      interval: 1m
+      scheme: https
+      tlsConfig:
+        insecureSkipVerify: true
+      honorLabels: true
+      relabelConfigs:
+        # job must stay kube-prometheus-stack-operator: the vendored KPS rules select it.
+        - action: replace
+          targetLabel: job
+          replacement: kube-prometheus-stack-operator

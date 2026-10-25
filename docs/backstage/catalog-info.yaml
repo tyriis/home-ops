@@ -51,6 +51,7 @@ spec:
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/spark-limiter/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/syncthing/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/tuppr/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/victoria-metrics/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/volsync/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/zigbee2mqtt/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/domains/home/catalog-info.yaml
