@@ -69,6 +69,22 @@ services:
       # a lane free for consolidation while retain drains, so one slow call cannot
       # stall the queue behind it. Retain is async — nothing waits on the answer.
       HINDSIGHT_API_LLM_MAX_CONCURRENT: ${HINDSIGHT_API_LLM_MAX_CONCURRENT:-2}
+      # Worker task pool: concurrent async tasks per worker (retain, consolidation,
+      # maintenance). Image default 10; the jarvis stack drops it to 1 so at most
+      # one operation runs at a time. HINDSIGHT_API_WORKER_MAX_SLOTS=1 requires
+      # shrinking the consolidation reservation (image default 2) to fit — the
+      # startup validator rejects reserved > pool.
+      HINDSIGHT_API_WORKER_MAX_SLOTS: ${HINDSIGHT_API_WORKER_MAX_SLOTS:-10}
+      HINDSIGHT_API_WORKER_CONSOLIDATION_RESERVED_SLOTS: ${HINDSIGHT_API_WORKER_CONSOLIDATION_RESERVED_SLOTS:-2}
+      # Tags outbound LLM + embedding calls with user=<bank_id> — the gateway
+      # (new-api) routes/limits/attributes cost per bank on that tag.
+      HINDSIGHT_API_LLM_SEND_BANK_AS_USER: ${HINDSIGHT_API_LLM_SEND_BANK_AS_USER:-false}
+      # Sleep-phase consolidation: auto-consolidate-after-retain disabled means
+      # retains still extract facts but consolidation work queues as
+      # pending_consolidation. Drained nightly by drain_consolidation.py
+      # (hermes cronjob). Watchdog: a large pending_consolidation during the day
+      # is EXPECTED, not an alert condition.
+      HINDSIGHT_API_ENABLE_AUTO_CONSOLIDATION: ${HINDSIGHT_API_ENABLE_AUTO_CONSOLIDATION:-true}
       # Embeddings + reranker intentionally stay on image defaults (local,
       # in-process). To override, add explicit pass-through lines above.
     healthcheck:
