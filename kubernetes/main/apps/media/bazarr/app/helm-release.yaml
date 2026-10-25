@@ -35,16 +35,11 @@ spec:
               repository: ghcr.io/home-operations/bazarr
               tag: 1.6.2@sha256:b8434a7339ebd9c2bfe4464c28db79944e0f52f47da85345fc7e0563c19f83ac
             env:
-              # https://wiki.servarr.com/useful-tools#using-environment-variables-for-config
-              BAZARR__APP__INSTANCENAME: Bazarr
-              BAZARR__APP__THEME: dark
-              BAZARR__AUTH__METHOD: Forms
-              BAZARR__AUTH__REQUIRED: DisabledForLocalAddresses
-              BAZARR__LOG__ANALYTICSENABLED: "False"
-              BAZARR__LOG__DBENABLED: "False"
-              BAZARR__LOG__LEVEL: info
-              BAZARR__SERVER__PORT: &port 6767
-              BAZARR__UPDATE__BRANCH: develop
+              BAZARR__PORT: &port 6767
+              DYNACONF_AUTH__TYPE: "@none"
+              DYNACONF_general__instance_name: Bazarr
+              DYNACONF_general__theme: dark
+              DYNACONF_analytics__enabled: "@bool false"
             ports:
               - name: http
                 containerPort: *port
