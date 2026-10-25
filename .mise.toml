@@ -12,7 +12,6 @@
 # https://mise-versions.jdx.dev/tools/flux2
 "aqua:fluxcd/flux2" = "2.9.6"
 # https://mise-versions.jdx.dev/tools/flux-operator-mcp
-# Provides the flux-operator MCP server declared in .opencode/opencode.jsonc
 "aqua:controlplaneio-fluxcd/flux-operator/flux-operator-mcp" = "0.61.0"
 # https://mise-versions.jdx.dev/tools/gitleaks
 "aqua:gitleaks/gitleaks" = "8.30.1"
