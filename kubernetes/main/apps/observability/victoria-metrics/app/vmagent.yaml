@@ -6,8 +6,6 @@ metadata:
   name: vmagent
 spec:
   replicaCount: 1
-  # Pick up every VMServiceScrape / VMStaticScrape / VMNodeScrape in the
-  # cluster, matching the Prometheus setup (serviceMonitorSelectorNilUsesHelmValues: false).
   selectAllByDefault: true
   scrapeInterval: 1m
   scrapeTimeout: 30s
@@ -18,9 +16,6 @@ spec:
       bearerTokenSecret:
         name: vmagent-remote-write
         key: token
-  # statefulMode puts vmagent's persistent queue on a PVC instead of an emptyDir.
-  # Samples buffered while the WAN link to the central store blips (or while the
-  # pod is restarting) survive the disruption and are replayed afterwards.
   statefulMode: true
   statefulStorage:
     volumeClaimTemplate:

@@ -11,7 +11,6 @@ spec:
   policyTypes:
     - Ingress
   ingress:
-    # Allow kube-prometheus and vmagent to scrape konflate metrics
     - from:
         - namespaceSelector:
             matchLabels:

@@ -5,8 +5,7 @@ kind: VMServiceScrape
 metadata:
   name: kube-apiserver
 spec:
-  # The API server Service lives in the "default" namespace, so discovery has to
-  # be pointed there explicitly (the operator defaults to its own namespace).
+  # The apiserver Service lives in "default"; the operator defaults to its own namespace.
   namespaceSelector:
     matchNames:
       - default
@@ -25,13 +24,11 @@ spec:
         serverName: kubernetes
         insecureSkipVerify: false
       relabelConfigs:
-        # Force the job name the Prometheus ServiceMonitor uses, so existing
-        # dashboards and alert rules that select job="apiserver" keep working.
+        # job must stay "apiserver": dashboards and rules select it.
         - action: replace
           targetLabel: job
           replacement: apiserver
       metricRelabelConfigs:
-        # Drop high cardinality histogram buckets, same as the KPS values.
         - action: drop
           sourceLabels:
             - __name__

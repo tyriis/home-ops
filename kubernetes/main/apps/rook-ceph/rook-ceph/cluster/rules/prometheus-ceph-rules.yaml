@@ -1,7 +1,6 @@
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmrule_v1beta1.json
-# Generated from rook-ceph-cluster 1.19.6 PrometheusRule prometheus-ceph-rules - regenerate by re-rendering the chart.
-# CephNodeInconsistentMTU was disabled when vendoring (previously monitoring.prometheusRuleOverrides).
+# CephNodeInconsistentMTU is deliberately absent; keep it out when re-rendering the chart.
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMRule
 metadata:

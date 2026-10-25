@@ -16,14 +16,11 @@ spec:
   tlsConfig:
     insecureSkipVerify: true
   relabelConfigs:
-    # The operator derives the job label from the object name, so all three
-    # kubelet scrape objects (kubelet, kubelet-cadvisor, kubelet-probes) force
-    # job="kubelet" to keep existing dashboards and alert rules working.
+    # job must stay "kubelet" for all three paths: dashboards and rules select it.
     - action: replace
       targetLabel: job
       replacement: kubelet
   metricRelabelConfigs:
-    # Drop high cardinality labels, same as the KPS values.
     - action: labeldrop
       regex: uid
     - action: labeldrop
@@ -51,12 +48,10 @@ spec:
   tlsConfig:
     insecureSkipVerify: true
   relabelConfigs:
-    # See the "kubelet" object above: job stays kubelet for all kubelet paths.
     - action: replace
       targetLabel: job
       replacement: kubelet
   metricRelabelConfigs:
-    # Drop high cardinality cAdvisor series, same as the KPS values.
     - action: drop
       sourceLabels:
         - __name__
@@ -97,7 +92,6 @@ spec:
   tlsConfig:
     insecureSkipVerify: true
   relabelConfigs:
-    # See the "kubelet" object above: job stays kubelet for all kubelet paths.
     - action: replace
       targetLabel: job
       replacement: kubelet

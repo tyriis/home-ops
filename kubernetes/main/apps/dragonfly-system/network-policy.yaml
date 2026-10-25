@@ -19,7 +19,6 @@ spec:
       ports:
         - protocol: TCP
           port: 9999
-    # Allow kube-prometheus and vmagent to scrape Dragonfly metrics on port 9999
     - from:
         - namespaceSelector:
             matchLabels:

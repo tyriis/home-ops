@@ -15,11 +15,8 @@ spec:
     template:
       engineVersion: v2
       data:
-        # Bearer token for the vmauth read user in front of the central store.
         token: "{{ .VMAUTH_TOKEN_VMALERT_METRICS }}"
   dataFrom:
-    # Main's ClusterSecretStore policy only grants this cluster's own path, so
-    # the vmauth read token is kept here as well as on the utility side. Both
-    # copies must hold the SAME value: vmauth validates it, vmalert presents it.
+    # Must match the vmauth read token on the utility side; vmauth validates it.
     - extract:
         key: infra/kubernetes/main/observability/victoria-metrics #gitleaks:allow

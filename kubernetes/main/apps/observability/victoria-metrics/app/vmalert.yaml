@@ -6,15 +6,8 @@ metadata:
   name: vmalert
 spec:
   replicaCount: 1
-  # Prometheus' global default was 1m and no rule group sets its own interval,
-  # so 1m keeps evaluation cadence identical to the old Prometheus setup.
   evaluationInterval: 1m
-  # Pick up every VMRule in the cluster, matching the old Prometheus ruleSelector
-  # (ruleSelectorNilUsesHelmValues: false). With selectAllByDefault: true and
-  # both ruleSelector/ruleNamespaceSelector unset, the operator selects all
-  # VMRules in all namespaces. A "ruleNamespaceSelector: {any: true}" form does
-  # not exist in this CRD version (the field is a plain LabelSelector with
-  # additionalProperties: false), so it must stay unset.
+  # ruleNamespaceSelector does not exist in this CRD version; leave it and ruleSelector unset.
   selectAllByDefault: true
   externalLabels:
     cluster: main
@@ -23,12 +16,7 @@ spec:
     bearerTokenSecret:
       name: vmalert-datasource
       key: token
-  # No notifier during the dual-run: Prometheus keeps evaluating its own
-  # PrometheusRules and routing through Alertmanager, so a notifier here would
-  # page twice for the same alert. The notifier block
-  # (url: http://alertmanager-operated.observability.svc.cluster.local:9093) is
-  # enabled in the cutover PR that disables Prometheus and moves Alertmanager
-  # routing to vmalert.
+  # No notifier while Prometheus still routes these alerts through Alertmanager; it would page twice.
   resources:
     requests:
       cpu: 25m

@@ -22,8 +22,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    # The chart renders its CRDs by default (crds.enabled: true, templated rather
-    # than crds.plain), so no value is set here for them.
     global:
       versions:
         metrics: v1.154.1

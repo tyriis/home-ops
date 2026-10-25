@@ -5,8 +5,6 @@ kind: VMProbe
 metadata:
   name: roborock-upstairs-icmp
 spec:
-  # 30s was the intent all along: the old chart target set the snake_case key
-  # scrape_interval, which the chart ignored and defaulted to 1m.
   jobName: roborock-upstairs-icmp
   interval: 30s
   scrapeTimeout: 30s

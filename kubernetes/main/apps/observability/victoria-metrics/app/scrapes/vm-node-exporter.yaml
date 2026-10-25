@@ -3,7 +3,6 @@
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMServiceScrape
 metadata:
-  # Job label "node-exporter", same as the Prometheus ServiceMonitor job.
   name: node-exporter
 spec:
   namespaceSelector:
@@ -11,8 +10,7 @@ spec:
       - observability
   selector:
     matchLabels:
-      # The kube-prometheus-stack subchart names the Service "node-exporter" but
-      # labels it with the chart name. Verified against the live Service.
+      # The subchart names the Service "node-exporter" but labels it with the chart name.
       app.kubernetes.io/name: prometheus-node-exporter
   endpoints:
     - port: http-metrics
@@ -26,7 +24,6 @@ spec:
           replacement: $1
           targetLabel: kubernetes_node
       metricRelabelConfigs:
-        # Drop the useless ms-01 temperature sensors from chip="platform_nct6775_2592".
         - action: drop
           sourceLabels:
             - chip

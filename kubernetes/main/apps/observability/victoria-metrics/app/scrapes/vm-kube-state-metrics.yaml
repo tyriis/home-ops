@@ -12,7 +12,6 @@ spec:
     matchLabels:
       app.kubernetes.io/name: kube-state-metrics
   endpoints:
-    # Cluster state metrics.
     - port: http
       path: /metrics
       interval: 1m
@@ -23,7 +22,6 @@ spec:
           regex: (.*)
           replacement: $1
           targetLabel: kubernetes_node
-    # kube-state-metrics' own telemetry (selfMonitor: true in the chart values).
     - port: metrics
       path: /metrics
       interval: 1m

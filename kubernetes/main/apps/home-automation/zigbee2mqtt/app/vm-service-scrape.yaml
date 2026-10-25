@@ -13,10 +13,7 @@ spec:
       app.kubernetes.io/name: zigbee2mqtt
       app.kubernetes.io/instance: zigbee2mqtt
   endpoints:
-    # The exporter listens on container port 3000 (name http-prom), but the
-    # zigbee2mqtt Service only exposes port http (8080), so the previous
-    # monitor's `port: http-prom` never resolved and this target was dead.
-    # Scrape the container port directly instead of the Service port.
+    # Scrapes the container port: the Service only exposes http (8080), so port: http-prom never resolves.
     - targetPort: 3000
       scheme: http
       path: /metrics

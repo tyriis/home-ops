@@ -3,7 +3,6 @@
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMStaticScrape
 metadata:
-  # Job label "kube-controller-manager", matching the Prometheus job name.
   name: kube-controller-manager
 spec:
   targetEndpoints:

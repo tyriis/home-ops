@@ -3,7 +3,6 @@
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMStaticScrape
 metadata:
-  # Job label "kube-scheduler", matching the Prometheus job name.
   name: kube-scheduler
 spec:
   targetEndpoints:

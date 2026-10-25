@@ -11,7 +11,6 @@ spec:
   policyTypes:
     - Ingress
   ingress:
-    # Operator metrics endpoint
     - from:
         - namespaceSelector:
             matchLabels:
@@ -19,8 +18,7 @@ spec:
       ports:
         - protocol: TCP
           port: 8080
-    # Admission webhook: called by kube-apiserver from the host network, so no
-    # `from` selector is set (a podSelector/namespaceSelector cannot match it)
+    # kube-apiserver calls the webhook from the host network; no `from` selector can match it.
     - ports:
         - protocol: TCP
           port: 9443

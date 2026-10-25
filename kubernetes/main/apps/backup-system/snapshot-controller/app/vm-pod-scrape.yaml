@@ -13,8 +13,7 @@ spec:
       app.kubernetes.io/name: snapshot-controller
       app.kubernetes.io/instance: snapshot-controller
   podMetricsEndpoints:
-    # The chart creates its headless metrics Service only when its
-    # (Prometheus) ServiceMonitor is enabled, so scrape the pod port instead.
+    # Scrape the pod port: the chart only creates its metrics Service when its ServiceMonitor is enabled.
     - port: http
       scheme: http
       path: /metrics

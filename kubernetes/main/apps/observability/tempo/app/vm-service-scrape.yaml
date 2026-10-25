@@ -12,9 +12,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: tempo
       app.kubernetes.io/instance: tempo
-    # tempo-headless carries prometheus.io/service-monitor: "false"; the chart
-    # monitor excluded it the same way, so only the `tempo` Service is scraped
-    # (one object instead of one per component Service, which do not exist here).
+    # tempo-headless carries prometheus.io/service-monitor: "false"; keep it excluded.
     matchExpressions:
       - key: prometheus.io/service-monitor
         operator: NotIn

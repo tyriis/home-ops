@@ -85,10 +85,7 @@ jobs:
         id: diff
         run: |
           DIFF="$(flate diff all --path kubernetes/${{ matrix.cluster }}/flux -o github)"
-          # The diff is handed to the comment action as one step output, which becomes a single
-          # process argument. Linux caps an argument at 128 KiB (MAX_ARG_STRLEN), so a large diff
-          # makes the action fail to start with "Argument list too long". Cap the posted body and
-          # point at the job log, where the full diff is still printed.
+          # One step output becomes one process argument; Linux caps it at 128 KiB (MAX_ARG_STRLEN).
           MAX_LINES=400
           TOTAL_LINES="$(printf '%s' "$DIFF" | wc -l)"
           TRUNCATED=""
