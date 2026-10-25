@@ -31,11 +31,26 @@ subjects:
     namespace: kube-tools
 
 ---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrolebinding_v1.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kubectl-readonly:basic-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:basic-user
+subjects:
+  - kind: ServiceAccount
+    name: kubectl-readonly
+    namespace: kube-tools
+
+---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrole_v1.json
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: kubectl-readonly-cluster-scoped
+  name: kubectl-readonly-native
 rules:
   - apiGroups: [""]
     resources: [nodes, namespaces, persistentvolumes, pods/log]
@@ -52,24 +67,31 @@ rules:
   - apiGroups: [apiextensions.k8s.io]
     resources: [customresourcedefinitions]
     verbs: [get, list, watch]
-  - apiGroups: [fluxcd.controlplane.io]
-    resources:
-      [fluxinstances, fluxreports, resourcesets, resourcesetinputproviders]
-    verbs: [get, list, watch]
-  - apiGroups: [tuppr.home-operations.com]
-    resources: [kubernetesupgrades, talosupgrades]
-    verbs: [get, list, watch]
+
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrolebinding_v1.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kubectl-readonly:native
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kubectl-readonly-native
+subjects:
+  - kind: ServiceAccount
+    name: kubectl-readonly
+    namespace: kube-tools
+
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrole_v1.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kubectl-readonly-cnpg
+rules:
   - apiGroups: [postgresql.cnpg.io]
     resources: [backups, clusters, scheduledbackups]
-    verbs: [get, list, watch]
-  - apiGroups: [snapshot.storage.k8s.io]
-    resources: [volumesnapshots, volumesnapshotcontents, volumesnapshotclasses]
-    verbs: [get, list, watch]
-  - apiGroups: [volsync.backube]
-    resources: [replicationsources, replicationdestinations]
-    verbs: [get, list, watch]
-  - apiGroups: [gateway.networking.k8s.io]
-    resources: [httproutes]
     verbs: [get, list, watch]
   - apiGroups: [barmancloud.cnpg.io]
     resources: [objectstores]
@@ -80,11 +102,11 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: kubectl-readonly:cluster-scoped
+  name: kubectl-readonly:cnpg
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: kubectl-readonly-cluster-scoped
+  name: kubectl-readonly-cnpg
 subjects:
   - kind: ServiceAccount
     name: kubectl-readonly
@@ -121,28 +143,6 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: kubectl-readonly-grafana
-rules:
-  - apiGroups: [grafana.integreatly.org]
-    resources:
-      [
-        grafanas,
-        grafanadashboards,
-        grafanadatasources,
-        grafanafolders,
-        grafanaalertrulegroups,
-        grafanacontactpoints,
-        grafanamutetimings,
-        grafananotificationpolicies,
-        grafanaserviceaccounts,
-      ]
-    verbs: [get, list, watch]
-
----
-# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrole_v1.json
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
   name: kubectl-readonly-dragonfly
 rules:
   - apiGroups: [dragonflydb.io]
@@ -165,6 +165,84 @@ subjects:
     namespace: kube-tools
 
 ---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrole_v1.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kubectl-readonly-flux
+rules:
+  - apiGroups: [fluxcd.controlplane.io]
+    resources:
+      [fluxinstances, fluxreports, resourcesets, resourcesetinputproviders]
+    verbs: [get, list, watch]
+
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrolebinding_v1.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kubectl-readonly:flux
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kubectl-readonly-flux
+subjects:
+  - kind: ServiceAccount
+    name: kubectl-readonly
+    namespace: kube-tools
+
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrole_v1.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kubectl-readonly-gateway
+rules:
+  - apiGroups: [gateway.networking.k8s.io]
+    resources: [httproutes]
+    verbs: [get, list, watch]
+  - apiGroups: [gateway.envoyproxy.io]
+    resources: [securitypolicies]
+    verbs: [get, list, watch]
+
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrolebinding_v1.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kubectl-readonly:gateway
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kubectl-readonly-gateway
+subjects:
+  - kind: ServiceAccount
+    name: kubectl-readonly
+    namespace: kube-tools
+
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrole_v1.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kubectl-readonly-grafana
+rules:
+  - apiGroups: [grafana.integreatly.org]
+    resources:
+      [
+        grafanas,
+        grafanadashboards,
+        grafanadatasources,
+        grafanafolders,
+        grafanaalertrulegroups,
+        grafanacontactpoints,
+        grafanamutetimings,
+        grafananotificationpolicies,
+        grafanaserviceaccounts,
+      ]
+    verbs: [get, list, watch]
+
+---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrolebinding_v1.json
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -174,6 +252,32 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: kubectl-readonly-grafana
+subjects:
+  - kind: ServiceAccount
+    name: kubectl-readonly
+    namespace: kube-tools
+
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrole_v1.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kubectl-readonly-snapshot
+rules:
+  - apiGroups: [snapshot.storage.k8s.io]
+    resources: [volumesnapshots, volumesnapshotcontents, volumesnapshotclasses]
+    verbs: [get, list, watch]
+
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrolebinding_v1.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kubectl-readonly:snapshot
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kubectl-readonly-snapshot
 subjects:
   - kind: ServiceAccount
     name: kubectl-readonly
@@ -222,15 +326,52 @@ subjects:
     namespace: kube-tools
 
 ---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrole_v1.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kubectl-readonly-tuppr
+rules:
+  - apiGroups: [tuppr.home-operations.com]
+    resources: [kubernetesupgrades, talosupgrades]
+    verbs: [get, list, watch]
+
+---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrolebinding_v1.json
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: kubectl-readonly:basic-user
+  name: kubectl-readonly:tuppr
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: system:basic-user
+  name: kubectl-readonly-tuppr
+subjects:
+  - kind: ServiceAccount
+    name: kubectl-readonly
+    namespace: kube-tools
+
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrole_v1.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kubectl-readonly-volsync
+rules:
+  - apiGroups: [volsync.backube]
+    resources: [replicationsources, replicationdestinations]
+    verbs: [get, list, watch]
+
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/clusterrolebinding_v1.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kubectl-readonly:volsync
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kubectl-readonly-volsync
 subjects:
   - kind: ServiceAccount
     name: kubectl-readonly
