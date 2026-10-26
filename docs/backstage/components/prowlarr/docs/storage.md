@@ -21,6 +21,6 @@ pod restart.
 
 | Path             | sizeLimit | Content                         |
 | ---------------- | --------- | ------------------------------- |
-| `/config/logs`   | 48Mi      | See [Logging](logging.md)       |
+| `/config/logs`   | 8Mi       | See [Logging](logging.md)       |
 | `/tmp`           | 16Mi      | Temp files                      |
 | `/config/Sentry` | 8Mi       | Sentry outbox. Analytics is off |

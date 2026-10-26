@@ -2,10 +2,10 @@
 
 Prowlarr writes logs to two destinations.
 
-| Destination          | Content                         | Retention                                 |
-| -------------------- | ------------------------------- | ----------------------------------------- |
-| `/config/logs/*.txt` | Full app logs                   | tmpfs volume, 48Mi max, lost with the pod |
-| stdout               | Console log, scraped by vlagent | 30d in VictoriaLogs                       |
+| Destination          | Content                         | Retention                                |
+| -------------------- | ------------------------------- | ---------------------------------------- |
+| `/config/logs/*.txt` | Full app logs                   | tmpfs volume, 8Mi max, lost with the pod |
+| stdout               | Console log, scraped by vlagent | 30d in VictoriaLogs                      |
 
 ## File rotation
 
@@ -15,12 +15,12 @@ The app writes three files: `prowlarr.txt` (info), `prowlarr.debug.txt` (disable
 These environment variables control the rotation:
 
 ```yaml
-PROWLARR__LOG__ROTATE: 10 # number of archive files per stream
+PROWLARR__LOG__ROTATE: 1 # number of archive files per stream. Default is 50
 PROWLARR__LOG__SIZELIMIT: 1 # MiB per file, upstream limit is 10
 ```
 
-The maximum size is 3 streams x 11 files x 1MiB = 34.6MiB. You must keep the `sizeLimit`
-of the `logs` volume above this value (48Mi).
+The maximum size is 3 streams x 2 files x 1MiB = 6.3MiB. You must keep the `sizeLimit`
+of the `logs` volume above this value (8Mi).
 
 ## Data exposure
 

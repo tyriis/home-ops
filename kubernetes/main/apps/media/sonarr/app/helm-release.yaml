@@ -46,7 +46,7 @@ spec:
               SONARR__LOG__ANALYTICSENABLED: "False"
               SONARR__LOG__DBENABLED: "False"
               SONARR__LOG__LEVEL: info
-              SONARR__LOG__ROTATE: 10
+              SONARR__LOG__ROTATE: 1
               SONARR__LOG__SIZELIMIT: 1
               SONARR__SERVER__PORT: &port 8989
               SONARR__UPDATE__BRANCH: develop
@@ -107,7 +107,7 @@ spec:
       logs:
         type: emptyDir
         medium: Memory
-        sizeLimit: 48Mi
+        sizeLimit: 8Mi
         advancedMounts:
           sonarr:
             app:
