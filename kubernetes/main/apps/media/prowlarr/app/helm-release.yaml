@@ -43,6 +43,8 @@ spec:
               PROWLARR__LOG__ANALYTICSENABLED: "False"
               PROWLARR__LOG__DBENABLED: "False"
               PROWLARR__LOG__LEVEL: info
+              PROWLARR__LOG__ROTATE: 10
+              PROWLARR__LOG__SIZELIMIT: 1
               PROWLARR__SERVER__PORT: &port 9696
               PROWLARR__UPDATE__BRANCH: develop
             ports:
@@ -95,26 +97,10 @@ spec:
     persistence:
       config:
         existingClaim: ${APP}-config
-      backups:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 64Mi
-        advancedMounts:
-          prowlarr:
-            app:
-              - path: /config/Backups
-      definitions:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 32Mi
-        advancedMounts:
-          prowlarr:
-            app:
-              - path: /config/Definitions
       logs:
         type: emptyDir
         medium: Memory
-        sizeLimit: 128Mi # keep >= 2x Servarr log rotation default: 2 streams x 50 files x 1MB
+        sizeLimit: 48Mi # worst case 3 log streams x 11 files x 1MiB, from LOG__ROTATE/LOG__SIZELIMIT
         advancedMounts:
           prowlarr:
             app:
@@ -122,7 +108,7 @@ spec:
       sentry:
         type: emptyDir
         medium: Memory
-        sizeLimit: 16Mi
+        sizeLimit: 8Mi
         advancedMounts:
           prowlarr:
             app:
@@ -130,7 +116,7 @@ spec:
       tmp:
         type: emptyDir
         medium: Memory
-        sizeLimit: 32Mi
+        sizeLimit: 16Mi
         advancedMounts:
           prowlarr:
             app:

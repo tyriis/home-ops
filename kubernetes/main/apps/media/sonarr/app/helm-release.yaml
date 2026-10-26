@@ -46,6 +46,8 @@ spec:
               SONARR__LOG__ANALYTICSENABLED: "False"
               SONARR__LOG__DBENABLED: "False"
               SONARR__LOG__LEVEL: info
+              SONARR__LOG__ROTATE: 10
+              SONARR__LOG__SIZELIMIT: 1
               SONARR__SERVER__PORT: &port 8989
               SONARR__UPDATE__BRANCH: develop
             ports:
@@ -102,26 +104,10 @@ spec:
         type: nfs
         server: nas.techtales.io
         path: /mnt/tank/media
-      backups:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 64Mi
-        advancedMounts:
-          sonarr:
-            app:
-              - path: /config/Backups
-      cache:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 256Mi
-        advancedMounts:
-          sonarr:
-            app:
-              - path: /config/MediaCover
       logs:
         type: emptyDir
         medium: Memory
-        sizeLimit: 128Mi # keep >= 2x Servarr log rotation default: 2 streams x 50 files x 1MB
+        sizeLimit: 48Mi # worst case 3 log streams x 11 files x 1MiB, from LOG__ROTATE/LOG__SIZELIMIT
         advancedMounts:
           sonarr:
             app:
@@ -129,7 +115,7 @@ spec:
       sentry:
         type: emptyDir
         medium: Memory
-        sizeLimit: 16Mi
+        sizeLimit: 8Mi
         advancedMounts:
           sonarr:
             app:
@@ -137,7 +123,7 @@ spec:
       tmp:
         type: emptyDir
         medium: Memory
-        sizeLimit: 32Mi
+        sizeLimit: 16Mi
         advancedMounts:
           sonarr:
             app:

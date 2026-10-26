@@ -94,42 +94,18 @@ spec:
         type: nfs
         server: nas.techtales.io
         path: /mnt/tank/media
-      backup:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 64Mi
-        advancedMounts:
-          bazarr:
-            app:
-              - path: /config/backup
-      cache:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 256Mi
-        advancedMounts:
-          bazarr:
-            app:
-              - path: /config/cache
       log:
         type: emptyDir
         medium: Memory
-        sizeLimit: 128Mi
+        sizeLimit: 48Mi # TimedRotatingFileHandler keeps 7 daily files, no upstream size cap
         advancedMounts:
           bazarr:
             app:
               - path: /config/log
-      restore:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 16Mi
-        advancedMounts:
-          bazarr:
-            app:
-              - path: /config/restore
       tmp:
         type: emptyDir
         medium: Memory
-        sizeLimit: 32Mi
+        sizeLimit: 16Mi
         advancedMounts:
           bazarr:
             app:
