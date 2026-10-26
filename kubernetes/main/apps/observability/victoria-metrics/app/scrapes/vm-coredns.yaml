@@ -12,7 +12,7 @@ spec:
     matchLabels:
       app.kubernetes.io/component: metrics
   endpoints:
-    - port: http-metrics
+    - port: metrics
       path: /metrics
       interval: 1m
       relabelConfigs:

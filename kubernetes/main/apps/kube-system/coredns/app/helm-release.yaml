@@ -33,6 +33,9 @@ spec:
     deployment:
       annotations:
         reloader.stakater.com/auto: "true"
+    prometheus:
+      service:
+        enabled: true
     servers:
       - zones:
           - zone: .
