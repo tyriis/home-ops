@@ -30,6 +30,7 @@ spec:
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/home-assistant/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/homepage/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/immich/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/jellyfin/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/karakeep/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/kromgo/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/kube-prometheus-stack/catalog-info.yaml

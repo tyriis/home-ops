@@ -1,0 +1,8 @@
+---
+site_name: recyclarr
+nav:
+  - Home: index.md
+  - Storage: storage.md
+
+plugins:
+  - techdocs-core

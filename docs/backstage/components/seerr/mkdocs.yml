@@ -1,0 +1,8 @@
+---
+site_name: seerr
+nav:
+  - Home: index.md
+  - Storage: storage.md
+
+plugins:
+  - techdocs-core

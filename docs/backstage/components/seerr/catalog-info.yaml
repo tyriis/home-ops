@@ -4,7 +4,10 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: seerr
-  description: Overseerr is a request management and discovery tool for the Plex media stack.
+  description: |
+    Seer is a request management and discovery tool for the Plex media stack.
+  annotations:
+    backstage.io/techdocs-ref: dir:.
   links:
     - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/media/seerr
       title: Flux definition
