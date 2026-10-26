@@ -100,7 +100,7 @@ spec:
       logs:
         type: emptyDir
         medium: Memory
-        sizeLimit: 48Mi # worst case 3 log streams x 11 files x 1MiB, from LOG__ROTATE/LOG__SIZELIMIT
+        sizeLimit: 48Mi
         advancedMounts:
           prowlarr:
             app:

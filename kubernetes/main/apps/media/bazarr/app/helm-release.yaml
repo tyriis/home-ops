@@ -97,7 +97,7 @@ spec:
       log:
         type: emptyDir
         medium: Memory
-        sizeLimit: 48Mi # TimedRotatingFileHandler keeps 7 daily files, no upstream size cap
+        sizeLimit: 48Mi
         advancedMounts:
           bazarr:
             app:
