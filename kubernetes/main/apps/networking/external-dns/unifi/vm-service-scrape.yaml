@@ -16,3 +16,6 @@ spec:
   endpoints:
     - port: http
       path: /metrics
+    # chart ServiceMonitor renders this one only while provider is webhook (provider.webhook.serviceMonitor)
+    - port: http-webhook
+      path: /metrics
