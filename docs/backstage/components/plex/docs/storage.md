@@ -15,7 +15,7 @@ VolSync replicates the PVC to MinIO (`backup-system`).
 ## Transcode tmpfs (RAM)
 
 The image entrypoint forces the preference `TranscoderTempDirectory=/transcode` on first run.
-A 256Mi memory-backed volume is mounted there for live session files.
+A 2500Mi memory-backed volume is mounted there for live session files.
 
 ## Media (NFS)
 
@@ -26,4 +26,4 @@ The NAS share `nas.techtales.io:/mnt/tank/media` is mounted read-only at `/media
 | Path         | sizeLimit | Content                                                         |
 | ------------ | --------- | --------------------------------------------------------------- |
 | `/tmp`       | 16Mi      | Plex scratch dirs (`pms-<uuid>/`), mounted by the chart default |
-| `/transcode` | 256Mi     | Live transcode session files                                    |
+| `/transcode` | 2500Mi    | Live transcode session files                                    |

@@ -16,8 +16,8 @@ The NAS share `nas.techtales.io:/mnt/tank/media` is mounted read-only at `/media
 
 ## RAM (tmpfs, volatile)
 
-| Path          | sizeLimit | Content                                                                           |
-| ------------- | --------- | --------------------------------------------------------------------------------- |
-| `/config/log` | 32Mi      | App logs. Lost with the pod                                                       |
-| `/tmp`        | 16Mi      | Temp files. Mounted by the chart default                                          |
-| `/cache`      | 128Mi     | Transcode cache. Upstream applies a 100 MB quota, so the volume holds the maximum |
+| Path          | sizeLimit | Content                                  |
+| ------------- | --------- | ---------------------------------------- |
+| `/config/log` | 32Mi      | App logs. Lost with the pod              |
+| `/tmp`        | 16Mi      | Temp files. Mounted by the chart default |
+| `/cache`      | 2500Mi    | Transcode cache. 2GiB free required.     |
