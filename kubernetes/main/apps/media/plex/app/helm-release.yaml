@@ -111,7 +111,3 @@ spec:
         type: emptyDir
         medium: Memory
         sizeLimit: 256Mi
-        advancedMounts:
-          plex:
-            app:
-              - path: /transcode
