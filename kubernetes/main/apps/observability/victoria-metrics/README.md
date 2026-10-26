@@ -74,6 +74,10 @@ moves.
   CNPG, Rook and cert-manager monitor generators switched off.
 - **5.** Main's Prometheus PVC deleted by hand after a retention cycle. The 14d TSDB is not
   imported: dashboards start at the cutover timestamp.
+- The release itself stays after run 2: Alertmanager and its config live in it, and four VM scrape
+  objects still select Services it renders (`kube-prometheus-stack-alertmanager`,
+  `kube-prometheus-stack-operator`, `node-exporter`, `kube-state-metrics`). CoreDNS is no longer one
+  of them. Uninstalling the chart is a separate migration, not part of this cutover.
 
 ## Architecture
 
@@ -235,13 +239,13 @@ curl -s -H "Authorization: Bearer $T" \
 In run 1 every VM object mirrors a live Prometheus-operator object of the same purpose, so both
 stacks scrape the same thing; the right-hand column is what disappears at cutover. CoreDNS is one of
 them: Prometheus scrapes it through the chart's `kube-prometheus-stack-coredns` `ServiceMonitor`
-(`kube-system`, port `http-metrics`/`9153`, job `coredns`), and the VM path mirrors that target in
-`app/scrapes/vm-coredns.yaml`. It selects the chart's own headless Service
-`kube-prometheus-stack-coredns` (`app: kube-prometheus-stack-coredns`), not the `kube-dns` Service
-from the CoreDNS chart: only the former carries the `http-metrics`/`9153` port, so a selector on
-`k8s-app: kube-dns` yields no target at all. vmagent therefore reports the job as
-`kube-prometheus-stack-coredns` (the Service name), where Prometheus reports `coredns` (the
-Service's `jobLabel` label).
+(`kube-system`, port `http-metrics`/`9153`, job `coredns`). The CoreDNS chart's own Service
+(`kube-dns`) exposes 53/udp+tcp only — its ports come from the `servers` blocks, and the prometheus
+plugin is not one — so the VM path does not reuse it: `app/scrapes/vm-coredns.yaml` scrapes a
+headless Service `coredns-metrics` that the coredns app owns
+(`kubernetes/main/apps/kube-system/coredns/app/service-metrics.yaml`, selector `k8s-app: kube-dns`).
+That keeps CoreDNS metrics independent of kube-prometheus-stack, whose equivalent Service goes away
+with the chart. The endpoint forces `job="coredns"`, so both stores answer the same queries.
 
 File conventions:
 
