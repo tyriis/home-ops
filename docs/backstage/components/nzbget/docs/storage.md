@@ -14,7 +14,7 @@ VolSync replicates the PVC to MinIO (`backup-system`).
 
 ## Media (NFS)
 
-The NAS share `nas.techtales.io:/mnt/tank/media` is mounted read-write.
+The NAS share `nas.techtales.io:/mnt/tank/media` is mounted read-write at `/media`.
 Downloads and post-processing write directly there, not to node disk.
 
 ## RAM (tmpfs, volatile)

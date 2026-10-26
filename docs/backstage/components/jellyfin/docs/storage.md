@@ -8,8 +8,7 @@ No app data writes to node disk. Data lives on the Ceph config PVC, the NAS, or 
 | ------- | -------------------------------- |
 | `data/` | Database, metadata, and settings |
 
-VolSync replicates the PVC to MinIO (`backup-system`). The PVC is ReadWriteOnce:
-scale the deployment to 0 before you mount it somewhere else.
+VolSync replicates the PVC to MinIO (`backup-system`).
 
 ## Media (NFS)
 

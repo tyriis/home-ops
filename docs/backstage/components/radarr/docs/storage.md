@@ -12,8 +12,7 @@ No app data writes to node disk. Data lives on the Ceph config PVC or in RAM.
 | `MediaCover/` | Poster and background cache                    |
 | `Backups/`    | App backups, 1 every 7 days, 28 days retention |
 
-VolSync replicates the PVC to MinIO (`backup-system`). The PVC is ReadWriteOnce:
-scale the deployment to 0 before you mount it somewhere else.
+VolSync replicates the PVC to MinIO (`backup-system`).
 
 Do not mount a volume over `asp/`. If you do, all sessions become invalid on every
 pod restart.
