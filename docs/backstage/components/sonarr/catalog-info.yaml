@@ -4,7 +4,10 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: sonarr
-  description: Sonarr is a PVR for Usenet and BitTorrent users to automate TV show downloads.
+  description: |
+    Sonarr is a PVR for Usenet and BitTorrent users to automate TV show downloads.
+  annotations:
+    backstage.io/techdocs-ref: dir:.
   links:
     - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/media/sonarr
       title: Flux definition
