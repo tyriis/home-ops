@@ -239,13 +239,13 @@ curl -s -H "Authorization: Bearer $T" \
 In run 1 every VM object mirrors a live Prometheus-operator object of the same purpose, so both
 stacks scrape the same thing; the right-hand column is what disappears at cutover. CoreDNS is one of
 them: Prometheus scrapes it through the chart's `kube-prometheus-stack-coredns` `ServiceMonitor`
-(`kube-system`, port `http-metrics`/`9153`, job `coredns`). The CoreDNS chart's own Service
-(`kube-dns`) exposes 53/udp+tcp only — its ports come from the `servers` blocks, and the prometheus
-plugin is not one — so the VM path does not reuse it: `app/scrapes/vm-coredns.yaml` scrapes a
-headless Service `coredns-metrics` that the coredns app owns
-(`kubernetes/main/apps/kube-system/coredns/app/service-metrics.yaml`, selector `k8s-app: kube-dns`).
-That keeps CoreDNS metrics independent of kube-prometheus-stack, whose equivalent Service goes away
-with the chart. The endpoint forces `job="coredns"`, so both stores answer the same queries.
+(`kube-system`, port `http-metrics`/`9153`, job `coredns`). The DNS Service (`kube-dns`) exposes
+53/udp+tcp only — its ports come from the `servers` blocks, and the prometheus plugin is not one —
+so the CoreDNS chart puts the metrics port on a second Service, `coredns-metrics`, rendered when
+`prometheus.service.enabled` is set (the coredns `HelmRelease` sets it).
+`app/scrapes/vm-coredns.yaml` scrapes that one (`app.kubernetes.io/component: metrics`, port
+`metrics`/9153), so CoreDNS metrics do not depend on kube-prometheus-stack and its equivalent
+Service. The endpoint forces `job="coredns"`, so both stores answer the same queries.
 
 File conventions:
 
