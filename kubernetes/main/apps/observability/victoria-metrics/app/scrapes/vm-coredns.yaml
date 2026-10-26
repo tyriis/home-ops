@@ -10,10 +10,13 @@ spec:
       - kube-system
   selector:
     matchLabels:
-      # kube-dns exposes only 53/udp+tcp; the metrics port lives on the chart's headless Service.
-      app: kube-prometheus-stack-coredns
-      release: kube-prometheus-stack
+      app.kubernetes.io/component: metrics
   endpoints:
     - port: http-metrics
       path: /metrics
       interval: 1m
+      relabelConfigs:
+        # job must stay "coredns": dashboards and vendored rules select it, vmagent would name it after the Service.
+        - action: replace
+          targetLabel: job
+          replacement: coredns

@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/core/service_v1.json
+apiVersion: v1
+kind: Service
+metadata:
+  name: coredns-metrics
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/name: coredns
+    app.kubernetes.io/component: metrics
+spec:
+  clusterIP: None
+  selector:
+    k8s-app: kube-dns
+  ports:
+    - name: http-metrics
+      port: 9153
+      protocol: TCP
+      targetPort: 9153
