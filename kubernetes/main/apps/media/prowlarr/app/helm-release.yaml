@@ -95,22 +95,6 @@ spec:
     persistence:
       config:
         existingClaim: ${APP}-config
-      logs:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 128Mi # keep >= 2x Servarr log rotation default: 2 streams x 50 files x 1MB
-        advancedMounts:
-          prowlarr:
-            app:
-              - path: /config/logs
-      tmp:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 32Mi
-        advancedMounts:
-          prowlarr:
-            app:
-              - path: /tmp
       backups:
         type: emptyDir
         medium: Memory
@@ -119,14 +103,6 @@ spec:
           prowlarr:
             app:
               - path: /config/Backups
-      sentry:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 16Mi
-        advancedMounts:
-          prowlarr:
-            app:
-              - path: /config/Sentry
       definitions:
         type: emptyDir
         medium: Memory
@@ -135,3 +111,27 @@ spec:
           prowlarr:
             app:
               - path: /config/Definitions
+      logs:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 128Mi # keep >= 2x Servarr log rotation default: 2 streams x 50 files x 1MB
+        advancedMounts:
+          prowlarr:
+            app:
+              - path: /config/logs
+      sentry:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 16Mi
+        advancedMounts:
+          prowlarr:
+            app:
+              - path: /config/Sentry
+      tmp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 32Mi
+        advancedMounts:
+          prowlarr:
+            app:
+              - path: /tmp

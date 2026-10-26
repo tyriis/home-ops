@@ -102,30 +102,6 @@ spec:
         type: nfs
         server: nas.techtales.io
         path: /mnt/tank/media
-      logs:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 128Mi # keep >= 2x Servarr log rotation default: 2 streams x 50 files x 1MB
-        advancedMounts:
-          radarr:
-            app:
-              - path: /config/logs
-      tmp:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 32Mi
-        advancedMounts:
-          radarr:
-            app:
-              - path: /tmp
-      cache:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 256Mi
-        advancedMounts:
-          radarr:
-            app:
-              - path: /config/MediaCover
       backups:
         type: emptyDir
         medium: Memory
@@ -134,6 +110,22 @@ spec:
           radarr:
             app:
               - path: /config/Backups
+      cache:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 256Mi
+        advancedMounts:
+          radarr:
+            app:
+              - path: /config/MediaCover
+      logs:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 128Mi # keep >= 2x Servarr log rotation default: 2 streams x 50 files x 1MB
+        advancedMounts:
+          radarr:
+            app:
+              - path: /config/logs
       sentry:
         type: emptyDir
         medium: Memory
@@ -142,3 +134,11 @@ spec:
           radarr:
             app:
               - path: /config/Sentry
+      tmp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 32Mi
+        advancedMounts:
+          radarr:
+            app:
+              - path: /tmp

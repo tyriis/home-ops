@@ -94,30 +94,6 @@ spec:
         type: nfs
         server: nas.techtales.io
         path: /mnt/tank/media
-      log:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 128Mi
-        advancedMounts:
-          bazarr:
-            app:
-              - path: /config/log
-      tmp:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 32Mi
-        advancedMounts:
-          bazarr:
-            app:
-              - path: /tmp
-      cache:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 256Mi
-        advancedMounts:
-          bazarr:
-            app:
-              - path: /config/cache
       backup:
         type: emptyDir
         medium: Memory
@@ -126,6 +102,22 @@ spec:
           bazarr:
             app:
               - path: /config/backup
+      cache:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 256Mi
+        advancedMounts:
+          bazarr:
+            app:
+              - path: /config/cache
+      log:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 128Mi
+        advancedMounts:
+          bazarr:
+            app:
+              - path: /config/log
       restore:
         type: emptyDir
         medium: Memory
@@ -134,3 +126,11 @@ spec:
           bazarr:
             app:
               - path: /config/restore
+      tmp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 32Mi
+        advancedMounts:
+          bazarr:
+            app:
+              - path: /tmp
