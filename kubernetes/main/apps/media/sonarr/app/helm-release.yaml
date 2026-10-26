@@ -124,7 +124,3 @@ spec:
         type: emptyDir
         medium: Memory
         sizeLimit: 16Mi
-        advancedMounts:
-          sonarr:
-            app:
-              - path: /tmp
