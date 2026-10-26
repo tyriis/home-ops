@@ -128,5 +128,5 @@ and a Flux `Kustomization` node has no edge to the `HelmRelease` it manages.
 - Comparable tools reviewed and not trialled further: `code-review-graph` (SQLite store, same
   AST-only premise), and the Graphify MCP server, which exposes the same graph to agents and
   therefore inherits every limitation above.
-- The `.gitignore` Graphify block added on 2026-10-02 stays: it is harmless and describes where a
-  future evaluation would write its artifacts.
+- The `.gitignore` Graphify block added on 2026-10-02 is removed with this ADR; a future evaluation
+  adds its own ignore entries.
