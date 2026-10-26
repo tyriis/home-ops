@@ -236,10 +236,12 @@ In run 1 every VM object mirrors a live Prometheus-operator object of the same p
 stacks scrape the same thing; the right-hand column is what disappears at cutover. CoreDNS is one of
 them: Prometheus scrapes it through the chart's `kube-prometheus-stack-coredns` `ServiceMonitor`
 (`kube-system`, port `http-metrics`/`9153`, job `coredns`), and the VM path mirrors that target in
-`app/scrapes/vm-coredns.yaml`, job label included. What it selects is the chart's own headless
-Service `kube-prometheus-stack-coredns` (`app: kube-prometheus-stack-coredns`), not the `kube-dns`
-Service from the CoreDNS chart: only the former carries the `http-metrics`/`9153` port, so a
-selector on `k8s-app: kube-dns` yields no target at all.
+`app/scrapes/vm-coredns.yaml`. It selects the chart's own headless Service
+`kube-prometheus-stack-coredns` (`app: kube-prometheus-stack-coredns`), not the `kube-dns` Service
+from the CoreDNS chart: only the former carries the `http-metrics`/`9153` port, so a selector on
+`k8s-app: kube-dns` yields no target at all. vmagent therefore reports the job as
+`kube-prometheus-stack-coredns` (the Service name), where Prometheus reports `coredns` (the
+Service's `jobLabel` label).
 
 File conventions:
 
