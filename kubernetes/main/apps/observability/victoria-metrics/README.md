@@ -245,7 +245,10 @@ so the CoreDNS chart puts the metrics port on a second Service, `coredns-metrics
 `prometheus.service.enabled` is set (the coredns `HelmRelease` sets it).
 `app/scrapes/vm-coredns.yaml` scrapes that one (`app.kubernetes.io/component: metrics`, port
 `metrics`/9153), so CoreDNS metrics do not depend on kube-prometheus-stack and its equivalent
-Service. The endpoint forces `job="coredns"`, so both stores answer the same queries.
+Service. The job label follows from that: vmagent names it after the Service (`coredns-metrics`),
+where Prometheus keeps `coredns` from the kube-prometheus-stack Service's `jobLabel` label. No query
+in this repo selects the job by name, so no relabel is applied — add a `job` relabel only when a
+dashboard needs the Prometheus name.
 
 File conventions:
 

@@ -15,8 +15,3 @@ spec:
     - port: metrics
       path: /metrics
       interval: 1m
-      relabelConfigs:
-        # job must stay "coredns": dashboards and vendored rules select it, vmagent would name it after the Service.
-        - action: replace
-          targetLabel: job
-          replacement: coredns
