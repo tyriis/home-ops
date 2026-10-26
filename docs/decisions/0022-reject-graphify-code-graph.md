@@ -92,7 +92,13 @@ and a Flux `Kustomization` node has no edge to the `HelmRelease` it manages.
   `mise install --force` discards.
 - Bad: the `techtales.ai/v1` gateway model (`qwen3.8-flash-next`) is a reasoning model; it spends
   output budget on reasoning tokens before emitting JSON, so chunk output must be raised well above
-  the defaults. The 22-ADR run produced no graph and was abandoned.
+  the defaults. Over 34 minutes the 22-ADR run returned hollow responses for all 22 files,
+  truncating at every split depth (three recursion levels, then "partial result kept") and
+  attributing nodes to none of them.
+- Bad: that run then failed outright in `extract`'s build step with
+  `ModuleNotFoundError: No module named 'graphify.build'`. Whether that is a packaging defect in
+  the 0.9.95 artifact or an install artefact of the hand-injected `openai` extra was not
+  investigated further; either way the semantic tier produced no graph at all here.
 
 ### Status quo — chosen
 
@@ -122,5 +128,5 @@ and a Flux `Kustomization` node has no edge to the `HelmRelease` it manages.
 - Comparable tools reviewed and not trialled further: `code-review-graph` (SQLite store, same
   AST-only premise), and the Graphify MCP server, which exposes the same graph to agents and
   therefore inherits every limitation above.
-- The `.gitignore` Graphify block added on 2026-10-02 stays: it is harmless and describes where a
-  future evaluation would write its artifacts.
+- The `.gitignore` Graphify block added on 2026-10-02 is removed with this ADR; a future evaluation
+  adds its own ignore entries.
