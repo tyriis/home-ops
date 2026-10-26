@@ -102,16 +102,43 @@ spec:
         type: nfs
         server: nas.techtales.io
         path: /mnt/tank/media
-      tmpfs:
+      logs:
         type: emptyDir
+        medium: Memory
+        sizeLimit: 128Mi # keep >= 2x Servarr log rotation default: 2 streams x 50 files x 1MB
+        advancedMounts:
+          sonarr:
+            app:
+              - path: /config/logs
+      tmp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 32Mi
+        advancedMounts:
+          sonarr:
+            app:
+              - path: /tmp
+      cache:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 256Mi
+        advancedMounts:
+          sonarr:
+            app:
+              - path: /config/MediaCover
+      backups:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 64Mi
         advancedMounts:
           sonarr:
             app:
               - path: /config/Backups
-                subPath: backup
-              - path: /config/MediaCover
-                subPath: cache
-              - path: /config/logs
-                subPath: logs
-              - path: /tmp
-                subPath: tmp
+      sentry:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 16Mi
+        advancedMounts:
+          sonarr:
+            app:
+              - path: /config/Sentry
