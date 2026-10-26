@@ -110,4 +110,4 @@ spec:
       transcode:
         type: emptyDir
         medium: Memory
-        sizeLimit: 256Mi
+        sizeLimit: 2500Mi

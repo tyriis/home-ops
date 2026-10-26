@@ -113,7 +113,7 @@ spec:
       transcode:
         type: emptyDir
         medium: Memory
-        sizeLimit: 128Mi
+        sizeLimit: 2500Mi
         advancedMounts:
           jellyfin:
             app:
