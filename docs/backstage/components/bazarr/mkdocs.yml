@@ -1,0 +1,9 @@
+---
+site_name: bazarr
+nav:
+  - Home: index.md
+  - Logging: logging.md
+  - Storage: storage.md
+
+plugins:
+  - techdocs-core

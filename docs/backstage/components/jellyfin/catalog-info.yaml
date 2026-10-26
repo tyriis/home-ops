@@ -1,0 +1,30 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: jellyfin
+  description: |
+    Jellyfin is a media server for streaming and organizing movies, TV shows, and music.
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/media/jellyfin
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/jellyfin/jellyfin
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+  tags:
+    - media
+    - streaming
+    - video
+spec:
+  type: service
+  lifecycle: production
+  system: main-cluster
+  owner: home-ops
+  dependsOn:
+    - component:envoy-gateway

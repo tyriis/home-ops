@@ -82,10 +82,7 @@ spec:
         type: nfs
         server: nas.techtales.io
         path: /mnt/tank/media
-      tmpfs:
+      tmp:
         type: emptyDir
-        advancedMounts:
-          nzbget:
-            app:
-              - path: /tmp
-                subPath: tmp
+        medium: Memory
+        sizeLimit: 16Mi

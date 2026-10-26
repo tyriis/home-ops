@@ -46,6 +46,8 @@ spec:
               RADARR__LOG__ANALYTICSENABLED: "False"
               RADARR__LOG__DBENABLED: "False"
               RADARR__LOG__LEVEL: info
+              RADARR__LOG__ROTATE: 1
+              RADARR__LOG__SIZELIMIT: 1
               RADARR__SERVER__PORT: &port 7878
               RADARR__UPDATE__BRANCH: develop
             ports:
@@ -102,16 +104,23 @@ spec:
         type: nfs
         server: nas.techtales.io
         path: /mnt/tank/media
-      tmpfs:
+      logs:
         type: emptyDir
+        medium: Memory
+        sizeLimit: 8Mi
         advancedMounts:
           radarr:
             app:
-              - path: /config/Backups
-                subPath: backup
-              - path: /config/MediaCover
-                subPath: cache
               - path: /config/logs
-                subPath: logs
-              - path: /tmp
-                subPath: tmp
+      sentry:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 8Mi
+        advancedMounts:
+          radarr:
+            app:
+              - path: /config/Sentry
+      tmp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 16Mi

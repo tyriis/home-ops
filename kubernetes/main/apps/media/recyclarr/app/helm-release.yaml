@@ -63,12 +63,15 @@ spec:
           - path: /config/recyclarr.yml
             subPath: recyclarr.yml
             readOnly: true
-      tmpfs:
+      logs:
         type: emptyDir
+        medium: Memory
+        sizeLimit: 16Mi
         advancedMounts:
           recyclarr:
             app:
               - path: /config/logs
-                subPath: logs
-              - path: /tmp
-                subPath: tmp
+      tmp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 16Mi

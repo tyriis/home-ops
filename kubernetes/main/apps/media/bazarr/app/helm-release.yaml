@@ -94,16 +94,15 @@ spec:
         type: nfs
         server: nas.techtales.io
         path: /mnt/tank/media
-      tmpfs:
+      log:
         type: emptyDir
+        medium: Memory
+        sizeLimit: 48Mi
         advancedMounts:
           bazarr:
             app:
-              - path: /config/backup
-                subPath: backup
-              - path: /config/cache
-                subPath: cache
               - path: /config/log
-                subPath: log
-              - path: /tmp
-                subPath: tmp
+      tmp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 16Mi

@@ -43,6 +43,8 @@ spec:
               PROWLARR__LOG__ANALYTICSENABLED: "False"
               PROWLARR__LOG__DBENABLED: "False"
               PROWLARR__LOG__LEVEL: info
+              PROWLARR__LOG__ROTATE: 1
+              PROWLARR__LOG__SIZELIMIT: 1
               PROWLARR__SERVER__PORT: &port 9696
               PROWLARR__UPDATE__BRANCH: develop
             ports:
@@ -95,14 +97,23 @@ spec:
     persistence:
       config:
         existingClaim: ${APP}-config
-      tmpfs:
+      logs:
         type: emptyDir
+        medium: Memory
+        sizeLimit: 8Mi
         advancedMounts:
           prowlarr:
             app:
-              - path: /config/Backups
-                subPath: backup
               - path: /config/logs
-                subPath: logs
-              - path: /tmp
-                subPath: tmp
+      sentry:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 8Mi
+        advancedMounts:
+          prowlarr:
+            app:
+              - path: /config/Sentry
+      tmp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 16Mi

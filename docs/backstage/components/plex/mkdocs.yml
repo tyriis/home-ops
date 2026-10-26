@@ -1,0 +1,8 @@
+---
+site_name: plex
+nav:
+  - Home: index.md
+  - Storage: storage.md
+
+plugins:
+  - techdocs-core
