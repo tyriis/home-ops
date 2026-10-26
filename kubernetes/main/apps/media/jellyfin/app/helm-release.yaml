@@ -91,6 +91,14 @@ spec:
     persistence:
       config:
         existingClaim: ${APP}-config
+      logs:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 32Mi
+        advancedMounts:
+          jellyfin:
+            app:
+              - path: /config/log
       media:
         type: nfs
         server: nas.techtales.io
@@ -98,14 +106,15 @@ spec:
         globalMounts:
           - path: /media
             readOnly: true
-      tmpfs:
+      tmp:
         type: emptyDir
+        medium: Memory
+        sizeLimit: 16Mi
+      transcode:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 128Mi
         advancedMounts:
           jellyfin:
             app:
               - path: /cache
-                subPath: cache
-              - path: /config/log
-                subPath: log
-              - path: /tmp
-                subPath: tmp
