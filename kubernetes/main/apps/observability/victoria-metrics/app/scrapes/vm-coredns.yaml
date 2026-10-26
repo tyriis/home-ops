@@ -10,7 +10,10 @@ spec:
       - kube-system
   selector:
     matchLabels:
-      k8s-app: kube-dns
+      # kube-dns exposes only 53/udp+tcp; the metrics port lives on the chart's headless Service.
+      app: kube-prometheus-stack-coredns
+      release: kube-prometheus-stack
   endpoints:
     - port: http-metrics
       path: /metrics
+      interval: 1m
