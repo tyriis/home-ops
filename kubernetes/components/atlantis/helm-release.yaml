@@ -86,7 +86,11 @@ spec:
               ATLANTIS_DISABLE_AUTOPLAN_LABEL: "no-autoplan"
               ATLANTIS_WRITE_GIT_CREDS: "true"
               ATLANTIS_ENABLE_DIFF_MARKDOWN_FORMAT: "true"
+              # The v0.49.0 image ships no Terraform binary. Atlantis downloads
+              # this version at startup. Keep it within the required_version
+              # range of the managed repos (>= 1.10.0, <= 1.17.0).
               ATLANTIS_DEFAULT_TF_DISTRIBUTION: terraform
+              ATLANTIS_DEFAULT_TF_VERSION: 1.17.0
               ATLANTIS_TF_DISTRIBUTION: terraform
               ATLANTIS_DISCARD_APPROVAL_ON_PLAN: "true"
               ATLANTIS_PORT: *port
