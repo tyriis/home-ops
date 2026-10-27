@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmagent_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMAgent
+metadata:
+  name: vmagent
+spec:
+  replicaCount: 1
+  selectAllByDefault: true
+  scrapeInterval: 1m
+  scrapeTimeout: 30s
+  externalLabels:
+    cluster: utility
+  remoteWrite:
+    # utility-metrics on vmauth allows only /api/v1/write; there is no /insert/ path on a single-node store.
+    - url: http://vmauth.observability.svc.cluster.local:8427/api/v1/write
+      bearerTokenSecret:
+        name: vmagent-remote-write
+        key: token
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi

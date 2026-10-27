@@ -19,3 +19,8 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  dependsOn:
+    - name: victoria-operator
+      namespace: observability
+    - name: victoria-auth
+      namespace: observability

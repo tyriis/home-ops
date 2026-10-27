@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmstaticscrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMStaticScrape
+metadata:
+  name: kube-controller-manager
+spec:
+  # Control-plane VIP: the controller-manager listens on the node, not on a Service.
+  targetEndpoints:
+    - targets:
+        - 192.168.100.30:10257
+      scheme: https
+      path: /metrics
+      interval: 1m
+      bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      tlsConfig:
+        insecureSkipVerify: true
