@@ -5,6 +5,8 @@ kind: VMStaticScrape
 metadata:
   name: kube-scheduler
 spec:
+  # Rules select job="kube-scheduler"; the operator default is staticScrape/<ns>/<name>/<i>.
+  jobName: kube-scheduler
   targetEndpoints:
     - targets:
         - 192.168.100.101:10259

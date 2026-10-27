@@ -5,6 +5,8 @@ kind: VMStaticScrape
 metadata:
   name: kube-controller-manager
 spec:
+  # Rules select job="kube-controller-manager"; the operator default is staticScrape/<ns>/<name>/<i>.
+  jobName: kube-controller-manager
   targetEndpoints:
     - targets:
         - 192.168.100.101:10257

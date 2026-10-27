@@ -14,6 +14,8 @@ spec:
   endpoints:
     - port: https
       path: /metrics
+      interval: 30s
+      scrapeTimeout: 10s
       scheme: https
       tlsConfig:
         insecureSkipVerify: true
