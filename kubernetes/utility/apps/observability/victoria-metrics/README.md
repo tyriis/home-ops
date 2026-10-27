@@ -26,7 +26,7 @@ utility  Prometheus ─▶ 14d TSDB ─▶ Alertmanager ─▶ Telegram / Grafan
 ```
 
 Agent settings: `replicaCount: 1`, `selectAllByDefault: true`, `scrapeInterval: 1m`,
-`scrapeTimeout: 30s`, `externalLabels.cluster: utility`, requests `100m` / `256Mi`, no
+`scrapeTimeout: 10s`, `externalLabels.cluster: utility`, requests `100m` / `256Mi`, no
 `statefulMode`.
 
 ## Write path and token
@@ -51,18 +51,18 @@ Agent settings: `replicaCount: 1`, `selectAllByDefault: true`, `scrapeInterval: 
 10 files in `app/scrapes/`, 12 objects. Job names are taken from utility's live Prometheus scrape
 config, so queries selecting a job keep working against `cluster="utility"`.
 
-| Job                                  | Object                                          | Kind              | Target                                                        |
-| ------------------------------------ | ----------------------------------------------- | ----------------- | ------------------------------------------------------------- |
-| `apiserver`                          | `kube-apiserver`                                | `VMServiceScrape` | `component=apiserver` Service in `default`, https, SA bearer  |
-| `kubelet`                            | `kubelet`, `kubelet-cadvisor`, `kubelet-probes` | `VMNodeScrape`    | node 10250, `kubernetes.io/os=linux`, three paths, job forced |
-| `kube-etcd`                          | `kube-etcd`                                     | `VMStaticScrape`  | `192.168.100.30:2381`, http, SA bearer                        |
-| `kube-scheduler`                     | `kube-scheduler`                                | `VMStaticScrape`  | `192.168.100.30:10259`, https, `insecureSkipVerify`           |
-| `kube-controller-manager`            | `kube-controller-manager`                       | `VMStaticScrape`  | `192.168.100.30:10257`, https, `insecureSkipVerify`           |
-| `coredns`                            | `coredns`                                       | `VMServiceScrape` | `kube-system`, chart Service, `http-metrics`                  |
-| `kube-state-metrics`                 | `kube-state-metrics`                            | `VMServiceScrape` | `observability`, `honorLabels`, two ports                     |
-| `node-exporter`                      | `node-exporter`                                 | `VMServiceScrape` | `observability`, `http-metrics`                               |
-| `kube-prometheus-stack-alertmanager` | `kube-prometheus-stack-alertmanager`            | `VMServiceScrape` | `http-web` + `reloader-web`, job forced                       |
-| `kube-prometheus-stack-operator`     | `kube-prometheus-stack-operator`                | `VMServiceScrape` | https, `insecureSkipVerify`, no bearer, job forced            |
+| Job                                  | Object                                          | Kind              | Target                                                                 |
+| ------------------------------------ | ----------------------------------------------- | ----------------- | ---------------------------------------------------------------------- |
+| `apiserver`                          | `kube-apiserver`                                | `VMServiceScrape` | `component=apiserver` Service in `default`, https, SA bearer           |
+| `kubelet`                            | `kubelet`, `kubelet-cadvisor`, `kubelet-probes` | `VMNodeScrape`    | node 10250, `kubernetes.io/os=linux`, three paths, job and path forced |
+| `kube-etcd`                          | `kube-etcd`                                     | `VMStaticScrape`  | `192.168.100.30:2381`, http, SA bearer                                 |
+| `kube-scheduler`                     | `kube-scheduler`                                | `VMStaticScrape`  | `192.168.100.30:10259`, https, `insecureSkipVerify`                    |
+| `kube-controller-manager`            | `kube-controller-manager`                       | `VMStaticScrape`  | `192.168.100.30:10257`, https, `insecureSkipVerify`                    |
+| `coredns`                            | `coredns`                                       | `VMServiceScrape` | `kube-system`, KPS-rendered Service, `http-metrics`                    |
+| `kube-state-metrics`                 | `kube-state-metrics`                            | `VMServiceScrape` | `observability`, `honorLabels`, two ports                              |
+| `node-exporter`                      | `node-exporter`                                 | `VMServiceScrape` | `observability`, `http-metrics`                                        |
+| `kube-prometheus-stack-alertmanager` | `kube-prometheus-stack-alertmanager`            | `VMServiceScrape` | `http-web` + `reloader-web`, job forced                                |
+| `kube-prometheus-stack-operator`     | `kube-prometheus-stack-operator`                | `VMServiceScrape` | https, `insecureSkipVerify`, no bearer, job forced                     |
 
 The three static targets use the control-plane VIP `192.168.100.30`; util01 is at
 `192.168.100.31` and kubelet is scraped per node, not by address.
@@ -91,10 +91,21 @@ The three static targets use the control-plane VIP `192.168.100.30`; util01 is a
 | `vmalert`                                  | `VMServiceScrape` | `observability/vmalert/app`                 |
 | `observability/victoria-logs-collector`    | `VMPodScrape`     | `observability/victoria-logs-collector/app` |
 
-`metadata.name` is the default job label; the rows that list several jobs take theirs from a service
-label or from a forced `action: replace` on `job`. Intervals: `10s` for `cilium-*` and
-`kubelet-cadvisor`, `30s` for `volsync`, `tuppr`, `cert-manager`, `flux-operator` and
-`smartctl-exporter`, `1m` otherwise.
+The default job name is per kind, not `metadata.name`: a `VMServiceScrape` takes the **selected
+Service's name** (`spec.jobLabel` reads it from a Service label instead), a `VMPodScrape` and a
+`VMNodeScrape` take `<namespace>/<name>`, and a `VMStaticScrape` takes
+`staticScrape/<namespace>/<name>/<i>` unless `spec.jobName` is set. So every object that has to keep
+a Prometheus job name forces it: `coredns` and `apiserver` by `action: replace` (their Services are
+`kube-prometheus-stack-coredns` and `kubernetes`), the cert-manager trio from each Service's
+`app.kubernetes.io/name`, and `kube-etcd`, `kube-scheduler`, `kube-controller-manager` by
+`jobName`.
+
+All three kubelet paths force `job=kubelet` and each forces its own `metrics_path` — `vmagent` does
+not add that label where Prometheus did, and the kubelet and container rules select on it.
+
+Intervals are `10s` for `cilium-*` and `kubelet-cadvisor`, `30s` for `volsync` and `tuppr`, `1m`
+otherwise; scrape timeouts are `10s` everywhere except `cert-manager`, `flux-operator` and
+`smartctl-exporter`, which keep `30s`.
 
 ## Gaps (dual run)
 
