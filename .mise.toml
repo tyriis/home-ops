@@ -10,9 +10,9 @@
 # https://mise-versions.jdx.dev/tools/direnv
 "aqua:direnv/direnv" = "2.38.2"
 # https://mise-versions.jdx.dev/tools/flux2
-"aqua:fluxcd/flux2" = "2.9.6"
+"aqua:fluxcd/flux2" = "2.10.0"
 # https://mise-versions.jdx.dev/tools/flux-operator-mcp
-"aqua:controlplaneio-fluxcd/flux-operator/flux-operator-mcp" = "0.61.0"
+"aqua:controlplaneio-fluxcd/flux-operator/flux-operator-mcp" = "0.62.1"
 # https://mise-versions.jdx.dev/tools/gitleaks
 "aqua:gitleaks/gitleaks" = "8.30.1"
 # https://mise-versions.jdx.dev/tools/helm
