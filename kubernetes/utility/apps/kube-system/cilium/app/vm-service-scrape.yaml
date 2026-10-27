@@ -16,6 +16,15 @@ spec:
       path: /metrics
       interval: 10s
       honorLabels: true
+      relabelConfigs:
+        - action: replace
+          sourceLabels:
+            - __meta_kubernetes_pod_node_name
+          regex: (.*)
+          replacement: $1
+          targetLabel: node
+  targetLabels:
+    - k8s-app
 
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
@@ -36,3 +45,5 @@ spec:
       path: /metrics
       interval: 10s
       honorLabels: true
+  targetLabels:
+    - io.cilium/app

@@ -5,6 +5,7 @@ kind: VMStaticScrape
 metadata:
   name: kube-scheduler
 spec:
+  jobName: kube-scheduler
   # Control-plane VIP: the scheduler listens on the node, not on a Service.
   targetEndpoints:
     - targets:

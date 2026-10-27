@@ -18,3 +18,8 @@ spec:
       path: /metrics
       interval: 1m
       bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      relabelConfigs:
+        # The Service is named kube-prometheus-stack-coredns; the live job is coredns.
+        - action: replace
+          targetLabel: job
+          replacement: coredns

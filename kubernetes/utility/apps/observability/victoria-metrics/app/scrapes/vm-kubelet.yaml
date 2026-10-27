@@ -12,14 +12,18 @@ spec:
   path: /metrics
   scheme: https
   interval: 1m
+  honorLabels: true
   bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
   tlsConfig:
     insecureSkipVerify: true
   relabelConfigs:
-    # job must stay "kubelet" for all three paths: dashboards and rules select it.
     - action: replace
       targetLabel: job
       replacement: kubelet
+    # All three kubelet paths share job=kubelet; the kubelet rules select metrics_path, which vmagent does not add for us.
+    - action: replace
+      targetLabel: metrics_path
+      replacement: /metrics
   metricRelabelConfigs:
     - action: labeldrop
       regex: uid
@@ -44,6 +48,7 @@ spec:
   path: /metrics/cadvisor
   scheme: https
   interval: 10s
+  honorLabels: true
   bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
   tlsConfig:
     insecureSkipVerify: true
@@ -51,6 +56,9 @@ spec:
     - action: replace
       targetLabel: job
       replacement: kubelet
+    - action: replace
+      targetLabel: metrics_path
+      replacement: /metrics/cadvisor
   metricRelabelConfigs:
     - action: drop
       sourceLabels:
@@ -102,6 +110,7 @@ spec:
   path: /metrics/probes
   scheme: https
   interval: 1m
+  honorLabels: true
   bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
   tlsConfig:
     insecureSkipVerify: true
@@ -109,3 +118,6 @@ spec:
     - action: replace
       targetLabel: job
       replacement: kubelet
+    - action: replace
+      targetLabel: metrics_path
+      replacement: /metrics/probes

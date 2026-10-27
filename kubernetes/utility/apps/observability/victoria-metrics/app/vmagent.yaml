@@ -8,7 +8,8 @@ spec:
   replicaCount: 1
   selectAllByDefault: true
   scrapeInterval: 1m
-  scrapeTimeout: 30s
+  # utility's Prometheus uses 10s for every job; cert-manager, flux-operator and smartctl-exporter set 30s themselves.
+  scrapeTimeout: 10s
   externalLabels:
     cluster: utility
   remoteWrite:
