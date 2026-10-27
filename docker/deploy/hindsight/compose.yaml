@@ -76,6 +76,21 @@ services:
       # startup validator rejects reserved > pool.
       HINDSIGHT_API_WORKER_MAX_SLOTS: ${HINDSIGHT_API_WORKER_MAX_SLOTS:-10}
       HINDSIGHT_API_WORKER_CONSOLIDATION_RESERVED_SLOTS: ${HINDSIGHT_API_WORKER_CONSOLIDATION_RESERVED_SLOTS:-2}
+      # Worker identity defaults to a per-boot generated id. The poller only ever
+      # reclaims tasks claimed by its OWN worker id (deliberate upstream design,
+      # poller.py _reclaim_own_processing_tasks), so a hard kill mid-task orphans
+      # the task row in 'processing' forever — a new boot with a new id will not
+      # touch it, and a stranded consolidation op blocks every later trigger for
+      # that bank (observed 2026-10-25: nightly drain 'timed out' for 3 nights on
+      # one zombie op frozen at 8/13 memories). A stable id makes the next boot
+      # reclaim and resume its own in-flight tasks. Safe here because this is a
+      # single-replica stack; do NOT reuse one id across two live replicas.
+      HINDSIGHT_API_WORKER_ID: ${HINDSIGHT_API_WORKER_ID:-}
+      # Consolidation gets its own semaphore lane, decoupled from the global
+      # LLM_MAX_CONCURRENT=1 daytime guard. Auto-consolidation is off, so this
+      # lane only ever activates during the nightly drain (or an explicit
+      # manual trigger); matches the image's consolidation_llm_parallelism=4.
+      HINDSIGHT_API_CONSOLIDATION_LLM_MAX_CONCURRENT: ${HINDSIGHT_API_CONSOLIDATION_LLM_MAX_CONCURRENT:-4}
       # Tags outbound LLM + embedding calls with user=<bank_id> — the gateway
       # (new-api) routes/limits/attributes cost per bank on that tag.
       HINDSIGHT_API_LLM_SEND_BANK_AS_USER: ${HINDSIGHT_API_LLM_SEND_BANK_AS_USER:-false}
