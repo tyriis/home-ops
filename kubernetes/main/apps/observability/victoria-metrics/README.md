@@ -151,7 +151,7 @@ control is the `src_paths` allowlist — the hostname is not a boundary: any tok
 | User              | Token env (Secret key)         | Allowed paths                                | Purpose                                                                           |
 | ----------------- | ------------------------------ | -------------------------------------------- | --------------------------------------------------------------------------------- |
 | `main-metrics`    | `VMAUTH_TOKEN_MAIN_METRICS`    | `/api/v1/write`, `/opentelemetry/v1/metrics` | main vmagent remote write                                                         |
-| `utility-metrics` | `VMAUTH_TOKEN_UTILITY_METRICS` | `/api/v1/write`                              | reserved for the utility dialect migration                                        |
+| `utility-metrics` | `VMAUTH_TOKEN_UTILITY_METRICS` | `/api/v1/write`                              | utility `VMAgent` remote write                                                    |
 | `grafana-read`    | `VMAUTH_TOKEN_GRAFANA_METRICS` | `/api/v1/.*`, `/prometheus/.*`, `/select/.*` | manual read queries in run 1; the Grafana `prometheus` datasource from cutover on |
 | `vmalert-read`    | `VMAUTH_TOKEN_VMALERT_METRICS` | `/api/v1/.*`, `/prometheus/.*`, `/select/.*` | main `VMAlert` datasource                                                         |
 
@@ -394,9 +394,11 @@ kube-prometheus-stack set: the VM side needs a `VMRule`, and the converter is of
 - **Two dialects coexist, and run 1 carries every app rule twice.** Main describes the same targets
   in both spellings — `ServiceMonitor`/`PodMonitor`/`PrometheusRule` for Prometheus,
   `VMServiceScrape`/`VMPodScrape`/`VMRule` for the VM path — while **utility's
-  kube-prometheus-stack is untouched** entirely: it runs its own Prometheus, `ServiceMonitor`s and
-  `PrometheusRule`s and is not scraped into the central store. Utility's `utility-metrics` token
-  exists so that migration is a vmauth-config-only follow-up.
+  kube-prometheus-stack stays enabled**: it keeps its own Prometheus, `ServiceMonitor`s,
+  `PrometheusRule`s and Alertmanager, and keeps paging. Utility ships its own targets to the central
+  store through its own `VMAgent` (see
+  `kubernetes/utility/apps/observability/victoria-metrics/README.md`), so `cluster="utility"` is
+  populated; its rules stay `PrometheusRule`s, so utility alerts do not reach the VM side.
 - **Prometheus still owns alert delivery.** `VMAlert` evaluates the `VMRule` copies from the central
   store but has no notifier in run 1, so a `VMRule` that is wrong, noisy or silent changes nothing
   anybody is paged by. Compare `ALERTS{alertname="…", cluster="main"}` in the two stores before
@@ -473,8 +475,9 @@ series.
 
 - Run 2 (cutover), the list under [Rollout](#rollout): Prometheus off, Grafana datasource switched,
   `VMAlert` notifier enabled, `PrometheusRule`s and monitor generators removed.
-- Migrate utility's kube-prometheus-stack to the same dialect (`utility-metrics` token, VM scrape
-  objects, `VMRule`) and delete its Prometheus.
+- Finish utility's dialect migration: the scrape objects are done
+  (`kubernetes/utility/apps/observability/victoria-metrics/README.md`); what remains is converting
+  its `PrometheusRule`s to `VMRule`s and retiring its Prometheus.
 - Delete main's leftover Prometheus PVC once the cutover has been observed for a retention cycle.
 - Clean up Gatus / public status checks that assert on main's Prometheus endpoint before run 2
   removes it.
