@@ -4,7 +4,7 @@
 # renovate: depName=siderolabs/talos datasource=github-tags
 talosVersion: v1.14.5
 # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
-kubernetesVersion: v1.37.1
+kubernetesVersion: v1.37.2
 
 clusterName: main
 endpoint: https://192.168.100.100:6443
