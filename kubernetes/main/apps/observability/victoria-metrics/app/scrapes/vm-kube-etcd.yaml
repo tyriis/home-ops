@@ -5,6 +5,8 @@ kind: VMStaticScrape
 metadata:
   name: kube-etcd
 spec:
+  # Rules select job="kube-etcd"; the operator default is staticScrape/<ns>/<name>/<i>.
+  jobName: kube-etcd
   targetEndpoints:
     - targets:
         - 192.168.100.101:2381
