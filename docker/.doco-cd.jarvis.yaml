@@ -18,3 +18,9 @@ name: hindsight
 working_dir: docker/jarvis/hindsight
 env_files:
   - .env
+---
+name: node-exporter
+working_dir: docker/deploy/node-exporter
+---
+name: vmagent
+working_dir: docker/jarvis/vmagent

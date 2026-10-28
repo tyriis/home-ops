@@ -152,6 +152,7 @@ control is the `src_paths` allowlist — the hostname is not a boundary: any tok
 | ----------------- | ------------------------------ | -------------------------------------------- | --------------------------------------------------------------------------------- |
 | `main-metrics`    | `VMAUTH_TOKEN_MAIN_METRICS`    | `/api/v1/write`, `/opentelemetry/v1/metrics` | main vmagent remote write                                                         |
 | `utility-metrics` | `VMAUTH_TOKEN_UTILITY_METRICS` | `/api/v1/write`                              | reserved for the utility dialect migration                                        |
+| `jarvis-metrics`  | `VMAUTH_TOKEN_JARVIS_METRICS`  | `/api/v1/write`                              | jarvis host vmagent remote write; **utility path only** (no cluster consumer)     |
 | `grafana-read`    | `VMAUTH_TOKEN_GRAFANA_METRICS` | `/api/v1/.*`, `/prometheus/.*`, `/select/.*` | manual read queries in run 1; the Grafana `prometheus` datasource from cutover on |
 | `vmalert-read`    | `VMAUTH_TOKEN_VMALERT_METRICS` | `/api/v1/.*`, `/prometheus/.*`, `/select/.*` | main `VMAlert` datasource                                                         |
 
@@ -167,6 +168,10 @@ All four keys exist in **two** OpenBao paths, with the same value in each, becau
   Grafana datasource switch in run 2; nothing on main consumes it in run 1.
 - `infra/kubernetes/main/observability/opentelemetry` — `VM_METRICS_TOKEN`, the same value as
   `VMAUTH_TOKEN_MAIN_METRICS`, for the OTel collector's OTLP export.
+- `infra/kubernetes/utility/observability/victoria-auth` — additionally `VMAUTH_TOKEN_JARVIS_METRICS`,
+  the vmauth user for the jarvis host vmagent. No cluster-side consumer, so no main-tree copy; the
+  host-side twin lives encrypted at `docker/jarvis/vmagent/sops.env` (`VM_TOKEN`) and is re-encrypted
+  by hand when the vmauth copy is rotated.
 
 **Rotating a token means patching both copies.** If they diverge, vmauth rejects the cluster-side
 consumer with `401` while the utility side keeps working.
