@@ -1,0 +1,39 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: kube-apiserver
+spec:
+  # The apiserver Service lives in "default"; the operator defaults to its own namespace.
+  namespaceSelector:
+    matchNames:
+      - default
+  selector:
+    matchLabels:
+      component: apiserver
+      provider: kubernetes
+  endpoints:
+    - port: https
+      path: /metrics
+      interval: 1m
+      scheme: https
+      bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      tlsConfig:
+        caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        serverName: kubernetes
+        insecureSkipVerify: false
+      relabelConfigs:
+        # job must stay "apiserver": dashboards and rules select it.
+        - action: replace
+          targetLabel: job
+          replacement: apiserver
+      metricRelabelConfigs:
+        - action: drop
+          sourceLabels:
+            - __name__
+          regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
+        - action: drop
+          sourceLabels:
+            - __name__
+          regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)

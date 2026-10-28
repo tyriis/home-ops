@@ -56,8 +56,9 @@ Left exactly as it was on the Prometheus side:
 
 Dual-run exists so the new path can be checked against real traffic — `up{cluster="main"}` on the
 same targets Prometheus sees, `vmalert_*` evaluation series, and enough days to trust the store —
-before Prometheus history becomes unrecoverable. Reversing run 1 is deleting this app; nothing else
-moves.
+before Prometheus history becomes unrecoverable. Reversing run 1 means deleting this app **and** the
+utility one: dropping only this app leaves utility's `VMAgent` and its scrape objects writing
+`cluster="utility"` into the store.
 
 ### Run 2 — cutover
 
@@ -117,8 +118,9 @@ Prometheus, so its evaluation never depends on the Prometheus it runs beside. It
 `notifier` in run 1**: every `VMRule` is evaluated on schedule and
 `vmalert_alerting_rules_*` / `vmalert_alerts_fired_total` show the result, but no alert leaves the
 pod. Paging stays on Prometheus → the main `Alertmanager`, whose routes, receivers and silences are
-untouched (ADR 0019). Utility keeps its own `vmalert` + rules for the log pipeline; it is not in
-the metrics path.
+untouched (ADR 0019). Utility's own `vmalert` evaluates VictoriaLogs rules only; utility enters the
+metrics path as a second writer through its own `VMAgent` (see the utility app's README), not as an
+alerting leg.
 
 ## Components on main
 
@@ -151,7 +153,7 @@ control is the `src_paths` allowlist — the hostname is not a boundary: any tok
 | User              | Token env (Secret key)         | Allowed paths                                | Purpose                                                                           |
 | ----------------- | ------------------------------ | -------------------------------------------- | --------------------------------------------------------------------------------- |
 | `main-metrics`    | `VMAUTH_TOKEN_MAIN_METRICS`    | `/api/v1/write`, `/opentelemetry/v1/metrics` | main vmagent remote write                                                         |
-| `utility-metrics` | `VMAUTH_TOKEN_UTILITY_METRICS` | `/api/v1/write`                              | reserved for the utility dialect migration                                        |
+| `utility-metrics` | `VMAUTH_TOKEN_UTILITY_METRICS` | `/api/v1/write`                              | utility `VMAgent` remote write                                                    |
 | `grafana-read`    | `VMAUTH_TOKEN_GRAFANA_METRICS` | `/api/v1/.*`, `/prometheus/.*`, `/select/.*` | manual read queries in run 1; the Grafana `prometheus` datasource from cutover on |
 | `vmalert-read`    | `VMAUTH_TOKEN_VMALERT_METRICS` | `/api/v1/.*`, `/prometheus/.*`, `/select/.*` | main `VMAlert` datasource                                                         |
 
@@ -228,13 +230,13 @@ curl -s -H "Authorization: Bearer $T" \
 
 ## Native monitor objects and naming rules
 
-| VictoriaMetrics   | mirrors (replaces at cutover)            | `metadata.name` (= job label) rule                                                                             |
-| ----------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `VMServiceScrape` | `ServiceMonitor`                         | the `ServiceMonitor` name it mirrors — the default job label dashboards, `VMRule` expressions and panels match |
-| `VMPodScrape`     | `PodMonitor`                             | the workload name                                                                                              |
-| `VMNodeScrape`    | node-level target (one per node)         | target purpose, e.g. `kubelet`, `kubelet-cadvisor`                                                             |
-| `VMStaticScrape`  | `additionalScrapeConfigs` static targets | the component, e.g. `kube-scheduler`                                                                           |
-| `VMProbe`         | `Probe` (blackbox exporter)              | the probe name                                                                                                 |
+| VictoriaMetrics   | mirrors (replaces at cutover)            | default `job` label rule                                                                                                                                           |
+| ----------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `VMServiceScrape` | `ServiceMonitor`                         | the **selected Service's name**, not the object name; where they differ (`kube-prometheus-stack-coredns`, `kubernetes`) a `job` relabel restores the mirrored name |
+| `VMPodScrape`     | `PodMonitor`                             | `<namespace>/<name>`; `job` is forced wherever dashboards and rules select the workload name                                                                       |
+| `VMNodeScrape`    | node-level target (one per node)         | `<namespace>/<name>`; the three kubelet objects force `job=kubelet`                                                                                                |
+| `VMStaticScrape`  | `additionalScrapeConfigs` static targets | `spec.jobName` when set, else `staticScrape/<namespace>/<name>/<i>` — the component name is always set explicitly                                                  |
+| `VMProbe`         | `Probe` (blackbox exporter)              | the probe name                                                                                                                                                     |
 
 In run 1 every VM object mirrors a live Prometheus-operator object of the same purpose, so both
 stacks scrape the same thing; the right-hand column is what disappears at cutover. CoreDNS is one of
@@ -258,14 +260,17 @@ File conventions:
 - **2. App-owned scrapes** live next to the app that owns the Service, exactly where the
   `ServiceMonitor` lives: `<app>/app/vm-service-scrape.yaml`, or `<app>/app/vm-pod-scrape.yaml`
   when the target is pod-level. One object per file, file name = kind in kebab case.
-- **3.** `metadata.name` is the **default job label**, not the file name: normally the name the
-  `ServiceMonitor`/`PodMonitor` it mirrors has (`cleanPrometheusOperatorObjectNames: true` made
-  those the plain component names). Where the live job differs — operator-generated monitors
-  namespace-prefix it (`cnpg-system/postgres17`, `media/immich-db`), chart-rendered ones derive it
-  from the chart or the Service (`grafana-service`, `external-secrets-metrics`), and one target
-  split across several objects shares a single job (`kubelet-cadvisor` → `kubelet`) — an explicit
-  `action: replace` relabel on `job` carries the historical name. The object name and that forced
-  value then live apart and must be kept in sync by hand.
+- **3.** `metadata.name` is **not** the job label: a `VMServiceScrape` job defaults to the selected
+  Service's name, a `VMPodScrape`/`VMNodeScrape` to `<namespace>/<name>`, a `VMStaticScrape` to
+  `staticScrape/<namespace>/<name>/<i>` unless `spec.jobName` is set. Names still follow the
+  `ServiceMonitor`/`PodMonitor` they mirror (`cleanPrometheusOperatorObjectNames: true` made those the
+  plain component names), so the two agree only where the Service carries the component's name. Where
+  the live job differs — operator-generated monitors namespace-prefix it (`cnpg-system/postgres17`,
+  `media/immich-db`), chart-rendered ones derive it from the chart or the Service
+  (`grafana-service`, `external-secrets-metrics`), and one target split across several objects shares
+  a single job (`kubelet-cadvisor` → `kubelet`) — an explicit `action: replace` relabel on `job`
+  carries the historical name. The object name and that forced value then live apart and must be
+  kept in sync by hand.
 - **4.** No `generated-*` objects, and no new `kind: ServiceMonitor` / `PodMonitor` /
   `PrometheusRule` is added for the VM path: the converter is disabled, so such an object would be
   inert rather than translated. The Prometheus-operator objects that already exist stay, for
@@ -360,7 +365,7 @@ kube-prometheus-stack set: the VM side needs a `VMRule`, and the converter is of
   apiVersion: operator.victoriametrics.com/v1beta1
   kind: VMServiceScrape
   metadata:
-    name: my-app # = default job label; reuse the old ServiceMonitor name
+    name: my-app # object name, not the job; the job defaults to the selected Service's name
   spec:
     namespaceSelector:
       matchNames:
@@ -379,7 +384,8 @@ kube-prometheus-stack set: the VM side needs a `VMRule`, and the converter is of
 - **4.** Nothing else: `selectAllByDefault: true` on the `VMAgent` means every VM scrape object in
   the cluster is picked up on the next config reconcile — no Helm values, no `vmagent` restart.
 - **5.** Verify: `kubectl --context admin@main -n <ns> get vmservicescrape my-app`, then query
-  `up{job="my-app", cluster="main"}` against `https://metrics.techtales.io` (read token). A new
+  `up{job="<service name>", cluster="main"}` against `https://metrics.techtales.io` (read token) —
+  the job is the Service name, which is only `my-app` here if the Service is named that. A new
   target that is up but has no samples usually means a wrong `port` name or `matchLabels`.
 - **6.** If the metric set is large, copy the `metricRelabelConfigs` drops from the
   `ServiceMonitor` verbatim — they are cardinality control for the **central** store, and copying
@@ -394,9 +400,11 @@ kube-prometheus-stack set: the VM side needs a `VMRule`, and the converter is of
 - **Two dialects coexist, and run 1 carries every app rule twice.** Main describes the same targets
   in both spellings — `ServiceMonitor`/`PodMonitor`/`PrometheusRule` for Prometheus,
   `VMServiceScrape`/`VMPodScrape`/`VMRule` for the VM path — while **utility's
-  kube-prometheus-stack is untouched** entirely: it runs its own Prometheus, `ServiceMonitor`s and
-  `PrometheusRule`s and is not scraped into the central store. Utility's `utility-metrics` token
-  exists so that migration is a vmauth-config-only follow-up.
+  kube-prometheus-stack stays enabled**: it keeps its own Prometheus, `ServiceMonitor`s,
+  `PrometheusRule`s and Alertmanager, and keeps paging. Utility ships its own targets to the central
+  store through its own `VMAgent` (see
+  `kubernetes/utility/apps/observability/victoria-metrics/README.md`), so `cluster="utility"` is
+  populated; its rules stay `PrometheusRule`s, so utility alerts do not reach the VM side.
 - **Prometheus still owns alert delivery.** `VMAlert` evaluates the `VMRule` copies from the central
   store but has no notifier in run 1, so a `VMRule` that is wrong, noisy or silent changes nothing
   anybody is paged by. Compare `ALERTS{alertname="…", cluster="main"}` in the two stores before
@@ -421,6 +429,10 @@ kube-prometheus-stack set: the VM side needs a `VMRule`, and the converter is of
 - `kube-prometheus-stack-prometheus` is a gap by design: `vmagent` does not scrape the Prometheus
   server's own `/metrics`, so the chart's 23 self-monitoring alerts have no `VMRule` twin and no
   series to evaluate. See the vendored-rules section.
+- Main's kubelet objects separate `kubelet`, `kubelet-cadvisor` and `kubelet-probes` by `job` alone:
+  they force `job=kubelet` but do not add the `metrics_path` label the vendored kubelet and container
+  rules select, which utility's three `VMNodeScrape`s now set per path. Rules selecting
+  `metrics_path` therefore match the utility series only.
 - Main has no local store, so a utility outage means **no metrics on main** (and no queries at
   all). The 5Gi queue protects writes only; dashboards fail during the outage.
 - `VMSingle` is single-node, no replication: `local-nvme` on util01 means losing the node loses
@@ -473,8 +485,9 @@ series.
 
 - Run 2 (cutover), the list under [Rollout](#rollout): Prometheus off, Grafana datasource switched,
   `VMAlert` notifier enabled, `PrometheusRule`s and monitor generators removed.
-- Migrate utility's kube-prometheus-stack to the same dialect (`utility-metrics` token, VM scrape
-  objects, `VMRule`) and delete its Prometheus.
+- Finish utility's dialect migration: the scrape objects are done
+  (`kubernetes/utility/apps/observability/victoria-metrics/README.md`); what remains is converting
+  its `PrometheusRule`s to `VMRule`s and retiring its Prometheus.
 - Delete main's leftover Prometheus PVC once the cutover has been observed for a retention cycle.
 - Clean up Gatus / public status checks that assert on main's Prometheus endpoint before run 2
   removes it.
