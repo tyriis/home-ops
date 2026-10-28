@@ -15,3 +15,14 @@
 include:
   - path: ../../deploy/tailscale/compose.yaml
     project_directory: .
+
+services:
+  tailscale:
+    volumes:
+      - type: volume
+        source: data
+        target: /var/lib/tailscale
+        read_only: false
+
+volumes:
+  data: {}

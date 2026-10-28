@@ -43,11 +43,6 @@ services:
     tmpfs:
       - /var/run/tailscale:mode=0755
     tty: false
-    volumes:
-      - type: bind
-        source: ${DATA_PATH}
-        target: /var/lib/tailscale
-        read_only: false
-        bind:
-          create_host_path: false
-          propagation: rprivate
+    # State volume is supplied per host by the include shim (compose include-merge
+    # APPENDS lists, so a host cannot override a volume declared here — it must come
+    # from the host file). synology: bind to ${DATA_PATH}; bifrost: named volume.
