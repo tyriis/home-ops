@@ -27,8 +27,8 @@ name: victoria-logs-collector
 working_dir: docker/bifrost/victoria-logs-collector
 env_files:
   - .env
----
-name: tailscale
-working_dir: docker/bifrost/tailscale
-env_files:
-  - .env
+# tailscale is NOT deployed on this host. The Lightwhale image cannot provide a
+# boot-reliable subnet router: persistent /etc mounts at S11persistence while rcS
+# runs strictly forward, a cut-down netfilter kernel, and a clean reboot that hung
+# and required a hard reset (see #11420). Runtime worked; boot reliability did not.
+# Stack files remain in docker/bifrost/tailscale/ for a future migration target.
