@@ -1,0 +1,7 @@
+---
+site_name: victoria-metrics
+nav:
+  - Home: index.md
+
+plugins:
+  - techdocs-core
