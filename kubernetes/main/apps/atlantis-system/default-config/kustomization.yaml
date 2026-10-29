@@ -5,9 +5,6 @@ kind: Kustomization
 resources:
   - ./external-secret.yaml
 configMapGenerator:
-  - name: atlantis-default-config
-    files:
-      - repos.yaml=./resources/repos.yaml
   - name: atlantis-default-scripts
     files:
       - allow_list.sh=./resources/allow_list.sh

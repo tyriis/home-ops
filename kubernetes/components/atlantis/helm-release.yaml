@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: ${APP}
 spec:
-  interval: 30m
+  interval: 15m
   driftDetection:
     mode: enabled
   chart:
@@ -104,11 +104,8 @@ spec:
               ATLANTIS_STATS_NAMESPACE: ${APP}
               ATLANTIS_REPO_ALLOWLIST: ${REPO}
               AWS_REGION: home
-              AWS_ENDPOINT_URL_S3: https://s3.nas.techtales.io/
+              # AWS_ENDPOINT_URL_S3 is set per instance via helm-release.patch.yaml.
               AWS_S3_FORCE_PATH_STYLE: "true"
-            envFrom:
-              - secretRef:
-                  name: ${APP}-env
 
             securityContext:
               allowPrivilegeEscalation: false
@@ -130,7 +127,6 @@ spec:
 
     serviceMonitor:
       metrics:
-        serviceName: ${APP}
         endpoints:
           - port: http
             scheme: http
@@ -179,15 +175,7 @@ spec:
                   value: /events
 
     persistence:
-      config:
-        type: configMap
-        name: atlantis-default-config
-        advancedMounts:
-          main:
-            app:
-              - path: /etc/atlantis/repos.yaml
-                subPath: repos.yaml
-                readOnly: true
+      # config (repos.yaml) is mounted per instance via helm-release.patch.yaml.
       scripts:
         type: configMap
         name: atlantis-default-scripts
