@@ -1,6 +1,13 @@
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmrule_v1beta1.json
 # Ref: chart kube-prometheus-stack 92.13.1, PrometheusRule kube-prometheus-stack-node.rules
+# Local change (2026-10-29): The node-exporter selectors in the memory-sum and the
+# cpu-utilization rule add cluster!="". Off-cluster hosts (jarvis: host=jarvis, no
+# cluster label) write to the central store. They add a label-less result series.
+# vmalert then adds its external label cluster=main to that result, which equals
+# the main sum. vmalert rejects the duplicate labelset and the rule writes
+# nothing. The filter keeps those hosts out of the cluster sums. See
+# https://docs.victoriametrics.com/victoriametrics/vmalert/#series-with-the-same-labelset
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMRule
 metadata:
@@ -24,19 +31,19 @@ spec:
           record: node:node_num_cpu:sum
         - expr: |-
             sum(
-              node_memory_MemAvailable_bytes{job="node-exporter"} or
+              node_memory_MemAvailable_bytes{job="node-exporter",cluster!=""} or
               (
-                node_memory_Buffers_bytes{job="node-exporter"} +
-                node_memory_Cached_bytes{job="node-exporter"} +
-                node_memory_MemFree_bytes{job="node-exporter"} +
-                node_memory_Slab_bytes{job="node-exporter"}
+                node_memory_Buffers_bytes{job="node-exporter",cluster!=""} +
+                node_memory_Cached_bytes{job="node-exporter",cluster!=""} +
+                node_memory_MemFree_bytes{job="node-exporter",cluster!=""} +
+                node_memory_Slab_bytes{job="node-exporter",cluster!=""}
               )
             ) by (cluster)
           record: :node_memory_MemAvailable_bytes:sum
         - expr: |-
             avg by (cluster, node) (
               sum without (mode) (
-                rate(node_cpu_seconds_total{mode!="idle",mode!="iowait",mode!="steal",job="node-exporter"}[5m])
+                rate(node_cpu_seconds_total{mode!="idle",mode!="iowait",mode!="steal",job="node-exporter",cluster!=""}[5m])
               )
             )
           record: node:node_cpu_utilization:ratio_rate5m
