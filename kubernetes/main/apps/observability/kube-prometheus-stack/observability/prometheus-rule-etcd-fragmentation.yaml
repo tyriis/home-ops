@@ -1,20 +1,8 @@
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/prometheusrule_v1.json
-# Override of the chart-bundled default rule etcdDatabaseHighFragmentationRatio
-# (group etcd, kube-prometheus-stack). The prometheus-operator annotations below
-# make the operator REPLACE the default rule; a plain same-name rule would run
-# alongside it and alert twice.
-#
-# Why: the default fires whenever in-use/total < 0.5. Our control-plane etcd is
-# a small DB (about 0.35 GiB total, 0.14 GiB in use). bbolt never releases
-# pages to disk, so the ratio drifts below 0.5 by design once the DB settles.
-# The default rule has no for-duration, so the alert flaps on every sample that
-# crosses the threshold. The 100 MiB floor does not help at this size.
-#
-# New condition keeps the ratio check but adds a materiality floor: at least
-# 2 GiB of the allocated file must be fragmented waste. 210 MiB of slack in a
-# 350 MiB DB is harmless; 2 GiB of waste in a large DB slows fsync and defrag
-# and is worth paging for. for: 1h removes the 30s-threshold jitter.
+# Replaces the chart-bundled etcdDatabaseHighFragmentationRatio via the
+# prometheus-operator group/alert annotations. Rationale and defrag runbook:
+# docs/backstage/components/kube-prometheus-stack/docs/index.md
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
