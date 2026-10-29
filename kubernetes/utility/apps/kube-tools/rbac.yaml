@@ -176,7 +176,7 @@ metadata:
   name: kubectl-readonly-kube-prometheus-stack
 rules:
   - apiGroups: [monitoring.coreos.com]
-    resources: [alertmanagers, scrapeconfigs]
+    resources: [alertmanagers, scrapeconfigs, servicemonitors]
     verbs: [get, list, watch]
 
 ---
