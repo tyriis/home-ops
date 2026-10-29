@@ -6,7 +6,8 @@ The `nas` system is a dedicated TrueNAS storage server (AOOSTAR WTR Pro — Inte
 
 - **NFS shares** served to the Kubernetes clusters and consumed via the `csi-driver-nfs` CSI driver.
 - **ZFS storage** with encrypted (AES-256-GCM) mirrored pool and named datasets.
-- **MinIO** as an S3-compatible object store, used as a VolSync replication target.
+- **MinIO S3 endpoint** on the shared `pgsty/silo` image, run as a doco-cd compose stack instead of a TrueNAS middleware app; used as a VolSync replication target.
+- **TLS** for `minio.techtales.io` / `s3.techtales.io` terminated by nginx-proxy-manager in front of the S3 endpoint.
 - **doco-cd workloads** deployed from this repository.
 
 ## Documentation
