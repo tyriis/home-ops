@@ -46,9 +46,7 @@ natively via `talosctl etcd`, so no shell access to the etcd member is necessary
 a time. Defrag blocks reads and writes on that member briefly while it rebuilds. Followers first,
 leader last.
 
-1. Show DB size, in-use percentage and leader per member:
-   `talosctl -n 192.168.100.101,192.168.100.102,192.168.100.103 etcd status`
+1. Show DB size, in-use percentage and leader per member: `talosctl -n 192.168.100.101,192.168.100.102,192.168.100.103 etcd status`
 2. Defragment one follower: `talosctl -n <follower-ip> etcd defrag`
 3. Repeat for the second follower, then the leader (the LEADER column names it).
-4. Re-run step 1 — the DB SIZE column should closely match the IN USE column
-   (in-use ratio back to ~100% per member).
+4. Re-run step 1. The DB SIZE column should closely match the IN USE column, with the in-use ratio back to ~100% per member.
