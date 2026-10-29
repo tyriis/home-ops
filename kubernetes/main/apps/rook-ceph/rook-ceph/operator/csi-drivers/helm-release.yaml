@@ -1,0 +1,61 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ceph-csi-drivers
+spec:
+  interval: 30m
+  dependsOn:
+    - name: rook-ceph
+  chartRef:
+    kind: OCIRepository
+    name: ceph-csi-drivers
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  # pins preserve the Driver/OperatorConfig CRs Rook 1.19.6 created on Helm adoption; chart defaults (30/1/on/false) would overwrite them
+  values:
+    operatorConfig:
+      name: ceph-csi-operator-config
+      namespace: rook-ceph
+      create: true
+      driverSpecDefaults:
+        clusterName: rook-ceph
+        grpcTimeout: 150
+        snapshotPolicy: volumeSnapshot
+        imageSet:
+          name: rook-csi-operator-image-set-configmap
+        log:
+          rotation:
+            enabled: false
+        nodePlugin:
+          priorityClassName: system-node-critical
+        controllerPlugin:
+          priorityClassName: system-cluster-critical
+          replicas: 2
+          hostNetwork: true
+    drivers:
+      rbd:
+        enabled: true
+        name: rook-ceph.rbd.csi.ceph.com
+        clusterName: rook-ceph
+        grpcTimeout: 150
+        snapshotPolicy: volumeSnapshot
+        log:
+          rotation:
+            enabled: false
+        controllerPlugin:
+          replicas: 2
+      cephfs:
+        enabled: false
+      nfs:
+        enabled: false
+      nvmeof:
+        enabled: false

@@ -6,6 +6,8 @@ metadata:
   name: rook-ceph-cluster
 spec:
   interval: 30m
+  dependsOn:
+    - name: ceph-csi-drivers
   chartRef:
     kind: OCIRepository
     name: rook-ceph-cluster
@@ -47,9 +49,9 @@ spec:
             namespace: networking
             sectionName: https
 
+    cephImage:
+      tag: v19.2.3 # chart default is v20.2.4; unpin only in the dedicated Ceph upgrade
     cephClusterSpec:
-      csi:
-        rookUseCsiOperator: true
       dashboard:
         urlPrefix: /
         ssl: false
