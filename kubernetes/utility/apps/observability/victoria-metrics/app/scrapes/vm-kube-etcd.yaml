@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmstaticscrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMStaticScrape
+metadata:
+  name: kube-etcd
+spec:
+  jobName: kube-etcd
+  # Control-plane VIP: the single etcd member publishes its metrics there.
+  targetEndpoints:
+    - targets:
+        - 192.168.100.30:2381
+      scheme: http
+      path: /metrics
+      interval: 1m
+      bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token

@@ -42,11 +42,14 @@ spec:
               - /bin/sh
               - -ec
               - |
+                # The kubelet sets status.message on shutdown, but its next status sync overwrites it.
+                # The DisruptionTarget condition keeps the marker, so read the conditions column too.
+                # Do not switch this back to go-template output: app-template renders templating syntax inside values.
                 kubectl get pods \
                   --all-namespaces \
-                  -o custom-columns=NS:.metadata.namespace,NAME:.metadata.name,MSG:.status.message \
+                  -o custom-columns=NS:.metadata.namespace,NAME:.metadata.name,MSG:.status.message,COND:.status.conditions \
                   --no-headers \
-                  | grep "Pod was terminated in response to imminent node shutdown." \
+                  | grep -F "Pod was terminated in response to imminent node shutdown." \
                   | awk '{print $1, $2}' \
                   | xargs -r -n2 kubectl delete pod -n || true
             resources:

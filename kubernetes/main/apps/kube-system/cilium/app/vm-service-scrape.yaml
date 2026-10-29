@@ -16,6 +16,7 @@ spec:
     - port: metrics
       honorLabels: true
       path: /metrics
+      interval: 10s
   targetLabels:
     - io.cilium/app
 
@@ -36,5 +37,6 @@ spec:
     - port: metrics
       honorLabels: true
       path: /metrics
+      interval: 10s
   targetLabels:
     - k8s-app

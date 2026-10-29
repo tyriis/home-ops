@@ -7,3 +7,4 @@ resources:
   - ./helm-release.yaml
   - ./rules.configmap.yaml
   - ./network-policy.yaml
+  - ./vm-service-scrape.yaml

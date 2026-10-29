@@ -1,0 +1,54 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
+# job must stay the per-Service app.kubernetes.io/name value (cainjector / cert-manager / webhook):
+# dashboards and rules select those names.
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: cert-manager
+spec:
+  namespaceSelector:
+    matchNames:
+      - cert-manager
+  selector:
+    matchExpressions:
+      - key: app.kubernetes.io/name
+        operator: In
+        values:
+          - cainjector
+          - cert-manager
+          - webhook
+      - key: app.kubernetes.io/instance
+        operator: In
+        values:
+          - cert-manager
+      - key: app.kubernetes.io/component
+        operator: In
+        values:
+          - cainjector
+          - controller
+          - webhook
+  endpoints:
+    - port: http-metrics
+      path: /metrics
+      interval: 1m
+      scrapeTimeout: 30s
+      relabelConfigs:
+        - action: replace
+          sourceLabels:
+            - __meta_kubernetes_service_label_app_kubernetes_io_name
+          regex: (.+)
+          replacement: $1
+          targetLabel: job
+    # cert-manager-webhook exposes its 9402 port as "metrics", so the http-metrics port never resolves there.
+    - port: metrics
+      path: /metrics
+      interval: 1m
+      scrapeTimeout: 30s
+      relabelConfigs:
+        - action: replace
+          sourceLabels:
+            - __meta_kubernetes_service_label_app_kubernetes_io_name
+          regex: (.+)
+          replacement: $1
+          targetLabel: job

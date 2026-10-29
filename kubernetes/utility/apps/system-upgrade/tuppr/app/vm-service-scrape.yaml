@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: tuppr-metrics-service
+spec:
+  namespaceSelector:
+    matchNames:
+      - system-upgrade
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: tuppr
+      app.kubernetes.io/name: tuppr
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: 30s

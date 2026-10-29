@@ -12,6 +12,14 @@ include:
 
 services:
   tailscale:
+    volumes:
+      - type: bind
+        source: ${DATA_PATH}
+        target: /var/lib/tailscale
+        read_only: false
+        bind:
+          create_host_path: false
+          propagation: rprivate
     logging:
       driver: json-file
       options:

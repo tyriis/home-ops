@@ -1,0 +1,24 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmpodscrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
+metadata:
+  name: cnpg-operator-cloudnative-pg
+spec:
+  namespaceSelector:
+    matchNames:
+      - cnpg-system
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: cnpg-operator
+      app.kubernetes.io/name: cloudnative-pg
+  podMetricsEndpoints:
+    - port: metrics
+      path: /metrics
+      interval: 1m
+      relabelConfigs:
+        # job must stay cnpg-system/cnpg-operator-cloudnative-pg: Prometheus' PodMonitor
+        # already emits the namespace-prefixed job and the CNPG dashboards select it.
+        - action: replace
+          targetLabel: job
+          replacement: cnpg-system/cnpg-operator-cloudnative-pg
