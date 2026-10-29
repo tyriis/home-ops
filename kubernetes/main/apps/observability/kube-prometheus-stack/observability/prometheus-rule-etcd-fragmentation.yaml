@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/prometheusrule_v1.json
+# Override of the chart-bundled default rule etcdDatabaseHighFragmentationRatio
+# (group etcd, kube-prometheus-stack). The prometheus-operator annotations below
+# make the operator REPLACE the default rule; a plain same-name rule would run
+# alongside it and alert twice.
+#
+# Why: the default fires whenever in-use/total < 0.5. Our control-plane etcd is
+# a small DB (about 0.35 GiB total, 0.14 GiB in use). bbolt never releases
+# pages to disk, so the ratio drifts below 0.5 by design once the DB settles.
+# The default rule has no for-duration, so the alert flaps on every sample that
+# crosses the threshold. The 100 MiB floor does not help at this size.
+#
+# New condition keeps the ratio check but adds a materiality floor: at least
+# 2 GiB of the allocated file must be fragmented waste. 210 MiB of slack in a
+# 350 MiB DB is harmless; 2 GiB of waste in a large DB slows fsync and defrag
+# and is worth paging for. for: 1h removes the 30s-threshold jitter.
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: etcd-fragmentation-override
+  labels:
+    operator.prometheus.io/prometheus-operator: "true"
+  annotations:
+    operator.prometheus.io/group: etcd
+    operator.prometheus.io/alert: etcdDatabaseHighFragmentationRatio
+spec:
+  groups:
+    - name: etcd
+      rules:
+        - alert: etcdDatabaseHighFragmentationRatio
+          annotations:
+            description: 'etcd cluster "{{ $labels.job }}": database size in use on instance {{ $labels.instance }} is {{ $value | humanizePercentage }} of the actual allocated disk space and at least 2 GiB of the file is fragmented, please run defragmentation (e.g. etcdctl defrag) to retrieve the unused fragmented disk space.'
+            runbook_url: https://runbooks.prometheus-operator.dev/runbooks/etcd/etcddatabasehighfragmentationratio
+            summary: 'etcd database fragmentation is material: in-use is below 50% of allocated and more than 2 GiB is wasted.'
+          expr: |
+            (last_over_time(etcd_mvcc_db_total_size_in_use_in_bytes{job=~".*etcd.*"}[5m]) / last_over_time(etcd_mvcc_db_total_size_in_bytes{job=~".*etcd.*"}[5m])) < 0.5
+            and
+            (last_over_time(etcd_mvcc_db_total_size_in_bytes{job=~".*etcd.*"}[5m]) - last_over_time(etcd_mvcc_db_total_size_in_use_in_bytes{job=~".*etcd.*"}[5m])) > 2147483648
+          for: 1h
+          labels:
+            severity: warning
