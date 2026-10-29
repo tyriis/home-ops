@@ -127,7 +127,6 @@ spec:
 
     serviceMonitor:
       metrics:
-        serviceName: ${APP}
         endpoints:
           - port: http
             scheme: http
