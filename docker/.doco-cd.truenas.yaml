@@ -14,3 +14,8 @@ env_files:
 ---
 name: victoria-logs-collector
 working_dir: docker/truenas/victoria-logs-collector
+---
+name: minio
+working_dir: docker/truenas/minio
+env_files:
+  - .env
