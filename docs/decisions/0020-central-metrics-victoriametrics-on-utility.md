@@ -66,19 +66,22 @@ The outcome below describes the end state. It is implemented in two rollout phas
   silently translated — explicit is the point.
 - **2. Headless `VMAgent` on main.** No local store and no query path: `statefulMode` with a 5Gi
   `ceph-block` persistent queue, `externalLabels.cluster: main`, remote-writing to
-  `https://metrics.techtales.io/insert/prometheus/api/v1/write` with the `main-metrics` token.
+  `https://metrics.techtales.io/api/v1/write` with the `main-metrics` token. A single-node
+  `VMSingle` serves `/api/v1/write` itself; the `/insert/*` paths belong to cluster-mode
+  `vminsert`.
 - **3. One `VMSingle` on utility** (30d retention, 50Gi `local-nvme`, 100m/512Mi requests), not
   routable on its own: everything goes through `vmauth` (`victoria-auth`) on
   `metrics.techtales.io`, which already fronts `logs.techtales.io` and `vmalert.techtales.io`.
-- **4. Per-cluster tokens, per-cluster revocation.** `main-metrics` and `utility-metrics` are
-  write-only (`/insert/.*`), `grafana-read` and `vmalert-read` are read-only
+- **4. Per-cluster tokens, per-cluster revocation.** `main-metrics` may call `/api/v1/write` and
+  `/opentelemetry/v1/metrics`, `utility-metrics` only `/api/v1/write`; `grafana-read` and
+  `vmalert-read` are read-only
   (`/api/v1/.*`, `/prometheus/.*`, `/select/.*`). The values live in the utility path
   `infra/kubernetes/utility/observability/victoria-auth`, which `vmauth` reads; because a
   cluster's `ClusterSecretStore` only grants its own tree, the main-side consumers carry copies
   under `infra/kubernetes/main/observability/`, with rotation touching both. Revoking the main
   cluster's write access is one key rotation; no other unit is affected.
-- **5. Alerting stays on main.** The 11 `PrometheusRule` manifests become 11 `VMRule`s (twin copies
-  during phase 1), evaluated by
+- **5. Alerting stays on main.** The 45 `VMRule`s (33 vendored from kube-prometheus-stack
+  92.13.1, 12 app-owned) twin the corresponding `PrometheusRule`s during phase 1, evaluated by
   a `VMAlert` CR on main whose datasource is the central store (through vmauth, `vmalert-read`)
   and whose notifier is the in-cluster, headless Alertmanager
   (`alertmanager-operated.observability.svc.cluster.local:9093`). Alertmanager, its CRDs and its
@@ -91,9 +94,20 @@ The outcome below describes the end state. It is implemented in two rollout phas
   `type: prometheus`; only `url` changes to `https://metrics.techtales.io` with a bearer header
   taken from `VMAUTH_METRICS_AUTHORIZATION`. Dashboards are deliberately not edited, in phase 1 or
   at cutover.
-- **8. Utility's own kube-prometheus-stack is untouched.** It keeps running Prometheus,
-  ServiceMonitors and PrometheusRules until a follow-up migrates that cluster too; the
-  `utility-metrics` token exists so that migration is a config-only change.
+- **8. Utility runs its own headless `VMAgent` into the same store.** It is stateless — in-cluster
+  write to `vmauth` with the `utility-metrics` token, `externalLabels.cluster: utility`, no
+  persistent queue — and brings utility's native scrape objects with it. Utility's Prometheus,
+  ServiceMonitors, PrometheusRules and Alertmanager stay authoritative until the separate cutover.
+
+### The store is shared, so rules must be cluster-scoped
+
+Main's `VMAlert` evaluates its rules over the whole store with `selectAllByDefault`, so it now reads
+utility's series too. Several vendored rules are cluster-blind and would fire on the wrong cluster:
+`absent(up{job="kube-scheduler"})`, `KubeControllerManagerDown`, `KubeAPIDown`, etcd's
+`or 0*absent(etcd_…)` guards, and recording rules such as
+`namespace_cpu:kube_pod_container_resource_requests:sum`, which group by namespace only — unlike
+`TargetDown BY (cluster, job, namespace, service)` and the node rules. Scope every remaining rule by
+`cluster`, or split it per cluster, before the phase-2 notifier is attached.
 
 ### Rollout phases
 
@@ -137,9 +151,9 @@ dashboard depends on an unproven path.
 - Bad: **main's Prometheus history is lost at cutover.** The 14d TSDB (3 replicas) was not
   imported; the new store starts empty for that cluster. The Prometheus PVC may survive the Helm
   release removal until it is deleted by hand.
-- Bad: **two dialects coexist.** Utility still describes its metrics with Prometheus-operator
-  objects, so the repo carries both spellings until the follow-up lands. Rule and scrape
-  conventions differ per cluster in the meantime.
+- Bad: **two dialects coexist.** Both clusters now carry both spellings — native VM scrape objects
+  and `VMRule`s next to `ServiceMonitor`s and `PrometheusRule`s — so rule and scrape conventions
+  have to be kept in step twice until utility's cutover.
 - Bad: `VMSingle` is single-node with no replication and no object-storage tiering. Retention is
   bounded by one `local-nvme` volume, and losing util01 loses the history.
 - Neutral: alert delivery is untouched (ADR 0019), so the blast radius of a metrics outage is
@@ -148,8 +162,9 @@ dashboard depends on an unproven path.
 
 ## Follow-ups
 
-- Migrate utility's kube-prometheus-stack to the VM dialect (native scrape objects, `VMRule`,
-  `utility-metrics` writer token) and delete its Prometheus. Until then, two stacks remain.
+- Convert utility's `PrometheusRule`s (23 objects, 180 alerts) to `VMRule`s, add an alerting leg,
+  then retire its Prometheus. Its native scrape objects and the `utility-metrics` writer already
+  exist; until then, two stacks remain.
 - Delete main's leftover Prometheus PVC once the cutover has been observed for a retention cycle.
 - Clean up Gatus / public status checks that assert on main's Prometheus endpoint before phase 2
   removes it.
