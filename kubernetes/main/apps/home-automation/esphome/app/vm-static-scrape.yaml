@@ -10,6 +10,7 @@ spec:
         - 192.168.10.60:80
       labels:
         job: sensor-heating
+        host: sensor-heating
       path: /metrics
       scheme: http
       interval: 15s
@@ -17,6 +18,7 @@ spec:
         - 192.168.10.61:80
       labels:
         job: sensor-bathroom
+        host: sensor-bathroom
       path: /metrics
       scheme: http
       interval: 15s
@@ -24,6 +26,7 @@ spec:
         - 192.168.10.62:80
       labels:
         job: light-stairs
+        host: light-stairs
       path: /metrics
       scheme: http
       interval: 15s
@@ -31,6 +34,7 @@ spec:
         - 192.168.10.63:80
       labels:
         job: switch-livingroom
+        host: switch-livingroom
       path: /metrics
       scheme: http
       interval: 15s
@@ -38,6 +42,7 @@ spec:
         - 192.168.10.64:80
       labels:
         job: switch-domiroom
+        host: switch-domiroom
       path: /metrics
       scheme: http
       interval: 15s
@@ -45,6 +50,7 @@ spec:
         - 192.168.10.65:80
       labels:
         job: bt-proxy-office
+        host: bt-proxy
       path: /metrics
       scheme: http
       interval: 15s
@@ -52,6 +58,7 @@ spec:
         - 192.168.10.65:80
       labels:
         job: bt-proxy-diningroom
+        host: bt-proxy
       path: /metrics
       scheme: http
       interval: 15s

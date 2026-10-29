@@ -12,9 +12,11 @@ spec:
   staticConfigs:
     - labels:
         job: node-exporter
+        host: truenas
       targets:
         - nas.techtales.io:9100
     - labels:
         job: smartctl-exporter
+        host: truenas
       targets:
         - nas.techtales.io:9633

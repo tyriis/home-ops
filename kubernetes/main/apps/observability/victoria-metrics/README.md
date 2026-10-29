@@ -288,6 +288,20 @@ Counted from the files under `kubernetes/main` (a multi-document file counts onc
 `VMStaticScrape`, 4 `VMProbe`, 45 `VMRule`. The `VMRule` total is 33 vendored
 kube-prometheus-stack rules plus 12 app-owned ones.
 
+### Cluster and host labels
+
+`cluster` records which agent wrote the sample, not where the machine lives. Both `VMAgent`s set
+`overrideHonorLabels: true`, so `externalLabels.cluster` always wins and a target-side `cluster`
+label is renamed to `exported_cluster`: no target can claim another cluster. Use `host` for the
+machine:
+
+- in-cluster targets carry no `host`; `cluster` is their whole attribution;
+- off-cluster machines scraped through main's `VMAgent` (`truenas`, the esphome devices) set
+  `host: <machine>` beside `job`, so `cluster="main"` alone does not read as a main-cluster node;
+- the jarvis host vmagent writes through the utility `vmauth` and sets `host: jarvis` only, so those
+  series carry no `cluster` label at all. Select them with `host="jarvis"`, never with a `cluster`
+  matcher.
+
 ## Vendored kube-prometheus-stack rules (`app/rules/kps/`)
 
 kube-prometheus-stack ships its default alert/recording rules as `PrometheusRule`s, and in run 1 the
