@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/networking.k8s.io/networkpolicy_v1.json
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: context7-mcp-proxy
+spec:
+  podSelector:
+    matchLabels:
+      toolhive: "true"
+      toolhive-name: context7
+      app: mcpremoteproxy
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: networking
+      ports:
+        - protocol: TCP
+          port: 8080

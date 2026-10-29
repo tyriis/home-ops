@@ -1,0 +1,20 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/toolhive.stacklok.dev/mcpremoteproxy_v1beta1.json
+apiVersion: toolhive.stacklok.dev/v1beta1
+kind: MCPRemoteProxy
+metadata:
+  name: gh-grep
+spec:
+  remoteUrl: https://mcp.grep.app
+  transport: streamable-http
+  proxyPort: 8080
+  resources:
+    requests:
+      cpu: 25m
+      memory: 64Mi
+    limits:
+      memory: 128Mi
+  podTemplateSpec:
+    metadata:
+      annotations:
+        reloader.stakater.com/auto: "true"
