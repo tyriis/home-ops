@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadashboard_v1beta1.json
+# Forgejo lives on utility; its metrics land only in the central store, so this dashboard
+# reads the victoriametrics datasource, not the default prometheus one.
+# Every query carries job="git-system/forgejo": go_*/process_* families are shared
+# across all store targets. Community lineage: grafana.com/dashboards/13192, adapted.
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: forgejo
+spec:
+  allowCrossNamespaceImport: true
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  datasources:
+    - datasourceName: victoriametrics
+      inputName: DS_PROMETHEUS
+  configMapRef:
+    name: forgejo-dashboard
+    key: forgejo.json

@@ -4,5 +4,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./grafana-dashboard.yaml
+  - ./forgejo-dashboard.configmap.yaml
+  - ./forgejo-grafana-dashboard.yaml
   - ./service-monitor.yaml
   - ./vm-service-scrape.yaml
