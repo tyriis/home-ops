@@ -57,8 +57,8 @@ Left exactly as it was on the Prometheus side:
 Dual-run exists so the new path can be checked against real traffic — `up{cluster="main"}` on the
 same targets Prometheus sees, `vmalert_*` evaluation series, and enough days to trust the store —
 before Prometheus history becomes unrecoverable. Reversing run 1 means deleting this app **and** the
-utility one: dropping only this app leaves utility's `VMAgent` and its scrape objects writing
-`cluster="utility"` into the store.
+utility one: dropping only this app leaves utility's `VMAgent`, `VMSingle` and scrape objects running,
+with the agent still writing `cluster="utility"` into the store.
 
 ### Run 2 — cutover
 
@@ -439,9 +439,15 @@ kube-prometheus-stack set: the VM side needs a `VMRule`, and the converter is of
   `alertmanager.techtales.io` endpoint stay on the main Alertmanager throughout, and in run 1
   Prometheus keeps feeding it.
 - **Cutover checklist** (run 2, in order): `up{cluster="main"}` non-empty via the read token →
-  sample count and series count in the expected range → the same query returns the same shape from
-  both stores → a dashboard query from Grafana on the VM endpoint → a test `VMRule` alert reaching
-  Alertmanager with the notifier attached → only then disable Prometheus and delete its objects.
+  sample count and series count in the expected range → the same `cluster="main"` query returns the
+  same shape from both stores (the shared store also holds `cluster="utility"`, which Prometheus
+  never had) → a dashboard query from Grafana on the VM endpoint → **scope every `VMRule` expression
+  by `cluster`, or split the rules per cluster, before the notifier is attached** — the `VMAlert`
+  evaluates over both clusters' series, so a cluster-blind rule pages for utility series that
+  utility's own Prometheus → Alertmanager already pages for, and `absent()` rules such as
+  `absent(up{job="kube-scheduler"})` mask an outage on either cluster → a test `VMRule` alert
+  reaching Alertmanager with the notifier attached → only then disable Prometheus and delete its
+  objects.
 
 ## Known gaps
 
