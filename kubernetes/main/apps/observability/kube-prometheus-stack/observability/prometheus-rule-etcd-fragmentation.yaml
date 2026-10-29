@@ -1,17 +1,13 @@
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/prometheusrule_v1.json
-# Replaces the chart-bundled etcdDatabaseHighFragmentationRatio via the
-# prometheus-operator group/alert annotations. Rationale and defrag runbook:
+# Replacement for the chart's etcdDatabaseHighFragmentationRatio, which is
+# disabled via defaultRules.disabled in the app HelmRelease. Rationale and
+# defrag runbook:
 # docs/backstage/components/kube-prometheus-stack/docs/index.md
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   name: etcd-fragmentation-override
-  labels:
-    operator.prometheus.io/prometheus-operator: "true"
-  annotations:
-    operator.prometheus.io/group: etcd
-    operator.prometheus.io/alert: etcdDatabaseHighFragmentationRatio
 spec:
   groups:
     - name: etcd

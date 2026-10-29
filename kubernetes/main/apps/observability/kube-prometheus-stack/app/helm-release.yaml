@@ -27,6 +27,13 @@ spec:
   # https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack?modal=values
   values:
     cleanPrometheusOperatorObjectNames: true
+    # Disables the chart's etcdDatabaseHighFragmentationRatio. The replacement
+    # rule lives in the observability Kustomization and only fires on material
+    # fragmentation. Rationale and runbook:
+    # docs/backstage/components/kube-prometheus-stack/docs/index.md
+    defaultRules:
+      disabled:
+        etcdDatabaseHighFragmentationRatio: true
     alertmanager:
       route:
         main:
