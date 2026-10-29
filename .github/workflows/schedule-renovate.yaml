@@ -26,6 +26,12 @@ on:
 
 env:
   LOG_LEVEL: debug
+  # Docker Hub's tags API (hub.docker.com/v2/.../tags) lags the registry
+  # (tags/list) for fresh releases, silently hiding new tags from
+  # Renovate >=44.19 (verified 2026-10-29: eclipse-mosquitto 2.1.2 present
+  # in registry tags/list, absent from the API — 90 stale tags served).
+  # Disable it to keep using the registry endpoint.
+  RENOVATE_X_DOCKER_HUB_TAGS_DISABLE: "true"
   RENOVATE_DRY_RUN: false
   RENOVATE_CONFIG_FILE: .github/renovate-bot.json5
 
