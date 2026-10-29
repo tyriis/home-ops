@@ -1,0 +1,7 @@
+---
+site_name: kube-prometheus-stack
+nav:
+  - Home: index.md
+
+plugins:
+  - techdocs-core

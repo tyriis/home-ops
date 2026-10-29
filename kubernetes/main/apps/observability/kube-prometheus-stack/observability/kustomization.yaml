@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./grafana-dashboard.yaml
   - ./prometheus-rule-cluster-label.yaml
+  - ./prometheus-rule-etcd-fragmentation.yaml
   - ./prometheus-rule-node-memory.yaml
   - ./prometheus-rule.yaml
   - ./scrape-config.yaml

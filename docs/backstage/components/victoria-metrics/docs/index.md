@@ -42,6 +42,20 @@ curl -s -G -H "Authorization: Bearer $T" --data-urlencode 'query=count by (clust
 Both `main` and `utility` must be present. A missing cluster means that agent is not writing; a
 missing job inside a cluster means a scrape object selects nothing.
 
+## Vendored kube-prometheus-stack rules
+
+`rules/kps/` holds the chart default rules rendered to `VMRule`s once per chart bump. They are
+copies, so the prometheus-operator replace mechanism does not exist here. When a default rule
+needs different logic for this homelab, edit the twin in place and mark it with a
+`LOCAL OVERRIDE (re-apply on re-render)` comment. Re-apply every marked hunk when the tree is
+re-rendered from a new chart version.
+
+Current overrides:
+
+- `kube-prometheus-stack-etcd`: `etcdDatabaseHighFragmentationRatio` requires 2 GiB of
+  fragmented waste and 1h persistence, not ratio < 0.5 alone. Rationale and defrag runbook:
+  [kube-prometheus-stack docs](https://github.com/tyriis/home-ops/tree/main/docs/backstage/components/kube-prometheus-stack/docs).
+
 ## Dual run
 
 Prometheus on both clusters is still the source of truth for its own rules: it keeps its TSDB,

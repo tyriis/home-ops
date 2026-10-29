@@ -161,12 +161,15 @@ spec:
           for: 10m
           labels:
             severity: warning
+        # LOCAL OVERRIDE (re-apply on re-render): materiality floor of 2 GiB
+        # fragmented + for: 1h instead of the chart default ratio-only trigger.
+        # Rationale and runbook: docs/backstage/components/kube-prometheus-stack/docs/index.md
         - alert: etcdDatabaseHighFragmentationRatio
           annotations:
-            description: 'etcd cluster "{{ $labels.job }}": database size in use on instance {{ $labels.instance }} is {{ $value | humanizePercentage }} of the actual allocated disk space, please run defragmentation (e.g. etcdctl defrag) to retrieve the unused fragmented disk space.'
+            description: 'etcd cluster "{{ $labels.job }}": database size in use on instance {{ $labels.instance }} is {{ $value | humanizePercentage }} of the actual allocated disk space and at least 2 GiB of the file is fragmented, please run defragmentation (e.g. etcdctl defrag) to retrieve the unused fragmented disk space.'
             runbook_url: https://runbooks.prometheus-operator.dev/runbooks/etcd/etcddatabasehighfragmentationratio
-            summary: etcd database size in use is less than 50% of the actual allocated storage.
-          expr: (last_over_time(etcd_mvcc_db_total_size_in_use_in_bytes{job=~".*etcd.*"}[5m]) / last_over_time(etcd_mvcc_db_total_size_in_bytes{job=~".*etcd.*"}[5m])) < 0.5 and etcd_mvcc_db_total_size_in_use_in_bytes{job=~".*etcd.*"} > 104857600
-          for: 10m
+            summary: "etcd database fragmentation is material: in-use is below 50% of allocated and more than 2 GiB is wasted."
+          expr: (last_over_time(etcd_mvcc_db_total_size_in_use_in_bytes{job=~".*etcd.*"}[5m]) / last_over_time(etcd_mvcc_db_total_size_in_bytes{job=~".*etcd.*"}[5m])) < 0.5 and (last_over_time(etcd_mvcc_db_total_size_in_bytes{job=~".*etcd.*"}[5m]) - last_over_time(etcd_mvcc_db_total_size_in_use_in_bytes{job=~".*etcd.*"}[5m])) > 2147483648
+          for: 1h
           labels:
             severity: warning
