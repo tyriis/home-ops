@@ -74,5 +74,5 @@ patches:
 - One component instance per Terraform repository — each app gets its own Atlantis deployment.
 - The `ATLANTIS_ATLANTIS_URL` is derived from `{{ .Release.Name }}.techtales.io` (Helm-native, not a substitution variable).
 - Redis (Dragonfly) is used as the locking backend at `dragonfly.dragonfly-system.svc.cluster.local`.
-- S3 state backend is pre-configured to `https://s3.nas.techtales.io/` with path-style access.
+- Each instance sets `AWS_ENDPOINT_URL_S3`, `envFrom`, and the `config` (repos.yaml) persistence itself via its `helm-release.patch.yaml`. Path-style access is set by the base.
 - A `ServiceMonitor` for Prometheus and both a main route and a `/events` webhook route are created automatically.
