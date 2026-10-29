@@ -44,6 +44,11 @@ and carries no secret.
 sops --decrypt docker/truenas/minio/sops.env
 ```
 
+Key names stay readable without decrypting (`grep -oE '^MINIO_[A-Z_]+' docker/truenas/minio/sops.env`); only
+the values are encrypted. Decryption itself works only on the owning host, or wherever that host's age private
+key is present. The key is not in this repository, so a run elsewhere fails with
+`identity did not match any of the recipients`.
+
 ## Runtime requirement on doco-cd host
 
 - `doco-cd` must hold that host's age private key, via `SOPS_AGE_KEY_FILE` (recommended).
