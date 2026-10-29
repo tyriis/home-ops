@@ -11,9 +11,9 @@
 
 set -euo pipefail
 
-VERSION="v0.1.5"
+VERSION="v0.1.9"
 BASE_URL="https://github.com/guarnz/deadvalues/releases/download/${VERSION}"
-CHECKSUMS_SHA256="101cc9bc8a8c6cb4ae93cd2ce572c617042f4a8dcb3a21459b0cb8794345b88b"
+CHECKSUMS_SHA256="29bd3e77970554f42a1ab41cb8ea557074381b139a28b14db30562c8889b872b"
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 bin_dir="${script_dir}/bin"
