@@ -70,6 +70,8 @@ spec:
           REPO_INDEXER_ENABLED: true
         mailer:
           ENABLED: false
+        metrics:
+          ENABLED: "true"
         oauth2_client:
           ENABLE_AUTO_REGISTRATION: true
           UPDATE_AVATAR: true
@@ -90,6 +92,9 @@ spec:
           ENABLE_NOTIFY_MAIL: false
           REQUIRE_SIGNIN_VIEW: true
           SHOW_REGISTRATION_BUTTON: false
+      metrics:
+        serviceMonitor:
+          enabled: true
     service:
       http:
         port: 80
