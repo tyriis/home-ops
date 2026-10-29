@@ -96,8 +96,9 @@ services:
       HINDSIGHT_API_LLM_SEND_BANK_AS_USER: ${HINDSIGHT_API_LLM_SEND_BANK_AS_USER:-false}
       # Sleep-phase consolidation: auto-consolidate-after-retain disabled means
       # retains still extract facts but consolidation work queues as
-      # pending_consolidation. Drained nightly by drain_consolidation.py
-      # (hermes cronjob). Watchdog: a large pending_consolidation during the day
+      # pending_consolidation. Drained nightly by the hermes cronjob
+      # drain_hindsight_consolidation.py (~/.hermes/profiles/jarvis/scripts/).
+      # Watchdog: a large pending_consolidation during the day
       # is EXPECTED, not an alert condition.
       HINDSIGHT_API_ENABLE_AUTO_CONSOLIDATION: ${HINDSIGHT_API_ENABLE_AUTO_CONSOLIDATION:-true}
       # Embeddings + reranker intentionally stay on image defaults (local,
