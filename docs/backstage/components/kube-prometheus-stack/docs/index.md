@@ -46,8 +46,8 @@ a time. Defrag blocks reads and writes on that member briefly while it rebuilds.
 leader last.
 
 1. Show DB size, in-use percentage and leader per member:
-   `talosctl -n 192.168.100.101,192.168.100.102,192.168.100.103 etcd status`
+    `talosctl -n 192.168.100.101,192.168.100.102,192.168.100.103 etcd status`
 2. Defragment one follower: `talosctl -n <follower-ip> etcd defrag`
 3. Repeat for the second follower, then the leader (the LEADER column names it).
 4. Re-run step 1 — the DB SIZE column should closely match the IN USE column
-   (in-use ratio back to ~100% per member).
+    (in-use ratio back to ~100% per member).
