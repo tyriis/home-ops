@@ -1,0 +1,35 @@
+---
+# Shared template — headless vmagent for plain Docker hosts.
+# Scrapes localhost exporters (see the host dir's scrape.yaml) and remote-writes to the
+# central VictoriaMetrics store via the vmauth front door. One egress, one token, no
+# inbound ports — hosts must never expose scrape endpoints.
+#
+# Host dirs provide (pattern: docker/jarvis/vmagent):
+#   - compose.yaml include shim (project_directory: .) + hostname + logging block
+#   - scrape.yaml               per-host targets + external_labels host=<host>
+#   - sops.env                  VM_TOKEN (vmauth user <host>-metrics, /api/v1/write only)
+#
+# The token is interpolated by vmagent's own -envflag (%{VAR} reads the container env
+# populated via env_file) — NOT compose interpolation, which expands empty here.
+services:
+  vmagent:
+    container_name: vmagent
+    image: docker.io/victoriametrics/vmagent:v1.155.0@sha256:8e3c03905be15bba8312d4868e8ae6f9fc2fefee0a41d544472034249ca42bb4
+    network_mode: host
+    restart: unless-stopped
+    env_file:
+      - ${SOPS_ENV_FILE:-sops.env}
+    command:
+      - -envflag.enable=true
+      - -httpListenAddr=:8429
+      - -promscrape.config=/etc/vmagent/scrape.yaml
+      - -promscrape.configCheckInterval=1m
+      - -remoteWrite.url=https://metrics.techtales.io/api/v1/write
+      - "-remoteWrite.headers=Authorization: Bearer %{VM_TOKEN}"
+      - -remoteWrite.tmpDataPath=/var/lib/vmagent/pending
+      - -remoteWrite.maxDiskUsagePerURL=1GB
+    volumes:
+      - ./scrape.yaml:/etc/vmagent/scrape.yaml:ro
+      - data:/var/lib/vmagent
+volumes:
+  data:

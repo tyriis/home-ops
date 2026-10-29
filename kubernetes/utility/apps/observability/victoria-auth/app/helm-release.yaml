@@ -144,6 +144,15 @@ spec:
                     deny_paths: ["/.*"]
                     url_prefix: "http://vmsingle-vmsingle.observability.svc.cluster.local:8428"
 
+              - name: jarvis-metrics
+                bearer_token: "%{VMAUTH_TOKEN_JARVIS_METRICS}"
+                url_map:
+                  - src_paths: ["/api/v1/write"]
+                    url_prefix: "http://vmsingle-vmsingle.observability.svc.cluster.local:8428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://vmsingle-vmsingle.observability.svc.cluster.local:8428"
+
               - name: grafana-read
                 bearer_token: "%{VMAUTH_TOKEN_GRAFANA_METRICS}"
                 url_map:

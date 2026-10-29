@@ -1,0 +1,18 @@
+---
+# Include shim — the actual service definition is shared: docker/deploy/vmagent/compose.yaml.
+# project_directory: . is REQUIRED so relative paths inside the shared compose
+# (env_file, scrape.yaml bind, the data volume) resolve against this host directory.
+include:
+  - path: ../../deploy/vmagent/compose.yaml
+    project_directory: .
+
+# Host override
+services:
+  vmagent:
+    hostname: jarvis
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+        labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
