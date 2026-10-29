@@ -1,0 +1,25 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: forgejo
+spec:
+  namespaceSelector:
+    matchNames:
+      - git-system
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: forgejo
+      app.kubernetes.io/name: forgejo
+      app.kubernetes.io/component: http
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 1m
+      relabelConfigs:
+        # job must stay git-system/forgejo: Prometheus' ServiceMonitor emits the
+        # namespace-prefixed job and dual-run queries match on it.
+        - action: replace
+          targetLabel: job
+          replacement: git-system/forgejo

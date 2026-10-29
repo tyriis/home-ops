@@ -7,6 +7,7 @@ resources:
   - ./external-secret.yaml
   - ./helm-release.yaml
   - ./http-route.yaml
+  - ./vm-service-scrape.yaml
 patches:
   - target:
       group: volsync.backube
