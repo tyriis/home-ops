@@ -12,7 +12,7 @@ creation_rules:
       age16pcjw9pvhx2lnx382hrgcpydpjvjz6r8u22wflm228cakedrlgdqzlwx4s
   - path_regex: 'docker/jarvis/.*/sops\.env$'
     age: >-
-      age1hpqz0wylrtaf5evn844jkq039wv2cye7cux9gkta9kd5na87yass4yd2k8
+      age1sq997t03f27pnuvujgmw5xjlta7pnsqj5xaxc020e6fgje3lwusspwydr3
   - path_regex: 'docker/synology/.*/sops\.env$'
     age: >-
       age1tcjhmd54y4nx9mpwld5fu0laav06wwjscvq4adqfquxtj4fg7a7q2s95sc
@@ -25,6 +25,3 @@ creation_rules:
   - path_regex: 'docker/truenas/.*/sops\.env$'
     age: >-
       age1gd4f4gu474snw3ay8njtvga56uuf4sxwzvuhk5c9h3adlfmx3yps08fhyh
-  - path_regex: 'docker/jarvis/.*/sops\.env$'
-    age: >-
-      age1sq997t03f27pnuvujgmw5xjlta7pnsqj5xaxc020e6fgje3lwusspwydr3
