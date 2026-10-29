@@ -4,9 +4,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./grafana-dashboard.yaml
+  - ./prometheus-rule-cluster-label.yaml
   - ./prometheus-rule-node-memory.yaml
   - ./prometheus-rule.yaml
   - ./scrape-config.yaml
+  - ./vm-rule-cluster-label.yaml
   - ./vm-rule-node-memory.yaml
   - ./vm-rule.yaml
   - ./vm-static-scrape.yaml
