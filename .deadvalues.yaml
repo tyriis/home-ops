@@ -1,0 +1,30 @@
+---
+# deadvalues configuration: https://github.com/guarnz/deadvalues
+# Both Talos clusters run Kubernetes v1.37.1 (talos/*/talconfig.yaml).
+kubeVersion: "1.37"
+
+# APIs beyond stock Kubernetes that the clusters serve, spelled exactly as
+# charts check them (.Capabilities.APIVersions.Has "..."). Tune from the
+# CONDITIONAL notes in `task deadvalues:check-values` output.
+apiVersions:
+  # Prometheus Operator ServiceMonitor CRD. Both clusters run the monitoring
+  # stack, so ServiceMonitor-gated values are live. Spell each entry exactly as
+  # the chart checks it: argo-workflows gates on the group/version, while
+  # external-secrets gates on the group/version/Kind.
+  - monitoring.coreos.com/v1
+  - monitoring.coreos.com/v1/ServiceMonitor
+
+failOn: dead
+
+flux:
+  substitute:
+    FLUX_CLUSTER_NAME: placeholder
+
+# Baseline for findings we deliberately keep (keys injected or consumed
+# externally). One entry per finding, most specific node wins.
+ignore:
+  # flate (and any render without our apiVersions) hard-requires this flag via
+  # cilium's validate.yaml; it is only dead when ServiceMonitor CRDs are present.
+  - app: cilium
+    keys:
+      - prometheus.serviceMonitor.trustCRDsExist

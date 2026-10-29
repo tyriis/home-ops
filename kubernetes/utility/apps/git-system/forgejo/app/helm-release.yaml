@@ -23,11 +23,8 @@ spec:
     keepHistory: false
   values:
     image:
-      registry: code.forgejo.org
-      repository: forgejo/forgejo
-      tag: 16.0.5-rootless
-      digest: sha256:5effb7305584aca479b29fde6f9631a6dbe86ae798ae02eeea33a3666f0c0bf8
-      rootless: true
+      tag: 16.0.6-rootless
+      digest: sha256:51b47921660e1ec7127f094208fe06901ba57df4fe6d59fcccc3a2419514a77f
     resources:
       requests:
         cpu: 100m
@@ -35,7 +32,6 @@ spec:
       limits:
         memory: 1Gi
     persistence:
-      enabled: true
       create: false
       claimName: forgejo-data
     gitea:
@@ -74,6 +70,8 @@ spec:
           REPO_INDEXER_ENABLED: true
         mailer:
           ENABLED: false
+        metrics:
+          ENABLED: "true"
         oauth2_client:
           ENABLE_AUTO_REGISTRATION: true
           UPDATE_AVATAR: true
@@ -94,12 +92,9 @@ spec:
           ENABLE_NOTIFY_MAIL: false
           REQUIRE_SIGNIN_VIEW: true
           SHOW_REGISTRATION_BUTTON: false
+      metrics:
+        serviceMonitor:
+          enabled: true
     service:
       http:
         port: 80
-    ingress:
-      enabled: false
-    httpRoute:
-      enabled: false
-    tcpRoute:
-      enabled: false

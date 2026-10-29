@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -47,7 +47,7 @@ spec:
           app:
             image:
               repository: ghcr.io/tyriis/locking-service
-              tag: v0.1.1@sha256:869e311ba7c46027bafdce0fc4f31c0fd03a9af6f2d8bdb2ede265b88eaa5e29
+              tag: v0.2.0@sha256:87ae750d40465f3e58885002b386b99f452c4dc3695e4b9fa143712c550cf573
             env:
               NODE_ENV: production
               CONFIG_PATH: /config/configuration.yaml
@@ -69,7 +69,6 @@ spec:
 
     service:
       app:
-        controller: *app
         ports:
           http:
             port: 3000

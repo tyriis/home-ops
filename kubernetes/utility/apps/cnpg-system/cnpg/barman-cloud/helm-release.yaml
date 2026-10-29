@@ -23,8 +23,6 @@ spec:
   values:
     controllers:
       barman-cloud:
-        serviceAccount:
-          identifier: *app
         containers:
           barman-cloud:
             image:
@@ -73,7 +71,6 @@ spec:
           cnpg.io/pluginServerSecret: &serverCert barman-cloud-server-tls
         labels:
           cnpg.io/pluginName: barman-cloud.cloudnative-pg.io
-        controller: barman-cloud
         ports:
           tcp:
             port: *port
@@ -82,14 +79,6 @@ spec:
       server:
         type: secret
         name: *serverCert
-        globalMounts:
-          - path: /server
       client:
         type: secret
         name: *clientCert
-        globalMounts:
-          - path: /client
-
-    serviceAccount:
-      cnpg-barman-cloud:
-        forceRename: *app

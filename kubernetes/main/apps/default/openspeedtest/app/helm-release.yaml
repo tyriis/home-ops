@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: openspeedtest/latest
-              tag: v2.0.6@sha256:a6a7e3b3e9e93cfe7b9b2eb49c60b2a93644149a0a600845d4df57148b193ff6
+              tag: v2.0.8@sha256:1127de0693c36bcf8c297c73d09891df8ec243680d027a6b6fab13fa0954ff46
             probes:
               liveness: &probes
                 enabled: true
@@ -45,8 +45,6 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-              startup:
-                enabled: false
             resources:
               requests:
                 cpu: 10m
@@ -55,7 +53,6 @@ spec:
                 memory: 256Mi
     service:
       app:
-        controller: openspeedtest
         ports:
           http:
             port: *port

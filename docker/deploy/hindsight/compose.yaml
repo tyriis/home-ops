@@ -1,0 +1,135 @@
+---
+# https://hindsight.vectorize.io — Hindsight: agent memory server (API + control plane).
+# Structured facts/entities/relations over an embedded PostgreSQL, multi-strategy
+# retrieval, reflect consolidation. Consumed by Hermes via the hindsight memory
+# provider plugin (mode: local_external).
+#
+# Storage note: the FULL image (ghcr.io/vectorize-io/hindsight) embeds its own
+# PostgreSQL under /home/hindsight/.pg0 — the named volume below is that path.
+# Requires shm_size >= 1g for the embedded database (upstream docker run docs).
+#
+# Hardening: this template attempts the full posture — fixed uid, no-new-privileges,
+# cap_drop ALL, read_only rootfs with tmpfs scratch. If the embedded PostgreSQL
+# entrypoint needs more (compare the arcane-agent template, which cannot be
+# hardened past no-new-privileges), relax ONLY what testing proves necessary
+# and update this comment to say which and why.
+volumes:
+  data:
+    external: ${VOLUME_EXTERNAL:-false}
+    name: ${VOLUME_NAME:-hindsight_data}
+    driver: ${VOLUME_DRIVER:-local}
+
+services:
+  hindsight:
+    container_name: ${CONTAINER_NAME:-hindsight}
+    # renovate: datasource=docker
+    image: ghcr.io/vectorize-io/hindsight:1.1.0@sha256:50311d02b4d5d2b7c5242bd336edf8735df8374eaad496a92f49c83b37d2aa06
+    user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
+    group_add:
+      - "${GROUP_ID:-1000}"
+    restart: unless-stopped
+    shm_size: "1g"
+    ports:
+      # API (:8888) and control-plane UI (:9999) — loopback-only by default;
+      # this host's agent talks to 127.0.0.1, nothing else is exposed.
+      - "${HOST_BIND:-127.0.0.1}:${API_PORT:-8888}:8888"
+      - "${HOST_BIND:-127.0.0.1}:${CP_PORT:-9999}:9999"
+    env_file:
+      # Secrets only. NOTE: the stack .env is a COMPOSE interpolation file (ports,
+      # volume names, uid) — nothing from it reaches the container unless it is
+      # ALSO named here in environment:. Any app var that must reach hindsight
+      # has to be listed in this block (arcane-agent pattern).
+      - ${SOPS_ENV_FILE:-sops.env}
+    environment:
+      TZ: Europe/Vienna
+      HINDSIGHT_API_LLM_PROVIDER: ${HINDSIGHT_API_LLM_PROVIDER:?set in stack .env}
+      HINDSIGHT_API_LLM_MODEL: ${HINDSIGHT_API_LLM_MODEL:?set in stack .env}
+      HINDSIGHT_API_LLM_BASE_URL: ${HINDSIGHT_API_LLM_BASE_URL:?set in stack .env}
+      HINDSIGHT_API_TENANT_EXTENSION: ${HINDSIGHT_API_TENANT_EXTENSION:?set in stack .env}
+      # --- LLM call budget (retain extract + consolidation) ---------------------
+      # Measured 2026-10-23: with the model's default reasoning, fact extraction
+      # took 93-472s per call (input 3.5-4.6k tokens, ~1k thinking tokens for
+      # ~300 tokens of answer) against the image's 120s llm_timeout. Every call
+      # was cancelled mid-generation and retried (3 in-call retries, then
+      # unbounded task-level retries via _schedule_retry), and each cancelled
+      # call kept generating on the vLLM upstream — request_success_total
+      # {finished_reason="abort"} stayed 0 — so a handful of ops pinned ~18-25
+      # concurrent streams on the cluster.
+      #
+      # enable_thinking=false makes the same call return in ~1s with 0 reasoning
+      # tokens (verified through the new-api gateway, which forwards
+      # chat_template_kwargs to vLLM). The timeout and the caps below are the
+      # safety net: one slow call must never amplify into a retry storm again.
+      HINDSIGHT_API_LLM_EXTRA_BODY: ${HINDSIGHT_API_LLM_EXTRA_BODY:-{"chat_template_kwargs":{"enable_thinking":false}}}
+      HINDSIGHT_API_LLM_TIMEOUT: ${HINDSIGHT_API_LLM_TIMEOUT:-600}
+      HINDSIGHT_API_LLM_MAX_RETRIES: ${HINDSIGHT_API_LLM_MAX_RETRIES:-2}
+      HINDSIGHT_API_LLM_INITIAL_BACKOFF: ${HINDSIGHT_API_LLM_INITIAL_BACKOFF:-2}
+      HINDSIGHT_API_LLM_MAX_BACKOFF: ${HINDSIGHT_API_LLM_MAX_BACKOFF:-30}
+      # Image default is 32 concurrent LLM calls against 10 worker slots. Two keeps
+      # a lane free for consolidation while retain drains, so one slow call cannot
+      # stall the queue behind it. Retain is async — nothing waits on the answer.
+      HINDSIGHT_API_LLM_MAX_CONCURRENT: ${HINDSIGHT_API_LLM_MAX_CONCURRENT:-2}
+      # Worker task pool: concurrent async tasks per worker (retain, consolidation,
+      # maintenance). Image default 10; the jarvis stack drops it to 1 so at most
+      # one operation runs at a time. HINDSIGHT_API_WORKER_MAX_SLOTS=1 requires
+      # shrinking the consolidation reservation (image default 2) to fit — the
+      # startup validator rejects reserved > pool.
+      HINDSIGHT_API_WORKER_MAX_SLOTS: ${HINDSIGHT_API_WORKER_MAX_SLOTS:-10}
+      HINDSIGHT_API_WORKER_CONSOLIDATION_RESERVED_SLOTS: ${HINDSIGHT_API_WORKER_CONSOLIDATION_RESERVED_SLOTS:-2}
+      # Worker identity defaults to a per-boot generated id. The poller only ever
+      # reclaims tasks claimed by its OWN worker id (deliberate upstream design,
+      # poller.py _reclaim_own_processing_tasks), so a hard kill mid-task orphans
+      # the task row in 'processing' forever — a new boot with a new id will not
+      # touch it, and a stranded consolidation op blocks every later trigger for
+      # that bank (observed 2026-10-25: nightly drain 'timed out' for 3 nights on
+      # one zombie op frozen at 8/13 memories). A stable id makes the next boot
+      # reclaim and resume its own in-flight tasks. Safe here because this is a
+      # single-replica stack; do NOT reuse one id across two live replicas.
+      HINDSIGHT_API_WORKER_ID: ${HINDSIGHT_API_WORKER_ID:-}
+      # Consolidation gets its own semaphore lane, decoupled from the global
+      # LLM_MAX_CONCURRENT=1 daytime guard. Auto-consolidation is off, so this
+      # lane only ever activates during the nightly drain (or an explicit
+      # manual trigger); matches the image's consolidation_llm_parallelism=4.
+      HINDSIGHT_API_CONSOLIDATION_LLM_MAX_CONCURRENT: ${HINDSIGHT_API_CONSOLIDATION_LLM_MAX_CONCURRENT:-4}
+      # Tags outbound LLM + embedding calls with user=<bank_id> — the gateway
+      # (new-api) routes/limits/attributes cost per bank on that tag.
+      HINDSIGHT_API_LLM_SEND_BANK_AS_USER: ${HINDSIGHT_API_LLM_SEND_BANK_AS_USER:-false}
+      # Sleep-phase consolidation: auto-consolidate-after-retain disabled means
+      # retains still extract facts but consolidation work queues as
+      # pending_consolidation. Drained nightly by the hermes cronjob
+      # drain_hindsight_consolidation.py (~/.hermes/profiles/jarvis/scripts/).
+      # Watchdog: a large pending_consolidation during the day
+      # is EXPECTED, not an alert condition.
+      HINDSIGHT_API_ENABLE_AUTO_CONSOLIDATION: ${HINDSIGHT_API_ENABLE_AUTO_CONSOLIDATION:-true}
+      # Embeddings + reranker intentionally stay on image defaults (local,
+      # in-process). To override, add explicit pass-through lines above.
+    healthcheck:
+      # startup includes first-time model init/download; upstream's own
+      # HINDSIGHT_API_STARTUP_WAIT_SECONDS default is 300s — mirror it.
+      # No wget/curl in the image; use its own Python.
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8888/health', timeout=4)"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 300s
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+        labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
+    read_only: true
+    tmpfs:
+      - /tmp
+      # PG socket/run dir — see the entrypoint: the embedded cluster listens here.
+      - /var/run/postgresql
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges=true
+    volumes:
+      - data:/home/hindsight/.pg0

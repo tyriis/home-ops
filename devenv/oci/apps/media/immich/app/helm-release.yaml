@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -38,7 +38,7 @@ spec:
           app:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v3.2.4@sha256:d317916b28090c33eb36b308464ea391f8b7df1d850fcfea227a39ec879718c2
+              tag: v3.3.5@sha256:485d546a2e31d6a8b4db8423fcba5c109de8c218d93410af115fd1ccfc4352a6
             envFrom:
               - configMapRef:
                   name: immich-config
@@ -117,7 +117,7 @@ spec:
           app:
             image:
               repository: ghcr.io/dragonflydb/dragonfly
-              tag: v2.0.0@sha256:7426fdb31ddcf7bd9499b4205f36ebaa83b26149ba1609a0d5f8f474b3631233
+              tag: v2.0.2@sha256:061f00b201b58e12f974e4e96c761a881ee1c05e9d8ee967466a604b7299753b
             args:
               - --cluster_mode=emulated
               - --default_lua_flags=allow-undeclared-keys
@@ -135,7 +135,7 @@ spec:
           app:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v3.2.4@sha256:e16c2f166a8174901959fdf85e2e4c7bd1ebc4b37e0b6655de97c41408a260c4
+              tag: v3.3.5@sha256:5b28c9352c8374b8a1ed96fbdd8d6755fea6e43510ec43fdf6538aa02ea40f56
             env:
               TRANSFORMERS_CACHE: /cache
               HF_XET_CACHE: /cache/huggingface-xet

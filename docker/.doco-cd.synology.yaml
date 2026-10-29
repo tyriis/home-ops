@@ -29,3 +29,6 @@ name: arcane-agent
 working_dir: docker/synology/arcane-agent
 env_files:
   - .env
+---
+name: victoria-logs-collector
+working_dir: docker/synology/victoria-logs-collector

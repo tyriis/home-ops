@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -29,9 +29,6 @@ spec:
     # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
     controllers:
       homepage:
-        serviceAccount:
-          identifier: *app
-        replicas: 1
         # strategy: RollingUpdate not multi target capable
         pod:
           annotations:
@@ -55,7 +52,7 @@ spec:
                   name: homepage-env
             image:
               repository: ghcr.io/gethomepage/homepage
-              tag: v2.4.0@sha256:643bd0be730d40f69d58028a55d1a896739333e8815786df42bc97f109ecbe61
+              tag: v2.7.0@sha256:19c5c09184458a41b7b5915e71463a39f36cd33540f41bdbed008791b8182d5f
             probes:
               startup:
                 enabled: true
@@ -76,7 +73,6 @@ spec:
               capabilities: { drop: ["ALL"] }
     service:
       main:
-        controller: homepage
         ports:
           http:
             port: &port 3000
@@ -94,7 +90,6 @@ spec:
 
     persistence:
       config:
-        enabled: true
         type: configMap
         name: homepage-config
         globalMounts:
@@ -116,5 +111,3 @@ spec:
             path: /app/config/custom.js
           - subPath: proxmox.yaml
             path: /app/config/proxmox.yaml
-    serviceAccount:
-      homepage: {}

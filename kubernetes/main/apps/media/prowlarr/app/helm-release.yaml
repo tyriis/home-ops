@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -27,23 +27,24 @@ spec:
     # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
     controllers:
       prowlarr:
-        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
               repository: ghcr.io/home-operations/prowlarr
-              tag: 2.6.5.5623@sha256:6152751c3ea2e7751564f5952173d5e83eed0e09f3fabd2cb6bdb58690c39e2f
+              tag: 2.7.0.5723@sha256:fcf7498692f97698ea8b8f7078a0f81120a16e7354e4c232b5e3810e3e783dff
             env:
               # https://wiki.servarr.com/useful-tools#using-environment-variables-for-config
               PROWLARR__APP__INSTANCENAME: Prowlarr
               PROWLARR__APP__THEME: dark
-              PROWLARR__AUTH__METHOD: Forms
+              PROWLARR__AUTH__METHOD: External
               PROWLARR__AUTH__REQUIRED: DisabledForLocalAddresses
               PROWLARR__LOG__ANALYTICSENABLED: "False"
               PROWLARR__LOG__DBENABLED: "False"
               PROWLARR__LOG__LEVEL: info
+              PROWLARR__LOG__ROTATE: 1
+              PROWLARR__LOG__SIZELIMIT: 1
               PROWLARR__SERVER__PORT: &port 9696
               PROWLARR__UPDATE__BRANCH: develop
             ports:
@@ -75,7 +76,6 @@ spec:
         fsGroup: 1000
     service:
       app:
-        controller: *app
         ports:
           http:
             port: *port
@@ -97,14 +97,23 @@ spec:
     persistence:
       config:
         existingClaim: ${APP}-config
-      tmpfs:
+      logs:
         type: emptyDir
+        medium: Memory
+        sizeLimit: 8Mi
         advancedMounts:
           prowlarr:
             app:
-              - path: /config/Backups
-                subPath: backup
               - path: /config/logs
-                subPath: logs
-              - path: /tmp
-                subPath: tmp
+      sentry:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 8Mi
+        advancedMounts:
+          prowlarr:
+            app:
+              - path: /config/Sentry
+      tmp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 16Mi

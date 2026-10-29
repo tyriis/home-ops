@@ -8,12 +8,33 @@ is made (see [Future: tailnet + YubiKey ssh-agent](#future-tailnet--yubikey-ssh-
 
 ## Services
 
-| Service   | Host port   | Deploy config           | Compose                                                      |
-| --------- | ----------- | ----------------------- | ------------------------------------------------------------ |
-| new-api   | `3000`      | `.doco-cd.bifrost.yaml` | `deploy/new-api` (digest-pinned image)                       |
-| traefik   | `80`/`443`  | `.doco-cd.bifrost.yaml` | `deploy/traefik` (tag-pinned image, bifrost include shim)    |
-| sparkDash | `8080`      | `.doco-cd.bifrost.yaml` | `deploy/sparkdash` (built from local clone — see its README) |
-| arcane    | — (Traefik) | `.doco-cd.bifrost.yaml` | `deploy/arcane` (digest-pinned image)                        |
+| Service   | Host port        | Deploy config           | Compose                                                      |
+| --------- | ---------------- | ----------------------- | ------------------------------------------------------------ |
+| new-api   | `3000`           | `.doco-cd.bifrost.yaml` | `deploy/new-api` (digest-pinned image)                       |
+| traefik   | `80`/`443`       | `.doco-cd.bifrost.yaml` | `deploy/traefik` (tag-pinned image, bifrost include shim)    |
+| sparkDash | `8080`           | `.doco-cd.bifrost.yaml` | `deploy/sparkdash` (built from local clone — see its README) |
+| arcane    | — (Traefik)      | `.doco-cd.bifrost.yaml` | `deploy/arcane` (digest-pinned image)                        |
+| vlagent   | `127.0.0.1:9500` | `.doco-cd.bifrost.yaml` | `deploy/victoria-logs-collector` (log shipper, see below)    |
+
+**Log shipping:** `victoria-logs-collector/` tails the Lightwhale host syslog
+(`/var/log/messages`, BusyBox `syslogd`) and ships it to VictoriaLogs (`https://logs.techtales.io`)
+through vmauth with the bifrost unit token. `TZ=Europe/Vienna` is REQUIRED: BusyBox syslogd stamps
+the file in local CEST and vlagent parses those timestamps in the container timezone — without it
+the lines ship with a 2h-future timestamp and fall outside every default Grafana time range.
+Docker runs with `--log-driver=syslog`, so container logs
+are in the same file, tagged `docker:<name>#<id>`. There are no `json-file` logs on this host. The
+`sops.env` there must hold `VL_TOKEN` = the `VMAUTH_TOKEN_BIFROST` value from the `vmauth-tokens`
+secret (`kubernetes/utility/apps/observability/victoria-auth/app/secrets.sops.yaml`). Encrypt it with
+the bifrost recipient (`docker/bifrost/.*/sops\.env`). **The glob is `/var/log/messages*`, not a
+single path, and `/var/log` is mounted as a directory — this is a bug fix, not style.** BusyBox
+`syslogd` rotates by rename+recreate: `messages` becomes `messages.0` (fresh inode, ~every 200KB of
+load). A tailer pinned to the exact path keeps tracking the old inode and silently stops tailing at
+every rotation — the vlagent process stays healthy, so Docker never restarts it and nothing alerts
+(2026-10-15: two wedges, 44 min and 2 min after start; stream dark ~10h each time, only a VL-side
+gap analysis caught it). Pattern-based discovery follows the rotation chain and cannot wedge
+(verified locally against vlagent v1.53.0 with rename+recreate). Restarting a wedged collector
+logs `rotated log file not found (inode=...)` and skips the gap — lines in rotated files already
+deleted/compressed (.gz is unreadable to vlagent) are lost for good; keep rotation frequency low.
 
 Per-service layout: each service dir holds a **real** thin `compose.yaml` **include shim** plus its
 host state. The shim `include:`s the shared service definition from `docker/deploy/<svc>/` with
@@ -38,7 +59,7 @@ applies `docker/.doco-cd.bifrost.yaml`. Before the first deploy:
 
   ```bash
   git clone https://github.com/MiaAI-Lab/sparkDash.git docker/deploy/sparkdash/sparkDash
-  git -C docker/deploy/sparkdash/sparkDash checkout cc44d3527e7d
+  git -C docker/deploy/sparkdash/sparkDash checkout v2.70.0
   ```
 
 - Provision SSH keys on the Sparks (below) and place the private key at

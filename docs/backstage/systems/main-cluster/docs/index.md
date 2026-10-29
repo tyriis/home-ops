@@ -44,11 +44,10 @@ For the Kubernetes operating system, the deliberate choice is [Talos Linux](http
 
 The `main-cluster` cluster rely on a few cloud services
 
-| Service       | Use                                                       | Cost         |
-| ------------- | --------------------------------------------------------- | ------------ |
-| GitHub        | Repository hosting and continuous integration/deployments | Free         |
-| Cloudflare    | Domain, DNS and proxy management, tunnel access           | $36.00/ year |
-| Grafana Cloud | Loki log mirror target                                    | Free         |
+| Service    | Use                                                       | Cost         |
+| ---------- | --------------------------------------------------------- | ------------ |
+| GitHub     | Repository hosting and continuous integration/deployments | Free         |
+| Cloudflare | Domain, DNS and proxy management, tunnel access           | $36.00/ year |
 
 ### Local Services
 

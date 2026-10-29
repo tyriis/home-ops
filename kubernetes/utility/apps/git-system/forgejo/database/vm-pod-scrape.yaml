@@ -1,0 +1,24 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmpodscrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
+metadata:
+  name: forgejo-db
+spec:
+  namespaceSelector:
+    matchNames:
+      - git-system
+  selector:
+    matchLabels:
+      cnpg.io/cluster: forgejo-db
+      cnpg.io/podRole: instance
+  podMetricsEndpoints:
+    - port: metrics
+      path: /metrics
+      interval: 1m
+      relabelConfigs:
+        # job must stay git-system/forgejo-db: Prometheus' PodMonitor already emits the
+        # namespace-prefixed job and the CNPG dashboards select it.
+        - action: replace
+          targetLabel: job
+          replacement: git-system/forgejo-db

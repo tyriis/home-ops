@@ -1,0 +1,14 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "servers": {
+      "flux-operator": {
+        "type": "local",
+        "command": ["flux-operator-mcp", "serve", "--read-only"],
+        "environment": {
+          "KUBECONFIG": "{env:HOME}/.kube/config",
+        },
+      },
+    },
+  },
+}

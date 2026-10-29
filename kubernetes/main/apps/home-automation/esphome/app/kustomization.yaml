@@ -8,3 +8,5 @@ resources:
   - ./prometheus-rule.yaml
   - ./pvc.yaml
   - ./scrape-config.yaml
+  - ./vm-rule.yaml
+  - ./vm-static-scrape.yaml

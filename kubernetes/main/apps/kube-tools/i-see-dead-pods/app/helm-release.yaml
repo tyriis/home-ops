@@ -25,7 +25,6 @@ spec:
       cron:
         type: cronjob
         cronjob:
-          concurrencyPolicy: Forbid
           schedule: "* * * * *"
         pod:
           automountServiceAccountToken: true
@@ -38,16 +37,19 @@ spec:
           cron:
             image:
               repository: alpine/kubectl
-              tag: 1.37.1@sha256:b57b3bd3cd9f4f02dd444281857126aa78efa4b7b7e6ec57579dd927bf146fc3
+              tag: 1.37.1@sha256:a5d0fbecab3f7b6c2ab7398f1daa73a3e0ed6ece18556d21698233e9e3759cc7
             command:
               - /bin/sh
               - -ec
               - |
+                # The kubelet sets status.message on shutdown, but its next status sync overwrites it.
+                # The DisruptionTarget condition keeps the marker, so read the conditions column too.
+                # Do not switch this back to go-template output: app-template renders templating syntax inside values.
                 kubectl get pods \
                   --all-namespaces \
-                  -o custom-columns=NS:.metadata.namespace,NAME:.metadata.name,MSG:.status.message \
+                  -o custom-columns=NS:.metadata.namespace,NAME:.metadata.name,MSG:.status.message,COND:.status.conditions \
                   --no-headers \
-                  | grep "Pod was terminated in response to imminent node shutdown." \
+                  | grep -F "Pod was terminated in response to imminent node shutdown." \
                   | awk '{print $1, $2}' \
                   | xargs -r -n2 kubectl delete pod -n || true
             resources:
@@ -75,8 +77,6 @@ spec:
         i-see-dead-pods:
           type: ClusterRoleBinding
           roleRef:
-            apiGroup: rbac.authorization.k8s.io
-            kind: ClusterRole
             identifier: *app
           subjects:
             - kind: ServiceAccount

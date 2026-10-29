@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: csi-driver-nfs
-      version: 4.13.4
+      version: 4.13.6
       sourceRef:
         kind: HelmRepository
         name: csi-driver-nfs
@@ -26,12 +26,9 @@ spec:
     keepHistory: false
   values:
     # https://artifacthub.io/packages/helm/csi-driver-nfs/csi-driver-nfs?modal=values
-    externalSnapshotter:
-      enabled: false
     volumeSnapshotClass:
       create: true
       name: nfs-nas
-      deletionPolicy: Delete
     storageClasses:
       - name: nfs-nas
         parameters:

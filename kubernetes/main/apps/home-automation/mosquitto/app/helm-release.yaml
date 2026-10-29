@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,7 +26,6 @@ spec:
   values:
     controllers:
       mosquitto:
-        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
@@ -42,7 +41,7 @@ spec:
           app:
             image:
               repository: docker.io/library/eclipse-mosquitto
-              tag: "2.0.22@sha256:199ea8ef2e35ec2b1b37e59cfd1dbae538ed4dfa4a2251a121a52215a6248a21"
+              tag: "2.0.22@sha256:09b62ff32c2e7b64d4b431b9a89236073289b68db273de2b089edeb9b0d92b5c"
             env:
               TZ: Europe/Vienna
             ports:
@@ -52,7 +51,6 @@ spec:
             probes:
               readiness: &probes
                 enabled: true
-                type: TCP
                 port: *port
               liveness: *probes
               startup:
@@ -75,14 +73,12 @@ spec:
 
     service:
       mqtt:
-        controller: *app
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: ${CILIUM_LB_IPS}
         ports:
           mqtt:
             port: *port
-            protocol: TCP
             targetPort: mqtt
 
     persistence:
@@ -108,5 +104,3 @@ spec:
             readOnly: true
       tmp:
         type: emptyDir
-        globalMounts:
-          - path: /tmp

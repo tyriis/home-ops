@@ -10,6 +10,7 @@ spec:
         - 192.168.10.60:80
       labels:
         job: *name
+        host: *name
   metricsPath: /metrics
   scheme: HTTP
   scrapeInterval: 15s
@@ -26,6 +27,7 @@ spec:
         - 192.168.10.61:80
       labels:
         job: *name
+        host: *name
   metricsPath: /metrics
   scheme: HTTP
   scrapeInterval: 15s
@@ -42,6 +44,7 @@ spec:
         - 192.168.10.62:80
       labels:
         job: *name
+        host: *name
   metricsPath: /metrics
   scheme: HTTP
   scrapeInterval: 15s
@@ -58,6 +61,7 @@ spec:
         - 192.168.10.63:80
       labels:
         job: *name
+        host: *name
   metricsPath: /metrics
   scheme: HTTP
   scrapeInterval: 15s
@@ -74,6 +78,7 @@ spec:
         - 192.168.10.64:80
       labels:
         job: *name
+        host: *name
   metricsPath: /metrics
   scheme: HTTP
   scrapeInterval: 15s
@@ -90,6 +95,7 @@ spec:
         - 192.168.10.65:80
       labels:
         job: *name
+        host: bt-proxy
   metricsPath: /metrics
   scheme: HTTP
   scrapeInterval: 15s
@@ -106,6 +112,7 @@ spec:
         - 192.168.10.65:80
       labels:
         job: *name
+        host: bt-proxy
   metricsPath: /metrics
   scheme: HTTP
   scrapeInterval: 15s

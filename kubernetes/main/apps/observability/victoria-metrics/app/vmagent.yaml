@@ -1,0 +1,33 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmagent_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMAgent
+metadata:
+  name: vmagent
+spec:
+  replicaCount: 1
+  selectAllByDefault: true
+  scrapeInterval: 1m
+  scrapeTimeout: 30s
+  overrideHonorLabels: true
+  externalLabels:
+    cluster: main
+  remoteWrite:
+    - url: https://metrics.techtales.io/api/v1/write
+      bearerTokenSecret:
+        name: vmagent-remote-write
+        key: token
+  statefulMode: true
+  statefulStorage:
+    volumeClaimTemplate:
+      spec:
+        storageClassName: ceph-block
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 5Gi
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi

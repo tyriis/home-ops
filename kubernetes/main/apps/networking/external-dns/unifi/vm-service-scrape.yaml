@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: external-dns-unifi
+spec:
+  jobLabel: app.kubernetes.io/instance
+  namespaceSelector:
+    matchNames:
+      - networking
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: external-dns
+      app.kubernetes.io/instance: external-dns-unifi
+  endpoints:
+    - port: http
+      path: /metrics
+    # chart ServiceMonitor renders this one only while provider is webhook (provider.webhook.serviceMonitor)
+    - port: http-webhook
+      path: /metrics

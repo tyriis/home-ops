@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: vmalert-datasource
+spec:
+  refreshInterval: 5m
+  secretStoreRef:
+    name: openbao-backend
+    kind: ClusterSecretStore
+  target:
+    name: vmalert-datasource
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        token: "{{ .VMAUTH_TOKEN_VMALERT_METRICS }}"
+  dataFrom:
+    # Must match the vmauth read token on the utility side; vmauth validates it.
+    - extract:
+        key: infra/kubernetes/main/observability/victoria-metrics #gitleaks:allow

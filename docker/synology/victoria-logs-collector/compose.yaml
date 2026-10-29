@@ -1,0 +1,61 @@
+---
+services:
+  vlagent:
+    extends:
+      file: ../../deploy/victoria-logs-collector/compose.yaml
+      service: vlagent
+    hostname: synology
+    cap_add:
+      - DAC_READ_SEARCH
+    env_file:
+      - ${SOPS_ENV_FILE:-sops.env}
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+        labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
+    command:
+      - -envflag.enable=true
+      - -httpListenAddr=:9500
+      - -remoteWrite.url=https://logs.techtales.io/insert/jsonline?_stream_fields=hostname%2Capp&_msg_field=log
+      - -remoteWrite.format=jsonline
+      - "-remoteWrite.headers=Authorization: Bearer %{VL_TOKEN}"
+      - -remoteWrite.tmpDataPath=/var/lib/vlagent/pending
+      - -remoteWrite.maxDiskUsagePerURL=1GB
+      - -fileCollector.checkpointsPath=/var/lib/vlagent/file-checkpoints.json
+      - -fileCollector.streamFields=hostname,app,attrs.com.docker.compose.service
+      # DSM core syslog (no .log extension)
+      - -fileCollector.glob=/var/log/messages
+      - '-fileCollector.extraFields={"app":"system"}'
+      # DSM daemons and every other .log file (kern, auth, syslog, scemd, disk,
+      # iscsi, postgresql, syno* etc.)
+      - -fileCollector.glob=/var/log/*.log
+      - '-fileCollector.extraFields={"app":"system"}'
+      # SMB
+      - -fileCollector.glob=/var/log/samba/*.log
+      - '-fileCollector.extraFields={"app":"smb"}'
+      # DSM web server (nginx)
+      - -fileCollector.glob=/var/log/nginx/*.log
+      - '-fileCollector.extraFields={"app":"nginx"}'
+      # systemd per-service logs
+      - -fileCollector.glob=/var/log/systemd/*.log
+      - '-fileCollector.extraFields={"app":"systemd"}'
+      # Package Center logs
+      - -fileCollector.glob=/var/log/packages/*.log
+      - '-fileCollector.extraFields={"app":"packages"}'
+      # Container stdout (json-file driver on shipped services)
+      - -fileCollector.glob=/host/containers/*/*-json.log
+      - '-fileCollector.extraFields={"app":"containers"}'
+    volumes:
+      # Whole DSM log directory, read-only (root-owned files; container runs as root)
+      - /var/log:/var/log:ro
+      # Container Manager data root (symlink target of /var/packages/ContainerManager/var/docker)
+      - /volume1/@docker/containers:/host/containers:ro
+      - data:/var/lib/vlagent
+
+volumes:
+  data:
+    external: ${VOLUME_EXTERNAL:-false}
+    name: ${VOLUME_NAME:-victoria-logs-collector_data}
+    driver: ${VOLUME_DRIVER:-local}

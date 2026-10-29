@@ -14,6 +14,12 @@ After skills are installed, ask the user to restart the coding assistant.
 
 ## Section 1: Core Directives & Rules
 
+### BRANCH_NAMING
+
+- Branch names MUST be `<bugfix|feature>/<kebab-case-name>`, max 40 chars.
+- `bugfix/` = bugfix, `feature/` = feature — NEVER `fix/`, `hotfix/`, `chore/`, or bare names.
+- This applies to every branch created in this repo, including one-off agent/PR branches.
+
 ### RESPONSES
 
 - Keep responses concise and to the point - unless the user asks otherwise.
@@ -46,6 +52,31 @@ When using the `writing-plans` skill to generate an implementation plan or when 
 ### GITOPS_FIRST
 
 When asked to deploy a new application or change a configuration, modify the Flux manifests (HelmReleases, Kustomizations) rather than applying changes directly to the cluster. Manual `kubectl apply` commands should be avoided.
+
+## COMMENTS
+
+Comments are ANCHORS, not documentation. They mark things that need attention or encode constraints a reader cannot derive from the file itself. When in doubt, omit the comment.
+
+### ALLOWED (the only four uses)
+
+1. **Anchors for attention** — `# TODO: <actionable next step>`, `# FIXME: <known breakage>`, `# HACK: <workaround + why>`. One line, actionable, no essays.
+2. **Cross-file / cross-system constraints** — a value that must stay in sync with something outside this file. State the coupling inline: `scrapeInterval: 1m # must match interval in Grafana Helm chart`, `prune: false # should never be deleted`.
+3. **Non-obvious side effects / traps** — enabling X breaks Y, order matters, a default is dangerous. The cost of silence is a future wrong edit.
+4. **Provenance refs** — `# Ref: <url>` pointing at the upstream source of a rule, chart default, or borrowed block. Link only, do not restate the content.
+
+### FORBIDDEN
+
+- Restating what the code/manifest already says (`# creates the namespace` above a Namespace — noise).
+- Explaining _why_ a change was made — that belongs in the commit message, not the file.
+- Section dividers, banner art, decorative rules.
+- Narrative "what this file does" headers — directory layout and filenames already say it.
+- Commented-out YAML kept "just in case" — delete it; git remembers.
+
+### RULES
+
+- **Never author or rewrite comments inside vendored/upstream default configs** (e.g. plugin `config.yml` shipped by upstream). They are upstream's; leave them untouched, including their style.
+- Prefer NO comment over a weak one. A file with zero comments is not under-documented.
+- Never add comments to satisfy a perceived "should be documented" instinct. This repo is manifests and config; git history is the documentation layer.
 
 ## Section 2: Repository Architecture & Directory Mapping
 

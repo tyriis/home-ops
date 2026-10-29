@@ -1,0 +1,37 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmrule_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+  name: esphome-alerts
+spec:
+  groups:
+    - name: esphome.sensor-heating.rules
+      rules:
+        - alert: ESPHomeSensorHeatingAbsent
+          annotations:
+            description: ESPHome sensor-heating has disappeared from Prometheus target discovery.
+            summary: ESPHome sensor-heating has disappeared from Prometheus target discovery.
+          expr: |-
+            absent(up{job="sensor-heating"})
+          for: 15m
+          labels:
+            severity: warning
+        - alert: ESPHomeSensorHeatingHighTemperature
+          annotations:
+            description: ESPHome sensor-heating temperature is too high.
+            summary: ESPHome sensor-heating high temp.
+          expr: |-
+            esphome_sensor_value{node="sensor-heating", name="Sensor Heating Temperature Flow Upstairs"} > 30
+          for: 10m
+          labels:
+            severity: critical
+        - alert: ESPHomeSensorHeatingLowTemperature
+          annotations:
+            description: ESPHome sensor-heating temperature is low.
+            summary: ESPHome sensor-heating low temp.
+          expr: |-
+            esphome_sensor_value{node="sensor-heating", name="Sensor Heating Temperature Flow Upstairs"} < 22
+          for: 10m
+          labels:
+            severity: warning

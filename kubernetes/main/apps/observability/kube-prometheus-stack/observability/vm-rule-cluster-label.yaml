@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmrule_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+  name: cluster-label-collision
+spec:
+  groups:
+    - name: cluster-label-collision
+      rules:
+        - alert: ClusterLabelOverrideIgnored
+          annotations:
+            description: Job {{ $labels.job }} exports cluster={{ $labels.exported_cluster }}, so the external cluster label won and {{ $value }} series carry the target value as exported_cluster. Rename the source label, for example to ceph_cluster.
+          expr: count by (job, exported_cluster) ({exported_cluster!=""}) > 0
+          for: 10m
+          labels:
+            severity: warning

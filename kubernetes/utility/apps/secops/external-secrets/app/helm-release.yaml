@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: external-secrets
-      version: 2.11.0
+      version: 2.14.0
       sourceRef:
         kind: HelmRepository
         name: external-secrets
@@ -25,8 +25,4 @@ spec:
   uninstall:
     keepHistory: false
   # https://artifacthub.io/packages/helm/external-secrets-operator/external-secrets?modal=values
-  values:
-    installCRDs: true
-    replicaCount: 1
-    grafana:
-      enabled: false
+  values: {}

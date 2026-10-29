@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -34,7 +34,7 @@ spec:
               ESPHOME_DASHBOARD_USE_PING: "true"
             image:
               repository: ghcr.io/esphome/esphome
-              tag: 2026.9.1@sha256:776a845d508909bf426d2ee7bdd81796361ebe6a7f091807ce1d6d0b48985413
+              tag: 2026.10.1@sha256:eab8cd6b4f51077c3883af4cedc058280ddc34a94f3b2ffee23e9d2cd5f1db64
             ports:
               - name: http
                 containerPort: &port 6052
@@ -49,7 +49,6 @@ spec:
 
     service:
       app:
-        controller: *app
         ports:
           http:
             port: *port
@@ -74,10 +73,6 @@ spec:
     persistence:
       config:
         existingClaim: esphome-config
-        advancedMounts:
-          esphome:
-            app:
-              - path: /config
       secrets:
         type: secret
         name: esphome-secrets

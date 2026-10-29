@@ -8,10 +8,12 @@ vars:
   DEVENV_DIR: "{{.PROJECT_DIR}}/devenv"
   KUBERNETES_DIR: "{{.PROJECT_DIR}}/kubernetes"
   TALOS_DIR: "{{.PROJECT_DIR}}/talos"
+  DEADVALUES_VERSION: "v0.1.9"
 
 includes:
   backstage: .taskfiles/backstage/Taskfile.yaml
   debug: .taskfiles/debug-tasks/Taskfile.yaml
+  deadvalues: .taskfiles/deadvalues/Taskfile.yaml
   devenv: .taskfiles/devenv/Taskfile.yaml
   flate: .taskfiles/flate/Taskfile.yaml
   git: .taskfiles/git/Taskfile.yaml

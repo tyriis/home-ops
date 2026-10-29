@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmrule_v1beta1.json
+# Ref: chart kube-prometheus-stack 92.13.1, PrometheusRule kube-prometheus-stack-kube-prometheus-general.rules
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+  name: kube-prometheus-stack-kube-prometheus-general.rules
+spec:
+  groups:
+    - name: kube-prometheus-general.rules
+      rules:
+        - expr: count without(instance, pod, node) (up == 1)
+          record: count:up1
+        - expr: count without(instance, pod, node) (up == 0)
+          record: count:up0

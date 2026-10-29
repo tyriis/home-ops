@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -38,7 +38,6 @@ spec:
           type: RuntimeDefault
     controllers:
       velocity:
-        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -47,7 +46,7 @@ spec:
             nameOverride: *app
             image:
               repository: itzg/mc-proxy
-              tag: 2026.10.0@sha256:ad35279fe06ec23ad0a2b8980894490177c6121eefb8784e5e5d8912aa6cbc07
+              tag: 2026.10.2@sha256:0b969bd3000d6e21ebb58444d062d63202cb552b5264b57a274fed7d2b411c0d
             envFrom:
               - secretRef:
                   name: minecraft-velocity-proxy-rcon
@@ -57,7 +56,7 @@ spec:
               GID: 1000
               TYPE: VELOCITY
               # TODO: update with renovate
-              VELOCITY_VERSION: 3.5.1
+              VELOCITY_VERSION: 4.3.0
 
               # Memory settings
               INIT_MEMORY: 128M
@@ -105,7 +104,6 @@ spec:
             probes:
               readiness: &probes
                 enabled: true
-                type: TCP
                 port: *port
               liveness: *probes
               startup:
@@ -121,7 +119,6 @@ spec:
 
     service:
       velocity:
-        controller: velocity
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: ${CILIUM_LB_IPS}
@@ -139,30 +136,24 @@ spec:
         ports:
           velocity-proxy:
             port: *port
-            protocol: TCP
             targetPort: velocity
           bedrock-proxy:
             port: *bedrockPort
             protocol: UDP
             targetPort: bedrock
       rcon:
-        controller: velocity
         ports:
           rcon:
             port: *rconPort
-            protocol: TCP
             targetPort: rcon
       metrics:
-        controller: velocity
         ports:
           metrics:
             port: *metricsPort
-            protocol: TCP
             targetPort: metrics
 
     serviceMonitor:
       metrics:
-        enabled: true
         serviceName: minecraft-velocity-proxy-metrics
         endpoints:
           - port: metrics
@@ -173,10 +164,7 @@ spec:
     persistence:
       tmp:
         type: emptyDir
-        globalMounts:
-          - path: /tmp
       data:
-        type: persistentVolumeClaim
         existingClaim: minecraft-velocity-proxy-data
         globalMounts:
           - path: /server

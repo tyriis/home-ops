@@ -1,0 +1,29 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/networking.k8s.io/networkpolicy_v1.json
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: vmsingle
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: vmsingle
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: vmauth
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: vmalert
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: vmagent
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: victoria-metrics-operator
+      ports:
+        - protocol: TCP
+          port: 8429 # policy matches post-DNAT target port; Service http-alias 8428 -> 8429

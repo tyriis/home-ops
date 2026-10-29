@@ -3,11 +3,11 @@
 # --------------------------------------------------------------------------------
 
 terraform {
-  required_version = "1.16.5"
+  required_version = "1.17.1"
   required_providers {
     kind = {
       source  = "tehcyx/kind"
-      version = "0.11.0"
+      version = "0.13.0"
     }
     docker = {
       source  = "kreuzwerker/docker"

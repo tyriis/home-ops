@@ -1,0 +1,45 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: victoria-metrics
+  description: VictoriaMetrics is the metrics platform for both clusters. A single VMSingle on the utility cluster, fronted by vmauth, receives remote writes from a stateless VMAgent on the utility cluster (in-cluster) and a headless VMAgent on the main cluster (over the WAN). It runs in dual-run alongside the main Prometheus and becomes the source of truth at cutover, when Prometheus is disabled and the Grafana datasource is switched.
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+    home-ops.io/rollout-phase: dual-run (phase 1 of 2) — owns the central store, becomes the source of truth at cutover
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/utility/apps/observability/victoria-metrics
+      title: Flux definition (central store)
+      icon: github
+      type: github-repository
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/observability/victoria-metrics
+      title: Flux definition (main cluster agent)
+      icon: github
+      type: github-repository
+    - url: https://metrics.techtales.io/
+      title: Metrics Endpoint
+      icon: dashboard
+      type: dashboard
+    - url: https://github.com/VictoriaMetrics/VictoriaMetrics
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+    - url: https://docs.victoriametrics.com/
+      title: VictoriaMetrics Homepage
+      icon: website
+      type: website
+  tags:
+    - monitoring
+    - observability
+    - metrics
+    - victoriametrics
+spec:
+  type: service
+  lifecycle: production
+  system: utility-cluster
+  owner: home-ops
+  dependsOn:
+    - component:cert-manager
+    - component:envoy-gateway
+    - component:openbao

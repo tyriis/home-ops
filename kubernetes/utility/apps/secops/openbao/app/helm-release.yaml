@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: openbao
-      version: 0.29.6
+      version: 0.30.6
       sourceRef:
         kind: HelmRepository
         name: openbao
@@ -29,11 +29,8 @@ spec:
     injector:
       enabled: false
     server:
-      enabled: true
       image:
-        registry: quay.io
-        repository: openbao/openbao
-        tag: 2.6.2@sha256:11fd73a2102cda9c55d5d881a8c3210303146a7ec1e8ac76f526e175c6d24641
+        tag: 2.7.1@sha256:6d2b93856e3fcf7b18ad855a0b51eaba474dc8b79cf554379ea32034797d2acf
       updateStrategyType: RollingUpdate
       logLevel: info
       logFormat: json
@@ -46,21 +43,16 @@ spec:
       extraLabels:
         reloader.stakater.com/auto: "true"
       dataStorage:
-        enabled: true
         size: 2Gi
-        mountPath: /openbao/data
         storageClass: local-nvme
       auditStorage:
         enabled: true
         size: 2Gi
-        mountPath: /openbao/audit
         storageClass: local-nvme
-      extraEnvironmentVars:
-        GOOGLE_APPLICATION_CREDENTIALS: /openbao/userconfig/kms-openbao-unseal/serviceaccount.json
-      extraVolumes:
-        - type: secret
-          name: kms-openbao-unseal
-          path: /openbao/userconfig
+      extraSecretEnvironmentVars:
+        - envName: STATIC_UNSEAL_KEY
+          secretName: openbao-unseal-key
+          secretKey: key
       ha:
         enabled: true
         replicas: 1
@@ -81,12 +73,9 @@ spec:
               }
             }
 
-            seal "gcpckms" {
-              disabled    = "false"
-              project     = "techtales"
-              region      = "europe-west3"
-              key_ring    = "home-infra"
-              crypto_key  = "vault-unseal"
+            seal "static" {
+              current_key_id = "20261004-1"
+              current_key    = "env://STATIC_UNSEAL_KEY"
             }
 
             # storage "file" {
@@ -99,10 +88,5 @@ spec:
 
     ui:
       enabled: true
-      publishNotReadyAddresses: true
-      # The service should only contain selectors for active Vault pod
-      activeVaultPodOnly: true
-      serviceType: ClusterIP
-      serviceNodePort: null
-      externalPort: 8200
-      targetPort: 8200
+      # The service should only contain selectors for active OpenBao pod
+      activeOpenbaoPodOnly: true

@@ -1,0 +1,99 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: vmalert
+spec:
+  driftDetection:
+    mode: enabled
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: vmalert
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        fsGroup: 65534
+        seccompProfile: { type: RuntimeDefault }
+
+    controllers:
+      main:
+        containers:
+          app:
+            image:
+              repository: docker.io/victoriametrics/vmalert
+              tag: v1.155.0@sha256:3256cba5ddaca5974eae6141105cec4ce37871f1c213f0a5c267ec0111bc68e1
+            args:
+              - --datasource.url=http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428
+              - --notifier.url=http://kube-prometheus-stack-alertmanager.observability.svc.cluster.local:9093
+              - --rule=/config/rules.yaml
+              - --rule.defaultRuleType=vlogs
+              - --httpListenAddr=:8880
+              - --configCheckInterval=1m
+              - --external.url=https://vmalert.techtales.io
+            ports:
+              - name: http
+                containerPort: 8880
+                protocol: TCP
+            probes:
+              readiness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: http
+              liveness: *probes
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
+    service:
+      app:
+        ports:
+          app:
+            port: 8880
+            targetPort: http
+
+    serviceMonitor:
+      app:
+        endpoints:
+          - port: app
+            scheme: http
+            path: /metrics
+            interval: 1m
+
+    persistence:
+      config:
+        type: configMap
+        name: vmalert-rules
+        advancedMounts:
+          main:
+            app:
+              # Mount the whole ConfigMap volume (no subPath): kubelet updates
+              # whole-volume configMap mounts atomically, and vmalert picks up
+              # changes via -configCheckInterval polling. subPath mounts would
+              # never see rule edits at all.
+              - path: /config
+                readOnly: true

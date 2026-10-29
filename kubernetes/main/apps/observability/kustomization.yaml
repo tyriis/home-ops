@@ -12,10 +12,11 @@ resources:
   - ./grafana/flux-sync.yaml
   - ./kromgo/flux-sync.yaml
   - ./kube-prometheus-stack/flux-sync.yaml
-  - ./loki/flux-sync.yaml
   - ./opentelemetry/flux-sync.yaml
-  - ./promtail/flux-sync.yaml
   - ./smartctl-exporter/flux-sync.yaml
   - ./speedtest-exporter/flux-sync.yaml
   - ./tempo/flux-sync.yaml
   - ./unpoller/flux-sync.yaml
+  - ./victoria-logs-collector/flux-sync.yaml
+  - ./victoria-metrics/flux-sync.yaml
+  - ./victoria-operator/flux-sync.yaml

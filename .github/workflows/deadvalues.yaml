@@ -1,0 +1,56 @@
+---
+# deadvalues: Helm values dead-code checker (https://github.com/guarnz/deadvalues)
+# Uses the upstream composite action: installs the pinned release, then runs
+# `diff --base` + `scan --changed-since` on PRs (fast, scoped) and a full scan
+# on workflow_dispatch (no base). Report lands in the job summary and a sticky
+# PR comment.
+# Gates the PR: scan fails on dead keys (fail-on-scan: dead), diff fails on
+# BREAKING chart bumps (fail-on-diff: breaking, catches the Renovate case).
+# Render errors exit 2 and fail the run too.
+name: deadvalues
+
+on:
+  pull_request:
+    paths:
+      - "**/*.yaml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deadvalues:
+    name: deadvalues / check
+    runs-on: ubuntu-latest
+    # first full run took ~14min on the 4-vCPU runner; manual-dispatch full scans keep headroom
+    timeout-minutes: 25
+    steps:
+      # https://github.com/marketplace/actions/checkout
+      - name: checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      # https://github.com/marketplace/actions/create-github-app-token
+      - name: generate token
+        id: generate-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+          permission-pull-requests: write
+
+      # https://github.com/marketplace/actions/deadvalues
+      - name: deadvalues
+        uses: guarnz/deadvalues@6ed0a88f1513ea7c3c93b3bb9a4b4fc71b951b25 # v0.1.9
+        with:
+          github-token: ${{ steps.generate-token.outputs.token }}
+          path: kubernetes
+          mode: all
+          fail-on-scan: dead
+          fail-on-diff: breaking

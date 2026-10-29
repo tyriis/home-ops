@@ -1,0 +1,17 @@
+---
+# Default-deny: nothing loads unless listed here. RHDH's own default set stays off.
+plugins:
+  - package: ./dynamic-plugins/dist/backstage-plugin-techdocs
+    disabled: false
+  - package: ./dynamic-plugins/dist/backstage-plugin-techdocs-backend-dynamic
+    disabled: false
+  - package: ./dynamic-plugins/dist/backstage-plugin-techdocs-module-addons-contrib
+    disabled: false
+    pluginConfig:
+      dynamicPlugins:
+        frontend:
+          backstage.plugin-techdocs-module-addons-contrib:
+            techdocsAddons:
+              - importName: ReportIssue
+              - importName: TextSize
+              - importName: LightBox

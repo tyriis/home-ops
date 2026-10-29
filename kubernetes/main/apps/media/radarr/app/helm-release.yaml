@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -27,14 +27,13 @@ spec:
     # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
     controllers:
       radarr:
-        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
               repository: ghcr.io/home-operations/radarr
-              tag: 6.4.4.10685@sha256:be53998a2d39cfa3c3315b70c7509a6a1f2a10c3aee9337653efc9f4c970430e
+              tag: 7.0.0.10815@sha256:c044b4df8e7b2546ef389481626a56fabe291575ff2d65481b1555432d6161ff
             envFrom:
               - secretRef:
                   name: radarr-env
@@ -47,6 +46,8 @@ spec:
               RADARR__LOG__ANALYTICSENABLED: "False"
               RADARR__LOG__DBENABLED: "False"
               RADARR__LOG__LEVEL: info
+              RADARR__LOG__ROTATE: 1
+              RADARR__LOG__SIZELIMIT: 1
               RADARR__SERVER__PORT: &port 7878
               RADARR__UPDATE__BRANCH: develop
             ports:
@@ -78,7 +79,6 @@ spec:
         fsGroup: 1000
     service:
       app:
-        controller: *app
         ports:
           http:
             port: *port
@@ -104,18 +104,23 @@ spec:
         type: nfs
         server: nas.techtales.io
         path: /mnt/tank/media
-        globalMounts:
-          - path: /media
-      tmpfs:
+      logs:
         type: emptyDir
+        medium: Memory
+        sizeLimit: 8Mi
         advancedMounts:
           radarr:
             app:
-              - path: /config/Backups
-                subPath: backup
-              - path: /config/MediaCover
-                subPath: cache
               - path: /config/logs
-                subPath: logs
-              - path: /tmp
-                subPath: tmp
+      sentry:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 8Mi
+        advancedMounts:
+          radarr:
+            app:
+              - path: /config/Sentry
+      tmp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 16Mi

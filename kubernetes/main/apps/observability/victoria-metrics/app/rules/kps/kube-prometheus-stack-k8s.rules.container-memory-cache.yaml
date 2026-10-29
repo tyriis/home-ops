@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmrule_v1beta1.json
+# Ref: chart kube-prometheus-stack 92.13.1, PrometheusRule kube-prometheus-stack-k8s.rules.container-memory-cache
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+  name: kube-prometheus-stack-k8s.rules.container-memory-cache
+spec:
+  groups:
+    - name: k8s.rules.container_memory_cache
+      rules:
+        - expr: |-
+            container_memory_cache{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
+            * on (cluster, namespace, pod) group_left(node) topk by (cluster, namespace, pod) (1,
+              max by (cluster, namespace, pod, node) (kube_pod_info{node!=""})
+            )
+          record: node_namespace_pod_container:container_memory_cache

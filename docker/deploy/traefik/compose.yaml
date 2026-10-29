@@ -12,7 +12,7 @@ volumes:
 
 services:
   traefik:
-    image: traefik:v3.7.13@sha256:24841fe2de7304c149343d877d2923b4c8800a38ba015dea9174c23b20e344a0
+    image: traefik:v3.7.16@sha256:1336e85aaed293bd63d005086e0dd013b04078b26aaeb1c18b26a2f928af7e65
     container_name: traefik
     command:
       # Let's Encrypt registration email — REQUIRED. Fails fast at deploy until

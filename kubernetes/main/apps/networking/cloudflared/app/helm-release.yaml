@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -35,7 +35,7 @@ spec:
           app:
             image:
               repository: cloudflare/cloudflared
-              tag: 2026.9.3-amd64@sha256:2fa795d0271a71c133a8f17c19a2a625e1976ad716329e0e61789f9fd8ee0091
+              tag: 2026.10.6-amd64@sha256:50b3d325d454037038203047e5e0d8a5c759b470b7ed59b8df11d3aff85ce809
             args:
               - tunnel
               - --loglevel
@@ -77,14 +77,12 @@ spec:
 
     service:
       app:
-        controller: cloudflared
         ports:
           http:
             port: *port
 
     serviceMonitor:
       app:
-        enabled: true
         endpoints:
           - port: http
             scheme: http

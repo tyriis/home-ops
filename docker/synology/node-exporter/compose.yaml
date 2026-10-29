@@ -9,3 +9,19 @@
 include:
   - path: ../../deploy/node-exporter/compose.yaml
     project_directory: .
+
+services:
+  node-exporter:
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+        labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
+  smartctl-exporter:
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+        labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"

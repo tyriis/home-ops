@@ -4,7 +4,10 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: plex
-  description: Plex is a media server for streaming and organizing personal movies, TV shows, and music.
+  description: |
+    Plex is a media server for streaming and organizing movies, TV shows, and music.
+  annotations:
+    backstage.io/techdocs-ref: dir:.
   links:
     - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/media/plex
       title: Flux definition

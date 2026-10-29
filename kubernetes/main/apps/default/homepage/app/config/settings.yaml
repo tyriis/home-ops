@@ -14,6 +14,10 @@ layout:
     style: columns
     # columns: 1
     tab: Home
+  Agents:
+    style: columns
+    columns: 1
+    tab: Services
   Web:
     style: columns
     # columns: 1

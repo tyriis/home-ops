@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -27,14 +27,13 @@ spec:
     # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
     controllers:
       sonarr:
-        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
               repository: ghcr.io/home-operations/sonarr
-              tag: 4.0.20.3012@sha256:1f19eb5e0f421418c1a956bbe01310a0141423afe28bd9a4b1dcb8629ff2bce2
+              tag: 5.0.0.2838@sha256:5d4f89a36a06fe44039e7533e743b4c7bf0e0d82868c86ea8ed8178abd1cbe4b
             envFrom:
               - secretRef:
                   name: sonarr-env
@@ -47,6 +46,8 @@ spec:
               SONARR__LOG__ANALYTICSENABLED: "False"
               SONARR__LOG__DBENABLED: "False"
               SONARR__LOG__LEVEL: info
+              SONARR__LOG__ROTATE: 1
+              SONARR__LOG__SIZELIMIT: 1
               SONARR__SERVER__PORT: &port 8989
               SONARR__UPDATE__BRANCH: develop
             ports:
@@ -78,7 +79,6 @@ spec:
         fsGroup: 1000
     service:
       app:
-        controller: *app
         ports:
           http:
             port: *port
@@ -104,18 +104,23 @@ spec:
         type: nfs
         server: nas.techtales.io
         path: /mnt/tank/media
-        globalMounts:
-          - path: /media
-      tmpfs:
+      logs:
         type: emptyDir
+        medium: Memory
+        sizeLimit: 8Mi
         advancedMounts:
           sonarr:
             app:
-              - path: /config/Backups
-                subPath: backup
-              - path: /config/MediaCover
-                subPath: cache
               - path: /config/logs
-                subPath: logs
-              - path: /tmp
-                subPath: tmp
+      sentry:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 8Mi
+        advancedMounts:
+          sonarr:
+            app:
+              - path: /config/Sentry
+      tmp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 16Mi

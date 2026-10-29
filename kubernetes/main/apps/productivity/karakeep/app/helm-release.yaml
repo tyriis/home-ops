@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -35,14 +35,13 @@ spec:
 
     controllers:
       karakeep:
-        forceRename: karakeep
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
               repository: ghcr.io/karakeep-app/karakeep
-              tag: 0.33.2@sha256:b069e4307dec06ea06d16989c6861c30a1ff208568be44ed5fb5d422cd3e950c
+              tag: 0.34.1@sha256:69ae5315c618b7c14c1af3e34c6e211acdb231793af424ecd1cab0b70691d987
             env:
               BROWSER_WEB_URL: http://karakeep-chrome.productivity.svc.cluster.local:9222 #NOSONAR allow http
               CRAWLER_DOWNLOAD_BANNER_IMAGE: true
@@ -58,6 +57,7 @@ spec:
               DISABLE_PASSWORD_AUTH: true
               OAUTH_ALLOW_DANGEROUS_EMAIL_ACCOUNT_LINKING: true
               NEXTAUTH_URL: https://karakeep.techtales.io
+              AUTH_TRUSTED_ORIGINS: https://karakeep.techtales.io
               OPENAI_BASE_URL: https://techtales.ai/v1
               INFERENCE_TEXT_MODEL: qwen3.8-flash-next
               INFERENCE_IMAGE_MODEL: qwen3.8-flash-next
@@ -89,7 +89,7 @@ spec:
           app:
             image:
               repository: ghcr.io/karakeep-app/karakeep-chrome
-              tag: 151.0.7922.47-r1@sha256:5b19bbb160e9ff60681a3abd97e1c4ec9f64212301410de658c3900ab7ef31e7
+              tag: 156.0.8078.47-r1@sha256:4ad61127638dd27bfe685222787c5780dd1d083d23a7658c39af657775814c44
             args:
               - --disable-gpu
               - --disable-dev-shm-usage
@@ -128,7 +128,7 @@ spec:
           app:
             image:
               repository: docker.io/getmeili/meilisearch
-              tag: v1.54.3@sha256:e68913ab7d6f5b159529e472cfd362ce3c741fafd3c127961b2142abbe41b3c9
+              tag: v1.56.0@sha256:1f578fa865f8251894b3bf38d6668d6209a3f451f8f65ab953e129d4c1db5ef4
             args:
               - /bin/meilisearch
               - --upgrade-db
@@ -148,7 +148,6 @@ spec:
     service:
       app:
         forceRename: karakeep
-        primary: true
         controller: karakeep
         ports:
           http:

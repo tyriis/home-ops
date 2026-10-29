@@ -1,0 +1,44 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: toolhive-operator
+spec:
+  driftDetection:
+    mode: enabled
+  interval: 30m
+  dependsOn:
+    - name: toolhive-operator-crds
+  chartRef:
+    kind: OCIRepository
+    name: toolhive-operator
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    operator:
+      features:
+        # namespace-scoped RBAC and cluster-wide RBAC are mutually exclusive upstream:
+        # the chart fails the render if the migrator stays on while scope is namespace
+        storageVersionMigrator: false
+      rbac:
+        scope: namespace
+        allowedNamespaces:
+          - ai
+      resources:
+        requests:
+          cpu: 20m
+          memory: 256Mi
+        limits:
+          # chart default is cpu 500m; null drops it (repo style: no CPU limits on controllers)
+          cpu: null
+          memory: 512Mi
+      gc:
+        gomemlimit: 400MiB

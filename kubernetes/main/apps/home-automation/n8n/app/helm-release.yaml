@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -40,7 +40,7 @@ spec:
           app:
             image:
               repository: ghcr.io/n8n-io/n8n
-              tag: 2.42.2@sha256:4867554ea7e90d996debeed6cdcdae676e66d949dbd0a05176b87792843d59f5
+              tag: 3.0.1@sha256:4ebd866ae91d222ffa6dd3731eade80ba71b4d13f7470172a7e66a81fe31faa0
             envFrom:
               - secretRef:
                   name: n8n-env
@@ -55,12 +55,16 @@ spec:
               N8N_PROTOCOL: "https"
               N8N_PORT: &port 8080
               N8N_HOST: &host n8n.techtales.io
+              N8N_PROXY_HOPS: "1"
               N8N_LOG_LEVEL: info
               N8N_LOG_OUTPUT: console
-              N8N_RUNNERS_ENABLED: "true"
               N8N_BLOCK_ENV_ACCESS_IN_NODE: "true"
-              WEBHOOK_URL: https://n8n-webhook.techtales.io/
-              N8N_INSTANCE_AI_REASONING_EFFORT: xhigh
+              N8N_WEBHOOK_URL: https://n8n-webhook.techtales.io/
+              N8N_INSTANCE_AI_REASONING_EFFORT: medium
+              N8N_RUNNERS_TASK_TIMEOUT: "300"
+              N8N_UNVERIFIED_PACKAGES_ENABLED: "true"
+              N8N_COMPRESSION_NODE_MAX_DECOMPRESSED_SIZE_BYTES: "2147483648"
+              N8N_COMPRESSION_NODE_MAX_ZIP_ENTRIES: "5000"
             ports:
               - name: http
                 containerPort: *port
@@ -75,7 +79,6 @@ spec:
 
     service:
       app:
-        controller: n8n
         ports:
           http:
             port: *port

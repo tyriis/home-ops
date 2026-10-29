@@ -32,7 +32,7 @@ services:
         - tailscale
         - status
       timeout: "5s"
-    image: ghcr.io/tailscale/tailscale:v1.102.5@sha256:c507f3a2a6ab1cabd8d809b98edeb41edbd5c3fb6ad9632ffd098b4c7d0b4065
+    image: ghcr.io/tailscale/tailscale:v1.104.4@sha256:ed6480b33c6eb67c9cbd203ed42b9fb57e361986725b6856def71b7a3d9e276c
     network_mode: host
     platform: linux/amd64
     privileged: false
@@ -43,11 +43,6 @@ services:
     tmpfs:
       - /var/run/tailscale:mode=0755
     tty: false
-    volumes:
-      - type: bind
-        source: ${DATA_PATH}
-        target: /var/lib/tailscale
-        read_only: false
-        bind:
-          create_host_path: false
-          propagation: rprivate
+    # State volume is supplied per host by the include shim (compose include-merge
+    # APPENDS lists, so a host cannot override a volume declared here — it must come
+    # from the host file). synology: bind to ${DATA_PATH}; bifrost: named volume.

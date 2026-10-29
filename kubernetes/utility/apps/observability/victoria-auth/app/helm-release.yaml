@@ -1,0 +1,253 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: vmauth
+spec:
+  driftDetection:
+    mode: enabled
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: vmauth
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    defaultPodOptions:
+      annotations:
+        reloader.stakater.com/auto: "true"
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        fsGroup: 65534
+
+    configMaps:
+      vmauth:
+        data:
+          vmauth.yaml: |-
+            users:
+              - name: main
+                bearer_token: "%{VMAUTH_TOKEN_MAIN}"
+                url_map:
+                  - src_paths: ["/insert/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+
+              - name: utility
+                bearer_token: "%{VMAUTH_TOKEN_UTILITY}"
+                url_map:
+                  - src_paths: ["/insert/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+
+              - name: nas
+                bearer_token: "%{VMAUTH_TOKEN_NAS}"
+                url_map:
+                  - src_paths: ["/insert/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+
+              - name: bifrost
+                bearer_token: "%{VMAUTH_TOKEN_BIFROST}"
+                url_map:
+                  - src_paths: ["/insert/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+
+              - name: red
+                bearer_token: "%{VMAUTH_TOKEN_RED}"
+                url_map:
+                  - src_paths: ["/insert/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+
+              - name: purple
+                bearer_token: "%{VMAUTH_TOKEN_PURPLE}"
+                url_map:
+                  - src_paths: ["/insert/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+
+              - name: synology
+                bearer_token: "%{VMAUTH_TOKEN_SYNOLOGY}"
+                url_map:
+                  - src_paths: ["/insert/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+
+              - name: jarvis
+                bearer_token: "%{VMAUTH_TOKEN_JARVIS}"
+                url_map:
+                  - src_paths: ["/insert/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+
+              - name: grafana-readonly
+                bearer_token: "%{VMAUTH_TOKEN_GRAFANA}"
+                url_map:
+                  - src_paths: ["/select/.*", "/api/v1/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+
+              - name: vmalert-readonly
+                username: "%{VMAUTH_VMALERT_USER}"
+                password: "%{VMAUTH_VMALERT_PASS}" # gg:ignore
+                url_map:
+                  - src_paths: ["/vmalert/.*"]
+                    url_prefix: "http://vmalert.observability.svc.cluster.local:8880"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://vmalert.observability.svc.cluster.local:8880"
+
+              - name: main-metrics
+                bearer_token: "%{VMAUTH_TOKEN_MAIN_METRICS}"
+                url_map:
+                  - src_paths: ["/api/v1/write", "/opentelemetry/v1/metrics"]
+                    url_prefix: "http://vmsingle-vmsingle.observability.svc.cluster.local:8428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://vmsingle-vmsingle.observability.svc.cluster.local:8428"
+
+              - name: utility-metrics
+                bearer_token: "%{VMAUTH_TOKEN_UTILITY_METRICS}"
+                url_map:
+                  - src_paths: ["/api/v1/write"]
+                    url_prefix: "http://vmsingle-vmsingle.observability.svc.cluster.local:8428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://vmsingle-vmsingle.observability.svc.cluster.local:8428"
+
+              - name: jarvis-metrics
+                bearer_token: "%{VMAUTH_TOKEN_JARVIS_METRICS}"
+                url_map:
+                  - src_paths: ["/api/v1/write"]
+                    url_prefix: "http://vmsingle-vmsingle.observability.svc.cluster.local:8428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://vmsingle-vmsingle.observability.svc.cluster.local:8428"
+
+              - name: grafana-read
+                bearer_token: "%{VMAUTH_TOKEN_GRAFANA_METRICS}"
+                url_map:
+                  - src_paths: ["/api/v1/.*", "/prometheus/.*", "/select/.*"]
+                    url_prefix: "http://vmsingle-vmsingle.observability.svc.cluster.local:8428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://vmsingle-vmsingle.observability.svc.cluster.local:8428"
+
+              - name: vmalert-read
+                bearer_token: "%{VMAUTH_TOKEN_VMALERT_METRICS}"
+                url_map:
+                  - src_paths: ["/api/v1/.*", "/prometheus/.*", "/select/.*"]
+                    url_prefix: "http://vmsingle-vmsingle.observability.svc.cluster.local:8428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://vmsingle-vmsingle.observability.svc.cluster.local:8428"
+
+    controllers:
+      vmauth:
+        containers:
+          app:
+            image:
+              repository: docker.io/victoriametrics/vmauth
+              tag: v1.155.0@sha256:dfeb63e5eff4bc32ed0fa2d43d8e85b717e8442c8b5c753e83c216669665a7de
+            args:
+              - -auth.config=/etc/vmauth/vmauth.yaml
+              - -httpListenAddr=:8427
+              - -configCheckInterval=1m
+            ports:
+              - name: http
+                containerPort: 8427
+                protocol: TCP
+            envFrom:
+              - secretRef:
+                  name: vmauth-tokens
+              - secretRef:
+                  name: vmauth-vmalert-credentials
+            probes:
+              readiness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /metrics
+                    port: http
+              liveness: *probes
+            resources:
+              requests:
+                cpu: 25m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+
+    service:
+      vmauth:
+        ports:
+          http:
+            port: 8427
+
+    route:
+      main:
+        hostnames:
+          - logs.techtales.io
+        parentRefs:
+          - name: envoy
+            namespace: networking
+            sectionName: https
+        annotations:
+          external-dns/unifi: "true"
+      vmalert:
+        hostnames:
+          - vmalert.techtales.io
+        parentRefs:
+          - name: envoy
+            namespace: networking
+            sectionName: https
+        annotations:
+          external-dns/unifi: "true"
+      metrics:
+        hostnames:
+          - metrics.techtales.io
+        parentRefs:
+          - name: envoy
+            namespace: networking
+            sectionName: https
+        annotations:
+          external-dns/unifi: "true"
+
+    persistence:
+      config:
+        type: configMap
+        name: vmauth
+        advancedMounts:
+          vmauth:
+            app:
+              - path: /etc/vmauth
+                readOnly: true

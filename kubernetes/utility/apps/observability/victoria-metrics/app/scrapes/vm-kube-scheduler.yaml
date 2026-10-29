@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmstaticscrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMStaticScrape
+metadata:
+  name: kube-scheduler
+spec:
+  jobName: kube-scheduler
+  # Control-plane VIP: the scheduler listens on the node, not on a Service.
+  targetEndpoints:
+    - targets:
+        - 192.168.100.30:10259
+      scheme: https
+      path: /metrics
+      interval: 1m
+      bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      tlsConfig:
+        insecureSkipVerify: true

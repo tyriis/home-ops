@@ -25,3 +25,6 @@ creation_rules:
   - path_regex: 'docker/truenas/.*/sops\.env$'
     age: >-
       age1gd4f4gu474snw3ay8njtvga56uuf4sxwzvuhk5c9h3adlfmx3yps08fhyh
+  - path_regex: 'docker/jarvis/.*/sops\.env$'
+    age: >-
+      age1sq997t03f27pnuvujgmw5xjlta7pnsqj5xaxc020e6fgje3lwusspwydr3

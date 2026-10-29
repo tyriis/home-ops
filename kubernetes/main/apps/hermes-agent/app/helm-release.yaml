@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -32,15 +32,13 @@ spec:
           type: RuntimeDefault
     controllers:
       hermes:
-        forceRename: *app
-        strategy: Recreate
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
           init-config:
             image:
               repository: docker.io/library/alpine
-              tag: 3.24@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6
+              tag: 3.24@sha256:be2656061b536c1883c4034790e21d0a09c5aaaf51968b89368a3c0371ea2c9a
             command:
               - sh
               - -c
@@ -56,7 +54,7 @@ spec:
           init-fix-ownership:
             image:
               repository: docker.io/library/alpine
-              tag: 3.24@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6
+              tag: 3.24@sha256:be2656061b536c1883c4034790e21d0a09c5aaaf51968b89368a3c0371ea2c9a
             command:
               - sh
               - -c
@@ -76,8 +74,8 @@ spec:
                 echo "ownership fix complete"
           init-agent-src:
             image:
-              repository: ghcr.io/tyriis/hermes-agent
-              tag: v2026.9.24@sha256:4f2312122f1976c220a8ba1ec77619176e288ebc16f2c55d7b7eaa72e041d8bf
+              repository: docker.io/nousresearch/hermes-agent
+              tag: v0.22.5@sha256:9c5561579f3ffdf333401797094ac3a743738d6c25d40f4331c7bf77b694238d
             command:
               - sh
               - -c
@@ -99,8 +97,8 @@ spec:
             command: ["hermes"]
             args: ["gateway", "run", "--no-supervise"]
             image: &image
-              repository: ghcr.io/tyriis/hermes-agent
-              tag: v2026.9.24@sha256:4f2312122f1976c220a8ba1ec77619176e288ebc16f2c55d7b7eaa72e041d8bf
+              repository: docker.io/nousresearch/hermes-agent
+              tag: v0.22.5@sha256:9c5561579f3ffdf333401797094ac3a743738d6c25d40f4331c7bf77b694238d
             ports:
               - name: api
                 containerPort: 8642
@@ -122,28 +120,6 @@ spec:
             envFrom:
               - secretRef:
                   name: ${APP}-secret
-            probes:
-              liveness: &probes
-                enabled: false
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: 8642
-                  initialDelaySeconds: 30
-                  periodSeconds: 30
-                  failureThreshold: 5
-              readiness: *probes
-              startup:
-                enabled: false
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: 8642
-                  initialDelaySeconds: 30
-                  periodSeconds: 10
-                  failureThreshold: 30
             securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -163,7 +139,7 @@ spec:
           webui:
             image:
               repository: ghcr.io/nesquena/hermes-webui
-              tag: 0.52.409@sha256:5b7d43eef7d60da43b49fc6413dc2b5882117a59ee7b158440447f4b3c23210d
+              tag: 0.52.578@sha256:ac3bb983530bd5b50353ea0d64d8a3d9efc30a7b2cfa2ae5c92c0abfb88e0bde
             command: ["/bin/sh", "-c"]
             args:
               - |-
@@ -252,9 +228,6 @@ spec:
                 memory: 512Mi
     service:
       app:
-        forceRename: *app
-        primary: true
-        controller: hermes
         ports:
           api:
             port: 8642
@@ -267,7 +240,7 @@ spec:
           external-dns/unifi: "true"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Hermes WebUI Chat
-          gethomepage.dev/group: AI
+          gethomepage.dev/group: Agents
           gethomepage.dev/icon: sh-hermes-agent-light
           gethomepage.dev/name: ${AGENT_NAME} agent
         hostnames:

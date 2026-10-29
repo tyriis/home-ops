@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -28,26 +28,19 @@ spec:
     # https://github.com/nzbgetcom/nzbget
     controllers:
       nzbget:
-        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
               repository: ghcr.io/home-operations/nzbget
-              tag: 26.3.0@sha256:7b8c77ede65ad37b55e318a38e09249e196736c319bd3c24034f7d53a2f1ba5a
+              tag: 26.3.0@sha256:af04d3bf15361afae8b4105df2f7b7157799c651bb169cf360f742455c162b6e
             env:
               NZBGET__PORT: &port 6789
             ports:
               - name: http
                 containerPort: *port
                 protocol: TCP
-            probes:
-              # TODO: debug
-              liveness:
-                enabled: false
-              readiness:
-                enabled: false
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -64,7 +57,6 @@ spec:
         fsGroup: 1000
     service:
       app:
-        controller: *app
         ports:
           http:
             port: *port
@@ -90,12 +82,7 @@ spec:
         type: nfs
         server: nas.techtales.io
         path: /mnt/tank/media
-        globalMounts:
-          - path: /media
-      tmpfs:
+      tmp:
         type: emptyDir
-        advancedMounts:
-          nzbget:
-            app:
-              - path: /tmp
-                subPath: tmp
+        medium: Memory
+        sizeLimit: 16Mi

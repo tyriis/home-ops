@@ -103,6 +103,7 @@ spec:
         gethomepage.dev/group: Observability
         gethomepage.dev/icon: grafana
         gethomepage.dev/name: Grafana
+        gethomepage.dev/pod-selector: app=grafana
     spec:
       hostnames:
         - grafana.techtales.io

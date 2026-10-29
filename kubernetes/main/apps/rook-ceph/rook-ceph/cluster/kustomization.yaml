@@ -6,3 +6,6 @@ resources:
   - ./oci-repository.yaml
   - ./helm-release.yaml
   - ./grafana-dashboard.yaml
+  - ./vm-service-scrape-exporter.yaml
+  - ./vm-service-scrape-mgr.yaml
+  - ./rules

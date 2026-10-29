@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -53,16 +53,12 @@ spec:
 
     service:
       app:
-        controller: speedtest-exporter
         ports:
           metrics:
-            enabled: true
-            protocol: TCP
             port: 9798
 
     serviceMonitor:
       app:
-        serviceName: *app
         endpoints:
           - port: metrics
             scheme: http

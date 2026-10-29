@@ -18,6 +18,15 @@ spec:
           - name: alertname
             value: Watchdog
             matchType: "="
+      # ZFS ARC is read as non-available memory; TrueNasNodeMemoryHighUtilization is the ARC-aware replacement
+      - receiver: "null"
+        matchers:
+          - name: alertname
+            value: NodeMemoryHighUtilization
+            matchType: "="
+          - name: instance
+            value: nas.techtales.io:9100
+            matchType: "="
       - receiver: "null"
         matchers:
           - name: alertname

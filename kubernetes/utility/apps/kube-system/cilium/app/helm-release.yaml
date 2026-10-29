@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: cilium
-      version: 1.20.2
+      version: 1.20.4
       sourceRef:
         kind: HelmRepository
         name: cilium
@@ -36,8 +36,6 @@ spec:
     bpf:
       masquerade: true
       tproxy: true
-    bgp:
-      enabled: false
     cgroup:
       autoMount:
         enabled: false
@@ -60,19 +58,13 @@ spec:
           - port-distribution
           - icmp
           - http
-        serviceMonitor:
-          enabled: true
+        # Read only when hubble.enabled is true; re-enable together with it.
+        # serviceMonitor:
+        #   enabled: true
         dashboards:
           enabled: true
           annotations:
             grafana_folder: Cilium
-      relay:
-        # FIXME
-        enabled: false
-        rollOutPods: true
-        prometheus:
-          serviceMonitor:
-            enabled: true
     ipam:
       mode: kubernetes
     ipv4NativeRoutingCIDR: 10.244.0.0/16
@@ -92,7 +84,6 @@ spec:
       replicas: 1
       rollOutPods: true
       prometheus:
-        enabled: true
         serviceMonitor:
           enabled: true
       dashboards:
@@ -112,22 +103,22 @@ spec:
     routingMode: native
     securityContext:
       privileged: true
-      capabilities:
-        ciliumAgent:
-          - CHOWN
-          - KILL
-          - NET_ADMIN
-          - NET_RAW
-          - IPC_LOCK
-          - SYS_ADMIN
-          - SYS_RESOURCE
-          - PERFMON
-          - BPF
-          - DAC_OVERRIDE
-          - FOWNER
-          - SETGID
-          - SETUID
-        cleanCiliumState:
-          - NET_ADMIN
-          - SYS_ADMIN
-          - SYS_RESOURCE
+      # capabilities:
+      #   ciliumAgent:
+      #     - CHOWN
+      #     - KILL
+      #     - NET_ADMIN
+      #     - NET_RAW
+      #     - IPC_LOCK
+      #     - SYS_ADMIN
+      #     - SYS_RESOURCE
+      #     - PERFMON
+      #     - BPF
+      #     - DAC_OVERRIDE
+      #     - FOWNER
+      #     - SETGID
+      #     - SETUID
+      #   cleanCiliumState:
+      #     - NET_ADMIN
+      #     - SYS_ADMIN
+      #     - SYS_RESOURCE

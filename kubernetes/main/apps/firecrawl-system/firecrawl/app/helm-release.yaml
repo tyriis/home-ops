@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,14 +26,13 @@ spec:
   values:
     controllers:
       api:
-        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
               repository: ghcr.io/firecrawl/firecrawl
-              tag: 2.11@sha256:2b5ca4e5b1a0a4c092ff15b874fa1a6a3d9af5aaa7efb13142f7ca38eea1ff6b
+              tag: 2.11.621@sha256:15a5873a307b416f67bbedd4dd80b4cb2d53d5d1e7b59840fe0bf66fd80ed3a1
             command: ["node", "--max-old-space-size=6144", "dist/src/index.js"]
             env:
               FLY_PROCESS_GROUP: app
@@ -91,14 +90,13 @@ spec:
                 memory: 6Gi
 
       worker:
-        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
               repository: ghcr.io/firecrawl/firecrawl
-              tag: 2.11@sha256:2b5ca4e5b1a0a4c092ff15b874fa1a6a3d9af5aaa7efb13142f7ca38eea1ff6b
+              tag: 2.11.621@sha256:15a5873a307b416f67bbedd4dd80b4cb2d53d5d1e7b59840fe0bf66fd80ed3a1
             command:
               [
                 "node",
@@ -149,14 +147,13 @@ spec:
                 memory: 4Gi
 
       nuq-worker:
-        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
               repository: ghcr.io/firecrawl/firecrawl
-              tag: 2.11@sha256:2b5ca4e5b1a0a4c092ff15b874fa1a6a3d9af5aaa7efb13142f7ca38eea1ff6b
+              tag: 2.11.621@sha256:15a5873a307b416f67bbedd4dd80b4cb2d53d5d1e7b59840fe0bf66fd80ed3a1
             command:
               [
                 "node",
@@ -207,14 +204,13 @@ spec:
                 memory: 4Gi
 
       playwright-service:
-        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
               repository: ghcr.io/firecrawl/playwright-service
-              tag: latest@sha256:47da52c036b55580d5d0812fa530eacfe03533ebad9449a50858ff697db04f71
+              tag: latest@sha256:637fb8c8399634b02c2179da72566ce11644435e5d93e895bdbde4b1f9b0882a
             env:
               PORT: "3000"
               BLOCK_MEDIA: "true"
@@ -250,7 +246,6 @@ spec:
                 memory: 4Gi
 
       nuq-postgres:
-        replicas: 1
         pod:
           securityContext:
             fsGroup: 999
@@ -258,7 +253,7 @@ spec:
           init-permissions:
             image:
               repository: ghcr.io/firecrawl/nuq-postgres
-              tag: latest@sha256:a582bc385702f3a93cafe2d8c749d55b6676e7c2761e94923113badf7af4b54f
+              tag: latest@sha256:5a0be88215431b8dd57ae5d701ee191521cd1ac8e882a65558ae95c4587c57cb
             securityContext:
               runAsUser: 0
             command:
@@ -270,7 +265,7 @@ spec:
           app:
             image:
               repository: ghcr.io/firecrawl/nuq-postgres
-              tag: latest@sha256:a582bc385702f3a93cafe2d8c749d55b6676e7c2761e94923113badf7af4b54f
+              tag: latest@sha256:5a0be88215431b8dd57ae5d701ee191521cd1ac8e882a65558ae95c4587c57cb
             env:
               POSTGRES_USER: postgres
               POSTGRES_PASSWORD: password
@@ -313,8 +308,6 @@ spec:
     persistence:
       tmp:
         type: emptyDir
-        globalMounts:
-          - path: /tmp
       data:
         type: emptyDir
         advancedMounts:

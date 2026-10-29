@@ -6,7 +6,7 @@ metadata:
   name: otel-collector
 spec:
   mode: daemonset
-  image: otel/opentelemetry-collector-contrib:0.161.0@sha256:fd328de2552466ad78385e1b1289c3f2402b1c45f265b252aab1955b42845ac1
+  image: otel/opentelemetry-collector-contrib:0.164.0@sha256:340c9ca6a36617084c6661bdc4f0fe92b7cda5a805d61673ec8db375fddc522b
   config:
     receivers:
       otlp:
@@ -27,14 +27,15 @@ spec:
         check_interval: 5s
         limit_mib: 1024
     exporters:
+      # otlphttp appends the signal path (/v1/metrics) to the base URL; do not repeat it.
       otlphttp/prom:
         endpoint: http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/otlp #NOSONAR allow http
         tls:
           insecure: true
-      otlphttp/loki:
-        endpoint: http://loki-headless.observability.svc.cluster.local:3100/otlp #NOSONAR allow http
-        tls:
-          insecure: true
+      otlphttp/vm:
+        endpoint: https://metrics.techtales.io/opentelemetry
+        headers:
+          Authorization: "Bearer ${env:VM_METRICS_TOKEN}"
       otlp/tempo:
         endpoint: tempo.observability.svc.cluster.local:4317
         tls:
@@ -54,11 +55,8 @@ spec:
         metrics:
           receivers: [otlp]
           processors: [memory_limiter, batch]
-          exporters: [otlphttp/prom]
-        logs:
-          receivers: [otlp]
-          processors: [memory_limiter, batch]
-          exporters: [otlphttp/loki]
+          exporters: [otlphttp/prom, otlphttp/vm]
+        # logs pipeline removed with loki; OTLP ingestion to VictoriaLogs tracked in #10987
       telemetry:
         metrics:
           level: detailed
@@ -74,6 +72,11 @@ spec:
         secretKeyRef:
           name: otel-collector
           key: OTEL_BEARER_TOKEN
+    - name: VM_METRICS_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: otel-collector
+          key: VM_METRICS_TOKEN
   resources:
     requests:
       cpu: 10m

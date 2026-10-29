@@ -1,0 +1,195 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/toolhive.stacklok.dev/mcpserver_v1alpha1.json
+apiVersion: toolhive.stacklok.dev/v1alpha1
+kind: MCPServer
+metadata:
+  name: unifi-network-mcp
+spec:
+  image: ghcr.io/sirkirby/unifi-network-mcp:0.42.0@sha256:e7365e1f27ed74ef95a1ddc812ac11d6c33c489d772056bf0dea495203e9b38e
+  transport: streamable-http
+  mcpPort: 3000
+  proxyPort: 8080
+  env:
+    # HTTP is off by default; the container runs stdio unless this is set.
+    - name: UNIFI_MCP_HTTP_ENABLED
+      value: "true"
+    - name: UNIFI_MCP_HTTP_TRANSPORT
+      value: streamable-http
+    - name: UNIFI_MCP_HOST
+      value: 0.0.0.0
+    - name: UNIFI_MCP_PORT
+      value: "3000"
+    - name: UNIFI_MCP_HTTP_FORCE
+      value: "true"
+    - name: UNIFI_PORT
+      value: "443"
+    # UniFi OS serves the API behind /proxy; auto-detection is inconclusive here.
+    - name: UNIFI_CONTROLLER_TYPE
+      value: proxy
+    # The MCP SDK answers 421 behind a reverse proxy unless this is off.
+    - name: UNIFI_MCP_ENABLE_DNS_REBINDING_PROTECTION
+      value: "false"
+    # Eager mode exposes real tool names to the authz policy below.
+    - name: UNIFI_TOOL_REGISTRATION_MODE
+      value: eager
+    # Mutations stay behind the preview-then-confirm flow.
+    - name: UNIFI_TOOL_PERMISSION_MODE
+      value: confirm
+    # Read-only, layer 1 of 2: no create/update/delete in any category. Reads are
+    # never gated, and a category added upstream inherits this deny (v0.39.3).
+    - name: UNIFI_POLICY_NETWORK_CREATE
+      value: "false"
+    - name: UNIFI_POLICY_NETWORK_UPDATE
+      value: "false"
+    - name: UNIFI_POLICY_NETWORK_DELETE
+      value: "false"
+  secrets:
+    - name: unifi-mcp-env
+      key: UNIFI_HOST
+      targetEnvName: UNIFI_HOST
+    - name: unifi-mcp-env
+      key: UNIFI_USERNAME
+      targetEnvName: UNIFI_USERNAME
+    - name: unifi-mcp-env
+      key: UNIFI_PASSWORD
+      targetEnvName: UNIFI_PASSWORD
+    - name: unifi-mcp-env
+      key: UNIFI_SITE
+      targetEnvName: UNIFI_SITE
+    - name: unifi-mcp-env
+      key: UNIFI_VERIFY_SSL
+      targetEnvName: UNIFI_VERIFY_SSL
+  resources:
+    requests:
+      cpu: 25m
+      memory: 128Mi
+    limits:
+      memory: 256Mi
+  # Reloader rolls the backend when the Secret changes; the operator does not.
+  podTemplateSpec:
+    metadata:
+      annotations:
+        reloader.stakater.com/auto: "true"
+  # Read-only, layer 2 of 2: deny every tool that is not readOnlyHint=true at
+  # network/v0.39.3, including the meta-tools that run any tool by name.
+  authzConfig:
+    type: inline
+    inline:
+      policies:
+        - 'permit(principal, action == Action::"call_tool", resource);'
+        - |
+          forbid(principal, action == Action::"call_tool", resource)
+          when {
+            [
+              "unifi_adopt_device",
+              "unifi_archive_alarm",
+              "unifi_archive_all_alarms",
+              "unifi_authorize_guest",
+              "unifi_batch",
+              "unifi_block_client",
+              "unifi_configure_port_aggregation",
+              "unifi_configure_port_mirror",
+              "unifi_create_acl_rule",
+              "unifi_create_ap_group",
+              "unifi_create_backup",
+              "unifi_create_client_group",
+              "unifi_create_content_filter",
+              "unifi_create_dns_record",
+              "unifi_create_dynamic_dns",
+              "unifi_create_firewall_group",
+              "unifi_create_firewall_policy",
+              "unifi_create_firewall_zone",
+              "unifi_create_nat_rule",
+              "unifi_create_network",
+              "unifi_create_oon_policy",
+              "unifi_create_port_forward",
+              "unifi_create_port_profile",
+              "unifi_create_qos_rule",
+              "unifi_create_route",
+              "unifi_create_simple_port_forward",
+              "unifi_create_simple_qos_rule",
+              "unifi_create_traffic_route",
+              "unifi_create_usergroup",
+              "unifi_create_voucher",
+              "unifi_create_wlan",
+              "unifi_delete_acl_rule",
+              "unifi_delete_ap_group",
+              "unifi_delete_backup",
+              "unifi_delete_client_group",
+              "unifi_delete_content_filter",
+              "unifi_delete_dns_record",
+              "unifi_delete_dynamic_dns",
+              "unifi_delete_firewall_group",
+              "unifi_delete_firewall_policy",
+              "unifi_delete_firewall_zone",
+              "unifi_delete_nat_rule",
+              "unifi_delete_network",
+              "unifi_delete_oon_policy",
+              "unifi_delete_port_forward",
+              "unifi_delete_port_profile",
+              "unifi_delete_vpn_client",
+              "unifi_delete_wlan",
+              "unifi_execute",
+              "unifi_force_provision_device",
+              "unifi_force_reconnect_client",
+              "unifi_forget_client",
+              "unifi_load_tools",
+              "unifi_locate_device",
+              "unifi_power_cycle_port",
+              "unifi_reboot_device",
+              "unifi_rename_client",
+              "unifi_rename_device",
+              "unifi_reorder_firewall_policies",
+              "unifi_revoke_voucher",
+              "unifi_set_client_fixed_ap",
+              "unifi_set_client_ip_settings",
+              "unifi_set_device_led",
+              "unifi_set_jumbo_frames",
+              "unifi_set_outlet_state",
+              "unifi_set_site_leds",
+              "unifi_set_switch_port_profile",
+              "unifi_toggle_device",
+              "unifi_toggle_firewall_policy",
+              "unifi_toggle_nat_rule",
+              "unifi_toggle_oon_policy",
+              "unifi_toggle_port_forward",
+              "unifi_toggle_qos_rule_enabled",
+              "unifi_toggle_traffic_route",
+              "unifi_toggle_wlan",
+              "unifi_trigger_rf_scan",
+              "unifi_trigger_speedtest",
+              "unifi_unauthorize_guest",
+              "unifi_unblock_client",
+              "unifi_update_acl_rule",
+              "unifi_update_ap_group",
+              "unifi_update_autobackup_settings",
+              "unifi_update_client_group",
+              "unifi_update_content_filter",
+              "unifi_update_device_radio",
+              "unifi_update_dns_record",
+              "unifi_update_dynamic_dns",
+              "unifi_update_firewall_group",
+              "unifi_update_firewall_policy",
+              "unifi_update_firewall_zone",
+              "unifi_update_gateway_settings",
+              "unifi_update_mdns_settings",
+              "unifi_update_nat_rule",
+              "unifi_update_network",
+              "unifi_update_oon_policy",
+              "unifi_update_port_forward",
+              "unifi_update_port_profile",
+              "unifi_update_qos_rule",
+              "unifi_update_route",
+              "unifi_update_snmp_settings",
+              "unifi_update_switch_stp",
+              "unifi_update_threat_management_settings",
+              "unifi_update_traffic_route",
+              "unifi_update_usergroup",
+              "unifi_update_vpn_client_state",
+              "unifi_update_vpn_server_alternate_address",
+              "unifi_update_vpn_server_state",
+              "unifi_update_wlan",
+              "unifi_upgrade_device"
+            ].contains(resource.name)
+          };
+      entitiesJson: "[]"

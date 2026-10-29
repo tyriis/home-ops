@@ -93,6 +93,22 @@
         description: OpenBao Secrets Management
         # ping: openbao.techtales.io
         siteMonitor: https://secrets.techtales.io
+- Development:
+    - New API:
+        icon: mdi-lightning-bolt
+        href: https://techtales.ai
+        description: LLM API Gateway
+        siteMonitor: https://techtales.ai
+    - Forgejo:
+        icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/forgejo.png
+        href: https://git.techtales.io
+        description: Self-hosted Git for Agents
+        siteMonitor: https://git.techtales.io/api/healthz
+    - OpenGist:
+        icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/opengist-light.svg
+        href: https://gist.techtales.io
+        description: Self-hosted Git Snippet Sharing
+        siteMonitor: https://gist.techtales.io
 - Web:
     - Cloudflare Dashboard:
         icon: cloudflare
@@ -152,6 +168,11 @@
         description: Harbor Container Registry
         siteMonitor: https://harbor.techtales.io
 - Observability:
+    - sparkDash:
+        icon: https://raw.githubusercontent.com/MiaAI-Lab/sparkDash/main/assets/bolt.svg
+        href: https://sparkdash.techtales.ai
+        description: DGX Spark Monitoring Dashboard
+        siteMonitor: https://sparkdash.techtales.ai
     - Grafana Cloud:
         icon: grafana
         href: https://homecluster.grafana.net

@@ -1,0 +1,28 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: truenas-memory
+spec:
+  groups:
+    - name: truenas-memory
+      rules:
+        - alert: TrueNasNodeMemoryHighUtilization
+          annotations:
+            description: Memory is filling up on {{ $labels.instance }}, has been above 90% for the last 15 minutes, is currently at {{ printf "%.2f" $value }}%. ZFS ARC is excluded from the calculation.
+          expr: |
+            100 - ((node_memory_MemAvailable_bytes{job="node-exporter", instance="nas.techtales.io:9100"} + node_zfs_arc_size{job="node-exporter", instance="nas.techtales.io:9100"}) / node_memory_MemTotal_bytes{job="node-exporter", instance="nas.techtales.io:9100"} * 100) > 90
+          for: 15m
+          labels:
+            severity: warning
+        - alert: TrueNasNodeMemoryPressure
+          annotations:
+            description: Tasks are blocked waiting for memory on {{ $labels.instance }} ({{ printf "%.2f" $value }} stalled seconds in the last 15 minutes) or ZFS is throttling allocations.
+          expr: |
+            increase(node_zfs_arc_memory_throttle_count{instance="nas.techtales.io:9100"}[15m]) > 0
+            or
+            increase(node_pressure_memory_waiting_seconds_total{instance="nas.techtales.io:9100"}[15m]) > 30
+          for: 5m
+          labels:
+            severity: critical

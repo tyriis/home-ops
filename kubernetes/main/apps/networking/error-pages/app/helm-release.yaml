@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: ghcr.io/tarampampam/error-pages
-              tag: 4.2.5@sha256:6d42b5d6e1a014fa2373e3587f9e85c25589a089fd5f6fc4f2a496858f5e365d
+              tag: 4.2.7@sha256:f59453fef7ca963c2239cbb021896c71e6f375d85e5ef3f9c6495c1367a7de4e
             env:
               TEMPLATE_NAME: connection
               SHOW_DETAILS: "false"
@@ -65,7 +65,6 @@ spec:
 
     service:
       app:
-        controller: *app
         ports:
           http:
             port: &port 8080
@@ -80,6 +79,3 @@ spec:
             sectionName: https
         hostnames:
           - "{{ .Release.Name }}.techtales.io"
-        rules:
-          - backendRefs:
-              - port: *port

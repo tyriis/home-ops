@@ -6,6 +6,7 @@ resources:
   - ../../../../../components/minecraft/external-secret.yaml
   - ./config-map.yaml
   - ./helm-release.yaml
+  - ./vm-service-scrape.yaml
 # components:
 #   - ../../../../../components/minecraft
 configMapGenerator:

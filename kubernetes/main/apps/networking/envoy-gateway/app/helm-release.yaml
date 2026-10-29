@@ -26,11 +26,8 @@ spec:
         extensionApis:
           enableEnvoyPatchPolicy: true
         provider:
-          type: Kubernetes
           kubernetes:
             deploy:
               type: GatewayNamespace
     global:
-      images:
-        envoyGateway:
-          imageRegistry: mirror.gcr.io
+      imageRegistry: mirror.gcr.io

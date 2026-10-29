@@ -57,9 +57,9 @@ jobs:
     steps:
       - name: generate token
         id: generate-token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
-          app-id: ${{ secrets.BOT_APP_ID }}
+          client-id: ${{ secrets.BOT_APP_ID }}
           private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
           permission-pull-requests: write
 
@@ -85,6 +85,15 @@ jobs:
         id: diff
         run: |
           DIFF="$(flate diff all --path kubernetes/${{ matrix.cluster }}/flux -o github)"
+          # One step output becomes one process argument; Linux caps it at 128 KiB (MAX_ARG_STRLEN).
+          MAX_LINES=400
+          TOTAL_LINES="$(printf '%s' "$DIFF" | wc -l)"
+          TRUNCATED=""
+          if [[ $TOTAL_LINES -gt $MAX_LINES ]]; then
+            DIFF="$(printf '%s\n' "$DIFF" | head -n "$MAX_LINES")"
+            TRUNCATED="
+          truncated: showing the first ${MAX_LINES} of ${TOTAL_LINES} lines. The complete diff is in this job's log."
+          fi
           {
             echo "message<<EOF"
             echo "### flate diff (${{ matrix.cluster }})"
@@ -92,6 +101,7 @@ jobs:
               echo '```diff'
               echo "$DIFF"
               echo '```'
+              echo "$TRUNCATED"
             else
               echo "no changes found"
             fi

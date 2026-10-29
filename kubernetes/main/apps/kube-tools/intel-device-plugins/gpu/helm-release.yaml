@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: intel-device-plugins-gpu
-      version: 0.37.0
+      version: 0.37.1
       sourceRef:
         kind: HelmRepository
         name: intel-device-plugins
@@ -26,4 +26,3 @@ spec:
     # https://artifacthub.io/packages/helm/intel/intel-device-plugins-gpu?modal=values
     name: i915
     nodeFeatureRule: false
-    sharedDevNum: 1 # setting greater than 1 enables sharing, allowing multiple pods to use the same GPU concurrently

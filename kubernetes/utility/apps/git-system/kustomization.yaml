@@ -8,3 +8,4 @@ components:
 resources:
   - ./namespace.yaml
   - ./forgejo/flux-sync.yaml
+  - ./opengist/flux-sync.yaml

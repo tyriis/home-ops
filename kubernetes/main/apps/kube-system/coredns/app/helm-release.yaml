@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: coredns
-      version: 1.48.2
+      version: 1.49.0
       sourceRef:
         kind: HelmRepository
         name: coredns
@@ -23,17 +23,17 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    fullnameOverride: coredns
     replicaCount: 2
     k8sAppLabelOverride: kube-dns
     service:
       name: kube-dns
       clusterIP: 10.96.0.10
-    serviceAccount:
-      create: true
     deployment:
       annotations:
         reloader.stakater.com/auto: "true"
+    prometheus:
+      service:
+        enabled: true
     servers:
       - zones:
           - zone: .

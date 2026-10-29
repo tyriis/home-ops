@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmpodscrape_v1beta1.json
+# Replaces the chart's own PodMonitor; keep monitoring.podMonitorEnabled false.
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
+metadata:
+  name: cnpg-operator
+spec:
+  namespaceSelector:
+    matchNames:
+      - cnpg-system
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cloudnative-pg
+  podMetricsEndpoints:
+    - port: metrics
+      path: /metrics
+      interval: 30s
+      relabelConfigs:
+        - action: replace
+          targetLabel: job
+          replacement: cnpg-system/cnpg-operator-cloudnative-pg

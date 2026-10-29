@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -27,19 +27,14 @@ spec:
     keepHistory: false
   # https://github.com/bjw-s/helm-charts/blob/main/charts/library/common/values.yaml
   values:
-    serviceAccount:
-      openbao-snapshots: {}
     controllers:
       openbao-snapshots:
         type: cronjob
         cronjob:
-          concurrencyPolicy: Forbid
           schedule: "0 6 * * *" # daily at 6am
           timeZone: Europe/Vienna
         annotations:
           reloader.stakater.com/auto: "true"
-        serviceAccount:
-          identifier: openbao-snapshots
         pod:
           automountServiceAccountToken: true
           securityContext:
@@ -50,7 +45,7 @@ spec:
           snapshot:
             image:
               repository: quay.io/openbao/openbao
-              tag: 2.6.2@sha256:11fd73a2102cda9c55d5d881a8c3210303146a7ec1e8ac76f526e175c6d24641
+              tag: 2.7.2@sha256:5046911075e137e154ce49ab051502f4ec7cf367d484ae4a4dce665d9b90561f
             command:
               - /bin/sh
               - -ec
@@ -75,7 +70,7 @@ spec:
           upload:
             image:
               repository: google/cloud-sdk
-              tag: 587.0.0-alpine@sha256:ef78619c8239711d94705ddd3e29d2b24b7482b865ca347c938da6f9bf8b6e92
+              tag: 591.0.0-alpine@sha256:52b4a5e7ec253a26bac670322289e8327f8b4d2f24a8c539591cf939e97c9e16
             command:
               - /bin/sh
               - -ec
@@ -102,8 +97,6 @@ spec:
     persistence:
       data:
         type: emptyDir
-        globalMounts:
-          - path: /data
       credentials:
         type: secret
         name: openbao-snapshots-gcp-sa

@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,20 +26,10 @@ spec:
   values:
     # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
     # https://github.com/jazzlyn/ml-detector
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
-        seccompProfile:
-          type: RuntimeDefault
     controllers:
       ml-detector:
         annotations:
           reloader.stakater.com/auto: "true"
-        replicas: 1
         strategy: RollingUpdate
         containers:
           app:
@@ -107,11 +97,9 @@ spec:
                   app.kubernetes.io/name: *app
     service:
       app:
-        controller: *app
         ports:
           http:
             port: *port
-            protocol: TCP
     persistence:
       config:
         type: configMap

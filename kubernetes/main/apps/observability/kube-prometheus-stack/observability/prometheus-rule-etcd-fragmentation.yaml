@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/prometheusrule_v1.json
+# Replacement for the chart's etcdDatabaseHighFragmentationRatio, which is
+# disabled via defaultRules.disabled in the app HelmRelease. Rationale and
+# defrag runbook:
+# docs/backstage/components/kube-prometheus-stack/docs/index.md
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: etcd-fragmentation-override
+spec:
+  groups:
+    - name: etcd
+      rules:
+        - alert: etcdDatabaseHighFragmentationRatio
+          annotations:
+            description: 'etcd cluster "{{ $labels.job }}": database size in use on instance {{ $labels.instance }} is {{ $value | humanizePercentage }} of the actual allocated disk space and at least 2 GiB of the file is fragmented, please run defragmentation (e.g. etcdctl defrag) to retrieve the unused fragmented disk space.'
+            runbook_url: https://runbooks.prometheus-operator.dev/runbooks/etcd/etcddatabasehighfragmentationratio
+            summary: "etcd database fragmentation is material: in-use is below 50% of allocated and more than 2 GiB is wasted."
+          expr: |
+            (last_over_time(etcd_mvcc_db_total_size_in_use_in_bytes{job=~".*etcd.*"}[5m]) / last_over_time(etcd_mvcc_db_total_size_in_bytes{job=~".*etcd.*"}[5m])) < 0.5
+            and
+            (last_over_time(etcd_mvcc_db_total_size_in_bytes{job=~".*etcd.*"}[5m]) - last_over_time(etcd_mvcc_db_total_size_in_use_in_bytes{job=~".*etcd.*"}[5m])) > 2147483648
+          for: 1h
+          labels:
+            severity: warning

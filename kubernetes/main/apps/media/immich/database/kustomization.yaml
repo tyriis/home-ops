@@ -7,3 +7,4 @@ resources:
   - ./cluster.yaml
   - ./objectstore.yaml
   - ./scheduled-backup.yaml
+  - ./vm-pod-scrape.yaml

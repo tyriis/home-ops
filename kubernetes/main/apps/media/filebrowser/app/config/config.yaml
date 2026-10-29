@@ -1,7 +1,10 @@
 ---
-server:
+http:
   port: 8080
-  database: /data/database.db
+  trustProxyHeaders: true
+server:
+  database:
+    path: /data/filebrowser.sqlite
   sources:
     - path: /mnt/media
       config:
@@ -17,8 +20,6 @@ server:
         defaultEnabled: true
         createUserDir: true
 auth:
-  # adminUsername: admin
-  # adminPassword: admin
   methods:
     password:
       enabled: false
@@ -35,3 +36,7 @@ auth:
 frontend:
   styling:
     customCSS: /config/custom.css
+    customThemes:
+      xplorer:
+        description: "Xplorer"
+        css: /config/xplorer.css

@@ -9,3 +9,20 @@
 include:
   - path: ../../deploy/tailscale/compose.yaml
     project_directory: .
+
+services:
+  tailscale:
+    volumes:
+      - type: bind
+        source: ${DATA_PATH}
+        target: /var/lib/tailscale
+        read_only: false
+        bind:
+          create_host_path: false
+          propagation: rprivate
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+        labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"

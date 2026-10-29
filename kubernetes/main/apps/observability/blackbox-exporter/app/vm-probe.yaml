@@ -1,0 +1,105 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmprobe_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMProbe
+metadata:
+  name: roborock-upstairs-icmp
+spec:
+  jobName: roborock-upstairs-icmp
+  interval: 30s
+  scrapeTimeout: 30s
+  module: icmp
+  vmProberSpec:
+    url: http://blackbox-exporter.observability.svc.cluster.local:9115
+    path: /probe
+  # targets.staticConfig is deprecated in operator v0.68.0+, targets.static replaces it
+  targets:
+    static:
+      targets:
+        - roborock-upstairs.localdomain
+  honorTimestamps: true
+  metricRelabelConfigs:
+    - action: replace
+      targetLabel: instance
+      replacement: roborock-upstairs.localdomain
+    - action: replace
+      targetLabel: target
+      replacement: roborock-upstairs-icmp
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmprobe_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMProbe
+metadata:
+  name: roborock-downstairs-icmp
+spec:
+  jobName: roborock-downstairs-icmp
+  interval: 30s
+  scrapeTimeout: 30s
+  module: icmp
+  vmProberSpec:
+    url: http://blackbox-exporter.observability.svc.cluster.local:9115
+    path: /probe
+  targets:
+    static:
+      targets:
+        - roborock-downstairs.localdomain
+  honorTimestamps: true
+  metricRelabelConfigs:
+    - action: replace
+      targetLabel: instance
+      replacement: roborock-downstairs.localdomain
+    - action: replace
+      targetLabel: target
+      replacement: roborock-downstairs-icmp
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmprobe_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMProbe
+metadata:
+  name: roborock-basement-icmp
+spec:
+  jobName: roborock-basement-icmp
+  interval: 30s
+  scrapeTimeout: 30s
+  module: icmp
+  vmProberSpec:
+    url: http://blackbox-exporter.observability.svc.cluster.local:9115
+    path: /probe
+  targets:
+    static:
+      targets:
+        - roborock-basement.localdomain
+  honorTimestamps: true
+  metricRelabelConfigs:
+    - action: replace
+      targetLabel: instance
+      replacement: roborock-basement.localdomain
+    - action: replace
+      targetLabel: target
+      replacement: roborock-basement-icmp
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmprobe_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMProbe
+metadata:
+  name: ping-cloudflare
+spec:
+  jobName: ping-cloudflare
+  interval: 30s
+  scrapeTimeout: 30s
+  module: icmp
+  vmProberSpec:
+    url: http://blackbox-exporter.observability.svc.cluster.local:9115
+    path: /probe
+  targets:
+    static:
+      targets:
+        - 1.1.1.1
+  honorTimestamps: true
+  metricRelabelConfigs:
+    - action: replace
+      targetLabel: instance
+      replacement: 1.1.1.1
+    - action: replace
+      targetLabel: target
+      replacement: ping-cloudflare

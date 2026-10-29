@@ -1,0 +1,54 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: victoria-logs-collector
+spec:
+  interval: 30m
+  timeout: 10m
+  driftDetection:
+    mode: enabled
+  chartRef:
+    kind: OCIRepository
+    name: victoria-logs-collector
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    env:
+      - name: VL_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: vmauth-tokens
+            key: VMAUTH_TOKEN_UTILITY
+    remoteWrite:
+      # Commas must be percent-encoded: vlagent splits -remoteWrite.url on
+      # raw commas and fails with "unsupported scheme" on the fragments.
+      - url: >-
+          http://vmauth.observability.svc.cluster.local:8427/insert/jsonline?_stream_fields=kubernetes.pod_namespace%2Ckubernetes.pod_name%2Ckubernetes.container_name&_msg_field=message
+        format: jsonline
+        # vlagent accepts VM-style sizes (GB) but not k8s quantities (Gi).
+        # Quoted so the chart renders the value verbatim.
+        maxDiskUsagePerURL: "1GB"
+        headers:
+          Authorization: Bearer %{VL_TOKEN}
+    collector:
+      extraFields: '{"cluster":"utility"}'
+      excludeFilter: kubernetes.pod_name:=%{HOSTNAME}
+    podAnnotations:
+      reloader.stakater.com/auto: "true"
+    podMonitor:
+      enabled: true
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        memory: 256Mi

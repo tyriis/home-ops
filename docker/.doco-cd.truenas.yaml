@@ -1,6 +1,6 @@
 ---
 name: node-exporter
-working_dir: docker/deploy/node-exporter
+working_dir: docker/truenas/node-exporter
 ---
 name: olah
 working_dir: docker/truenas/olah
@@ -9,5 +9,13 @@ env_files:
 ---
 name: arcane-agent
 working_dir: docker/truenas/arcane-agent
+env_files:
+  - .env
+---
+name: victoria-logs-collector
+working_dir: docker/truenas/victoria-logs-collector
+---
+name: minio
+working_dir: docker/truenas/minio
 env_files:
   - .env

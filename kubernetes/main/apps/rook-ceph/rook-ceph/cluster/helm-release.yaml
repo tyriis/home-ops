@@ -42,20 +42,15 @@ spec:
           gethomepage.dev/pod-selector: app=rook-ceph-mgr
         host:
           name: rook.techtales.io
-          path: /
-          pathType: PathPrefix
         parentRefs:
           - name: envoy
             namespace: networking
             sectionName: https
 
     cephClusterSpec:
-      crashCollector:
-        disable: false
       csi:
         rookUseCsiOperator: true
       dashboard:
-        enabled: true
         urlPrefix: /
         ssl: false
         prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090 #NOSONAR allow http
@@ -76,7 +71,6 @@ spec:
         connections:
           requireMsgr2: true
       storage:
-        useAllNodes: true
         useAllDevices: false
         devicePathFilter: /dev/disk/by-path/pci-0000:01:00.0-nvme-1
       cephConfig:
@@ -116,8 +110,6 @@ spec:
             - nodiratime # Don't update directory access times
     cephBlockPoolsVolumeSnapshotClass:
       enabled: true
-      name: ceph-block
       isDefault: true
-      deletionPolicy: Delete
     cephFileSystems: []
     cephObjectStores: []

@@ -1,0 +1,162 @@
+# VictoriaLogs central log ingestion (utility cluster)
+
+VictoriaLogs single-node (HelmRelease `victoria-logs`, chart `victoria-logs-single` 0.13.10, VL
+v1.53.0) fronted by **vmauth** (HelmRelease `vmauth`, deployed via the bjw-s app-template chart,
+OCI-sourced `app-template` 5.2.1) with per-unit bearer tokens. The front door is its own app:
+`kubernetes/utility/apps/observability/victoria-auth/` holds the vmauth HelmRelease, its
+NetworkPolicy, and the token Secret. Everything reaches VL through vmauth
+on `logs.techtales.io`; VL itself is not routable (NetworkPolicy locks `:9428` to vmauth pods).
+The `vmauth` HTTPRoute is rendered by the vmauth HelmRelease itself (app-template `route` section).
+See ADR 0016 (`docs/decisions/0016-central-log-platform-victorialogs-on-utility.md`).
+
+## Shippers deployed
+
+- **main cluster** — `victoria-logs-collector` (vlagent v1.53.0, chart 0.3.8, app
+  `kubernetes/main/apps/observability/victoria-logs-collector/`): DaemonSet shipping the
+  talos01-03 pod + node logs over WAN/VPN to `https://logs.techtales.io/insert/jsonline`
+  (main has no in-cluster vmauth; envoy terminates TLS and proxies to utility vmauth). The
+  write token is NOT a Sops secret here: an ExternalSecret pulls it from OpenBao at
+  `infra/kubernetes/main/observability/victoria-logs-collector` (key `VMAUTH_TOKEN`) into
+  Secret `victoria-logs-collector` (key `VL_TOKEN`). On-disk send buffer at
+  `/var/lib/vl-collector` (1GB cap), every line tagged `cluster="main"`, the collector's own
+  logs excluded.
+- **utility cluster** — `victoria-logs-collector` (vlagent v1.53.0, chart 0.3.8, app
+  `kubernetes/utility/apps/observability/victoria-logs-collector/`): DaemonSet shipping util01's
+  pod + node logs through the in-cluster vmauth service with key `VMAUTH_TOKEN_UTILITY`. On-disk
+  send buffer at `/var/lib/vl-collector` (1GB cap), every line tagged `cluster="utility"`, the
+  collector's own logs excluded.
+- **bifrost** — `vlagent` compose stack (`docker/bifrost/victoria-logs-collector/`, doco-cd target
+  `bifrost`): Lightwhale host syslog `/var/log/messages` (sshd, host daemons, Docker syslog-driver
+  container logs), `hostname=bifrost`, token `VMAUTH_TOKEN_BIFROST` in the bifrost `sops.env` as
+  `VL_TOKEN`.
+- NAS, workstations, remote site — pending; each reuses this pattern with its own token.
+
+## Unit tokens
+
+Each unit authenticates with its own token. All eight tokens live in OpenBao at
+`infra/kubernetes/utility/observability/victoria-auth` and are synced to ONE Secret
+`vmauth-tokens` by ExternalSecret `vmauth-tokens`; each key is the `VMAUTH_TOKEN_*` env name
+vmauth reads, so the Deployment maps them with a single `envFrom` block:
+
+| Unit     | Secret key              | Role                              |
+| -------- | ----------------------- | --------------------------------- |
+| main     | `VMAUTH_TOKEN_MAIN`     | write (`/insert/.*` only)         |
+| utility  | `VMAUTH_TOKEN_UTILITY`  | write (`/insert/.*` only)         |
+| nas      | `VMAUTH_TOKEN_NAS`      | write (`/insert/.*` only)         |
+| bifrost  | `VMAUTH_TOKEN_BIFROST`  | write (`/insert/.*` only)         |
+| red      | `VMAUTH_TOKEN_RED`      | write (`/insert/.*` only)         |
+| purple   | `VMAUTH_TOKEN_PURPLE`   | write (`/insert/.*` only)         |
+| synology | `VMAUTH_TOKEN_SYNOLOGY` | write (`/insert/.*` only)         |
+| grafana  | `VMAUTH_TOKEN_GRAFANA`  | read (`/select/.*`, `/api/v1/.*`) |
+
+Retrieve a unit's token (`<KEY>` = secret key from the table):
+
+```sh
+kubectl --context readonly@utility -n observability get secret vmauth-tokens \
+  -o "jsonpath={.data.<KEY>}" | base64 -d
+```
+
+One user breaks the pattern: `vmalert-readonly` authenticates with **Basic auth** (username +
+password) instead of a bearer token — the only mechanism a browser can present natively, since it
+gates the vmalert UI at `vmalert.techtales.io/vmalert`. Its credentials are NOT part of the
+token set above: a separate ExternalSecret
+`vmauth-vmalert-credentials` pulls them from the same OpenBao path
+`infra/kubernetes/utility/observability/victoria-auth` into its own Secret, added to the
+Deployment via a second `envFrom` entry.
+
+## Insert endpoint
+
+Ship logs with `POST /insert/jsonline` (VL single-node ignores tenant path segments — use the
+plain path):
+
+- LAN: `https://logs.techtales.io/insert/jsonline?_stream_fields=host,cluster,unit&_msg_field=msg`
+- Tailscale: same hostname — `logs.techtales.io` resolves to the LAN IP over the tunnel.
+
+Per-unit smoke test (example for `main`, one jsonline line):
+
+```sh
+T=$(kubectl --context admin@utility -n observability get secret vmauth-tokens \
+      -o "jsonpath={.data.VMAUTH_TOKEN_MAIN}" | base64 -d)
+curl -s -o /dev/null -w '%{http_code}\n' -X POST -H "Authorization: Bearer ***" \
+  -H "Content-Type: application/json" \
+  --data-binary '{"msg":"smoke","host":"test","cluster":"utility","unit":"main","_time":"'"$(date +%s%N)"'"}' \
+  'https://logs.techtales.io/insert/jsonline?_stream_fields=host,cluster,unit&_msg_field=msg&_time_field=_time'
+```
+
+Expected: `200`. Bad/unknown token → `401`. Write token on `/select/*` → `403`. Read token on
+`/insert/*` → `403`.
+
+NOTE: The `Content-Type: application/json` header is REQUIRED. VL parses ingestion query args
+with Go's `r.FormValue`, which consumes the request body when the content type is
+`application/x-www-form-urlencoded` (the curl `--data-binary` default). The request then
+returns `200` with zero rows ingested — a silent data-loss trap. Verify writes with
+`vl_rows_ingested_total{type="jsonline"}` if unsure.
+
+## Grafana datasource
+
+- Type: **Victoria Logs** (`victoriametrics-logs-datasource`)
+- URL: `https://logs.techtales.io`
+- Custom HTTP header: `Authorization: Bearer <grafana token>` (key `VMAUTH_TOKEN_GRAFANA`
+  in `vmauth-tokens`)
+- Example LogsQL query: `{cluster="utility"}`
+
+## vmui
+
+`https://logs.techtales.io/select/vmui/` — authenticate with the read token
+(key `VMAUTH_TOKEN_GRAFANA` in `vmauth-tokens`).
+
+## Operational notes
+
+- **Token rotation**: per-unit revocation = rotate that unit's `VMAUTH_TOKEN_*` key in OpenBao
+  (`bao kv patch infra/kubernetes/utility/observability/victoria-auth ...`); Stakater reloader
+  restarts
+  the vmauth pod (env is fixed at container start, `%{VAR}` is resolved at config parse —
+  hot-reload alone does NOT pick up rotated tokens).
+- **Bad config**: vmauth keeps serving its last good config if a reloaded `vmauth.yaml` has a typo
+  (e.g. a mangled `%{VAR}`) — watch pod logs for `invalid config` rather than trusting uptime.
+- The read user's `/api/v1/.*` allowance is speculative breadth (the datasource plugin only calls
+  `/select/logsql/*`); it is read-only and harmless, trim later if never used.
+- Denied paths return `403` because of the per-user `deny_paths` catch-all in
+  `../victoria-auth/app/helm-release.yaml` (the app-template `configMaps` section); without
+  it vmauth returns
+  `400` ("missing route").
+- On this single-node cluster, host-local processes bypass NetworkPolicy and could reach
+  `VL:9428` directly — acceptable at lab trust level.
+
+## Verification transcript
+
+Filled after deploy.
+
+## Graduation
+
+From ADR 0016: graduate to Option B (vlcluster) when there is a need for true tenant isolation,
+per-unit retention/quota, or ingest beyond single-node comfort. The vmauth config carries over;
+only these config changes are needed.
+
+Metrics backend on the same front door — add a VictoriaMetrics HelmRelease, then one user
+per unit:
+
+```yaml
+- name: main-metrics
+  bearer_token: "%{VMAUTH_TOKEN_MAIN_METRICS}"
+  url_map:
+    - src_paths: ["/api/v1/write"]
+      url_prefix: "http://victoria-metrics.observability.svc.cluster.local:8428"
+    - src_paths: ["/api/v1/query.*", "/api/v1/series.*", "/api/v1/labels.*"]
+      url_prefix: "http://victoria-metrics.observability.svc.cluster.local:8428"
+```
+
+Option B tenant rewrite — swap VL for vlinsert and pin a tenant per user:
+
+```yaml
+- name: main
+  bearer_token: "%{VMAUTH_TOKEN_MAIN}"
+  url_map:
+    - src_paths: ["/insert/.*"]
+      url_prefix: "http://vlinsert.observability.svc.cluster.local:9491/insert/1"
+      headers: ["AccountID: 1", "ProjectID: 0"]
+```
+
+The Grafana source swap is a URL change. The config has no `unauthorized_user:` block, so
+unknown tokens get `401`; the per-user `deny_paths` catch-alls answer `403` (they carry a
+mandatory `url_prefix` that a deny short-circuits before dialing).

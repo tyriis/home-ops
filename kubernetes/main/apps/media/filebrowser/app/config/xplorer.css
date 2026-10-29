@@ -1,0 +1,135 @@
+/* Xplorer theme (https://xplorer.space/)
+ * Dark, indigo-accented, Inter font, soft rounded cards with glow shadows. */
+
+:root,
+.dark-mode {
+  --background: #0a0a1a;
+  --alt-background: #0d0d24;
+  --surfacePrimary: #0d0d24;
+  --surfaceSecondary: #1a1a2e;
+  --divider: rgba(255, 255, 255, 0.08);
+  --textPrimary: #f3f4f6;
+  --textSecondary: #9ca3af;
+  --iconBackground: #1a1a2e;
+  --activeWhiteIcon: #ffffff;
+  --primary-color: #6366f1;
+  --secondary-color: #818cf8;
+  --success-color: #34d399;
+  --borderRadius: 0.75rem;
+  --font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+body,
+.dark-mode body {
+  font-family: var(--font-family);
+  background-color: #0a0a1a;
+  background-image: radial-gradient(
+    ellipse 80% 50% at 50% -10%,
+    rgba(99, 102, 241, 0.18),
+    transparent
+  );
+  color: #f3f4f6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Surfaces */
+.card,
+.floating-window,
+.listing-item,
+#search-input,
+#results {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 0.75rem !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 25px 50px -12px rgba(0, 0, 0, 0.4),
+    0 0 80px -20px rgba(99, 102, 241, 0.15) !important;
+}
+
+.card:hover,
+.listing-item:hover {
+  border-color: rgba(99, 102, 241, 0.4) !important;
+  box-shadow: 0 8px 30px -10px rgba(99, 102, 241, 0.25) !important;
+}
+
+/* Header / sidebar */
+header,
+#listingView .header,
+nav,
+.sidebar {
+  background-color: rgba(13, 13, 36, 0.8) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(12px);
+}
+
+/* Buttons */
+.button,
+button {
+  border-radius: 0.5rem !important;
+  font-family: var(--font-family);
+  transition:
+    background-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.button.primary,
+button.primary,
+.button:not(.secondary):not(.flat) {
+  background-image: linear-gradient(135deg, #6366f1, #a855f7);
+  color: #ffffff;
+  border: none;
+}
+
+.button.primary:hover,
+button.primary:hover {
+  box-shadow: 0 0 20px -5px rgba(99, 102, 241, 0.6);
+}
+
+/* Inputs */
+.input,
+input,
+select,
+textarea {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  color: #f3f4f6;
+}
+
+.input:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+}
+
+/* Selection and links */
+::selection {
+  background: rgba(99, 102, 241, 0.35);
+}
+
+a {
+  color: #a5b4fc;
+}
+
+a:hover {
+  color: #c7d2fe;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.35);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}

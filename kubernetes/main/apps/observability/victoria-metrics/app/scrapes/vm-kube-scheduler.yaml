@@ -1,0 +1,20 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmstaticscrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMStaticScrape
+metadata:
+  name: kube-scheduler
+spec:
+  # Rules select job="kube-scheduler"; the operator default is staticScrape/<ns>/<name>/<i>.
+  jobName: kube-scheduler
+  targetEndpoints:
+    - targets:
+        - 192.168.100.101:10259
+        - 192.168.100.102:10259
+        - 192.168.100.103:10259
+      scheme: https
+      path: /metrics
+      interval: 1m
+      bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      tlsConfig:
+        insecureSkipVerify: true

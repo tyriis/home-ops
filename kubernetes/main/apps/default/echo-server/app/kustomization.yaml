@@ -2,7 +2,10 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization.json
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+components:
+  - ../../../../../components/envoy-pocketid
 resources:
   - ./helm-release.yaml
+  - ./vm-service-scrape.yaml
 patches:
   - path: ./security-policy.patch.yaml

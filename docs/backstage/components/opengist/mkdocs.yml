@@ -1,0 +1,7 @@
+---
+site_name: opengist
+nav:
+  - Home: index.md
+
+plugins:
+  - techdocs-core

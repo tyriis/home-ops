@@ -5,6 +5,8 @@ kind: Component
 metadata:
   name: kube-prometheus-stack
   description: The kube-prometheus-stack is a collection of Kubernetes manifests, Grafana dashboards, and Prometheus rules combined with Helm charts to provide a monitoring solution for your Kubernetes cluster.
+  annotations:
+    backstage.io/techdocs-ref: dir:.
   links:
     - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/observability/kube-prometheus-stack
       title: Flux definition

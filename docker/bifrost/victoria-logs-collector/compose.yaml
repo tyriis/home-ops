@@ -1,0 +1,40 @@
+---
+# Include shim — the actual service definition is shared: docker/deploy/victoria-logs-collector/compose.yaml.
+# doco-cd runs compose in working_dir and hard-fails ("no compose files found") unless a
+# compose file is resolvable there; this real file provides it. Symlinks are deliberately
+# avoided (redeploy-hash churn, doco-cd #954; path-escape false positives, v0.74
+# regressions #1142/#1086/#1152).
+# project_directory: . is REQUIRED so relative paths (env_file, the data volume) resolve
+# against this host directory, not the deploy dir.
+include:
+  - path: ../../deploy/victoria-logs-collector/compose.yaml
+    project_directory: .
+
+services:
+  vlagent:
+    hostname: bifrost
+    dns:
+      - 192.168.100.1
+      - 1.1.1.2
+    environment:
+      - TZ=Europe/Vienna
+    env_file:
+      - ${SOPS_ENV_FILE:-sops.env}
+    command:
+      - -envflag.enable=true
+      - -httpListenAddr=:9500
+      - -remoteWrite.url=https://logs.techtales.io/insert/jsonline?_stream_fields=hostname%2Capp&_msg_field=log
+      - -remoteWrite.format=jsonline
+      - "-remoteWrite.headers=Authorization: Bearer %{VL_TOKEN}"
+      - -remoteWrite.tmpDataPath=/var/lib/vlagent/pending
+      - -remoteWrite.maxDiskUsagePerURL=1GB
+      - -fileCollector.checkpointsPath=/var/lib/vlagent/file-checkpoints.json
+      - -fileCollector.streamFields=hostname,app
+      # Lightwhale host syslog (BusyBox syslogd via /dev/log). Carries sshd, host daemons,
+      # and every container's logs (Docker syslog driver, tag docker:<name>#<id>).
+      # Glob pattern (messages*) is REQUIRED — see bifrost README, "Log shipping".
+      - -fileCollector.glob=/var/log/messages*
+      - '-fileCollector.extraFields={"app":"syslog"}'
+    volumes:
+      - /var/log:/var/log:ro
+      - data:/var/lib/vlagent

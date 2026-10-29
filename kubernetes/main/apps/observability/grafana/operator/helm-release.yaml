@@ -22,7 +22,6 @@ spec:
     keepHistory: false
   values:
     # https://artifacthub.io/packages/helm/grafana/grafana-operator?modal=values
-    replicas: 1
     dashboard:
       enabled: true
     defaultResyncPeriod: 1m

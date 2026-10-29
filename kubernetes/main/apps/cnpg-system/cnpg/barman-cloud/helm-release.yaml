@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -28,8 +28,6 @@ spec:
   values:
     controllers:
       barman-cloud:
-        serviceAccount:
-          identifier: *app
         containers:
           barman-cloud:
             image:
@@ -78,7 +76,6 @@ spec:
           cnpg.io/pluginServerSecret: &serverCert barman-cloud-server-tls
         labels:
           cnpg.io/pluginName: barman-cloud.cloudnative-pg.io
-        controller: barman-cloud
         ports:
           tcp:
             port: *port
@@ -87,17 +84,9 @@ spec:
       server:
         type: secret
         name: *serverCert
-        globalMounts:
-          - path: /server
       client:
         type: secret
         name: *clientCert
-        globalMounts:
-          - path: /client
-
-    serviceAccount:
-      cnpg-barman-cloud:
-        forceRename: *app
 
     rbac:
       roles:
@@ -258,8 +247,6 @@ spec:
         leader-election-rolebinding:
           type: RoleBinding
           roleRef:
-            apiGroup: rbac.authorization.k8s.io
-            kind: Role
             identifier: leader-election-role
           subjects: &subject
             - kind: ServiceAccount
@@ -268,8 +255,6 @@ spec:
         metrics-auth-rolebinding:
           type: ClusterRoleBinding
           roleRef: &roleRef
-            apiGroup: rbac.authorization.k8s.io
-            kind: ClusterRole
             identifier: metrics-auth-role
           subjects: *subject
         cnpg-barman-cloud-binding:

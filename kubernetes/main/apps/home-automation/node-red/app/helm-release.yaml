@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,7 +26,6 @@ spec:
   values:
     controllers:
       node-red:
-        strategy: Recreate
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -41,7 +40,7 @@ spec:
           app:
             image:
               repository: docker.io/nodered/node-red
-              tag: 5.0.7@sha256:a649dd711d55490151a2c39a8e48ad0c44325488fbc0e66315f2d2e19e5e1ace
+              tag: 5.0.9@sha256:e085d4a06591fd0aca2ea2a91364d27f1a0e31e885675f77935e10f95412a963
             env:
               FLOWS: flows.json
               NODE_RED_ENABLE_PROJECTS: "true"
@@ -62,7 +61,6 @@ spec:
 
     service:
       app:
-        controller: *app
         ports:
           http:
             port: 1880
@@ -87,10 +85,6 @@ spec:
     persistence:
       data:
         existingClaim: node-red-data
-        advancedMounts:
-          node-red:
-            app:
-              - path: /data
       gitconfig:
         type: configMap
         name: node-red-gitconfig

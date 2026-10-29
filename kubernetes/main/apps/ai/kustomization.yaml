@@ -7,8 +7,6 @@ components:
   - ../../../components/flux/alerts
 resources:
   - ./namespace.yaml
-  - ./llm-guard/flux-sync.yaml
-  - ./olla/flux-sync.yaml
-  - ./ollama/flux-sync.yaml
-  - ./open-webui/flux-sync.yaml
   - ./searxng/flux-sync.yaml
+  - ./toolhive/flux-sync.yaml
+  - ./unifi-mcp/flux-sync.yaml

@@ -11,7 +11,7 @@ spec:
   policyTypes:
     - Ingress
   ingress:
-    # Same namespace: Open WebUI
+    # Same namespace (ai)
     - from:
         - podSelector: {}
       ports:

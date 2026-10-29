@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -32,7 +32,7 @@ spec:
           copy-config:
             image:
               repository: busybox
-              tag: 1.38.0@sha256:fd7dc98638c8e305f4dc34e979f1c0fdfdcaeb0fbf8fcff77ae834b6da3d7e6e
+              tag: 1.38.0@sha256:a46257e06c82ad85242d0d38077d0a52d9896389ca60a1a59d3463db586e5fa4
             command:
               - sh
               - -c
@@ -73,7 +73,6 @@ spec:
 
     service:
       app:
-        controller: *app
         ports:
           http:
             port: *port
@@ -81,8 +80,6 @@ spec:
     persistence:
       data:
         existingClaim: ring-mqtt-data
-        globalMounts:
-          - path: /data
       credentials:
         type: secret
         name: ring-mqtt-config

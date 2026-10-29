@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -27,14 +27,13 @@ spec:
     # https://github.com/bjw-s-labs/helm-charts/blob/main/charts/library/common/values.yaml
     controllers:
       seerr:
-        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
               repository: ghcr.io/seerr-team/seerr
-              tag: v3.5.0@sha256:27602401178d54f1964442287b9f23f67a3fa2252645ee8065839ea1c3f69e45
+              tag: v3.5.1@sha256:d8fab675b55ad293ded98fd71efcfd46054cbad9746534ae1cc4794a88c0b3be
             envFrom:
               - secretRef:
                   name: seerr-env
@@ -70,7 +69,6 @@ spec:
         fsGroup: 1000
     service:
       app:
-        controller: *app
         ports:
           http:
             port: *port
@@ -98,7 +96,7 @@ spec:
         type: nfs
         server: nas.techtales.io
         path: /mnt/tank/media
-        globalMounts:
-          - path: /media
-      tmpfs:
+      tmp:
         type: emptyDir
+        medium: Memory
+        sizeLimit: 16Mi

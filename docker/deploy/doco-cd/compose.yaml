@@ -23,13 +23,23 @@ secrets:
 services:
   doco-cd:
     scale: 1 # scale to 0 if you want to stop the service without losing data
+    # json-file with label passthrough — embeds compose/doco/OCI labels as `attrs`
+    # in the log file so victoria-logs-collector can ship them (synology pattern).
+    # NOTE: doco-cd is standalone per host — this change only applies when the
+    # stack is manually re-upped (`docker compose up -d`) on each host.
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+        labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
     configs:
       - source: poll-config.yml
         target: /poll-config.yml
     container_name: ${CONTAINER_NAME:-doco-cd}
     environment:
       HTTP_PORT: ${HTTP_PORT:-8080}
-      LOG_LEVEL: debug
+      LOG_LEVEL: ${LOG_LEVEL:-info}
       POLL_CONFIG_FILE: /poll-config.yml
       WEBHOOK_SECRET_FILE: /run/secrets/webhook_secret
       SOPS_AGE_KEY_FILE: /run/secrets/sops_age_key
@@ -43,7 +53,7 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
-    image: ghcr.io/kimdre/doco-cd:0.123.0@sha256:11b474122ed530614cbe4cb8390f94b646d3fc8ba40d74c0f0b7f55a8ca719f8
+    image: ghcr.io/kimdre/doco-cd:0.131.0@sha256:33761af0adb58696bf7892604a4a319cee6164aa5cb17e5b4b4f5c8cb248a603
     ports:
       - ${HTTP_PORT:-8080}:${HTTP_PORT:-8080}
     restart: unless-stopped

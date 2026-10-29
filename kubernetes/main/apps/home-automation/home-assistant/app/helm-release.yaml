@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -45,7 +45,7 @@ spec:
               VENV_FOLDER: /venv
             image:
               repository: ghcr.io/home-operations/home-assistant
-              tag: 2026.9.4@sha256:cd5ffc0a3bc873b35f20189ef22ee7ee9e8875fe666928dfee263cd464cc053d
+              tag: 2026.10.4@sha256:81271a8bbe2a6019659e9d5cde98b884dd0d67fad6819bb4ab177dceb0c1c5e1
             ports:
               - name: http
                 containerPort: 8123
@@ -64,7 +64,7 @@ spec:
           code-server:
             image:
               repository: ghcr.io/coder/code-server
-              tag: 4.140.0@sha256:1c9ad972a78450f430155144110da4c02d3627c72a598e9197e2781fb9f92e28
+              tag: 4.144.0@sha256:b9e8056bb74bd0c4f90284c7559eddeccd38400cfedc28e64c9d3ca50fef1f83
             args:
               - --auth
               - none
@@ -88,7 +88,6 @@ spec:
 
     service:
       app:
-        primary: true
         ports:
           http:
             port: 8123
@@ -108,12 +107,6 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}-config"
-        advancedMounts:
-          home-assistant:
-            app:
-              - path: /config
-            code-server:
-              - path: /config
       # ring-snapshots:
       #   existingClaim: home-assistant-ring-snapshots
       #   advancedMounts:

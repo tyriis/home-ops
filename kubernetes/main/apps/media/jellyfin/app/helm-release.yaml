@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 5.2.1
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -28,14 +28,13 @@ spec:
     # https://github.com/jellyfin/jellyfin
     controllers:
       jellyfin:
-        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
               repository: ghcr.io/jellyfin/jellyfin
-              tag: 10.11.11@sha256:45f648c382a0c8b552582fcea40e95cb17c5d475473a891cba0eb7523fb92112
+              tag: 12.4@sha256:fea863d0cd9ec445985d9c75fc6ed64e38a1d2766cf0c250a33d553f4fc1b771
             ports:
               - name: http
                 containerPort: &port 8096
@@ -71,7 +70,6 @@ spec:
         fsGroup: 1000
     service:
       app:
-        controller: *app
         ports:
           http:
             port: *port
@@ -93,6 +91,14 @@ spec:
     persistence:
       config:
         existingClaim: ${APP}-config
+      logs:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 32Mi
+        advancedMounts:
+          jellyfin:
+            app:
+              - path: /config/log
       media:
         type: nfs
         server: nas.techtales.io
@@ -100,14 +106,15 @@ spec:
         globalMounts:
           - path: /media
             readOnly: true
-      tmpfs:
+      tmp:
         type: emptyDir
+        medium: Memory
+        sizeLimit: 16Mi
+      transcode:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 2500Mi
         advancedMounts:
           jellyfin:
             app:
               - path: /cache
-                subPath: cache
-              - path: /config/log
-                subPath: log
-              - path: /tmp
-                subPath: tmp

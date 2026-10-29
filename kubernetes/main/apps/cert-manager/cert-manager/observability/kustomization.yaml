@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - ./grafana-dashboard.yaml
   - ./prometheus-rule.yaml
+  - ./vm-rule.yaml

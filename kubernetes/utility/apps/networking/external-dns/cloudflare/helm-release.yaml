@@ -27,7 +27,6 @@ spec:
   # https://kubernetes-sigs.github.io/external-dns/latest/
   values:
     # https://artifacthub.io/packages/helm/external-dns/external-dns?modal=values
-    fullnameOverride: *app
     interval: 2m
     # logLevel: debug
     logFormat: json

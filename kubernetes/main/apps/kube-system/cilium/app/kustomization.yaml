@@ -6,3 +6,4 @@ resources:
   - ./helm-repository.yaml
   - ./helm-release.yaml
   - ./grafana-dashboard.yaml
+  - ./vm-service-scrape.yaml

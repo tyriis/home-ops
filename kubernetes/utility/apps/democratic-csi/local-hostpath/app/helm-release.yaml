@@ -45,7 +45,6 @@ spec:
           cluster: ${FLUX_CLUSTER_NAME}
 
     controller:
-      enabled: true
       strategy: node
       externalProvisioner:
         extraArgs:
@@ -62,7 +61,6 @@ spec:
         enabled: false
 
       externalSnapshotter:
-        enabled: true
         extraArgs:
           - --leader-election=false
           - --node-deployment=true

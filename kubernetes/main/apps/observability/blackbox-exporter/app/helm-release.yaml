@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: prometheus-blackbox-exporter
-      version: 11.19.1
+      version: 11.20.2
       sourceRef:
         kind: HelmRepository
         name: prometheus-community
@@ -33,13 +33,6 @@ spec:
           value: "0 2147483647"
     config:
       modules:
-        http_2xx:
-          prober: http
-          timeout: 5s
-          http:
-            valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
-            follow_redirects: true
-            preferred_ip_protocol: "ip4"
         icmp:
           prober: icmp
           timeout: 30s
@@ -75,8 +68,6 @@ spec:
               The host {{ $labels.instance }} is currently unreachable
 
     securityContext:
-      readOnlyRootFilesystem: true
-      allowPrivilegeEscalation: false
       capabilities:
         add: ["NET_RAW"]
 
@@ -86,7 +77,6 @@ spec:
         labels:
           release: prometheus
         interval: 1m
-        scrapeTimeout: 30s
       targets:
         # Vacuum robot upstairs
         - module: icmp

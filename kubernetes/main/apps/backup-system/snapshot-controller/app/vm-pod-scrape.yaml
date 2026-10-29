@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmpodscrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
+metadata:
+  name: snapshot-controller
+spec:
+  namespaceSelector:
+    matchNames:
+      - backup-system
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: snapshot-controller
+      app.kubernetes.io/instance: snapshot-controller
+  podMetricsEndpoints:
+    # Scrape the pod port: the chart only creates its metrics Service when its ServiceMonitor is enabled.
+    - port: http
+      scheme: http
+      path: /metrics
