@@ -98,6 +98,15 @@ endpoints:
   #   ui:
   #     hide-hostname: false
   #     hide-url: false
+  - name: karakeep-meilisearch
+    group: internal
+    url: http://karakeep-meilisearch.productivity.svc.cluster.local:7700/health
+    interval: 1m
+    ui:
+      hide-hostname: true
+      hide-url: true
+    conditions:
+      - "[STATUS] == 200"
   - name: OpenBAO
     group: infrastructure
     url: https://secrets.techtales.io/ui/
