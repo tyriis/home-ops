@@ -1,0 +1,35 @@
+---
+# red host scrape config — consumed by the shared vmagent template
+# (docker/deploy/vmagent/compose.yaml). Jobs match the k8s-side naming convention
+# (job = exporter name); host label carries attribution instead of a cluster label.
+global:
+  scrape_interval: 1m
+  external_labels:
+    host: red
+
+scrape_configs:
+  # node-exporter runs on host network (docker/deploy/node-exporter)
+  - job_name: node-exporter
+    static_configs:
+      - targets: ["127.0.0.1:9100"]
+    # instance is loopback and therefore identical on every host; make it fleet-unique
+    relabel_configs:
+      - target_label: instance
+        replacement: "red:9100"
+
+  # smartctl-exporter, reached via its published port on loopback
+  - job_name: smartctl-exporter
+    scrape_interval: 2m
+    static_configs:
+      - targets: ["127.0.0.1:9633"]
+    relabel_configs:
+      - target_label: instance
+        replacement: "red:9633"
+
+  # forward-agent self-metrics: remote-write health, queue depth, scrape counts
+  - job_name: vmagent
+    static_configs:
+      - targets: ["127.0.0.1:8429"]
+    relabel_configs:
+      - target_label: instance
+        replacement: "red:8429"

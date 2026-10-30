@@ -37,3 +37,7 @@ name: arcane-agent
 working_dir: docker/red/arcane-agent
 env_files:
   - .env
+
+---
+name: vmagent
+working_dir: docker/red/vmagent
