@@ -9,3 +9,7 @@ name: arcane-agent
 working_dir: docker/purple/arcane-agent
 env_files:
   - .env
+
+---
+name: vmagent
+working_dir: docker/purple/vmagent
