@@ -32,3 +32,7 @@ env_files:
 # runs strictly forward, a cut-down netfilter kernel, and a clean reboot that hung
 # and required a hard reset (see #11420). Runtime worked; boot reliability did not.
 # Stack files remain in docker/bifrost/tailscale/ for a future migration target.
+
+---
+name: vmagent
+working_dir: docker/bifrost/vmagent

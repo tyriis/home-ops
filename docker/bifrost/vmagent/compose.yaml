@@ -1,0 +1,14 @@
+---
+# Include shim — the actual service definition is shared: docker/deploy/vmagent/compose.yaml.
+# project_directory: . is REQUIRED so relative paths inside the shared compose
+# (env_file, scrape.yaml bind, the data volume) resolve against this host directory.
+include:
+  - path: ../../deploy/vmagent/compose.yaml
+    project_directory: .
+
+# Host override
+services:
+  vmagent:
+    hostname: bifrost
+    # No json-file logging block: bifrost's daemon-wide syslog driver feeds VictoriaLogs
+    # (/var/log/messages); a per-service json-file override would hide vmagent's own logs.
