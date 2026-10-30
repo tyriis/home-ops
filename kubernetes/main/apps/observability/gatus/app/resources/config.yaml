@@ -43,6 +43,15 @@ endpoints:
       dns-resolver: tcp://192.168.1.1:53
     conditions:
       - "[STATUS] == 200"
+  - name: blackbox-exporter
+    group: internal
+    url: http://blackbox-exporter.observability.svc.cluster.local:9115
+    interval: 1m
+    ui:
+      hide-hostname: true
+      hide-url: true
+    conditions:
+      - "[STATUS] == 200"
   # infrastructure
   - name: FRITZ!Box
     group: infrastructure
