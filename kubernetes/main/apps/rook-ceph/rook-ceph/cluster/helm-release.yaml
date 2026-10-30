@@ -16,6 +16,7 @@ spec:
       retries: -1
   upgrade:
     cleanupOnFail: true
+    timeout: 30m # cephx rotation + daemon roll needs longer than the 5m default
     remediation:
       retries: 3
   uninstall:
