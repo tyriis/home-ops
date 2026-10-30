@@ -10,5 +10,10 @@ include:
 services:
   vmagent:
     hostname: bifrost
+    # The host resolver cannot answer for the internal zone; metrics.techtales.io
+    # exists only in split-DNS. Same resolver pair as the vlagent shim.
+    dns:
+      - 192.168.100.1
+      - 1.1.1.2
     # No json-file logging block: bifrost's daemon-wide syslog driver feeds VictoriaLogs
     # (/var/log/messages); a per-service json-file override would hide vmagent's own logs.

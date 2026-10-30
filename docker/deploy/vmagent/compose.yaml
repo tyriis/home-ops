@@ -17,6 +17,13 @@ services:
     image: docker.io/victoriametrics/vmagent:v1.155.0@sha256:8e3c03905be15bba8312d4868e8ae6f9fc2fefee0a41d544472034249ca42bb4
     network_mode: host
     restart: unless-stopped
+    # Fleet default. The central store hostname lives only in the internal split-DNS
+    # zone, so the pod-owning host resolver cannot answer for it. Docker honors dns:
+    # even with network_mode: host — it renders a container-local /etc/resolv.conf
+    # with these nameservers. Override per host when its LAN resolver differs.
+    dns:
+      - 192.168.100.1
+      - 1.1.1.2
     env_file:
       - ${SOPS_ENV_FILE:-sops.env}
     command:
