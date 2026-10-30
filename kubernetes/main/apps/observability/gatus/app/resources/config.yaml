@@ -52,6 +52,15 @@ endpoints:
       hide-url: true
     conditions:
       - "[STATUS] == 200"
+  - name: immich-machine-learning
+    group: internal
+    url: http://immich-machine-learning.media.svc.cluster.local:3003/health
+    interval: 1m
+    ui:
+      hide-hostname: true
+      hide-url: true
+    conditions:
+      - "[STATUS] == 200"
   # infrastructure
   - name: FRITZ!Box
     group: infrastructure
