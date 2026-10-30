@@ -21,8 +21,19 @@ is made (see [Future: tailnet + YubiKey ssh-agent](#future-tailnet--yubikey-ssh-
 through vmauth with the bifrost unit token. `TZ=Europe/Vienna` is REQUIRED: BusyBox syslogd stamps
 the file in local CEST and vlagent parses those timestamps in the container timezone — without it
 the lines ship with a 2h-future timestamp and fall outside every default Grafana time range.
-Docker runs with `--log-driver=syslog`, so container logs
-are in the same file, tagged `docker:<name>#<id>`. There are no `json-file` logs on this host. The
+Docker runs with `--log-driver=syslog` as the daemon default, so containers without an
+override are in the same file, tagged `docker:<name>#<id>`. Stacks that want structured
+fields override it per-shim with a json-file `logging:` block (driver, max-size/max-file,
+`labels:` — proven live 2026-10-30: the vendor daemon honors the override and embeds
+`attrs`); those containers write to the data root
+`/mnt/lightwhale-data/lightwhale-state/docker/containers/*/*-json.log` (writable NVMe
+btrfs — the read-only squashfs root is not involved). The collector bind-mounts that
+directory as `/host/containers:ro` and tails `*-json.log` as `app="containers"`, with the
+embedded `attrs.*` carrying the compose labels (same query shape as synology/truenas).
+A flipped container is GONE from the syslog stream — the `containers` glob must be live
+before any flip. The `tag:` log-opt is accepted by the daemon but ignored by json-file;
+never add it. Host syslog shipping stays regardless: `sshd`, kernel, and the
+`/etc/init.d/SNN` scripts live only in `/var/log/messages`. The
 `sops.env` there must hold `VL_TOKEN` = the `VMAUTH_TOKEN_BIFROST` value from the `vmauth-tokens`
 secret (`kubernetes/utility/apps/observability/victoria-auth/app/secrets.sops.yaml`). Encrypt it with
 the bifrost recipient (`docker/bifrost/.*/sops\.env`). **The glob is `/var/log/messages*`, not a

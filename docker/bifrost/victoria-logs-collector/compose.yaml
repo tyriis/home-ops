@@ -29,12 +29,20 @@ services:
       - -remoteWrite.tmpDataPath=/var/lib/vlagent/pending
       - -remoteWrite.maxDiskUsagePerURL=1GB
       - -fileCollector.checkpointsPath=/var/lib/vlagent/file-checkpoints.json
-      - -fileCollector.streamFields=hostname,app
+      - -fileCollector.streamFields=hostname,app,attrs.com.docker.compose.service
       # Lightwhale host syslog (BusyBox syslogd via /dev/log). Carries sshd, host daemons,
-      # and every container's logs (Docker syslog driver, tag docker:<name>#<id>).
+      # and every container's logs on the daemon default (Docker syslog driver,
+      # tag docker:<name>#<id>).
       # Glob pattern (messages*) is REQUIRED — see bifrost README, "Log shipping".
       - -fileCollector.glob=/var/log/messages*
       - '-fileCollector.extraFields={"app":"syslog"}'
+      # Container stdout for stacks that override the daemon default with a json-file
+      # `logging:` block in their host shim (bifrost-only override; the attrs embedded by
+      # Docker carry the compose labels — same shape as synology/truenas).
+      - -fileCollector.glob=/host/containers/*/*-json.log
+      - '-fileCollector.extraFields={"app":"containers"}'
     volumes:
       - /var/log:/var/log:ro
+      # Docker data root is on the writable NVMe btrfs, not the read-only squashfs root.
+      - /mnt/lightwhale-data/lightwhale-state/docker/containers:/host/containers:ro
       - data:/var/lib/vlagent
