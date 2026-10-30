@@ -50,7 +50,7 @@ spec:
             sectionName: https
 
     cephImage:
-      tag: v19.2.3 # chart default is v20.2.4; unpin only in the dedicated Ceph upgrade
+      tag: v19.2.7 # chart default is v20.2.4; unpin only in the dedicated Ceph upgrade
     cephClusterSpec:
       dashboard:
         urlPrefix: /
@@ -72,6 +72,12 @@ spec:
           # cluster: ["169.254.255.0/24"] # Thunderbolt ring
         connections:
           requireMsgr2: true
+      # Ref: https://rook.io/docs/rook/v1.20/Storage-Configuration/Advanced/cephx-key-rotation/ (CVE-2025-30156)
+      security:
+        cephx:
+          daemon:
+            keyRotationPolicy: KeyGeneration
+            keyGeneration: 2 # must never decrease; raise it to rotate the daemon keys again
       storage:
         useAllDevices: false
         devicePathFilter: /dev/disk/by-path/pci-0000:01:00.0-nvme-1
