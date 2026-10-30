@@ -32,3 +32,7 @@ env_files:
 ---
 name: victoria-logs-collector
 working_dir: docker/synology/victoria-logs-collector
+
+---
+name: vmagent
+working_dir: docker/synology/vmagent
