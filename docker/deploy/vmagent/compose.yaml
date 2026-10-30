@@ -20,9 +20,10 @@ services:
     # Fleet default. The central store hostname lives only in the internal split-DNS
     # zone, so the pod-owning host resolver cannot answer for it. Docker honors dns:
     # even with network_mode: host — it renders a container-local /etc/resolv.conf
-    # with these nameservers. Override per host when its LAN resolver differs.
+    # with these nameservers. 192.168.1.1 is the techtales LAN resolver. The second
+    # entry is a public fallback.
     dns:
-      - 192.168.100.1
+      - 192.168.1.1
       - 1.1.1.2
     env_file:
       - ${SOPS_ENV_FILE:-sops.env}
