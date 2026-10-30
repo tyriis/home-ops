@@ -27,6 +27,7 @@ spec:
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/grafana/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/harbor/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/hermes-agent/catalog-info.yaml
+    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/hindsight/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/home-assistant/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/homepage/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/immich/catalog-info.yaml
