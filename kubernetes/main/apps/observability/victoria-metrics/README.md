@@ -157,6 +157,7 @@ control is the `src_paths` allowlist — the hostname is not a boundary: any tok
 | `jarvis-metrics`   | `VMAUTH_TOKEN_JARVIS_METRICS`   | `/api/v1/write`                              | jarvis host vmagent remote write; **utility path only** (no cluster consumer)     |
 | `bifrost-metrics`  | `VMAUTH_TOKEN_BIFROST_METRICS`  | `/api/v1/write`                              | bifrost host vmagent remote write; **utility path only** (no cluster consumer)    |
 | `synology-metrics` | `VMAUTH_TOKEN_SYNOLOGY_METRICS` | `/api/v1/write`                              | synology host vmagent remote write; **utility path only** (no cluster consumer)   |
+| `red-metrics`      | `VMAUTH_TOKEN_RED_METRICS`      | `/api/v1/write`                              | red host vmagent remote write; **utility path only** (no cluster consumer)        |
 | `grafana-read`     | `VMAUTH_TOKEN_GRAFANA_METRICS`  | `/api/v1/.*`, `/prometheus/.*`, `/select/.*` | manual read queries in run 1; the Grafana `prometheus` datasource from cutover on |
 | `vmalert-read`     | `VMAUTH_TOKEN_VMALERT_METRICS`  | `/api/v1/.*`, `/prometheus/.*`, `/select/.*` | main `VMAlert` datasource                                                         |
 
@@ -182,6 +183,9 @@ All four keys exist in **two** OpenBao paths, with the same value in each, becau
 - `infra/kubernetes/utility/observability/victoria-auth` — additionally `VMAUTH_TOKEN_SYNOLOGY_METRICS`,
   the vmauth user for the synology host vmagent. No cluster-side consumer, so no main-tree copy; the
   host-side twin lives encrypted at `docker/synology/vmagent/sops.env` (`VM_TOKEN`).
+- `infra/kubernetes/utility/observability/victoria-auth` — additionally `VMAUTH_TOKEN_RED_METRICS`,
+  the vmauth user for the red host vmagent. No cluster-side consumer, so no main-tree copy; the
+  host-side twin lives encrypted at `docker/red/vmagent/sops.env` (`VM_TOKEN`).
 
 **Rotating a token means patching both copies.** If they diverge, vmauth rejects the cluster-side
 consumer with `401` while the utility side keeps working.
