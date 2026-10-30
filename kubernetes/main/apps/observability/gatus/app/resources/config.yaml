@@ -63,7 +63,7 @@ endpoints:
       - "[STATUS] == 200"
   - name: immich-machine-learning
     group: internal
-    url: http://immich-machine-learning.media.svc.cluster.local:3003/health
+    url: http://immich-machine-learning.media.svc.cluster.local:3003/ping
     interval: 1m
     ui:
       hide-hostname: true
