@@ -11,8 +11,8 @@ services:
   vmagent:
     hostname: bifrost
     # The host resolver cannot answer for the internal zone; metrics.techtales.io
-    # exists only in split-DNS. The actual host resolver pair for this subnet is
-    # 192.168.1.1.
+    # exists only in split-DNS. Same resolver pair as the vlagent shim.
+    # the actual host resolver pair for this subnet is 192.168.1.1
     dns:
       - 192.168.1.1
       - 1.1.1.2
