@@ -158,6 +158,7 @@ control is the `src_paths` allowlist — the hostname is not a boundary: any tok
 | `bifrost-metrics`  | `VMAUTH_TOKEN_BIFROST_METRICS`  | `/api/v1/write`                              | bifrost host vmagent remote write; **utility path only** (no cluster consumer)    |
 | `synology-metrics` | `VMAUTH_TOKEN_SYNOLOGY_METRICS` | `/api/v1/write`                              | synology host vmagent remote write; **utility path only** (no cluster consumer)   |
 | `red-metrics`      | `VMAUTH_TOKEN_RED_METRICS`      | `/api/v1/write`                              | red host vmagent remote write; **utility path only** (no cluster consumer)        |
+| `truenas-metrics`  | `VMAUTH_TOKEN_TRUENAS_METRICS`  | `/api/v1/write`                              | truenas host vmagent remote write; **utility path only** (no cluster consumer)    |
 | `grafana-read`     | `VMAUTH_TOKEN_GRAFANA_METRICS`  | `/api/v1/.*`, `/prometheus/.*`, `/select/.*` | manual read queries in run 1; the Grafana `prometheus` datasource from cutover on |
 | `vmalert-read`     | `VMAUTH_TOKEN_VMALERT_METRICS`  | `/api/v1/.*`, `/prometheus/.*`, `/select/.*` | main `VMAlert` datasource                                                         |
 
@@ -186,6 +187,9 @@ All four keys exist in **two** OpenBao paths, with the same value in each, becau
 - `infra/kubernetes/utility/observability/victoria-auth` — additionally `VMAUTH_TOKEN_RED_METRICS`,
   the vmauth user for the red host vmagent. No cluster-side consumer, so no main-tree copy; the
   host-side twin lives encrypted at `docker/red/vmagent/sops.env` (`VM_TOKEN`).
+- `infra/kubernetes/utility/observability/victoria-auth` — additionally `VMAUTH_TOKEN_TRUENAS_METRICS`,
+  the vmauth user for the truenas host vmagent. No cluster-side consumer, so no main-tree copy; the
+  host-side twin lives encrypted at `docker/truenas/vmagent/sops.env` (`VM_TOKEN`).
 
 **Rotating a token means patching both copies.** If they diverge, vmauth rejects the cluster-side
 consumer with `401` while the utility side keeps working.
@@ -308,11 +312,11 @@ label is renamed to `exported_cluster`: no target can claim another cluster. Use
 machine:
 
 - in-cluster targets carry no `host`; `cluster` is their whole attribution;
-- off-cluster machines scraped through main's `VMAgent` (`truenas`, the esphome devices) set
+- off-cluster machines scraped through main's `VMAgent` (the esphome devices) set
   `host: <machine>` beside `job`, so `cluster="main"` alone does not read as a main-cluster node;
-- the jarvis host vmagent writes through the utility `vmauth` and sets `host: jarvis` only, so those
-  series carry no `cluster` label at all. Select them with `host="jarvis"`, never with a `cluster`
-  matcher.
+- the jarvis and truenas host vmagents write through the utility `vmauth` and set `host: <machine>`
+  only, so those series carry no `cluster` label at all. Select them with `host="jarvis"` or
+  `host="truenas"`, never with a `cluster` matcher.
 
 ## Vendored kube-prometheus-stack rules (`app/rules/kps/`)
 
