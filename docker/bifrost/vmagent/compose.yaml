@@ -16,5 +16,12 @@ services:
     dns:
       - 192.168.1.1
       - 1.1.1.2
-    # No json-file logging block: bifrost's daemon-wide syslog driver feeds VictoriaLogs
-    # (/var/log/messages); a per-service json-file override would hide vmagent's own logs.
+    # Bifrost-only override: the daemon default is syslog; json-file embeds the attrs
+    # below, which the vl-collector ships as app="containers". Remove once the block
+    # lands in the shared docker/deploy/ blueprints fleet-wide.
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+        labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
