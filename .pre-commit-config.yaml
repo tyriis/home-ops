@@ -2,6 +2,8 @@
 # yaml-language-server: $schema=https://json.schemastore.org/pre-commit-config.json
 fail_fast: false
 exclude: "^(docs/superpowers/.*|\\.agents/.*)$"
+default_language_version:
+  node: system
 default_stages:
   - pre-commit
   - pre-push
