@@ -187,6 +187,15 @@ spec:
                     deny_paths: ["/.*"]
                     url_prefix: "http://vmsingle-vmsingle.observability.svc.cluster.local:8428"
 
+              - name: purple-metrics
+                bearer_token: "%{VMAUTH_TOKEN_PURPLE_METRICS}"
+                url_map:
+                  - src_paths: ["/api/v1/write"]
+                    url_prefix: "http://vmsingle-vmsingle.observability.svc.cluster.local:8428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://vmsingle-vmsingle.observability.svc.cluster.local:8428"
+
               - name: grafana-read
                 bearer_token: "%{VMAUTH_TOKEN_GRAFANA_METRICS}"
                 url_map:
