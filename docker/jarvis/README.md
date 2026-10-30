@@ -24,7 +24,7 @@ the LAN. Do not port-forward `:3000` — access it via the TLS route.
 
 ## First deploy
 
-1. Create the UniFi (UDM SE) local DNS A record `openchamber.tyriis.dev` → `192.168.30.100`.
+1. The UniFi (UDM SE) DNS records live in Terraform (`techtales-io/terraform-unifi`, `data/dns-records/`): A `jarvis.tyriis.dev` → `192.168.30.100`, CNAME `openchamber.tyriis.dev` → `jarvis.tyriis.dev`. Apply there, never in the UniFi UI.
 2. Put the real Cloudflare token (Zone:DNS:Edit on the `tyriis.dev` zone) into the encrypted file: `sops docker/jarvis/traefik/sops.env`, replace `CF_DNS_API_TOKEN=REPLACE_ME`.
 3. The age private key is at `~/.config/sops/age/keys.txt`; doco-cd reads the same path via `jarvis.env`. The public key is the jarvis creation rule in `.sops.yaml`.
 4. Create the doco-cd webhook secret file (contents unused unless webhooks are wired up): `mkdir -p ~/.config/doco-cd && openssl rand -hex 16 > ~/.config/doco-cd/webhook_secret`
