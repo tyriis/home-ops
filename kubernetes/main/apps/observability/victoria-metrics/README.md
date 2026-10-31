@@ -310,10 +310,12 @@ kube-prometheus-stack rules plus 12 app-owned ones.
 
 ### Cluster and host labels
 
-`cluster` records which agent wrote the sample, not where the machine lives. Both `VMAgent`s set
-`overrideHonorLabels: true`, so `externalLabels.cluster` always wins and a target-side `cluster`
-label is renamed to `exported_cluster`: no target can claim another cluster. Use `host` for the
-machine:
+`cluster` records which agent wrote the sample, not where the machine lives. The remote write
+applies `externalLabels.cluster` with honor_labels off, so the agent label wins and a target-side
+`cluster` label is renamed to `exported_cluster`: no target can claim another cluster. Do not set
+`overrideHonorLabels` on the agents: it forces honor_labels off for every scrape, and
+kube-state-metrics needs `honorLabels: true` per scrape to keep the pod names its info metrics
+carry. Use `host` for the machine:
 
 - in-cluster targets carry no `host`; `cluster` is their whole attribution;
 - off-cluster machines scraped through main's `VMAgent` (the esphome devices) set

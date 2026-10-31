@@ -15,6 +15,7 @@ spec:
     - port: http
       path: /metrics
       interval: 1m
+      honorLabels: true
       relabelConfigs:
         - action: replace
           sourceLabels:
@@ -25,6 +26,7 @@ spec:
     - port: metrics
       path: /metrics
       interval: 1m
+      honorLabels: true
       relabelConfigs:
         - action: replace
           sourceLabels:

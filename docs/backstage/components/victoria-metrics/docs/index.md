@@ -21,14 +21,15 @@ overrides (`10s` for `cilium-*` and the kubelet cadvisor scrape, `30s` for `vols
 ## The `cluster` label
 
 Every sample carries `cluster=main` or `cluster=utility`, taken from the agent's
-`externalLabels.cluster`. Both agents set `overrideHonorLabels: true`: a target that exports its own
-`cluster` label cannot replace the external one, and its value is kept as `exported_cluster`
-instead. Without it, one exporter's label moves its whole series set into the other cluster's
-namespace without any scrape failing.
+`externalLabels.cluster`. The write path keeps the agent label: a target that exports its own
+`cluster` label has it renamed to `exported_cluster`. This is the default `honor_labels` off
+behavior of the remote write, not a setting. Without it, one exporter's label moves its whole
+series set into the other cluster's namespace without any scrape failing.
 
-The rule is set on the agents and not in the charts because Prometheus keeps its own `honorLabels`
-handling on both clusters. The pinned label is therefore a property of the VM write path, not of the
-scrape objects.
+Do not set `overrideHonorLabels` on the agents. It forces honor_labels off for every scrape and
+for every label, not only `cluster`. kube-state-metrics needs `honorLabels: true` per scrape: its
+info metrics carry the pod's name in the `pod` label, and honor_labels off renames that payload to
+`exported_pod`. Rules that join on `pod` then match nothing and write nothing, silently.
 
 ## Verify
 
