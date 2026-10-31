@@ -53,11 +53,10 @@ The generated block keeps `job_name: minio-job` and `scheme: http`; take only it
 job is `minio`. That token is signed with the user's secret and expires in ~100 years, so it is a filed
 credential: rotating the secret silently breaks the scrape.
 
-Put it in the **vmagent** env as `MINIO_METRICS_TOKEN` in `docker/<host>/vmagent/sops.env`. This manual
-step runs on the owning host, which holds the age key — `sops docker/<host>/vmagent/sops.env`, add the
-key, save — then doco-cd redeploys vmagent; until then the job reports `up == 0` (403). Verify in the
-central store with `up{job="minio"}` and `count by (host) ({__name__=~"minio_.*"})`; series carry `host`
-and no `cluster`.
+Put it in the **vmagent** env as `MINIO_METRICS_TOKEN` in `docker/<host>/vmagent/sops.env` — on the
+owning host, or anywhere that has that host's age key in `SOPS_AGE_KEY_FILE`. doco-cd redeploys vmagent;
+until then the job reports `up == 0` (403). Verify in the central store with `up{job="minio"}` and
+`count by (host) ({__name__=~"minio_.*"})`; series carry `host` and no `cluster`.
 
 The Console Metrics page needs a read path into the central store and host tokens are write-only, so
 console wiring is out of scope.
