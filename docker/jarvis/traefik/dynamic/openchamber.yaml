@@ -1,8 +1,7 @@
 ---
-# Traefik file-provider route for the OpenChamber host process (NOT a container).
-# Requires openchamber on jarvis to listen beyond 127.0.0.1 (it binds 0.0.0.0:3000),
-# protected by its built-in UI password (--ui-password). Traefik reaches the host via
-# host.docker.internal (= host-gateway); the *.tyriis.dev wildcard cert covers this host.
+# Host-process route. Backend dep: openchamber.service on jarvis binds
+# 172.17.0.1:3000 (docker0 host gateway) — host.docker.internal resolves to it.
+# Access stays gated by openchamber's --ui-password.
 http:
   routers:
     openchamber:
