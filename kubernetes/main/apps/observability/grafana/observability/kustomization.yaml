@@ -6,5 +6,6 @@ resources:
   - ./grafana-dashboard.yaml
   - ./forgejo-dashboard.configmap.yaml
   - ./forgejo-grafana-dashboard.yaml
+  - ./silo-grafana-dashboard.yaml
   - ./service-monitor.yaml
   - ./vm-service-scrape.yaml

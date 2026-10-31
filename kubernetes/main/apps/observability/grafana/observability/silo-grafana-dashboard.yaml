@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadashboard_v1beta1.json
+# Maintained at github.com/tyriis/silo-grafana-dashboard, derived from
+# FedericoAntoniazzi/minio-grafana-dashboard-metrics-v3 (Apache-2.0); its NOTICE lists the changes.
+# Pinned to a commit, never main — and reads victoriametrics, since host series never reach Prometheus.
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: silo
+spec:
+  allowCrossNamespaceImport: true
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  datasources:
+    - datasourceName: victoriametrics
+      inputName: DS_PROMETHEUS
+  url: https://raw.githubusercontent.com/tyriis/silo-grafana-dashboard/1e6297f99df466ba275d236f82e15f02c4342dce/dashboard.json

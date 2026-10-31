@@ -25,6 +25,42 @@ and `minio.techtales.io` (console); the Synology DSM reverse proxy serves the
 `*.synology.techtales.io` equivalents. A proxy target change on either host must keep the
 published ports in step.
 
+## Monitoring
+
+Metrics v3 is served on the S3 API listener (`9000`), not the console: `GET /minio/metrics/v3`. The v2
+paths (`/minio/v2/metrics/{cluster,node,bucket,resource}`) still answer but are unused here — one v3
+scrape replaces the v2 cluster+node+resource trio, and the Console speaks v3. The vmagent scrapes it
+as job `minio`, using the token below — on truenas first; the Synology job lands with that host's token.
+
+`MINIO_PROMETHEUS_AUTH_TYPE` stays at its default `jwt`; `public` is not used because it serves bucket
+names, sizes and object counts unauthenticated. No `MINIO_PROMETHEUS_*` key belongs in this `sops.env`.
+
+The endpoint authorises the token: `admin:Prometheus` is the exact least-privilege action, and the
+built-in `readonly` policy is not enough (403). Per host, open a shell in that host's container
+(`docker exec -it minio sh`; `mc` is the image's alias for `mcli`) and run:
+
+```sh
+mc alias set admin http://127.0.0.1:9000 "$MINIO_ROOT_USER" "$MINIO_ROOT_PASSWORD"
+mc admin user add admin prometheus <secret>
+printf '%s' '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["admin:Prometheus"],"Resource":["arn:aws:s3:::*"]}]}' > /tmp/p.json
+mc admin policy create admin prometheus-scrape /tmp/p.json
+mc admin policy attach admin prometheus-scrape --user prometheus
+mc alias set scrape http://127.0.0.1:9000 prometheus <secret>
+mc admin prometheus generate scrape --api-version v3
+```
+
+The generated block keeps `job_name: minio-job` and `scheme: http`; take only its `bearer_token` — our
+job is `minio`. That token is signed with the user's secret and expires in ~100 years, so it is a filed
+credential: rotating the secret silently breaks the scrape.
+
+Put it in the **vmagent** env as `MINIO_METRICS_TOKEN` in `docker/<host>/vmagent/sops.env` — on the
+owning host, or anywhere that has that host's age key in `SOPS_AGE_KEY_FILE`. doco-cd redeploys vmagent;
+until then the job reports `up == 0` (403). Verify in the central store with `up{job="minio"}` and
+`count by (host) ({__name__=~"minio_.*"})`; series carry `host` and no `cluster`.
+
+The Console Metrics page needs a read path into the central store and host tokens are write-only, so
+console wiring is out of scope.
+
 ## Env split
 
 Two files per host, with different reach:
