@@ -1,0 +1,228 @@
+# Common machine-config patch for the `main` cluster.
+# Render: talosctl gen config main <endpoint> --with-secrets <talsecret>
+#         --config-patch @patches/common.patch.yaml --config-patch @patches/<node>.patch.yaml
+#         [--config-patch <decrypted secrets-patch>] --output-types controlplane -o -
+# Field placement follows the official 1.14 document map
+# (docs.siderolabs.com/talos/v1.14/reference/configuration/document-map):
+# only fields that remain v1alpha1 in 1.14 live in the v1alpha1 block below.
+# KubeEtcdEncryptionConfig (secret material) comes from secrets.patch.sops.yaml at render time.
+---
+version: v1alpha1
+machine:
+  time:
+    disabled: false
+    servers:
+      - 192.168.1.1
+      - time.cloudflare.com
+  features:
+    rbac: true
+    apidCheckExtKeyUsage: true
+    diskQuotaSupport: true
+  registries:
+    mirrors:
+      docker.io:
+        endpoints:
+          - https://harbor.techtales.io/v2/proxy-docker.io
+        overridePath: true
+      ghcr.io:
+        endpoints:
+          - https://harbor.techtales.io/v2/proxy-ghcr.io
+        overridePath: true
+cluster:
+  etcd:
+    extraArgs:
+      listen-metrics-urls: http://0.0.0.0:2381
+---
+apiVersion: v1alpha1
+kind: SysctlConfig
+params:
+  fs.inotify.max_user_instances: "8192" # Watchdog
+  fs.inotify.max_user_watches: "1048576" # Watchdog
+  net.core.default_qdisc: fq # 10Gb/s
+  net.core.rmem_max: "67108864" # 10Gb/s | Cloudflared / QUIC
+  net.core.wmem_max: "67108864" # 10Gb/s | Cloudflared / QUIC
+  net.ipv4.tcp_congestion_control: bbr # 10Gb/s
+  net.ipv4.tcp_fastopen: "3"
+  net.ipv4.tcp_mtu_probing: "1" # 10Gb/s | Jumbo frames
+  net.ipv4.tcp_rmem: 4096 87380 33554432 # 10Gb/s
+  net.ipv4.tcp_wmem: 4096 65536 33554432 # 10Gb/s
+  net.ipv4.tcp_window_scaling: "1" # 10Gb/s
+  vm.nr_hugepages: "1024" # PostgreSQL
+---
+apiVersion: v1alpha1
+kind: SysfsConfig
+params:
+  devices.system.cpu.cpu0.cpuidle.state1.disable: "1"
+  devices.system.cpu.cpu0.cpuidle.state2.disable: "1"
+  devices.system.cpu.cpu0.cpuidle.state3.disable: "1"
+  devices.system.cpu.intel_pstate.hwp_dynamic_boost: "1"
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: i915
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: thunderbolt
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: thunderbolt_net
+---
+apiVersion: v1alpha1
+kind: UdevRulesConfig
+rules:
+  - ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{authorized}=="0", ATTR{authorized}="1"
+---
+# replaces old machine.kubelet.extraMounts (no equivalent in 1.14 docs);
+# user volumes under /var/mnt are exposed to the kubelet automatically
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: extra
+volumeType: directory
+---
+# disables /etc/kubernetes/manifests — locked to `true` in 1.14 multi-doc,
+# kept for explicitness only if validate complains
+# (removed from v1alpha1: disableManifestsDirectory)
+apiVersion: v1alpha1
+kind: KubeletConfig
+extraArgs:
+  max-pods: "200"
+  rotate-server-certificates: "true"
+defaultRuntimeSeccompProfileEnabled: true
+config:
+  allowedUnsafeSysctls:
+    - net.ipv6.conf.net1.* # IPv6 syscalls for Matter/Thread
+  serializeImagePulls: false
+---
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+labels:
+  topology.kubernetes.io/zone: home
+annotations:
+  tuppr.home-operations.com/factory-url: factory.talos.dev/metal-installer-secureboot
+nodeIP:
+  validSubnets:
+    - 192.168.100.0/24
+taints:
+  $patch: delete
+---
+apiVersion: v1alpha1
+kind: ResolverConfig
+hostDNS:
+  enabled: true
+  resolveMemberNames: true
+  forwardKubeDNSToHost: false
+nameservers:
+  - address: 192.168.1.1
+searchDomains:
+  disableDefault: true
+---
+apiVersion: v1alpha1
+kind: KubePrismConfig
+port: 7445
+---
+apiVersion: v1alpha1
+kind: KubeTalosAPIAccessConfig
+allowedRoles:
+  - os:admin
+allowedKubernetesNamespaces:
+  - system-upgrade
+---
+# presence of this doc deploys CoreDNS; delete it to disable (external DNS)
+apiVersion: v1alpha1
+kind: KubeCoreDNSConfig
+$patch: delete
+---
+apiVersion: v1alpha1
+kind: KubeProxyConfig
+enabled: false
+---
+apiVersion: v1alpha1
+kind: KubeControllerManagerConfig
+extraArgs:
+  bind-address: 0.0.0.0
+---
+apiVersion: v1alpha1
+kind: KubeSchedulerConfig
+extraArgs:
+  bind-address: 0.0.0.0
+config:
+  profiles:
+    - schedulerName: default-scheduler
+      plugins:
+        score:
+          disabled:
+            - name: ImageLocality
+      pluginConfig:
+        - name: PodTopologySpread
+          args:
+            defaultingType: List
+            defaultConstraints:
+              - maxSkew: 1.0
+                topologyKey: kubernetes.io/hostname
+                whenUnsatisfiable: ScheduleAnyway
+---
+apiVersion: v1alpha1
+kind: KubeExternalManifestConfig
+name: gateway-api
+url: https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.3/experimental-install.yaml
+---
+apiVersion: v1alpha1
+kind: KubeExternalManifestConfig
+name: prometheus-operator-crds
+url: https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.94.2/stripped-down-crds.yaml
+---
+apiVersion: v1alpha1
+kind: KubeExternalManifestConfig
+name: grafana-operator-crds
+url: https://github.com/grafana/grafana-operator/releases/download/v5.25.0/crds.yaml
+---
+# fresh 1.14 gen defaults NOT enabled on this cluster — pin to current live behavior
+apiVersion: v1alpha1
+kind: SecurityProfileConfig
+workloadIsolation: false
+---
+apiVersion: v1alpha1
+kind: VolumeConfig
+name: EPHEMERAL
+mount:
+  secure: false
+---
+# cluster runs Cilium — never deploy flannel (fresh gen emits this doc by default)
+apiVersion: v1alpha1
+kind: KubeFlannelCNIConfig
+$patch: delete
+---
+# drop the gen-bundled single-key encryption doc; the full document
+# (key2 + key1 + identity) is appended by a LATER patch (ordering matters)
+apiVersion: v1alpha1
+kind: KubeEtcdEncryptionConfig
+$patch: delete
+---
+# replaces deprecated .machine.files entries
+apiVersion: v1alpha1
+kind: CRICustomizationConfig
+name: home-cri
+content: |
+  [plugins]
+    [plugins."io.containerd.grpc.v1.cri"]
+      enable_unprivileged_ports = true
+      enable_unprivileged_icmp = true
+  [plugins."io.containerd.cri.v1.images"]
+    discard_unpacked_layers = false
+  [plugins."io.containerd.cri.v1.runtime"]
+    device_ownership_from_security_context = true
+---
+apiVersion: v1alpha1
+kind: EtcFileConfig
+name: nfsmount.conf
+mode: 0o644
+contents: |
+  [ NFSMount_Global_Options ]
+  nfsvers=4.1
+  hard=True
+  nconnect=8
+  noatime=True
+  rsize=1048576
+  wsize=1048576

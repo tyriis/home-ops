@@ -383,54 +383,58 @@ controlPlane:
           kubePrism:
             enabled: true
             port: 7445
-          hostDNS:
-            enabled: true
-            resolveMemberNames: true
-            forwardKubeDNSToHost: false
 
       cluster:
         etcd:
           extraArgs:
             listen-metrics-urls: http://0.0.0.0:2381
-        controllerManager:
-          extraArgs:
-            bind-address: 0.0.0.0
-        proxy:
-          disabled: true
         coreDNS:
           disabled: true
-        discovery:
-          enabled: true
-          registries:
-            kubernetes:
-              disabled: true
-            service:
-              disabled: false
         # apiServer:
         #   extraArgs:
         #     runtime-config: admissionregistration.k8s.io/v1alpha1=true
         #     feature-gates: MutatingAdmissionPolicy=true
-        scheduler:
-          extraArgs:
-            bind-address: 0.0.0.0
-          config:
-            apiVersion: kubescheduler.config.k8s.io/v1
-            kind: KubeSchedulerConfiguration
-            profiles:
-              - schedulerName: default-scheduler
-                plugins:
-                  score:
-                    disabled:
-                      - name: ImageLocality
-                pluginConfig:
-                  - name: PodTopologySpread
-                    args:
-                      defaultingType: List
-                      defaultConstraints:
-                        - maxSkew: 1.0
-                          topologyKey: kubernetes.io/hostname
-                          whenUnsatisfiable: ScheduleAnyway
         extraManifests:
           - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.3/experimental-install.yaml
           - https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.94.2/stripped-down-crds.yaml
           - https://github.com/grafana/grafana-operator/releases/download/v5.25.0/crds.yaml
+
+    - |-
+      apiVersion: v1alpha1
+      kind: ResolverConfig
+      hostDNS:
+        enabled: true
+        resolveMemberNames: true
+        forwardKubeDNSToHost: false
+
+    - |-
+      apiVersion: v1alpha1
+      kind: KubeControllerManagerConfig
+      extraArgs:
+        bind-address: 0.0.0.0
+
+    - |-
+      apiVersion: v1alpha1
+      kind: KubeSchedulerConfig
+      extraArgs:
+        bind-address: 0.0.0.0
+      config:
+        profiles:
+          - schedulerName: default-scheduler
+            plugins:
+              score:
+                disabled:
+                  - name: ImageLocality
+            pluginConfig:
+              - name: PodTopologySpread
+                args:
+                  defaultingType: List
+                  defaultConstraints:
+                    - maxSkew: 1.0
+                      topologyKey: kubernetes.io/hostname
+                      whenUnsatisfiable: ScheduleAnyway
+
+    - |-
+      apiVersion: v1alpha1
+      kind: KubeProxyConfig
+      enabled: false

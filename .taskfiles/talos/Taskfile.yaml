@@ -20,6 +20,35 @@ tasks:
     dir: "{{.TALOS_DIR}}"
     cmds:
       - "talhelper genconfig"
+      - "../../.taskfiles/talos/fix-etcd-encryption-keys.sh clusterconfig"
+
+  # ---- main cluster: patch-based rendering (talhelper-free, in-memory) ----
+  # Regenerate nothing on disk: config is rendered at apply time from patches/.
+  main:render:
+    desc: "Render main-cluster machine config to stdout (node=talos01|talos02|talos03)"
+    cmds:
+      - "./.taskfiles/talos/render-main-config.sh {{.node}}"
+    requires:
+      vars: [node]
+
+  main:diff:
+    desc: "Show diff between rendered config and live node config (node, ip required)"
+    cmds:
+      - "./.taskfiles/talos/apply-main-config.sh {{.node}} {{.ip}} --diff-only"
+    requires:
+      vars: [node, ip]
+
+  main:apply:
+    desc: "Diff live vs rendered, then ask before applying — nothing ever written to disk"
+    cmds:
+      - "./.taskfiles/talos/apply-main-config.sh {{.node}} {{.ip}}"
+    requires:
+      vars: [node, ip]
+
+  main:talosconfig:
+    desc: Render talosconfig (client cert) — the ONE artifact that must live on disk
+    cmds:
+      - bash -c 'umask 077; talosctl gen config main https://192.168.100.100:6443 --with-secrets <(sops -d talos/main/talsecret.sops.yaml) --kubernetes-version v1.37.2 --talos-version v1.14.5 --output-types talosconfig -o talos/main/clusterconfig/talosconfig'
 
   install:talos01:
     desc: Install talos01
