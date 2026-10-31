@@ -3,17 +3,17 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
-  name: gh-grep-mcp
+  name: mcp-gh-grep
 spec:
   targetRefs:
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
-      name: gh-grep-mcp
+      name: mcp-gh-grep
   apiKeyAuth:
     credentialRefs:
       - group: ""
         kind: Secret
-        name: mcp-remote-api-keys
+        name: mcp-gh-grep-api-keys
     extractFrom:
       - headers:
           - x-api-key

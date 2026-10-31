@@ -54,14 +54,14 @@ kubernetes/main/apps/ai/
 
 ## Adding the first MCP server
 
-Remote MCPs are not declared here: they are delivered by the sibling [`mcp-remote`](../mcp-remote)
-app, which holds the `MCPRemoteProxy` CRs (currently context7 and grep.app) together with their Envoy
-HTTPRoutes and API-key policies. Local container-based `MCPServer` CRs stay out of scope, as do
-`MCPRegistry`, `VirtualMCPServer`, OIDC and authz configuration. When that work starts, note that the
-operator is namespace-scoped to `ai`: an MCP server CR placed in any other namespace is not
-reconciled until that namespace is added to `operator.rbac.allowedNamespaces`. Follow the upstream
-Kubernetes operator docs at <https://docs.stacklok.com/toolhive> and inspect the CRDs actually
-installed on the cluster with:
+Remote MCPs are not declared here: they are delivered by the sibling [`mcp-context7`](../mcp-context7)
+and [`mcp-gh-grep`](../mcp-gh-grep) apps, which hold the `MCPRemoteProxy` CRs (context7 and grep.app)
+with their Envoy HTTPRoutes and API-key policies. Local container-based `MCPServer` CRs stay out of
+scope, as do `MCPRegistry`, `VirtualMCPServer`, OIDC and authz configuration. When that work starts,
+note that the operator is namespace-scoped to `ai`: an MCP server CR placed in any other namespace is
+not reconciled until that namespace is added to `operator.rbac.allowedNamespaces`. Follow the
+upstream Kubernetes operator docs at <https://docs.stacklok.com/toolhive> and inspect the CRDs
+actually installed on the cluster with:
 
 ```sh
 kubectl get crd | grep toolhive.stacklok.dev

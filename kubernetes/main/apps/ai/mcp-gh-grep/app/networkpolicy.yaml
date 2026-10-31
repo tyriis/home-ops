@@ -3,7 +3,7 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: gh-grep-mcp-proxy
+  name: mcp-gh-grep-proxy
 spec:
   podSelector:
     matchLabels:
@@ -17,6 +17,10 @@ spec:
         - namespaceSelector:
             matchLabels:
               kubernetes.io/metadata.name: networking
+          podSelector:
+            matchLabels:
+              gateway.envoyproxy.io/owning-gateway-name: envoy
+              gateway.envoyproxy.io/owning-gateway-namespace: networking
       ports:
         - protocol: TCP
           port: 8080

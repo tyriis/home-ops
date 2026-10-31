@@ -3,14 +3,14 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app mcp-remote
+  name: &app mcp-gh-grep
   namespace: &namespace ai
 spec:
   targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/ai/mcp-remote/app
+  path: ./kubernetes/main/apps/ai/mcp-gh-grep/app
   prune: true
   sourceRef:
     kind: GitRepository

@@ -3,17 +3,17 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
-  name: context7-mcp
+  name: mcp-context7
 spec:
   targetRefs:
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
-      name: context7-mcp
+      name: mcp-context7
   apiKeyAuth:
     credentialRefs:
       - group: ""
         kind: Secret
-        name: mcp-remote-api-keys
+        name: mcp-context7-api-keys
     extractFrom:
       - headers:
           - x-api-key

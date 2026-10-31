@@ -13,7 +13,7 @@ spec:
     addHeadersFromSecret:
       - headerName: CONTEXT7_API_KEY
         valueSecretRef:
-          name: mcp-remote-env
+          name: mcp-context7-env
           key: CONTEXT7_API_KEY
   resources:
     requests:
