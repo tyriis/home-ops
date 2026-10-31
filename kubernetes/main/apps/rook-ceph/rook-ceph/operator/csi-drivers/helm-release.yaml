@@ -54,11 +54,7 @@ spec:
         controllerPlugin:
           replicas: 2
       cephfs:
-        enabled: true
-        name: rook-ceph.cephfs.csi.ceph.com
-        clusterName: rook-ceph
-        controllerPlugin:
-          replicas: 2
+        enabled: false
       nfs:
         enabled: false
       nvmeof:
