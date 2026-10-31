@@ -103,6 +103,14 @@ spec:
         type: nfs
         server: nas.techtales.io
         path: /mnt/tank/media
+      logs:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 32Mi
+        advancedMounts:
+          plex:
+            app:
+              - path: /config/Library/Application Support/Plex Media Server/Logs
       tmp:
         type: emptyDir
         medium: Memory
