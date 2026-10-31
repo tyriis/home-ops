@@ -29,8 +29,8 @@ published ports in step.
 
 Metrics v3 is served on the S3 API listener (`9000`), not the console: `GET /minio/metrics/v3`. The v2
 paths (`/minio/v2/metrics/{cluster,node,bucket,resource}`) still answer but are unused here — one v3
-scrape replaces the v2 cluster+node+resource trio, and the Console speaks v3. Each host's vmagent
-scrapes it as job `minio`, using the token below.
+scrape replaces the v2 cluster+node+resource trio, and the Console speaks v3. The vmagent scrapes it
+as job `minio`, using the token below — on truenas first; the Synology job lands with that host's token.
 
 `MINIO_PROMETHEUS_AUTH_TYPE` stays at its default `jwt`; `public` is not used because it serves bucket
 names, sizes and object counts unauthenticated. No `MINIO_PROMETHEUS_*` key belongs in this `sops.env`.
