@@ -15,4 +15,4 @@ spec:
   datasources:
     - datasourceName: victoriametrics
       inputName: DS_PROMETHEUS
-  url: https://raw.githubusercontent.com/tyriis/silo-grafana-dashboard/182bed87ad7bea0721dc3f8c8e1ea470773e45a2/silo/dashboard.json
+  url: https://raw.githubusercontent.com/tyriis/silo-grafana-dashboard/1e6297f99df466ba275d236f82e15f02c4342dce/dashboard.json
