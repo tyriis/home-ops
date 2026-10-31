@@ -16,6 +16,7 @@ The NAS share `nas.techtales.io:/mnt/tank/media` is mounted read-only at `/media
 
 ## RAM (tmpfs, volatile)
 
-| Path   | sizeLimit | Content                                  |
-| ------ | --------- | ---------------------------------------- |
-| `/tmp` | 16Mi      | Temp files. Mounted by the chart default |
+| Path               | sizeLimit | Content                                              |
+| ------------------ | --------- | ---------------------------------------------------- |
+| `/app/config/logs` | 16Mi      | Winston log files. Daily rotation, gzipped archives. |
+| `/tmp`             | 16Mi      | Temp files. Mounted by the chart default             |

@@ -23,7 +23,8 @@ The NAS share `nas.techtales.io:/mnt/tank/media` is mounted read-only at `/media
 
 ## RAM (tmpfs, volatile)
 
-| Path         | sizeLimit | Content                                                         |
-| ------------ | --------- | --------------------------------------------------------------- |
-| `/tmp`       | 16Mi      | Plex scratch dirs (`pms-<uuid>/`), mounted by the chart default |
-| `/transcode` | 2500Mi    | Live transcode session files                                    |
+| Path                       | sizeLimit | Content                                                         |
+| -------------------------- | --------- | --------------------------------------------------------------- |
+| `/tmp`                     | 16Mi      | Plex scratch dirs (`pms-<uuid>/`), mounted by the chart default |
+| `/transcode`               | 2500Mi    | Live transcode session files                                    |
+| `…/Plex Media Server/Logs` | 32Mi      | Plex log files. Plex rotates and deletes old files itself.      |
