@@ -19,6 +19,7 @@ TALOS_VERSION="v1.14.5"
 # key material has exactly ONE home. See talos-cluster-config skill,
 # references/encryption-incident.md — key NAMES matter (k8s secretbox resolves by name).
 secretbox="$(sops -d "$here/talsecret.sops.yaml" | yq -p yaml -r '.secrets.secretboxencryptionsecret')"
+[[ -n "$secretbox" && "$secretbox" != "null" ]] || { echo "talsecret: secretboxencryptionsecret missing" >&2; exit 1; }
 encpatch="$(mktemp --tmpdir -d talos-enc-XXXXXX)/patch.yaml"
 trap 'rm -rf "$(dirname "$encpatch")"' EXIT
 umask 077
@@ -40,8 +41,8 @@ config:
         - secrets
 EOF
 
-# shellcheck disable=SC2015
-[ -f "$here/patches/${node}.patch.yaml" ] || { echo "missing patch: $here/patches/${node}.patch.yaml" >&2; exit 1; }
+patch="$here/patches/${node}.patch.yaml"
+[[ -f "$patch" ]] || { echo "missing patch: $patch" >&2; exit 1; }
 
 # --with-secrets via process substitution: decrypted talsecret never hits disk.
 # common.patch.yaml deletes the gen-bundled encryption doc; encpatch re-adds the full one
@@ -51,6 +52,6 @@ exec talosctl gen config "$CLUSTER_NAME" "$ENDPOINT" \
   --kubernetes-version "$KUBERNETES_VERSION" \
   --talos-version "$TALOS_VERSION" \
   --config-patch "@$here/patches/common.patch.yaml" \
-  --config-patch "@$here/patches/${node}.patch.yaml" \
+  --config-patch "@$patch" \
   --config-patch "@$encpatch" \
   --output-types controlplane -o -
