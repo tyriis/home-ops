@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/toolhive.stacklok.dev/mcpremoteproxy_v1beta1.json
+apiVersion: toolhive.stacklok.dev/v1beta1
+kind: MCPRemoteProxy
+metadata:
+  name: context7
+spec:
+  remoteUrl: https://mcp.context7.com/mcp
+  transport: streamable-http
+  proxyPort: 8080
+  # not Authorization: clients send their own auth header, which would collide
+  headerForward:
+    addHeadersFromSecret:
+      - headerName: CONTEXT7_API_KEY
+        valueSecretRef:
+          name: mcp-remote-env
+          key: CONTEXT7_API_KEY
+  resources:
+    requests:
+      cpu: 25m
+      memory: 64Mi
+    limits:
+      memory: 128Mi
+  podTemplateSpec:
+    metadata:
+      annotations:
+        reloader.stakater.com/auto: "true"
