@@ -1,0 +1,7 @@
+---
+site_name: hindsight
+nav:
+  - Home: index.md
+
+plugins:
+  - techdocs-core

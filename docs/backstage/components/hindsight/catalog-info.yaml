@@ -1,0 +1,34 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: hindsight
+  description: Vectorize Hindsight agent memory server (API + control plane) on the jarvis docker host — banks for Hermes and the coding agents.
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+  links:
+    - url: https://github.com/tyriis/home-ops/blob/main/docker/deploy/hindsight/compose.yaml
+      title: Compose definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/vectorize-io/hindsight
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+    - url: https://hindsight.vectorize.io
+      title: Upstream Docs
+      icon: dashboard
+      type: other
+  tags:
+    - ai
+    - agent
+    - llm
+    - memory
+    - docker-host
+spec:
+  type: service
+  lifecycle: production
+  owner: home-ops
+  # no system: — runs as a host docker stack on the jarvis machine, not on a
+  # cluster/system that exists in this catalog yet

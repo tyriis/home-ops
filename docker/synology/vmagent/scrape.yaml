@@ -17,6 +17,9 @@ scrape_configs:
       - target_label: instance
         replacement: "synology:9100"
 
+  # no minio job yet: the scrape identity lands here after the truenas rollout
+  # (docker/deploy/minio/README.md, Monitoring)
+
   # no smartctl job: docker/synology/node-exporter/.env sets ENABLE_SMARTCTL_EXPORTER=0,
   # so :9633 is never listening on this host
 
