@@ -48,7 +48,7 @@ tasks:
   main:talosconfig:
     desc: Render talosconfig (client cert) — the ONE artifact that must live on disk
     cmds:
-      - bash -c 'umask 077; talosctl gen config main https://192.168.100.100:6443 --with-secrets <(sops -d talos/main/talsecret.sops.yaml) --kubernetes-version v1.37.2 --talos-version v1.14.5 --output-types talosconfig -o talos/main/clusterconfig/talosconfig'
+      - bash -c 'umask 077; kv="$(yq -e -r .kubernetesVersion talos/main/version.yaml)"; tv="$(yq -e -r .talosVersion talos/main/version.yaml)"; talosctl gen config main https://192.168.100.100:6443 --with-secrets <(sops -d talos/main/talsecret.sops.yaml) --kubernetes-version "$kv" --talos-version "$tv" --output-types talosconfig -o talos/main/clusterconfig/talosconfig'
 
   install:talos01:
     desc: Install talos01

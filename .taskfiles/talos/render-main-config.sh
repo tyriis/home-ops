@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Render the full machine config for a main-cluster control-plane node, in memory.
 # Usage: render-main-config.sh <01|02|03>   → machine config on stdout
-# Sources of truth: talos/main/talconfig-* is GONE — patches/ + talsecret.sops.yaml only.
+# Sources of truth: version.yaml + patches/ + talsecret.sops.yaml only.
 # Replaces talhelper per the official "reproducible machine configuration" workflow:
 # https://docs.siderolabs.com/talos/v1.14/configure-your-talos-cluster/system-configuration/reproducible-machine-configuration
 set -euo pipefail
@@ -11,9 +11,9 @@ here="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../talos/main" && pwd)"
 
 CLUSTER_NAME="main"
 ENDPOINT="https://192.168.100.100:6443"
-# version contract: bump only deliberately when regenerating for a Talos/K8s upgrade
-KUBERNETES_VERSION="v1.37.2"
-TALOS_VERSION="v1.14.5"
+# version contract lives in version.yaml (Renovate-annotated); -e fails on a missing key
+KUBERNETES_VERSION="$(yq -e -p yaml -r '.kubernetesVersion' "$here/version.yaml")"
+TALOS_VERSION="$(yq -e -p yaml -r '.talosVersion' "$here/version.yaml")"
 
 # Encryption document (key2+key1+identity) is generated at runtime from talsecret so the
 # key material has exactly ONE home. See talos-cluster-config skill,
