@@ -31,7 +31,7 @@ services:
       - -httpListenAddr=:9500
       - -remoteWrite.url=https://logs.techtales.io/insert/jsonline?_stream_fields=hostname%2Capp&_msg_field=log
       - -remoteWrite.format=jsonline
-      - "-remoteWrite.headers=Authorization: Bearer ***}"
+      - "-remoteWrite.headers=Authorization: Bearer %{VL_TOKEN}"
       - -remoteWrite.tmpDataPath=/var/lib/vlagent/pending
       - -remoteWrite.maxDiskUsagePerURL=1GB
       - -fileCollector.checkpointsPath=/var/lib/vlagent/file-checkpoints.json
