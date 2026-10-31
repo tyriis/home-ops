@@ -29,6 +29,9 @@ See ADR 0016 (`docs/decisions/0016-central-log-platform-victorialogs-on-utility.
   `bifrost`): Lightwhale host syslog `/var/log/messages` (sshd, host daemons, Docker syslog-driver
   container logs), `hostname=bifrost`, token `VMAUTH_TOKEN_BIFROST` in the bifrost `sops.env` as
   `VL_TOKEN`.
+- **purple** — `vlagent` compose stack (`docker/purple/victoria-logs-collector/`, doco-cd target
+  `purple`): same sources as red — container json-file logs, `/var/log/pacman.log`, cups — with
+  `hostname=purple`, token `VMAUTH_TOKEN_PURPLE` in the purple `sops.env` as `VL_TOKEN`.
 - NAS, workstations, remote site — pending; each reuses this pattern with its own token.
 
 ## Unit tokens
