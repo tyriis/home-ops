@@ -1,0 +1,16 @@
+---
+name: node-exporter
+working_dir: docker/deploy/node-exporter
+---
+name: arcane-agent
+working_dir: docker/agentix/arcane-agent
+env_files:
+  - .env
+---
+name: victoria-logs-collector
+working_dir: docker/agentix/victoria-logs-collector
+env_files:
+  - .env
+---
+name: vmagent
+working_dir: docker/agentix/vmagent

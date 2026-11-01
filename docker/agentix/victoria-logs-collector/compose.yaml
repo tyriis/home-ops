@@ -1,0 +1,39 @@
+---
+# Include shim — the actual service definition is shared: docker/deploy/victoria-logs-collector/compose.yaml.
+# project_directory: . is REQUIRED so relative paths inside the shared compose
+# (env_file, the data volume) resolve against this host directory.
+include:
+  - path: ../../deploy/victoria-logs-collector/compose.yaml
+    project_directory: .
+
+# Host override — the shared compose ships a command with no -fileCollector.glob;
+# agentix ships container json-file logs only.
+services:
+  vlagent:
+    hostname: agentix
+    dns:
+      - 192.168.1.1
+      - 1.1.1.2
+    env_file:
+      - ${SOPS_ENV_FILE:-sops.env}
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+        labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
+    command:
+      - -envflag.enable=true
+      - -httpListenAddr=:9500
+      - -remoteWrite.url=https://logs.techtales.io/insert/jsonline?_stream_fields=hostname%2Capp&_msg_field=log
+      - -remoteWrite.format=jsonline
+      - "-remoteWrite.headers=Authorization: Bearer %{VL_TOKEN}"
+      - -remoteWrite.tmpDataPath=/var/lib/vlagent/pending
+      - -remoteWrite.maxDiskUsagePerURL=1GB
+      - -fileCollector.checkpointsPath=/var/lib/vlagent/file-checkpoints.json
+      - -fileCollector.streamFields=hostname,app,attrs.com.docker.compose.service
+      - -fileCollector.glob=/host/containers/*/*-json.log
+      - '-fileCollector.extraFields={"app":"containers"}'
+    volumes:
+      - /var/lib/docker/containers:/host/containers:ro
+      - data:/var/lib/vlagent
