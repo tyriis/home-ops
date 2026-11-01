@@ -14,8 +14,8 @@ here="$root/talos/$cluster"
 source "$root/.taskfiles/talos/clusters.sh"
 cluster_config "$cluster"
 
-kv="$(yq -e -r .kubernetesVersion "$here/version.yaml")"
-tv="$(yq -e -r .talosVersion "$here/version.yaml")"
+kv="$(yq -e -p yaml -o yaml -r .kubernetesVersion "$here/version.yaml")"
+tv="$(yq -e -p yaml -o yaml -r .talosVersion "$here/version.yaml")"
 
 out="$here/clusterconfig/talosconfig"
 mkdir -p "$here/clusterconfig"

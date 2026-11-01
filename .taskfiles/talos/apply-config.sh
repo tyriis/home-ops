@@ -32,7 +32,6 @@ echo "==> validating rendered config" >&2
 talosctl validate -m metal -c "$tmp/render.yaml"
 
 echo "==> diff live($ip) vs rendered($cluster/$node)"
-echo "    (expected one-time: v1alpha1 -> multi-doc; see diff-live-config.py)"
 python3 "$root/.taskfiles/talos/diff-live-config.py" "$tmp/live.jsonl" "$tmp/render.jsonl" || true
 
 [[ "$diff_only" == "--diff-only" ]] && exit 0

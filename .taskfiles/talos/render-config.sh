@@ -15,8 +15,8 @@ source "$root/.taskfiles/talos/clusters.sh"
 cluster_config "$cluster"
 
 # version contract lives in version.yaml (Renovate-annotated); -e fails on a missing key
-KUBERNETES_VERSION="$(yq -e -p yaml -r '.kubernetesVersion' "$here/version.yaml")"
-TALOS_VERSION="$(yq -e -p yaml -r '.talosVersion' "$here/version.yaml")"
+KUBERNETES_VERSION="$(yq -e -p yaml -o yaml -r '.kubernetesVersion' "$here/version.yaml")"
+TALOS_VERSION="$(yq -e -p yaml -o yaml -r '.talosVersion' "$here/version.yaml")"
 
 common="$here/patches/common.patch.yaml"
 patch="$here/patches/${node}.patch.yaml"
@@ -26,7 +26,7 @@ patch="$here/patches/${node}.patch.yaml"
 # Encryption document (key2+key1+identity) is generated at runtime from talsecret so the
 # key material has exactly ONE home. See talos-cluster-config skill,
 # references/encryption-incident.md — key NAMES matter (k8s secretbox resolves by name).
-secretbox="$(sops -d "$here/talsecret.sops.yaml" | yq -p yaml -r '.secrets.secretboxencryptionsecret')"
+secretbox="$(sops -d "$here/talsecret.sops.yaml" | yq -p yaml -o yaml -r '.secrets.secretboxencryptionsecret')"
 [[ -n "$secretbox" && "$secretbox" != "null" ]] || { echo "talsecret: secretboxencryptionsecret missing" >&2; exit 1; }
 encpatch="$(mktemp --tmpdir -d talos-enc-XXXXXX)/patch.yaml"
 trap 'rm -rf "$(dirname "$encpatch")"' EXIT
