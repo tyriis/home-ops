@@ -11,12 +11,8 @@ cluster="${1:?usage: render-config.sh <cluster> <node>}"
 node="${2:?usage: render-config.sh <cluster> <node>}"
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 here="$root/talos/$cluster"
-
-case "$cluster" in
-  main)    CLUSTER_NAME="main";    ENDPOINT="https://192.168.100.100:6443" ;;
-  utility) CLUSTER_NAME="utility"; ENDPOINT="https://192.168.100.30:6443" ;;
-  *) echo "unknown cluster: $cluster (known: main, utility)" >&2; exit 1 ;;
-esac
+source "$root/.taskfiles/talos/clusters.sh"
+cluster_config "$cluster"
 
 # version contract lives in version.yaml (Renovate-annotated); -e fails on a missing key
 KUBERNETES_VERSION="$(yq -e -p yaml -r '.kubernetesVersion' "$here/version.yaml")"
