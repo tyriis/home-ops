@@ -73,6 +73,23 @@ tasks:
     requires:
       vars: [node, ip]
 
+  # ---- server-side dry run: the node's own reboot plan + redacted diff ----
+  # Standard pre-apply gate: authoritative on whether a reboot is needed.
+  # diff (above) stays for offline review / per-doc review of patch changes.
+  main:dry:
+    desc: "Render + server-side dry-run for main (reboot plan + redacted diff), nothing applied"
+    cmds:
+      - "./.taskfiles/talos/dry-run-config.sh main {{.node}} {{.ip}}"
+    requires:
+      vars: [node, ip]
+
+  utility:dry:
+    desc: "Render + server-side dry-run for utility (reboot plan + redacted diff), nothing applied"
+    cmds:
+      - "./.taskfiles/talos/dry-run-config.sh utility {{.node}} {{.ip}}"
+    requires:
+      vars: [node, ip]
+
   install:talos01:
     desc: Install talos01
     dir: "{{.TALOS_DIR}}"
