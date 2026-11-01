@@ -59,6 +59,16 @@ tasks:
     requires:
       vars: [cluster, node, ip]
 
+  schematic:check:
+    desc: "Verify the committed factory schematics against the installer image refs in patches/ — offline ([cluster=])"
+    cmds:
+      - "./.taskfiles/talos/check-schematic.sh {{.cluster}}"
+
+  schematic:verify:
+    desc: "Re-derive the schematic ids from factory.talos.dev and compare with the committed headers — needs network ([cluster=])"
+    cmds:
+      - "./.taskfiles/talos/check-schematic.sh --online {{.cluster}}"
+
   etcd:backup:
     desc: "etcd snapshot to ~/backups/talos-dr (cluster=, node=)"
     cmds:
