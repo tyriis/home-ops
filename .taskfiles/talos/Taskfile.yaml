@@ -4,23 +4,13 @@ version: "3"
 
 tasks:
   setup:
-    - task: config
     - task: kubeconfig
 
   init:
-    desc: Initialize talos configuration
+    desc: Generate a fresh talsecret for a NEW cluster, encrypted straight to sops (never plaintext on disk)
     dir: "{{.TALOS_DIR}}"
     cmds:
-      # https://github.com/budimanjojo/talhelper
-      - "talhelper gensecret > talsecret.sops.yaml"
-      - "sops -e -i talsecret.sops.yaml"
-
-  config:
-    desc: Let talhelper generate the configuration files
-    dir: "{{.TALOS_DIR}}"
-    cmds:
-      - "talhelper genconfig"
-      - "../../.taskfiles/talos/fix-etcd-encryption-keys.sh clusterconfig"
+      - bash -c 'umask 077; talosctl gen secrets --output-file - | sops /dev/stdin > talsecret.sops.yaml'
 
   # ---- main cluster: patch-based rendering (talhelper-free, in-memory) ----
   # Regenerate nothing on disk: config is rendered at apply time from patches/.
@@ -46,9 +36,11 @@ tasks:
       vars: [node, ip]
 
   main:talosconfig:
-    desc: Render talosconfig (client cert) — the ONE artifact that must live on disk
+    desc: Render main talosconfig (client cert) and merge into the central ~/.talos/config (use explicit --context for writes)
     cmds:
-      - bash -c 'umask 077; kv="$(yq -e -r .kubernetesVersion talos/main/version.yaml)"; tv="$(yq -e -r .talosVersion talos/main/version.yaml)"; talosctl gen config main https://192.168.100.100:6443 --with-secrets <(sops -d talos/main/talsecret.sops.yaml) --kubernetes-version "$kv" --talos-version "$tv" --output-types talosconfig -o talos/main/clusterconfig/talosconfig'
+      - bash -c 'rm -f talos/main/clusterconfig/talosconfig; umask 077; kv="$(yq -e -r .kubernetesVersion talos/main/version.yaml)"; tv="$(yq -e -r .talosVersion talos/main/version.yaml)"; talosctl gen config main https://192.168.100.100:6443 --with-secrets <(sops -d talos/main/talsecret.sops.yaml) --kubernetes-version "$kv" --talos-version "$tv" --output-types talosconfig -o talos/main/clusterconfig/talosconfig'
+      - bash -c 'yq -i ".contexts.main.endpoints = [\"https://192.168.100.101:50000\", \"https://192.168.100.102:50000\", \"https://192.168.100.103:50000\"] | .contexts.main.nodes = [\"192.168.100.101\", \"192.168.100.102\", \"192.168.100.103\"]" talos/main/clusterconfig/talosconfig'
+      - bash -c 'talosctl config merge talos/main/clusterconfig/talosconfig; talosctl config context main'
 
   # ---- utility cluster: patch-based rendering (talhelper-free, in-memory) ----
   # Same flow as main; sources of truth: talos/utility/patches/ + render-contract.yaml.
@@ -211,9 +203,9 @@ tasks:
       - until kubectl --context {{.KUBE_CONTEXT}} wait --timeout=5m --for=jsonpath=.status.ceph.health=HEALTH_OK cephcluster --all --all-namespaces; do sleep 10; done
     vars:
       TALOS_VERSION:
-        sh: yq 'select(document_index == 0).talosVersion' {{.TALOS_DIR}}/talconfig.yaml
+        sh: yq '.talosVersion' {{.TALOS_DIR}}/version.yaml
       KUBERNETES_VERSION:
-        sh: yq 'select(document_index == 0).kubernetesVersion' {{.TALOS_DIR}}/talconfig.yaml
+        sh: yq '.kubernetesVersion' {{.TALOS_DIR}}/version.yaml
       # CONTROLLER:
       #   sh: talosctl --context {{.cluster}} config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
       KUBE_CONTEXT:
@@ -223,7 +215,7 @@ tasks:
         - cluster
         - hostname
     preconditions:
-      - test -f {{.TALOS_DIR}}/talconfig.yaml
+      - test -f {{.TALOS_DIR}}/version.yaml
       - talosctl --context {{.cluster}} config info >/dev/null 2>&1
       - talosctl --context {{.cluster}} --nodes {{.hostname}} get machineconfig >/dev/null 2>&1
 
@@ -233,7 +225,6 @@ tasks:
     dir: "{{.TALOS_DIR}}"
     prompt: do you want to upgrade kubelet to {{.KUBERNETES_VERSION}} on node {{.hostname}}?
     cmds:
-      - task: config
       - until kubectl --context {{.KUBE_CONTEXT}} wait --timeout=5m --for=jsonpath=.status.ceph.health=HEALTH_OK cephcluster --all --all-namespaces; do sleep 10; done
       - talosctl apply --nodes {{.ip }} --file clusterconfig/talos-flux-{{.hostname }}.yaml
       - talosctl --context {{.cluster}} --nodes {{.ip}} health --wait-timeout=10m --server=false
@@ -242,14 +233,14 @@ tasks:
       KUBE_CONTEXT:
         sh: echo admin@{{.cluster}}
       KUBERNETES_VERSION:
-        sh: yq 'select(document_index == 0).kubernetesVersion' {{.TALOS_DIR}}/talconfig.yaml
+        sh: yq '.kubernetesVersion' {{.TALOS_DIR}}/version.yaml
     requires:
       vars:
         - cluster
         - hostname
         - ip
     preconditions:
-      - test -f {{.TALOS_DIR}}/talconfig.yaml
+      - test -f {{.TALOS_DIR}}/version.yaml
       - talosctl --context {{.cluster}} config info >/dev/null 2>&1
       - talosctl --context {{.cluster}} --nodes {{.ip}} get machineconfig >/dev/null 2>&1
 

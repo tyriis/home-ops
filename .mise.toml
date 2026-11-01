@@ -29,8 +29,6 @@
 "aqua:pre-commit/pre-commit" = "4.7.0"
 # https://mise-versions.jdx.dev/tools/sops
 "aqua:getsops/sops" = "3.13.3"
-# https://mise-versions.jdx.dev/tools/talhelper
-"aqua:budimanjojo/talhelper" = "3.1.17"
 # https://mise-versions.jdx.dev/tools/talosctl
 "aqua:siderolabs/talos" = "1.14.5"
 # https://mise-versions.jdx.dev/tools/task
