@@ -77,16 +77,34 @@ done
 
 echo "etcd leader: ${leader_ip:-unknown} — order: $(IFS=' '; echo "${queue[*]}")"
 
+# --- decide + confirm ---
+needed=()
+for ip in "${queue[@]}"; do
+  awk -v f="${FREE[$ip]}" -v t="$threshold" 'BEGIN{exit !(f >= t)}' && needed+=("$ip")
+done
+
+run_all=0
+if [[ ${#needed[@]} -gt 0 ]]; then
+  echo "fragmentation >= ${threshold}% on: ${needed[*]}"
+  read -r -p "Run rolling etcd defrag now? [Y/n] " ans
+  [[ "$ans" =~ ^[Nn] ]] && { echo "cancelled."; exit 0; }
+else
+  echo "no node has >= ${threshold}% free (fragmentation) — max is $(printf '%s\n' "${FREE[@]}" | sort -rn | head -1)%"
+  read -r -p "Run defrag anyway? NOT recommended. [y/N] " ans
+  [[ "$ans" =~ ^[Yy] ]] || { echo "cancelled."; exit 0; }
+  run_all=1
+fi
+
 # --- one at a time, never in parallel ---
 defragged=()
 for ip in "${queue[@]}"; do
-  if awk -v f="${FREE[$ip]}" -v t="$threshold" 'BEGIN{exit !(f > t)}'; then
-    echo "==> $ip: ${FREE[$ip]}% free > ${threshold}% — defragmenting (blocking)..."
+  if [[ $run_all -eq 1 ]] || awk -v f="${FREE[$ip]}" -v t="$threshold" 'BEGIN{exit !(f >= t)}'; then
+    echo "==> $ip: ${FREE[$ip]}% free — defragmenting (blocking)..."
     tal -n "$ip" etcd defrag
     echo "    after: $(member_status "$ip" | awk '{print $5, $6, $7}')"
     defragged+=("$ip")
   else
-    echo "==> $ip: ${FREE[$ip]}% free <= ${threshold}% — skipping"
+    echo "==> $ip: ${FREE[$ip]}% free below threshold — skipping"
   fi
 done
 

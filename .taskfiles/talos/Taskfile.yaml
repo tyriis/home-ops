@@ -59,7 +59,7 @@ tasks:
     requires:
       vars: [cluster, node, ip]
 
-  backup-etcd:
+  etcd:backup:
     desc: "etcd snapshot to ~/backups/talos-dr (cluster=, node=)"
     cmds:
       - bash -c 'mkdir -p ~/backups/talos-dr; talosctl --context {{.cluster}} -n {{.node}} etcd snapshot ~/backups/talos-dr/{{.cluster}}-$(date +%Y%m%dT%H%M%S).snapshot'
@@ -73,11 +73,11 @@ tasks:
     requires:
       vars: [cluster, node]
 
-  etcd-defrag:
-    desc: "Rolling etcd defrag — only nodes >threshold% free, one at a time, etcd LEADER last (cluster=, nodes=<ips>, threshold=)"
-    # usage: task talos:etcd-defrag cluster=main nodes="192.168.100.101 192.168.100.102 192.168.100.103"
+  etcd:defrag:
+    desc: "Rolling etcd defrag — prompts (recommended at >=threshold% free, not-recommended otherwise), leader last (cluster=, nodes=<ips>, threshold=)"
+    # usage: task talos:etcd:defrag cluster=main nodes="192.168.100.101 192.168.100.102 192.168.100.103"
     # non etcd members (workers) among the nodes are reported + skipped — only
-    # etcd members have a DB to defrag; non-members should come first per policy
+    # etcd members have a DB to defrag
     cmds:
       - "./.taskfiles/talos/etcd-defrag.sh {{.cluster}} {{.threshold | default 50}} {{.nodes}}"
     requires:
