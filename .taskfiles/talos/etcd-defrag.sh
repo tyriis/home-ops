@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 # Rolling etcd defrag for a cluster.
 #
-#   usage: etcd-defrag.sh <cluster> <threshold-pct> <ip> [ip...]
+#   usage: etcd-defrag.sh <cluster> [threshold-pct] [ip...]
 #
-# Nodes are processed STRICTLY in the order given, one at a time (etcd's own
-# guidance: defrag is resource-heavy, never on several members at once).
-# Convention: non-control-plane IPs first, control-plane IPs last, e.g.
-#   etcd-defrag.sh main 50 192.168.100.120 192.168.100.101 192.168.100.102 192.168.100.103
+# With no IPs given, etcd members are AUTO-DETECTED via
+# `talosctl --context <cluster> etcd members` (only etcd members have a DB to
+# defrag — workers are never targets). Explicit IPs are processed STRICTLY in
+# the order given, one at a time (etcd's own guidance: defrag is
+# resource-heavy, never on several members at once).
 #
 # Per node:
 #   - non etcd-member (worker) -> nothing to defrag, reported + skipped
@@ -20,23 +21,30 @@
 # Exit: 0 success (defragged or correctly skipped), non-zero if a member errored.
 set -euo pipefail
 
-cluster="${1:?usage: etcd-defrag.sh <cluster> <threshold-pct> <ip> [ip...]}"
-threshold="${2:?usage: etcd-defrag.sh <cluster> <threshold-pct> <ip> [ip...]}"
-shift 2
-[[ $# -ge 1 ]] || { echo "no node IPs given" >&2; exit 2; }
+cluster="${1:?usage: etcd-defrag.sh <cluster> [threshold-pct] [ip...]}"
+shift
+threshold=50
+[[ "${1:-}" =~ ^[0-9]+$ ]] && { threshold="$1"; shift; }
 
-ts() { command -v "$1" >/dev/null || { echo "missing binary: $1" >&2; exit 3; }; }
+ts() { local b="$1"; command -v "$b" >/dev/null || { echo "missing binary: $b" >&2; exit 3; }; }
 ts talosctl; ts awk
 
 tal() { talosctl --context "$cluster" "$@"; }
 
+# no explicit IPs -> auto-detect etcd members (dedupe; client URL host = IP)
+if [[ $# -eq 0 ]]; then
+  mapfile -t detected < <(tal etcd members 2>/dev/null | awk 'NR>1 {print $5}' | sed 's|https://||; s|:2379$||' | sort -u)
+  [[ ${#detected[@]} -gt 0 ]] || { echo "no etcd members detected for context '$cluster'" >&2; exit 2; }
+  set -- "${detected[@]}"
+fi
+
 # etcd status table for one node -> single data row
 # Columns are multi-token ("285 MB", "152 MB (53.22%)"): $1=node $2=memberid
 # $3-4=db size $5-7=in use + percent $8=leaderid
-member_status() { tal -n "$1" etcd status 2>/dev/null | tail -1; }
-in_use_pct() { awk '{print $7}' <<<"$1" | tr -d '()%'; }
-member_id()  { awk '{print $2}' <<<"$1"; }
-leader_id()  { awk '{print $8}' <<<"$1"; }
+member_status() { local ip="$1"; tal -n "$ip" etcd status 2>/dev/null | tail -1; }
+in_use_pct() { local row="$1"; awk '{print $7}' <<<"$row" | tr -d '()%'; }
+member_id()  { local row="$1"; awk '{print $2}' <<<"$row"; }
+leader_id()  { local row="$1"; awk '{print $8}' <<<"$row"; }
 
 echo "cluster=$cluster threshold=${threshold}% free-space, nodes in requested order: $*"
 
