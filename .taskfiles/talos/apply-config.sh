@@ -32,9 +32,15 @@ echo "==> validating rendered config" >&2
 talosctl validate -m metal -c "$tmp/render.yaml"
 
 echo "==> diff live($ip) vs rendered($cluster/$node)"
-python3 "$root/.taskfiles/talos/diff-live-config.py" "$tmp/live.jsonl" "$tmp/render.jsonl" || true
+diff_out="$(python3 "$root/.taskfiles/talos/diff-live-config.py" "$tmp/live.jsonl" "$tmp/render.jsonl" || true)"
+echo "$diff_out"
 
 [[ "$diff_only" == "--diff-only" ]] && exit 0
+
+if grep -q "configs identical" <<<"$diff_out"; then
+  echo "nothing to apply — live config already matches the render. Done."
+  exit 0
+fi
 
 echo
 read -r -p "Apply rendered config to $ip? [y/N] " answer
