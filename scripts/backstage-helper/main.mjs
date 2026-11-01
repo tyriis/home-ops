@@ -100,7 +100,9 @@ if (missing.length > 0) {
     )
   )
   // sort and remove duplicates
-  catalogJson.spec.targets = [...new Set(catalogJson.spec.targets)].sort()
+  catalogJson.spec.targets = [...new Set(catalogJson.spec.targets)].sort(
+    (a, b) => a.localeCompare(b)
+  )
 
   await fs.writeFile(catalogPath, `---\n${YAML.stringify(catalogJson)}`)
 }
