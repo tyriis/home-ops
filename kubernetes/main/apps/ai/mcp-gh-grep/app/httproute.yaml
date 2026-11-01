@@ -6,6 +6,10 @@ metadata:
   name: mcp-gh-grep
   annotations:
     external-dns/unifi: "true"
+    gatus.home-operations.com/endpoint: |
+      url: https://mcp-gh-grep.techtales.io/
+      conditions:
+        - "[STATUS] == 401"
 spec:
   hostnames:
     - mcp-gh-grep.techtales.io
