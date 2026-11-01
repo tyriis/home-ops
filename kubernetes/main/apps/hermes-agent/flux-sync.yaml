@@ -10,8 +10,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../components/volsync
-  path: ./kubernetes/main/apps/hermes-agent/app
+    - ../../../../../components/volsync
+  path: ./kubernetes/main/apps/hermes-agent/overlays/tyriis
   prune: true
   sourceRef:
     kind: GitRepository
