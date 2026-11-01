@@ -2,215 +2,93 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
+# One parameterized command per operation — the cluster is a variable
+# (cluster=main|utility). Shared endpoint table: .taskfiles/talos/clusters.sh.
+# Generic scripts (render/apply/dry-run/gen-talosconfig), nothing ever on disk
+# but tmpfs. Talos/Kubernetes VERSION UPGRADES are owned by tuppr — no
+# upgrade tasks here.
+
 tasks:
-  setup:
-    - task: config
-    - task: kubeconfig
-
   init:
-    desc: Initialize talos configuration
-    dir: "{{.TALOS_DIR}}"
+    desc: "Generate a fresh talsecret for a NEW cluster, encrypted straight to sops (cluster=)"
     cmds:
-      # https://github.com/budimanjojo/talhelper
-      - "talhelper gensecret > talsecret.sops.yaml"
-      - "sops -e -i talsecret.sops.yaml"
+      - bash -c 'umask 077; talosctl gen secrets --output-file - | sops /dev/stdin > talos/{{.cluster}}/talsecret.sops.yaml'
+    requires:
+      vars: [cluster]
 
-  config:
-    desc: Let talhelper generate the configuration files
-    dir: "{{.TALOS_DIR}}"
+  render:
+    desc: "Render machine config to stdout (cluster=, node=)"
     cmds:
-      - "talhelper genconfig"
+      - "./.taskfiles/talos/render-config.sh {{.cluster}} {{.node}}"
+    requires:
+      vars: [cluster, node]
 
-  install:talos01:
-    desc: Install talos01
-    dir: "{{.TALOS_DIR}}"
+  diff:
+    desc: "Doc-level diff live vs rendered — offline-capable patch review (cluster=, node=, ip=)"
     cmds:
-      - |
-        talosctl apply-config --insecure \
-          --nodes 192.168.100.101 \
-          --file clusterconfig/talos-flux-talos01.yaml
+      - "./.taskfiles/talos/apply-config.sh {{.cluster}} {{.node}} {{.ip}} --diff-only"
+    requires:
+      vars: [cluster, node, ip]
 
-  install:talos02:
-    desc: Install talos02
-    dir: "{{.TALOS_DIR}}"
+  dry:
+    desc: "STANDARD PRE-APPLY GATE — node's own reboot plan + redacted diff; nothing applied (cluster=, node=, ip=)"
     cmds:
-      - |
-        talosctl apply-config --insecure \
-          --nodes 192.168.100.102 \
-          --file clusterconfig/talos-flux-talos02.yaml
+      - "./.taskfiles/talos/dry-run-config.sh {{.cluster}} {{.node}} {{.ip}}"
+    requires:
+      vars: [cluster, node, ip]
 
-  install:talos03:
-    desc: Install talos03
-    dir: "{{.TALOS_DIR}}"
+  apply:
+    desc: "Diff, confirm, apply — nothing ever written to disk (cluster=, node=, ip=)"
     cmds:
-      - |
-        talosctl apply-config --insecure \
-          --nodes 192.168.100.103 \
-          --file clusterconfig/talos-flux-talos03.yaml
+      - "./.taskfiles/talos/apply-config.sh {{.cluster}} {{.node}} {{.ip}}"
+    requires:
+      vars: [cluster, node, ip]
 
-  update:talos01:
-    desc: Update talos01
-    dir: "{{.TALOS_DIR}}"
+  talosconfig:
+    desc: "Regenerate client cert + merge into central ~/.talos/config (cluster=, nodes=<ips> REQUIRED; default context stays yours — set via 'talosctl config context <name>')"
     cmds:
-      - |
-        talosctl apply-config \
-          --nodes 192.168.100.101 \
-          --file clusterconfig/talos-flux-talos01.yaml
+      - "./.taskfiles/talos/gen-talosconfig.sh {{.cluster}} {{.nodes}}"
+    requires:
+      vars: [cluster, nodes]
 
-  update:talos02:
-    desc: Update talos02
-    dir: "{{.TALOS_DIR}}"
+  install:
+    desc: "Fresh install of a new/replaced node: render + INSECURE maintenance-mode apply (cluster=, node=, ip=)"
+    prompt: "Install rendered config {{.cluster}}/{{.node}} onto {{.ip}} via insecure maintenance apply?"
     cmds:
-      - |
-        talosctl apply-config \
-          --nodes 192.168.100.102 \
-          --file clusterconfig/talos-flux-talos02.yaml
+      - bash -c 'tmp="$(mktemp /dev/shm/talos-install.XXXXXX.yaml)"; trap "rm -f \"$tmp\"" EXIT; chmod 600 "$tmp"; ./.taskfiles/talos/render-config.sh {{.cluster}} {{.node}} > "$tmp" && talosctl apply-config --insecure --nodes {{.ip}} --file "$tmp"'
+    requires:
+      vars: [cluster, node, ip]
 
-  update:talos03:
-    desc: Update talos03
-    dir: "{{.TALOS_DIR}}"
+  schematic:check:
+    desc: "Verify the committed factory schematics against the installer image refs in patches/ — offline ([cluster=])"
     cmds:
-      - |
-        talosctl apply-config \
-          --nodes 192.168.100.103 \
-          --file clusterconfig/talos-flux-talos03.yaml
+      - "./.taskfiles/talos/check-schematic.sh {{.cluster}}"
 
-  bootstrap:
-    desc: Bootstrap talos etcd on 1st node
-    dir: "{{.TALOS_DIR}}"
+  schematic:verify:
+    desc: "Re-derive the schematic ids from factory.talos.dev and compare with the committed headers — needs network ([cluster=])"
     cmds:
-      - |
-        talosctl bootstrap \
-          --talosconfig=clusterconfig/talosconfig \
-          --nodes 192.168.100.101
+      - "./.taskfiles/talos/check-schematic.sh --online {{.cluster}}"
 
-  kubeconfig:
-    desc: write kube config
-    dir: "{{.TALOS_DIR}}"
+  etcd:backup:
+    desc: "etcd snapshot to ~/backups/talos-dr (cluster=, node=)"
     cmds:
-      - |
-        talosctl kubeconfig \
-          --talosconfig=clusterconfig/talosconfig \
-          --nodes 192.168.100.100 \
-          --endpoints 192.168.100.100 \
-          --force
-
-  # dashboard:
-  #   desc: start the theila dashboard
-  #   cmds:
-  #     - theila --address 127.0.0.1 --port 8080
-
-  # https://www.talos.dev/v1.2/advanced/disaster-recovery/
-  backup:etcd:
-    desc: backup etcd from ip 192.168.100.101
-    cmds:
-      - talosctl -n 192.168.100.101 etcd snapshot db.snapshot
+      - bash -c 'mkdir -p ~/backups/talos-dr; talosctl --context {{.cluster}} -n {{.node}} etcd snapshot ~/backups/talos-dr/{{.cluster}}-$(date +%Y%m%dT%H%M%S).snapshot'
+    requires:
+      vars: [cluster, node]
 
   dashboard:
-    desc: Dashboard talos01
-    dir: "{{.TALOS_DIR}}"
+    desc: "talosctl dashboard on a node (cluster=, node=<ip>)"
     cmds:
-      - talosctl dashboard --nodes {{.hostname}}
+      - "talosctl --context {{.cluster}} dashboard -n {{.node}}"
     requires:
-      vars:
-        - hostname
+      vars: [cluster, node]
 
-  dashboard:talos01:
-    desc: Dashboard talos01
-    dir: "{{.TALOS_DIR}}"
+  etcd:defrag:
+    desc: "Rolling etcd defrag — auto-detects etcd members if nodes omitted; prompts (recommended at >=threshold% free, not-recommended otherwise), leader last (cluster=, [nodes=], [threshold=])"
+    # usage: task talos:etcd:defrag cluster=main
+    #        task talos:etcd:defrag cluster=main nodes="192.168.100.101 192.168.100.102 192.168.100.103"
+    # non etcd members (workers) among explicit nodes are reported + skipped
     cmds:
-      - |
-        talosctl dashboard \
-          --nodes 192.168.100.101
-
-  dashboard:talos02:
-    desc: Dashboard talos02
-    dir: "{{.TALOS_DIR}}"
-    cmds:
-      - |
-        talosctl dashboard \
-          --nodes 192.168.100.102
-
-  dashboard:talos03:
-    desc: Dashboard talos03
-    dir: "{{.TALOS_DIR}}"
-    cmds:
-      - |
-        talosctl dashboard \
-          --nodes 192.168.100.103
-
-  upgrade:
-    # usage: task talos:upgrade hostname=192.168.100.101 cluster=talos-flux
-    desc: Upgrade talos on a node
-    dir: "{{.TALOS_DIR}}"
-    prompt: do you want to upgrade talos to {{.TALOS_VERSION}} on node {{.hostname}}?
-    cmds:
-      - until kubectl --context {{.KUBE_CONTEXT}} wait --timeout=5m --for=condition=Complete jobs --all --all-namespaces; do sleep 10; done
-      - talosctl --context {{.cluster}} --nodes {{.hostname}} upgrade --image="ghcr.io/siderolabs/installer:{{.TALOS_VERSION}}" --wait=true --timeout=10m --preserve=true
-      - talosctl --context {{.cluster}} --nodes {{.hostname}} health --wait-timeout=10m --server=false
-      - until kubectl --context {{.KUBE_CONTEXT}} wait --timeout=5m --for=jsonpath=.status.ceph.health=HEALTH_OK cephcluster --all --all-namespaces; do sleep 10; done
-    vars:
-      TALOS_VERSION:
-        sh: yq 'select(document_index == 0).talosVersion' {{.TALOS_DIR}}/talconfig.yaml
-      KUBERNETES_VERSION:
-        sh: yq 'select(document_index == 0).kubernetesVersion' {{.TALOS_DIR}}/talconfig.yaml
-      # CONTROLLER:
-      #   sh: talosctl --context {{.cluster}} config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
-      KUBE_CONTEXT:
-        sh: echo admin@{{.cluster}}
+      - "./.taskfiles/talos/etcd-defrag.sh {{.cluster}} {{.threshold | default 50}} {{.nodes}}"
     requires:
-      vars:
-        - cluster
-        - hostname
-    preconditions:
-      - test -f {{.TALOS_DIR}}/talconfig.yaml
-      - talosctl --context {{.cluster}} config info >/dev/null 2>&1
-      - talosctl --context {{.cluster}} --nodes {{.hostname}} get machineconfig >/dev/null 2>&1
-
-  kubelet:upgrade:
-    # usage: task talos:kubelet:upgrade hostname=talos01 ip=192.168.100.101 cluster=talos-flux
-    desc: Upgrade kubelet on a node
-    dir: "{{.TALOS_DIR}}"
-    prompt: do you want to upgrade kubelet to {{.KUBERNETES_VERSION}} on node {{.hostname}}?
-    cmds:
-      - task: config
-      - until kubectl --context {{.KUBE_CONTEXT}} wait --timeout=5m --for=jsonpath=.status.ceph.health=HEALTH_OK cephcluster --all --all-namespaces; do sleep 10; done
-      - talosctl apply --nodes {{.ip }} --file clusterconfig/talos-flux-{{.hostname }}.yaml
-      - talosctl --context {{.cluster}} --nodes {{.ip}} health --wait-timeout=10m --server=false
-      - until kubectl --context {{.KUBE_CONTEXT}} wait --timeout=5m --for=jsonpath=.status.ceph.health=HEALTH_OK cephcluster --all --all-namespaces; do sleep 10; done
-    vars:
-      KUBE_CONTEXT:
-        sh: echo admin@{{.cluster}}
-      KUBERNETES_VERSION:
-        sh: yq 'select(document_index == 0).kubernetesVersion' {{.TALOS_DIR}}/talconfig.yaml
-    requires:
-      vars:
-        - cluster
-        - hostname
-        - ip
-    preconditions:
-      - test -f {{.TALOS_DIR}}/talconfig.yaml
-      - talosctl --context {{.cluster}} config info >/dev/null 2>&1
-      - talosctl --context {{.cluster}} --nodes {{.ip}} get machineconfig >/dev/null 2>&1
-
-  init:main:
-    desc: Bootstrap kubernetes cluster
-    dir: "{{.PROJECT_DIR}}"
-    cmds:
-      - kubectl kustomize --enable-helm kubernetes/main/bootstrap/cilium | kubectl apply -f -
-      - kubectl kustomize --enable-helm kubernetes/main/bootstrap/coredns | kubectl apply -n kube-system -f -
-      - kubectl kustomize --enable-helm kubernetes/main/bootstrap/kubelet-csr-approver | kubectl apply -n kube-system -f -
-      - kubectl kustomize --enable-helm kubernetes/main/bootstrap/metrics-server | kubectl apply -n kube-system -f -
-      - kubectl create namespace democratic-csi
-      - kubectl label --overwrite namespace democratic-csi pod-security.kubernetes.io/enforce=privileged
-      - kubectl kustomize --enable-helm kubernetes/main/bootstrap/democratic-csi | kubectl apply -n democratic-csi -f -
-      - kubectl create namespace flux-system
-      - kubectl kustomize --enable-helm kubernetes/main/bootstrap/flux-operator | kubectl apply -n flux-system -f -
-
-  wipe:
-    desc: Wipe talos cluster
-    dir: "{{.TALOS_DIR}}"
-    cmds:
-      - talosctl reset --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL --graceful=false -n 192.168.100.101
-      - talosctl reset --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL --graceful=false -n 192.168.100.102
-      - talosctl reset --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL --graceful=false -n 192.168.100.103
+      vars: [cluster]

@@ -1,6 +1,6 @@
 ---
 # deadvalues configuration: https://github.com/guarnz/deadvalues
-# Both Talos clusters run Kubernetes v1.37.1 (talos/*/talconfig.yaml).
+# Both Talos clusters run Kubernetes 1.37 (per-cluster pin: talos/*/version.yaml).
 kubeVersion: "1.37"
 
 # APIs beyond stock Kubernetes that the clusters serve, spelled exactly as

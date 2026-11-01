@@ -1,0 +1,8 @@
+---
+# Version contract for the utility cluster. Consumed by
+# .taskfiles/talos/render-config.sh and the talos:utility:talosconfig task.
+# Bump only deliberately when regenerating for a Talos/K8s upgrade.
+# renovate: depName=siderolabs/talos datasource=github-tags
+talosVersion: v1.14.5
+# renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
+kubernetesVersion: v1.37.2

@@ -1,0 +1,20 @@
+---
+# factory.talos.dev schematic for the `utility` cluster (secureboot UKI metal installer).
+# id: f5322febc5e6e2ee4225e9e0e9a508417bc3d7530775e828daa441cd6b76e3e5
+# The id must equal the installer image refs in talos/utility/patches/*.patch.yaml.
+# Ref: https://factory.talos.dev/schematics
+customization:
+  systemExtensions:
+    officialExtensions:
+      - siderolabs/intel-ucode
+      - siderolabs/nvme-cli
+      - siderolabs/zfs
+  extraKernelArgs:
+    - apparmor=0
+    - init_on_alloc=0
+    - init_on_free=0
+    - intel_iommu=on
+    - iommu=pt
+    - mitigations=off
+    - security=none
+    - talos.auditd.disabled=1

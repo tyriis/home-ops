@@ -1,0 +1,214 @@
+# Common machine-config patch for the `utility` cluster (util01).
+# Render: .taskfiles/talos/render-config.sh utility util01
+# Field placement follows the official 1.14 document map
+# (docs.siderolabs.com/talos/v1.14/reference/configuration/document-map).
+# Live source of truth (2026-11-01): old-format talhelper config — every
+# deprecated field below is REPRODUCED as its 1.14 document replacement,
+# pinned to the live values, so the first diff is minimal.
+#
+# ENCRYPTION CONTRACT (verified 2026-11-01): every encrypted record in the
+# live etcd DB carries prefix `k8s:enc:secretbox:v1:key2` (315/315, no other
+# key names, no plaintext-only records found). The gen-bundled
+# KubeEtcdEncryptionConfig is deleted here and re-appended COMPLETE by the
+# runtime encpatch (key2 + key1 + identity) from the talsecret — key NAMES
+# are semantic (k8s secretbox resolves keys by name). See
+# skill talos-cluster-config references/encryption-incident.md.
+---
+version: v1alpha1
+machine:
+  time:
+    disabled: false
+    servers:
+      - time.cloudflare.com
+  features:
+    rbac: true
+    apidCheckExtKeyUsage: true
+    diskQuotaSupport: true
+  registries:
+    mirrors:
+      docker.io:
+        endpoints:
+          - https://harbor.techtales.io/v2/proxy-docker.io
+        overridePath: true
+      ghcr.io:
+        endpoints:
+          - https://harbor.techtales.io/v2/proxy-ghcr.io
+        overridePath: true
+cluster:
+  etcd:
+    extraArgs:
+      listen-metrics-urls: http://0.0.0.0:2381
+---
+apiVersion: v1alpha1
+kind: SysctlConfig
+params:
+  fs.inotify.max_user_instances: "8192" # Watchdog
+  fs.inotify.max_user_watches: "1048576" # Watchdog
+  net.ipv4.tcp_fastopen: "3" # SYN packet fast-open
+  vm.nr_hugepages: "1024" # PostgreSQL
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: zfs
+---
+# replaces deprecated .machine.kubelet.* fields
+apiVersion: v1alpha1
+kind: KubeletConfig
+extraArgs:
+  rotate-server-certificates: "true"
+defaultRuntimeSeccompProfileEnabled: true
+config:
+  serializeImagePulls: false
+---
+# replaces deprecated .machine.kubelet.extraMounts (/var/mnt/extra bind);
+# user volumes under /var/mnt are exposed to the kubelet automatically
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: extra
+volumeType: directory
+---
+# replaces deprecated .machine.nodeLabels/.machine.nodeAnnotations.
+# installer-url annotation pinned to the LIVE value (stale :v1.13.6 from the
+# original install; upgrades don't rewrite it) to keep the diff zero-delta.
+# nodeLabels.talos.sidero.dev/secureboot was a talconfig template of
+# "installer image contains installer-secureboot" -> evaluates true on live,
+# pinned literally.
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+labels:
+  topology.kubernetes.io/zone: home
+  talos.sidero.dev/secureboot: "true"
+annotations:
+  talos.sidero.dev/installer-url: factory.talos.dev/metal-installer-secureboot/f5322febc5e6e2ee4225e9e0e9a508417bc3d7530775e828daa441cd6b76e3e5:v1.13.6
+nodeIP:
+  validSubnets:
+    - 192.168.100.0/24
+# LIVE: single CP, scheduling on control planes enabled -> NO taints on live.
+# 1.13+ gen bakes a control-plane:NoSchedule taint unless deleted as a whole
+# section (a null entry would UNSET it back to the tainted default). A
+# materialized taint on this single-CP node = all workloads Pending.
+# (main-cluster pitfall, commit 1d1d643.)
+taints:
+  $patch: delete
+---
+# replaces deprecated .machine.disableSearchDomain + nameservers + hostDNS
+apiVersion: v1alpha1
+kind: ResolverConfig
+hostDNS:
+  enabled: true
+  resolveMemberNames: true
+  forwardKubeDNSToHost: false
+nameservers:
+  - address: 192.168.1.1
+searchDomains:
+  disableDefault: true
+---
+apiVersion: v1alpha1
+kind: KubePrismConfig
+port: 7445
+---
+apiVersion: v1alpha1
+kind: KubeTalosAPIAccessConfig
+allowedRoles:
+  - os:admin
+allowedKubernetesNamespaces:
+  - system-upgrade
+---
+# replaces deprecated .cluster.coreDNS.disabled — presence of this doc
+# deploys CoreDNS; delete to disable (Cilium DNS + external DNS)
+apiVersion: v1alpha1
+kind: KubeCoreDNSConfig
+$patch: delete
+---
+# replaces deprecated .cluster.proxy.disabled — cluster runs Cilium
+apiVersion: v1alpha1
+kind: KubeProxyConfig
+enabled: false
+---
+apiVersion: v1alpha1
+kind: KubeControllerManagerConfig
+extraArgs:
+  bind-address: 0.0.0.0
+---
+# replaces deprecated .cluster.scheduler.*
+apiVersion: v1alpha1
+kind: KubeSchedulerConfig
+extraArgs:
+  bind-address: 0.0.0.0
+config:
+  profiles:
+    - schedulerName: default-scheduler
+      plugins:
+        score:
+          disabled:
+            - name: ImageLocality
+      pluginConfig:
+        - name: PodTopologySpread
+          args:
+            defaultingType: List
+            defaultConstraints:
+              - maxSkew: 1.0
+                topologyKey: kubernetes.io/hostname
+                whenUnsatisfiable: ScheduleAnyway
+---
+# replaces deprecated .cluster.extraManifests (names stable = gen-safe)
+apiVersion: v1alpha1
+kind: KubeExternalManifestConfig
+name: gateway-api
+url: https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.3/experimental-install.yaml
+---
+apiVersion: v1alpha1
+kind: KubeExternalManifestConfig
+name: prometheus-operator-crds
+url: https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.94.2/stripped-down-crds.yaml
+---
+# fresh 1.14 gen defaults NOT enabled on this cluster — pin to live behavior
+apiVersion: v1alpha1
+kind: SecurityProfileConfig
+workloadIsolation: false
+---
+apiVersion: v1alpha1
+kind: VolumeConfig
+name: EPHEMERAL
+mount:
+  secure: false
+---
+# CNI: live runs cluster.network.cni.name=none + Cilium — never deploy flannel
+apiVersion: v1alpha1
+kind: KubeFlannelCNIConfig
+$patch: delete
+---
+# drop the gen-bundled single-key encryption doc; the full document
+# (key2 + key1 + identity) is appended LAST by the runtime encpatch
+# (ordering matters — strategic merge appends)
+apiVersion: v1alpha1
+kind: KubeEtcdEncryptionConfig
+$patch: delete
+---
+# replaces deprecated .machine.files /etc/cri/conf.d/20-customization.part
+apiVersion: v1alpha1
+kind: CRICustomizationConfig
+name: home-cri
+content: |
+  [plugins]
+    [plugins."io.containerd.grpc.v1.cri"]
+      enable_unprivileged_ports = true
+      enable_unprivileged_icmp = true
+  [plugins."io.containerd.cri.v1.images"]
+    discard_unpacked_layers = false
+  [plugins."io.containerd.cri.v1.runtime"]
+    device_ownership_from_security_context = true
+---
+# replaces deprecated .machine.files /etc/nfsmount.conf
+apiVersion: v1alpha1
+kind: EtcFileConfig
+name: nfsmount.conf
+mode: 0o644
+contents: |
+  [ NFSMount_Global_Options ]
+  nfsvers=4.1
+  hard=True
+  nconnect=8
+  noatime=True
+  rsize=1048576
+  wsize=1048576
