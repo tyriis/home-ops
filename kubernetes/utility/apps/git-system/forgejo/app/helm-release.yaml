@@ -82,7 +82,7 @@ spec:
           DEFAULT_REPO_UNITS: repo.code,repo.releases,repo.issues,repo.pulls,repo.actions
         server:
           DISABLE_SSH: true
-          LANDING_PAGE: homepage
+          LANDING_PAGE: home
           OFFLINE_MODE: true
           ROOT_URL: https://git.techtales.io
         service:
