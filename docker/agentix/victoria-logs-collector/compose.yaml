@@ -11,9 +11,6 @@ include:
 services:
   vlagent:
     hostname: agentix
-    dns:
-      - 192.168.1.1
-      - 1.1.1.2
     env_file:
       - ${SOPS_ENV_FILE:-sops.env}
     logging:
