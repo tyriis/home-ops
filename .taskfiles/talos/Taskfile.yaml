@@ -72,3 +72,13 @@ tasks:
       - "talosctl --context {{.cluster}} dashboard -n {{.node}}"
     requires:
       vars: [cluster, node]
+
+  etcd-defrag:
+    desc: "Rolling etcd defrag — only nodes >threshold% free, one at a time, etcd LEADER last (cluster=, nodes=<ips>, threshold=)"
+    # usage: task talos:etcd-defrag cluster=main nodes="192.168.100.101 192.168.100.102 192.168.100.103"
+    # non etcd members (workers) among the nodes are reported + skipped — only
+    # etcd members have a DB to defrag; non-members should come first per policy
+    cmds:
+      - "./.taskfiles/talos/etcd-defrag.sh {{.cluster}} {{.threshold | default 50}} {{.nodes}}"
+    requires:
+      vars: [cluster, nodes]
