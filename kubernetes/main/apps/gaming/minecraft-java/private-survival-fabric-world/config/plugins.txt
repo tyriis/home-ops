@@ -22,6 +22,6 @@ https://cdn.modrinth.com/data/gvQqBUqZ/versions/xS0Q8LSi/lithium-fabric-0.26.2%2
 https://cdn.modrinth.com/data/AANobbMI/versions/bAZQdGpg/sodium-fabric-0.9.2%2Bmc26.3.jar
 
 # Farmers Delight https://modrinth.com/mod/farmers-delight-refabricated/versions?l=fabric
-https://cdn.modrinth.com/data/7vxePowz/versions/W0KeKCgk/FarmersDelight-26.3-3.6.29%2Brefabricated.jar
+# https://cdn.modrinth.com/data/7vxePowz/versions/W0KeKCgk/FarmersDelight-26.3-3.6.29%2Brefabricated.jar
 # Universal Graves https://modrinth.com/mod/universal-graves/versions?c=release
 https://cdn.modrinth.com/data/yn9u3ypm/versions/r9hY06vQ/graves-3.13.0%2B26.3.jar
