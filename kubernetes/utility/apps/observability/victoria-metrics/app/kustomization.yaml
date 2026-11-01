@@ -18,3 +18,4 @@ resources:
   - ./scrapes/vm-alertmanager.yaml
   - ./scrapes/vm-prometheus-operator.yaml
   - ./scrapes/vm-coredns.yaml
+  - ./scrapes/vm-vmsingle.yaml

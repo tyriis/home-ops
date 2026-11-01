@@ -18,6 +18,9 @@ spec:
         - podSelector:
             matchLabels:
               app.kubernetes.io/name: vmalert
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: vmagent # VMServiceScrape victoria-logs: /metrics self-metrics
       ports:
         - protocol: TCP
           port: 9428
