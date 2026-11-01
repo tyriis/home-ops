@@ -89,6 +89,15 @@ spec:
                     deny_paths: ["/.*"]
                     url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
 
+              - name: agentix
+                bearer_token: "%{VMAUTH_TOKEN_AGENTIX}"
+                url_map:
+                  - src_paths: ["/insert/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
+
               - name: synology
                 bearer_token: "%{VMAUTH_TOKEN_SYNOLOGY}"
                 url_map:
@@ -189,6 +198,15 @@ spec:
 
               - name: purple-metrics
                 bearer_token: "%{VMAUTH_TOKEN_PURPLE_METRICS}"
+                url_map:
+                  - src_paths: ["/api/v1/write"]
+                    url_prefix: "http://vmsingle-vmsingle.observability.svc.cluster.local:8428"
+                  - src_paths: ["/.*"]
+                    deny_paths: ["/.*"]
+                    url_prefix: "http://vmsingle-vmsingle.observability.svc.cluster.local:8428"
+
+              - name: agentix-metrics
+                bearer_token: "%{VMAUTH_TOKEN_AGENTIX_METRICS}"
                 url_map:
                   - src_paths: ["/api/v1/write"]
                     url_prefix: "http://vmsingle-vmsingle.observability.svc.cluster.local:8428"
