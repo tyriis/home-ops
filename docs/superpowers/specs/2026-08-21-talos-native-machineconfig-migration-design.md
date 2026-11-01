@@ -175,3 +175,80 @@ The industry split is really "secrets out of git (Vault/ESO)" vs "secrets encryp
 - [talosctl CLI reference](https://docs.siderolabs.com/talos/v1.13/reference/cli)
 - [Editing machine configuration](https://docs.siderolabs.com/talos/v1.13/configure-your-talos-cluster/system-configuration/editing-machine-configuration)
 - [OpenBao kv command](https://github.com/openbao/openbao/blob/main/website/content/docs/commands/kv/index.mdx)
+
+## As-built delta (2026-11-02)
+
+PR #11545 implemented this design for both clusters. Five decisions changed
+in practice. Read this section before you follow the steps above.
+
+### 1. Secrets stay in SOPS-in-git until a tested off-cluster restore exists
+
+The move of the secrets bundle to OpenBao did not happen. It must not
+happen yet. OpenBao runs inside the utility cluster. That cluster needs
+the secrets to restore itself. That is a restore deadlock. First,
+document an off-cluster snapshot location. Then, complete a restore test
+without a running cluster. Delete the SOPS copy only after that test
+passes.
+
+Current behavior: `render-config.sh` decrypts `talsecret.sops.yaml`
+through a process-substitution pipe. Plaintext never lands on disk. This
+improves hygiene. It does not fix issue #8767, because a decryptable
+secret still sits in git. Keep the OpenBao move as a goal, gated behind
+the restore test above.
+
+Fix one command in "Secret model" now. Use
+`bao kv put -mount=infra <path> data=@secrets.yaml`. Do not use
+`data="$(cat secrets.yaml)"`. The second form puts plaintext in shell
+history and in the process argv. A local agent can read argv. That is
+the exposure #8767 reports.
+
+### 2. Schematic: commit the ID with the source
+
+"Resolved decisions" said the ID stays out of git, and derivation stays
+canonical. PR #11545 reversed that decision. Each cluster now commits
+`schematic.yaml` with the derived ID in a `# id: <64 hex>` header line.
+`check-schematic.sh` asserts the header ID equals every installer image
+reference in `patches/`. This assertion runs offline, with no network.
+The optional `--online` mode re-derives the ID from factory.talos.dev.
+The factory API accepts a `GET /schematics/<id>` lookup, but that service
+is a convenience, not an archive. Commit the source plus the ID. Keep the
+derivation as the validator.
+
+### 3. Tasks take variables, and nothing lands on disk
+
+The mapping above planned a `config` task that wrote files to
+`clusterconfig/`. No task writes files there now. The delivered surface
+is: `render`, `diff`, `dry`, `apply`, `install`, `talosconfig`,
+`etcd:backup`, `etcd:defrag`. Each task takes `cluster=`, `node=`, and
+`ip=` arguments. The `upgrade` and `kubelet:upgrade` tasks no longer
+exist. tuppr owns all version upgrades. Do not add upgrade tasks back.
+`task init cluster=<c>` now generates a fresh `talosctl gen secrets`
+bundle and pipes it straight into sops.
+
+### 4. Layout and version facts changed
+
+- Patches use `common.patch.yaml` plus one file per node. There is no
+  separate controlplane layer.
+- The `clusterconfig/` directory no longer exists.
+- Each cluster has a `version.yaml`. Renovate and `render-config.sh`
+  read it. It is the version contract.
+- Current pins: Talos v1.14.5, Kubernetes 1.37, and the documents config
+  format. The old pins and the v1alpha1 format in "Current state" are
+  obsolete.
+- The render flow builds the `KubeEtcdEncryptionConfig` document at
+  render time from the talsecret. Kubernetes resolves etcd encryption
+  keys by name. Do not rename or drop a key name.
+
+### 5. Pre-apply gates replace the single validate step
+
+Step 5 planned one offline `talosctl validate` run. The delivered flow
+adds two gates before any apply:
+
+1. `task talos:diff cluster=<c> node=<n> ip=<ip>` compares the live
+   config and the rendered config at document level. It redacts key
+   material. It fails on unexpected value loss.
+2. `task talos:dry` asks the node for its own reboot plan. It shows a
+   redacted diff. The task applies nothing.
+
+Run both gates per node. Apply one node at a time. Run `talosctl
+health` between applies.
