@@ -9,7 +9,6 @@ spec:
   selectAllByDefault: true
   scrapeInterval: 1m
   scrapeTimeout: 30s
-  overrideHonorLabels: true
   externalLabels:
     cluster: main
   remoteWrite:

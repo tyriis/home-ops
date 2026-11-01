@@ -79,6 +79,8 @@ spec:
           daemon:
             keyRotationPolicy: KeyGeneration
             keyGeneration: 2 # must never decrease; raise it to rotate the daemon keys again
+          csi:
+            keyType: aes # kernel-rbd needs Linux 7.0+ for aes256k; Talos ships 6.18. Flip in #11554 once nodes reach 7.0.
       storage:
         useAllDevices: false
         devicePathFilter: /dev/disk/by-path/pci-0000:01:00.0-nvme-1

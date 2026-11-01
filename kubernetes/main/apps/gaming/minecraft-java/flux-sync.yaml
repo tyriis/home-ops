@@ -76,44 +76,6 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app minecraft-survival-world
-spec:
-  targetNamespace: &namespace gaming
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  components:
-    - ../../../../../components/volsync
-  path: ./kubernetes/main/apps/gaming/minecraft-java/private-survival-world
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-  dependsOn:
-    - name: external-secrets-stores
-      namespace: secops
-    - name: volsync
-      namespace: backup-system
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
-  postBuild:
-    substitute:
-      APP: *app
-      NAMESPACE: *namespace
-      SERVICE: minecraft-survival-world-minecraft
-      VOLSYNC_CAPACITY: 10Gi
-      VOLSYNC_CACHE_CAPACITY: 10Gi
-
----
-# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
   name: &app minecraft-fabric-world
 spec:
   targetNamespace: &namespace gaming
@@ -144,6 +106,44 @@ spec:
       APP: *app
       NAMESPACE: *namespace
       SERVICE: minecraft-fabric-world-minecraft
+      VOLSYNC_CAPACITY: 10Gi
+      VOLSYNC_CACHE_CAPACITY: 10Gi
+
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app minecraft-survival-fabric-world
+spec:
+  targetNamespace: &namespace gaming
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../../components/volsync
+  path: ./kubernetes/main/apps/gaming/minecraft-java/private-survival-fabric-world
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: external-secrets-stores
+      namespace: secops
+    - name: volsync
+      namespace: backup-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace
+      SERVICE: minecraft-survival-fabric-world-minecraft
       VOLSYNC_CAPACITY: 10Gi
       VOLSYNC_CACHE_CAPACITY: 10Gi
 

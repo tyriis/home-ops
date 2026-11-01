@@ -10,7 +10,6 @@ spec:
   scrapeInterval: 1m
   # utility's Prometheus uses 10s for every job; cert-manager, flux-operator and smartctl-exporter set 30s themselves.
   scrapeTimeout: 10s
-  overrideHonorLabels: true
   externalLabels:
     cluster: utility
   remoteWrite:

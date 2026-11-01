@@ -96,6 +96,14 @@ spec:
         type: nfs
         server: nas.techtales.io
         path: /mnt/tank/media
+      logs:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 16Mi
+        advancedMounts:
+          seerr:
+            app:
+              - path: /app/config/logs
       tmp:
         type: emptyDir
         medium: Memory
