@@ -1,0 +1,39 @@
+# util01 node patch — pin everything to the LIVE persistent machineconfig.
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: util01
+auto: "off"
+---
+# replaces deprecated .machine.install (v1alpha1)
+# LIVE image: factory schematic f5322fe...:v1.14.5 (metal, secureboot, UKI;
+# extensions intel-ucode + nvme-cli + zfs and extraKernelArgs are baked into
+# the schematic, NOT into the machine config — same as main).
+# diskSelector: live used model contains "Samsung SSD 870"; pinned to the
+# exact WWID of sda (naa.5002538f52b2dfc6) for a deterministic selection —
+# deliberate improvement, affects future reinstalls only.
+apiVersion: v1alpha1
+kind: UnattendedInstallConfig
+installer:
+  image: factory.talos.dev/metal-installer-secureboot/f5322febc5e6e2ee4225e9e0e9a508417bc3d7530775e828daa441cd6b76e3e5:v1.14.5
+provisioning:
+  diskSelector:
+    match: disk.wwid == "naa.5002538f52b2dfc6"
+  wipe: false
+# NOTE: live machine.install.grubUseUKICmdline=true has NO 1.14 replacement
+# (UKI cmdline is handled by the secureboot factory installer image itself) —
+# expected one-time disappearance in the diff, same as main.
+---
+apiVersion: v1alpha1
+kind: LinkConfig
+name: eno1
+mtu: 1500
+---
+apiVersion: v1alpha1
+kind: DHCPv4Config
+name: eno1
+---
+apiVersion: v1alpha1
+kind: Layer2VIPConfig
+name: 192.168.100.30
+link: eno1

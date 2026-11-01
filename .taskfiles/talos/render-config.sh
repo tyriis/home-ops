@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+# Render the full machine config for a cluster node, IN MEMORY — nothing on disk.
+# Usage: render-config.sh <cluster> <node>   → machine config on stdout
+# Sources of truth per cluster: talos/<cluster>/version.yaml + patches/ +
+# talsecret.sops.yaml (decrypted through a pipe only).
+# Generalizes render-main-config.sh; official workflow:
+# https://docs.siderolabs.com/talos/v1.14/configure-your-talos-cluster/system-configuration/reproducible-machine-configuration
+set -euo pipefail
+
+cluster="${1:?usage: render-config.sh <cluster> <node>}"
+node="${2:?usage: render-config.sh <cluster> <node>}"
+root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+here="$root/talos/$cluster"
+
+case "$cluster" in
+  main)    CLUSTER_NAME="main";    ENDPOINT="https://192.168.100.100:6443" ;;
+  utility) CLUSTER_NAME="utility"; ENDPOINT="https://192.168.100.30:6443" ;;
+  *) echo "unknown cluster: $cluster (known: main, utility)" >&2; exit 1 ;;
+esac
+
+# version contract lives in version.yaml (Renovate-annotated); -e fails on a missing key
+KUBERNETES_VERSION="$(yq -e -p yaml -r '.kubernetesVersion' "$here/version.yaml")"
+TALOS_VERSION="$(yq -e -p yaml -r '.talosVersion' "$here/version.yaml")"
+
+common="$here/patches/common.patch.yaml"
+patch="$here/patches/${node}.patch.yaml"
+[[ -f "$common" ]] || { echo "missing patch: $common" >&2; exit 1; }
+[[ -f "$patch" ]] || { echo "missing patch: $patch" >&2; exit 1; }
+
+# Encryption document (key2+key1+identity) is generated at runtime from talsecret so the
+# key material has exactly ONE home. See talos-cluster-config skill,
+# references/encryption-incident.md — key NAMES matter (k8s secretbox resolves by name).
+secretbox="$(sops -d "$here/talsecret.sops.yaml" | yq -p yaml -r '.secrets.secretboxencryptionsecret')"
+[[ -n "$secretbox" && "$secretbox" != "null" ]] || { echo "talsecret: secretboxencryptionsecret missing" >&2; exit 1; }
+encpatch="$(mktemp --tmpdir -d talos-enc-XXXXXX)/patch.yaml"
+trap 'rm -rf "$(dirname "$encpatch")"' EXIT
+umask 077
+cat > "$encpatch" <<EOF
+---
+apiVersion: v1alpha1
+kind: KubeEtcdEncryptionConfig
+config:
+  resources:
+    - providers:
+        - secretbox:
+            keys:
+              - name: key2
+                secret: ${secretbox}
+              - name: key1
+                secret: ${secretbox}
+        - identity: {}
+      resources:
+        - secrets
+EOF
+
+# --with-secrets via process substitution: decrypted talsecret never hits disk.
+# common.patch.yaml deletes the gen-bundled encryption doc; encpatch re-adds the full one
+# LAST so it lands as a single appended document (order is semantic here).
+exec talosctl gen config "$CLUSTER_NAME" "$ENDPOINT" \
+  --with-secrets <(sops -d "$here/talsecret.sops.yaml") \
+  --kubernetes-version "$KUBERNETES_VERSION" \
+  --talos-version "$TALOS_VERSION" \
+  --config-patch "@$common" \
+  --config-patch "@$patch" \
+  --config-patch "@$encpatch" \
+  --output-types controlplane -o -

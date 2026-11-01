@@ -50,6 +50,37 @@ tasks:
     cmds:
       - bash -c 'umask 077; kv="$(yq -e -r .kubernetesVersion talos/main/version.yaml)"; tv="$(yq -e -r .talosVersion talos/main/version.yaml)"; talosctl gen config main https://192.168.100.100:6443 --with-secrets <(sops -d talos/main/talsecret.sops.yaml) --kubernetes-version "$kv" --talos-version "$tv" --output-types talosconfig -o talos/main/clusterconfig/talosconfig'
 
+  # ---- utility cluster: patch-based rendering (talhelper-free, in-memory) ----
+  # Same flow as main; sources of truth: talos/utility/patches/ + render-contract.yaml.
+  # After rendering a new talosconfig, re-merge: `talosctl config merge`.
+  utility:talosconfig:
+    desc: Render utility talosconfig (client cert) — the ONE artifact that may live on disk
+    cmds:
+      - bash -c 'rm -f talos/utility/clusterconfig/talosconfig; umask 077; kv="$(yq -e -r .kubernetesVersion talos/utility/version.yaml)"; tv="$(yq -e -r .talosVersion talos/utility/version.yaml)"; talosctl gen config utility https://192.168.100.30:6443 --with-secrets <(sops -d talos/utility/talsecret.sops.yaml) --kubernetes-version "$kv" --talos-version "$tv" --output-types talosconfig -o talos/utility/clusterconfig/talosconfig'
+      - bash -c 'yq -i ".contexts.utility.endpoints = [\"https://192.168.100.31:50000\"] | .contexts.utility.nodes = [\"192.168.100.31\"]" talos/utility/clusterconfig/talosconfig'
+      - bash -c 'talosctl config merge talos/utility/clusterconfig/talosconfig'
+
+  utility:render:
+    desc: "Render utility machine config to stdout (node=util01)"
+    cmds:
+      - "./.taskfiles/talos/render-config.sh utility {{.node}}"
+    requires:
+      vars: [node]
+
+  utility:diff:
+    desc: "Diff live vs rendered for utility (node=util01 ip=192.168.100.31)"
+    cmds:
+      - "./.taskfiles/talos/apply-config.sh utility {{.node}} {{.ip}} --diff-only"
+    requires:
+      vars: [node, ip]
+
+  utility:apply:
+    desc: "Diff, confirm, apply utility config — nothing ever written to disk"
+    cmds:
+      - "./.taskfiles/talos/apply-config.sh utility {{.node}} {{.ip}}"
+    requires:
+      vars: [node, ip]
+
   install:talos01:
     desc: Install talos01
     dir: "{{.TALOS_DIR}}"
