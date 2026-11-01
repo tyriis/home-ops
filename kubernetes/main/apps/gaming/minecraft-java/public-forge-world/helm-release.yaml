@@ -72,7 +72,7 @@ spec:
             env:
               # https://docker-minecraft-server.readthedocs.io/en/latest/variables
               TYPE: FORGE
-              # TODO: update with renovate
+              # pinned by hand: no renovate datasource for the Minecraft version
               VERSION: 26.2
 
               MEMORY: 4096M

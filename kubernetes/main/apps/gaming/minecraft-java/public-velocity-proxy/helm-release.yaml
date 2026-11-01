@@ -55,7 +55,7 @@ spec:
               UID: 1000
               GID: 1000
               TYPE: VELOCITY
-              # TODO: update with renovate
+              # pinned by hand: no renovate datasource for the Minecraft version
               VELOCITY_VERSION: 4.3.0
 
               # Memory settings

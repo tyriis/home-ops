@@ -2,7 +2,7 @@
 
 ALLOWLIST_FILE="/etc/atlantis/allowlist.txt"
 
-if [ ! -f "$ALLOWLIST_FILE" ]; then
+if [[ ! -f "$ALLOWLIST_FILE" ]]; then
   echo "Nobody is allowed to run atlantis (missing allowlist)."
   exit 1
 fi

@@ -177,7 +177,7 @@ spec:
               HERMES_WEBUI_BOT_NAME: "${AGENT_NAME}"
               HERMES_WEBUI_PASSKEY: "1"
               HERMES_WEBUI_STATE_DIR: /opt/data/webui
-              HERMES_NIX_BUILD: "1" # TODO: https://github.com/nesquena/hermes-webui/issues/6441
+              HERMES_NIX_BUILD: "1" # Ref: https://github.com/nesquena/hermes-webui/issues/6441
               HOME: *home
               HERMES_CONFIG_PATH: /opt/data/config.yaml
               HERMES_HOME: /opt/data

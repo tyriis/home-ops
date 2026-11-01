@@ -14,7 +14,6 @@ metadata:
       title: Atlantis techtales dashboard
       icon: dashboard
       type: dashboard
-      # TODO: move to https://atlantis.tyriis.dev/
     - url: https://atlantis-tyriis.techtales.io/
       title: Atlantis tyriis dashboard
       icon: dashboard
