@@ -6,6 +6,10 @@ metadata:
   name: mcp-context7
   annotations:
     external-dns/unifi: "true"
+    gatus.home-operations.com/endpoint: |
+      url: https://mcp-context7.techtales.io/
+      conditions:
+        - "[STATUS] == 401"
 spec:
   hostnames:
     - mcp-context7.techtales.io
