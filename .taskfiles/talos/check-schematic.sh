@@ -28,26 +28,26 @@ fail() {
   status=1
 }
 
-if [ "${#clusters[@]}" -eq 0 ]; then
+if [[ ${#clusters[@]} -eq 0 ]]; then
   for schematic in "$root"/talos/*/schematic.yaml; do
     cluster="${schematic#"$root"/talos/}"
     clusters+=("${cluster%/schematic.yaml}")
   done
 fi
-if [ "${#clusters[@]}" -eq 0 ]; then
+if [[ ${#clusters[@]} -eq 0 ]]; then
   echo "FAIL: no talos/*/schematic.yaml found" >&2
   exit 1
 fi
 
 for cluster in "${clusters[@]}"; do
   schematic="$root/talos/$cluster/schematic.yaml"
-  if [ ! -f "$schematic" ]; then
+  if [[ ! -f $schematic ]]; then
     fail "missing $schematic"
     continue
   fi
 
   id="$(sed -n 's/^# id: \([0-9a-f]\{64\}\)$/\1/p' "$schematic")"
-  if [ -z "$id" ]; then
+  if [[ -z $id ]]; then
     fail "$schematic: no '# id: <64 hex>' header line"
     continue
   fi
@@ -64,14 +64,14 @@ for cluster in "${clusters[@]}"; do
     done < <(yq ea -r 'select(.kind == "UnattendedInstallConfig") | .installer.image // ""' "$patch" |
       sed '/^---$/d; /^$/d')
   done
-  if [ "$found" -eq 0 ]; then
+  if [[ $found -eq 0 ]]; then
     fail "talos/$cluster/patches: no UnattendedInstallConfig installer image refs found"
   fi
 
-  if [ "$online" -eq 1 ] && [ "$status" -eq "$before" ]; then
+  if [[ $online -eq 1 && $status -eq $before ]]; then
     if remote="$(curl -fsS -X POST --data-binary "@$schematic" https://factory.talos.dev/schematics |
       yq -p json -r '.id')"; then
-      if [ "$remote" != "$id" ]; then
+      if [[ $remote != "$id" ]]; then
         fail "$schematic: factory.talos.dev returned id '$remote', header says $id"
       fi
     else
@@ -79,7 +79,7 @@ for cluster in "${clusters[@]}"; do
     fi
   fi
 
-  if [ "$status" -eq "$before" ]; then
+  if [[ $status -eq $before ]]; then
     printf 'ok: %s %s\n' "$cluster" "$id"
   fi
 done
