@@ -32,6 +32,9 @@ See ADR 0016 (`docs/decisions/0016-central-log-platform-victorialogs-on-utility.
 - **purple** — `vlagent` compose stack (`docker/purple/victoria-logs-collector/`, doco-cd target
   `purple`): same sources as red — container json-file logs, `/var/log/pacman.log`, cups — with
   `hostname=purple`, token `VMAUTH_TOKEN_PURPLE` in the purple `sops.env` as `VL_TOKEN`.
+- **agentix** — `vlagent` compose stack (`docker/agentix/victoria-logs-collector/`, doco-cd target
+  `agentix`): container json-file logs only, with `hostname=agentix`, token `VMAUTH_TOKEN_AGENTIX`
+  in the agentix `sops.env` as `VL_TOKEN`.
 - NAS, workstations, remote site — pending; each reuses this pattern with its own token.
 
 ## Unit tokens
@@ -49,6 +52,7 @@ vmauth reads, so the Deployment maps them with a single `envFrom` block:
 | bifrost  | `VMAUTH_TOKEN_BIFROST`  | write (`/insert/.*` only)         |
 | red      | `VMAUTH_TOKEN_RED`      | write (`/insert/.*` only)         |
 | purple   | `VMAUTH_TOKEN_PURPLE`   | write (`/insert/.*` only)         |
+| agentix  | `VMAUTH_TOKEN_AGENTIX`  | write (`/insert/.*` only)         |
 | synology | `VMAUTH_TOKEN_SYNOLOGY` | write (`/insert/.*` only)         |
 | grafana  | `VMAUTH_TOKEN_GRAFANA`  | read (`/select/.*`, `/api/v1/.*`) |
 
