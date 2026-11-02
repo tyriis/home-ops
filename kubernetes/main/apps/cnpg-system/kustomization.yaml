@@ -9,4 +9,3 @@ resources:
   - ./namespace.yaml
   - ./cnpg/git-repository.yaml
   - ./cnpg/flux-sync.yaml
-  - ./dbman/flux-sync.yaml
