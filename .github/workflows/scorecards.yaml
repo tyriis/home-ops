@@ -18,8 +18,9 @@ on:
     branches:
       - main
 
-# Declare default permissions as read only.
-permissions: read-all
+# Default only; the analysis job's own block replaces it entirely.
+permissions:
+  contents: read
 
 jobs:
   analysis:
