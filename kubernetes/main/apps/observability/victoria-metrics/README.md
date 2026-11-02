@@ -294,8 +294,8 @@ File conventions:
   `staticScrape/<namespace>/<name>/<i>` unless `spec.jobName` is set. Names still follow the
   `ServiceMonitor`/`PodMonitor` they mirror (`cleanPrometheusOperatorObjectNames: true` made those the
   plain component names), so the two agree only where the Service carries the component's name. Where
-  the live job differs — operator-generated monitors namespace-prefix it (`cnpg-system/postgres17`,
-  `media/immich-db`), chart-rendered ones derive it from the chart or the Service
+  the live job differs — operator-generated monitors namespace-prefix it (`media/immich-db`),
+  chart-rendered ones derive it from the chart or the Service
   (`grafana-service`, `external-secrets-metrics`), and one target split across several objects shares
   a single job (`kubelet-cadvisor` → `kubelet`) — an explicit `action: replace` relabel on `job`
   carries the historical name. The object name and that forced value then live apart and must be
@@ -379,12 +379,11 @@ side carries a native twin beside each one:
 | Owner                  | Generator to switch off at cutover                          | Native twin                                                      |
 | ---------------------- | ----------------------------------------------------------- | ---------------------------------------------------------------- |
 | CNPG operator (0.29.1) | `monitoring.podMonitorEnabled: false`                       | `cnpg-system/cnpg/operator/` (`vm-pod-scrape`, `vm-rule`)        |
-| CNPG `Cluster`         | `spec.monitoring.enablePodMonitor: false`                   | `cnpg-system/cnpg/cluster/vm-pod-scrape.yaml`                    |
 | Immich database        | same field on its own `Cluster`                             | `media/immich/database/vm-pod-scrape.yaml`                       |
 | rook-ceph-cluster      | `monitoring.enabled: false`, `createPrometheusRules: false` | `rook-ceph/rook-ceph/cluster/` (`vm-service-scrape-*`, `rules/`) |
 
-Both CNPG `Cluster`s (`postgres17` in `cnpg-system`, Immich's database in `media/immich`) still set
-`spec.monitoring.enablePodMonitor` in run 1. At cutover the field can go — it is deprecated upstream
+The Immich database `Cluster` in `media/immich` still sets `spec.monitoring.enablePodMonitor` in
+run 1. At cutover the field can go — it is deprecated upstream
 since CNPG 1.30 and would then only produce a `PodMonitor` nobody evaluates — and the operator's own
 `PodMonitor` is switched off with the chart value `monitoring.podMonitorEnabled: false` instead. The
 operator's alert rules already exist as the `VMRule`
