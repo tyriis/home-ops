@@ -47,7 +47,6 @@ bootstraps a new `Cluster` from the production backup via `spec.bootstrap.recove
 
 | Manifest                                                            | Restored cluster     | Verifies                                                                                     |
 | ------------------------------------------------------------------- | -------------------- | -------------------------------------------------------------------------------------------- |
-| `kubernetes/main/apps/cnpg-system/cnpg/cluster/restore-verify.yaml` | `postgres17-restore` | All `postgres17` databases (`app`, `hass`, `immich`, `firecrawl_nuq`) are recoverable.       |
 | `kubernetes/main/apps/media/immich/database/restore-verify.yaml`    | `immich-db-restore`  | The PG 18 + VectorChord Immich database is recoverable with the `vchord` extension loadable. |
 
 Both restored clusters are single-instance and set `enableSuperuserAccess: true` so `kubectl cnpg psql`
@@ -56,8 +55,7 @@ production backup objects.
 
 ## Procedure
 
-Work through one manifest at a time. Replace namespaces as noted (`cnpg-system` for `postgres17`,
-`media` for `immich-db`).
+Apply the single drill manifest in the `media` namespace.
 
 ### 1. Confirm production is currently backing up
 
@@ -65,26 +63,21 @@ Before restoring, confirm the source cluster has a recent successful backup. Use
 Backup status" block and the ObjectStore / Server name line:
 
 ```bash
-kubectl cnpg status postgres17 -n cnpg-system
 kubectl cnpg status immich-db -n media
 ```
 
 Expect a recent **Last Successful Backup** and a server name matching the source folder
-(`postgres17`, `immich-db`).
+(`immich-db`).
 
 ### 2. Apply the drill manifest
 
 ```bash
-kubectl apply -f kubernetes/main/apps/cnpg-system/cnpg/cluster/restore-verify.yaml
-# or
 kubectl apply -f kubernetes/main/apps/media/immich/database/restore-verify.yaml
 ```
 
 ### 3. Wait for recovery and promotion
 
 ```bash
-kubectl cnpg status postgres17-restore -n cnpg-system
-# or
 kubectl cnpg status immich-db-restore -n media
 ```
 
@@ -93,18 +86,6 @@ The restore is complete when the cluster reports **Cluster in healthy state** an
 replayed.
 
 ### 4. Check the content
-
-#### postgres17-restore
-
-```bash
-# List the databases; expect app, hass, immich, firecrawl_nuq
-kubectl cnpg psql postgres17-restore -n cnpg-system -- -c '\l'
-
-# Expect f (false) after promotion
-kubectl cnpg psql postgres17-restore -n cnpg-system -- -c 'SELECT pg_is_in_recovery();'
-```
-
-#### immich-db-restore
 
 ```bash
 kubectl cnpg psql immich-db-restore -n media -- -d immich -Atc \
@@ -120,20 +101,17 @@ The restored cluster is throwaway. Delete it as soon as the checks pass so it do
 resources or PVC space:
 
 ```bash
-kubectl delete -f kubernetes/main/apps/cnpg-system/cnpg/cluster/restore-verify.yaml
-# or
 kubectl delete -f kubernetes/main/apps/media/immich/database/restore-verify.yaml
 ```
 
 ## Interpreting results
 
 - **System ID match is the strongest structural proof.** The restored cluster's PostgreSQL System ID
-  must equal the production cluster's — the drill observed `7547851034227179550` for both. A matching
-  System ID proves the restored data directory is the same database lineage, not a coincidence. You can
-  read it with:
+  must equal the production cluster's. A matching System ID proves the restored data directory is the
+  same database lineage, not a coincidence. Read it with:
 
   ```bash
-  kubectl cnpg psql postgres17-restore -n cnpg-system -- -c 'SELECT system_identifier FROM pg_control_system();'
+  kubectl cnpg psql immich-db-restore -n media -- -c 'SELECT system_identifier FROM pg_control_system();'
   ```
 
 - **The content check is the functional proof.** The database list / row counts / timestamp bounds show
@@ -148,8 +126,7 @@ kubectl delete -f kubernetes/main/apps/media/immich/database/restore-verify.yaml
 
 ### Restore fails with "no backups found"
 
-`serverName` does not match the folder the source wrote to. The recovery stub in
-`kubernetes/main/apps/cnpg-system/cnpg/cluster/cluster.yaml` references a stale `main-postgres17` — don't use it.
+`serverName` does not match the folder the source wrote to.
 Confirm the value with `kubectl cnpg status <cluster> -n <ns>`, looking at the "Continuous Backup status" line.
 
 ### Bootstrap stalls with `WAL archive check failed ... Expected empty archive`
@@ -175,7 +152,7 @@ rejects; `destinationPath` must have no trailing slash.
 
 ## Related links
 
-- Drill manifests: [`cnpg/cluster/restore-verify.yaml`](https://github.com/tyriis/home-ops/blob/main/kubernetes/main/apps/cnpg-system/cnpg/cluster/restore-verify.yaml), [`immich/database/restore-verify.yaml`](https://github.com/tyriis/home-ops/blob/main/kubernetes/main/apps/media/immich/database/restore-verify.yaml)
+- Drill manifest: [`immich/database/restore-verify.yaml`](https://github.com/tyriis/home-ops/blob/main/kubernetes/main/apps/media/immich/database/restore-verify.yaml)
 - Source definitions: [`kubernetes/main/apps/cnpg-system/cnpg/`](https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/cnpg-system/cnpg)
 - [Issue #10706 — CNPG backups failing since 2025-10](https://github.com/tyriis/home-ops/issues/10706)
 - [CloudNativePG recovery documentation](https://cloudnative-pg.io/documentation/current/recovery/)

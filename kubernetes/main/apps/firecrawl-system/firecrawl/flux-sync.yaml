@@ -25,8 +25,6 @@ spec:
   dependsOn:
     - name: dragonfly-crds
       namespace: dragonfly-system
-    - name: cnpg-cluster
-      namespace: cnpg-system
     - name: external-secrets-stores
       namespace: secops
   postBuild:
