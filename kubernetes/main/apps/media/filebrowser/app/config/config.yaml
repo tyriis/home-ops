@@ -36,7 +36,3 @@ auth:
 frontend:
   styling:
     customCSS: /config/custom.css
-    customThemes:
-      xplorer:
-        description: "Xplorer"
-        css: /config/xplorer.css
