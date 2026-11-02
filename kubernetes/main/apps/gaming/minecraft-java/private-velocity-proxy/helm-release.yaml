@@ -56,7 +56,7 @@ spec:
               GID: 1000
               TYPE: VELOCITY
               # renovate: depName=PaperMC/Velocity datasource=github-tags
-              VELOCITY_VERSION: 4.3.0
+              VELOCITY_VERSION: 4.3.1
 
               # Memory settings
               INIT_MEMORY: 128M
