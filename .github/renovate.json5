@@ -17,6 +17,7 @@
     "github>techtales-io/renovate-config//dependencies/minecraft-velocity.json5",
     "github>techtales-io/renovate-config//dependencies/rook-ceph.json5",
     "github>techtales-io/renovate-config//dependencies/silo.json5",
+    "github>techtales-io/renovate-config//dependencies/toolhive.json5",
     "github>techtales-io/renovate-config//dependencies/talos.json5",
   ],
   ignorePaths: [],
