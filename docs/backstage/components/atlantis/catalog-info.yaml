@@ -10,13 +10,44 @@ metadata:
       title: Flux definition
       icon: github
       type: github-repository
-    - url: https://atlantis.techtales.io/
-      title: Atlantis techtales dashboard
+    - url: https://atlantis-techtales-io-terraform-discord.techtales.io/
+      title: Atlantis techtales-io discord dashboard
       icon: dashboard
       type: dashboard
-      # TODO: move to https://atlantis.tyriis.dev/
-    - url: https://atlantis-tyriis.techtales.io/
-      title: Atlantis tyriis dashboard
+    - url: https://atlantis-techtales-io-terraform-gcloud.techtales.io/
+      title: Atlantis techtales-io gcloud dashboard
+      icon: dashboard
+      type: dashboard
+    - url: https://atlantis-techtales-io-terraform-github.techtales.io/
+      title: Atlantis techtales-io github dashboard
+      icon: dashboard
+      type: dashboard
+    - url: https://atlantis-techtales-io-terraform-gworkspace.techtales.io/
+      title: Atlantis techtales-io gworkspace dashboard
+      icon: dashboard
+      type: dashboard
+    - url: https://atlantis-techtales-io-terraform-harbor.techtales.io/
+      title: Atlantis techtales-io harbor dashboard
+      icon: dashboard
+      type: dashboard
+    - url: https://atlantis-techtales-io-terraform-minio.techtales.io/
+      title: Atlantis techtales-io minio dashboard
+      icon: dashboard
+      type: dashboard
+    - url: https://atlantis-techtales-io-terraform-pocket-id.techtales.io/
+      title: Atlantis techtales-io pocket-id dashboard
+      icon: dashboard
+      type: dashboard
+    - url: https://atlantis-techtales-io-terraform-unifi.techtales.io/
+      title: Atlantis techtales-io unifi dashboard
+      icon: dashboard
+      type: dashboard
+    - url: https://atlantis-techtales-io-terraform-vault.techtales.io/
+      title: Atlantis techtales-io vault dashboard
+      icon: dashboard
+      type: dashboard
+    - url: https://atlantis-tyriis-terraform-github.techtales.io/
+      title: Atlantis tyriis github dashboard
       icon: dashboard
       type: dashboard
   tags:
