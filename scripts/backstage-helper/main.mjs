@@ -5,35 +5,43 @@ const fluxKustomizations = await glob([
 
 // echo`${JSON.stringify(fluxKustomizations, null, 2)}`
 
-const parseYAML = async (fluxKustomizations) => {
-  const result = []
-  for (const fluxKustomization of fluxKustomizations) {
-    const data = (await fs.readFile(fluxKustomization, "utf-8")).toString()
-    result.push(...JSON.parse(JSON.stringify(YAML.parseAllDocuments(data))))
-  }
-  return result
+const parseYAML = async (fluxKustomization) => {
+  const content = await fs.readFile(fluxKustomization, "utf-8")
+  return YAML.parseAllDocuments(content).map((document) =>
+    structuredClone(document.toJS())
+  )
 }
 
-let data = await parseYAML(fluxKustomizations)
-// let json = JSON.parse(JSON.stringify(data))
+const data = (
+  await Promise.all(fluxKustomizations.map((file) => parseYAML(file)))
+).flat()
 
-for (const item of data) {
-  if (
-    item.metadata?.annotations?.["backstage.io/discovery"] === "enabled" &&
-    item.metadata?.annotations?.["backstage.io/name"]
-  ) {
-    const name = item.metadata.annotations["backstage.io/name"]
-    // echo`${name}`
-    const exists = await fs.pathExists(
+const components = data
+  .filter(
+    (item) =>
+      item.metadata?.annotations?.["backstage.io/discovery"] === "enabled" &&
+      item.metadata?.annotations?.["backstage.io/name"]
+  )
+  .map((item) => item.metadata.annotations["backstage.io/name"])
+
+const componentsWithState = await Promise.all(
+  components.map(async (name) => ({
+    name,
+    exists: await fs.pathExists(
       `docs/backstage/components/${name}/catalog-info.yaml`
-    )
-    if (exists) {
-      echo(chalk.blue(`Component ${name} is already in Backstage`))
-      continue
-    }
-    echo(chalk.red(`Component ${name} is not in Backstage`))
-    // create backstage component with template
-    let catalogInfo = `---
+    ),
+  }))
+)
+
+for (const { name, exists } of componentsWithState) {
+  echo(
+    exists
+      ? chalk.blue(`Component ${name} is already in Backstage`)
+      : chalk.red(`Component ${name} is not in Backstage`)
+  )
+}
+
+const catalogInfoTemplate = `---
     # yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
     apiVersion: backstage.io/v1alpha1
     kind: Component
@@ -66,33 +74,35 @@ for (const item of data) {
       # providesApis:
       #   - test-api
     `
-    catalogInfo = catalogInfo.replace(/name: .*/, `name: ${name}`)
-    await fs.ensureDir(`docs/backstage/components/${name}`)
-    await fs.writeFile(
-      `docs/backstage/components/${name}/catalog-info.yaml`,
-      catalogInfo
+
+const missing = componentsWithState.filter((component) => !component.exists)
+
+if (missing.length > 0) {
+  const catalogPath = "docs/backstage/catalog-info.yaml"
+
+  await Promise.all(
+    missing.map(async ({ name }) => {
+      const componentDir = `docs/backstage/components/${name}`
+      await fs.ensureDir(componentDir)
+      await fs.writeFile(
+        `${componentDir}/catalog-info.yaml`,
+        catalogInfoTemplate.replace(/name: .*/, `name: ${name}`)
+      )
+    })
+  )
+
+  // register the components in the docs/backstage/catalog-info.yaml file
+  const catalogJson = YAML.parse(await fs.readFile(catalogPath, "utf-8"))
+  catalogJson.spec.targets.push(
+    ...missing.map(
+      ({ name }) =>
+        `https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/${name}/catalog-info.yaml`
     )
-    // register the component in the docs/backstage/catalog-info.yaml file
-    const catalog = await fs.readFile(
-      "docs/backstage/catalog-info.yaml",
-      "utf-8"
-    )
-    const catalogJson = YAML.parse(catalog)
-    catalogJson.spec.targets.push(
-      `https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/${name}/catalog-info.yaml`
-    )
-    catalogJson.spec.targets = catalogJson.spec.targets.sort()
-    // remove duplicates
-    catalogJson.spec.targets = catalogJson.spec.targets.filter(
-      (item, index) => catalogJson.spec.targets.indexOf(item) === index
-    )
-    await fs.writeFile(
-      "docs/backstage/catalog-info.yaml",
-      `---\n${YAML.stringify(catalogJson)}`
-    )
-  }
+  )
+  // sort and remove duplicates
+  catalogJson.spec.targets = [...new Set(catalogJson.spec.targets)].sort(
+    (a, b) => a.localeCompare(b)
+  )
+
+  await fs.writeFile(catalogPath, `---\n${YAML.stringify(catalogJson)}`)
 }
-
-// console.log(json[0])
-
-// echo`${JSON.stringify(json[0].metadata, null, 2)}`

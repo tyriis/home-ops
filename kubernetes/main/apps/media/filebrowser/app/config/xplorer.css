@@ -32,41 +32,48 @@ body,
   -webkit-font-smoothing: antialiased;
 }
 
-/* Surfaces */
+/* Surfaces — must beat FileBrowser Quantum's own !important
+ * (upstream listing.css:479,486,494, Search.vue:1275, styles.css:376). */
 .card,
 .floating-window,
 .listing-item,
 #search-input,
 #results {
-  background-color: rgba(255, 255, 255, 0.03) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  border-radius: 0.75rem !important;
+  background-color: rgba(255, 255, 255, 0.03) !important; /* NOSONAR */
+  border: 1px solid rgba(255, 255, 255, 0.08) !important; /* NOSONAR */
+  border-radius: 0.75rem !important; /* NOSONAR */
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.05),
     0 25px 50px -12px rgba(0, 0, 0, 0.4),
-    0 0 80px -20px rgba(99, 102, 241, 0.15) !important;
+    0 0 80px -20px rgba(99, 102, 241, 0.15) !important; /* NOSONAR */
 }
 
 .card:hover,
 .listing-item:hover {
-  border-color: rgba(99, 102, 241, 0.4) !important;
-  box-shadow: 0 8px 30px -10px rgba(99, 102, 241, 0.25) !important;
+  border-color: rgba(99, 102, 241, 0.4) !important; /* NOSONAR */
+  box-shadow: 0 8px 30px -10px rgba(99, 102, 241, 0.25) !important; /* NOSONAR */
 }
 
 /* Header / sidebar */
+#app header,
+#listingView .header,
+#app nav,
+.sidebar {
+  background-color: rgba(13, 13, 36, 0.8);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
 header,
 #listingView .header,
 nav,
 .sidebar {
-  background-color: rgba(13, 13, 36, 0.8) !important;
-  border-color: rgba(255, 255, 255, 0.08) !important;
   backdrop-filter: blur(12px);
 }
 
-/* Buttons */
+/* Buttons — must beat FileBrowser Quantum's own !important (upstream styles.css:415). */
 .button,
 button {
-  border-radius: 0.5rem !important;
+  border-radius: 0.5rem !important; /* NOSONAR */
   font-family: var(--font-family);
   transition:
     background-color 0.15s ease,
@@ -91,7 +98,7 @@ button.primary:hover {
 input,
 select,
 textarea {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: #14142b;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 0.5rem;
   color: #f3f4f6;
