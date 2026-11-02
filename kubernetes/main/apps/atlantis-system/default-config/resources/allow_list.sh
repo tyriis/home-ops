@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/sh
+# Run as `sh` from the atlantis repo configs; keep this POSIX.
 
 ALLOWLIST_FILE="/etc/atlantis/allowlist.txt"
 
