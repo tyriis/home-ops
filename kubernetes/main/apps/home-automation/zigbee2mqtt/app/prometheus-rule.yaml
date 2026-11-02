@@ -12,7 +12,7 @@ spec:
           annotations:
             summary: Zigbee Device {{ $labels.device }} on {{ $labels.job }} has not been seen since 24h.
           expr: |-
-            zigbee2mqtt_last_seen{device!~"hue.*|tradfri ambience spot.*|ambient desk.*"} > (60 * 60 * 24)
+            zigbee2mqtt_last_seen{device!~"senic wall switch.*"} > (60 * 60 * 24)
           for: 10m
           labels:
             severity: warning
