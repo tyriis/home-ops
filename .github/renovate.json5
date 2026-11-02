@@ -14,7 +14,6 @@
     "github>techtales-io/renovate-config//dependencies/minecraft.json5",
     "github>techtales-io/renovate-config//dependencies/minecraft-luckperms-plugin.json5",
     "github>techtales-io/renovate-config//dependencies/minecraft-paper-builds.json5",
-    "github>techtales-io/renovate-config//dependencies/minecraft-velocity.json5",
     "github>techtales-io/renovate-config//dependencies/rook-ceph.json5",
     "github>techtales-io/renovate-config//dependencies/silo.json5",
     "github>techtales-io/renovate-config//dependencies/toolhive.json5",
