@@ -1,0 +1,6 @@
+/* Homepage v2.7.0 requires this file to exist. It copies a skeleton stylesheet
+ * into /app/config when the file is absent, and that directory is read-only, so
+ * removing it crash-loops the pod. */
+:root {
+  color-scheme: dark;
+}
