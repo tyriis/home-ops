@@ -62,8 +62,9 @@ Banks in use:
 - **jarvis**: auto-consolidation-after-retain is off. Retains still extract facts; consolidation queues as
   `pending_consolidation` and is drained nightly by the Hermes cronjob `drain_hindsight_consolidation.py`. A large
   `pending_consolidation` during the day is **expected** — not an alert condition.
-- **agentix**: auto-consolidation stays **on** (`HINDSIGHT_API_ENABLE_AUTO_CONSOLIDATION=true`) — no Hermes cron exists
-  there to drain it. It shares the single LLM slot, so background consolidation is slow, not harmful.
+- **agentix**: auto-consolidation is also **off** (`HINDSIGHT_API_ENABLE_AUTO_CONSOLIDATION=false`) — an agentix-side
+  nightly cron drains `pending_consolidation` there, the same sleep-phase pattern as jarvis. A large
+  `pending_consolidation` during the day is **expected** on both hosts.
 
 ## agentix bring-up
 
