@@ -1,0 +1,18 @@
+---
+# Host-process route. Backend dep: Hermes A2A gateway on jarvis listens on
+# port 9900 — Traefik reaches the host via host.docker.internal.
+# The *.tyriis.dev wildcard cert (cf resolver) covers this host.
+http:
+  routers:
+    a2a:
+      rule: "Host(`jarvis-a2a.tyriis.dev`)"
+      entryPoints:
+        - websecure
+      service: a2a
+      tls:
+        certResolver: cf
+  services:
+    a2a:
+      loadBalancer:
+        servers:
+          - url: http://host.docker.internal:9900
