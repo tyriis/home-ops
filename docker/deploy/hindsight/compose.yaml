@@ -13,10 +13,22 @@
 # entrypoint needs more (compare the arcane-agent template, which cannot be
 # hardened past no-new-privileges), relax ONLY what testing proves necessary
 # and update this comment to say which and why.
+# Proven relaxations so far: the hf_cache volume — the reranker's HF cache must be
+# writable or startup dies on OSError 30 writing refs/main (see volumes: below).
 volumes:
   data:
     external: ${VOLUME_EXTERNAL:-false}
     name: ${VOLUME_NAME:-hindsight_data}
+    driver: ${VOLUME_DRIVER:-local}
+  # Writable HF cache. A fresh boot on read_only rootfs dies at the reranker:
+  # hindsight-ai/hs-rerank-1 has no modules.json upstream (404), so
+  # sentence-transformers writes .no_exist + refs/main markers into the
+  # image-baked cache — refs/main write = OSError 30, startup abort
+  # (live 2026-11-03 on the 1.2.0 bump). Named volume self-seeds the baked
+  # 379M models on first mount; tmpfs would hide them and force re-download.
+  hf_cache:
+    external: ${HF_VOLUME_EXTERNAL:-false}
+    name: ${VOLUME_NAME_HF_CACHE:-hindsight_hf_cache}
     driver: ${VOLUME_DRIVER:-local}
 
 services:
@@ -133,3 +145,4 @@ services:
       - no-new-privileges=true
     volumes:
       - data:/home/hindsight/.pg0
+      - hf_cache:/home/hindsight/.cache/huggingface
