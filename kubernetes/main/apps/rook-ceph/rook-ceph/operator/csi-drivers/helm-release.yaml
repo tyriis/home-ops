@@ -23,9 +23,7 @@ spec:
   # pins preserve the Driver/OperatorConfig CRs Rook 1.19.6 created on Helm adoption; chart defaults (30/1/on/false) would overwrite them
   values:
     operatorConfig:
-      name: ceph-csi-operator-config
       namespace: rook-ceph
-      create: true
       driverSpecDefaults:
         clusterName: rook-ceph
         grpcTimeout: 150
@@ -43,7 +41,6 @@ spec:
           hostNetwork: true
     drivers:
       rbd:
-        enabled: true
         name: rook-ceph.rbd.csi.ceph.com
         clusterName: rook-ceph
         grpcTimeout: 150
@@ -53,11 +50,11 @@ spec:
             enabled: false
         controllerPlugin:
           replicas: 2
-      # cephfs is parked, not serving: the operator reconciles this Driver so its
-      # requeue loop on the deleted CR ends, and the node plugin must never schedule.
+      # cephfs is parked, not serving: the chart enables it by default, so the operator
+      # reconciles this Driver and its requeue loop on the deleted CR ends, while the
+      # node plugin never schedules.
       # Ref: https://github.com/tyriis/home-ops/issues/11587
       cephfs:
-        enabled: true
         name: rook-ceph.cephfs.csi.ceph.com
         clusterName: rook-ceph
         grpcTimeout: 150
