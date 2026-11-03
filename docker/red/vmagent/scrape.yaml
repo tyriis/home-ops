@@ -26,6 +26,14 @@ scrape_configs:
       - target_label: instance
         replacement: "red:9633"
 
+  # nvidia_gpu_exporter, GPU metrics; published port on loopback (docker/deploy/nvidia-gpu-exporter)
+  - job_name: nvidia-gpu-exporter
+    static_configs:
+      - targets: ["127.0.0.1:9835"]
+    relabel_configs:
+      - target_label: instance
+        replacement: "red:9835"
+
   # forward-agent self-metrics: remote-write health, queue depth, scrape counts
   - job_name: vmagent
     static_configs:

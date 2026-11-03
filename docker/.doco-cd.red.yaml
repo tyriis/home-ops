@@ -46,3 +46,6 @@ name: victoria-logs-collector
 working_dir: docker/red/victoria-logs-collector
 env_files:
   - .env
+---
+name: nvidia-gpu-exporter
+working_dir: docker/deploy/nvidia-gpu-exporter
