@@ -46,9 +46,11 @@ data:
           # at onset. Cosmetic; runbook covers detection, pre-check, restart.
           # Note: control-plane zap logs are structured — the reason lives in
           # the `err` field, _msg is only "Failed to watch"; dotted labels in
-          # stats-by must be quoted or the query silently returns empty.
+          # stats-by must be quoted; a LogsQL expr must NOT start with the
+          # `filter` keyword (it is pipe-only; at lead position it becomes a
+          # word-match for "filter" and silently returns zero rows).
           - alert: KCMStaleInformerLoop
-            expr: 'filter kubernetes.container_name:"kube-controller-manager" "Failed to watch" | filter err:"could not find the requested resource" | stats by (cluster, kubernetes.pod_namespace, "kubernetes.pod_name") count() as stale | filter stale:>20'
+            expr: 'kubernetes.container_name:"kube-controller-manager" "Failed to watch" | filter err:"could not find the requested resource" | stats by (cluster, kubernetes.pod_namespace, "kubernetes.pod_name") count() as stale | filter stale:>20'
             for: 5m
             labels:
               severity: warning
