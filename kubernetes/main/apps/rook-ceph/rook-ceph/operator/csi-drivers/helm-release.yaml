@@ -61,20 +61,16 @@ spec:
         name: rook-ceph.cephfs.csi.ceph.com
         clusterName: rook-ceph
         grpcTimeout: 150
-        snapshotPolicy: volumeSnapshot
         log:
           rotation:
             enabled: false
-        controllerPlugin:
-          # CRD minimum is 1; 0 is falsy in the chart and renders 2.
-          replicas: 1
         nodePlugin:
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
                 nodeSelectorTerms:
                   - matchExpressions:
-                      - key: cephfs.csi.ceph.com/parked
+                      - key: parked.home-operations.com/cephfs-csi
                         operator: Exists
       nfs:
         enabled: false
