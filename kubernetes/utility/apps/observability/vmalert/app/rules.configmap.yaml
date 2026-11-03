@@ -36,3 +36,23 @@ data:
             annotations:
               summary: 'Critical/fatal log lines in {{ $labels.cluster }}: {{ index .Labels "kubernetes.pod_namespace" }}/{{ index .Labels "kubernetes.pod_name" }}'
               description: 'Pod {{ index .Labels "kubernetes.pod_name" }} in namespace {{ index .Labels "kubernetes.pod_namespace" }} of cluster {{ $labels.cluster }} logged CRITICAL or FATAL lines over the last 5 minutes ({{ $value }}).'
+
+      - name: control-plane-log-signals
+        type: vlogs
+        interval: 5m
+        rules:
+          # Stale GC metadata informer in kube-controller-manager after a CRD
+          # deletion: 404-reflector loop on the KCM leader only, ~30 lines/5m
+          # at onset. Cosmetic; runbook covers detection, pre-check, restart.
+          # Note: control-plane zap logs are structured — the reason lives in
+          # the `err` field, _msg is only "Failed to watch"; dotted labels in
+          # stats-by must be quoted or the query silently returns empty.
+          - alert: KCMStaleInformerLoop
+            expr: 'filter kubernetes.container_name:"kube-controller-manager" "Failed to watch" | filter err:"could not find the requested resource" | stats by (cluster, kubernetes.pod_namespace, "kubernetes.pod_name") count() as stale | filter stale:>20'
+            for: 5m
+            labels:
+              severity: warning
+            annotations:
+              summary: 'KCM stale informer loop in {{ $labels.cluster }}: {{ index .Labels "kubernetes.pod_name" }}'
+              description: 'kube-controller-manager pod {{ index .Labels "kubernetes.pod_name" }} looped {{ $value }} "Failed to watch *v1.PartialObjectMetadata" lines over the last 5 minutes — a CRD was deleted while its GC informer was live. Cosmetic; restart of the affected pod clears it.'
+              runbook_url: 'https://backstage.techtales.io/docs/default/System/main-cluster/runbooks/kcm-stale-informer-loop'

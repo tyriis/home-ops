@@ -9,6 +9,7 @@ nav:
   - Upgrade: upgrade.md
   - Runbooks:
       - ETCD Database Fragmentation Troubleshooting: runbooks/etcd-database-fragmentation-troubleshooting.md
+      - KCM Stale Informer Loop: runbooks/kcm-stale-informer-loop.md
 
 theme:
   name: material
