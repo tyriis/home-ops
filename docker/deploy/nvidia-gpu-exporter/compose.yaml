@@ -1,0 +1,18 @@
+---
+services:
+  nvidia-gpu-exporter:
+    container_name: nvidia-gpu-exporter
+    # the -nvml build is cgo-linked and exits at startup unless the nvidia runtime injects libnvidia-ml.so.1
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    environment:
+      NVIDIA_DRIVER_CAPABILITIES: utility
+    image: utkuozdemir/nvidia_gpu_exporter:1.17.0-nvml@sha256:dd159fae6783a61edf8378c34a93fd20c2a2d8838ec02ea2119f280dca2ec508
+    ports:
+      - 9835:9835
+    restart: unless-stopped
