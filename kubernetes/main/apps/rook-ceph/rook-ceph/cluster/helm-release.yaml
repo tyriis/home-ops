@@ -51,7 +51,7 @@ spec:
             sectionName: https
 
     cephImage:
-      tag: v19.2.7 # chart default is v20.2.4; unpin only in the dedicated Ceph upgrade
+      tag: v20.2.5-20261028 # build-qualified so nodes cannot diverge mid-roll; Tentacle below v20.2.4 breaks the CephX key-type change
     cephClusterSpec:
       dashboard:
         urlPrefix: /
@@ -64,7 +64,7 @@ spec:
           - name: pg_autoscaler
             enabled: true
           - name: rook
-            enabled: true
+            enabled: false # Ref: Rook v1.21 upgrade guide, stability issues under Tentacle; disables a few dashboard pages
       network:
         provider: host
         addressRanges:
