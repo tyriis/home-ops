@@ -53,8 +53,29 @@ spec:
             enabled: false
         controllerPlugin:
           replicas: 2
+      # cephfs is parked, not serving: the operator reconciles this Driver so its
+      # requeue loop on the deleted CR ends, and the node plugin must never schedule.
+      # Ref: https://github.com/tyriis/home-ops/issues/11587
       cephfs:
-        enabled: false
+        enabled: true
+        name: rook-ceph.cephfs.csi.ceph.com
+        clusterName: rook-ceph
+        grpcTimeout: 150
+        snapshotPolicy: volumeSnapshot
+        log:
+          rotation:
+            enabled: false
+        controllerPlugin:
+          # CRD minimum is 1; 0 is falsy in the chart and renders 2.
+          replicas: 1
+        nodePlugin:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: cephfs.csi.ceph.com/parked
+                        operator: Exists
       nfs:
         enabled: false
       nvmeof:
