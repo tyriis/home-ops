@@ -58,3 +58,23 @@ data:
               summary: 'KCM stale informer loop in {{ $labels.cluster }}: {{ index .Labels "kubernetes.pod_name" }}'
               description: 'kube-controller-manager pod {{ index .Labels "kubernetes.pod_name" }} looped {{ $value }} "Failed to watch *v1.PartialObjectMetadata" lines over the last 5 minutes — a CRD was deleted while its GC informer was live. Cosmetic; restart of the affected pod clears it.'
               runbook_url: 'https://backstage.techtales.io/docs/default/System/main-cluster/runbooks/kcm-stale-informer-loop'
+
+      - name: docker-host-crash-loop
+        type: vlogs
+        interval: 5m
+        rules:
+          # Docker hosts have no kube-state-metrics equivalent and restart-policy
+          # loops never sit "unhealthy" long enough for Arcane auto-heal to see
+          # them — the repeated startup abort IS the signal (live 2026-11-03:
+          # hindsight crash-looped 1h45m on jarvis and agentix, 345 occurrences,
+          # zero alerts). Text match is the uvicorn/FastAPI abort line; broaden
+          # via extra OR terms in the lead filter, keep them abort-phrased —
+          # generic "error"/"panic" word-matches flood the containers stream.
+          - alert: ContainerStartupCrashLoop
+            expr: '"Application startup failed" | stats by (hostname) count() as aborts | filter aborts:>2'
+            for: 1m
+            labels:
+              severity: critical
+            annotations:
+              summary: 'Crash-looping container on {{ $labels.hostname }}'
+              description: 'A container on {{ $labels.hostname }} aborted startup {{ $value }} times in 5 minutes — the restart policy keeps re-feeding a fatal boot path. docker logs names the failure.'
