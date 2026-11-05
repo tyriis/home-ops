@@ -1,0 +1,7 @@
+---
+site_name: dragonfly
+nav:
+  - Home: index.md
+
+plugins:
+  - techdocs-core
