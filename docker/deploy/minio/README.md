@@ -20,8 +20,8 @@ data path.
 - `9000`: S3 API, published on all interfaces (`API_PORT` overrides).
 - `9001`: console, published on all interfaces (`CONSOLE_PORT` overrides).
 
-TLS terminates in front of the host: nginx-proxy-manager on the NAS serves `s3.techtales.io` (API)
-and `minio.techtales.io` (console); the Synology DSM reverse proxy serves the
+TLS terminates in front of the host: Traefik on the NAS (`docker/truenas/traefik`) serves
+`s3.techtales.io` (API) and `minio.techtales.io` (console); the Synology DSM reverse proxy serves the
 `*.synology.techtales.io` equivalents. A proxy target change on either host must keep the
 published ports in step.
 

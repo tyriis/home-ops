@@ -1,0 +1,79 @@
+---
+# truenas.techtales.io ingress routes (file provider — backends are host-published
+# ports / host processes, reached via host.docker.internal; cf resolver serves the
+# *.techtales.io wildcard).
+http:
+  routers:
+    # silo (minio) web console, host-published :9001.
+    minio-console:
+      rule: "Host(`minio.techtales.io`)"
+      entryPoints:
+        - websecure
+      service: minio-console
+      tls:
+        certResolver: cf
+
+    # Object storage API (S3 endpoint), host-published :9000.
+    minio-api:
+      rule: "Host(`s3.techtales.io`)"
+      entryPoints:
+        - websecure
+      service: minio-api
+      tls:
+        certResolver: cf
+
+    # olah (Hugging Face mirror), host-published :8090, plain HTTP.
+    # The NPM-era notes asked for `proxy_buffering off` + 3600s read timeout for
+    # multi-GB model streams: Traefik does not buffer response bodies at all, and
+    # the default serversTransport read timeout is 0 (unlimited), so both are
+    # satisfied by the defaults — no custom transport needed. Client tip from the
+    # Olah README still applies: HF_HUB_ETAG_TIMEOUT=1800 reduces metadata churn.
+    olah:
+      rule: "Host(`hf.techtales.io`)"
+      entryPoints:
+        - websecure
+      service: olah
+      tls:
+        certResolver: cf
+
+    # TrueNAS middleware GUI — already serves on :8443 (verified live, 302 -> /login;
+    # 8081 is its companion HTTP listener). No GUI port move required for the
+    # 80/443 handover.
+    nas-gui:
+      rule: "Host(`nas.techtales.io`)"
+      entryPoints:
+        - websecure
+      service: nas-gui
+      tls:
+        certResolver: cf
+
+  services:
+    minio-console:
+      loadBalancer:
+        servers:
+          - url: http://host.docker.internal:9001
+
+    minio-api:
+      loadBalancer:
+        servers:
+          - url: http://host.docker.internal:9000
+
+    olah:
+      loadBalancer:
+        servers:
+          - url: http://host.docker.internal:8090
+
+    nas-gui:
+      loadBalancer:
+        servers:
+          - url: https://host.docker.internal:8443
+        # TrueNAS GUI serves its own certificate (self-signed / middleware-managed);
+        # edge TLS for clients is the LE wildcard, so backend TLS verification is
+        # skipped rather than double-managing certs.
+        transport: truenas-gui
+
+  transports:
+    truenas-gui:
+      forwardingTimeouts:
+        dialTimeout: 10s
+      insecureSkipVerify: true
