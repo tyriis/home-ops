@@ -3,11 +3,9 @@ app:
   baseUrl: ${BASE_URL}
   title: TechTales Backstage
 
-# Explicit plugin root — no reliance on the relative-path default.
-dynamicPlugins:
-  rootDirectory: /opt/app-root/src/dynamic-plugins-root
-
-# Pocket-ID OIDC via the oidc module compiled into the RHDH image.
+# Pocket-ID OIDC. The provider module is compiled into the image, and the app
+# shows its sign-in button whenever this block is present (guest is used when
+# it is not).
 auth:
   environment: production
   session:
@@ -27,8 +25,6 @@ auth:
 # against Pocket-ID fails with `login_required`; the redirect flow reaches the
 # Pocket-ID sign-in page and completes.
 enableExperimentalRedirectFlow: true
-
-signInPage: oidc
 
 # Local builder: /opt/techdocs-venv (mkdocs + mkdocs-techdocs-core) ships in the image.
 techdocs:

@@ -38,25 +38,16 @@ spec:
       backstage:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          dynamic-plugins:
-            image:
-              repository: quay.io/rhdh-community/rhdh
-              tag: 1.10.6@sha256:3a25ca5f58faf3433431a5f41eb44829e3a9eb4620e65707510b202b2ddc9798
-            workingDir: /opt/app-root/src
-            command:
-              - ./install-dynamic-plugins.sh
-            args:
-              - /dynamic-plugins-root
         containers:
           app:
             image:
-              repository: quay.io/rhdh-community/rhdh
-              tag: 1.10.6@sha256:3a25ca5f58faf3433431a5f41eb44829e3a9eb4620e65707510b202b2ddc9798
-            # RHDH entrypoint is exec-form: these append after its own --config flags and win.
+              repository: harbor.techtales.io/main/techtales/backstage
+              tag: v0.1.0@sha256:4b831f3a15e631ece35f762fdc8af9fac474b35047ed173b3844c8bc1b508372
+            # app-config.yaml is baked into the image (plugin, search and TechDocs
+            # defaults); the mounted ConfigMap supplies the deployment values on top.
             args:
               - --config
-              - /opt/app-root/src/dynamic-plugins-root/app-config.dynamic-plugins.yaml
+              - app-config.yaml
               - --config
               - /app-config/app-config.production.yaml
             resources:
@@ -129,21 +120,9 @@ spec:
         name: app-config
         advancedMounts:
           backstage:
-            dynamic-plugins:
-              - path: /opt/app-root/src/dynamic-plugins.yaml
-                subPath: dynamic-plugins.yaml
-                readOnly: true
             app:
               - path: /app-config
                 readOnly: true
-      dynamic-plugins:
-        type: emptyDir
-        advancedMounts:
-          backstage:
-            dynamic-plugins:
-              - path: /dynamic-plugins-root
-            app:
-              - path: /opt/app-root/src/dynamic-plugins-root
       data:
         accessMode: ReadWriteOnce
         storageClass: ceph-block
