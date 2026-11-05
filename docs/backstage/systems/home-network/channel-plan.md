@@ -28,14 +28,9 @@ the narrow 2 MHz ZigBee channels lose as silent packet loss and device flapping.
 ## Rules
 
 1. **Never enable Wi-Fi channel 1.** It lands directly on the ZigBee network (ZigBee 11–14).
-2. **Keep 2400–2422 MHz clear of Wi-Fi** — any future 2.4 GHz channel change must preserve
-   that window before taking effect.
-3. **Pin both 2.4 GHz radios** in the UniFi console. Do not leave them on auto-channel:
-   UniFi's auto-optimisation has moved radios unsolicited and has no awareness of the ZigBee
-   network.
-4. **Move ZigBee last.** A ZigBee channel change forces ~100 devices to rejoin; a Wi-Fi
-   channel change affects only reassociation. Retune from the ZigBee side only if co-tenant
-   ZigBee/Thread networks encroach, using the overlap table above.
+2. **Keep 2400–2422 MHz clear of Wi-Fi** — any future 2.4 GHz channel change must preserve that window before taking effect.
+3. **Pin both 2.4 GHz radios** in the UniFi console. Do not leave them on auto-channel: UniFi's auto-optimisation has moved radios unsolicited and has no awareness of the ZigBee network.
+4. **Move ZigBee last.** A ZigBee channel change forces ~100 devices to rejoin; a Wi-Fi channel change affects only reassociation. Retune from the ZigBee side only if co-tenant ZigBee/Thread networks encroach, using the overlap table above.
 
 Rationale and rejected options: ADR
 [0023-wifi-zigbee-channel-plan](../../../../decisions/0023-wifi-zigbee-channel-plan.md)
