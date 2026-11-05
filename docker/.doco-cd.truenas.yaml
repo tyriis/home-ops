@@ -29,3 +29,8 @@ name: tailscale
 working_dir: docker/truenas/tailscale
 env_files:
   - .env
+---
+name: traefik
+working_dir: docker/truenas/traefik
+env_files:
+  - .env
