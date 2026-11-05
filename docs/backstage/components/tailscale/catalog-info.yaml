@@ -1,0 +1,39 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: tailscale
+  description: |
+    Tailscale (WireGuard mesh) for the Docker hosts that live outside Kubernetes. One shared
+    compose definition, one stack per host via doco-cd: subnet router for the LAN and exit node.
+    Replaced the TrueNAS SCALE tailscale middleware app.
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/docker/deploy/tailscale
+      title: Shared compose definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/tyriis/home-ops/issues/8227
+      title: Issue #8227
+      icon: github
+      type: issue
+    - url: https://github.com/tailscale/tailscale
+      title: Upstream Repository
+      icon: github
+      type: github-repository
+  tags:
+    - tailscale
+    - wireguard
+    - vpn
+    - subnet-router
+    - exit-node
+    - doco-cd
+    - truenas
+    - synology
+spec:
+  type: service
+  lifecycle: production
+  system: nas
+  owner: home-ops

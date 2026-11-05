@@ -1,0 +1,7 @@
+---
+site_name: tailscale
+nav:
+  - Home: index.md
+
+plugins:
+  - techdocs-core
