@@ -9,7 +9,6 @@ configMapGenerator:
   - name: app-config
     files:
       - app-config.production.yaml=./resources/app-config.production.yaml
-      - dynamic-plugins.yaml=./resources/dynamic-plugins.yaml
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
