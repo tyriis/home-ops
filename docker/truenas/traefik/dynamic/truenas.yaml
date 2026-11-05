@@ -70,9 +70,9 @@ http:
         # TrueNAS GUI serves its own certificate (self-signed / middleware-managed);
         # edge TLS for clients is the LE wildcard, so backend TLS verification is
         # skipped rather than double-managing certs.
-        transport: truenas-gui
+        serversTransport: truenas-gui
 
-  transports:
+  serversTransports:
     truenas-gui:
       forwardingTimeouts:
         dialTimeout: 10s
