@@ -27,7 +27,8 @@ The image runs as root and ships no unprivileged user, so the compose pins the c
 
 ## Ports
 
-- `8090`: olah (plain HTTP) — bound on all interfaces; TLS terminates at Nginx Proxy Manager.
+- `8090`: olah (plain HTTP) — bound on all interfaces; TLS terminates at Traefik on the NAS
+  (`docker/truenas/traefik`, route `olah`).
 
 ## Manual provisioning (one-time, NAS-side)
 
@@ -43,16 +44,13 @@ chown -R 3002:3002 /mnt/tank/olah
 
 olah mounts it at `/mnt/tank/olah` → container `/data/repos`, and its own `cache-size-limit` (4TB) stays below the 5T ZFS quota.
 
-### Nginx Proxy Manager
+### Reverse proxy
 
-Add a proxy host `hf.techtales.io` → `http://<nas-ip>:8090` with a Let's Encrypt certificate, and on that host's Advanced tab:
-
-```nginx
-proxy_buffering off;
-proxy_read_timeout 3600s;
-```
-
-`proxy_buffering off` and the extended read timeout are required for multi-GB model streams.
+Handled declaratively by the Traefik stack — `docker/truenas/traefik/dynamic/truenas.yaml`
+routes `hf.techtales.io` → `http://<nas>:8090` with the `*.techtales.io` LE wildcard.
+No per-host nginx tuning is needed: unlike the retired NPM setup (`proxy_buffering off`,
+`proxy_read_timeout 3600s`), Traefik never buffers response bodies and its default read
+timeout is unlimited, so multi-GB model streams pass through untouched.
 
 ## Client usage
 

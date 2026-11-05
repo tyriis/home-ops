@@ -1,0 +1,61 @@
+---
+# Include shim — the service definition is shared: docker/deploy/traefik/compose.yaml.
+# doco-cd runs compose in working_dir and hard-fails ("no compose files found") unless a
+# compose file is resolvable there; this real file provides it. Symlinks are deliberately
+# avoided (redeploy-hash churn, doco-cd #954; path-escape false positives, v0.74
+# regressions #1142/#1086/#1152).
+# project_directory: . is REQUIRED so relative paths inside the shared compose
+# (env_file, the dynamic directory) resolve against this host directory, not the deploy dir.
+#
+# `command:` and `volumes:` are overridden in full because compose replaces list fields
+# from an include instead of appending (re-listing config:/certs and docker.sock).
+#
+# Replaces nginx-proxy-manager (TrueNAS app update v2.12.4 broke it; NPM retired).
+# Serves the four UniFi static-DNS names pointed at this host (see dynamic/truenas.yaml):
+#   s3.techtales.io   -> silo (minio) API   host :9000
+#   minio.techtales.io-> silo (minio) console host :9001
+#   hf.techtales.io   ->olah               host :8090
+#   nas.techtales.io  -> TrueNAS middleware GUI host :8443 (GUI already lives there)
+# All routes are file-provider (docker labels deliberately NOT used): the backends are
+# host-published ports, matching the jarvis dynamic/ precedent.
+include:
+  - path: ../../deploy/traefik/compose.yaml
+    project_directory: .
+
+services:
+  traefik:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command:
+      # Let's Encrypt registration email — REQUIRED, from docker/truenas/traefik/.env.
+      - --certificatesresolvers.cf.acme.email=${ACME_EMAIL:?set ACME_EMAIL in the stack .env}
+      - --certificatesresolvers.cf.acme.caserver=https://acme-v02.api.letsencrypt.org/directory
+      # Cloudflare DNS challenge
+      - --certificatesresolvers.cf.acme.dnschallenge=true
+      - --certificatesresolvers.cf.acme.dnschallenge.provider=cloudflare
+      - --certificatesresolvers.cf.acme.dnschallenge.resolvers=1.1.1.1:53,1.0.0.1:53
+      - --certificatesresolvers.cf.acme.storage=/certs/acme.json
+      # Entry points (global HTTP -> HTTPS redirect)
+      - --entryPoints.web.address=:80
+      - --entryPoints.web.http.redirections.entryPoint.scheme=https
+      - --entryPoints.web.http.redirections.entryPoint.to=websecure
+      # HTTPS entry point
+      - --entryPoints.websecure.address=:443
+      - --entryPoints.websecure.http.tls=true
+      - --entryPoints.websecure.http.tls.certResolver=cf
+      # Wildcard certificate for this host's domain
+      - --entryPoints.websecure.http.tls.domains[0].main=${TLS_DOMAIN:?set TLS_DOMAIN in the stack .env}
+      - --entryPoints.websecure.http.tls.domains[0].sans=*.${TLS_DOMAIN}
+      # Docker provider kept for parity with the shared base; no labeled backends yet.
+      - --providers.docker=true
+      - --providers.docker.exposedByDefault=false
+      # File provider: host-published and host-process backends (dynamic/truenas.yaml)
+      - --providers.file.directory=/etc/traefik/dynamic
+      - --providers.file.watch=true
+      # Resolve non-Docker proxy targets via the host resolver; host.docker.internal then
+      # resolves from extra_hosts (host-gateway). Traefik >= v3.7 flag group.
+      - --hostresolver=true
+    volumes:
+      - config:/certs
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./dynamic:/etc/traefik/dynamic:ro
