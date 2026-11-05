@@ -14,11 +14,17 @@ All instances come from one template, `kubernetes/components/dragonfly/cluster.y
 | `n8n-dragonfly`             | home-automation  | n8n queue mode (BullMQ)        |
 | `immich-dragonfly`          | media            | immich job queue and cache     |
 
-All instances run `--cluster_mode=emulated` with 2 replicas. No instance has a PVC. All state is in-memory by design: a pod restart wipes the data, and a rollout therefore causes brief cache or queue churn. The locking-service lock table re-registers from clients over a few minutes after a wipe.
+All instances run `--cluster_mode=emulated` with 2 replicas.
+No instance has a PVC.
+All state is in-memory by design: a pod restart wipes the data, and a rollout therefore causes brief cache or queue churn.
+The locking-service lock table re-registers from clients over a few minutes after a wipe.
 
 ## License: DSAL since v2.1.0
 
-Upstream changed the license with v2.1.0, from BUSL-1.1 to the **Dragonfly Source-Available License (DSAL)**. We crossed that boundary with the v2.0.2 → v2.1.0 bump (PR [#11701](https://github.com/tyriis/home-ops/pull/11701)). DSAL is not an open-source license. The terms we operate under:
+Upstream changed the license with v2.1.0, from BUSL-1.1 to the **Dragonfly Source-Available License (DSAL)**.
+We crossed that boundary with the v2.0.2 → v2.1.0 bump (PR [#11701](https://github.com/tyriis/home-ops/pull/11701)).
+DSAL is not an open-source license.
+The terms we operate under:
 
 - **Usage limit:** DSAL caps free production use at 100 vCPUs, counted across all concurrently running instances. Beyond the limit requires a paid commercial license. DSAL places no limit on non-production use.
 - **No standalone redistribution:** we may embed dragonfly in our own applications. We must not distribute, sell, or sublicense it as a standalone database or caching product.
