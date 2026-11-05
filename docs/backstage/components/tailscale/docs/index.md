@@ -88,13 +88,10 @@ new stack runs.
 
 ## adding a host
 
-1. `docker/<host>/tailscale/` with a shim copied from an existing host, plus `.env` carrying
-   `TARGET=<host>`.
-2. `sops.env` encrypted to that host's age recipient; add a `docker/<host>/*/sops.env` rule to
-   `.sops.yaml` if the host has none yet.
+1. `docker/<host>/tailscale/` with a shim copied from an existing host, plus `.env` carrying `TARGET=<host>`.
+2. `sops.env` encrypted to that host's age recipient; add a `docker/<host>/*/sops.env` rule to `.sops.yaml` if the host has none yet.
 3. Entry in `docker/.doco-cd.<host>.yaml`: `name: tailscale`, `working_dir`, `env_files: [.env]`.
-4. Deploy, then approve any advertised routes and the exit-node flag for the new device; set
-   `TS_EXTRA_ARGS` to match what that host should advertise.
+4. Deploy, then approve any advertised routes and the exit-node flag for the new device; set `TS_EXTRA_ARGS` to match what that host should advertise.
 
 Hosts with a Docker-managed state volume need no preparation; hosts binding a host path must have the
 path present, since the shim sets `create_host_path: false`.
