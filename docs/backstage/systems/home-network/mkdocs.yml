@@ -1,0 +1,17 @@
+---
+site_name: home-network
+site_description: Home site network - LAN/VLAN fabric, Wi-Fi, ZigBee, and RF channel planning
+
+nav:
+  - Overview: index.md
+  - Channel Plan (2.4 GHz): channel-plan.md
+
+theme:
+  name: material
+  features:
+    - navigation.expand
+    - navigation.indexes
+
+plugins:
+  - techdocs-core
+  - search

@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: home-network
+  description: Home site network — LAN/VLAN fabric, Wi-Fi, ZigBee, and RF channel planning
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: tyriis/home-ops
+  links:
+    - url: https://github.com/tyriis/home-ops
+      title: home-ops
+      icon: github
+      type: github-repository
+  tags:
+    - network
+    - wifi
+    - zigbee
+    - unifi
+spec:
+  owner: home-ops
+  domain: home
