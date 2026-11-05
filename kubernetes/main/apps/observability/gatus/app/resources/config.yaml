@@ -89,15 +89,33 @@ endpoints:
     ui:
       hide-hostname: false
       hide-url: false
-  # - name: NAS
-  #   group: infrastructure
-  #   url: https://nas.techtales.io
-  #   interval: 1m
-  #   conditions:
-  #     - "[STATUS] == 200"
-  #   ui:
-  #     hide-hostname: false
-  #     hide-url: false
+  - name: TrueNAS
+    group: infrastructure
+    url: https://nas.techtales.io
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+    ui:
+      hide-hostname: false
+      hide-url: false
+  - name: Synology
+    group: infrastructure
+    url: https://synology.techtales.io
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+    ui:
+      hide-hostname: false
+      hide-url: false
+  - name: MinIO
+    group: infrastructure
+    url: https://minio.techtales.io
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+    ui:
+      hide-hostname: false
+      hide-url: false
   - name: karakeep-meilisearch
     group: internal
     url: http://karakeep-meilisearch.productivity.svc.cluster.local:7700/health
