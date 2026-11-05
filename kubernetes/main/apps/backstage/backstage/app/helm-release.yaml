@@ -43,9 +43,13 @@ spec:
             image:
               repository: harbor.techtales.io/main/techtales/backstage
               tag: v0.1.0@sha256:4b831f3a15e631ece35f762fdc8af9fac474b35047ed173b3844c8bc1b508372
+            # Image entrypoint is node's official docker-entrypoint.sh: args starting
+            # with "-" get node prepended, so the full backend command must be the args.
             # app-config.yaml is baked into the image (plugin, search and TechDocs
             # defaults); the mounted ConfigMap supplies the deployment values on top.
             args:
+              - node
+              - packages/backend
               - --config
               - app-config.yaml
               - --config
