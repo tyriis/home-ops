@@ -17,9 +17,9 @@ auth:
         clientId: ${AUTH_OIDC_CLIENT_ID}
         clientSecret: ${AUTH_OIDC_CLIENT_SECRET}
         prompt: auto
-        signIn:
-          resolvers:
-            - resolver: emailLocalPartMatchingUserEntityName
+        # No signIn.resolvers: the cluster image registers a fixed sign-in
+        # resolver (email local part -> user entity) in its backend module;
+        # declarative resolvers must stay unset for that provider to init.
 
 # Sign in with a full-page redirect instead of the auth popup. The popup flow
 # against Pocket-ID fails with `login_required`; the redirect flow reaches the
