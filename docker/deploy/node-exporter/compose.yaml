@@ -6,13 +6,11 @@ services:
       - --path.procfs=/host/proc
       - --path.sysfs=/host/sys
       - --path.udev.data=/host/root/run/udev/data
-      - --web.listen-address=${NODE_EXPORTER_LISTEN:-0.0.0.0}:9100
+      - --web.listen-address=127.0.0.1:9100
       - --collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)
     container_name: node-exporter
     image: quay.io/prometheus/node-exporter:v1.12.1@sha256:1b4e4438faca4dd7e001dd445d161a4a2091b0fededa84093b3a8dfeae1f1be0
     network_mode: host
-    ports:
-      - 9100:9100
     restart: unless-stopped
     volumes:
       - /:/host/root:ro
@@ -26,8 +24,12 @@ services:
 
     container_name: smartctl-exporter
     image: ghcr.io/prometheus-community/smartctl-exporter:v0.15.0@sha256:a76e08dbf5db4781fefd1ed81c65ad46ae8d2849dae6b6d3acebcde2fc4e59d6
-    ports:
-      - ${SMARTCTL_PUBLISH_IP:-0.0.0.0}:9633:9633 # keep in sync with the host vmagent scrape target
+    # host net + loopback bind replaces the published-port pattern: a per-host
+    # ports override against an include merges instead of replacing (9633 double-bind).
+    # Listeners match the host vmagent scrape targets (always 127.0.0.1).
+    command:
+      - --web.listen-address=127.0.0.1:9633
+    network_mode: host
     privileged: true
     restart: unless-stopped
     user: root
