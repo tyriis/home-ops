@@ -1,12 +1,17 @@
 ---
 # Synology-only variant of docker/deploy/doco-cd/compose.yaml (keep fields in sync when bumping).
-# Synology's compose cannot render `configs: content:`, so the poll config is a plain
-# bind mount from this directory instead. Arcane deploys this directory directly.
+# Synology's compose cannot render `configs: content:`, so the poll config is a
+# host file at /etc/doco-cd/poll-config.yml — the same path convention as the
+# age key and webhook secret. Arcane deploys this directory directly.
 volumes:
   data:
     external: ${VOLUME_EXTERNAL:-false}
     name: ${VOLUME_NAME:-doco-cd_data}
     driver: ${VOLUME_DRIVER:-local}
+
+configs:
+  poll-config.yml:
+    file: /etc/doco-cd/poll-config.yml
 
 secrets:
   sops_age_key:
@@ -25,6 +30,9 @@ services:
         max-size: 10m
         max-file: "3"
         labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
+    configs:
+      - source: poll-config.yml
+        target: /poll-config.yml
     container_name: ${CONTAINER_NAME:-doco-cd}
     environment:
       HTTP_PORT: ${HTTP_PORT:-8080}
@@ -52,5 +60,4 @@ services:
       - sops_age_key
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./poll-config.yml:/poll-config.yml:ro
       - data:/data

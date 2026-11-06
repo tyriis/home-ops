@@ -1,8 +1,0 @@
----
-# Poll config for synology's doco-cd. File-sourced configs get no compose
-# interpolation, so the target is literal here. Same content as the inline
-# block in docker/deploy/doco-cd/compose.yaml with TARGET resolved.
-- url: https://github.com/tyriis/home-ops.git
-  target: synology
-  interval: 180
-  reference: main
