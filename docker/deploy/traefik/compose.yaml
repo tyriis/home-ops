@@ -14,6 +14,12 @@ services:
   traefik:
     image: traefik:v3.7.17@sha256:92627e6a99f71b8e46634acea28130b9f14bec5d9887ad15161007e1b652afe1
     container_name: traefik
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+        labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
     command:
       # Let's Encrypt registration email — REQUIRED. Fails fast at deploy until
       # ACME_EMAIL is set in the stack .env (docker/bifrost/traefik/.env).

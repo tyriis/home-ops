@@ -3,6 +3,12 @@ services:
   tailscale:
     scale: 1
     container_name: tailscale
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+        labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
     cap_add:
       - CHOWN
       - DAC_OVERRIDE

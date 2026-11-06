@@ -24,6 +24,12 @@ services:
     # within the Ubuntu 26.04 + CUDA 13.3 line (see .github/renovate.json5).
     image: mmartial/comfyui-nvidia-docker:ubuntu26_cuda13.3-20261010@sha256:7507fb6c452ad41acc1fc474bd5cabad73ccf0c8070e2a00a852f8c65e66a5f7
     container_name: comfyui-nvidia
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+        labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
     restart: unless-stopped
     ports:
       - 8188:8188 # Remove 127.0.0.1: prefix to expose on all interfaces
@@ -84,6 +90,12 @@ services:
   comfyui-gallery:
     image: mmartial/smart-comfyui-gallery:2.24@sha256:041897c24f347dab0ee7f1ed90626f91fd8c9d743f6b366522c59650d946b6a5
     container_name: comfyui-gallery
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+        labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
     restart: unless-stopped
     ports:
       - 8189:8189
@@ -102,6 +114,12 @@ services:
 
   fix-permissions:
     image: alpine:latest@sha256:3f4d6b32e26703c6082839234f43769d5046b3ac7c910033911d1e71d8cd630a
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+        labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
     volumes:
       - smartgallery:/smartgallery
       - basedir:/basedir

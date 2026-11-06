@@ -9,6 +9,12 @@ services:
   unsloth:
     scale: 1 # scale to 0 if you want to stop the service without losing data
     container_name: unsloth
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+        labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
     image: unsloth/unsloth:2026.5.9-pt2.10.0-vllm-0.16.0-cu12.8-studio-release-v0.1.43-beta-2026-MAY-31@sha256:f21629b9ae4ed11231768edfaed0f40d41d85d6ea9a71e8096a3d96ea0311772
     env_file:
       - ${SOPS_ENV_FILE:-sops.env}
