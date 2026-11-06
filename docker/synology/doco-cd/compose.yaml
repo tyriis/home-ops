@@ -1,0 +1,56 @@
+---
+# Synology-only variant of docker/deploy/doco-cd/compose.yaml (keep fields in sync when bumping).
+# Synology's compose cannot render `configs: content:`, so the poll config is a plain
+# bind mount from this directory instead. Arcane deploys this directory directly.
+volumes:
+  data:
+    external: ${VOLUME_EXTERNAL:-false}
+    name: ${VOLUME_NAME:-doco-cd_data}
+    driver: ${VOLUME_DRIVER:-local}
+
+secrets:
+  sops_age_key:
+    file: ${SOPS_AGE_KEY_FILE:-/etc/doco-cd/age-keys.txt}
+  webhook_secret:
+    file: ${WEBHOOK_SECRET_FILE:-/etc/doco-cd/webhook_secret}
+
+services:
+  doco-cd:
+    scale: 1 # scale to 0 if you want to stop the service without losing data
+    # json-file with label passthrough — embeds compose/doco/OCI labels as `attrs`
+    # in the log file so victoria-logs-collector can ship them (synology pattern).
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+        labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
+    container_name: ${CONTAINER_NAME:-doco-cd}
+    environment:
+      HTTP_PORT: ${HTTP_PORT:-8080}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      POLL_CONFIG_FILE: /poll-config.yml
+      WEBHOOK_SECRET_FILE: /run/secrets/webhook_secret
+      SOPS_AGE_KEY_FILE: /run/secrets/sops_age_key
+      DEPLOY_CONFIG_BASE_DIR: ./docker
+    healthcheck:
+      test:
+        - CMD
+        - /doco-cd
+        - healthcheck
+      start_period: 15s
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    image: ghcr.io/kimdre/doco-cd:0.133.2@sha256:8ca3cf6701f70ac3af4c5d726e542fe3a854a038149375f87222ec2719b3c975
+    ports:
+      - 127.0.0.1:${HTTP_PORT:-8080}:${HTTP_PORT:-8080} # polling-only, no inbound consumers
+      - 127.0.0.1:9120:9120
+    restart: unless-stopped
+    secrets:
+      - webhook_secret
+      - sops_age_key
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./poll-config.yml:/poll-config.yml:ro
+      - data:/data
