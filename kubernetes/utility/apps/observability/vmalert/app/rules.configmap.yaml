@@ -92,8 +92,10 @@ data:
           # rejected bearer token, not a lost host: the scrape identity is prometheus-metrics and
           # a rotated secret breaks the token until 'mc admin prometheus generate' runs again.
           # Jobs absent from a host's config produce no series and therefore never fire here.
+          # host!="" is load-bearing: utility's vmagent writes the same job names to this store;
+          # only docker-host series carry a host label.
           - alert: HostScrapeFailing
-            expr: 'up{job=~"minio|node-exporter|nvidia-gpu-exporter|smartctl-exporter|vmagent"} == 0'
+            expr: 'up{job=~"minio|node-exporter|nvidia-gpu-exporter|smartctl-exporter|vmagent", host!=""} == 0'
             for: 10m
             labels:
               severity: warning
@@ -101,8 +103,9 @@ data:
               summary: '{{ $labels.job }} on {{ $labels.host }} answers no scrape.'
               description: 'vmagent on {{ $labels.host }} has failed every scrape of {{ $labels.job }} at {{ $labels.instance }} for 10 minutes. A 403 on minio means the token no longer authorises admin:Prometheus; any other failure is the exporter itself.'
           # The floor case: no host writes at all, so up==0 cannot fire for anything.
+          # Without host!="" the utility cluster's own jobs would keep this satisfied forever.
           - alert: HostScrapeFleetGone
-            expr: 'absent(up{job=~"minio|node-exporter|nvidia-gpu-exporter|smartctl-exporter|vmagent"})'
+            expr: 'absent(up{job=~"minio|node-exporter|nvidia-gpu-exporter|smartctl-exporter|vmagent", host!=""})'
             for: 15m
             labels:
               severity: critical
