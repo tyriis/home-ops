@@ -7,9 +7,9 @@ volumes:
 
 services:
   # https://getarcane.app — Arcane Agent: pairs this Docker host to the bifrost Manager.
-  # Edge mode (outbound-only, no published port): the agent connects to the Manager through
-  # Traefik at MANAGER_API_URL over the poll transport, so no inbound firewall opening and no
-  # Traefik gRPC/h2c setup is needed.
+  # Edge mode (outbound-only, no published port): EDGE_TRANSPORT=poll is the control plane
+  # only; the tunnel data plane still tries gRPC first and falls back to websocket, so the
+  # Manager's reverse proxy must forward /api/tunnel/connect as h2c (issue #11139).
   # The image starts as root only to chown /app/data and drop to the non-root runtime user, so
   # do NOT add cap_drop / user: / read_only: — that breaks startup.
   # AGENT_TOKEN comes from the SOPS-managed env file.

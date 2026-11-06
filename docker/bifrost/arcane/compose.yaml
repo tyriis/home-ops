@@ -26,6 +26,14 @@ services:
       - "traefik.http.routers.arcane.rule=Host(`arcane.techtales.io`)"
       - "traefik.http.routers.arcane.entrypoints=websecure"
       - "traefik.http.services.arcane.loadbalancer.server.port=3552"
+      # The tunnel path serves gRPC and the websocket fallback, so only gRPC requests may
+      # take an h2c service — scheme=h2c on the router above would break websockets.
+      - "traefik.http.routers.arcane-grpc.rule=Host(`arcane.techtales.io`) && Path(`/api/tunnel/connect`) && Method(`POST`) && HeaderRegexp(`Content-Type`, `^application/grpc`)"
+      - "traefik.http.routers.arcane-grpc.entrypoints=websecure"
+      - "traefik.http.routers.arcane-grpc.priority=100"
+      - "traefik.http.routers.arcane-grpc.service=arcane-grpc"
+      - "traefik.http.services.arcane-grpc.loadbalancer.server.port=3552"
+      - "traefik.http.services.arcane-grpc.loadbalancer.server.scheme=h2c"
     dns:
       - 192.168.100.1
       - 1.1.1.2

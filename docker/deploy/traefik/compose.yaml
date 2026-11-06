@@ -38,6 +38,8 @@ services:
       - --entryPoints.websecure.http.tls.domains[0].sans=*.techtales.ai
       # Arcane UI on bifrost (LAN-only) — requires the Cloudflare token to cover techtales.io
       - --entryPoints.websecure.http.tls.domains[1].main=arcane.techtales.io
+      # Arcane's gRPC edge tunnel is one long-lived stream; the 60s default read timeout kills it.
+      - --entryPoints.websecure.transport.respondingTimeouts.readTimeout=0s
       # Docker Provider
       - --providers.docker=true
       - --providers.docker.exposedByDefault=false
