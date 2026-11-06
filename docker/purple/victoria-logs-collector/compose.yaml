@@ -20,12 +20,6 @@ services:
       - 1.1.1.2
     env_file:
       - ${SOPS_ENV_FILE:-sops.env}
-    logging:
-      driver: json-file
-      options:
-        max-size: 10m
-        max-file: "3"
-        labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
     command:
       - -envflag.enable=true
       - -httpListenAddr=:9500
