@@ -56,6 +56,7 @@ services:
     image: ghcr.io/kimdre/doco-cd:0.133.2@sha256:8ca3cf6701f70ac3af4c5d726e542fe3a854a038149375f87222ec2719b3c975
     ports:
       - 127.0.0.1:${HTTP_PORT:-8080}:${HTTP_PORT:-8080} # polling-only, no inbound consumers
+      - 127.0.0.1:9120:9120
     restart: unless-stopped
     secrets:
       - webhook_secret

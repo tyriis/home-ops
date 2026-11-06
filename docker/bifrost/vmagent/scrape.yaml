@@ -26,6 +26,22 @@ scrape_configs:
       - target_label: instance
         replacement: "bifrost:9633"
 
+  # doco-cd self-metrics, loopback publish (docker/deploy/doco-cd)
+  - job_name: doco-cd
+    static_configs:
+      - targets: ["127.0.0.1:9120"]
+    relabel_configs:
+      - target_label: instance
+        replacement: "bifrost:9120"
+
+  # vlagent self-metrics: shipper backlog and drop counters
+  - job_name: vlagent
+    static_configs:
+      - targets: ["127.0.0.1:9500"]
+    relabel_configs:
+      - target_label: instance
+        replacement: "bifrost:9500"
+
   # forward-agent self-metrics: remote-write health, queue depth, scrape counts
   - job_name: vmagent
     static_configs:
