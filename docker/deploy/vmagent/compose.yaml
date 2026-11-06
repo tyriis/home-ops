@@ -29,7 +29,7 @@ services:
       - ${SOPS_ENV_FILE:-sops.env}
     command:
       - -envflag.enable=true
-      - -httpListenAddr=:8429
+      - -httpListenAddr=${HTTP_LISTEN_ADDR:-:8429}
       - -promscrape.config=/etc/vmagent/scrape.yaml
       - -promscrape.configCheckInterval=1m
       - -remoteWrite.url=https://metrics.techtales.io/api/v1/write
