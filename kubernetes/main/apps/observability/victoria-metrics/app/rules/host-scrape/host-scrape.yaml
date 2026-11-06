@@ -1,0 +1,43 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmrule_v1beta1.json
+# Host scrapes run in vmagent on the docker hosts and reach VictoriaMetrics through remote
+# write; Prometheus never sees these series. That is why this rule has no PrometheusRule twin,
+# unlike the per-app pairs in this repo.
+# Background: tyriis/home-ops#8376 — a rotated minio scrape token had no alert.
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+  name: host-scrape
+spec:
+  groups:
+    - name: host-scrape
+      rules:
+        # up == 0 while the rest of that host keeps reporting. For minio the usual cause is a
+        # rejected bearer token, not a lost host: the scrape identity is prometheus-metrics and
+        # a rotated secret breaks the token until 'mc admin prometheus generate' runs again.
+        # Jobs absent from a host's config produce no series and therefore never fire here.
+        - alert: HostScrapeFailing
+          annotations:
+            summary: "{{ $labels.job }} on {{ $labels.host }} answers no scrape."
+            description: >-
+              vmagent on {{ $labels.host }} has failed every scrape of {{ $labels.job }} at
+              {{ $labels.instance }} for 10 minutes. A 403 on minio means the token no longer
+              authorises admin:Prometheus; any other failure is the exporter itself.
+          expr: |-
+            up{job=~"minio|node-exporter|nvidia-gpu-exporter|smartctl-exporter|vmagent"} == 0
+          for: 10m
+          labels:
+            severity: warning
+        # The floor case: no host writes at all, so up==0 cannot fire for anything.
+        - alert: HostScrapeFleetGone
+          annotations:
+            summary: "No docker host scrape target is up anywhere."
+            description: >-
+              VictoriaMetrics holds no up series for any host job (minio, node-exporter,
+              nvidia-gpu-exporter, smartctl-exporter, vmagent), so no docker host is remote
+              writing. That is the host fleet or the central write path, not one host.
+          expr: |-
+            absent(up{job=~"minio|node-exporter|nvidia-gpu-exporter|smartctl-exporter|vmagent"})
+          for: 15m
+          labels:
+            severity: critical
