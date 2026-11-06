@@ -20,4 +20,3 @@ resources:
   - ./scrapes/vm-prometheus-operator.yaml
   - ./scrapes/vm-coredns.yaml
   - ./rules/kps
-  - ./rules/host-scrape

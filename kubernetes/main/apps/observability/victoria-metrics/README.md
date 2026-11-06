@@ -150,19 +150,19 @@ control is the `src_paths` allowlist — the hostname is not a boundary: any tok
 `logs.`, `vmalert.` and `metrics.techtales.io` and can only reach what its own `url_map` allows
 (`deny_paths: ["/.*"]` catch-all on everything else, which answers `403`).
 
-| User               | Token env (Secret key)          | Allowed paths                                | Purpose                                                                           |
-| ------------------ | ------------------------------- | -------------------------------------------- | --------------------------------------------------------------------------------- |
-| `main-metrics`     | `VMAUTH_TOKEN_MAIN_METRICS`     | `/api/v1/write`, `/opentelemetry/v1/metrics` | main vmagent remote write                                                         |
-| `utility-metrics`  | `VMAUTH_TOKEN_UTILITY_METRICS`  | `/api/v1/write`                              | utility `VMAgent` remote write                                                    |
-| `jarvis-metrics`   | `VMAUTH_TOKEN_JARVIS_METRICS`   | `/api/v1/write`                              | jarvis host vmagent remote write; **utility path only** (no cluster consumer)     |
-| `bifrost-metrics`  | `VMAUTH_TOKEN_BIFROST_METRICS`  | `/api/v1/write`                              | bifrost host vmagent remote write; **utility path only** (no cluster consumer)    |
-| `synology-metrics` | `VMAUTH_TOKEN_SYNOLOGY_METRICS` | `/api/v1/write`                              | synology host vmagent remote write; **utility path only** (no cluster consumer)   |
-| `red-metrics`      | `VMAUTH_TOKEN_RED_METRICS`      | `/api/v1/write`                              | red host vmagent remote write; **utility path only** (no cluster consumer)        |
-| `truenas-metrics`  | `VMAUTH_TOKEN_TRUENAS_METRICS`  | `/api/v1/write`                              | truenas host vmagent remote write; **utility path only** (no cluster consumer)    |
-| `purple-metrics`   | `VMAUTH_TOKEN_PURPLE_METRICS`   | `/api/v1/write`                              | purple host vmagent remote write; **utility path only** (no cluster consumer)     |
-| `agentix-metrics`  | `VMAUTH_TOKEN_AGENTIX_METRICS`  | `/api/v1/write`                              | agentix host vmagent remote write; **utility path only** (no cluster consumer)    |
-| `grafana-read`     | `VMAUTH_TOKEN_GRAFANA_METRICS`  | `/api/v1/.*`, `/prometheus/.*`, `/select/.*` | manual read queries in run 1; the Grafana `prometheus` datasource from cutover on |
-| `vmalert-read`     | `VMAUTH_TOKEN_VMALERT_METRICS`  | `/api/v1/.*`, `/prometheus/.*`, `/select/.*` | main `VMAlert` datasource                                                         |
+| User               | Token env (Secret key)          | Allowed paths                                | Purpose                                                                                                                    |
+| ------------------ | ------------------------------- | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `main-metrics`     | `VMAUTH_TOKEN_MAIN_METRICS`     | `/api/v1/write`, `/opentelemetry/v1/metrics` | main vmagent remote write                                                                                                  |
+| `utility-metrics`  | `VMAUTH_TOKEN_UTILITY_METRICS`  | `/api/v1/write`                              | utility `VMAgent` remote write                                                                                             |
+| `jarvis-metrics`   | `VMAUTH_TOKEN_JARVIS_METRICS`   | `/api/v1/write`                              | jarvis host vmagent remote write; **utility path only** (no cluster consumer)                                              |
+| `bifrost-metrics`  | `VMAUTH_TOKEN_BIFROST_METRICS`  | `/api/v1/write`                              | bifrost host vmagent remote write; **utility path only** (no cluster consumer)                                             |
+| `synology-metrics` | `VMAUTH_TOKEN_SYNOLOGY_METRICS` | `/api/v1/write`                              | synology host vmagent remote write; **utility path only** (no cluster consumer)                                            |
+| `red-metrics`      | `VMAUTH_TOKEN_RED_METRICS`      | `/api/v1/write`                              | red host vmagent remote write; **utility path only** (no cluster consumer)                                                 |
+| `truenas-metrics`  | `VMAUTH_TOKEN_TRUENAS_METRICS`  | `/api/v1/write`                              | truenas host vmagent remote write; **utility path only** (no cluster consumer)                                             |
+| `purple-metrics`   | `VMAUTH_TOKEN_PURPLE_METRICS`   | `/api/v1/write`                              | purple host vmagent remote write; **utility path only** (no cluster consumer)                                              |
+| `agentix-metrics`  | `VMAUTH_TOKEN_AGENTIX_METRICS`  | `/api/v1/write`                              | agentix host vmagent remote write; **utility path only** (no cluster consumer)                                             |
+| `grafana-read`     | `VMAUTH_TOKEN_GRAFANA_METRICS`  | `/api/v1/.*`, `/prometheus/.*`, `/select/.*` | manual read queries in run 1; the Grafana `prometheus` datasource from cutover on                                          |
+| `vmalert-read`     | `VMAUTH_TOKEN_VMALERT_METRICS`  | `/api/v1/.*`, `/prometheus/.*`, `/select/.*` | main `VMAlert` datasource; utility `vmalert` datasource (in-cluster, vlogs rules route `/select/logsql/*` to VictoriaLogs) |
 
 All four keys exist in **two** OpenBao paths, with the same value in each, because a cluster's
 `ClusterSecretStore` policy only grants its own path — main cannot read the utility tree:

@@ -226,6 +226,11 @@ spec:
               - name: vmalert-read
                 bearer_token: "%{VMAUTH_TOKEN_VMALERT_METRICS}"
                 url_map:
+                  # logsql must precede the /select/ catch-all: one vmalert datasource serves
+                  # both rule types via path routing
+                  # docs.victoriametrics.com/victorialogs/vmalert/#how-to-use-one-vmalert-for-victorialogs-and-victoriametrics-rules-at-the-same-time
+                  - src_paths: ["/select/logsql/.*"]
+                    url_prefix: "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428"
                   - src_paths: ["/api/v1/.*", "/prometheus/.*", "/select/.*"]
                     url_prefix: "http://vmsingle-vmsingle.observability.svc.cluster.local:8428"
                   - src_paths: ["/.*"]
