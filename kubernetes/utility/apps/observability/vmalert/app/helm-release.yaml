@@ -38,7 +38,8 @@ spec:
               repository: docker.io/victoriametrics/vmalert
               tag: v1.155.0@sha256:3256cba5ddaca5974eae6141105cec4ce37871f1c213f0a5c267ec0111bc68e1
             args:
-              - --datasource.url=http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428
+              - --datasource.url=http://vmauth.observability.svc.cluster.local:8427
+              - --datasource.bearerTokenFile=/etc/vmalert/secrets/token
               - --notifier.url=http://kube-prometheus-stack-alertmanager.observability.svc.cluster.local:9093
               - --rule=/config/rules.yaml
               - --rule.defaultRuleType=vlogs
@@ -96,4 +97,12 @@ spec:
               # changes via -configCheckInterval polling. subPath mounts would
               # never see rule edits at all.
               - path: /config
+                readOnly: true
+      datasource-token:
+        type: secret
+        name: vmalert-datasource
+        advancedMounts:
+          main:
+            app:
+              - path: /etc/vmalert/secrets
                 readOnly: true

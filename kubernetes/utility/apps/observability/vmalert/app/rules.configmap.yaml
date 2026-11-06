@@ -78,3 +78,34 @@ data:
             annotations:
               summary: 'Crash-looping container on {{ $labels.hostname }}'
               description: 'A container on {{ $labels.hostname }} aborted startup {{ $value }} times in 5 minutes — the restart policy keeps re-feeding a fatal boot path. docker logs names the failure.'
+
+      # Metrics rules against vmsingle, reached via the vmauth dual-engine route
+      # (type: prometheus overrides --rule.defaultRuleType=vlogs).
+      # Host scrapes run in vmagent on the docker hosts and reach VictoriaMetrics through remote
+      # write; Prometheus never sees these series, so these alerts have no PrometheusRule twin.
+      # Background: tyriis/home-ops#8376 and #11755 — a rotated minio scrape token had no alert.
+      - name: host-scrape
+        type: prometheus
+        interval: 1m
+        rules:
+          # up == 0 while the rest of that host keeps reporting. For minio the usual cause is a
+          # rejected bearer token, not a lost host: the scrape identity is prometheus-metrics and
+          # a rotated secret breaks the token until 'mc admin prometheus generate' runs again.
+          # Jobs absent from a host's config produce no series and therefore never fire here.
+          - alert: HostScrapeFailing
+            expr: 'up{job=~"minio|node-exporter|nvidia-gpu-exporter|smartctl-exporter|vmagent"} == 0'
+            for: 10m
+            labels:
+              severity: warning
+            annotations:
+              summary: '{{ $labels.job }} on {{ $labels.host }} answers no scrape.'
+              description: 'vmagent on {{ $labels.host }} has failed every scrape of {{ $labels.job }} at {{ $labels.instance }} for 10 minutes. A 403 on minio means the token no longer authorises admin:Prometheus; any other failure is the exporter itself.'
+          # The floor case: no host writes at all, so up==0 cannot fire for anything.
+          - alert: HostScrapeFleetGone
+            expr: 'absent(up{job=~"minio|node-exporter|nvidia-gpu-exporter|smartctl-exporter|vmagent"})'
+            for: 15m
+            labels:
+              severity: critical
+            annotations:
+              summary: 'No docker host scrape target is up anywhere.'
+              description: 'VictoriaMetrics holds no up series for any host job (minio, node-exporter, nvidia-gpu-exporter, smartctl-exporter, vmagent), so no docker host is remote writing. That is the host fleet or the central write path, not one host.'

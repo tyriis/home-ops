@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./oci-repository.yaml
   - ./helm-release.yaml
+  - ./external-secret.yaml
   - ./rules.configmap.yaml
   - ./network-policy.yaml
   - ./vm-service-scrape.yaml
