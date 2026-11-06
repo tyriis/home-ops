@@ -2,6 +2,12 @@
 services:
   nvidia-gpu-exporter:
     container_name: nvidia-gpu-exporter
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+        labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
     # the -nvml build is cgo-linked and exits at startup unless the nvidia runtime injects libnvidia-ml.so.1
     deploy:
       resources:

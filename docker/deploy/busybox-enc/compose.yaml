@@ -3,6 +3,12 @@ services:
   busybox-enc:
     scale: 1
     container_name: busybox-enc
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+        labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
     image: busybox:1.38.0@sha256:a46257e06c82ad85242d0d38077d0a52d9896389ca60a1a59d3463db586e5fa4
     env_file:
       - ${SOPS_ENV_FILE:-sops.env}
