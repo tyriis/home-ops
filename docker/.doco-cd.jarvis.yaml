@@ -26,11 +26,7 @@ env_files:
   - .env
 ---
 name: node-exporter
-working_dir: docker/jarvis/node-exporter
-env_files:
-  - .env
+working_dir: docker/deploy/node-exporter
 ---
 name: vmagent
 working_dir: docker/jarvis/vmagent
-env_files:
-  - .env

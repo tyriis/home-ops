@@ -1,7 +1,0 @@
----
-# Include shim — the actual service definition is shared: docker/deploy/node-exporter/compose.yaml.
-# project_directory: . is REQUIRED so relative paths inside the shared compose
-# resolve against this host directory. Loopback values live in .env.
-include:
-  - path: ../../deploy/node-exporter/compose.yaml
-    project_directory: .
