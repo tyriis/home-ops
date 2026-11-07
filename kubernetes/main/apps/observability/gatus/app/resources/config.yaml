@@ -44,6 +44,7 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
     ui:
+      hide-hostname: true
       hide-url: true
   - name: locking-service
     group: internal
@@ -169,7 +170,7 @@ endpoints:
     conditions:
       - "[STATUS] < 500"
     ui:
-      hide-hostname: false
+      hide-hostname: true
       hide-url: true
   - name: s3
     group: infrastructure
