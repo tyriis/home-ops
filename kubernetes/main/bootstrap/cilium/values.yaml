@@ -21,9 +21,9 @@ cgroup:
 endpointRoutes:
   enabled: true
 hubble:
-  enabled: true
+  enabled: false
   relay:
-    enabled: true
+    enabled: false
 ipam:
   mode: kubernetes
 ipv4NativeRoutingCIDR: 10.244.0.0/16
