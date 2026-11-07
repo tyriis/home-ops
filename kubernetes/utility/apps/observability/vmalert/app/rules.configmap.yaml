@@ -115,6 +115,22 @@ data:
             annotations:
               summary: 'No docker host scrape target is up anywhere.'
               description: 'VictoriaMetrics holds no up series for any host job (doco-cd, minio, node-exporter, nvidia-gpu-exporter, smartctl-exporter, vlagent, vmagent) on any always-on host (agentix, bifrost, jarvis, synology, truenas). That is the host fleet or the central write path, not one host.'
+          # Blind-exporter floor: the scrape succeeds, so up stays 1, yet the exporter reads no
+          # SMART data at all. smartctl_devices keeps its value in that state because
+          # 'smartctl --scan' needs no SMART read, so zero per-disk temperature series is the
+          # only signal. Live on tyriis/home-ops#11791: the four NVMe hosts lost every read
+          # under 'cap_drop ALL + SYS_RAWIO' until #11794 added SYS_ADMIN (the kernel requires
+          # it for NVMe admin passthrough at nsid=0xffffffff).
+          # Always-on allowlist as in HostScrapeFleetGone: sleeping workstations write no up
+          # series, so a denylist here would only add false fires at wake-up races.
+          - alert: SmartctlExporterNoDiskData
+            expr: 'count by (host, instance) (up{job="smartctl-exporter", host=~"agentix|bifrost|jarvis|synology|truenas"}) unless count by (host, instance) (smartctl_device_temperature{host=~"agentix|bifrost|jarvis|synology|truenas"})'
+            for: 10m
+            labels:
+              severity: warning
+            annotations:
+              summary: 'smartctl-exporter on {{ $labels.host }} is scraped but reports no disk.'
+              description: 'up is 1 for {{ $labels.instance }} yet the store holds no smartctl_device_temperature series for it. The exporter is up and blind: it cannot read SMART (capabilities or device access), not a down scrape.'
 
       # TrueNAS no longer has an in-cluster scrape: docker/truenas/node-exporter listens on
       # loopback and the host's own vmagent pushes to this store, so the rule selects the
