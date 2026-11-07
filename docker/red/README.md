@@ -14,9 +14,9 @@ LLM/image tooling and an Arcane edge agent. GitOps via doco-cd with `TARGET=red`
 | comfyui                 | `comfyui.tyriis.dev` | `comfyui-nvidia:8188`               | —                |
 | comfyui-gallery         | `gallery.tyriis.dev` | `comfyui-gallery:8189`              | —                |
 | ollama (gated)          | `ollama.tyriis.dev`  | `ollama-auth:8080` → `ollama:11434` | —                |
-| node-exporter           | not proxied          | host net `:9100`                    | `:9100`          |
-| smartctl-exporter       | not proxied          | `:9633`                             | `:9633`          |
-| nvidia-gpu-exporter     | not proxied          | `:9835`                             | `:9835`          |
+| node-exporter           | not proxied          | host net `:9100`                    | `127.0.0.1:9100` |
+| smartctl-exporter       | not proxied          | `:9633`                             | `127.0.0.1:9633` |
+| nvidia-gpu-exporter     | not proxied          | `:9835`                             | `127.0.0.1:9835` |
 | busybox-enc             | —                    | SOPS decrypt smoke test             | —                |
 | arcane-agent            | —                    | outbound edge poll to bifrost       | —                |
 
@@ -33,9 +33,11 @@ that requires an OpenAI-style `Authorization: Bearer <key>` header before proxyi
 SOPS-encrypted `docker/red/ollama/sops.env`; no plaintext key is committed or placed in Compose
 labels.
 
-**Metrics are intentionally not proxied.** `node-exporter` needs `network_mode: host` for correct
-`netdev`/`netstat`/`sockstat` metrics (`/proc/net` is netns-scoped), so it and `smartctl-exporter`
-are scraped directly on the LAN.
+**Metrics are intentionally not proxied.** Every exporter publishes on loopback only and is
+scraped by this host's own `vmagent`, which remote-writes to the central store — hosts never
+accept inbound scrape traffic. `node-exporter` needs `network_mode: host` for correct
+`netdev`/`netstat`/`sockstat` metrics (`/proc/net` is netns-scoped) but still binds
+`127.0.0.1:9100`.
 
 ## First deploy
 
