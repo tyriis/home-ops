@@ -40,3 +40,23 @@ spec:
       interval: 10s
   targetLabels:
     - k8s-app
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmservicescrape_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: hubble
+spec:
+  namespaceSelector:
+    matchNames:
+      - kube-system
+  selector:
+    matchLabels:
+      k8s-app: hubble
+  endpoints:
+    - port: hubble-metrics
+      honorLabels: true
+      path: /metrics
+      interval: 10s
+  targetLabels:
+    - k8s-app
