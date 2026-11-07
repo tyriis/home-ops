@@ -64,7 +64,11 @@ services:
       - ${WEB_IP:-0.0.0.0}:${HTTPS_PORT:-443}:443
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "traefik", "healthcheck", "--ping"]
+      # The healthcheck process is a fresh traefik run and does NOT inherit the
+      # container's command flags: without the address it probes the default :8080
+      # and reports a false unhealthy. Keep this address in sync with
+      # --entryPoints.traefik.address above.
+      test: ["CMD", "traefik", "healthcheck", "--ping", "--entryPoints.traefik.address=127.0.0.1:8082"]
       interval: 30s
       timeout: 5s
       retries: 3
