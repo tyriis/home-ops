@@ -8,13 +8,13 @@ is made (see [Future: tailnet + YubiKey ssh-agent](#future-tailnet--yubikey-ssh-
 
 ## Services
 
-| Service   | Host port        | Deploy config           | Compose                                                      |
-| --------- | ---------------- | ----------------------- | ------------------------------------------------------------ |
-| new-api   | `3000`           | `.doco-cd.bifrost.yaml` | `deploy/new-api` (digest-pinned image)                       |
-| traefik   | `80`/`443`       | `.doco-cd.bifrost.yaml` | `deploy/traefik` (tag-pinned image, bifrost include shim)    |
-| sparkDash | `8080`           | `.doco-cd.bifrost.yaml` | `deploy/sparkdash` (built from local clone — see its README) |
-| arcane    | — (Traefik)      | `.doco-cd.bifrost.yaml` | `deploy/arcane` (digest-pinned image)                        |
-| vlagent   | `127.0.0.1:9500` | `.doco-cd.bifrost.yaml` | `deploy/victoria-logs-collector` (log shipper, see below)    |
+| Service   | Host port        | Deploy config           | Compose                                                   |
+| --------- | ---------------- | ----------------------- | --------------------------------------------------------- |
+| new-api   | `3000`           | `.doco-cd.bifrost.yaml` | `deploy/new-api` (digest-pinned image)                    |
+| traefik   | `80`/`443`       | `.doco-cd.bifrost.yaml` | `deploy/traefik` (tag-pinned image, bifrost include shim) |
+| sparkDash | `8080`           | — **not managed**       | none in repo (built from a local clone — see below)       |
+| arcane    | — (Traefik)      | `.doco-cd.bifrost.yaml` | `deploy/arcane` (digest-pinned image)                     |
+| vlagent   | `127.0.0.1:9500` | `.doco-cd.bifrost.yaml` | `deploy/victoria-logs-collector` (log shipper, see below) |
 
 **Log shipping:** `victoria-logs-collector/` tails the Lightwhale host syslog
 (`/var/log/messages`, BusyBox `syslogd`) and ships it to VictoriaLogs (`https://logs.techtales.io`)
@@ -54,8 +54,8 @@ build context, the `./data` / `./config` / `./keys` binds) resolve against this 
 not the deploy dir. Why a shim: doco-cd runs compose in `working_dir` and hard-fails with
 "no compose files found" unless a compose file is resolvable there. **Symlinks into the working
 dir are intentionally avoided** — they resolve technically but are a known source of redeploy-hash
-churn (doco-cd #954) and path-escape false positives (v0.74 regressions #1142/#1086/#1152); the
-older hosts (synology/truenas) still use symlinks but are out of scope for migration.
+churn (doco-cd #954) and path-escape false positives (v0.74 regressions #1142/#1086/#1152); no
+host in this repo uses them.
 
 `.env` holds plain values (`TARGET`, ports), `sops.env` holds sops-encrypted secrets (committed
 placeholders here must be replaced with real sops-encrypted files before first deploy:
