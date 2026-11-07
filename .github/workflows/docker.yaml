@@ -1,0 +1,31 @@
+---
+name: docker
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - docker/**
+      - scripts/hooks/check-docker-compose.sh
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: docker / compose config
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: compose version
+        run: docker compose version
+
+      - name: validate compose files
+        run: bash scripts/hooks/check-docker-compose.sh

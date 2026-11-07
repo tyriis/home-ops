@@ -25,6 +25,16 @@ repos:
         entry: scripts/hooks/check-cnpg-barman-destinationpath.sh
         files: ^(kubernetes|devenv)/.*\.ya?ml$
 
+  # compose files and doco-cd stack wiring must validate before merge: a bad
+  # include/env_files only fails inside a single host's deploy log, never in CI.
+  - repo: local
+    hooks:
+      - id: check-docker-compose
+        name: docker compose files validate
+        language: script
+        entry: scripts/hooks/check-docker-compose.sh
+        files: ^docker/.*compose\.yaml$
+
   - repo: https://github.com/thlorenz/doctoc
     rev: v2.5.0
     hooks:
