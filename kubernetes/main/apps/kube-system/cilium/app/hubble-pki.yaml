@@ -1,0 +1,37 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cert-manager.io/issuer_v1.json
+# Private CA for Hubble's mTLS: selfsigned root -> CA certificate -> CA issuer.
+# The ACME ClusterIssuers cannot sign *.hubble-grpc.cilium.io, and cert-manager's
+# certmanager method signs leaves directly, so the referenced issuer must be CA-backed.
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: hubble-selfsign
+spec:
+  selfSigned: {}
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: hubble-ca
+spec:
+  secretName: hubble-ca
+  duration: 43800h
+  commonName: ca.hubble.cilium.io
+  isCA: true
+  # Never: a rotated CA key would leave already-issued leaves signed by the old key.
+  privateKey:
+    rotationPolicy: Never
+  issuerRef:
+    name: hubble-selfsign
+    kind: Issuer
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cert-manager.io/issuer_v1.json
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: hubble-ca
+spec:
+  ca:
+    secretName: hubble-ca

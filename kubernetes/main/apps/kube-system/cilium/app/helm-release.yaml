@@ -49,8 +49,27 @@ spec:
     #   enableAlpn: true
     #   xffNumTrustedHops: 1
     hubble:
-      # FIXME
-      enabled: false
+      enabled: true
+      tls:
+        auto:
+          method: certmanager
+          certManagerIssuerRef:
+            group: cert-manager.io
+            kind: Issuer
+            name: hubble-ca
+      relay:
+        enabled: true
+        rollOutPods: true
+        tls:
+          server:
+            enabled: true
+            mtls: true
+        resources:
+          requests:
+            cpu: 25m
+            memory: 128Mi
+          limits:
+            memory: 512Mi
       metrics:
         enabled:
           - dns:query;ignoreAAAA
@@ -60,39 +79,12 @@ spec:
           - port-distribution
           - icmp
           - http
-        # Read only when hubble.enabled is true; re-enable together with it.
-        # serviceMonitor:
-        #   enabled: true
+        serviceMonitor:
+          enabled: true
         dashboards:
           enabled: true
           annotations:
             grafana_folder: Cilium
-      # ui:
-      #   enabled: false
-      #   rollOutPods: false
-      #   ingress:
-      #     enabled: true
-      #     className: traefik
-      #     annotations:
-      #       cert-manager.io/cluster-issuer: letsencrypt-production
-      #       kubernetes.io/tls-acme: "true"
-      #       traefik.ingress.kubernetes.io/router.middlewares: traefik-ingress-sso@kubernetescrd
-      #       traefik.ingress.kubernetes.io/router.entrypoints: websecure
-      #       traefik.ingress.kubernetes.io/affinity: "true"
-      #       traefik.ingress.kubernetes.io/router.tls: "true"
-      #       external-dns/opnsense: "true"
-      #       gethomepage.dev/enabled: "true"
-      #       gethomepage.dev/description: Networking, Observability, and Security
-      #       gethomepage.dev/group: Networking
-      #       gethomepage.dev/icon: cilium
-      #       gethomepage.dev/name: Hubble
-      #       gethomepage.dev/weight: "10" # optional
-      #     hosts:
-      #       - &host hubble.techtales.io
-      #     tls:
-      #       - hosts:
-      #           - *host
-      #         secretName: hubble-tls
     ipam:
       mode: kubernetes
     ipv4NativeRoutingCIDR: 10.244.0.0/16

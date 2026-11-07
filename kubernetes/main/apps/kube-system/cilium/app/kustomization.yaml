@@ -7,3 +7,4 @@ resources:
   - ./helm-release.yaml
   - ./grafana-dashboard.yaml
   - ./vm-service-scrape.yaml
+  - ./hubble-pki.yaml
