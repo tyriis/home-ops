@@ -25,9 +25,10 @@ services:
 
   smartctl-exporter:
     scale: ${ENABLE_SMARTCTL_EXPORTER:-1} # scale to 0 if you want to stop the service without losing data
-
-    # container_name: ${CONTAINER_NAME:-doco-cd}
-
+    cap_add:
+      - SYS_RAWIO
+    cap_drop:
+      - ALL
     container_name: smartctl-exporter
     logging:
       driver: json-file
@@ -42,6 +43,8 @@ services:
     command:
       - --web.listen-address=127.0.0.1:9633
     network_mode: host
-    privileged: true
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges=true
+    # root stays: the image default user (nobody) cannot open 0600 root:root disks.
     user: root

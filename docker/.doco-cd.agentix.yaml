@@ -1,6 +1,6 @@
 ---
 name: node-exporter
-working_dir: docker/deploy/node-exporter
+working_dir: docker/agentix/node-exporter
 ---
 name: arcane-agent
 working_dir: docker/agentix/arcane-agent
