@@ -8,6 +8,7 @@ on:
     paths:
       - docker/**
       - scripts/hooks/check-docker-compose.sh
+      - .github/workflows/docker.yaml
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
