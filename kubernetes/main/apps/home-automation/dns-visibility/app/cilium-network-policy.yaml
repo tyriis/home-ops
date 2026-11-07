@@ -1,7 +1,8 @@
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
-# enableDefaultDeny: false keeps this observational — it installs the DNS proxy (and
+# enableDefaultDeny off keeps this observational — it installs the DNS proxy (and
 # therefore the hubble dns metrics) without switching the namespace to default-deny.
+# Cilium 1.20 takes per-direction booleans, not a single boolean.
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
@@ -10,7 +11,9 @@ spec:
   endpointSelector:
     matchLabels:
       k8s:io.kubernetes.pod.namespace: home-automation
-  enableDefaultDeny: false
+  enableDefaultDeny:
+    egress: false
+    ingress: false
   egress:
     - toEndpoints:
         - matchLabels:
