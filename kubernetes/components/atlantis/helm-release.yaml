@@ -134,7 +134,7 @@ spec:
             interval: 15s
 
     route:
-      main:
+      app:
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Terraform Pull Request Automation
