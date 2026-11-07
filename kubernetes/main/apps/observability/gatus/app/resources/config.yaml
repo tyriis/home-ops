@@ -162,7 +162,9 @@ endpoints:
   # --- truenas ---
   - name: olah
     group: internal
-    url: https://hf.techtales.io
+    # olah answers 500 on the bare origin root (mirror catch-all has no route there).
+    # Probe the metadata route hf clients hit first: 200 proves the proxy path works.
+    url: https://hf.techtales.io/api/models/bert-base-cased
     interval: 1m
     conditions:
       - "[STATUS] < 500"
