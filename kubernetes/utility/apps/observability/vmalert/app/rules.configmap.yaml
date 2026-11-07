@@ -94,8 +94,10 @@ data:
           # Jobs absent from a host's config produce no series and therefore never fire here.
           # host!="" is load-bearing: utility's vmagent writes the same job names to this store;
           # only docker-host series carry a host label.
+          # Workstations (red, purple, hades, coal, carbon) are off-by-policy when idle;
+          # excluded so wake/sleep churn never pages.
           - alert: HostScrapeFailing
-            expr: 'up{job=~"doco-cd|minio|node-exporter|nvidia-gpu-exporter|smartctl-exporter|vlagent|vmagent", host!=""} == 0'
+            expr: 'up{job=~"doco-cd|minio|node-exporter|nvidia-gpu-exporter|smartctl-exporter|vlagent|vmagent", host!="", host!~"red|purple|hades|coal|carbon"} == 0'
             for: 10m
             labels:
               severity: warning
@@ -103,12 +105,13 @@ data:
               summary: '{{ $labels.job }} on {{ $labels.host }} answers no scrape.'
               description: 'vmagent on {{ $labels.host }} has failed every scrape of {{ $labels.job }} at {{ $labels.instance }} for 10 minutes. A 403 on minio means the token no longer authorises admin:Prometheus; any other failure is the exporter itself.'
           # The floor case: no host writes at all, so up==0 cannot fire for anything.
-          # Without host!="" the utility cluster's own jobs would keep this satisfied forever.
+          # An always-on host allowlist: workstations are off by policy when idle, so they
+          # must not satisfy the floor; adding an always-on host means adding it here.
           - alert: HostScrapeFleetGone
-            expr: 'absent(up{job=~"doco-cd|minio|node-exporter|nvidia-gpu-exporter|smartctl-exporter|vlagent|vmagent", host!=""})'
+            expr: 'absent(up{job=~"doco-cd|minio|node-exporter|nvidia-gpu-exporter|smartctl-exporter|vlagent|vmagent", host=~"agentix|bifrost|jarvis|synology|truenas"})'
             for: 15m
             labels:
               severity: critical
             annotations:
               summary: 'No docker host scrape target is up anywhere.'
-              description: 'VictoriaMetrics holds no up series for any host job (doco-cd, minio, node-exporter, nvidia-gpu-exporter, smartctl-exporter, vlagent, vmagent), so no docker host is remote writing. That is the host fleet or the central write path, not one host.'
+              description: 'VictoriaMetrics holds no up series for any host job (doco-cd, minio, node-exporter, nvidia-gpu-exporter, smartctl-exporter, vlagent, vmagent) on any always-on host (agentix, bifrost, jarvis, synology, truenas). That is the host fleet or the central write path, not one host.'
