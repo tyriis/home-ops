@@ -52,6 +52,7 @@ spec:
       enabled: true
       relay:
         enabled: true
+        rollOutPods: true
         resources:
           requests:
             cpu: 25m
