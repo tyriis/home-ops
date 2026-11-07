@@ -23,7 +23,7 @@
 
 - A PR that edits a gate's own workflow file must start that gate — every task adds the workflow file to its own `paths`.
 - A PR touching both `kubernetes/` and `docker/` must start both gates — `paths` are per-workflow, never exclusive.
-- `kubernetes/` holds 4 `.yml` and 21 non-YAML files that the old `kubernetes/**.yaml` glob missed — Task 2 asserts they now match.
+- `kubernetes/` holds 4 `.yml` and 56 non-YAML files (60 non-`.yaml` in total) that the old `kubernetes/**.yaml` glob missed — Task 1 Step 4 asserts they now match.
 - A `workflow_dispatch` run must still work after the trigger edit on `deadvalues` and `MegaLinter`.
 - Renovate runs hourly; the new concurrency group must queue, not cancel, so two runs never overlap and neither is killed mid-update.
 
@@ -266,4 +266,4 @@ git push -u origin feature/ci-area-path-filters
 ```
 Then present the commits and ask whether to open a PR. Do not open one unasked.
 
-Post-merge empirical check (owner, not implementer): a docs-only PR starts only MegaLinter, Dependency Review and the labeler; a `kubernetes/` PR starts `flate` and `deadvalues`; a `docker/` PR starts `docker` only.
+Post-merge empirical check (owner, not implementer): a docs-only PR starts only MegaLinter, Dependency Review and the labeler; a `kubernetes/` PR starts `flate` and `deadvalues`; a `docker/` PR starts `docker` among the area gates — MegaLinter, Dependency Review and the labeler always run too.

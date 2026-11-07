@@ -111,7 +111,8 @@ template's minimum.
   matched by its `paths` entry and that no file outside the area matches.
 - Empirical: after merge, a docs-only PR starts only MegaLinter, Dependency
   Review and the labeler; a `kubernetes/` PR starts `flate` and `deadvalues`; a
-  `docker/` PR starts `docker` only.
+  `docker/` PR starts `docker` among the area gates — MegaLinter, Dependency
+  Review and the labeler always run too.
 
 ## Left to the builder
 

@@ -35,6 +35,7 @@ env:
 jobs:
   renovate:
     name: Renovate
+    timeout-minutes: 90
     #runs-on: ubuntu-latest
     runs-on: tyriis-home-ops-runner
     steps:
