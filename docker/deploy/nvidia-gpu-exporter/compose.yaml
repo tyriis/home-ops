@@ -20,5 +20,5 @@ services:
       NVIDIA_DRIVER_CAPABILITIES: utility
     image: utkuozdemir/nvidia_gpu_exporter:1.18.0-nvml@sha256:bf82122fdf8cc960b1233e33dea82767a711343fa2919d525ca9199e83cc5195
     ports:
-      - 9835:9835
+      - 127.0.0.1:9835:9835
     restart: unless-stopped
