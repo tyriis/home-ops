@@ -16,6 +16,9 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.arcane.rule=Host(`arcane.techtales.io`)"
       - "traefik.http.routers.arcane.entrypoints=websecure"
+      # Traefik auto-links a router only when the container has exactly one Service;
+      # arcane-grpc below is the second, so this link must stay explicit.
+      - "traefik.http.routers.arcane.service=arcane"
       - "traefik.http.services.arcane.loadbalancer.server.port=3552"
       # The tunnel path serves gRPC and the websocket fallback, so only gRPC requests may
       # take an h2c service — scheme=h2c on the router above would break websockets.
