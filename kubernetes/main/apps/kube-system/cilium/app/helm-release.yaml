@@ -53,6 +53,10 @@ spec:
       relay:
         enabled: true
         rollOutPods: true
+        tls:
+          server:
+            enabled: true
+            mtls: true
         resources:
           requests:
             cpu: 25m

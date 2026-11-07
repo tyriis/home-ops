@@ -118,11 +118,11 @@ PR conversation before merge.
    `hubble.tls.auto.method: cronJob` (chart-provided certgen Job + quarterly CronJob, auto-renewal, one more Job that
    must succeed before the relay is usable), or stay on `helm` and schedule the leaf deletion (`hubble-server-certs`,
    `hubble-relay-client-certs`) before day ~330 so the next reconcile re-signs them from the unchanged `cilium-ca`.
-2. **Relay authentication.** `hubble.relay.tls.server` is off by default, so any pod in any namespace can stream flow
-   metadata (workloads, namespaces, DNS, L7) from `hubble-relay.kube-system:80` with no client auth. The plan already
-   refuses the UI on exactly that ground, yet the relay carries the same data. Options: turn on
-   `hubble.relay.tls.server.enabled: true` (+ `mtls`) and distribute the client cert, or accept the in-cluster
-   plaintext relay in writing and give it an explicit rule in the #8068 default-deny rollout.
+2. **Relay authentication — decided: mTLS.** `hubble.relay.tls.server.enabled: true` with `mtls: true`. The relay
+   now presents `hubble-relay-server-certs` and verifies client certs against the same CA, so a pod without a
+   certificate cannot read flows from `hubble-relay.kube-system:80`. Clients (`hubble observe`, a future UI) need a
+   cert signed by that CA — the relay's own client pair in `hubble-relay-client-certs` works for the CLI. Note this
+   is a chart-level boolean, not an object: `hubble.relay.tls.server.mtls: true` (the schema rejects a mapping).
 
 ---
 
@@ -147,6 +147,10 @@ Replace lines 51–95 of `kubernetes/main/apps/kube-system/cilium/app/helm-relea
       relay:
         enabled: true
         rollOutPods: true
+        tls:
+          server:
+            enabled: true
+            mtls: true
         resources:
           requests:
             cpu: 25m
@@ -228,7 +232,9 @@ themselves come from Task 2 — until the metrics path exists there is nothing t
 
 Optional, only if a `hubble` CLI is available locally: port-forward the relay Service
 (`kubectl -n kube-system port-forward svc/hubble-relay 4245:80`; the Service maps port 80 to `grpc`), then
-`hubble observe --server localhost:4245` with the `hubble-relay-client-certs` material copied out.
+`hubble observe --server localhost:4245 --tls` with the CA and client pair taken from `hubble-relay-client-certs`
+(`ca.crt` as `--tls-ca-cert-files`, `tls.crt`/`tls.key` as `--tls-client-cert-file`/`--tls-client-key-file`).
+Relay mTLS is on, so a plain `hubble observe` is refused by design.
 
 ---
 
