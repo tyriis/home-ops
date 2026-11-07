@@ -107,7 +107,7 @@ endpoints:
     ui:
       hide-hostname: false
       hide-url: false
-  - name: MinIO
+  - name: silo
     group: infrastructure
     url: https://minio.techtales.io
     interval: 1m
@@ -140,14 +140,14 @@ endpoints:
   # challenge passes. Hence "< 500" rather than "== 200".
   # --- bifrost ---
   - name: arcane
-    group: infrastructure
+    group: internal
     url: https://arcane.techtales.io
     interval: 1m
     conditions:
       - "[STATUS] < 500"
     ui:
-      hide-hostname: false
-      hide-url: false
+      hide-hostname: true
+      hide-url: true
   - name: techtales-ai
     group: infrastructure
     url: https://techtales.ai
@@ -158,8 +158,8 @@ endpoints:
       hide-hostname: false
       hide-url: false
   # --- truenas ---
-  - name: hf
-    group: infrastructure
+  - name: olah
+    group: internal
     url: https://hf.techtales.io
     interval: 1m
     conditions:
@@ -167,7 +167,7 @@ endpoints:
     ui:
       hide-hostname: false
       hide-url: false
-  - name: minio-s3
+  - name: s3
     group: infrastructure
     url: https://s3.techtales.io
     interval: 1m
