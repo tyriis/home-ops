@@ -68,5 +68,5 @@ License acceptance for gated models stays tied to the token's HF account. `trans
 - The vestigial `~/.olah` dir (HOME=/data/repos, so it lands on the dataset as `.olah`) holds disposable SQLite state; nothing there needs persisting beyond the cache itself.
 - v0.x upgrades may require wiping the cache dataset between versions (upstream: cached data is not migratable).
   Pin bumps ride the existing `docker/` Renovate flow — test before promoting, then `rm -rf /mnt/tank/olah/*` if the app reports CRC/format mismatches after a version change.
-- The upstream compose example references the stale typo tag `lastet`; this repo pins `xiahan2019/olah:0.5.1@sha256:...` instead.
+- The upstream compose example references the stale typo tag `lastet`. This repo pins the image by digest instead, and Renovate keeps that pin current — the version lives only in `docker/deploy/olah/compose.yaml`.
 - Acceptance test: `HF_ENDPOINT=https://hf.techtales.io hf download <public repo>` twice — the second run must complete at LAN speed with zero NAS egress.

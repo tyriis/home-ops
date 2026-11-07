@@ -1,9 +1,3 @@
-# ---
-# # For testing only
-# name: busybox-enc
-# working_dir: docker/synology/busybox-enc
-# env_files:
-#   - .env
 ---
 name: node-exporter
 working_dir: docker/synology/node-exporter

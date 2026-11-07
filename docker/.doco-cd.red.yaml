@@ -1,9 +1,3 @@
-# ---
-# this does not work when updated :(
-# name: doco-cd
-# working_dir: docker/deploy/doco-cd
-# env_files:
-#   - red.env
 ---
 # Traefik first: it creates the shared `apps` network and the TLS entry points before
 # the labelled services attach.
