@@ -5,17 +5,19 @@ include:
 
 services:
   node-exporter:
-    # truenas (nas.techtales.io, 192.168.100.2) is still live-scraped over LAN by the
-    # legacy main-cluster prometheus (up{instance="nas.techtales.io:9100|:9633"}).
-    # Drop this block only once those legacy jobs are retired.
     command:
       - --path.rootfs=/host/root
       - --path.procfs=/host/proc
       - --path.sysfs=/host/sys
       - --path.udev.data=/host/root/run/udev/data
-      - --web.listen-address=0.0.0.0:9100
+      - --web.listen-address=127.0.0.1:9100
       - --collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)
   smartctl-exporter:
     command:
-      - --smartctl.device-exclude=sde
-      - --web.listen-address=0.0.0.0:9633
+      - --web.listen-address=127.0.0.1:9633
+    devices:
+      - "/dev/sda:/dev/sda:r"
+      - "/dev/sdb:/dev/sdb:r"
+      - "/dev/sdc:/dev/sdc:r"
+      - "/dev/sdd:/dev/sdd:r"
+      - "/dev/nvme0:/dev/nvme0:r"

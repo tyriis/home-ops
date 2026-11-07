@@ -24,8 +24,8 @@ spec:
           - name: alertname
             value: NodeMemoryHighUtilization
             matchType: "="
-          - name: instance
-            value: nas.techtales.io:9100
+          - name: host
+            value: truenas
             matchType: "="
       - receiver: "null"
         matchers:

@@ -1,0 +1,10 @@
+---
+include:
+  - path: ../../deploy/node-exporter/compose.yaml
+    project_directory: .
+
+services:
+  smartctl-exporter:
+    devices:
+      - "/dev/nvme0:/dev/nvme0:r"
+      - "/dev/nvme1:/dev/nvme1:r"
