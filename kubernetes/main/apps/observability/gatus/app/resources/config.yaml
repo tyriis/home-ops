@@ -43,6 +43,8 @@ endpoints:
       dns-resolver: tcp://192.168.1.1:53
     conditions:
       - "[STATUS] == 200"
+    ui:
+      hide-url: true
   - name: locking-service
     group: internal
     url: http://locking-service.home-automation.svc.cluster.local:3000/health
@@ -166,7 +168,7 @@ endpoints:
       - "[STATUS] < 500"
     ui:
       hide-hostname: false
-      hide-url: false
+      hide-url: true
   - name: s3
     group: infrastructure
     url: https://s3.techtales.io
