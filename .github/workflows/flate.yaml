@@ -6,7 +6,8 @@ on:
     branches:
       - main
     paths:
-      - kubernetes/**.yaml
+      - kubernetes/**
+      - .github/workflows/flate.yaml
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}

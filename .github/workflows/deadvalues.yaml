@@ -11,8 +11,12 @@ name: deadvalues
 
 on:
   pull_request:
+    branches:
+      - main
     paths:
-      - "**/*.yaml"
+      - kubernetes/**
+      - .deadvalues.yaml
+      - .github/workflows/deadvalues.yaml
   workflow_dispatch:
 
 permissions:

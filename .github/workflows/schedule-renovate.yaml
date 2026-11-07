@@ -21,8 +21,11 @@ on:
     paths:
       - .github/renovate.json5
       - .github/renovate-bot.json5
-      - .github/renovate/**.json5
       - .github/workflows/schedule-renovate.yaml
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
 
 env:
   LOG_LEVEL: debug
@@ -32,6 +35,7 @@ env:
 jobs:
   renovate:
     name: Renovate
+    timeout-minutes: 90
     #runs-on: ubuntu-latest
     runs-on: tyriis-home-ops-runner
     steps:
