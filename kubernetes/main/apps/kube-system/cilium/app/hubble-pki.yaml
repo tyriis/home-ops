@@ -20,6 +20,9 @@ spec:
   duration: 43800h
   commonName: ca.hubble.cilium.io
   isCA: true
+  # Never: a rotated CA key would leave already-issued leaves signed by the old key.
+  privateKey:
+    rotationPolicy: Never
   issuerRef:
     name: hubble-selfsign
     kind: Issuer

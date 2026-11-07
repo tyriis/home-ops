@@ -20,6 +20,7 @@ cgroup:
   hostRoot: /sys/fs/cgroup
 endpointRoutes:
   enabled: true
+# off: bootstrap predates cert-manager, and cluster.name differs from the HelmRelease
 hubble:
   enabled: false
   relay:

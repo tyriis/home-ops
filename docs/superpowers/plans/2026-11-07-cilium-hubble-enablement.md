@@ -124,11 +124,14 @@ paste: `/tmp/opencode/issue-10183.md`.
    upgrades (`lookup`), so mTLS would die silently a year in. `method: certmanager` hands the same Secrets to
    cert-manager, which renews at two thirds of lifetime. Cost, accepted: a private CA has to exist in the cluster
    (this change adds one) and the relay cannot start while cert-manager is unhealthy — the relay's TLS volume is not
-   optional, so it stays `Pending` instead of coming up without certs. The agent's volume *is* optional, so a
-   cert-manager outage never blocks a CNI rollout or cluster networking.
+   optional, so it stays `Pending` instead of coming up without certs — and because Flux Helm runs with `--wait`,
+   an unissued certificate can instead fail the whole release after the timeout (`cleanupOnFail` then rolls back).
+   Either way the blast radius is Hubble, never the CNI: the agent's volume *is* optional, so a cert-manager outage
+   cannot block a rollout or cluster networking. Verify cert-manager and `certificate/hubble-ca` are healthy before
+   reconciling the HelmRelease.
 2. **Relay authentication — decided: mTLS.** `hubble.relay.tls.server.enabled: true` with `mtls: true`. The relay
    now presents `hubble-relay-server-certs` and verifies client certs against the same CA, so a pod without a
-   certificate cannot read flows from `hubble-relay.kube-system:80`. Clients (`hubble observe`, a future UI) need a
+   certificate cannot read flows from `hubble-relay.kube-system:443`. Clients (`hubble observe`, a future UI) need a
    cert signed by that CA — the relay's own client pair in `hubble-relay-client-certs` works for the CLI. Note this
    is a chart-level boolean, not an object: `hubble.relay.tls.server.mtls: true` (the schema rejects a mapping).
 
@@ -225,6 +228,9 @@ spec:
   duration: 43800h
   commonName: ca.hubble.cilium.io
   isCA: true
+  # Never: a rotated CA key would leave already-issued leaves signed by the old key.
+  privateKey:
+    rotationPolicy: Never
   issuerRef:
     name: hubble-selfsign
     kind: Issuer
@@ -245,14 +251,14 @@ stamps `targetNamespace: kube-system`.
 
 - [ ] **Step 3: Leave the bootstrap values alone**
 
-`kubernetes/main/bootstrap/cilium/values.yaml` keeps `hubble.enabled: false` / `relay.enabled: false`. This is the
-one place the plan deliberately does **not** mirror the HelmRelease: bootstrap renders `cluster.name: main`, the
-HelmRelease renders `kube-lab`, and the Hubble server cert SAN is derived from `cluster.name`. Enabling hubble at
-bootstrap creates `hubble-server-certs` for `*.main.hubble-grpc.cilium.io`; the first Flux upgrade keeps that leaf
-(`lookup`) but writes `cluster-name: kube-lab` into `hubble-relay-config`, so the relay looks for
-`hubble-peer.kube-lab.hubble-grpc.cilium.io` and never becomes ready. Bootstrap also has no cert-manager yet. Only
-mirror this file after the `FLUX_CLUSTER_NAME` FIXME in
-`kubernetes/main/apps/kube-system/cilium/flux-sync.yaml` is resolved so both sides agree.
+`kubernetes/main/bootstrap/cilium/values.yaml` keeps `hubble.enabled: false` / `relay.enabled: false`, with a
+one-line anchor comment saying so. This is the one place the plan deliberately does **not** mirror the HelmRelease,
+for two reasons. First, bootstrap is applied with `kubectl apply -f -` before cert-manager exists, so the
+`Certificate` objects the render would contain are unknown kinds and the apply fails. Second, bootstrap renders
+`cluster.name: main` while the HelmRelease renders `kube-lab`, and the Hubble server cert SAN is derived from
+`cluster.name` — wiring cert-manager into bootstrap would ask it for `*.main.hubble-grpc.cilium.io` while the relay
+looks for `hubble-peer.kube-lab.hubble-grpc.cilium.io`. Only mirror this file after the `FLUX_CLUSTER_NAME` FIXME in
+`kubernetes/main/apps/kube-system/cilium/flux-sync.yaml` is resolved and deliberately.
 
 Do not add `hubble.metrics` there either: bootstrap runs before kube-prometheus-stack installs the
 `monitoring.coreos.com` CRDs, and a ServiceMonitor in that render would fail to apply.
@@ -282,8 +288,23 @@ git commit -m "feat(cilium): enable hubble and hubble relay on main"
 
 - [ ] **Step 6: Reconcile and confirm certs, agents and relay**
 
-Run: `flux reconcile kustomization cilium -n kube-system --with-source` and
-`flux reconcile helmrelease cilium -n kube-system --with-source` (or wait for the 30m interval).
+Before anything else, confirm cert-manager is healthy — a cert-manager that cannot issue turns this release into a
+failed Helm upgrade rather than a `Pending` relay:
+
+```bash
+kubectl -n cert-manager get pods
+```
+
+Then reconcile the app (which creates the Issuers and the CA `Certificate` alongside the HelmRelease), wait for
+`hubble-ca` to be `Ready`, and only then reconcile the release:
+
+```bash
+flux reconcile kustomization cilium -n kube-system --with-source
+kubectl -n kube-system wait --for=condition=Ready certificate/hubble-ca --timeout=120s
+flux reconcile helmrelease cilium -n kube-system --with-source
+```
+
+(or wait for the 30m interval if you would rather not force it).
 
 Run: `kubectl -n kube-system get certificate`
 Expected: `hubble-ca`, `hubble-server-certs`, `hubble-relay-client-certs`, `hubble-relay-server-certs` all `Ready`
@@ -305,15 +326,23 @@ Expected: no `connection refused`; the config the relay loaded names the peer se
 - [ ] **Step 7: Confirm the credentials the agent and relay mount**
 
 Run: `kubectl -n kube-system get secret hubble-ca hubble-server-certs hubble-relay-client-certs hubble-relay-server-certs -o jsonpath='{range .items[*]}{.metadata.name}: {.data}{"\n"}{end}'`
-Expected: keys `ca.crt`, `tls.crt`, `tls.key` on each leaf (`hubble-ca` also carries `tls-computing.crt`, which is
-fine). `client.crt` / `client.key` / `hubble-server-ca.crt` are the projected-volume filenames inside the relay pod,
-not Secret keys.
+Expected: keys `ca.crt`, `tls.crt`, `tls.key` on each of the four. `client.crt` / `client.key` /
+`hubble-server-ca.crt` are the projected-volume filenames inside the relay pod, not Secret keys.
 
-Optional, only if a `hubble` CLI is available locally: port-forward the relay Service
-(`kubectl -n kube-system port-forward svc/hubble-relay 4245:80`; the Service maps port 80 to `grpc`), then
-`hubble observe --server localhost:4245 --tls` with the CA and client pair taken from `hubble-relay-client-certs`
-(`ca.crt` as `--tls-ca-cert-files`, `tls.crt`/`tls.key` as `--tls-client-cert-file`/`--tls-client-key-file`).
-Relay mTLS is on, so a plain `hubble observe` is refused by design.
+Optional, only if a `hubble` CLI is available locally. The Service port is **443**, not 80, once relay server TLS is
+on (the chart picks `hubble.relay.tls.server.enabled | ternary 443 80`), and the server certificate's only SAN is
+`*.hubble-relay.cilium.io`, so the CLI must be told the server name:
+
+```bash
+kubectl -n kube-system port-forward svc/hubble-relay 4245:443
+hubble observe --server localhost:4245 --tls \
+  --tls-server-name ui.hubble-relay.cilium.io \
+  --tls-ca-cert-files ca.crt \
+  --tls-client-cert-file tls.crt --tls-client-key-file tls.key
+```
+
+with the three files extracted from `hubble-relay-client-certs`. Relay mTLS is on, so a plain `hubble observe` — or a
+run without `--tls-server-name` — is refused by design.
 
 ---
 
