@@ -134,3 +134,48 @@ endpoints:
     ui:
       hide-hostname: false
       hide-url: false
+  # Docker-host routes. Several of these answer 401/403/302 by design (API auth, S3 root,
+  # login redirects), so the check asserts the route is alive rather than a specific page:
+  # a 502/503 from Traefik, a DNS failure or a bad certificate all fail it, an auth
+  # challenge passes. Hence "< 500" rather than "== 200".
+  # --- bifrost ---
+  - name: arcane
+    group: infrastructure
+    url: https://arcane.techtales.io
+    interval: 1m
+    conditions:
+      - "[STATUS] < 500"
+    ui:
+      hide-hostname: false
+      hide-url: false
+  - name: techtales-ai
+    group: infrastructure
+    url: https://techtales.ai
+    interval: 1m
+    conditions:
+      - "[STATUS] < 500"
+    ui:
+      hide-hostname: false
+      hide-url: false
+  # --- truenas ---
+  - name: hf
+    group: infrastructure
+    url: https://hf.techtales.io
+    interval: 1m
+    conditions:
+      - "[STATUS] < 500"
+    ui:
+      hide-hostname: false
+      hide-url: false
+  - name: minio-s3
+    group: infrastructure
+    url: https://s3.techtales.io
+    interval: 1m
+    conditions:
+      - "[STATUS] < 500"
+    ui:
+      hide-hostname: false
+      hide-url: false
+  # jarvis routes (openchamber, hermes-jarvis, jarvis-a2a) are absent on purpose: they
+  # live on 192.168.30.100 and nothing in the cluster has yet proven a route to that
+  # subnet. Add them once reachability is confirmed, or they read as a broken host.

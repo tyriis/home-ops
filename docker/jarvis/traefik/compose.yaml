@@ -50,6 +50,9 @@ services:
       # Resolve non-Docker proxy targets via the host resolver; host.docker.internal then
       # resolves from extra_hosts (host-gateway). Traefik >= v3.7 flag group.
       - --hostresolver=true
+      # Healthcheck ping, loopback only — keep in sync with the shared base command.
+      - --ping=true
+      - --entryPoints.traefik.address=127.0.0.1:8082
     volumes:
       - config:/certs
       - /var/run/docker.sock:/var/run/docker.sock:ro

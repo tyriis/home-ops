@@ -49,6 +49,10 @@ services:
       # Docker Provider
       - --providers.docker=true
       - --providers.docker.exposedByDefault=false
+      # Loopback-bound ping endpoint: the healthcheck probes it, and the fleet invariant
+      # is that no admin/metrics port is reachable off-host (see docker/deploy/vmagent).
+      - --ping=true
+      - --entryPoints.traefik.address=127.0.0.1:8082
     env_file:
       # SOPS-encrypted secrets, decrypted by doco-cd at deploy time (CF_DNS_API_TOKEN;
       # token auth needs no CF_API_EMAIL / CF_API_KEY)
@@ -59,6 +63,12 @@ services:
       - ${WEB_IP:-0.0.0.0}:${HTTP_PORT:-80}:80
       - ${WEB_IP:-0.0.0.0}:${HTTPS_PORT:-443}:443
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "traefik", "healthcheck", "--ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
     security_opt:
       - no-new-privileges=true
     volumes:

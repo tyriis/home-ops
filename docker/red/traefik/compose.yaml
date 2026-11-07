@@ -40,3 +40,6 @@ services:
       # Docker provider
       - --providers.docker=true
       - --providers.docker.exposedByDefault=false
+      # Healthcheck ping, loopback only — keep in sync with the shared base command.
+      - --ping=true
+      - --entryPoints.traefik.address=127.0.0.1:8082
