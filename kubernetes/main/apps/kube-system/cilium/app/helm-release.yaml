@@ -50,6 +50,13 @@ spec:
     #   xffNumTrustedHops: 1
     hubble:
       enabled: true
+      tls:
+        auto:
+          method: certmanager
+          certManagerIssuerRef:
+            group: cert-manager.io
+            kind: Issuer
+            name: hubble-ca
       relay:
         enabled: true
         rollOutPods: true
