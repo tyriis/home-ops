@@ -1,0 +1,18 @@
+---
+# Host-process route. Backend dep: jarvis-serve.service on jarvis binds
+# 172.17.0.1:9119 (docker0 host gateway) — host.docker.internal resolves to it.
+# Access stays gated by the Hermes web login.
+http:
+  routers:
+    hermes-web:
+      rule: "Host(`hermes.jarvis.tyriis.dev`)"
+      entryPoints:
+        - websecure
+      service: hermes-web
+      tls:
+        certResolver: cf
+  services:
+    hermes-web:
+      loadBalancer:
+        servers:
+          - url: http://host.docker.internal:9119
