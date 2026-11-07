@@ -181,6 +181,33 @@ endpoints:
     ui:
       hide-hostname: false
       hide-url: false
-  # jarvis routes (openchamber, hermes-jarvis, jarvis-a2a) are absent on purpose: they
-  # live on 192.168.30.100 and nothing in the cluster has yet proven a route to that
-  # subnet. Add them once reachability is confirmed, or they read as a broken host.
+  # jarvis routes. The host sits on 192.168.30.100 while the cluster is on 192.168.100.x,
+  # so these cross a VLAN boundary. If they read red while the host is up, check the
+  # inter-VLAN firewall rule rather than the service.
+  - name: openchamber tyriis
+    group: agents
+    url: https://openchamber.tyriis.dev
+    interval: 1m
+    conditions:
+      - "[STATUS] < 500"
+    ui:
+      hide-hostname: true
+      hide-url: true
+  - name: jarvis
+    group: agents
+    url: https://hermes.jarvis.tyriis.dev
+    interval: 1m
+    conditions:
+      - "[STATUS] < 500"
+    ui:
+      hide-hostname: true
+      hide-url: true
+  - name: jarvis-a2a
+    group: agents
+    url: https://jarvis-a2a.tyriis.dev
+    interval: 1m
+    conditions:
+      - "[STATUS] < 500"
+    ui:
+      hide-hostname: true
+      hide-url: true
