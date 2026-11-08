@@ -4,6 +4,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 components:
   - ../../../../../components/atlantis
+  - ../../../../../components/envoy-pocketid
 configMapGenerator:
   - name: atlantis-techtales-io-terraform-discord-allowlist
     files:
@@ -18,3 +19,4 @@ generatorOptions:
 patches:
   - path: helm-release.patch.yaml
   - path: external-secret.patch.yaml
+  - path: ../../../../../components/atlantis/external-secret.patch.yaml
