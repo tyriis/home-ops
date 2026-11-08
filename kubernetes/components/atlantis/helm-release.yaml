@@ -135,6 +135,10 @@ spec:
 
     route:
       app:
+        # With two routes app-template would name this one <release>-app;
+        # force it to the bare release name so components/envoy-pocketid's
+        # ${APP} targetRef resolves.
+        forceRename: ${APP}
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Terraform Pull Request Automation
