@@ -140,6 +140,9 @@ spec:
         # ${APP} targetRef resolves.
         forceRename: ${APP}
         annotations:
+          gatus.home-operations.com/endpoint: |
+            conditions:
+              - "[STATUS] < 500"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Terraform Pull Request Automation
           gethomepage.dev/group: ${GROUP:=Terraform}
