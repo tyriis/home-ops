@@ -1,9 +1,11 @@
-# System: docker-fleet
+# docker
 
-The Docker hosts that run outside Kubernetes. They hold anything that needs hardware the clusters do not
-have (GPUs, large disks, USB devices) or that has to survive Talos upgrades without a scheduler.
+The Docker hosts that run outside Kubernetes. They hold what needs hardware the clusters do not have
+(GPUs, large disks, USB devices) or what must survive a Talos upgrade without a scheduler.
 
-Eight hosts, one delivery mechanism, one compose pattern:
+This file documents what is true for every host in this directory. Host-specific documentation lives in
+Backstage as a **System** per host (`bifrost`, `nas`, `synology-nas`), with the services running on it as
+**Components** of that system.
 
 | Host       | Role                                      | Deploy config            |
 | ---------- | ----------------------------------------- | ------------------------ |
@@ -16,15 +18,13 @@ Eight hosts, one delivery mechanism, one compose pattern:
 | `synology` | DSM NAS                                   | `.doco-cd.synology.yaml` |
 | `truenas`  | NAS, backup target                        | `.doco-cd.truenas.yaml`  |
 
-Each host has its own page under `systems/<host>/` with hardware, services and runbooks. This page holds
-what is true for all of them.
-
 ## Delivery
 
 [doco-cd](https://github.com/kimdre/doco-cd) polls `main` every 180 s and applies the stacks listed in
-`docker/.doco-cd.<host>.yaml`. There is no push step, no CI deploy and no manual `docker compose up` in
-normal operation. A stack that is removed from a deploy config keeps running: doco-cd does not tear down
-what it no longer tracks, so offboarding a service needs an explicit `docker compose down -v` on the host.
+`.doco-cd.<host>.yaml`. There is no push step and no manual `docker compose up` in normal operation.
+
+A stack removed from a deploy config keeps running: doco-cd does not tear down what it no longer tracks, so
+offboarding a service needs an explicit `docker compose down -v` on the host.
 
 ## Layout
 
@@ -49,45 +49,45 @@ include:
     project_directory: .
 ```
 
-Three rules follow from this, and breaking any of them fails quietly:
+Three rules follow, and breaking any of them fails quietly:
 
 1. **`project_directory: .` is required.** Without it, relative paths inside the shared blueprint (`env_file`, bind mounts) resolve against `docker/deploy/` instead of the host directory.
 2. **Symlinks are banned.** They resolve technically but cause redeploy-hash churn (doco-cd #954) and path-escape false positives (v0.74 regressions #1142/#1086/#1152).
 3. **List fields are replaced, not appended.** Compose replaces `command:` and `volumes:` from an include, so a host that needs one extra flag must re-list the whole field.
 
 `name:` in the deploy config stays equal to the service name even after `working_dir` moves, so the compose
-project — and therefore the running containers — survive the move without being recreated under a new name.
+project — and therefore the running containers — survive the move instead of being recreated under a new
+name.
 
 ## Secrets
 
-Everything encrypted lives in `sops.env` with a per-host age recipient (`.sops.yaml`). doco-cd decrypts
-those files in place at deploy time; `env_files` in the deploy config also make the values available for
-`${VAR}` interpolation in compose.
+Encrypted values live in `sops.env` with a per-host age recipient (`.sops.yaml`). doco-cd decrypts those
+files in place at deploy time; `env_files` in the deploy config also make the values available for `${VAR}`
+interpolation in compose.
 
-Application services take credentials as environment variables. `doco-cd` itself uses compose `secrets:`
-with file sources for its age key and webhook secret. Whether app services should follow is an open
-question: `secrets: environment:` would keep the value out of `docker inspect`, and it is deliberately not
-done yet because a misspelled `*_FILE` variable fails silently.
+Application services take credentials as environment variables. doco-cd itself uses compose `secrets:` with
+file sources for its age key and webhook secret. Whether app services should follow is open: `secrets:
+environment:` keeps the value out of `docker inspect`, and it is not done yet because a misspelled `*_FILE`
+variable fails silently rather than refusing to start.
 
 ## Invariants
 
-These are enforced by review, not by tooling:
+Enforced by review, not by tooling:
 
 - **No inbound scrape or admin port.** Exporters and agent endpoints bind `127.0.0.1` in the container and
-  are scraped by the host's own vmagent. The only LAN-facing ports are Traefik's `80`/`443` and the
-  services deliberately published for LAN use.
+  are scraped by the host's own vmagent. The only LAN-facing ports are Traefik's `80`/`443` and services
+  deliberately published for LAN use.
 - **Bounded logs.** Every service carries a `json-file` block with `max-size: 10m`, `max-file: "3"` and the
-  label list that VictoriaLogs ships as attributes. It lives in the shared blueprint, so a new host
-  inherits it.
+  label list VictoriaLogs ships as attributes. It lives in the shared blueprint, so a new host inherits it.
 - **One egress, one token.** vmagent remote-writes to the central VictoriaMetrics store through vmauth; no
   host accepts inbound metrics traffic.
-- **Images are digest-pinned.** Renovate raises the bumps; nothing is applied automatically.
+- **Images are digest-pinned.** Renovate raises the bumps; nothing applies automatically.
 
-## Monitoring model
+## Monitoring
 
-Each host runs `vmagent` (metrics, remote-write) and `victoria-logs-collector` (logs, tailing the container
-json files and the host's own syslog). Alerts are evaluated centrally by vmalert; route availability is
-probed by Gatus.
+Each host runs `vmagent` (metrics, remote-write) and `victoria-logs-collector` (logs, tailing container json
+files plus the host's own syslog). Alerts are evaluated centrally by vmalert; route availability is probed
+by Gatus.
 
 Two blind spots are known and deliberate:
 
@@ -96,20 +96,19 @@ Two blind spots are known and deliberate:
 - **Workstations are off by policy.** `red`, `purple`, `hades`, `coal` and `carbon` are excluded from the
   host-down rules, so their failures do not page.
 
-## Editing these files
+## Editing files here
 
-The repo's comment policy says comments are anchors, not documentation. For this directory that means:
+The repository's comment policy says comments are anchors, not documentation. In this directory that means:
 
-- **Edit-time constraints stay inline**, one line, next to the thing they constrain — for example the
-  `project_directory: .` requirement in a shim, or the fact that compose replaces list fields.
-- **Everything else lives on this page or the host's page.** A shim's header comment should be at most a
-  pointer, because the same explanation repeated in 35 files drifts.
+- **Edit-time constraints stay inline**, one line, next to what they constrain — the `project_directory: .`
+  requirement in a shim, or the fact that compose replaces list fields.
+- **Everything else belongs here or on the host's Backstage page.** A repeated header block drifts; this
+  file does not.
 
 ## Known exceptions
 
 - **sparkDash on bifrost runs outside this repository** — no compose file, no digest pin, no update path.
-  Its runbook is on the bifrost page.
-- **`coal` has no host directory yet.** It deploys `docker/deploy/node-exporter` directly, which is why its
+- **`coal` has no host directory.** It deploys `docker/deploy/node-exporter` directly, which is why its
   smartctl exporter has no device whitelist.
 - **Synology's smartctl exporter was disabled** (`ENABLE_SMARTCTL_EXPORTER=0`) until 2026-11, so its disk
-  health was not in the central store before then.
+  health was absent from the central store before then.
