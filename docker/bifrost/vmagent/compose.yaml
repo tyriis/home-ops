@@ -1,7 +1,5 @@
 ---
-# Include shim — the actual service definition is shared: docker/deploy/vmagent/compose.yaml.
-# project_directory: . is REQUIRED so relative paths inside the shared compose
-# (env_file, scrape.yaml bind, the data volume) resolve against this host directory.
+# project_directory: . keeps relative paths in the shared compose resolving against this host dir — see docker/README.md
 include:
   - path: ../../deploy/vmagent/compose.yaml
     project_directory: .
