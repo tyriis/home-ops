@@ -51,12 +51,9 @@ include:
 
 Three rules follow from this, and breaking any of them fails quietly:
 
-1. **`project_directory: .` is required.** Without it, relative paths inside the shared blueprint
-   (`env_file`, bind mounts) resolve against `docker/deploy/` instead of the host directory.
-2. **Symlinks are banned.** They resolve technically but cause redeploy-hash churn (doco-cd #954) and
-   path-escape false positives (v0.74 regressions #1142/#1086/#1152).
-3. **List fields are replaced, not appended.** Compose replaces `command:` and `volumes:` from an include,
-   so a host that needs one extra flag must re-list the whole field.
+1. **`project_directory: .` is required.** Without it, relative paths inside the shared blueprint (`env_file`, bind mounts) resolve against `docker/deploy/` instead of the host directory.
+2. **Symlinks are banned.** They resolve technically but cause redeploy-hash churn (doco-cd #954) and path-escape false positives (v0.74 regressions #1142/#1086/#1152).
+3. **List fields are replaced, not appended.** Compose replaces `command:` and `volumes:` from an include, so a host that needs one extra flag must re-list the whole field.
 
 `name:` in the deploy config stays equal to the service name even after `working_dir` moves, so the compose
 project — and therefore the running containers — survive the move without being recreated under a new name.
