@@ -35,7 +35,7 @@ services:
   hindsight:
     container_name: ${CONTAINER_NAME:-hindsight}
     # renovate: datasource=docker
-    image: ghcr.io/vectorize-io/hindsight:1.2.0@sha256:19d0c08f3df79acac29384826419a1ca158129e81ec527cdcbd8c97ff4ef76da
+    image: ghcr.io/vectorize-io/hindsight:1.2.1@sha256:d2bc230a714e933affd63753e181a0579328fdcbbc021800a76e0bc7b6e76b31
     user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
     group_add:
       - "${GROUP_ID:-1000}"
