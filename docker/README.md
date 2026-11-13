@@ -23,8 +23,46 @@ Backstage as a **System** per host (`bifrost`, `nas`, `synology-nas`), with the 
 [doco-cd](https://github.com/kimdre/doco-cd) polls `main` every 180 s and applies the stacks listed in
 `.doco-cd.<host>.yaml`. There is no push step and no manual `docker compose up` in normal operation.
 
-A stack removed from a deploy config keeps running: doco-cd does not tear down what it no longer tracks, so
-offboarding a service needs an explicit `docker compose down -v` on the host.
+A stack removed from a deploy config keeps running: doco-cd does not tear down what it no longer tracks. See [Offboarding a service](#offboarding-a-service).
+
+## Offboarding a service
+
+Work top to bottom. Do the first two before anything stops running: removing a container before its monitoring leaves a scrape job pointing at nothing, which produces `up == 0` and fires `HostScrapeFailing` after ten minutes.
+
+### Remove monitoring
+
+Drop the job from `docker/<host>/vmagent/scrape.yaml`, delete the endpoint from the Gatus config, and remove any alert rule keyed on that job name.
+
+### DNS
+
+Delete the record in `techtales-io/terraform-unifi`. Nothing in this repository owns DNS, so this is the step most often forgotten, and it leaves a name resolving to a host that no longer serves it.
+
+### Deploy config
+
+Remove the stack from `docker/.doco-cd.<host>.yaml`, then delete the host directory and the shared blueprint in `docker/deploy/` if nothing else includes it.
+
+### Teardown on the host
+
+Hosts have no repo checkout. The compose files of a running stack exist only in the deployed revision's artifacts directory, inside the doco-cd volume. Discover that path from the live container, then run compose from it:
+
+```sh
+DIR=$(docker inspect <service> --format '{{index .Config.Labels "com.docker.compose.project.working_dir"}}')
+docker compose --project-directory "$DIR" down -v
+```
+
+The `-v` matters: doco-cd never removes volumes, and an orphaned named volume is silent disk growth. Run the teardown before the next poll moves past that revision.
+
+If that window is gone, remove the containers and volumes by name instead. The project name equals the deploy config's `name`.
+
+### Networks
+
+Leave the shared `apps` network alone; other stacks attach to it. A compose `down` keeps it regardless, because external networks survive a project teardown.
+
+### Remove secrets
+
+Delete the stack's `.env` and `sops.env`, and remove the matching entries from OpenBao if the Kubernetes side read them.
+
+Auto-discovery would handle that teardown on its own. No host enables it, and `auto_discovery.delete` defaults to false. A top-level `destroy` setting removes an explicitly listed stack. No config here uses it.
 
 ## Layout
 
