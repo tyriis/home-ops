@@ -1,17 +1,18 @@
-# basement automation
+# basement light
 
-This document explains the basement automation flows.
+Motion-driven light automation for the basement. Migrated from the Node-RED flow
+of the same name ([ADR 0025](https://github.com/tyriis/home-ops/blob/main/docs/decisions/0025-deprecate-and-remove-node-red.md)).
 
-## light
+## Entity and lock design
 
-In previous iterrations i have had a few corner cases,
-therefore I made use of a locking implementation to prevent unwanted/unexpected state transitions.
-
-The main idea is to block any state transaction while lock is active, or refresh lock duration for n time on a motion event for example.
+Earlier iterations had a few corner cases, therefore the automation uses a lock
+from `locking-service` to prevent unwanted state transitions. The idea is to
+block any state transition while the lock is active, and to refresh the lock
+duration on a motion event.
 
 ### entities
 
-This table list all involved entities and the system they belong to:
+This table lists all involved entities and the system they belong to:
 
 | system          | entity                |
 | --------------- | --------------------- |
@@ -21,7 +22,7 @@ This table list all involved entities and the system they belong to:
 
 ### system-states
 
-This table list all system states:
+This table lists all system states:
 
 | state | light | time        |
 | ----- | ----- | ----------- |
@@ -30,7 +31,7 @@ This table list all system states:
 | 10    | on    | 00:00-08:00 |
 | 11    | on    | 08:00-00:00 |
 
-The following yaml is a simple explanation on how the state is encoded:
+The following yaml explains how the state is encoded:
 
 ```yaml
 state-encoding: |
@@ -40,7 +41,7 @@ state-encoding: |
 
 ### rules
 
-These rules are the requirements, creating the base for our state mashine:
+These rules are the requirements; they are the base for the state machine:
 
 ```yaml
 - if: motion is on and light is off and time is between 00:00-08:00 local time
@@ -89,6 +90,6 @@ stateDiagram-v2
     11 --> 11: motion detected
 ```
 
-### state mashine
+### state machine
 
 ![light states basement](https://storage.googleapis.com/techtales-public-images/node-red_basement-light_state-mashine.png "light states basement")
