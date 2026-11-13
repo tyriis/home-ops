@@ -1,0 +1,12 @@
+---
+site_name: home-assistant
+site_description: automations and conventions for Home Assistant on the home-ops platform
+
+nav:
+  - Overview: index.md
+  - Automations:
+      - office: flows/office.md
+      - basement: flows/basement.md
+
+plugins:
+  - techdocs-core

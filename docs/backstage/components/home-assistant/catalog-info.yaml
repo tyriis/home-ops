@@ -4,6 +4,8 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: home-assistant
+  annotations:
+    backstage.io/techdocs-ref: dir:.
   description: Home Assistant is a component for orchestrating smart home devices, providing automation and integration capabilities.
   links:
     - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/home-automation/home-assistant
