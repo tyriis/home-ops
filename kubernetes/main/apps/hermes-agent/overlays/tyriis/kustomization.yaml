@@ -1,0 +1,12 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization.json
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# The shared base app/ renders all four Hermes agents. This overlay keeps the base
+# untouched and adds the `hermes serve` backend for the TYRIIS agent only.
+resources:
+  - ../../app
+  - ./external-secret-serve.yaml
+  - ./network-policy-serve.yaml
+patches:
+  - path: ./helm-release.patch.yaml
