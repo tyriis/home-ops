@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-09-17
 decision-makers: [tyriis]
 ---
@@ -44,11 +44,17 @@ InfluxDB 3 variant without a query-range cap, its only extra requirement (S3-com
 object storage) is already satisfied by MinIO, and Home Assistant can push sensor data
 to it natively.
 
-Placement: namespace `observability`, ClusterIP-only (cluster-internal access),
-deployed via bjw-s app-template as a plain container — no official Helm chart exists
-for 2.x/3.x. Reference implementation:
+Placement: its own namespace `influxdb` on the main cluster (not `observability`), ClusterIP-only
+(cluster-internal access), deployed with bjw-s app-template 5.3.0 as a plain container on image
+`influxdb:3.12.2-enterprise`. The official `influxdata/helm-charts` chart `influxdb3-enterprise`
+(0.18.0) is multi-node and accepts only `trial`/`commercial` licences, so it cannot run the free
+home licence, which is single-node only. The object store is the TrueNAS MinIO instance behind
+<https://s3.techtales.io>. Reference implementation:
 [gavinmcfall/home-ops](https://github.com/gavinmcfall/home-ops/blob/main/kubernetes/apps/database/influxdb3/app/helmrelease.yaml)
 (37 stars).
+
+The Home Assistant side is out of GitOps: HA's configuration lives on its own PVC, so the InfluxDB
+integration is a documented UI step in the app README, not a manifest in this repository.
 
 ### Consequences
 
@@ -90,7 +96,7 @@ Listed in issue #39. Legacy carbon/aggregator stack.
 
 ### InfluxDB 1.x (official Helm chart)
 
-The only chart the official `influxdata/helm-charts` repo provides.
+The legacy 1.x chart in the official `influxdata/helm-charts` repo, which otherwise ships 3.x.
 
 - Good, official chart exists, HA integration supports it
 - Bad, legacy product line, chart ships dated 1.8.10-alpine images
@@ -122,17 +128,17 @@ Full 3.x engine storing Parquet/Arrow in object storage.
 
 Decision captured from a structured grilling session, 2026-09-17:
 
-| Decision     | Answer                                                       |
-| ------------ | ------------------------------------------------------------ |
-| Scope        | HA sensor data only, long-term storage                       |
-| HA recorder  | Stays (parallel writes)                                      |
-| Prometheus   | Stays (cluster metrics untouched)                            |
-| Version      | InfluxDB 3 Enterprise, free home license                     |
-| Object store | Existing MinIO                                               |
-| Access       | Cluster-internal (ClusterIP), namespace `observability`      |
-| Deploy       | bjw-s app-template container (no official chart for 2.x/3.x) |
-| HA ingestion | Start with everything, prune later                           |
-| Retention    | Raw indefinitely; delete via SQL when/if ever                |
+| Decision     | Answer                                                                 |
+| ------------ | ---------------------------------------------------------------------- |
+| Scope        | HA sensor data only, long-term storage                                 |
+| HA recorder  | Stays (parallel writes)                                                |
+| Prometheus   | Stays (cluster metrics untouched)                                      |
+| Version      | InfluxDB 3 Enterprise, free home license                               |
+| Object store | Existing MinIO                                                         |
+| Access       | Cluster-internal (ClusterIP), namespace `influxdb`                     |
+| Deploy       | bjw-s app-template; the official 3.x chart cannot run the home licence |
+| HA ingestion | Start with everything, prune later                                     |
+| Retention    | Raw indefinitely; delete via SQL when/if ever                          |
 
 Related community references:
 
