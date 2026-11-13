@@ -54,9 +54,9 @@ the change.** No retention window.
   (`kustomize.toolkit.fluxcd.io/prune: disabled`), the volsync cache PVC, the
   OpenBao path `infra/kubernetes/main/volsync/node-red-data`, and the restic
   repository in MinIO.
-- Deleted with the component: the Backstage entity and the `office` / `basement`
-  flow docs. Those pages described Node-RED implementations; keeping them would
-  document flows that no longer exist.
+- Deleted with the component: the Backstage entity. The `office` / `basement`
+  pages were rewritten as Home Assistant automations and moved to the
+  `home-assistant` component, so the documented behaviour survives the removal.
 
 ## Consequences
 
@@ -64,10 +64,8 @@ the change.** No retention window.
   repository and PVC fewer.
 - Positive: an idle, semi-broken deployment no longer shows up in dashboards as
   a working component.
-- Negative: Node-RED's visual flow debugging is gone. Anything that still needs
-  a flow-shaped graph has to be expressed in n8n.
-- Negative: the `basement` and `office` automation behaviour is no longer
-  documented anywhere in this repository. Home Assistant owns the logic now.
+- Negative: the Node-RED visual flow debugging is gone; anything that still needs a
+  flow-shaped graph has to be expressed in n8n.
 
 ## More Information
 
