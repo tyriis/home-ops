@@ -1,0 +1,40 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: influxdb3
+  description: InfluxDB 3 Enterprise is the long-term store for Home Assistant sensor history. A single pod in the influxdb namespace on the main cluster keeps its data in the TrueNAS MinIO bucket influxdb3, Home Assistant pushes state changes to it over the InfluxDB integration, and Grafana reads it with SQL over FlightSQL. The HA recorder and Prometheus are untouched.
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+  links:
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/influxdb/influxdb3
+      title: Flux definition
+      icon: github
+      type: github-repository
+    - url: https://github.com/tyriis/home-ops/blob/main/docs/decisions/0021-influxdb3-enterprise-ha-sensor-storage.md
+      title: ADR-0021 (decision record)
+      icon: article
+      type: documentation
+    - url: https://github.com/tyriis/home-ops/tree/main/kubernetes/main/apps/observability/grafana/instance
+      title: Grafana datasource
+      icon: github
+      type: github-repository
+    - url: https://docs.influxdata.com/influxdb3/enterprise/
+      title: InfluxDB 3 Enterprise documentation
+      icon: docs
+      type: documentation
+  tags:
+    - observability
+    - time-series
+    - influxdb
+    - home-assistant
+spec:
+  type: service
+  lifecycle: production
+  system: main-cluster
+  owner: home-ops
+  dependsOn:
+    - component:openbao
+    - component:home-assistant
+    - system:nas

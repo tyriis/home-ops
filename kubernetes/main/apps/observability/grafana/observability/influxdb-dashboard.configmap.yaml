@@ -1,0 +1,86 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/core/configmap_v1.json
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: influxdb-dashboard
+data:
+  influxdb.json: |-
+    {
+      "title": "Home Assistant (InfluxDB 3)",
+      "uid": "influxdb-home-assistant",
+      "tags": ["home-assistant", "influxdb"],
+      "timezone": "browser",
+      "editable": true,
+      "refresh": "1m",
+      "time": {"from": "now-24h", "to": "now"},
+      "schemaVersion": 39,
+      "__inputs": [
+        {
+          "name": "DS_INFLUXDB",
+          "label": "InfluxDB",
+          "type": "datasource",
+          "pluginId": "influxdb",
+          "pluginName": "InfluxDB"
+        }
+      ],
+      "templating": {
+        "list": [
+          {
+            "name": "measurement",
+            "label": "Measurement",
+            "type": "query",
+            "datasource": {"type": "influxdb", "uid": "${DS_INFLUXDB}"},
+            "definition": "SHOW TABLES",
+            "query": {"query": "SHOW TABLES"},
+            "refresh": 1,
+            "includeAll": false,
+            "multi": false,
+            "options": [],
+            "current": {}
+          },
+          {
+            "name": "entity",
+            "label": "Entity",
+            "type": "query",
+            "datasource": {"type": "influxdb", "uid": "${DS_INFLUXDB}"},
+            "definition": "SELECT DISTINCT entity_id FROM \"${measurement}\" LIMIT 500",
+            "query": {"query": "SELECT DISTINCT entity_id FROM \"${measurement}\" LIMIT 500"},
+            "refresh": 1,
+            "includeAll": false,
+            "multi": false,
+            "options": [],
+            "current": {}
+          }
+        ]
+      },
+      "panels": [
+        {
+          "type": "timeseries",
+          "title": "Sensor value",
+          "id": 1,
+          "datasource": {"type": "influxdb", "uid": "${DS_INFLUXDB}"},
+          "gridPos": {"h": 9, "w": 24, "x": 0, "y": 0},
+          "targets": [
+            {
+              "refId": "A",
+              "datasource": {"type": "influxdb", "uid": "${DS_INFLUXDB}"},
+              "editorMode": "code",
+              "format": "time_series",
+              "rawSql": "SELECT time, value FROM \"${measurement}\" WHERE entity_id = '${entity}' ORDER BY time"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "custom": {"drawStyle": "line", "fillOpacity": 10, "lineWidth": 1, "showPoints": "never"}
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {"displayMode": "list", "placement": "bottom", "showLegend": true},
+            "tooltip": {"mode": "single", "sort": "none"}
+          }
+        }
+      ]
+    }

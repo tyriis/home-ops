@@ -128,6 +128,36 @@ spec:
       implementation: prometheus
     url: https://alertmanager.utility.techtales.io
 
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadatasource_v1beta1.json
+# SQL runs over FlightSQL (gRPC), so the plain-http in-cluster URL needs insecureGrpc: true or every query fails on the TLS handshake.
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: influxdb
+spec:
+  valuesFrom:
+    - targetPath: "secureJsonData.token"
+      valueFrom:
+        secretKeyRef:
+          name: influxdb3-grafana-token
+          key: READ_TOKEN
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  datasource:
+    type: influxdb
+    name: influxdb
+    access: proxy
+    url: http://influxdb3-app.influxdb.svc.cluster.local:8181 #NOSONAR allow http
+    jsonData:
+      version: SQL
+      dbName: home_assistant
+      httpMode: POST
+      insecureGrpc: true
+    secureJsonData:
+      token: ${READ_TOKEN} # placeholder for the valuesFrom override, not an env var
+
 # ---
 # # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadatasource_v1beta1.json
 # # https://grafana.github.io/grafana-operator/docs/examples/datasource/
