@@ -32,11 +32,18 @@ Order matters. Removing the container before its monitoring leaves a scrape job 
 1. **Monitoring first.** Drop the job from `docker/<host>/vmagent/scrape.yaml`, delete the endpoint from the Gatus config, and remove any alert rule keyed on that job name.
 2. **DNS.** Delete the record in `techtales-io/terraform-unifi`. Nothing in this repository owns DNS, so this is the step most often forgotten, and it leaves a name resolving to a host that no longer serves it.
 3. **Deploy config.** Remove the stack from `docker/.doco-cd.<host>.yaml`, then delete the host directory and the shared blueprint in `docker/deploy/` if nothing else includes it.
-4. **On the host.** Run `docker compose --project-directory docker/<host>/<service> down -v`. The `-v` matters: doco-cd never removes volumes, and an orphaned named volume is silent disk growth.
-5. **Networks.** Leave the shared `apps` network alone. Check `docker network inspect apps` before removing anything; other stacks attach to it.
+4. **On the host.** Tear the stack down from the artifacts directory of the deployed revision. Hosts have no repo checkout: the compose files live only inside the doco-cd volume, at the path the project label reports.
+
+   Discover that path with `docker inspect <service> --format '{{index .Config.Labels "com.docker.compose.project.working_dir"}}'`, then run `docker compose --project-directory "$DIR" down -v` from there, where `$DIR` is that path.
+
+   Run it before the next poll moves past the revision. If that window is gone, fall back to removing the containers and volumes by name, under the deploy config's `name`.
+
+   The `-v` matters: doco-cd never removes volumes, and an orphaned named volume is silent disk growth.
+
+5. **Networks.** Leave the shared `apps` network alone; other stacks attach to it. A compose `down` keeps it regardless, because external networks survive a project teardown.
 6. **Secrets.** Delete the stack's `.env` and `sops.env`, and remove the matching entries from OpenBao if the Kubernetes side read them.
 
-Auto-discovery would handle step 3's teardown automatically, but no host enables it, and `auto_discovery.delete` defaults to false even when it is on.
+Auto-discovery would handle step 3's teardown automatically, but no host enables it, and `auto_discovery.delete` defaults to false even when it is on. A top-level `destroy` setting removes an explicitly listed stack; no config here uses it.
 
 ## Layout
 
