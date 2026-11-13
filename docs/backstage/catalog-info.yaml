@@ -37,7 +37,6 @@ spec:
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/locking-service/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/mosquitto/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/n8n/catalog-info.yaml
-    - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/node-red/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/olah/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/nzbget/catalog-info.yaml
     - https://github.com/tyriis/home-ops/blob/main/docs/backstage/components/openbao/catalog-info.yaml

@@ -15,6 +15,5 @@ resources:
   - ./mosquitto/flux-sync.yaml
   # - ./matter-server/flux-sync.yaml needs additional network for pod
   - ./n8n/flux-sync.yaml
-  - ./node-red/flux-sync.yaml
   - ./ring-mqtt/flux-sync.yaml
   - ./zigbee2mqtt/flux-sync.yaml
