@@ -6,7 +6,7 @@ metadata:
 data:
   EULA: "true"
   DIFFICULTY: hard
-  OPS: "tyriis,jazzlyin"
+  OPS: "tyriis,jazzlyin,crowlexpro"
   MAX_PLAYERS: "25"
   ENABLE_COMMAND_BLOCK: "false"
   GENERATE_STRUCTURES: "true"
