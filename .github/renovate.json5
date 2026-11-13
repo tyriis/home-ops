@@ -80,6 +80,16 @@
       },
     },
     {
+      description: "alpine: comfyui compose (latest) and hermes-agent init containers (3.24) are one image — group digest bumps only, the tag streams differ",
+      matchDepNames: ["alpine", "docker.io/library/alpine"],
+      matchUpdateTypes: ["digest"],
+      groupName: "alpine",
+      group: {
+        semanticCommitScope: "container",
+        commitMessageTopic: "alpine",
+      },
+    },
+    {
       description: "add changelog for talos (source is siderolabs/talos)",
       matchDepNames: ["siderolabs/talos"],
       sourceUrl: "https://github.com/siderolabs/talos",
