@@ -74,6 +74,11 @@ services:
       # safety net: one slow call must never amplify into a retry storm again.
       HINDSIGHT_API_LLM_EXTRA_BODY: ${HINDSIGHT_API_LLM_EXTRA_BODY:-{"chat_template_kwargs":{"enable_thinking":false}}}
       HINDSIGHT_API_LLM_TIMEOUT: ${HINDSIGHT_API_LLM_TIMEOUT:-600}
+      # Wall-clock kill budget for one whole reflect/refresh task. The image
+      # default 300 is SHORTER than HINDSIGHT_API_LLM_TIMEOUT 600, so one slow
+      # call kills the whole refresh (49 mental models paused this way).
+      # Hosts raising it must pick a value > HINDSIGHT_API_LLM_TIMEOUT.
+      HINDSIGHT_API_REFLECT_WALL_TIMEOUT: ${HINDSIGHT_API_REFLECT_WALL_TIMEOUT:-300}
       HINDSIGHT_API_LLM_MAX_RETRIES: ${HINDSIGHT_API_LLM_MAX_RETRIES:-2}
       HINDSIGHT_API_LLM_INITIAL_BACKOFF: ${HINDSIGHT_API_LLM_INITIAL_BACKOFF:-2}
       HINDSIGHT_API_LLM_MAX_BACKOFF: ${HINDSIGHT_API_LLM_MAX_BACKOFF:-30}
