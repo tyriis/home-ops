@@ -9,7 +9,7 @@ metadata:
     gatus.home-operations.com/endpoint: |
       url: https://mcp-github.techtales.io/health
       conditions:
-        - "[STATUS] == 200"
+        - "[STATUS] == 401"
 spec:
   hostnames:
     - mcp-github.techtales.io
