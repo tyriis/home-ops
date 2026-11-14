@@ -1,0 +1,60 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/toolhive.stacklok.dev/mcpserver_v1beta1.json
+apiVersion: toolhive.stacklok.dev/v1beta1
+kind: MCPServer
+metadata:
+  name: github
+spec:
+  image: ghcr.io/github/github-mcp-server:v2.1.0@sha256:f6056fc10bfffcc8c81a6417a2e9ca12808647e8dd6049642a4feaadee0e0f8a
+  transport: stdio
+  proxyPort: 8080
+  env:
+    - name: GITHUB_APP_ID
+      value: "0"
+    # Keep in sync with the GitHub App installation in OpenBao (infra/kubernetes/main/ai/mcp-github).
+    - name: GITHUB_APP_INSTALLATION_ID
+      value: "0"
+    - name: GITHUB_TOOLSETS
+      value: repos,issues,pull_requests,actions,context
+  secrets:
+    # Key name matches the env var on purpose: ToolHive defaults targetEnvName to the key.
+    - name: github-mcp-app
+      key: GITHUB_APP_PRIVATE_KEY
+  toolConfigRef:
+    name: github-mcp-tools
+  # GITHUB_READ_ONLY must stay unset: read-only mode drops the write tools that
+  # mcp-tool-config.yaml allows (create_pull_request, merge_pull_request, reviews).
+  authzConfig:
+    type: inline
+    inline:
+      policies:
+        - 'permit(principal, action == Action::"call_tool", resource);'
+        - |
+          forbid(principal, action == Action::"call_tool", resource)
+          when {
+            [
+              "actions_run_trigger",
+              "create_branch",
+              "create_or_update_file",
+              "create_repository",
+              "delete_file",
+              "delete_repository",
+              "fork_repository",
+              "issue_write",
+              "push_files",
+              "sub_issue_write",
+              "update_issue_comment",
+              "update_pull_request_draft_state"
+            ].contains(resource.name)
+          };
+      entitiesJson: "[]"
+  resources:
+    requests:
+      cpu: 25m
+      memory: 128Mi
+    limits:
+      memory: 256Mi
+  podTemplateSpec:
+    metadata:
+      annotations:
+        reloader.stakater.com/auto: "true"

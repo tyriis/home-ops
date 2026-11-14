@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/toolhive.stacklok.dev/mcptoolconfig_v1beta1.json
+apiVersion: toolhive.stacklok.dev/v1beta1
+kind: MCPToolConfig
+metadata:
+  name: github-mcp-tools
+spec:
+  toolsFilter:
+    - actions_get
+    - actions_list
+    - add_comment_to_pending_review
+    - add_issue_comment
+    - add_reply_to_pull_request_comment
+    - create_pull_request
+    - get_commit
+    - get_file_contents
+    - get_job_logs
+    - get_label
+    - get_latest_release
+    - get_me
+    - get_release_by_tag
+    - get_tag
+    - issue_read
+    - list_branches
+    - list_commits
+    - list_issue_fields
+    - list_issue_types
+    - list_issues
+    - list_pull_requests
+    - list_releases
+    - list_repository_collaborators
+    - list_tags
+    - merge_pull_request
+    - pull_request_read
+    - pull_request_review_write
+    - search_code
+    - search_commits
+    - search_issues
+    - search_pull_requests
+    - search_repositories
+    - update_pull_request
+    - update_pull_request_branch
