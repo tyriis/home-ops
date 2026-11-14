@@ -11,4 +11,5 @@ resources:
   - ./toolhive/flux-sync.yaml
   - ./mcp-context7/flux-sync.yaml
   - ./mcp-gh-grep/flux-sync.yaml
+  - ./mcp-github/flux-sync.yaml
   - ./unifi-mcp/flux-sync.yaml
