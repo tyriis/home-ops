@@ -9,15 +9,14 @@ spec:
   transport: stdio
   proxyPort: 8080
   env:
-    - name: GITHUB_APP_ID
-      value: "0"
-    # Keep in sync with the GitHub App installation in OpenBao (infra/kubernetes/main/ai/mcp-github).
-    - name: GITHUB_APP_INSTALLATION_ID
-      value: "0"
     - name: GITHUB_TOOLSETS
       value: repos,issues,pull_requests,actions,context
   secrets:
     # Key name matches the env var on purpose: ToolHive defaults targetEnvName to the key.
+    - name: github-mcp-app
+      key: GITHUB_APP_ID
+    - name: github-mcp-app
+      key: GITHUB_APP_INSTALLATION_ID
     - name: github-mcp-app
       key: GITHUB_APP_PRIVATE_KEY
   toolConfigRef:
