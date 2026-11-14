@@ -39,10 +39,8 @@ spec:
               "delete_file",
               "delete_repository",
               "fork_repository",
-              "issue_write",
               "push_files",
               "sub_issue_write",
-              "update_issue_comment",
               "update_pull_request_draft_state"
             ].contains(resource.name)
           };
