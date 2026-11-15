@@ -94,21 +94,21 @@ jobs:
             | awk '!seen[$0]++' | head -120 > notes.txt || true
           wc -l notes.txt
 
-      - name: Open PR
+      - name: Commit lockfile
         if: steps.update.outputs.bumped == 'true'
+        id: commit
         env:
-          GH_TOKEN: "${{ steps.app-token.outputs.token }}"
           OLD: "${{ steps.update.outputs.old }}"
           NEW: "${{ steps.update.outputs.new }}"
         run: |
           set -euo pipefail
+          TODAY="$(date -u +%Y-%m-%d)"
           BRANCH="chore/nixos-flake-$(date -u +%Y%m%d)"
           git config user.name "tyriis-bot"
           git config user.email "tyriis-bot@users.noreply.github.com"
           git checkout -b "$BRANCH"
           git add nixos/flake.lock
-          git commit -m "chore(nixos): bump nixpkgs pin $(date -u +%Y-%m-%d)"
-          git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}" "$BRANCH"
+          git commit -m "chore(nixos): bump nixpkgs pin ${TODAY}"
           {
             echo "## Pin"
             echo ""
@@ -130,7 +130,20 @@ jobs:
             echo "- On bifrostix: nvd against the new toplevel, review version diffs."
             echo "- nixos-rebuild switch, reboot self-recovery probe, one risky control per rebuild."
             echo "- Generation rollback is the escape lane. Do not boot-loaders unless planned."
-          } > body.md
-          gh pr create --base main --head "$BRANCH" \
-            --title "chore(nixos): bump nixpkgs pin $(date -u +%Y-%m-%d)" \
-            --body-file body.md
+          } > /tmp/pr-body.md
+          echo "today=${TODAY}" >> "$GITHUB_OUTPUT"
+          echo "branch=${BRANCH}" >> "$GITHUB_OUTPUT"
+
+      - name: Open PR
+        if: steps.update.outputs.bumped == 'true'
+        # Pushes the branch and opens the PR with one identity, passed
+        # explicitly. The previous hand-rolled `git push` embedded
+        # secrets.GITHUB_TOKEN and was rejected (run 43773457309):
+        # github-actions[bot] has no push right here by design.
+        uses: peter-evans/create-pull-request@3ffccacd46053766916f087ce41d627c0b8cf2d1 # v8.1.3
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          branch: ${{ steps.commit.outputs.branch }}
+          delete-branch: true
+          title: "chore(nixos): bump nixpkgs pin ${{ steps.commit.outputs.today }}"
+          body-path: /tmp/pr-body.md
