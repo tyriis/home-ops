@@ -111,4 +111,55 @@
     "page_alloc.shuffle=1"
     "debugfs=off"
   ];
+
+  # ---- integrity + audit (phase A2, 2026-11-15) --------------------------
+  # journald: survive reboots, and prove the log was not edited afterwards.
+  # At this nixpkgs pin `storage` is first-class but Seal is not — extraConfig
+  # is the render path (the settings-freeform migration is a newer change).
+  services.journald.storage = "persistent";
+  services.journald.extraConfig = ''
+    Seal=yes
+  '';
+
+  # auditd: the second channel journald lacks — execve/euid attribution.
+  # -w watches + only two cheap syscall families (time change, module load).
+  # Deliberately absent: syscall-level execve tracing (CIS L2 noise),
+  # -e 2 immutable mode and failure=panic (brick-adjacent on a remote box),
+  # watches under /var/lib/docker (fires on every pull/build — audit the
+  # control plane, not the data plane).
+  # NixOS quirk: /etc files are materialized store symlinks; a store-path
+  # change means a rebuild happened, which is visible in generations anyway.
+  security.auditd.enable = true;
+  security.audit.rules = [
+    "-b 8192"
+    "-w /etc/passwd -p wa -k identity"
+    "-w /etc/shadow -p wa -k identity"
+    "-w /etc/group -p wa -k identity"
+    "-w /etc/sudoers -p wa -k identity"
+    "-w /etc/sudoers.d -p wa -k identity"
+    "-w /etc/ssh/sshd_config.d -p wa -k sshd"
+    "-w /etc/audit/ -p wa -k auditconfig"
+    "-w /var/log/audit/ -p wa -k logchange"
+    "-a always,exit -F arch=b64 -S adjtimex,settimeofday,clock_settime -k time-change"
+    "-w /etc/localtime -p wa -k time-change"
+    "-a always,exit -F arch=b64 -S init_module,finit_module,delete_module -k modules"
+    "-w /etc/modprobe.d -p wa -k modules"
+    "-w /run/current-system/sw/bin/sudo -p x -k privesc"
+    "-w /run/current-system/sw/bin/su -p x -k privesc"
+    "-w /etc/docker -p wa -k docker"
+    "-w /run/docker.sock -p wa -k docker"
+  ];
+
+  # OOM doctrine: zram (already on) buys time; earlyoom spends it — kills the
+  # runaway before global thrash. Not paired with systemd-oomd (never both).
+  services.earlyoom = {
+    enable = true;
+    # Kill container-y offenders slightly earlier than default thresholds.
+    freeMemThreshold = 5;
+  };
+
+  # (polkit auth-reuse window + pkexec-wrapper opt-in: this pin's polkit
+  # module exposes only JS extraConfig — no polkitd.conf options yet.
+  # Re-add `settings.Polkitd.ExpirationSeconds = 30` and
+  # `enablePkexecWrapper = false` on the first flake update carrying 26.11.)
 }
