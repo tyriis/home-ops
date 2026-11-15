@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: bifrostix
+  description: NUC7i5 (i5-7260U) — NixOS docker-lane pilot host, replacement for bifrost
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: tyriis/home-ops
+  tags:
+    - docker
+    - nixos
+    - docker-lane
+    - pilot
+spec:
+  owner: home-ops
+  domain: home
+  type: server
+  lifecycle: experimental
+  system: bifrostix

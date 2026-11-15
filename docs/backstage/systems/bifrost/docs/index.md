@@ -4,6 +4,11 @@ The `bifrost` system is an ASUS NUC 14 Essential (Intel N250) mini-server. Purpo
 
 It is **LAN-only** — Tailscale is deliberately not deployed on this host — and runs **Lightwhale OS** (Buildroot-based, busybox init, **no systemd**): services are managed with `/etc/init.d/S*NN` scripts, so there is no `systemctl`.
 
+> **Replacement in progress:** [bifrostix](https://github.com/tyriis/home-ops/blob/main/docs/backstage/systems/bifrostix/docs/index.md)
+> (NUC7i5, NixOS docker-lane pilot) is the planned successor — see
+> [ADR 0026](https://github.com/tyriis/home-ops/blob/main/docs/decisions/0026-nixos-as-the-docker-lane-platform-bifrostix-pilot.md).
+> bifrost is not yet retired.
+
 ## Hardware
 
 | Device                | CPU/SoC    | OS         | OS Disk       | Data Disk | RAM   | Purpose |
