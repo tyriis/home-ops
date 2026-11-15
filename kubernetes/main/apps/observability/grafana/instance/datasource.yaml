@@ -157,23 +157,3 @@ spec:
       insecureGrpc: true
     secureJsonData:
       token: ${READ_TOKEN} # placeholder for the valuesFrom override, not an env var
-
-# ---
-# # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadatasource_v1beta1.json
-# # https://grafana.github.io/grafana-operator/docs/examples/datasource/
-# apiVersion: grafana.integreatly.org/v1beta1
-# kind: GrafanaDatasource
-# metadata:
-#   name: github-tyriis-home-ops
-# spec:
-#   instanceSelector:
-#     matchLabels:
-#       grafana.internal/instance: grafana
-#   datasource:
-#     type: grafana-github-datasource
-#     name: github-tyriis-home-ops
-#     jsonData:
-#       owner: tyriis
-#       repository: home-ops
-#     secureJsonData:
-#       accessToken: $GITHUB_PAT
