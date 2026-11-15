@@ -11,18 +11,18 @@ Write in the active voice. Keep sentences short. Do not use semicolons.
 ## What changed
 
 <!-- Describe the change in one or two plain sentences.
-     Do not put only a link here. Link the ticket after the sentence. -->
+  Do not put only a link here. Link the ticket after the sentence. -->
 
 ## Why
 
 <!-- State the goal this change reaches. Include the engineering reason
-     and any operational or business reason the diff cannot show. -->
+  and any operational or business reason the diff cannot show. -->
 
 ## How
 
 <!-- Explain only the decisions the diff cannot show:
-     design choices, alternatives you rejected, and known caveats.
-     Call out anything a reviewer would not expect from the code alone. -->
+  design choices, alternatives you rejected, and known caveats.
+  Call out anything a reviewer would not expect from the code alone. -->
 
 ## How to verify
 
@@ -38,7 +38,7 @@ For other changes, link the CI run or paste the command output. -->
 ## Evidence
 
 <!-- Paste command output, rendered results, or screenshots.
-     Put large output inside a details block:
+  Put large output inside a details block:
 
 <details>
 <summary>plan output</summary>
@@ -52,4 +52,4 @@ For other changes, link the CI run or paste the command output. -->
 ## What stays open
 
 <!-- List known gaps, risks you accepted, and planned follow-up PRs.
-     Delete this section when nothing stays open. -->
+  Delete this section when nothing stays open. -->
