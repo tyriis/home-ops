@@ -10,6 +10,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../../components/volsync
   path: ./kubernetes/main/apps/influxdb/influxdb3/app
   prune: true
   sourceRef:
@@ -23,3 +25,16 @@ spec:
   dependsOn:
     - name: external-secrets-stores
       namespace: secops
+    - name: volsync
+      namespace: backup-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace
+      VOLSYNC_CAPACITY: 5Gi
+      VOLSYNC_CACHE_CAPACITY: 2Gi
+      # the pod runs as 1500; restic's default 1000 cannot read that volume
+      VOLSYNC_PUID: "1500"
+      VOLSYNC_PGID: "1500"

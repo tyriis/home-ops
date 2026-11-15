@@ -10,6 +10,9 @@ See [ADR 0021](../../../../../docs/decisions/0021-influxdb3-enterprise-ha-sensor
   `docker.io/library/influxdb:3.12.2-enterprise`)
 - service: `influxdb3-app.influxdb.svc.cluster.local:8181`, ClusterIP only
 - secrets: OpenBao `infra/kubernetes/main/influxdb/influxdb3` → Secret `influxdb3-env`
+- storage: PVC `influxdb3-data`, created by the volsync component — local data dir only, the bucket holds
+  the data
+- backups: restic to MinIO every 2 hours, retaining hourly 12 / daily 7 / weekly 4 / monthly 3
 - Grafana: datasource `influxdb`, dashboard "Home Assistant (InfluxDB 3)"
 
 ## Prerequisites
@@ -40,7 +43,25 @@ InfluxDB 3 accepts a hand-written token file, so no first-boot bootstrap is need
 printf '{"token":"apiv3_%s","name":"_admin"}\n' "$(openssl rand -base64 32 | tr -d '\n')"
 ```
 
-### 3. OpenBao
+### 3. Backup repository
+
+The local data-dir PVC is backed by the repo's volsync component (restic to MinIO), which needs a
+repository of its own before the app is deployed:
+
+- MinIO user: add a dedicated user for the restic repository to `data/users` in `terraform-minio`, open a
+  PR and let Atlantis apply it.
+- OpenBao: create `infra/kubernetes/main/volsync/influxdb3-data` with the keys the component expects, the
+  way [`docs/backstage/components/volsync/docs/index.md`](../../../../../docs/backstage/components/volsync/docs/index.md)
+  describes:
+
+| Key                     | Value                                                                  |
+| ----------------------- | ---------------------------------------------------------------------- |
+| `RESTIC_REPOSITORY`     | `s3:https://s3.techtales.io/<bucket>`                                  |
+| `RESTIC_PASSWORD`       | freshly generated 64-character restic password                         |
+| `AWS_ACCESS_KEY_ID`     | access key of that MinIO user, from `infra/minio/iam/nas.techtales.io` |
+| `AWS_SECRET_ACCESS_KEY` | its secret                                                             |
+
+### 4. OpenBao
 
 Put the values at `infra/kubernetes/main/influxdb/influxdb3`:
 
@@ -54,13 +75,13 @@ Put the values at `infra/kubernetes/main/influxdb/influxdb3`:
 
 `bao kv put` creates the path; `bao kv patch` fails on a path that does not exist yet.
 
-### 4. Verify the license
+### 5. Verify the license
 
 Once the pod is `Running`, InfluxData mails a verification link to `LICENSE_EMAIL`. Click it. The
 license is then stored in the object store, not in the pod, so a rebuild does not need a second
 verification.
 
-### 5. Database and tokens
+### 6. Database and tokens
 
 Exec into the running pod and create the database plus one read token for Grafana and one write
 token for Home Assistant:
@@ -121,6 +142,36 @@ Unbounded. There are no retention policies; old data is deleted per table with S
 ```sql
 DELETE FROM "<measurement>" WHERE time < '2026-01-01T00:00:00Z';
 ```
+
+## Restore
+
+`influxdb3-data` carries a `dataSourceRef` to `ReplicationDestination/influxdb3-data`, so the claim is
+populated by the volsync volume populator **when it is created**. A restore therefore recycles the claim
+instead of writing into the running volume:
+
+```sh
+# 1. restore the newest restic snapshot into a fresh volume image
+kubectl -n influxdb patch replicationdestination influxdb3-data --type=merge \
+  -p '{"spec":{"trigger":{"manual":"restore-2026-01-01"}}}'
+
+# 2. wait until status.lastManualSync holds that marker and status.latestImage is set
+kubectl -n influxdb get replicationdestination influxdb3-data \
+  -o jsonpath='{.status.lastManualSync}{" "}{.status.latestImage.name}{"\n"}'
+
+# 3. drop the old claim so the populator can rebuild it from that image
+kubectl -n influxdb scale deploy/influxdb3 --replicas=0
+kubectl -n influxdb delete pvc influxdb3-data
+flux reconcile kustomization influxdb3
+
+# 4. once the claim is Bound again
+kubectl -n influxdb scale deploy/influxdb3 --replicas=1
+```
+
+Any `spec.trigger.manual` value the operator has not seen before starts a restore; the value is only a
+marker, so pick the date of the restore attempt.
+
+The object store remains the source of truth for the data, and the PVC only carries the local data dir
+(WAL and cache), so this backup is a convenience, not the primary copy.
 
 ## Verify
 

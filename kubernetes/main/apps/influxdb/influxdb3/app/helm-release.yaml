@@ -87,7 +87,7 @@ spec:
             port: *port
     persistence:
       data:
-        existingClaim: influxdb3
+        existingClaim: "{{ .Release.Name }}-data"
         globalMounts:
           - path: /var/lib/influxdb3
       plugins:
