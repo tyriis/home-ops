@@ -62,6 +62,7 @@ jobs:
           echo "new=$NEW" >> "$GITHUB_OUTPUT"
           if [ "$OLD" = "$NEW" ]; then
             echo "bumped=false" >> "$GITHUB_OUTPUT"
+            echo "nixpkgs pin unchanged at \`${OLD}\` - no PR opened." >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
           echo "bumped=true" >> "$GITHUB_OUTPUT"
