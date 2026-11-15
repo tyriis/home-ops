@@ -94,21 +94,21 @@ jobs:
             | awk '!seen[$0]++' | head -120 > notes.txt || true
           wc -l notes.txt
 
-      - name: Commit lockfile
+      - name: Stage branch and PR body
         if: steps.update.outputs.bumped == 'true'
         id: commit
         env:
+          GH_TOKEN: "${{ steps.app-token.outputs.token }}"
           OLD: "${{ steps.update.outputs.old }}"
           NEW: "${{ steps.update.outputs.new }}"
         run: |
           set -euo pipefail
           TODAY="$(date -u +%Y-%m-%d)"
           BRANCH="chore/nixos-flake-$(date -u +%Y%m%d)"
-          git config user.name "tyriis-bot"
-          git config user.email "tyriis-bot@users.noreply.github.com"
-          git checkout -b "$BRANCH"
-          git add nixos/flake.lock
-          git commit -m "chore(nixos): bump nixpkgs pin ${TODAY}"
+          # multi-file-commit does not create branches; point one at the
+          # checked-out main commit first, via the App identity.
+          gh api "repos/${GITHUB_REPOSITORY}/git/refs" \
+            -f "ref=refs/heads/${BRANCH}" -f "sha=${GITHUB_SHA}"
           {
             echo "## Pin"
             echo ""
@@ -134,16 +134,25 @@ jobs:
           echo "today=${TODAY}" >> "$GITHUB_OUTPUT"
           echo "branch=${BRANCH}" >> "$GITHUB_OUTPUT"
 
-      - name: Open PR
+      - name: Commit lockfile (signed)
         if: steps.update.outputs.bumped == 'true'
-        # Pushes the branch and opens the PR with one identity, passed
-        # explicitly. The previous hand-rolled `git push` embedded
-        # secrets.GITHUB_TOKEN and was rejected (run 43773457309):
-        # github-actions[bot] has no push right here by design.
-        uses: peter-evans/create-pull-request@3ffccacd46053766916f087ce41d627c0b8cf2d1 # v8.1.3
+        # Over the GitHub API, not git push: a commit created by the App
+        # is signed by GitHub and lands Verified. A local `git commit`
+        # by a bot has no signing identity and would break the
+        # protected-branch signed-commits rule.
+        uses: tyriis/multi-file-commit@2d6dcce35c5e8a7c2f945fb9854cfe9d6c81cc7 # v1.1.0
         with:
           token: ${{ steps.app-token.outputs.token }}
-          branch: ${{ steps.commit.outputs.branch }}
-          delete-branch: true
-          title: "chore(nixos): bump nixpkgs pin ${{ steps.commit.outputs.today }}"
-          body-path: /tmp/pr-body.md
+          ref: ${{ steps.commit.outputs.branch }}
+          files: nixos/flake.lock
+          message: "chore(nixos): bump nixpkgs pin ${{ steps.commit.outputs.today }}"
+
+      - name: Open PR
+        if: steps.update.outputs.bumped == 'true'
+        env:
+          GH_TOKEN: "${{ steps.app-token.outputs.token }}"
+        run: |
+          set -euo pipefail
+          gh pr create --base main --head "${{ steps.commit.outputs.branch }}" \
+            --title "chore(nixos): bump nixpkgs pin ${{ steps.commit.outputs.today }}" \
+            --body-file /tmp/pr-body.md
