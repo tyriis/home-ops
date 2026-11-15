@@ -100,3 +100,15 @@ No retention policies exist. Old data is deleted per table:
 ```sql
 DELETE FROM "<measurement>" WHERE time < '2026-01-01T00:00:00Z';
 ```
+
+## Backups
+
+The local data-dir PVC `influxdb3-data` comes from the `volsync` component, not from this app: the
+component builds the claim, its restic `ReplicationSource` and the restore `ReplicationDestination`.
+The schedule is overridden in the app's `kustomization.yaml` to a daily 03:30 run, because the
+component's default (minute 0 of every even hour) collides with the fleet-wide volsync slot. Because
+the claim is created against the `ReplicationDestination`, a restore recycles the claim rather than
+writing into the running volume; the app README carries the step-by-step.
+
+The bucket, not this PVC, is the source of truth: parquet and catalog objects are written to MinIO,
+and the PVC only holds the local data dir (WAL and cache).

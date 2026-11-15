@@ -12,7 +12,8 @@ See [ADR 0021](../../../../../docs/decisions/0021-influxdb3-enterprise-ha-sensor
 - secrets: OpenBao `infra/kubernetes/main/influxdb/influxdb3` → Secret `influxdb3-env`
 - storage: PVC `influxdb3-data`, created by the volsync component — local data dir only, the bucket holds
   the data
-- backups: restic to MinIO every 2 hours, retaining hourly 12 / daily 7 / weekly 4 / monthly 3
+- backups: restic to MinIO daily at 03:30 — off the cluster-wide 2-hourly volsync slot — retaining
+  daily 7 / weekly 4 / monthly 3
 - Grafana: datasource `influxdb`, dashboard "Home Assistant (InfluxDB 3)"
 
 ## Prerequisites

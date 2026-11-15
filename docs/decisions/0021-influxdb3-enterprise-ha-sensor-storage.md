@@ -47,11 +47,11 @@ to it natively.
 Placement: its own namespace `influxdb` on the main cluster (not `observability`), ClusterIP-only
 (cluster-internal access), deployed with bjw-s app-template 5.3.0 as a plain container on image
 `influxdb:3.12.2-enterprise`. The local data-dir PVC `influxdb3-data` is covered by the repo's volsync
-component (restic to MinIO, every 2 hours), while the Parquet and catalog objects stay the source of
-truth. The official `influxdata/helm-charts` chart `influxdb3-enterprise`
-(0.18.0) is multi-node and accepts only `trial`/`commercial` licences, so it cannot run the free
-home licence, which is single-node only. The object store is the TrueNAS MinIO instance behind
-<https://s3.techtales.io>. Reference implementation:
+component (restic to MinIO, daily at 03:30 to stay clear of the two-hourly fleet-wide slot), while the
+Parquet and catalog objects stay the source of truth. The official `influxdata/helm-charts` chart
+`influxdb3-enterprise` (0.18.0) is multi-node and accepts only `trial`/`commercial` licences, so it
+cannot run the free home licence, which is single-node only. The object store is the TrueNAS MinIO
+instance behind <https://s3.techtales.io>. Reference implementation:
 [gavinmcfall/home-ops](https://github.com/gavinmcfall/home-ops/blob/main/kubernetes/apps/database/influxdb3/app/helmrelease.yaml)
 (37 stars).
 

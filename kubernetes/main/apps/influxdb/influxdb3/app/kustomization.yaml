@@ -7,3 +7,16 @@ resources:
   - ./external-secret.yaml
   - ./helm-release.yaml
   - ./oci-repository.yaml
+patches:
+  # Component names are still ${APP}-… when kustomize patches run, so match by kind.
+  # The component schedules every app at minute 0 of even hours; a daily run there
+  # would race that stampede. 03:30 is clear of it, of the 00:00 recyclarr run and
+  # of the 06:00 OpenBao snapshots.
+  - target:
+      group: volsync.backube
+      version: v1alpha1
+      kind: ReplicationSource
+    patch: |-
+      - op: replace
+        path: /spec/trigger/schedule
+        value: "30 3 * * *"
