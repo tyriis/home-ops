@@ -1,7 +1,8 @@
 # Baseline module for docker-lane hosts (design: docs/superpowers/specs/2026-11-07-nixos-hardened-docker-lane-design.md).
-# Encodes the pilot-proven state of bifrostix (2026-11-14). Impermanence, LUKS/TPM2
-# sealing, default-deny nftables and the sysctl hardening set are deliberate
-# follow-ups per the spec acceptance list — tracked in #11792, not silently asserted here.
+# Encodes the pilot-proven state of bifrostix (2026-11-14). Impermanence and
+# LUKS/TPM2 sealing are the remaining deliberate follow-ups per the spec
+# acceptance list — tracked in #11792. The hardening baseline
+# (sshd/nftables/sysctl) lives in ./hardening.nix (phase A, 2026-11-15).
 { pkgs, ... }:
 {
   # Boot

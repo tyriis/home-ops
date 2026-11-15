@@ -13,6 +13,7 @@
           system = "x86_64-linux";
           modules = [
             ./modules/docker-lane.nix
+            ./modules/hardening.nix
             ./hosts/bifrostix.nix
           ];
         };
