@@ -52,12 +52,16 @@ configured directly in DSM (Storage Manager → Smart Test → Create):
 Note: DSM stores this task in the host, not in this repository — the repo
 is the only system of record for it. If the NAS is rebuilt, recreate it.
 
+Manual run 2026-11-15 (DSM UI, both bays): fresh `Short offline — Completed
+without error` rows at 76,395 h (sda) and 76,386 h (sdb); first scheduled
+04:00 run still to be observed.
+
 ## Verify live state
 
-| What                     | Probe                                                          | Expected                                                                                      |
-| ------------------------ | -------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| Self-test cadence (host) | `sudo smartctl -l selftest /dev/sda`                           | a fresh `Short offline — Completed without error` row per day, `LifeTime` advancing ~24 h/day |
-| Drive identity (host)    | `sudo smartctl -i /dev/sda`                                    | serial still `ZGY18C52` — device letters drift, serials don't                                 |
-| Error-log newness        | central VM: `smartctl_device_error_log_count{host="synology"}` | sdb stays 15, sda 0                                                                           |
-| Array state (host)       | `cat /proc/mdstat`                                             | all arrays `[2/2] [UU]`                                                                       |
-| Kernel I/O errors (host) | `dmesg \| grep -iE 'ata[0-9]\|sdb\|blk\|I/O error' \| tail`    | empty                                                                                         |
+| What                     | Probe                                                          | Expected                                                                                                                                   |
+| ------------------------ | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| Self-test cadence (host) | `sudo smartctl -l selftest /dev/sda`                           | a fresh `Short offline — Completed without error` row per day. LifeTime wraps at 65,536 h (16-bit): `10,8xx` here = fresh test at `76,4xx` |
+| Drive identity (host)    | `sudo smartctl -i /dev/sda`                                    | serial still `ZGY18C52` — device letters drift, serials don't                                                                              |
+| Error-log newness        | central VM: `smartctl_device_error_log_count{host="synology"}` | sdb stays 15, sda 0                                                                                                                        |
+| Array state (host)       | `cat /proc/mdstat`                                             | all arrays `[2/2] [UU]`                                                                                                                    |
+| Kernel I/O errors (host) | `dmesg \| grep -iE 'ata[0-9]\|sdb\|blk\|I/O error' \| tail`    | empty                                                                                                                                      |
