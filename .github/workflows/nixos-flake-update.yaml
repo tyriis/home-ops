@@ -46,9 +46,9 @@ jobs:
         uses: cachix/install-nix-action@d698718aa798980d17dd749f03beae0b51183399 # v31.11.5
         with:
           # Flake input fetches are GitHub API calls. Without a token,
-          # anonymous rate limits fail the run intermittently. The
-          # default GITHUB_TOKEN is enough for public repo fetches.
-          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          # anonymous rate limits fail the run intermittently. Bot App
+          # token, as all automations here.
+          github_access_token: ${{ steps.app-token.outputs.token }}
 
       - name: Update flake lock
         id: update
