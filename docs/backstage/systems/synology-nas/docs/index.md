@@ -13,6 +13,7 @@ The `synology` system is a Synology DS218+ NAS running DSM.
 
 - [Setup](setup.md) — step-by-step setup of the NAS.
 - [ACME DNS-01 Challenge](acme-dns01.md) — certificate issuance and renewal.
+- [Disk Health](disk-health.md) — drive inventory, SMART self-test schedule, verification probes.
 
 ## Log shipping
 
