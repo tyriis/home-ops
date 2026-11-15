@@ -3,7 +3,36 @@
 # Deliberately NOT here: forward-chain policy (Docker owns FORWARD today),
 # egress filtering (monitor-only until designed), modules_disabled/lockdown
 # (brick risk without preloaded-module audit), LUKS/TPM + impermanence (phases B/C).
+{ lib, ... }:
+let
+  # journald's render path flipped between the locked rev (26.05.x) and
+  # nixos-unstable (now 26.11.x): `storage` renamed into `settings.Journal`
+  # and `extraConfig` removed outright — a hard assert, silently dropping
+  # Seal=yes (build gate caught it, run 43771273732). Version is monotonic
+  # and pure to evaluate; probing `options` from a module of the same
+  # evalModules pass instead would recurse.
+  # If a hand-picked pin ever lands between the remap merge and the
+  # 26.11 version bump, the old branch misroutes LOUD — assert at gate
+  # time, never silently.
+  journaldSettingsRender = lib.versionAtLeast lib.version "26.11";
+in
 {
+  imports = [
+    # journald: survive reboots, and prove the log was not edited afterwards.
+    (lib.optionalAttrs journaldSettingsRender {
+      services.journald.settings.Journal = {
+        Storage = "persistent";
+        Seal = "yes";
+      };
+    })
+    (lib.optionalAttrs (!journaldSettingsRender) {
+      services.journald.storage = "persistent";
+      services.journald.extraConfig = ''
+        Seal=yes
+      '';
+    })
+  ];
+
   # ---- sshd: complete the key-only lane --------------------------------
   # Do not pin ciphers/KEX: OpenSSH 10.x defaults are post-quantum hybrid;
   # hand-curated lists are downgrades in disguise.
@@ -113,13 +142,8 @@
   ];
 
   # ---- integrity + audit (phase A2, 2026-11-15) --------------------------
-  # journald: survive reboots, and prove the log was not edited afterwards.
-  # At this nixpkgs pin `storage` is first-class but Seal is not — extraConfig
-  # is the render path (the settings-freeform migration is a newer change).
-  services.journald.storage = "persistent";
-  services.journald.extraConfig = ''
-    Seal=yes
-  '';
+  # journald persistent + Seal render per-pin below (option-shape flipped
+  # between the locked rev and current nixos-unstable).
 
   # auditd: the second channel journald lacks — execve/euid attribution.
   # -w watches + only two cheap syscall families (time change, module load).
