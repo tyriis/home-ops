@@ -1,5 +1,8 @@
 <!-- markdownlint-disable MD041 MD033 -->
 
+<!-- Delete the next line when this PR resolves no issue.
+  Do not open an issue just to fill this line. -->
+
 Resolves #<issue-number>.
 
 <!--
