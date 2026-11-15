@@ -18,7 +18,7 @@ services:
               capabilities: [gpu]
     environment:
       NVIDIA_DRIVER_CAPABILITIES: utility
-    image: utkuozdemir/nvidia_gpu_exporter:1.18.0-nvml@sha256:bf82122fdf8cc960b1233e33dea82767a711343fa2919d525ca9199e83cc5195
+    image: utkuozdemir/nvidia_gpu_exporter:1.19.0-nvml@sha256:f95e5097b89aaba66395c7dcbc02f51af740e25b504ccb426e533f60265a7b50
     ports:
       - 127.0.0.1:9835:9835
     restart: unless-stopped
