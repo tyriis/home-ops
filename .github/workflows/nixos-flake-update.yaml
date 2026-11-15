@@ -1,0 +1,135 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+# Weekly bump of the nixos/flake.lock nixpkgs pin (bifrostix docker-lane pilot, #11792).
+# Nix-native by design: Renovate's beta nix manager delegates to an external nix
+# binary anyway, so this job runs nix itself, verifies the system builds, and
+# opens a PR whose body summarizes what moved inside nixpkgs.
+# The gate before switching a host stays manual: nvd diff on the host, then
+# nixos-rebuild switch, then the reboot self-recovery probe.
+name: NixOS Flake Update
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 5 * * 3"
+
+permissions:
+  contents: read
+
+jobs:
+  bump:
+    name: Bump nixpkgs pin
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/marketplace/actions/harden-runner
+      - name: Harden Runner
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
+        with:
+          egress-policy: audit
+
+      # https://github.com/marketplace/actions/create-github-app-token
+      - name: Generate Token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        id: app-token
+        with:
+          client-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          fetch-depth: 1
+
+      # https://github.com/marketplace/actions/install-nix
+      - name: Install Nix
+        uses: cachix/install-nix-action@d698718aa798980d17dd749f03beae0b51183399 # v31.11.5
+        with:
+          # Flake input fetches are GitHub API calls. Without a token,
+          # anonymous rate limits fail the run intermittently. Bot App
+          # token, as all automations here.
+          github_access_token: ${{ steps.app-token.outputs.token }}
+
+      - name: Update flake lock
+        id: update
+        working-directory: nixos
+        run: |
+          set -euo pipefail
+          OLD=$(git show HEAD:nixos/flake.lock | jq -r .nodes.nixpkgs.locked.rev)
+          nix flake update nixpkgs
+          NEW=$(jq -r .nodes.nixpkgs.locked.rev flake.lock)
+          echo "old=$OLD" >> "$GITHUB_OUTPUT"
+          echo "new=$NEW" >> "$GITHUB_OUTPUT"
+          if [ "$OLD" = "$NEW" ]; then
+            echo "bumped=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "bumped=true" >> "$GITHUB_OUTPUT"
+          # Build the toplevel at the new pin so a PR only ever opens on a
+          # green eval. Binary cache covers most of the closure.
+          nix build .#nixosConfigurations.bifrostix.config.system.build.toplevel \
+            --no-link --print-build-logs
+
+      - name: Summarize nixpkgs range
+        if: steps.update.outputs.bumped == 'true'
+        env:
+          GH_TOKEN: "${{ steps.app-token.outputs.token }}"
+          OLD: "${{ steps.update.outputs.old }}"
+          NEW: "${{ steps.update.outputs.new }}"
+        run: |
+          set -euo pipefail
+          # The compare endpoint response has multiple top-level keys, so
+          # gh --paginate refuses it. Walk pages until one comes back empty.
+          : > commits.txt
+          page=1
+          while :; do
+            chunk=$(gh api "repos/NixOS/nixpkgs/compare/${OLD}...${NEW}?per_page=100&page=${page}" \
+              --jq '.commits[].commit.message | split("\n")[0]')
+            [ -n "$chunk" ] || break
+            printf '%s\n' "$chunk" >> commits.txt
+            page=$((page + 1))
+          done
+          grep -Ei '(docker|runc|containerd|openssh|linuxPackages|glibc|systemd|btrfs-progs|earlyoom|audit|sudo|polkit|nixStable|nixUnstable|cni)' commits.txt \
+            | awk '!seen[$0]++' | head -120 > notes.txt || true
+          wc -l notes.txt
+
+      - name: Open PR
+        if: steps.update.outputs.bumped == 'true'
+        env:
+          GH_TOKEN: "${{ steps.app-token.outputs.token }}"
+          OLD: "${{ steps.update.outputs.old }}"
+          NEW: "${{ steps.update.outputs.new }}"
+        run: |
+          set -euo pipefail
+          BRANCH="chore/nixos-flake-$(date -u +%Y%m%d)"
+          git config user.name "tyriis-bot"
+          git config user.email "tyriis-bot@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add nixos/flake.lock
+          git commit -m "chore(nixos): bump nixpkgs pin $(date -u +%Y-%m-%d)"
+          git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}" "$BRANCH"
+          {
+            echo "## Pin"
+            echo ""
+            echo "| | rev |"
+            echo "|---|---|"
+            echo "| old | \`${OLD}\` |"
+            echo "| new | \`${NEW}\` |"
+            echo ""
+            echo "Full nixpkgs range: <https://github.com/NixOS/nixpkgs/compare/${OLD}...${NEW}>"
+            echo ""
+            echo "## Host-relevant changes (filtered merge titles)"
+            echo ""
+            echo '```'
+            cat notes.txt
+            echo '```'
+            echo ""
+            echo "## Gate before any host switch"
+            echo ""
+            echo "- On bifrostix: nvd against the new toplevel, review version diffs."
+            echo "- nixos-rebuild switch, reboot self-recovery probe, one risky control per rebuild."
+            echo "- Generation rollback is the escape lane. Do not boot-loaders unless planned."
+          } > body.md
+          gh pr create --base main --head "$BRANCH" \
+            --title "chore(nixos): bump nixpkgs pin $(date -u +%Y-%m-%d)" \
+            --body-file body.md
