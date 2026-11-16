@@ -46,7 +46,7 @@ spec:
               - --data-dir=/var/lib/influxdb3/data
               - --http-bind=0.0.0.0:8181
               - --admin-token-file=/etc/influxdb3/admin-token.json
-              - --disable-authz=health
+              - --disable-authz=health,metrics
             envFrom:
               - secretRef:
                   name: influxdb3-env

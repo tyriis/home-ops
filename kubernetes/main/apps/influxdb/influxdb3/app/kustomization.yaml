@@ -7,6 +7,7 @@ resources:
   - ./external-secret.yaml
   - ./helm-release.yaml
   - ./oci-repository.yaml
+  - ./vm-service-scrape.yaml
 patches:
   # Component names are still ${APP}-… when kustomize patches run, so match by kind.
   # The component schedules every app at minute 0 of even hours; a daily run there

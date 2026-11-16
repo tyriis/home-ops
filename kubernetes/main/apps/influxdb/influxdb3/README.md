@@ -177,6 +177,7 @@ kubectl -n influxdb logs deploy/influxdb3
 kubectl -n influxdb exec deploy/influxdb3 -- du -sh /var/lib/influxdb3/data
 kubectl -n influxdb port-forward svc/influxdb3 8181:8181 &
 curl -fsS http://127.0.0.1:8181/health
+curl -fsS http://127.0.0.1:8181/metrics | head
 ```
 
 After Home Assistant has been writing for a few minutes, the row count comes from a SQL query in
