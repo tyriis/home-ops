@@ -28,3 +28,9 @@ ignore:
   - app: cilium
     keys:
       - prometheus.serviceMonitor.trustCRDsExist
+  # app-template defaults a Deployment to Recreate, so the value matches the
+  # template today. It stays explicit because a switch to `type: statefulset`
+  # defaults to RollingUpdate, which would run two writers against the RWO claim.
+  - app: influxdb3
+    keys:
+      - controllers.influxdb3.strategy
