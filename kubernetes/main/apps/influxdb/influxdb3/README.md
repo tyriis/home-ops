@@ -94,10 +94,10 @@ kubectl -n influxdb exec deploy/influxdb3 -- \
   influxdb3 create database home_assistant --token "$ADMIN"
 
 kubectl -n influxdb exec deploy/influxdb3 -- \
-  influxdb3 create token --db home_assistant --permission read --name grafana --token "$ADMIN"
+  influxdb3 create token --permission "db:home_assistant:read" --name grafana --token "$ADMIN"
 
 kubectl -n influxdb exec deploy/influxdb3 -- \
-  influxdb3 create token --db home_assistant --permission write --name home-assistant --token "$ADMIN"
+  influxdb3 create token --permission "db:home_assistant:write" --name home-assistant --token "$ADMIN"
 ```
 
 The token comes from the mounted `admin-token.json`, not from an `ADMIN_TOKEN` env key: the
