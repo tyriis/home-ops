@@ -124,7 +124,9 @@ unit (`°C`, `%`, `W`) or the entity id when there is no unit — `measurement_a
 The `influxdb` datasource is provisioned from GitOps (`kubernetes/main/apps/observability/grafana/instance/datasource.yaml`),
 and the dashboard "Home Assistant (InfluxDB 3)" from
 `kubernetes/main/apps/observability/grafana/observability/`. The dashboard picks the table from a
-`measurement` variable (`SHOW TABLES`) and the entity from the rows of that table. The datasource
+`measurement` variable and the entity from the rows of that table. The variable queries
+`information_schema.tables` for `table_schema = 'iox'` and drops `system%`, because `SHOW TABLES`
+returns `table_catalog` first and lists the system tables alongside the data tables. The datasource
 queries with `version: SQL` over FlightSQL, so the plain-HTTP in-cluster URL needs
 `insecureGrpc: true`.
 

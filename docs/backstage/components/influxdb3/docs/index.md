@@ -79,7 +79,8 @@ The `influxdb` datasource is provisioned from GitOps with `version: SQL` and `in
 SQL runs over FlightSQL (gRPC), so the plain-HTTP in-cluster URL fails its handshake without that
 flag. The dashboard "Home Assistant (InfluxDB 3)" ships beside it from
 `kubernetes/main/apps/observability/grafana/observability/`, picking the table from a `measurement`
-variable (`SHOW TABLES`) and the entity from that table's rows.
+variable (`information_schema.tables`, schema `iox`, minus `system%`) and the entity from that
+table's rows.
 
 ## Verify
 
