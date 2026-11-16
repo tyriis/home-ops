@@ -45,6 +45,22 @@
     };
   };
 
+  # Drill hold: DORMANT by default. On an unencrypted root the stage-1
+  # window is a few seconds — too narrow to prove the 2222 escape lane
+  # reliably. Create the condition path (drill generations only) and the
+  # initrd holds 120s with sshd reachable, so a drill can log in at
+  # leisure. Continue a held boot with: systemctl isolate
+  # initrd-switch-root.target
+  boot.initrd.systemd.services.initrd-drill-hold = {
+    description = "Hold stage 1 for the initrd-SSH drill";
+    after = [ "sshd.service" ];
+    wantedBy = [ "initrd-switch-root.target" ];
+    before = [ "initrd-switch-root.target" ];
+    unitConfig.ConditionPathExists = "/etc/initrd-drill-hold";
+    serviceConfig.Type = "oneshot";
+    script = "sleep 120";
+  };
+
   # Docker platform (spec, "Docker daemon, declarative"):
   # json-file as daemon default so unmanaged strays rotate too (#11541 pattern).
   virtualisation.docker = {
