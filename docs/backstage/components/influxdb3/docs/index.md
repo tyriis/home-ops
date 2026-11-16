@@ -123,6 +123,10 @@ overridden in the app's `kustomization.yaml` to a daily 03:30 run, because the c
 against the `ReplicationDestination`, a restore recycles the claim rather than writing into the
 running volume; the app README carries the step-by-step.
 
+The restic repository is `s3:https://s3.techtales.io/volsync/main/influxdb/influxdb3-data` — the
+shared `volsync` bucket with a prefix unique to this claim. The mover initialises it on the first
+backup, so nothing is created by hand.
+
 The volume is the source of truth, so the nightly snapshot is a full backup rather than a copy of
 scratch space: it captures WAL, Parquet and catalogue at one instant, and the WAL replays on start.
 Data written after the snapshot is lost, and the snapshot is taken through a Ceph volume snapshot, so

@@ -39,10 +39,15 @@ its own before the app is deployed:
 
 | Key                     | Value                                                                  |
 | ----------------------- | ---------------------------------------------------------------------- |
-| `RESTIC_REPOSITORY`     | `s3:https://s3.techtales.io/<bucket>`                                  |
+| `RESTIC_REPOSITORY`     | `s3:https://s3.techtales.io/volsync/main/influxdb/influxdb3-data`      |
 | `RESTIC_PASSWORD`       | freshly generated 64-character restic password                         |
 | `AWS_ACCESS_KEY_ID`     | access key of that MinIO user, from `infra/minio/iam/nas.techtales.io` |
 | `AWS_SECRET_ACCESS_KEY` | its secret                                                             |
+
+The bucket `volsync` is shared with the other volsync apps, so the path after it stays unique to this
+claim. The mover runs `restic init` itself on the first backup, so nothing is created by hand. The
+user's policy needs `ListBucket` on the bucket plus read, write and delete on
+`volsync/main/influxdb/influxdb3-data/*`.
 
 ### 2. OpenBao
 
