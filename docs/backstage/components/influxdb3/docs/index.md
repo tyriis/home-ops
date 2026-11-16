@@ -26,7 +26,7 @@ Source:
 | License   | Enterprise "home" tier, verified once by email, stored on the volume |
 | Retention | Unbounded, no retention policy; delete with SQL                      |
 
-WAL, compacted Parquet files, the catalogue and the licence record all live under `--data-dir`, so
+WAL, compacted Parquet files, the catalogue and the license record all live under `--data-dir`, so
 the volume is the dataset. Nothing outside the cluster reads it directly; MinIO is a backup target
 only.
 
@@ -57,8 +57,10 @@ app's own `ExternalSecret`, and `influxdb3-grafana-token` in the Grafana app, wh
 The token is read from the mounted `admin-token.json`; the Secret carries no `ADMIN_TOKEN` key.
 
 The license check is a first-boot step: InfluxData mails the verification link to `LICENSE_EMAIL`
-once the pod is running. The record lands on the volume, so a rebuild does not need a second
-verification, but a lost volume does.
+once the pod is running, and clicking it produces a license bound to the cluster id and that
+address. The record lands on the volume, so a rebuild does not need a second verification; a lost
+volume re-fetches the existing license from the license server by address, which makes the mailbox
+the recovery key rather than a repeat signup step.
 
 ## Home Assistant
 

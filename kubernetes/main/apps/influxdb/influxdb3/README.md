@@ -19,7 +19,7 @@ See [ADR 0021](../../../../../docs/decisions/0021-influxdb3-enterprise-ha-sensor
 - Grafana: datasource `influxdb`, dashboard "Home Assistant (InfluxDB 3)"
 
 The engine runs `--object-store=file --data-dir=/var/lib/influxdb3/data`. WAL, compacted Parquet and
-the catalogue all live under that directory, and the licence record is written there too, so the
+the catalogue all live under that directory, and the license record is written there too, so the
 volume is both the working set and the durable copy.
 
 ## Prerequisites
@@ -66,7 +66,9 @@ into the `admin-token.json` file that `--admin-token-file` points at. `bao kv pu
 
 Once the pod is `Running`, InfluxData mails a verification link to `LICENSE_EMAIL`. Click it. The
 license is stored in the data volume, not in the pod, so a rebuild does not need a second
-verification — but a lost volume does.
+verification. A lost volume does not need one either: the engine asks the license server for the
+existing license for `LICENSE_EMAIL`, so keep that mailbox reachable — it is the recovery key, not a
+repeat signup step.
 
 ### 4. Database and tokens
 
