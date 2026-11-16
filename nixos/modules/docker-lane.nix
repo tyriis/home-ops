@@ -25,6 +25,24 @@
     };
   };
 
+  # Escape lane: SSH from the initrd (port 2222, root key from
+  # users.users.root below). Recovery shell that works when root is not
+  # mounted yet — the drill that makes it proven lives with the
+  # impermanence plan (2026-11-16 spec), and Phase C LUKS unlock reuses it.
+  # 26.11 removed scripted stage 1: the initrd is systemd unconditionally,
+  # networking is systemd-networkd, and the system .network units are
+  # reused, so DHCP applies in stage 1 too.
+  boot.initrd.network = {
+    enable = true;
+    ssh = {
+      enable = true;
+      port = 2222;
+      # Reuse the live host key so the fingerprint is the one operators
+      # already trust; build-time read, baked into the initrd as a secret.
+      hostKeys = [ "/etc/ssh/ssh_host_ed25519_key" ];
+    };
+  };
+
   # Docker platform (spec, "Docker daemon, declarative"):
   # json-file as daemon default so unmanaged strays rotate too (#11541 pattern).
   virtualisation.docker = {
