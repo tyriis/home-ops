@@ -33,7 +33,7 @@ spec:
     substitute:
       APP: *app
       NAMESPACE: *namespace
-      VOLSYNC_CAPACITY: 5Gi
+      VOLSYNC_CAPACITY: 20Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
       # the pod runs as 1500; restic's default 1000 cannot read that volume
       VOLSYNC_PUID: "1500"

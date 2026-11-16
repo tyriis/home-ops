@@ -1,53 +1,35 @@
 # InfluxDB 3 Enterprise (main cluster)
 
 Long-term store for Home Assistant sensor history, running as a single pod in its own `influxdb`
-namespace on the main cluster. Data lives in the TrueNAS MinIO bucket `influxdb3`, so the pod itself
-keeps no state; Home Assistant pushes over the InfluxDB integration and Grafana reads with SQL over
-FlightSQL. Home Assistant's recorder and Prometheus are untouched — this is a third, parallel path.
+namespace on the main cluster. The engine runs with a local `file` object store, so the dataset —
+WAL, Parquet files and catalogue — lives on the `influxdb3-data` volume, and MinIO holds only the
+restic backups of that volume. Home Assistant pushes over the InfluxDB integration and Grafana reads
+with SQL over FlightSQL. Home Assistant's recorder and Prometheus are untouched — this is a third,
+parallel path.
 See [ADR 0021](../../../../../docs/decisions/0021-influxdb3-enterprise-ha-sensor-storage.md).
 
 - app: `kubernetes/main/apps/influxdb/influxdb3/app/` (bjw-s app-template `5.3.0`, image
   `docker.io/library/influxdb:3.12.2-enterprise`)
 - service: `influxdb3.influxdb.svc.cluster.local:8181`, ClusterIP only
 - secrets: OpenBao `infra/kubernetes/main/influxdb/influxdb3` → Secret `influxdb3-env`
-- storage: PVC `influxdb3-data`, created by the volsync component — local data dir only, the bucket holds
-  the data
+- storage: PVC `influxdb3-data`, 20 Gi `ceph-block`, created by the volsync component — this volume
+  is the dataset, mounted at `--data-dir`
 - backups: restic to MinIO daily at 03:30 — off the cluster-wide 2-hourly volsync slot — retaining
   daily 7 / weekly 4 / monthly 3
 - Grafana: datasource `influxdb`, dashboard "Home Assistant (InfluxDB 3)"
+
+The engine runs `--object-store=file --data-dir=/var/lib/influxdb3/data`. WAL, compacted Parquet and
+the catalogue all live under that directory, and the licence record is written there too, so the
+volume is both the working set and the durable copy.
 
 ## Prerequisites
 
 Hand-run once, in this order. Nothing here is in GitOps.
 
-### 1. MinIO bucket and user
+### 1. Backup repository
 
-On the TrueNAS MinIO instance (`docker exec -it minio sh`; `mc` is the image's alias for `mcli`):
-
-```sh
-mc alias set admin http://127.0.0.1:9000 "$MINIO_ROOT_USER" "$MINIO_ROOT_PASSWORD"
-mc mb admin/influxdb3
-mc admin user add admin influxdb3 <secret>
-printf '%s' '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["s3:*"],"Resource":["arn:aws:s3:::influxdb3","arn:aws:s3:::influxdb3/*"]}]}' > /tmp/influxdb3.json
-mc admin policy create admin influxdb3-rw /tmp/influxdb3.json
-mc admin policy attach admin influxdb3-rw --user influxdb3
-```
-
-The policy is scoped to that bucket and its objects only. The endpoint in the manifest is
-`https://s3.techtales.io` (Traefik on the NAS terminates TLS).
-
-### 2. Admin token
-
-InfluxDB 3 accepts a hand-written token file, so no first-boot bootstrap is needed:
-
-```sh
-printf '{"token":"apiv3_%s","name":"_admin"}\n' "$(openssl rand -base64 32 | tr -d '\n')"
-```
-
-### 3. Backup repository
-
-The local data-dir PVC is backed by the repo's volsync component (restic to MinIO), which needs a
-repository of its own before the app is deployed:
+The volume is backed up by the repo's volsync component (restic to MinIO), which needs a repository of
+its own before the app is deployed:
 
 - MinIO user: add a dedicated user for the restic repository to `data/users` in `terraform-minio`, open a
   PR and let Atlantis apply it.
@@ -62,27 +44,31 @@ repository of its own before the app is deployed:
 | `AWS_ACCESS_KEY_ID`     | access key of that MinIO user, from `infra/minio/iam/nas.techtales.io` |
 | `AWS_SECRET_ACCESS_KEY` | its secret                                                             |
 
-### 4. OpenBao
+### 2. OpenBao
 
 Put the values at `infra/kubernetes/main/influxdb/influxdb3`:
 
-| Key              | Value                                       |
-| ---------------- | ------------------------------------------- |
-| `S3_BUCKET_NAME` | `influxdb3`                                 |
-| `S3_ACCESS_KEY`  | the MinIO user from step 1                  |
-| `S3_SECRET_KEY`  | its secret                                  |
-| `LICENSE_EMAIL`  | mailbox that receives the verification link |
-| `ADMIN_TOKEN`    | the `apiv3_…` token from step 2             |
+| Key             | Value                                       |
+| --------------- | ------------------------------------------- |
+| `LICENSE_EMAIL` | mailbox that receives the verification link |
+| `ADMIN_TOKEN`   | an `apiv3_...` token, generated offline     |
+| `READ_TOKEN`    | added in step 4, once the pod is running    |
 
-`bao kv put` creates the path; `bao kv patch` fails on a path that does not exist yet.
+Generate the admin token with `openssl rand -base64 32` — InfluxDB 3 accepts a hand-written token
+file, so no first-boot bootstrap is needed.
 
-### 5. Verify the license
+The ExternalSecret templates these into the environment the server reads: `INFLUXDB3_LICENSE_TYPE` is
+fixed to `home`, `INFLUXDB3_LICENSE_EMAIL` comes from `LICENSE_EMAIL`, and `ADMIN_TOKEN` is rendered
+into the `admin-token.json` file that `--admin-token-file` points at. `bao kv put` creates the path;
+`bao kv patch` fails on a path that does not exist yet.
+
+### 3. Verify the license
 
 Once the pod is `Running`, InfluxData mails a verification link to `LICENSE_EMAIL`. Click it. The
-license is then stored in the object store, not in the pod, so a rebuild does not need a second
-verification.
+license is stored in the data volume, not in the pod, so a rebuild does not need a second
+verification — but a lost volume does.
 
-### 6. Database and tokens
+### 4. Database and tokens
 
 Exec into the running pod and create the database plus one read token for Grafana and one write
 token for Home Assistant:
@@ -106,6 +92,12 @@ ExternalSecret renders the JSON document as that file.
 Add the read token to the same OpenBao entry as `READ_TOKEN`. The ExternalSecret `influxdb3-env`
 feeds the app, and Grafana's `influxdb3-grafana-token` reads the same key for its datasource, so a
 rotation is one `bao kv patch` plus an ESO refresh on both sides.
+
+## Sizing
+
+20 Gi holds years of Home Assistant sensor data at home cardinality; the engine compresses to
+Parquet and keeps 7 daily, 4 weekly and 3 monthly snapshots in the restic repository. To grow the
+volume, raise `VOLSYNC_CAPACITY` in `flux-sync.yaml` and reconcile — `ceph-block` expands online.
 
 ## Home Assistant
 
@@ -146,9 +138,10 @@ DELETE FROM "<measurement>" WHERE time < '2026-01-01T00:00:00Z';
 
 ## Restore
 
-`influxdb3-data` carries a `dataSourceRef` to `ReplicationDestination/influxdb3-data`, so the claim is
-populated by the volsync volume populator **when it is created**. A restore therefore recycles the claim
-instead of writing into the running volume:
+The volume holds the whole dataset, so a restore is a real recovery. `influxdb3-data` carries a
+`dataSourceRef` to `ReplicationDestination/influxdb3-data`, so the claim is populated by the volsync
+volume populator **when it is created**. A restore therefore recycles the claim instead of writing
+into the running volume:
 
 ```sh
 # 1. restore the newest restic snapshot into a fresh volume image
@@ -157,7 +150,7 @@ kubectl -n influxdb patch replicationdestination influxdb3-data --type=merge \
 
 # 2. wait until status.lastManualSync holds that marker and status.latestImage is set
 kubectl -n influxdb get replicationdestination influxdb3-data \
-  -o jsonpath='{.status.lastManualSync}{" "}{.status.latestImage.name}{"\n"}'
+  -o jsonpath='{.status.lastManualSync}{" "}{status.latestImage.name}{"\n"}'
 
 # 3. drop the old claim so the populator can rebuild it from that image
 kubectl -n influxdb scale deploy/influxdb3 --replicas=0
@@ -171,14 +164,15 @@ kubectl -n influxdb scale deploy/influxdb3 --replicas=1
 Any `spec.trigger.manual` value the operator has not seen before starts a restore; the value is only a
 marker, so pick the date of the restore attempt.
 
-The object store remains the source of truth for the data, and the PVC only carries the local data dir
-(WAL and cache), so this backup is a convenience, not the primary copy.
+The snapshot is taken through a Ceph volume snapshot, so the restored directory is consistent as of
+that instant and the WAL under it replays on start. Data written after the snapshot is lost.
 
 ## Verify
 
 ```sh
 kubectl -n influxdb get pods
 kubectl -n influxdb logs deploy/influxdb3
+kubectl -n influxdb exec deploy/influxdb3 -- du -sh /var/lib/influxdb3/data
 kubectl -n influxdb port-forward svc/influxdb3 8181:8181 &
 curl -fsS http://127.0.0.1:8181/health
 ```
@@ -190,5 +184,6 @@ Grafana's Explore (datasource `influxdb`), against one of the unit tables:
 SELECT count(*) FROM "<measurement>";
 ```
 
-A pod that is `Running` but holds no data usually means the S3 credentials or bucket policy are
-wrong — the failure appears in the pod log, not in the readiness check.
+A pod that is `Running` but holds no data usually means the engine is not writing to the mounted
+volume, or the claim was restored from an empty repository. The pod log carries the failure; the
+readiness check only reports `/health`.

@@ -24,7 +24,8 @@ Constraints discovered during evaluation:
 
 - Native Home Assistant integration (zero middleware)
 - Long-term (multi-year) retention without manual babysitting
-- Fits existing infra: app-template deploy pattern, MinIO object storage, Grafana as single pane of glass
+- Fits existing infra: app-template deploy pattern, Ceph block storage with MinIO for backups, Grafana
+  as single pane of glass
 - GitOps-homelab deployability (Flux + app-template, no bespoke operator)
 - Low operational overhead for a single-node Talos cluster
 
@@ -40,18 +41,21 @@ Constraints discovered during evaluation:
 ## Decision Outcome
 
 Chosen option: "InfluxDB 3 Enterprise (free home license)", because it is the only
-InfluxDB 3 variant without a query-range cap, its only extra requirement (S3-compatible
-object storage) is already satisfied by MinIO, and Home Assistant can push sensor data
-to it natively.
+InfluxDB 3 variant without a query-range cap and Home Assistant can push sensor data
+to it natively. It runs with a local `file` object store, so it needs no bucket and no S3
+credentials; the free home licence is single-node, which leaves the engine's shared-object-store
+multi-node design with nothing to buy here.
 
 Placement: its own namespace `influxdb` on the main cluster (not `observability`), ClusterIP-only
 (cluster-internal access), deployed with bjw-s app-template 5.3.0 as a plain container on image
-`influxdb:3.12.2-enterprise`. The local data-dir PVC `influxdb3-data` is covered by the repo's volsync
-component (restic to MinIO, daily at 03:30 to stay clear of the two-hourly fleet-wide slot), while the
-Parquet and catalog objects stay the source of truth. The official `influxdata/helm-charts` chart
-`influxdb3-enterprise` (0.18.0) is multi-node and accepts only `trial`/`commercial` licences, so it
-cannot run the free home licence, which is single-node only. The object store is the TrueNAS MinIO
-instance behind <https://s3.techtales.io>. Reference implementation:
+`influxdb:3.12.2-enterprise`. The engine runs `--object-store=file --data-dir=/var/lib/influxdb3/data`
+against the `influxdb3-data` PVC (20 Gi, `ceph-block`), created by the repo's volsync component. That
+volume holds the WAL, the compacted Parquet files, the catalogue and the licence record, so it is the
+dataset, and the component's nightly restic run (daily at 03:30 to stay clear of the two-hourly
+fleet-wide slot) backs it up to MinIO. MinIO is therefore a backup target only. The official
+`influxdata/helm-charts` chart `influxdb3-enterprise` (0.18.0) is multi-node and accepts only
+`trial`/`commercial` licences, so it cannot run the free home licence, which is single-node only.
+Reference implementation:
 [gavinmcfall/home-ops](https://github.com/gavinmcfall/home-ops/blob/main/kubernetes/apps/database/influxdb3/app/helmrelease.yaml)
 (37 stars).
 
@@ -61,7 +65,15 @@ integration is a documented UI step in the app README, not a manifest in this re
 ### Consequences
 
 - Good, parallel data paths: Prometheus keeps cluster metrics; InfluxDB owns HA sensor data; Grafana queries both.
-- Good, data durability: Parquet/Arrow objects live in MinIO; InfluxDB 3 compute is effectively stateless.
+- Good, data durability: the whole dataset (WAL, Parquet, catalogue) sits on a replicated Ceph block
+  volume and is snapshotted through Ceph and copied to MinIO by restic nightly, so a restore is a real
+  recovery rather than a copy of scratch space.
+- Good, read path: queries read Parquet from the block volume instead of fetching objects over HTTP
+  from the NAS, which matters because the home licence caps the engine at two cores and one DataFusion
+  thread shared by ingest, compaction and query.
+- Neutral, capacity is a number instead of unlimited: 20 Gi covers years of sensor data at home
+  cardinality and `ceph-block` expands online, but the volume needs watching rather than trusting an
+  object store to grow without limit.
 - Good, retention is a runtime decision, not architecture: no automatic retention
   policies; old data is removed via SQL `DELETE FROM ... WHERE time < ...` whenever
   desired. Raw data is kept indefinitely until deleted manually.
@@ -123,7 +135,8 @@ MIT-licensed Rust rewrite, SQL, stateless-friendly.
 Full 3.x engine storing Parquet/Arrow in object storage.
 
 - Good, unlimited query range; free "home" license tier with no expiry for home-sensor use
-- Good, reuses existing MinIO as object store
+- Good, reuses existing MinIO as the backup target, while the dataset itself runs on the cluster's own
+  block storage
 - Bad, email verification + license env via secret; 2-CPU-per-cluster cap (cgroup-based, acceptable at sensor volumes)
 
 ## More Information
@@ -136,7 +149,7 @@ Decision captured from a structured grilling session, 2026-09-17:
 | HA recorder  | Stays (parallel writes)                                                |
 | Prometheus   | Stays (cluster metrics untouched)                                      |
 | Version      | InfluxDB 3 Enterprise, free home license                               |
-| Object store | Existing MinIO                                                         |
+| Object store | `ceph-block` PVC, `--object-store=file`; MinIO for restic only         |
 | Access       | Cluster-internal (ClusterIP), namespace `influxdb`                     |
 | Deploy       | bjw-s app-template; the official 3.x chart cannot run the home licence |
 | HA ingestion | Start with everything, prune later                                     |
@@ -148,3 +161,13 @@ Related community references:
 - <https://github.com/gavinmcfall/home-ops/blob/main/kubernetes/apps/database/influxdb3/app/helmrelease.yaml>
 - <https://docs.influxdata.com/influxdb3/enterprise/about-the-home-license/>
 - <https://docs.influxdata.com/influxdb3/core/query-data/delete/>
+
+## Revision history
+
+- **2026-11-16**: the object store moved from MinIO to a local `file` object store on a 20 Gi
+  `ceph-block` PVC, and MinIO was reduced to the restic backup target. This supersedes the earlier
+  wording that placed the Parquet and catalog objects in MinIO as the source of truth, and drops the
+  "S3-compatible object storage" prerequisite from the decision. Three reasons: the free home licence
+  is single-node, so a shared object store bought no availability; the bucket had no backup of its
+  own; and in that design the PVC held only scratch data, so the volsync backup could not rebuild
+  anything. The option analysis above is left as originally written.

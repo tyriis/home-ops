@@ -4,7 +4,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: influxdb3
-  description: InfluxDB 3 Enterprise is the long-term store for Home Assistant sensor history. A single pod in the influxdb namespace on the main cluster keeps its data in the TrueNAS MinIO bucket influxdb3, Home Assistant pushes state changes to it over the InfluxDB integration, and Grafana reads it with SQL over FlightSQL. The HA recorder and Prometheus are untouched.
+  description: InfluxDB 3 Enterprise is the long-term store for Home Assistant sensor history. A single pod in the influxdb namespace on the main cluster runs a local file object store on a 20 Gi ceph-block volume, with restic backups to MinIO, Home Assistant pushes state changes to it over the InfluxDB integration, and Grafana reads it with SQL over FlightSQL. The HA recorder and Prometheus are untouched.
   annotations:
     backstage.io/techdocs-ref: dir:.
   links:

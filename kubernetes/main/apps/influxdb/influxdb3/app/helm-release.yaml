@@ -42,10 +42,8 @@ spec:
               - serve
               - --node-id=influxdb3-node0
               - --cluster-id=influxdb3
-              - --object-store=s3
-              - --aws-endpoint=https://s3.techtales.io
-              - --aws-default-region=us-east-1
-              - --data-dir=/var/lib/influxdb3
+              - --object-store=file
+              - --data-dir=/var/lib/influxdb3/data
               - --http-bind=0.0.0.0:8181
               - --admin-token-file=/etc/influxdb3/admin-token.json
               - --disable-authz=health
