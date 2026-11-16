@@ -182,8 +182,15 @@ in
     freeMemThreshold = 5;
   };
 
-  # (polkit auth-reuse window + pkexec-wrapper opt-in: this pin's polkit
-  # module exposes only JS extraConfig — no polkitd.conf options yet.
-  # Re-add `settings.Polkitd.ExpirationSeconds = 30` and
-  # `enablePkexecWrapper = false` on the first flake update carrying 26.11.)
+  # polkit: harden-before-present. Polkit is currently disabled on this
+  # headless host (enable evaluates false), so this block is not a live
+  # surface today — it is the pin for the day something pulls it in:
+  # setuid pkexec wrapper stays opt-in, auth-reuse window 300 s -> 30 s
+  # (upstream default). Options verified at pin d5cc68339997:
+  # nixos/modules/security/polkit.nix (moved out of services/security in
+  # the 26.11 restructure; enablePkexecWrapper :31, Polkitd.ExpirationSeconds :42).
+  security.polkit = {
+    enablePkexecWrapper = false;
+    settings.Polkitd.ExpirationSeconds = 30;
+  };
 }
