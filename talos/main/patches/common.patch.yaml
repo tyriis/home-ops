@@ -175,7 +175,7 @@ url: https://github.com/prometheus-operator/prometheus-operator/releases/downloa
 apiVersion: v1alpha1
 kind: KubeExternalManifestConfig
 name: grafana-operator-crds
-url: https://github.com/grafana/grafana-operator/releases/download/v5.25.0/crds.yaml
+url: https://github.com/grafana/grafana-operator/releases/download/v5.26.0/crds.yaml
 ---
 # fresh 1.14 gen defaults NOT enabled on this cluster — pin to current live behavior
 apiVersion: v1alpha1
