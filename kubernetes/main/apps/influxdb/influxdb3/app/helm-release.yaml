@@ -23,6 +23,7 @@ spec:
   values:
     controllers:
       influxdb3:
+        strategy: Recreate
         pod:
           securityContext:
             runAsNonRoot: true
