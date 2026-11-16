@@ -180,7 +180,8 @@ globs — the same ones the wipe itself creates:
    on. Guard the rename itself: `[ ! -e @old ] && mv @ @old`,
    `fail_open` otherwise.
 10. Wipe, atomic-ordered: `btrfs subvolume snapshot @base @new` →
-    `mv @new @` → `btrfs subvolume delete @old` → clear
+    `mv @ @old` (the rename step 9 guards) → `mv @new @` →
+    `btrfs subvolume delete @old` → clear
     `/run/impermanence/*` markers (a wipe completed from `@base` is
     a clean root — an old `FAILED` must not report a clean boot as
     failed) → `sync` → unmount. Create-then-swap: any single step
@@ -287,8 +288,11 @@ mirrors the wipe's recovery-first structure:
 2. Reconcile **all three names** — `@base`, `@base.new`,
    `@base.old`. If `@base` is absent: promote `@base.new`, else
    `@base.old` (a crash between the two renames left the tree as
-   `.old`; promoting it is the convergence). If `@base` is present:
-   delete `@base.new` and `@base.old` remnants.
+   `.old`; promoting it is the convergence), then **delete the other
+   remnant if it exists** — promotion without deletion strands a
+   remnant that step 3's assertion would reject on every later run.
+   If `@base` is present: delete `@base.new` and `@base.old`
+   remnants.
 3. Assert neither remnant name exists. Without this gate, a
    surviving `@base.old` turns the next `mv @base @base.old` into a
    **nest** (`@base.old/@base`, POSIX rename-into-directory), and
