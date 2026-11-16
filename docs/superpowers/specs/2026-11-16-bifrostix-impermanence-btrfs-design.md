@@ -18,6 +18,9 @@ delivery mechanism for `/etc/doco-cd`, pin-correct initrd networking and
 host-key paths, sentinel check replacing the stage-2 assert, non-latching
 metric, converging reseed, and the minor list.
 
+Revision 2.2 (2026-11-16): second-pass review of rev 2.1 (6 items), the
+initrd-network and initrd-key corrections, and the minor list.
+
 ## Intent
 
 Make bifrostix's root filesystem recreated from a known-good snapshot on every
@@ -56,9 +59,17 @@ convention.
   premise was wrong; the /etc decision stands for other reasons (see
   Persistence).
 - `boot.initrd.network.udhcpc.enable` no longer exists at the pin
-  (`initrd-network.nix:18-32`): `boot.initrd.network.enable` alone adds
-  only `af_packet`. Stage-1 DHCP needs a systemd-networkd unit or
-  `ip=dhcp` on the kernel cmdline.
+  (`initrd-network.nix:18-32`). `boot.initrd.network.enable = true`
+  sets `systemd.network.enable` via `mkDefault`
+  (`networkd.nix:4291`), so stage-1 networkd + generator +
+  `af_packet` arrive with it: `boot.initrd.network.enable = true` plus
+  `ip=dhcp` on the kernel cmdline is the complete stage-1 DHCP
+  setup. Rev 2.1's "adds only `af_packet`" claim was wrong.
+- The stage-1 network option family is
+  `boot.initrd.systemd.network.networks.<name>.networkConfig` —
+  values are strings (`DHCP = "yes"`).
+- `boot.initrd.network.ssh.enable` defaults to `false`
+  (`initrd-ssh.nix:25-27`) — PR-A sets it explicitly.
 - `boot.initrd.network.ssh.hostKeys` files are copied into the initrd at
   **build time** (`initrd-ssh.nix:233-235`); a path produced by a
   stage-2 decryption step cannot satisfy it.
@@ -123,46 +134,68 @@ Ordering is the whole mechanism: the wipe must run **after**
 `initrd-root-device.target` (device present) and **before** `sysroot.mount`
 — once `@` is mounted, deleting it is `EBUSY`.
 
-The script, in sequence. Remnants use exactly two names — `@new` and
-`@old`, literal, no globs — the same ones the wipe itself creates:
+The script, in sequence. Each numbered step is a gate: an unmet
+expectation aborts to `fail_open` unless the step says otherwise.
+Remnants use exactly two names — `@new` and `@old`, literal, no
+globs — the same ones the wipe itself creates:
 
-1. Kill-switch first: `impermanence.disable` on `/proc/cmdline` → log,
-   write `/run/impermanence/DISABLED`, exit 0. It preempts
-   every other check, so a broken assertion cannot block a deliberate
-   skip.
-2. Mount the filesystem explicitly at **`-o subvolid=5`** — never rely
-   on the default-subvolume fallback. Assert
-   `btrfs subvolume get-default` still reports FS_TREE; if it does not,
-   escape lane 2 has been destroyed by someone else — abort loudly.
-3. **Recover before anything else.** If `@` is absent: promote `@new`
+1. Mount the filesystem explicitly at **`-o subvolid=5`** — never
+   rely on the default-subvolume fallback.
+2. **Recover before anything else.** If `@` is absent: promote `@new`
    to `@` if it exists, else rename `@old` to `@`. Write
    `/run/impermanence/FAILED` with reason `recovered` — the boot is
    stale, say so. If `@` cannot be produced at all, **do not
    fail-open**: there is no root to boot, exiting 0 here only delays
    the emergency shell past a confusing mount error. Exit non-zero;
-   the PR-A initrd SSH and the console are the response for this
-   state.
-4. Guard: `@base` exists. (Without this, a delete→snapshot pair loses
-   both.)
-5. Guard: no nested subvolume inside `@` (`btrfs subvolume list`
+   the initrd SSH and the console are the response for this state —
+   proven by the no-root drill case, not assumed.
+3. Kill-switch: `impermanence.disable` on `/proc/cmdline` → log,
+   write `/run/impermanence/DISABLED`, exit 0. It skips the **wipe
+   only** — recovery (step 2) already ran, because a skipped wipe
+   with no root is not a boot, it is an emergency shell with extra
+   steps.
+4. Assert the default subvolume: parse
+   `btrfs subvolume get-default`, require `ID 5` exactly — a
+   substring match against a path is not a check. A changed default
+   means escape lane 2 has been destroyed by someone else — abort
+   loudly.
+5. Sentinel check, then source mkdir (see Persistence): a lost
+   persist surface aborts here, **fail-closed** — an exit 0 on empty
+   sentinels boots an empty `/var/lib/nixos`, renumbers every uid,
+   changes the networkd DUID, and makes the host unreachable through
+   the very reservation that justifies the allow-list.
+6. Guard: `@base` exists. (Without this, a delete→snapshot pair
+   loses both.)
+7. Guard: no nested subvolume inside `@` (`btrfs subvolume list`
    against its id is empty). Nested children make `subvolume delete`
-   refuse; on vanilla systems that silently boots a stale `@` forever.
-6. Clean stale `@new` and `@old` remnants — only now, only while `@`
-   exists. Cleaning before recovery is how a wipe deletes its own
-   recovery path: a power loss after `mv @ @old` leaves the remnants
-   as the only copies of the tree.
-7. Wipe, atomic-ordered: `btrfs subvolume snapshot @base @new` →
-   `mv @ @old` → `mv @new @` → `btrfs subvolume delete @old` → `sync`
-   → unmount. Create-then-swap: any single step failing leaves a
-   recoverable tree, and a re-run converges via step 3.
+   refuse; on vanilla systems that silently boots a stale `@`
+   forever.
+8. Clean stale `@new` and `@old` remnants — after recovery, only
+   while `@` exists. Cleaning before recovery is how a wipe deletes
+   its own recovery path: a power loss after `mv @ @old` leaves the
+   remnants as the only copies of the tree.
+9. Assert both remnant names are now **gone**. If either survives
+   (delete refused, crash between attempts), `mv @ @old` would nest
+   `@` inside a stale `@old` — the wipe would be dead from that boot
+   on. Guard the rename itself: `[ ! -e @old ] && mv @ @old`,
+   `fail_open` otherwise.
+10. Wipe, atomic-ordered: `btrfs subvolume snapshot @base @new` →
+    `mv @new @` → `btrfs subvolume delete @old` → clear
+    `/run/impermanence/*` markers (a wipe completed from `@base` is
+    a clean root — an old `FAILED` must not report a clean boot as
+    failed) → `sync` → unmount. Create-then-swap: any single step
+    failing leaves a recoverable tree, and a re-run converges via
+    step 2.
 
 `fail_open` = log to console and `/dev/kmsg` with reason, write
 `/run/impermanence/FAILED` (stage-1 `/run` is the tmpfs that survives
-`switch_root`, so the marker is visible to the running system and erased
-on the next boot by construction), unmount best-effort, exit 0.
-Boot proceeds on the stale `@`. The fail-open contract is conditional:
-it applies **only when a viable `@` exists** (or was recovered at
-step 3). With no root at all, exit 0 would be a lie.
+`switch_root`, so the marker is visible to the running system and
+erased on the next boot by construction), unmount best-effort, exit
+0. Boot proceeds on the stale `@`. The fail-open contract is
+conditional: it applies **only when a viable `@` exists** (or was
+recovered at step 2) **and the persist sentinels passed**. With no
+root, or an empty persist surface, exit 0 would be a lie — those
+states halt and call: initrd SSH, then console.
 
 **The loud half (`impermanence-check.service`, stage-2, oneshot):** reads
 the stage-1 markers. If `/run/impermanence/FAILED` exists:
@@ -186,22 +219,27 @@ every one with:
   i.e. after stage-2 `/etc` activation and racing
   nix-daemon/sshd/journald. That race is the uid-renumbering failure this
   spec names as its own justification.
-- explicit `Options = [ "bind" ]` + generated `RequiresMountsFor` on
-  `/persistent` (the initrd service creates nothing at runtime except
-  mountpoints — see below).
-- **sentinel check before mkdir** (rev 2's stage-2 `AssertPathExists`
-  was inert: a `neededForBoot` bind starts before stage 2 evaluates
-  anything, and the wipe's own `mkdir -p` makes any assert vacuous).
-  From the wipe service's `subvolid=5` mount, every bind source is at
-  `<mnt>/@persistent/<path>`; before creating any of them, verify
-  sentinel **content** for the critical entries —
+- explicit `Options = [ "bind" ]` + generated `RequiresMountsFor`
+  on `/persistent`.
+- **Sentinel check before mkdir** (rev 2's stage-2
+  `AssertPathExists` was inert: a `neededForBoot` bind starts before
+  stage 2 evaluates anything, and the wipe's own `mkdir -p` would
+  make any assert vacuous). The wipe service does create missing
+  bind sources at runtime — that is why the sentinel must gate the
+  mkdir rather than follow it. From the wipe service's
+  `subvolid=5` mount, every bind source is at
+  `<mnt>/@persistent/<path>`. The sentinel **list is a per-device
+  module input** — a static list would fail a fresh host with an
+  empty `@persistent` before it could ever seed itself, and this
+  module serves every future NixOS host. For bifrostix the list:
   `@persistent/var/lib/nixos/ids` non-empty, `@persistent/etc/ssh`
   holding a key file, `@persistent/var/lib/systemd` present. A
   missing/empty sentinel means `@persistent` lost its contents:
-  write `FAILED` with reason `persist-empty` before any mkdir can
-  paper over it, so a lost persist surface cannot bind empty dirs and
-  silently renumber every uid — the exact failure this spec exists
-  to prevent.
+  **halt the boot** (same state as no-root: write the marker to the
+  console, exit non-zero). Failing open here boots an empty
+  `/var/lib/nixos`, renumbers every uid, changes the networkd DUID,
+  and the reservation misses — unreachable with no console message,
+  the worst of both designs.
 
 Two entries are **not** binds:
 
@@ -230,10 +268,12 @@ Replacements:
   `mldsa44-ed25519` — `sshd.nix:371-387`), so declare the full set we
   want, each `path` pointing at `/persistent/etc/ssh/...`. Seed the
   current default key(s) into `@persistent` during migration. Missing
-  keys are generated by sshd's own `preStart` at the configured
-  paths — generation lands in `@persistent` and survives. (Rev 2
-  attributed this to the reseed; the reseed never touches keys.)
-  The PR-B eval gate re-proves entry shape against the pin.
+  keys are generated at the configured paths by
+  `sshd-keygen.service` (`sshd.nix:991-995`, driven from
+  `hostKeys`) — generation lands in `@persistent` and survives. (Rev
+  2 attributed this to the reseed; rev 2.1 to a preStart. Neither:
+  it is the keygen unit.) The PR-B eval gate re-proves entry shape
+  against the pin.
 - `machine-id`: declaratively static via `environment.etc."machine-id"`
   with this host's id committed in the config. Deterministic identity
   needs no persistence at all — the store re-renders it every activation.
@@ -244,18 +284,24 @@ Replacements:
 mirrors the wipe's recovery-first structure:
 
 1. mount `-o subvolid=5`, `sync`.
-2. Reconcile remnants: if `@base.new` exists and `@base` does not,
-   promote it (`mv @base.new @base`); if both exist, delete
-   `@base.new` (the previous run completed its snapshot, and the
-   completed `@base` was the operator's intent).
-3. `btrfs subvolume snapshot -r @ @base.new`.
-4. `mv @base @base.old` when `@base` exists.
-5. `mv @base.new @base`.
-6. delete `@base.old`, unmount.
+2. Reconcile **all three names** — `@base`, `@base.new`,
+   `@base.old`. If `@base` is absent: promote `@base.new`, else
+   `@base.old` (a crash between the two renames left the tree as
+   `.old`; promoting it is the convergence). If `@base` is present:
+   delete `@base.new` and `@base.old` remnants.
+3. Assert neither remnant name exists. Without this gate, a
+   surviving `@base.old` turns the next `mv @base @base.old` into a
+   **nest** (`@base.old/@base`, POSIX rename-into-directory), and
+   every later run repeats the cycle.
+4. `btrfs subvolume snapshot -r @ @base.new`.
+5. `mv @base @base.old` when `@base` exists — guarded:
+   `[ ! -e @base.old ]`.
+6. `mv @base.new @base`.
+7. delete `@base.old`, unmount.
 
 Delete-last, never delete-first: a power loss at any step leaves a
-complete `@base` or a complete `@base.new`, and step 2 converges on
-re-run. Honest
+complete `@base` or a complete `@base.new`/`@base.old`, and step 2's
+three-name reconcile converges on re-run. Honest
 statement: this snapshots a live filesystem, so `@base` is
 **crash-consistent, not point-in-time**. Databases on the root volume
 must tolerate that; nothing on the allow-list demands more (docker data
@@ -281,8 +327,10 @@ listed as a subvolume mount)
   must not evaporate.
 - `/etc/doco-cd` (contents under `/persistent`) — the parent spec's
   bootstrap secret for this host. Delivered via
-  `environment.etc."doco-cd".source = "/persistent/etc/doco-cd"` — a
-  declared `/etc` symlink into persisted content, no bind involved.
+  `environment.etc."doco-cd".source = "/persistent/etc/doco-cd"`
+  (a **string**, not a path literal — a path value would be copied
+  into the store at build time). A declared `/etc` symlink into
+  persisted content, no bind involved.
 - `/root/nixos` — the config tree (until the host moves to a real git
   checkout of this repo — a tracked follow-up).
 - `/persistent/docker` (via `@docker`) — declared Docker `data-root`.
@@ -319,6 +367,13 @@ unproven at spec time — "refuse to boot" on a headless box is indistinguishabl
 from "bricked" until someone physically intervenes. Stale-but-bootable
 with a proven alert chain is recoverable at leisure; unreachable is not.
 
+Fail-open has exactly two exceptions, both states where "boot anyway"
+is a lie rather than a safety net: **no viable root** (nothing was
+recoverable) and **empty persist sentinels** (booting would
+self-corrupt: uid renumbering, DUID change, missed reservation).
+Those two halt the boot and route to the initrd SSH — a halt with a
+proven out-of-band path beats a boot that destroys the evidence.
+
 The decision is conditional and the condition is structural, not
 aspirational: fail-open is only acceptable *because* the marker chain is
 proven — the break-and-restore drill below is a migration gate, not a
@@ -327,8 +382,10 @@ surfaced as a failed unit, and alerted on before Phase B closes.
 
 Kill-switch: `impermanence.disable` on the kernel cmdline (editable in
 systemd-boot at pick time, or via `boot.kernelParams` for a persistent
-skip). Semantics: skip wipe, write `/run/impermanence/DISABLED`, boot
-whatever root exists, loud log. It is a supported mode for "I know
+skip). Semantics: skip the **wipe only** — recovery still runs, since
+a skip that yields no root is an emergency shell, not a boot. Write
+`/run/impermanence/DISABLED`, boot whatever root exists, loud log.
+It is a supported mode for "I know
 something is wrong, boot anyway", not an escape from the allow-list
 discipline.
 
@@ -356,19 +413,28 @@ and the rollback lane is gone without a sound. Therefore:
    already true and are not:
    - NIC driver in the initrd: `e1000e` added to
      `boot.initrd.availableKernelModules` (absent today);
-   - `boot.initrd.network.enable` plus a stage-1 network: the
-     `udhcpc` option no longer exists at the pin, so DHCP comes from a
-     `boot.initrd.systemd.network` unit with `DHCP = yes`, or
-     `ip=dhcp` on the kernel cmdline. The SSH port defaults to 22 —
-     set `boot.initrd.network.ssh.port = 2222` explicitly.
+   - `boot.initrd.network.enable = true` + `ip=dhcp` on the kernel
+     cmdline: the enable flag pulls stage-1 networkd, the generator,
+     and `af_packet` via `mkDefault` (`networkd.nix:4291`), so these
+     two lines are the complete stage-1 DHCP setup. Alternative for
+     a managed link:
+     `boot.initrd.systemd.network.networks.<name>.networkConfig.DHCP
+     = "yes"` (string value).
+   - `boot.initrd.network.ssh.enable = true` (defaults to false),
+     and the port defaults to 22 — set
+     `boot.initrd.network.ssh.port = 2222` explicitly.
    - non-empty `boot.initrd.network.ssh.hostKeys` — the option
      asserts, and the files are **copied into the initrd at build
-     time** (`initrd-ssh.nix:233-235`), so they must exist at eval:
-     a sops-encrypted keypair decrypted by a build-time derivation
-     (`sops -d` in a `runCommand`). There is no sops-nix flake input
-     here, and stage-2 decryption is too late for the initrd.
-     Accepted exposure until Phase C LUKS: the initrd image on
-     `/boot` carries the private key unencrypted. Separate from
+     time** (`initrd-ssh.nix:233-235`), so they must exist at eval.
+     **Committed keypair** for the initrd, dedicated to this host
+     and this purpose. Sops-encryption is rejected here on two
+     grounds: a sandboxed derivation cannot read the age key, and
+     making it readable would place the age key in the store closure
+     — a bigger leak than the one avoided. And build-time
+     decryption buys no confidentiality anyway: the initrd lands on
+     the unencrypted ESP regardless. So the honest exposure is
+     stated, not hidden: the initrd host key is public while
+     `/boot` is unencrypted — until Phase C LUKS. Separate from
      stage-2 host keys; rotation independent.
    This is the out-of-band path if a boot ever fails before root mounts,
    and Phase C (LUKS2+TPM2) inherits it as its unlock path.
@@ -380,10 +446,14 @@ and the rollback lane is gone without a sound. Therefore:
 
 ## Migration sequence (one host, one window, deliberate)
 
-1. **PR-A: initrd SSH.** Add `e1000e`, initrd network (stage-1
-   networkd or `ip=dhcp`), `port = 2222`, build-time host keys.
-   `nixos-rebuild boot`, reboot, **prove** the 2222 shell while `/` is
-   unmounted. No layout work merges before this drill passes.
+1. **PR-A: initrd SSH.** Add `e1000e`,
+   `boot.initrd.network.enable = true` + `ip=dhcp`,
+   `ssh.enable = true`, `port = 2222`, committed initrd host keys.
+   `nixos-rebuild boot`, reboot, **prove** the 2222 shell while `/`
+   is unmounted. No layout work merges before this drill passes.
+   (The **no-root drill case** — a missing root must still reach the
+   2222 shell — runs at the break step below, since it needs the `@`
+   layout to exist.)
 2. Create subvolumes beside the live system from FS_TREE: `@`,
    `@persistent`, `@docker`, `@journal`. Seed `@`:
    `rsync -aHAXSx --numeric-ids` with an **explicit exclude list** —
@@ -397,7 +467,7 @@ and the rollback lane is gone without a sound. Therefore:
    dead dirs *into* `@`, hide them under the new mounts, and break
    the A2 seal chain at the flip without a signal.
    Seed allow-list contents into `@persistent` (host key, nixos dir,
-   DUID dir, doco-cd secret). Seed `@journal` by moving the current
+   DUID dir, audit dir, doco-cd secret). Seed `@journal` by moving the current
    `/var/log/journal` content into it, preserving the seal chain. Docker has no
    containers yet — the lane was deliberately deferred behind this
    phase, so no runtime data moves.
@@ -406,9 +476,10 @@ and the rollback lane is gone without a sound. Therefore:
    host-fs module for the layout. `hardware-bifrostix.nix` keeps its
    "do not modify" contract; layout overrides live beside it, not in it.
    Contents per Design: `fileSystems` entries for `/` (`subvol=@`),
-   `/persistent`, `/persistent/docker`, `/var/log/journal`;
-   `boot.tmp.useTmpfs` (a hand-rolled tmpfs entry is 0755 and
-   RAM-unbounded); zram stays as-is; Docker `data-root` +
+   `/persistent`, `/persistent/docker`, `/var/log/journal`, **all
+   allow-list binds** (each with `neededForBoot`);
+   `boot.tmp.useTmpfs` plus the explicit `/var/tmp` tmpfs entry (the
+   option covers `/tmp` only); zram stays as-is; Docker `data-root` +
    `RequiresMountsFor`; wipe + checker + reseed units.
    Gate: eval + `--dry-run` build at the pin.
 5. `nixos-rebuild boot` (**not** `switch` — the root-mount flip, the bind
@@ -436,6 +507,10 @@ and the rollback lane is gone without a sound. Therefore:
    fingerprint unchanged. This one drill is simultaneously the
    fail-open proof, the first asserted wipe proof, and the `@base`
    restore drill.
+   Additional drill case (proves the no-root response, which the
+   design must not assume): rename `@` → `@.off`, reboot, prove the
+   initrd 2222 shell with **no root at all** — this is the state the
+   wipe's non-zero exit routes to. Restore `@.off` → `@`.
 8. Reseed: `systemctl start impermanence-reseed` — the base now equals
    the approved state, read-only.
 9. Cleanup pass (later PR): delete `tmp`, `var/tmp`,
@@ -445,10 +520,10 @@ and the rollback lane is gone without a sound. Therefore:
    `docs/backstage/systems/bifrostix/docs/index.md` (still says 26.05 /
    `f1e5c35` / `.232`).
 
-Planned reboots to close Phase B: four — PR-A drill (1), the flip (2),
-the break (3), the restore-and-first-wipe (4). Each is self-recovering by
-design, and the fail-open path is what makes "self-recovering" a claim
-the drill has actually tested.
+Planned reboots to close Phase B: five — PR-A drill (1), the flip (2),
+the break (3), the no-root case (4), the restore-and-asserted-wipe (5).
+Each is self-recovering by design, and the drill reboots are what make
+"self-recovering" a tested claim rather than an assumption.
 
 ## Non-goals for this spec
 
@@ -480,7 +555,11 @@ the drill has actually tested.
   `/var/log/journal`.
 - Static invariants: no `set-default` anywhere in the repo's nixos tree
   for this host (grep-gate in PR-B CI alongside the existing
-  nix-evaluation check); wipe service asserts
-  `btrfs subvolume get-default` every boot.
+  nix-evaluation check); the wipe service asserts
+  `btrfs subvolume get-default` = `ID 5` on every boot where the
+  wipe runs (the kill-switch skips it, by design).
+- After the no-root drill case: an initrd 2222 shell with the root
+  subvolume renamed away — the no-root fail path is proven, not
+  assumed.
 - `btrfs filesystem usage` recorded before the flip and at the close, to
   catch a leak between `@` and persistent subvolumes early.
