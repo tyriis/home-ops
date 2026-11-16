@@ -9,10 +9,10 @@ storage.
 All clusters back up to the S3 endpoint `https://s3.techtales.io` in bucket `cnpg`. Credentials are synced from
 OpenBao by the External Secrets Operator — no S3 credentials are committed to the repository.
 
-| Cluster      | Namespace                      | Image          | Databases                                                | ObjectStore / Server name   | Destination path             |
-| ------------ | ------------------------------ | -------------- | -------------------------------------------------------- | --------------------------- | ---------------------------- |
-| `immich-db`  | `media`                        | PG 18 + vchord | `immich`                                                 | `immich-db` / `immich-db`   | `s3://cnpg/main/immich`      |
-| `forgejo-db` | `git-system` (utility cluster) | PG 18          | `forgejo`                                                | `forgejo-db` / `forgejo-db` | `s3://cnpg/utility/forgejo/` |
+| Cluster      | Namespace                      | Image          | Databases | ObjectStore / Server name   | Destination path             |
+| ------------ | ------------------------------ | -------------- | --------- | --------------------------- | ---------------------------- |
+| `immich-db`  | `media`                        | PG 18 + vchord | `immich`  | `immich-db` / `immich-db`   | `s3://cnpg/main/immich`      |
+| `forgejo-db` | `git-system` (utility cluster) | PG 18          | `forgejo` | `forgejo-db` / `forgejo-db` | `s3://cnpg/utility/forgejo/` |
 
 Images: `immich-db` uses
 `ghcr.io/tensorchord/cloudnative-vectorchord:18.3-1.1.1@sha256:392b53675b403d6a2c72b673cc488a7c272514755dd818c622fb9ce4665193c4`;

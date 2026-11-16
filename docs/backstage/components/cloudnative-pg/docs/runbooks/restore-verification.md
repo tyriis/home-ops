@@ -45,9 +45,9 @@ deliberately **not** referenced by any `kustomization.yaml`, so Flux never appli
 bootstraps a new `Cluster` from the production backup via `spec.bootstrap.recovery.source` and an
 `externalClusters[]` entry using the barman plugin.
 
-| Manifest                                                            | Restored cluster     | Verifies                                                                                     |
-| ------------------------------------------------------------------- | -------------------- | -------------------------------------------------------------------------------------------- |
-| `kubernetes/main/apps/media/immich/database/restore-verify.yaml`    | `immich-db-restore`  | The PG 18 + VectorChord Immich database is recoverable with the `vchord` extension loadable. |
+| Manifest                                                         | Restored cluster    | Verifies                                                                                     |
+| ---------------------------------------------------------------- | ------------------- | -------------------------------------------------------------------------------------------- |
+| `kubernetes/main/apps/media/immich/database/restore-verify.yaml` | `immich-db-restore` | The PG 18 + VectorChord Immich database is recoverable with the `vchord` extension loadable. |
 
 Both restored clusters are single-instance and set `enableSuperuserAccess: true` so `kubectl cnpg psql`
 works. They are **not** archivers (no `spec.plugins`), so a restored cluster can never overwrite
