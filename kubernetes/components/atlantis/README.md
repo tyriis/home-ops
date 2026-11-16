@@ -72,6 +72,8 @@ patches:
 ## Notes
 
 - One component instance per Terraform repository — each app gets its own Atlantis deployment.
+- `ATLANTIS_ALLOW_COMMANDS` enables every command Atlantis offers: `version`, `plan`, `apply`, `unlock`,
+  `approve_policies`, `cancel`, `import`, `state`.
 - The `ATLANTIS_ATLANTIS_URL` is derived from `{{ .Release.Name }}.techtales.io` (Helm-native, not a substitution variable).
 - Redis (Dragonfly) is used as the locking backend at `dragonfly.dragonfly-system.svc.cluster.local`.
 - Each instance sets `AWS_ENDPOINT_URL_S3`, `envFrom`, and the `config` (repos.yaml) persistence itself via its `helm-release.patch.yaml`. Path-style access is set by the base.

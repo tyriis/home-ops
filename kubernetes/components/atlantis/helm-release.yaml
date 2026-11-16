@@ -78,6 +78,7 @@ spec:
                   httpGet: *httpGet
             env:
               # https://www.runatlantis.io/docs/server-configuration.html
+              ATLANTIS_ALLOW_COMMANDS: "version,plan,apply,unlock,approve_policies,cancel,import,state"
               ATLANTIS_ATLANTIS_URL: "https://{{ .Release.Name }}.techtales.io"
               # ATLANTIS_AUTOMERGE: "true"
               ATLANTIS_AUTOPLAN_MODULES: "true"
