@@ -31,7 +31,9 @@
   # impermanence plan (2026-11-16 spec), and Phase C LUKS unlock reuses it.
   # 26.11 removed scripted stage 1: the initrd is systemd unconditionally,
   # networking is systemd-networkd, and the system .network units are
-  # reused, so DHCP applies in stage 1 too.
+  # reused, so DHCP applies in stage 1 too. Each host must declare its
+  # NIC driver in boot.initrd.kernelModules — initrd networking does not
+  # include it, and no driver means no listener (bifrostix: e1000e).
   boot.initrd.network = {
     enable = true;
     ssh = {

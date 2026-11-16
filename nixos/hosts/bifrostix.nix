@@ -26,5 +26,12 @@
     linkConfig.Name = "eno1";
   };
 
+  # The initrd SSH escape lane (docker-lane baseline) needs the NIC
+  # driver present in stage 1 — initrd networking does not pull it in,
+  # and without it there is no link, no DHCP, no port 2222. Proven the
+  # hard way by the drill on 2026-11-16. Phase C LUKS unlock needs the
+  # same module for the same reason.
+  boot.initrd.kernelModules = [ "e1000e" ];
+
   system.stateVersion = "26.05";
 }
