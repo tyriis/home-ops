@@ -68,7 +68,14 @@ services:
       # container's command flags: without the address it probes the default :8080
       # and reports a false unhealthy. Keep this address in sync with
       # --entryPoints.traefik.address above.
-      test: ["CMD", "traefik", "healthcheck", "--ping", "--entryPoints.traefik.address=127.0.0.1:8082"]
+      test:
+        [
+          "CMD",
+          "traefik",
+          "healthcheck",
+          "--ping",
+          "--entryPoints.traefik.address=127.0.0.1:8082",
+        ]
       interval: 30s
       timeout: 5s
       retries: 3
