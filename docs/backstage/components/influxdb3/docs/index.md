@@ -18,7 +18,7 @@ Source:
 | Item         | Value                                                                |
 | ------------ | -------------------------------------------------------------------- |
 | Namespace    | `influxdb`                                                           |
-| Service      | `influxdb3-app.influxdb.svc.cluster.local:8181`, ClusterIP only      |
+| Service      | `influxdb3.influxdb.svc.cluster.local:8181`, ClusterIP only          |
 | Object store | TrueNAS MinIO `https://s3.techtales.io`, bucket `influxdb3`          |
 | Secrets      | OpenBao `infra/kubernetes/main/influxdb/influxdb3` → `influxdb3-env` |
 | License      | Enterprise "home" tier, verified once by email, stored in the bucket |
@@ -57,7 +57,7 @@ The token is read from the mounted `admin-token.json`; the Secret carries no `AD
 
 UI only — HA's configuration lives on its PVC, so this is not in the repository. Settings > Devices &
 Services > Add Integration > InfluxDB: API version 2, URL
-`http://influxdb3-app.influxdb.svc.cluster.local:8181`, bucket/database `home_assistant`,
+`http://influxdb3.influxdb.svc.cluster.local:8181`, bucket/database `home_assistant`,
 organisation anything (InfluxDB 3 ignores it), token = the `home-assistant` write token, verify SSL
 off. The recorder keeps writing as before; entity allow/deny lists come later.
 
@@ -79,7 +79,7 @@ variable (`SHOW TABLES`) and the entity from that table's rows.
 ```sh
 kubectl -n influxdb get pods
 kubectl -n influxdb logs deploy/influxdb3
-kubectl -n influxdb port-forward svc/influxdb3-app 8181:8181 &
+kubectl -n influxdb port-forward svc/influxdb3 8181:8181 &
 curl -fsS http://127.0.0.1:8181/health
 ```
 

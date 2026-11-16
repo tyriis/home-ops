@@ -149,7 +149,7 @@ spec:
     type: influxdb
     name: influxdb
     access: proxy
-    url: http://influxdb3-app.influxdb.svc.cluster.local:8181 #NOSONAR allow http
+    url: http://influxdb3.influxdb.svc.cluster.local:8181 #NOSONAR allow http
     jsonData:
       version: SQL
       dbName: home_assistant

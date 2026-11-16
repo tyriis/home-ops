@@ -8,7 +8,7 @@ See [ADR 0021](../../../../../docs/decisions/0021-influxdb3-enterprise-ha-sensor
 
 - app: `kubernetes/main/apps/influxdb/influxdb3/app/` (bjw-s app-template `5.3.0`, image
   `docker.io/library/influxdb:3.12.2-enterprise`)
-- service: `influxdb3-app.influxdb.svc.cluster.local:8181`, ClusterIP only
+- service: `influxdb3.influxdb.svc.cluster.local:8181`, ClusterIP only
 - secrets: OpenBao `infra/kubernetes/main/influxdb/influxdb3` → Secret `influxdb3-env`
 - storage: PVC `influxdb3-data`, created by the volsync component — local data dir only, the bucket holds
   the data
@@ -114,7 +114,7 @@ UI only, not GitOps — HA's configuration lives on its PVC.
 Settings > Devices & Services > Add Integration > InfluxDB:
 
 - API version: 2
-- URL: `http://influxdb3-app.influxdb.svc.cluster.local:8181`
+- URL: `http://influxdb3.influxdb.svc.cluster.local:8181`
 - bucket/database: `home_assistant`
 - organisation: anything — InfluxDB 3 ignores it
 - token: the `home-assistant` write token
@@ -179,7 +179,7 @@ The object store remains the source of truth for the data, and the PVC only carr
 ```sh
 kubectl -n influxdb get pods
 kubectl -n influxdb logs deploy/influxdb3
-kubectl -n influxdb port-forward svc/influxdb3-app 8181:8181 &
+kubectl -n influxdb port-forward svc/influxdb3 8181:8181 &
 curl -fsS http://127.0.0.1:8181/health
 ```
 
