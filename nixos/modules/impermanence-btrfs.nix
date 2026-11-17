@@ -30,9 +30,19 @@ let
 
   # One shell test per sentinel; the sentinel surface is a per-device input
   # so a fresh host can seed an empty @persistent without tripping it.
+  # Persist surfaces are CHILD SUBVOLUMES of @persistent (device mounts —
+  # immune to sibling-mount ordering). Child-subvol content exists only
+  # across the subvol's own mount: a sibling mount shows it as an empty
+  # dir. Sentinels therefore mount the surface itself before checking.
   sentinelCheck = s:
-    let p = "\${M}/@persistent/${s.path}";
+    let p = "\${M}/_sentinel";
     in
+    ''
+      mkdir -p "${p}"
+      if ! mount -o subvol=@persistent/${s.path} "$D" "${p}" 2>/dev/null; then
+        halt "persist sentinel surface @persistent/${s.path} not mountable"
+      fi
+    '' + (
     if s.check == "nonempty" then ''
       if [ -z "$(ls -A "${p}" 2>/dev/null)" ]; then
         halt "persist sentinel empty: @persistent/${s.path}"
@@ -43,14 +53,13 @@ let
         halt "persist sentinel has no host key: @persistent/${s.path}"
       fi
     ''
-    else if s.check == "present" then ''
-      if [ ! -d "${p}" ]; then
-        halt "persist sentinel missing: @persistent/${s.path}"
-      fi
-    ''
-    else throw "impermanence: unknown sentinel check '${s.check}'";
+    else if s.check == "present" then ""
+    else throw "impermanence: unknown sentinel check '${s.check}'")
+    + ''
+      umount "${p}" 2>/dev/null || halt "sentinel umount failed: ${s.path}"
+    '';
 
-  persistBindSrcs = map (b: "\${M}/@persistent${b}") cfg.persistBinds;
+  persistBindSrcs = map (b: "\${M}/@persistent/${b}") cfg.persistBinds;
 
   # Every non-ephemeral mountpoint declared anywhere in the config, so the
   # wipe can assert the shape of the root it ships (see step 10).
@@ -146,11 +155,25 @@ let
       *) fail_open "default subvolume is no longer FS_TREE: $DEF" ;;
     esac
 
-    # 5. Sentinels gate the mkdir. The wipe itself creates missing bind
-    # sources, so an assert *after* the mkdir would be vacuous — this is the
-    # only order in which the sentinel has teeth.
+    # 5. Sentinels gate the ensure step below: without this order a wipe
+    # that has no data would create a fresh empty surface and the
+    # nonempty check would pass against the wipe's own creation.
     ${lib.concatStringsSep "\n" (map sentinelCheck cfg.sentinelDirs)}
-    mkdir -p ${lib.concatStringsSep " " persistBindSrcs}
+    # 5b. Assert each persist surface is a btrfs child subvolume of
+    # @persistent (gen37: device mounts; the path binds they replace
+    # raced persistent.mount and killed gens 27-36). A pre-2026-11-17
+    # plain dir: empty is pruned, populated HALTS for migration.
+    # rmdir refuses real subvolumes — the check cannot misfire.
+    for s in ${lib.concatStringsSep " " persistBindSrcs}; do
+      if ! btrfs subvolume show "$s" >/dev/null 2>&1; then
+        if [ -e "$s" ]; then
+          rmdir "$s" 2>/dev/null \
+            || halt "persist surface $s is a populated plain dir — migrate"
+        fi
+        btrfs subvolume create "$s" >/dev/null 2>&1 \
+          || halt "cannot create persist subvolume $s"
+      fi
+    done
 
     # 6. Guard @base. Without a seed, a delete -> snapshot pair loses both.
     [ -d "$M/@base" ] || fail_open "no @base seed present"

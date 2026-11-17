@@ -23,12 +23,15 @@ in
 
     # Bind sources the wipe pre-creates; each has a matching fileSystems
     # entry below.
+    # 2026-11-17: child-subvolume names of @persistent (device-mounted
+    # surfaces), not bind mountpoints. Each needs a matching
+    # fileSystems entry below with options = [ "subvol=@persistent/<n>" ].
     persistBinds = [
-      "/etc/ssh"
-      "/var/lib/nixos"
-      "/var/lib/systemd"
-      "/var/log/audit"
-      "/root/nixos"
+      "etc-ssh"
+      "var-lib-nixos"
+      "var-lib-systemd"
+      "var-log-audit"
+      "root-nixos"
     ];
 
     # bifrostix's persist surface. Empty/missing → the wipe halts rather
@@ -38,9 +41,9 @@ in
       # 2026-11-17: uid-map, gid-map, declarative-{users,groups},
       # auto-subuid-map. A wrong sentinel here fail-closed a boot at
       # stage-1 (the design working), but only after costing a console.
-      { path = "var/lib/nixos"; check = "nonempty"; }
-      { path = "etc/ssh"; check = "hostkeys"; }
-      { path = "var/lib/systemd"; check = "present"; }
+      { path = "var-lib-nixos"; check = "nonempty"; }
+      { path = "etc-ssh"; check = "hostkeys"; }
+      { path = "var-lib-systemd"; check = "present"; }
     ];
   };
 
@@ -89,37 +92,55 @@ in
   # SSH host keys. The sentinel asserts they exist under @persistent
   # every boot; without this bind the assertion guards a surface that
   # is never mounted — keys would seed, assert, and still regenerate.
+  # Root-cause of gen27-36 (11 deaths, 1 lucky one-shot survivor),
+  # proven 2026-11-17: the fstab generator orders mounts by MOUNTPOINT
+  # prefix only — it never orders a bind after the mount that provides
+  # its SOURCE path. The five persist surfaces below used to be path
+  # binds sourcing /persistent/*, a sibling x-initrd mount: a coin flip
+  # at ~4.8s decided every boot (loss = ENOENT cascade,
+  # repeated-too-quickly kills the unit, switch-root fails).
+  #
+  # Fix is structural, not ordering: each surface is now its own btrfs
+  # CHILD SUBVOLUME mounted by device — a device mount draws from the
+  # block device directly and CANNOT race persistent.mount. Unit-level
+  # overrides were attempted first and are DEAD ENDS at this pin:
+  # boot.initrd.systemd.units.<n>.unitConfig and .after do not exist
+  # (option is raw whole-unit .text/.unit; a same-name whole-unit
+  # override clobbers the generator's Where=/Options=). Do not re-lit.
+  # Migration note: child subvolumes are created + seeded by the wipe's
+  # ensure-persist step; @persistent's old same-named plain dirs must
+  # not exist at create time.
   fileSystems."/etc/ssh" = {
-    device = "/persistent/etc/ssh";
-    fsType = "none";
-    options = [ "bind" ];
+    device = dev;
+    fsType = "btrfs";
+    options = [ "subvol=@persistent/etc-ssh" ];
     neededForBoot = true;
   };
   fileSystems."/var/lib/nixos" = {
-    device = "/persistent/var/lib/nixos";
-    fsType = "none";
-    options = [ "bind" ];
+    device = dev;
+    fsType = "btrfs";
+    options = [ "subvol=@persistent/var-lib-nixos" ];
     neededForBoot = true;
   };
   fileSystems."/var/lib/systemd" = {
-    device = "/persistent/var/lib/systemd";
-    fsType = "none";
-    options = [ "bind" ];
+    device = dev;
+    fsType = "btrfs";
+    options = [ "subvol=@persistent/var-lib-systemd" ];
     neededForBoot = true;
   };
   fileSystems."/var/log/audit" = {
-    device = "/persistent/var/log/audit";
-    fsType = "none";
-    options = [ "bind" ];
+    device = dev;
+    fsType = "btrfs";
+    options = [ "subvol=@persistent/var-log-audit" ];
     neededForBoot = true;
   };
   # The rebuild source. Seeded during migration: a flake build needs a tree
   # (docker-lane builds from it); "nixos dir" once read as /var/lib/nixos
   # and left a host with nothing to rebuild from.
   fileSystems."/root/nixos" = {
-    device = "/persistent/root/nixos";
-    fsType = "none";
-    options = [ "bind" ];
+    device = dev;
+    fsType = "btrfs";
+    options = [ "subvol=@persistent/root-nixos" ];
     neededForBoot = true;
   };
 
@@ -241,28 +262,15 @@ in
   # sources (plus the crutch-killed nix.mount — sixth failure on the
   # 11:52 console) lose the coin flip, fail "Can't look up mountpoint:
   # ENOENT", get killed by "start request repeated too quickly", and
-  # switch-root fails on the dead units. The generator cannot fix this;
-  # declare the edges it does not know about. x-initrd units carry the
-  # sysroot- prefix in the initrd (exact names console-verified), plain
-  # names in stage-2.
-  boot.initrd.systemd.units = lib.listToAttrs (map (n: {
-    name = "sysroot-${n}.mount";
-    value = {
-      unitConfig = {
-        Requires = [ "sysroot-persistent.mount" ];
-        After = [ "sysroot-persistent.mount" ];
-      };
-    };
-  }) [ "etc-ssh" "var-lib-nixos" "var-lib-systemd" "var-log-audit" "root-nixos" ]);
-  systemd.units = lib.listToAttrs (map (n: {
-    name = "${n}.mount";
-    value = {
-      unitConfig = {
-        Requires = [ "persistent.mount" ];
-        After = [ "persistent.mount" ];
-      };
-    };
-  }) [ "etc-ssh" "var-lib-nixos" "var-lib-systemd" "var-log-audit" "root-nixos" ]);
+  # switch-root fails on the dead units.
+  #
+  # Scope: the INITRD only. x-initrd mounts exist and activate in
+  # stage-1; stage-2 receives them via switch-root migration, where the
+  # generator's stage-2 twins never re-run. Pin-proven 26.11 surface:
+  # boot.initrd.systemd.units.<name>.unitConfig compiles (renders
+  # [Unit]); `systemd.units.<n>.after/.unitConfig` DO NOT exist at this
+  # pin — that option is raw whole-unit .text and a same-name override
+  # would clobber the generator's Where=/Options= — do not reach for it.
 
   # Host keys: persist the data under /persistent/etc/ssh (contents, not an
   # /etc bind) and point the option at it. Assigning hostKeys replaces the
