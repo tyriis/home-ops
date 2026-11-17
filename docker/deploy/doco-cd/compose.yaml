@@ -33,6 +33,8 @@ services:
         max-size: 10m
         max-file: "3"
         labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
+    mem_limit: 1g
+    pids_limit: 256
     configs:
       - source: poll-config.yml
         target: /poll-config.yml

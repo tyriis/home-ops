@@ -28,6 +28,8 @@ services:
         max-size: 10m
         max-file: "3"
         labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
+    mem_limit: 1g
+    pids_limit: 256
     # upstream compose example ships the stale typo tag "lastet" - never use it
     image: xiahan2019/olah:0.5.4@sha256:802ec30637bc37c2766e39d66a6c57e2ba1c97eb6fc2db14c459f7b174372baf
     networks:

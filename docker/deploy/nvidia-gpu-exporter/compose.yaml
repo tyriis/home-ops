@@ -8,6 +8,8 @@ services:
         max-size: 10m
         max-file: "3"
         labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
+    mem_limit: 128m
+    pids_limit: 64
     # the -nvml build is cgo-linked and exits at startup unless the nvidia runtime injects libnvidia-ml.so.1
     deploy:
       resources:

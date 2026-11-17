@@ -9,6 +9,8 @@ services:
         max-size: 10m
         max-file: "3"
         labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
+    mem_limit: 256m
+    pids_limit: 128
     cap_add:
       - CHOWN
       - DAC_OVERRIDE

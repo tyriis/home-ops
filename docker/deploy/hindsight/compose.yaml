@@ -139,6 +139,8 @@ services:
         max-size: 10m
         max-file: "3"
         labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
+    mem_limit: 6g
+    pids_limit: 512
     read_only: true
     tmpfs:
       - /tmp

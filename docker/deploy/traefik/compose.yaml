@@ -20,6 +20,8 @@ services:
         max-size: 10m
         max-file: "3"
         labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
+    mem_limit: 512m
+    pids_limit: 256
     command:
       # Let's Encrypt registration email — REQUIRED. Fails fast at deploy until
       # ACME_EMAIL is set in the stack .env (docker/bifrost/traefik/.env).
