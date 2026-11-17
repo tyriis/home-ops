@@ -82,7 +82,13 @@ let
       mkdir -p "$MARK"
       printf '%s' "$1" > "$MARK/FAILED"
       umount "$M" 2>/dev/null || true
-      exit 1
+      # 2026-11-17: 26.11's chain walks PAST a failed wipe unit (proven
+      # 12:5x: 2222 open one minute, gone). Park for real: isolate to
+      # emergency.target — it kills the pending switch-root progression
+      # and fires the initrd black-box recorder (dumps + reboots itself,
+      # landing on the gen26-pinned EFI default).
+      systemctl isolate emergency.target || true
+      exec sleep infinity
     }
 
     # 1. Mount FS_TREE explicitly.

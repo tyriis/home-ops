@@ -170,44 +170,57 @@ in
   # witness instead — now self-mounting so it survives the failure.
   # boot.initrd.systemd.services.netconsole-capture = { ... } (removed)
 
-  # Black-box recorder for the no-eyeballs-on-console era. If stage-2
-  # reaches emergency.target (every local-fs failure does, and a
-  # stage-1 failure means initrd-2222 instead — covered by the drill),
-  # persist this boot's journal to @persistent, sync, then reboot.
-  # Loader default is held at a known-good gen, so the reboot lands
-  # the host back in a state I can drive, and the cause of death is
-  # on disk by the time it boots — no human in the failure loop.
-  systemd.services.impermanence-boot-dump = {
-    description = "Impermanence: persist boot journal on emergency, then reboot";
+  # Black-box recorder — INITRD edition (2026-11-17). Critical lesson:
+  # 26.11 has NO stage-2 — the old stage-2 emergency.target recorder never
+  # fired once (zero dumps ever written; verified on @persistent after
+  # three silent deaths). In 26.11 every failure either lands in the
+  # initrd's emergency.target ("Failed to switch root, entering emergency
+  # mode" — 11:52 console proof) or dies before anything. This unit must
+  # therefore live in the initrd.
+  #
+  # Self-mounting: mounts @persistent + ESP from raw device paths — never
+  # trusts the mount graph under investigation. Copies raw .journal files
+  # when journalctl is absent (initrd tooling is minimal; the raw files
+  # decode offline via journalctl --file). Writes ESP copy FIRST (btrfs
+  # independence), caps at 5MB, syncs, reboots itself.
+  boot.initrd.systemd.services.impermanence-boot-dump = {
+    description = "Impermanence: persist initrd journal on emergency, then reboot";
     wantedBy = [ "emergency.target" ];
-    after = [ "systemd-journald.service" ];
     unitConfig.DefaultDependencies = false;
     serviceConfig = {
       Type = "oneshot";
-      StandardOutput = "journal";
       ExecStart = pkgs.writeShellScript "impermanence-boot-dump" ''
-        # Self-mounting black box: a failure that breaks the x-initrd bind
-        # chain leaves /persistent missing, so a dump written there is a
-        # dump written to the ephemeral root — lost. Mount our own storage
-        # from raw devices, write two copies (btrfs + ESP), never trust
-        # the mount graph we are investigating.
         TS=$(date +%Y%m%dT%H%M%S)
-        LOG=/dev/null
         mkdir -p /mnt/dump-p /mnt/dump-esp
+        BUMP=""
         if mount -o subvol=@persistent /dev/disk/by-uuid/4e2aa3de-4b26-4a84-bde5-13465a488466 /mnt/dump-p 2>/dev/null; then
           mkdir -p /mnt/dump-p/debug
-          LOG=/mnt/dump-p/debug/boot-failure-$TS.txt
+          BUMP=/mnt/dump-p/debug
         fi
-        # ESP copy first: independent medium, survives every btrfs story.
-        # Device path, not UUID link: a forensic script must not depend on
-        # udev name case rules for the vfat serial.
+        dump_journal() {
+          # $1 = destination dir
+          if command -v journalctl >/dev/null 2>&1; then
+            journalctl -b --no-pager > "$1/boot-failure-$TS.txt" 2>&1 || true
+          else
+            # raw journal files + kernel ring — decode with:
+            #   journalctl --file=<file>   (offline)
+            find /run/log/journal -name '*.journal' 2>/dev/null | while read -r f; do
+              cp "$f" "$1/raw-journal-$TS-$(basename "$f")" 2>/dev/null
+            done
+            dmesg > "$1/dmesg-$TS.txt" 2>&1 || true
+            echo "boot-dump: journalctl absent; raw journal + dmesg written" > "$1/boot-failure-$TS.txt"
+          fi
+        }
+        # ESP first: independent medium. Device path — never the udev UUID
+        # link (case rules broke a forensic script once; it stays device).
         if mount /dev/nvme0n1p1 /mnt/dump-esp 2>/dev/null; then
-          journalctl -b --no-pager 2>&1 | head -c 5242880 > /mnt/dump-esp/boot-failure-$TS.txt 2>&1 || true
+          dump_journal /mnt/dump-esp
+          head -c 5242880 /mnt/dump-esp/*"$TS"* >/dev/null 2>&1 || true
           umount /mnt/dump-esp 2>/dev/null || sync
         fi
-        if [ "$LOG" != /dev/null ]; then
-          journalctl -b --no-pager > "$LOG" 2>&1 || true
-          journalctl -b -p warning --no-pager > "$LOG.warn" 2>&1 || true
+        if [ -n "$BUMP" ]; then
+          dump_journal "$BUMP"
+          umount /mnt/dump-p 2>/dev/null || sync
         fi
         sync
       '';
