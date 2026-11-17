@@ -134,7 +134,9 @@ let
 
     # 7. Guard no nested subvolume inside @. Nested children make
     # `subvolume delete` refuse, silently booting a stale @ forever.
-    if [ -n "$(btrfs subvolume list "$M/@")" ]; then
+    # NB: `list <path>` without -o lists the WHOLE filesystem — only -o
+    # filters to children of the given subvolume (proven live 2026-11-17).
+    if [ -n "$(btrfs subvolume list -o "$M/@")" ]; then
       fail_open "nested subvolume(s) under @ — wipe cannot proceed"
     fi
 
