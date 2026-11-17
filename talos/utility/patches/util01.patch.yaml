@@ -6,16 +6,14 @@ hostname: util01
 auto: "off"
 ---
 # replaces deprecated .machine.install (v1alpha1)
-# LIVE image: factory schematic f5322fe...:v1.14.5 (metal, secureboot, UKI;
+# installer.image is derived at render time (schematic id + version.yaml);
 # extensions intel-ucode + nvme-cli + zfs and extraKernelArgs are baked into
-# the schematic, NOT into the machine config — same as main).
+# the schematic, NOT into the machine config — same as main.
 # diskSelector: live used model contains "Samsung SSD 870"; pinned to the
 # exact WWID of sda (naa.5002538f52b2dfc6) for a deterministic selection —
 # deliberate improvement, affects future reinstalls only.
 apiVersion: v1alpha1
 kind: UnattendedInstallConfig
-installer:
-  image: factory.talos.dev/metal-installer-secureboot/f5322febc5e6e2ee4225e9e0e9a508417bc3d7530775e828daa441cd6b76e3e5:v1.14.5
 provisioning:
   diskSelector:
     match: disk.wwid == "naa.5002538f52b2dfc6"
