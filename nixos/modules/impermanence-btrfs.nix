@@ -86,24 +86,20 @@ let
     # Fail-closed: "boot anyway" would be a lie (no root, or a persist
     # surface whose boot would self-corrupt). Halt and route to initrd SSH.
     halt() {
-      echo "impermanence-wipe: HALT: $1 — refusing to boot, reach initrd SSH on :2222"
-      echo "impermanence-wipe: HALT: $1 — refusing to boot, reach initrd SSH on :2222" > /dev/kmsg 2>/dev/null || true
+      # 26.11 lesson (12:5x + 21:2x consoles): a FAILED wipe unit does
+      # NOT stop the chain, and no usable systemctl exists in the
+      # initrd. Stop-attempted designs that assumed either made boots
+      # silently worse. This function therefore only marks intent;
+      # impermanence-halt-guard (Required-by local-fs) converts the
+      # marker into a real block: guard fails -> emergency -> recorder
+      # dumps reason -> auto-reboot to the pinned good generation.
+      echo "impermanence-wipe: HALT: $1 — blocked by halt-guard, see recorder dump"
+      echo "impermanence-wipe: HALT: $1 — blocked by halt-guard, see recorder dump" > /dev/kmsg 2>/dev/null || true
       mkdir -p "$MARK"
+      printf '%s' "$1" > "$MARK/HALT"
       printf '%s' "$1" > "$MARK/FAILED"
       umount "$M" 2>/dev/null || true
-      # 2026-11-17: 26.11's chain walks PAST a failed wipe unit (proven
-      # 12:5x: 2222 open one minute, gone). Park for real: isolate to
-      # emergency.target — it kills the pending switch-root progression
-      # and fires the initrd black-box recorder (dumps + reboots itself,
-      # landing on the gen26-pinned EFI default).
-      # systemctl MUST be absolute-pathed: the initrd PATH has no
-      # systemctl — the bare call died "No such file or directory" on
-      # the 2026-11-17 21:0x console, crashing halt() itself and letting
-      # the chain walk past a fail-closed stop. Absolute path = the same
-      # ${pkgs.systemd} the recorder's ExecStartPost cites; the reference
-      # is what pulls the binary into the initrd closure.
-      ${pkgs.systemd}/bin/systemctl isolate emergency.target || true
-      exec sleep infinity
+      exit 0
     }
 
     # 1. Mount FS_TREE explicitly.
@@ -317,12 +313,38 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # pkgs.systemd: halt() calls systemctl. Console-proven 2026-11-17
-    # 21:2x: absolute path found the binary, but 26.11's minimal initrd
-    # closure lacked its library deps ("error while loading shared
-    # library: readline"). initrdBin copies package + full closure and
-    # puts it on the initrd PATH — the only sanctioned way.
-    boot.initrd.systemd.initrdBin = [ pkgs.btrfs-progs pkgs.coreutils pkgs.util-linux pkgs.systemd ];
+    # NB: do NOT add pkgs.systemd here — the build rejects it, and the
+    # 21:2x console proved the dependency class (readline et al missing
+    # from the 26.11 initrd closure). halt() no longer calls systemctl at
+    # all: it writes a HALT marker and the impermanence-halt-guard unit
+    # below fails the chain into emergency. Use the chain, not binaries.
+    boot.initrd.systemd.initrdBin = [ pkgs.btrfs-progs pkgs.coreutils pkgs.util-linux ];
+
+    # Fail-closed enforcer. The 26.11 chain walks PAST a failed wipe
+    # unit (proven 12:5x and 21:2x), so halt() alone cannot stop a boot.
+    # This unit closes that hole with zero external binaries: it is
+    # Required-by local-fs, runs after the wipe, and exits 1 iff the
+    # wipe wrote a HALT marker. Its failure drags local-fs down ->
+    # initrd emergency.target -> the black-box recorder dumps the
+    # reason to ESP + @persistent/debug -> ExecStartPost reboots to the
+    # gen26-pinned EFI default. Fail-open's FAILED marker deliberately
+    # does NOT trip this gate — only HALT does.
+    boot.initrd.systemd.services."impermanence-halt-guard" = {
+      description = "Impermanence: block local-fs when the wipe halted";
+      requiredBy = [ "local-fs.target" ];
+      after = [ "impermanence-wipe.service" ];
+      before = [ "local-fs.target" ];
+      unitConfig.DefaultDependencies = false;
+      serviceConfig = {
+        Type = "oneshot";
+      };
+      script = ''
+        if [ -e /run/impermanence/HALT ]; then
+          echo "impermanence-halt-guard: wipe HALTED — forcing emergency" > /dev/kmsg 2>/dev/null || true
+          exit 1
+        fi
+      '';
+    };
 
     # Stage 1: the wipe. Order is the whole mechanism — after the root device
     # is present, before sysroot mounts it (deleting a mounted @ is EBUSY).
