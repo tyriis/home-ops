@@ -21,6 +21,14 @@ metric, converging reseed, and the minor list.
 Revision 2.2 (2026-11-16): second-pass review of rev 2.1 (6 items), the
 initrd-network and initrd-key corrections, and the minor list.
 
+Revision 2.3 (`feae84ae5`): third-pass blocker — the restored wipe
+rename and the reseed remnant deletion.
+
+Revision 2.4: final-review text edits — the seed list names the
+config tree, the DUID rationale is corrected for the v262 EN DUID,
+drill order and return path are aligned, and the rename lives in
+step 10 only.
+
 ## Intent
 
 Make bifrostix's root filesystem recreated from a known-good snapshot on every
@@ -150,10 +158,12 @@ globs — the same ones the wipe itself creates:
    the initrd SSH and the console are the response for this state —
    proven by the no-root drill case, not assumed.
 3. Kill-switch: `impermanence.disable` on `/proc/cmdline` → log,
-   write `/run/impermanence/DISABLED`, exit 0. It skips the **wipe
-   only** — recovery (step 2) already ran, because a skipped wipe
-   with no root is not a boot, it is an emergency shell with extra
-   steps.
+   write `/run/impermanence/DISABLED`, exit 0. It skips the **wipe**
+   — recovery (step 2) already ran, because a skipped wipe with no
+   root is not a boot, it is an emergency shell with extra steps. It
+   runs before the sentinel gate, so it **also bypasses the
+   fail-closed halt**: an operator who sets it has accepted the
+   persist surface as-is.
 4. Assert the default subvolume: parse
    `btrfs subvolume get-default`, require `ID 5` exactly — a
    substring match against a path is not a check. A changed default
@@ -162,8 +172,8 @@ globs — the same ones the wipe itself creates:
 5. Sentinel check, then source mkdir (see Persistence): a lost
    persist surface aborts here, **fail-closed** — an exit 0 on empty
    sentinels boots an empty `/var/lib/nixos`, renumbers every uid,
-   changes the networkd DUID, and makes the host unreachable through
-   the very reservation that justifies the allow-list.
+   breaks ownership of every persisted path, and turns the host into
+   a permissions-error machine with no console message.
 6. Guard: `@base` exists. (Without this, a delete→snapshot pair
    loses both.)
 7. Guard: no nested subvolume inside `@` (`btrfs subvolume list`
@@ -175,13 +185,14 @@ globs — the same ones the wipe itself creates:
    its own recovery path: a power loss after `mv @ @old` leaves the
    remnants as the only copies of the tree.
 9. Assert both remnant names are now **gone**. If either survives
-   (delete refused, crash between attempts), `mv @ @old` would nest
-   `@` inside a stale `@old` — the wipe would be dead from that boot
-   on. Guard the rename itself: `[ ! -e @old ] && mv @ @old`,
-   `fail_open` otherwise.
-10. Wipe, atomic-ordered: `btrfs subvolume snapshot @base @new` →
-    `mv @ @old` (the rename step 9 guards) → `mv @new @` →
-    `btrfs subvolume delete @old` → clear
+   (delete refused, crash between attempts), the step-10 rename
+   would nest `@` inside a stale `@old` — the wipe would be dead from
+   that boot on. This step only asserts; it runs nothing.
+10. Wipe — the only step that runs the renames, each guarded:
+    `btrfs subvolume snapshot @base @new` →
+    `[ ! -e @old ] && mv @ @old` (`fail_open` if the guard fails) →
+    `[ -e @new ] && mv @new @` → `btrfs subvolume delete @old` →
+    clear
     `/run/impermanence/*` markers (a wipe completed from `@base` is
     a clean root — an old `FAILED` must not report a clean boot as
     failed) → `sync` → unmount. Create-then-swap: any single step
@@ -200,8 +211,10 @@ states halt and call: initrd SSH, then console.
 
 **The loud half (`impermanence-check.service`, stage-2, oneshot):** reads
 the stage-1 markers. If `/run/impermanence/FAILED` exists:
-`log -p err` with the reason, write a node-exporter textfile metric
-(`node_impermanence_wipe_failed 1`), and exit 1 — so the boot also shows
+`log -p err` with the reason, write the textfile
+`/var/lib/impsnap/impermanence-status.prom` containing
+`node_impermanence_wipe_failed 1` (the vmagent textfile directory),
+and exit 1 — so the boot also shows
 red in `systemctl --failed` and can never be mistaken for clean. If
 `DISABLED`: metric 0, loud log, exit 0. On a clean boot it still writes
 the textfile with `node_impermanence_wipe_failed 0` — a metric written
@@ -209,8 +222,9 @@ only on failure latches at 1 forever once the textfile exists, and a
 latching gauge alerts forever after the recovery. This unit is the alert
 source;
 the central VictoriaMetrics rule (`node_impermanence_wipe_failed == 1`)
-lands with the monitoring-lane wiring task. Until then the failed unit and
-login banner are the signal.
+lands with the monitoring-lane wiring task. Until then the failed unit
+and the root login message (`motd`, set declaratively) are the
+signal.
 
 **Persistence binds:** declared as `fileSystems` entries (one mount
 mechanism, not a mix of `fileSystems` + hand-written `.mount` units),
@@ -303,6 +317,11 @@ mirrors the wipe's recovery-first structure:
 6. `mv @base.new @base`.
 7. delete `@base.old`, unmount.
 
+A reseed is an operator command: every unmet guard exits
+**non-zero** with a message — no silent fallthrough. Nothing to
+promote and no `@base`: exit non-zero. Step 5 renames only under
+`[ ! -e @base.old ]`; step 7 deletes `@base.old` only when present.
+
 Delete-last, never delete-first: a power loss at any step leaves a
 complete `@base` or a complete `@base.new`/`@base.old`, and step 2's
 three-name reconcile converges on re-run. Honest
@@ -322,10 +341,15 @@ listed as a subvolume mount)
 - `/var/log/journal` (`@journal` subvolume) — sealed journald state and
   logs; Phase A2's seal needs persistent state, and it must be mounted
   before journald starts (see above).
-- `/var/lib/systemd` — systemd-networkd DUID lives here. Without it the
-  DHCP client-id changes every boot, which quietly breaks the
-  controller-owned reservation that is this host's whole addressing
-  premise (#11969).
+- `/var/lib/systemd` — systemd-networkd runtime state lives here, for
+  lease/link continuity. It is **not** a DUID file: systemd v262 uses
+  a DUID of type EN derived from the machine id at runtime
+  (`networkd-manager.c:705-706`), and this spec pins the machine id
+  via `environment.etc."machine-id"` — the client-id stays stable
+  with or without this entry, so the reservation never depended on
+  this path. Rev 2's "breaks #11969" claim was wrong. Keep the entry
+  for state continuity; the sentinel keeps its teeth from uid
+  renumbering.
 - `/var/log/audit` — auditd rules write here
   (`hardening.nix:156-166`); audit records are a hardening feature and
   must not evaporate.
@@ -374,9 +398,12 @@ with a proven alert chain is recoverable at leisure; unreachable is not.
 Fail-open has exactly two exceptions, both states where "boot anyway"
 is a lie rather than a safety net: **no viable root** (nothing was
 recoverable) and **empty persist sentinels** (booting would
-self-corrupt: uid renumbering, DUID change, missed reservation).
-Those two halt the boot and route to the initrd SSH — a halt with a
-proven out-of-band path beats a boot that destroys the evidence.
+self-corrupt: uid renumbering, ownership breakage across every
+persisted path, evidence destroyed). A DUID change is **not** on
+that harm list — the v262 EN DUID derives from the static machine-id
+and is unaffected by an empty `/var/lib/systemd`. Those two states
+halt the boot and route to the initrd SSH — a halt with a proven
+out-of-band path beats a boot that destroys the evidence.
 
 The decision is conditional and the condition is structural, not
 aspirational: fail-open is only acceptable *because* the marker chain is
@@ -439,7 +466,10 @@ and the rollback lane is gone without a sound. Therefore:
      the unencrypted ESP regardless. So the honest exposure is
      stated, not hidden: the initrd host key is public while
      `/boot` is unencrypted — until Phase C LUKS. Separate from
-     stage-2 host keys; rotation independent.
+     stage-2 host keys; rotation independent. A committed private
+     key is a deliberate exception to this repo's no-plaintext-
+     secrets rule: **owner acceptance is posted on #11792 before
+     PR-A merges** — git history outlives any key rotation.
    This is the out-of-band path if a boot ever fails before root mounts,
    and Phase C (LUKS2+TPM2) inherits it as its unlock path.
 2. **Old generations stay bootable as-is** — with the integrity
@@ -453,8 +483,9 @@ and the rollback lane is gone without a sound. Therefore:
 1. **PR-A: initrd SSH.** Add `e1000e`,
    `boot.initrd.network.enable = true` + `ip=dhcp`,
    `ssh.enable = true`, `port = 2222`, committed initrd host keys.
-   `nixos-rebuild boot`, reboot, **prove** the 2222 shell while `/`
-   is unmounted. No layout work merges before this drill passes.
+   `nixos-rebuild boot`, reboot with `rd.break` on the kernel
+   cmdline to hold stage 1 open, and **prove** the 2222 shell while
+   `/` is unmounted. No layout work merges before this drill passes.
    (The **no-root drill case** — a missing root must still reach the
    2222 shell — runs at the break step below, since it needs the `@`
    layout to exist.)
@@ -470,8 +501,13 @@ and the rollback lane is gone without a sound. Therefore:
    the fsid). Omitting the last four would copy today's journal and
    dead dirs *into* `@`, hide them under the new mounts, and break
    the A2 seal chain at the flip without a signal.
-   Seed allow-list contents into `@persistent` (host key, nixos dir,
-   DUID dir, audit dir, doco-cd secret). Seed `@journal` by moving the current
+   Seed allow-list contents into `@persistent`, named separately:
+   `/etc/ssh` host keys; `/var/lib/nixos` (uid state);
+   `/var/lib/systemd` (network state); `/var/log/audit`;
+   `/root/nixos` — the config tree, the rebuild source
+   (`docker-lane.nix:55-56` runs flake builds from it; seeding "nixos
+   dir" ambiguously once read as `/var/lib/nixos` and left the host
+   with no rebuild source); `/etc/doco-cd` secret. Seed `@journal` by moving the current
    `/var/log/journal` content into it, preserving the seal chain. Docker has no
    containers yet — the lane was deliberately deferred behind this
    phase, so no runtime data moves.
@@ -511,10 +547,12 @@ and the rollback lane is gone without a sound. Therefore:
    fingerprint unchanged. This one drill is simultaneously the
    fail-open proof, the first asserted wipe proof, and the `@base`
    restore drill.
-   Additional drill case (proves the no-root response, which the
-   design must not assume): rename `@` → `@.off`, reboot, prove the
-   initrd 2222 shell with **no root at all** — this is the state the
-   wipe's non-zero exit routes to. Restore `@.off` → `@`.
+   Final drill case (proves the no-root response, which the design
+   must not assume): from the clean system, rename `@` → `@.off`,
+   reboot. Expected: no root, non-zero wipe exit, initrd 2222 shell —
+   the state the no-root route lands in. **Return path:** from that
+   shell, mount FS_TREE at `-o subvolid=5`, rename `@.off` back to
+   `@`, `reboot`. The host comes back clean.
 8. Reseed: `systemctl start impermanence-reseed` — the base now equals
    the approved state, read-only.
 9. Cleanup pass (later PR): delete `tmp`, `var/tmp`,
@@ -525,9 +563,10 @@ and the rollback lane is gone without a sound. Therefore:
    `f1e5c35` / `.232`).
 
 Planned reboots to close Phase B: five — PR-A drill (1), the flip (2),
-the break (3), the no-root case (4), the restore-and-asserted-wipe (5).
-Each is self-recovering by design, and the drill reboots are what make
-"self-recovering" a tested claim rather than an assumption.
+the break (3), the restore-and-first-asserted-wipe (4), the no-root
+proof (5), plus its documented return boot from the initrd shell.
+Each drill is self-recovering by design, and the drill reboots are
+what make "self-recovering" a tested claim rather than an assumption.
 
 ## Non-goals for this spec
 
@@ -551,12 +590,13 @@ Each is self-recovering by design, and the drill reboots are what make
   dedicated initrd key.
 - After step 6: every `findmnt`/`mountpoint` assertion above passes on
   the live boot, not just in the rendered config.
-- After step 7 (both reboots): fail-open behaves as specified — FAILED
-  marker + failed unit + stale root + marker file survives — and the
-  restore reboot proves the wipe and persistence in one stroke:
-  ephemeral gone, every allow-list path present, host-key fingerprint
-  unchanged, `journalctl --verify` clean on a non-empty
-  `/var/log/journal`.
+- After the step-7 drill cases: fail-open behaves as specified —
+  FAILED marker + failed unit + stale root + marker file survives —
+  the restore reboot proves the wipe and persistence in one stroke
+  (ephemeral gone, every allow-list path present, host-key
+  fingerprint unchanged, `journalctl --verify` clean on a non-empty
+  `/var/log/journal`), and the no-root case reaches the initrd 2222
+  shell and returns via the documented rename.
 - Static invariants: no `set-default` anywhere in the repo's nixos tree
   for this host (grep-gate in PR-B CI alongside the existing
   nix-evaluation check); the wipe service asserts
