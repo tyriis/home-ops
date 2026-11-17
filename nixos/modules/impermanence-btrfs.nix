@@ -317,7 +317,12 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    boot.initrd.systemd.initrdBin = [ pkgs.btrfs-progs pkgs.coreutils pkgs.util-linux ];
+    # pkgs.systemd: halt() calls systemctl. Console-proven 2026-11-17
+    # 21:2x: absolute path found the binary, but 26.11's minimal initrd
+    # closure lacked its library deps ("error while loading shared
+    # library: readline"). initrdBin copies package + full closure and
+    # puts it on the initrd PATH — the only sanctioned way.
+    boot.initrd.systemd.initrdBin = [ pkgs.btrfs-progs pkgs.coreutils pkgs.util-linux pkgs.systemd ];
 
     # Stage 1: the wipe. Order is the whole mechanism — after the root device
     # is present, before sysroot mounts it (deleting a mounted @ is EBUSY).
