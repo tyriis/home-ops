@@ -177,7 +177,18 @@ in
   # arrival for the NVMe ("Timed out waiting for devices to appear",
   # x-initrd mounts failing ENOENT at 4.8s with 20 s caps instead of the
   # 90 s device budget). Debug convenience must not eat boot physics.
-  boot.kernelParams = [ "systemd.journald.forward_to_console=1" ];
+  # 2026-11-17 (gen40 forensics run): 26.11 stage-1 has NO journald — every
+  # dump-unit design is structurally blind, console is the only medium.
+  # stage1panic arms 26.11's native panic-on-fail (full oops + failed-unit
+  # trace on console); panic=20 holds it readable, then reboots to the 26
+  # default. loglevel=7 ensures stage-1 unit messages reach the screen.
+  # REVERT THIS TRIO once the switch-root wall is root-caused.
+  boot.kernelParams = [
+    "systemd.journald.forward_to_console=1"
+    "stage1panic"
+    "panic=20"
+    "loglevel=7"
+  ];
 
   # Boot forensics: stream the console to the jarvis box over UDP. The
   # netconsole module is loaded in stage-1 (after the initrd network is
