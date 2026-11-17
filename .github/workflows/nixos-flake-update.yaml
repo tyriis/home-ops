@@ -140,7 +140,7 @@ jobs:
         # is signed by GitHub and lands Verified. A local `git commit`
         # by a bot has no signing identity and would break the
         # protected-branch signed-commits rule.
-        uses: tyriis/multi-file-commit@2d6dcce35c5e8a7c2f945fb98544cfe9d6c81cc7 # v1.1.0
+        uses: tyriis/multi-file-commit@7bf613b8f7c63daf815d5e4d9eb68b8dead5e6a3 # v1.2.0
         with:
           token: ${{ steps.app-token.outputs.token }}
           ref: ${{ steps.commit.outputs.branch }}
