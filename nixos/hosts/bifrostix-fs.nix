@@ -33,7 +33,11 @@ in
     # bifrostix's persist surface. Empty/missing → the wipe halts rather
     # than boot an empty /var/lib/nixos (uid renumbering, ownership ruin).
     sentinelDirs = [
-      { path = "var/lib/nixos/ids"; check = "nonempty"; }
+      # NB: this pin's /var/lib/nixos has no ids/ subdir — live proof
+      # 2026-11-17: uid-map, gid-map, declarative-{users,groups},
+      # auto-subuid-map. A wrong sentinel here fail-closed a boot at
+      # stage-1 (the design working), but only after costing a console.
+      { path = "var/lib/nixos"; check = "nonempty"; }
       { path = "etc/ssh"; check = "hostkeys"; }
       { path = "var/lib/systemd"; check = "present"; }
     ];

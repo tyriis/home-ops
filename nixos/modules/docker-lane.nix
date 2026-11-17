@@ -34,6 +34,11 @@
   # reused, so DHCP applies in stage 1 too. Each host must declare its
   # NIC driver in boot.initrd.kernelModules — initrd networking does not
   # include it, and no driver means no listener (bifrostix: e1000e).
+  #
+  # vfat in the baseline: the escape lane is only an escape lane if it can
+  # reach the bootloader. 2026-11-17 bifrostix: recovery from initrd SSH
+  # needed the ESP to repoint loader default; mount failed — no vfat module.
+  boot.initrd.kernelModules = [ "vfat" ];
   boot.initrd.network = {
     enable = true;
     ssh = {

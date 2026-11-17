@@ -472,6 +472,30 @@ and the rollback lane is gone without a sound. Therefore:
      PR-A merges** — git history outlives any key rotation.
    This is the out-of-band path if a boot ever fails before root mounts,
    and Phase C (LUKS2+TPM2) inherits it as its unlock path.
+
+   **Field notes — migration attempt 1 (2026-11-17, live fire):**
+
+   The fail-closed design held exactly as specified: a wrong sentinel path
+   (`var/lib/nixos/ids` — this pin's uid state is
+   `uid-map/gid-map/declarative-*/auto-subuid-map`, no `ids/`) halted the
+   boot at stage-1 with `@` untouched, no renames, no data loss. Two
+   lessons for every future recovery from 2222:
+
+   1. **The initrd needs the ESP's filesystem.** `mount` of the vfat ESP
+    from initrd SSH failed — no `vfat` module. Repointing the loader
+    default is the first move of any stage-1 recovery, so the baseline
+    now ships `boot.initrd.kernelModules = [ "vfat" ]` (docker-lane).
+   2. **`systemctl switch-root /sysroot` works, but do not pre-mount
+    `/sysroot/run`.** Native switch-root migrates the live `/run` and
+    `/dev` into the new root; a tmpfs sitting at the destination blocks
+    the move, and the incoming world boots with a runtime directory
+    nobody can see — no socket, no sshd, no channel. `mkdir` only.
+
+   Also: identify the new generation by the `nixos-rebuild` "Done. The new
+   configuration is …" line — never by `ls -dt /nix/store/*nixos-system*`,
+   which mixes in unrelated recently-realised store paths and once made a
+   correct config look like a missing fstab entry.
+
 2. **Old generations stay bootable as-is** — with the integrity
    invariants above. Rollback = pick an old entry; it boots the
    pre-Phase-B FS_TREE tree untouched (new subvolumes are siblings, the
