@@ -131,6 +131,79 @@ in
   # from it, keeping the controller's .31 reservation addressing stable.
   environment.etc."machine-id".text = "ba8478fc635a4f08ab4fd710e687aa3f\n";
 
+  # Debug posture for the PoC console era (revisit at Phase C hardening):
+  # - forward the stage-2 journal to the console so a failed boot names
+  #   its own killer on screen instead of vanishing into a runtime-only
+  #   journal lost at the next reset (2026-11-17: the 11:57 boot died with
+  #   zero trace — journald in emergency writes only to /run).
+  # - shorten start-timeouts so a hung unit announces itself in 20s, not
+  #   90s — the failing unit's name reaches the console between glances.
+  # NB: no stage-2 passwordless-emergency option exists at this pin
+  # (only boot.initrd.systemed.emergencyAccess); the console journal
+  # carries the evidence instead, so a sulogin shell is not needed.
+  boot.kernelParams = [
+    "systemd.journald.forward_to_console=1"
+    "systemd.default_timeout_start_sec=20"
+  ];
+
+  # Boot forensics: stream the console to the jarvis box over UDP. The
+  # netconsole module is loaded in stage-1 (after the initrd network is
+  # online — the same path the 2222 drill proves) and survives
+  # switch-root, so a stage-2 death (12:3x boot: nixos-activation
+  # "no such file", zero journal trace) prints itself out to a witness
+  # instead of a dark monitor.
+  # 2026-11-17 RETIRED: NixOS's 6.18.63 tree ships NO netconsole.ko —
+  # CONFIG_NETCONSOLE is unset; both capture attempts were silent because
+  # the module simply does not exist. The black-box recorder below is the
+  # witness instead — now self-mounting so it survives the failure.
+  # boot.initrd.systemd.services.netconsole-capture = { ... } (removed)
+
+  # Black-box recorder for the no-eyeballs-on-console era. If stage-2
+  # reaches emergency.target (every local-fs failure does, and a
+  # stage-1 failure means initrd-2222 instead — covered by the drill),
+  # persist this boot's journal to @persistent, sync, then reboot.
+  # Loader default is held at a known-good gen, so the reboot lands
+  # the host back in a state I can drive, and the cause of death is
+  # on disk by the time it boots — no human in the failure loop.
+  systemd.services.impermanence-boot-dump = {
+    description = "Impermanence: persist boot journal on emergency, then reboot";
+    wantedBy = [ "emergency.target" ];
+    after = [ "systemd-journald.service" ];
+    unitConfig.DefaultDependencies = false;
+    serviceConfig = {
+      Type = "oneshot";
+      StandardOutput = "journal";
+      ExecStart = pkgs.writeShellScript "impermanence-boot-dump" ''
+        # Self-mounting black box: a failure that breaks the x-initrd bind
+        # chain leaves /persistent missing, so a dump written there is a
+        # dump written to the ephemeral root — lost. Mount our own storage
+        # from raw devices, write two copies (btrfs + ESP), never trust
+        # the mount graph we are investigating.
+        TS=$(date +%Y%m%dT%H%M%S)
+        LOG=/dev/null
+        mkdir -p /mnt/dump-p /mnt/dump-esp
+        if mount -o subvol=@persistent /dev/disk/by-uuid/4e2aa3de-4b26-4a84-bde5-13465a488466 /mnt/dump-p 2>/dev/null; then
+          mkdir -p /mnt/dump-p/debug
+          LOG=/mnt/dump-p/debug/boot-failure-$TS.txt
+        fi
+        # ESP copy first: independent medium, survives every btrfs story.
+        # Device path, not UUID link: a forensic script must not depend on
+        # udev name case rules for the vfat serial.
+        if mount /dev/nvme0n1p1 /mnt/dump-esp 2>/dev/null; then
+          journalctl -b --no-pager > /mnt/dump-esp/boot-failure-$TS.txt 2>&1 || true
+          umount /mnt/dump-esp 2>/dev/null || sync
+        fi
+        if [ "$LOG" != /dev/null ]; then
+          journalctl -b --no-pager > "$LOG" 2>&1 || true
+          journalctl -b -p warning --no-pager > "$LOG.warn" 2>&1 || true
+        fi
+        sync
+      '';
+      ExecStartPost = "${pkgs.systemd}/bin/systemctl reboot --no-block";
+      TimeoutStartSec = 60;
+    };
+  };
+
   # Host keys: persist the data under /persistent/etc/ssh (contents, not an
   # /etc bind) and point the option at it. Assigning hostKeys replaces the
   # default set, so declare the full set; missing keys are generated at
