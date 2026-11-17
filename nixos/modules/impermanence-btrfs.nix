@@ -52,6 +52,11 @@ let
 
   persistBindSrcs = map (b: "\${M}/@persistent${b}") cfg.persistBinds;
 
+  # Every non-ephemeral mountpoint declared anywhere in the config, so the
+  # wipe can assert the shape of the root it ships (see step 10).
+  allMountPoints = builtins.map (m: m.mountPoint)
+    (builtins.attrValues config.fileSystems);
+
   wipeScript = ''
     #!/bin/sh
     set -u
@@ -101,6 +106,18 @@ let
       else
         halt "no @ and no @new/@old remnant to recover"
       fi
+    fi
+
+    # 2.5 Operator hold gate (PoC era, 2026-11-17): a flag file on
+    # FS_TREE parks the boot at initrd :2222 before anything is touched.
+    # Every blind flip last night cost a power-cycle; never again.
+    # Release from :2222 — remove the flag, then reboot (the flag is
+    # checked after recovery, so a held boot never mutated @).
+    if [ -e "$M/impermanence-hold" ]; then
+      echo "impermanence-wipe: HOLD flag set — parked, initrd SSH on :2222" > /dev/kmsg 2>/dev/null || true
+      umount "$M" 2>/dev/null || true
+      systemctl isolate emergency.target || true
+      exec sleep infinity
     fi
 
     # 3. Kill-switch: skip the WIPE only (recovery already ran). Also bypasses
@@ -156,6 +173,12 @@ let
     # 10. Wipe. Create-then-swap: any single step failing leaves a
     # recoverable tree, and a re-run converges via recovery.
     btrfs subvolume snapshot "$M/@base" "$M/@new" || fail_open "snapshot @base -> @new failed"
+    # Re-assert every mountpoint inside @new BEFORE it is published.
+    # @base should carry them (it was seeded from a full root), but a
+    # silently-stale @base reproduces the 2026-11-17 initrd wall
+    # ("Can't look up mountpoint") three steps later where nothing can
+    # see it. Cheap and decisive: assert the shape of the tree we ship.
+    ${lib.concatStringsSep "\n" (map (p: ''mkdir -p "$M/@new${p}"'') (lib.unique allMountPoints))}
     [ ! -e "$M/@old" ] || fail_open "@old reappeared mid-wipe"
     mv "$M/@" "$M/@old" || fail_open "mv @ -> @old failed"
     [ -e "$M/@new" ] || fail_open "@new vanished before promote"

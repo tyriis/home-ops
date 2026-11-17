@@ -24,6 +24,7 @@ in
     # Bind sources the wipe pre-creates; each has a matching fileSystems
     # entry below.
     persistBinds = [
+      "/etc/ssh"
       "/var/lib/nixos"
       "/var/lib/systemd"
       "/var/log/audit"
@@ -78,27 +79,39 @@ in
     neededForBoot = true;
   };
 
-  # Content binds (everything else under /persistent). STAGE-2 only
-  # (local-fs): stage-1 carries only plain btrfs device mounts — see
-  # 2026-11-17 wall #6: 26.11 early-bind mounts in the initrd race
-  # sysroot.mount visibility ("Can't look up mountpoint") and were the
-  # most fragile units of the night. NixOS stage-2 activation runs
-  # After=local-fs (verified via nix eval before each flip), so the
-  # uid-renumbering race stays dead with these at local-fs.
+  # Content binds (everything else under /persistent).
+  # neededForBoot IS MANDATORY at 26.11: stage-2 activation does not exist
+  # — the whole activation script runs in the INITRD (unit
+  # initrd-nixos-activation) BEFORE switch-root, so anything it reads or
+  # writes (/var/lib/nixos = uid/gid state!) must be mounted stage-1.
+  # Verified 2026-11-17: `systemctl show nixos-activation` on the live
+  # 26.11 host reports no such unit.
+  # SSH host keys. The sentinel asserts they exist under @persistent
+  # every boot; without this bind the assertion guards a surface that
+  # is never mounted — keys would seed, assert, and still regenerate.
+  fileSystems."/etc/ssh" = {
+    device = "/persistent/etc/ssh";
+    fsType = "none";
+    options = [ "bind" ];
+    neededForBoot = true;
+  };
   fileSystems."/var/lib/nixos" = {
     device = "/persistent/var/lib/nixos";
     fsType = "none";
     options = [ "bind" ];
+    neededForBoot = true;
   };
   fileSystems."/var/lib/systemd" = {
     device = "/persistent/var/lib/systemd";
     fsType = "none";
     options = [ "bind" ];
+    neededForBoot = true;
   };
   fileSystems."/var/log/audit" = {
     device = "/persistent/var/log/audit";
     fsType = "none";
     options = [ "bind" ];
+    neededForBoot = true;
   };
   # The rebuild source. Seeded during migration: a flake build needs a tree
   # (docker-lane builds from it); "nixos dir" once read as /var/lib/nixos
@@ -107,6 +120,7 @@ in
     device = "/persistent/root/nixos";
     fsType = "none";
     options = [ "bind" ];
+    neededForBoot = true;
   };
 
   # tmp surfaces. boot.tmp.useTmpfs covers /tmp only; /var/tmp is separate.
