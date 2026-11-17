@@ -50,9 +50,11 @@ kubectl -n influxdb exec deploy/influxdb3 -- \
   influxdb3 create token --permission "db:home_assistant:write" --name home-assistant --token "$ADMIN"
 ```
 
-The read token is stored as `READ_TOKEN` in the same OpenBao entry. Two consumers read that key: the
-app's own `ExternalSecret`, and `influxdb3-grafana-token` in the Grafana app, which feeds the
-`influxdb` datasource. Rotating it is one `bao kv patch` plus an ESO refresh on both sides.
+A token string is printed once, at creation, and cannot be read back — `influxdb3 show tokens` lists
+a truncated hash, never the value. Keep both in OpenBao: `READ_TOKEN` for Grafana and `WRITE_TOKEN`
+for Home Assistant. Two consumers read `READ_TOKEN`: the app's own `ExternalSecret`, and
+`influxdb3-grafana-token` in the Grafana app, which feeds the `influxdb` datasource. Rotating it is
+one `bao kv patch` plus an ESO refresh on both sides.
 
 The token is read from the mounted `admin-token.json`; the Secret carries no `ADMIN_TOKEN` key.
 
@@ -106,13 +108,23 @@ A `Running` pod that holds no data means the engine is not writing to the mounte
 claim came back from an empty repository; the pod log carries the failure, the readiness check does
 not.
 
-## Retention
+## Retention and deletion
 
-No retention policies exist. Old data is deleted per table:
+No retention policies exist. Row deletion is a CLI operation, not SQL — `DELETE FROM` is not
+supported by the 3.12 storage engine:
 
-```sql
-DELETE FROM "<measurement>" WHERE time < '2026-01-01T00:00:00Z';
+```sh
+influxdb3 delete rows --database home_assistant --max-time 2026-01-01T00:00:00Z --token "$ADMIN"
 ```
+
+`--max-time` is exclusive, and `--all-time` clears the whole database. Deletes are asynchronous and
+applied by the compactor, with a default minimum age of one day, so rows stay queryable until then.
+
+To keep the database, its tokens and its caches while clearing the data, use
+`influxdb3 delete database --data-only home_assistant`; add `--remove-tables` to drop the table
+schemas as well. Running `delete database` **without** `--data-only` keeps the token rows by name but
+kills their grants, and every client holding one starts receiving `401` until both tokens are
+re-created.
 
 ## Backups
 

@@ -58,6 +58,7 @@ Put the values at `infra/kubernetes/main/influxdb/influxdb3`:
 | `LICENSE_EMAIL` | mailbox that receives the verification link |
 | `ADMIN_TOKEN`   | an `apiv3_...` token, generated offline     |
 | `READ_TOKEN`    | added in step 4, once the pod is running    |
+| `WRITE_TOKEN`   | added in step 4, once the pod is running    |
 
 Generate the admin token with `openssl rand -base64 32` — InfluxDB 3 accepts a hand-written token
 file, so no first-boot bootstrap is needed.
@@ -96,9 +97,14 @@ kubectl -n influxdb exec deploy/influxdb3 -- \
 The token comes from the mounted `admin-token.json`, not from an `ADMIN_TOKEN` env key: the
 ExternalSecret renders the JSON document as that file.
 
-Add the read token to the same OpenBao entry as `READ_TOKEN`. The ExternalSecret `influxdb3-env`
-feeds the app, and Grafana's `influxdb3-grafana-token` reads the same key for its datasource, so a
-rotation is one `bao kv patch` plus an ESO refresh on both sides.
+A token string is printed once, when it is created, and cannot be read back: `influxdb3 show tokens`
+lists every token with a truncated hash, never the value. Keep both in the same OpenBao entry —
+`READ_TOKEN` for Grafana and `WRITE_TOKEN` for Home Assistant — so a lost integration entry is a
+lookup rather than a rotation.
+
+The ExternalSecret `influxdb3-env` feeds the app, and Grafana's `influxdb3-grafana-token` reads
+`READ_TOKEN` for its datasource, so a rotation is one `bao kv patch` plus an ESO refresh on both
+sides.
 
 ## Sizing
 
@@ -137,13 +143,36 @@ returns `table_catalog` first and lists the system tables alongside the data tab
 queries with `version: SQL` over FlightSQL, so the plain-HTTP in-cluster URL needs
 `insecureGrpc: true`.
 
-## Retention
+## Retention and deletion
 
-Unbounded. There are no retention policies; old data is deleted per table with SQL:
+There is no retention policy; data stays until it is deleted. Row deletion is a CLI operation —
+`DELETE FROM` is not supported by the 3.12 storage engine:
 
-```sql
-DELETE FROM "<measurement>" WHERE time < '2026-01-01T00:00:00Z';
+```sh
+ADMIN=$(kubectl -n influxdb exec deploy/influxdb3 -- cat /etc/influxdb3/admin-token.json | jq -r .token)
+
+# rows older than a cut-off; --max-time is exclusive
+echo yes | kubectl -n influxdb exec -i deploy/influxdb3 -- \
+  influxdb3 delete rows --database home_assistant --max-time 2026-01-01T00:00:00Z --token "$ADMIN"
 ```
+
+Row deletes are asynchronous. The request is persisted immediately and the compactor applies it, with
+a default minimum age of one day (`--row-delete-min-age`), so rows stay queryable until the next
+rewrite of the affected run sets. Rows in the un-compacted ingest tail can outlive an otherwise
+finished delete.
+
+To clear the data while keeping the database, its tokens and its caches, delete with `--data-only`:
+
+```sh
+kubectl -n influxdb exec deploy/influxdb3 -- \
+  influxdb3 delete database --data-only home_assistant --token "$ADMIN"
+```
+
+Add `--remove-tables` to drop the table schemas too; database-level resources survive either way.
+**Do not run `delete database` without `--data-only`** unless you mean to remove the database. The
+token rows then survive by name but their grants stop resolving, and every client holding one —
+Grafana and Home Assistant — starts receiving `401`. Recovery is to delete and re-create both
+tokens, then update `READ_TOKEN`, `WRITE_TOKEN` and the Home Assistant integration.
 
 ## Restore
 
