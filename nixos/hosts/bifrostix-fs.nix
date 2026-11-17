@@ -78,24 +78,27 @@ in
     neededForBoot = true;
   };
 
-  # Content binds (everything else under /persistent).
+  # Content binds (everything else under /persistent). STAGE-2 only
+  # (local-fs): stage-1 carries only plain btrfs device mounts — see
+  # 2026-11-17 wall #6: 26.11 early-bind mounts in the initrd race
+  # sysroot.mount visibility ("Can't look up mountpoint") and were the
+  # most fragile units of the night. NixOS stage-2 activation runs
+  # After=local-fs (verified via nix eval before each flip), so the
+  # uid-renumbering race stays dead with these at local-fs.
   fileSystems."/var/lib/nixos" = {
     device = "/persistent/var/lib/nixos";
     fsType = "none";
     options = [ "bind" ];
-    neededForBoot = true;
   };
   fileSystems."/var/lib/systemd" = {
     device = "/persistent/var/lib/systemd";
     fsType = "none";
     options = [ "bind" ];
-    neededForBoot = true;
   };
   fileSystems."/var/log/audit" = {
     device = "/persistent/var/log/audit";
     fsType = "none";
     options = [ "bind" ];
-    neededForBoot = true;
   };
   # The rebuild source. Seeded during migration: a flake build needs a tree
   # (docker-lane builds from it); "nixos dir" once read as /var/lib/nixos
@@ -104,7 +107,6 @@ in
     device = "/persistent/root/nixos";
     fsType = "none";
     options = [ "bind" ];
-    neededForBoot = true;
   };
 
   # tmp surfaces. boot.tmp.useTmpfs covers /tmp only; /var/tmp is separate.
@@ -132,19 +134,15 @@ in
   environment.etc."machine-id".text = "ba8478fc635a4f08ab4fd710e687aa3f\n";
 
   # Debug posture for the PoC console era (revisit at Phase C hardening):
-  # - forward the stage-2 journal to the console so a failed boot names
-  #   its own killer on screen instead of vanishing into a runtime-only
-  #   journal lost at the next reset (2026-11-17: the 11:57 boot died with
-  #   zero trace — journald in emergency writes only to /run).
-  # - shorten start-timeouts so a hung unit announces itself in 20s, not
-  #   90s — the failing unit's name reaches the console between glances.
-  # NB: no stage-2 passwordless-emergency option exists at this pin
-  # (only boot.initrd.systemed.emergencyAccess); the console journal
-  # carries the evidence instead, so a sulogin shell is not needed.
-  boot.kernelParams = [
-    "systemd.journald.forward_to_console=1"
-    "systemd.default_timeout_start_sec=20"
-  ];
+  # forward the stage-2 journal to the console so a failed boot names its
+  # own killer on screen instead of vanishing into a runtime-only journal
+  # lost at the next reset.
+  # 2026-11-17: systemd.default_timeout_start_sec=20 REMOVED — it is a
+  # global crutch and it starved exactly the phase that killed us: device
+  # arrival for the NVMe ("Timed out waiting for devices to appear",
+  # x-initrd mounts failing ENOENT at 4.8s with 20 s caps instead of the
+  # 90 s device budget). Debug convenience must not eat boot physics.
+  boot.kernelParams = [ "systemd.journald.forward_to_console=1" ];
 
   # Boot forensics: stream the console to the jarvis box over UDP. The
   # netconsole module is loaded in stage-1 (after the initrd network is

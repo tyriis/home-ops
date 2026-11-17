@@ -277,22 +277,14 @@ in
       script = wipeScript;
     };
 
-    # Upstream 26.11 ordering gap, caught 4x on the bifrostix flip
-    # (2026-11-17). The stock activation unit runs
-    #   closure="$(realpath /nixos-closure)"
-    #   exec chroot /sysroot "$closure/prepare-root"
-    # with DefaultDependencies=no and RequiresMountsFor=/sysroot/run ONLY.
-    # The chroot re-resolves the absolute closure path against /sysroot —
-    # an x-initrd store path that exists ENOENTs when /sysroot/nix is not
-    # mounted yet: a startup race with no ordering edge upstream. The one
-    # boot that survived (gen28 11:50) won by accident — sshd host-key
-    # generation slowed stage-1 just enough; every fast boot since lost.
-    # NixOS is not patchable here, so assert the edge ourselves:
-    # initrd-fs.target already Requires every x-initrd.mount, /nix included.
-    boot.initrd.systemd.services.initrd-nixos-activation = {
-      after = [ "initrd-fs.target" ];
-      requires = [ "initrd-fs.target" ];
-    };
+    # 2026-11-17 RETRACTED: an earlier build of this module added
+    # After=+Requires=initrd-fs.target to initrd-nixos-activation on the
+    # theory that /sysroot/nix was slow to appear. That theory was wrong
+    # (gen32 carried the fix and still died) and the change pulled
+    # activation's dependency subtree EARLIER, worsening the very race:
+    # the real starvation was device arrival, and x-initrd ordering is
+    # owned by the 26.11 fstab-generator with proper .device deps. Do not
+    # re-assert ordering edges on stock initrd units from here.
 
     # Stage 2: the loud half. Never mistaken for a clean boot.
     systemd.services.impermanence-check = {
