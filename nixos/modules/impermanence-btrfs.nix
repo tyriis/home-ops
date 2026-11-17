@@ -73,6 +73,26 @@ let
     M="${wipeMnt}"
     MARK="/run/impermanence"
 
+    # ONE-SHOT GATE (gen44, 2026-11-17). 26.11 re-queues this unit a second
+    # time during initrd-cleanup — initrd-parse-etc daemon-reloads and
+    # re-requests its targets, and a dead requiredBy unit on a re-triggered
+    # target is started again. The gen27-43 death pattern, proven verbatim
+    # from gen40's deadman dump (@persistent/debug deadman-20261117T220623):
+    # run 2 renames the LIVE root @ -> @old (permitted — the mount lives at
+    # /sysroot, not at @'s name entry), then run 2's @old delete sees only
+    # the freshly renamed path, so btrfs's mounted-subvolume check misses it,
+    # and deletes the tree that /sysroot's filesystem IS. 26.11 activation
+    # then chroots and ENOENTs walking `nix` off the deleted root:
+    # "prepare-root: No such file or directory", exit 127, 6.2 s in.
+    # /run is initrd tmpfs: this marker is per-boot, exactly the scope
+    # needed. A re-fired run must touch zero btrfs state.
+    mkdir -p "$MARK"
+    if [ -e "$MARK/DONE" ]; then
+      echo "impermanence-wipe: re-fire suppressed (26.11 initrd re-triggers requiredBy units)"
+      exit 0
+    fi
+    : > "$MARK/DONE"
+
     # Fail-open: a viable root exists, so boot it — but say so, loudly, via a
     # FAILED marker the stage-2 checker turns into a failed unit + a metric.
     fail_open() {
@@ -214,11 +234,26 @@ let
     mv "$M/@" "$M/@old" || fail_open "mv @ -> @old failed"
     [ -e "$M/@new" ] || fail_open "@new vanished before promote"
     mv "$M/@new" "$M/@" || fail_open "mv @new -> @ failed"
-    btrfs subvolume delete "$M/@old" >/dev/null 2>&1 \
-      || echo "impermanence-wipe: could not delete @old (boot is unaffected)"
+    # Never delete the subvolume that backs the live root. btrfs-progs
+    # decides "is this mounted?" from mount-table PATHS, and we have
+    # just renamed the path to @old — the check misses /sysroot's mount
+    # and deletes the running tree (gen40 post-mortem: this exact call
+    # pulled /sysroot's root out from under 26.11 activation's chroot).
+    # Stat inodes are subvolume ids on btrfs and rename-invariant:
+    # compare those, not names.
+    OLD_INO="$(stat -c %i "$M/@old" 2>/dev/null || echo x)"
+    SYS_INO="$(stat -c %i /sysroot 2>/dev/null || echo y)"
+    if [ "$OLD_INO" = "$SYS_INO" ]; then
+      echo "impermanence-wipe: @old is the live /sysroot root — delete skipped (26.11 guard)"
+    else
+      btrfs subvolume delete "$M/@old" >/dev/null 2>&1 \
+        || echo "impermanence-wipe: could not delete @old (boot is unaffected)"
+    fi
     # A completed wipe from @base is a clean root — a stale FAILED must not
-    # report a clean boot as failed.
-    rm -f "$MARK"/* 2>/dev/null || true
+    # report a clean boot as done-failed. Do NOT glob: the DONE one-shot
+    # marker above must survive this line, or a 26.11 re-fire re-arms and
+    # re-runs the full wipe (exactly the gen27-43 failure).
+    rm -f "$MARK/FAILED" "$MARK/HALT" 2>/dev/null || true
     sync
     umount "$M" 2>/dev/null || true
     exit 0
