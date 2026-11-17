@@ -151,10 +151,14 @@ There is no retention policy; data stays until it is deleted. Row deletion is a 
 ```sh
 ADMIN=$(kubectl -n influxdb exec deploy/influxdb3 -- cat /etc/influxdb3/admin-token.json | jq -r .token)
 
-# rows older than a cut-off; --max-time is exclusive
+# rows of one table, older than a cut-off; --max-time is exclusive
 echo yes | kubectl -n influxdb exec -i deploy/influxdb3 -- \
-  influxdb3 delete rows --database home_assistant --max-time 2026-01-01T00:00:00Z --token "$ADMIN"
+  influxdb3 delete rows --database home_assistant --table "<measurement>" \
+  --max-time 2026-01-01T00:00:00Z --token "$ADMIN"
 ```
+
+`delete rows` needs `--table`. It deletes rows of one named table. To clear a whole database, run
+`influxdb3 delete database --data-only` instead, never a loop over tables.
 
 Row deletes are asynchronous. The request is persisted immediately and the compactor applies it, with
 a default minimum age of one day (`--row-delete-min-age`), so rows stay queryable until the next

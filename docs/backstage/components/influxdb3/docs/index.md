@@ -114,10 +114,13 @@ No retention policies exist. Row deletion is a CLI operation, not SQL — `DELET
 supported by the 3.12 storage engine:
 
 ```sh
-influxdb3 delete rows --database home_assistant --max-time 2026-01-01T00:00:00Z --token "$ADMIN"
+influxdb3 delete rows --database home_assistant --table "<measurement>" \
+  --max-time 2026-01-01T00:00:00Z --token "$ADMIN"
 ```
 
-`--max-time` is exclusive, and `--all-time` clears the whole database. Deletes are asynchronous and
+`delete rows` needs `--table`. It deletes rows of one named table. To clear a whole database, run
+`influxdb3 delete database --data-only` instead, never a loop over tables. `--max-time` is
+exclusive, and `--all-time` spans every timestamp of that table. Deletes are asynchronous and
 applied by the compactor, with a default minimum age of one day, so rows stay queryable until then.
 
 To keep the database, its tokens and its caches while clearing the data, use
