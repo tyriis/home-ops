@@ -254,6 +254,69 @@ in
     };
   };
 
+  # 2026-11-17 (gen39): a stage-1 activation/switch-root failure does NOT
+  # enter emergency. 26.11's stage-1 units are DefaultDependencies=false,
+  # so a failed oneshot (e.g. gen39's `chroot /sysroot prepare-root`
+  # ENOENT inside initrd-nixos-activation) silently stops the chain —
+  # no emergency.target, no OnFailure, no dump. That console line was
+  # the entire evidence.
+  #
+  # Deadman pattern: this unit is After=initrd-switch-root.service. On
+  # the SUCCESS path the switch-root service never completes (its chroot
+  # kills the initrd), so this unit never runs. On the FAILURE path the
+  # job fails, ordering is satisfied, and this runs: dump journal to
+  # both vaults, then reboot via sysrq — kernel-level, since the 26.11
+  # initrd's external-binary surface is proven untrustworthy (gen37/38).
+  # WantedBy the target only pulls it into the transaction; Wants= is
+  # non-blocking, so the success path is untouched.
+  boot.initrd.systemd.services.impermanence-switch-deadman = {
+    description = "Impermanence: dump evidence if switch-root fails, then sysrq-reboot";
+    after = [ "initrd-switch-root.service" ];
+    wantedBy = [ "initrd-switch-root.target" ];
+    unitConfig.DefaultDependencies = false;
+    script = ''
+      # Running at all means switch-root failed; let systemd flush its
+      # failure messages to the journal first.
+      sleep 3
+      TS=$(date +%Y%m%dT%H%M%S)
+      mkdir -p /mnt/dump-p /mnt/dump-esp
+      BUMP=""
+      if mount -o subvol=@persistent /dev/disk/by-uuid/4e2aa3de-4b26-4a84-bde5-13465a488466 /mnt/dump-p 2>/dev/null; then
+        mkdir -p /mnt/dump-p/debug
+        BUMP=/mnt/dump-p/debug
+      fi
+      dump_all() {
+        if command -v journalctl >/dev/null 2>&1; then
+          journalctl -b --no-pager > "$1/deadman-$TS.txt" 2>&1 || true
+        else
+          find /run/log/journal -name '*.journal' 2>/dev/null | while read -r f; do
+            cp "$f" "$1/deadman-$TS-$(basename "$f")" 2>/dev/null
+          done
+        fi
+        dmesg > "$1/deadman-dmesg-$TS.txt" 2>&1 || true
+      }
+      # ESP first: independent medium, device path (case rules proved
+      # udev UUID links fragile under forensics).
+      if mount /dev/nvme0n1p1 /mnt/dump-esp 2>/dev/null; then
+        dump_all /mnt/dump-esp
+        umount /mnt/dump-esp 2>/dev/null || sync
+      fi
+      if [ -n "$BUMP" ]; then
+        dump_all "$BUMP"
+        umount /mnt/dump-p 2>/dev/null || sync
+      fi
+      sync
+      echo 1 > /proc/sys/kernel/sysrq 2>/dev/null || true
+      sleep 2
+      echo b > /proc/sysrq-trigger
+    '';
+    serviceConfig.TimeoutStartSec = 90;
+  };
+
+  # The deadman's reboot lever. Initrd-stage: 26.11's stage-1 applies
+  # boot.kernel.sysctl before local-fs.
+  boot.kernel.sysctl."kernel.sysrq" = "1";
+
   # Root-cause of gen27-36 (11 deaths, 1 lucky one-shot survivor),
   # proven 2026-11-17: the fstab generator orders mounts by MOUNTPOINT
   # prefix only — it never orders a bind after the mount that provides
