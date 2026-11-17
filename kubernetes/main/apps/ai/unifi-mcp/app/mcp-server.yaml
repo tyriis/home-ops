@@ -5,7 +5,7 @@ kind: MCPServer
 metadata:
   name: unifi-network-mcp
 spec:
-  image: ghcr.io/sirkirby/unifi-network-mcp:0.47.1@sha256:2ca0122f773adb3b6f1d5d2d3e5e38d14b96e8320362b81a73b92d2e08bcf411
+  image: ghcr.io/sirkirby/unifi-network-mcp:0.48.0@sha256:0e7aa0dd506e8c921acb7ec1ad9089a73e8be4531db1f4f13944d406c7e936c2
   transport: streamable-http
   mcpPort: 3000
   proxyPort: 8080
