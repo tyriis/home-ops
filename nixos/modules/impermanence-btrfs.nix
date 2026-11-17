@@ -96,7 +96,13 @@ let
       # emergency.target — it kills the pending switch-root progression
       # and fires the initrd black-box recorder (dumps + reboots itself,
       # landing on the gen26-pinned EFI default).
-      systemctl isolate emergency.target || true
+      # systemctl MUST be absolute-pathed: the initrd PATH has no
+      # systemctl — the bare call died "No such file or directory" on
+      # the 2026-11-17 21:0x console, crashing halt() itself and letting
+      # the chain walk past a fail-closed stop. Absolute path = the same
+      # ${pkgs.systemd} the recorder's ExecStartPost cites; the reference
+      # is what pulls the binary into the initrd closure.
+      ${pkgs.systemd}/bin/systemctl isolate emergency.target || true
       exec sleep infinity
     }
 
