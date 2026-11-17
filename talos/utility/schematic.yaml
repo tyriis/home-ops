@@ -1,7 +1,7 @@
 ---
 # factory.talos.dev schematic for the `utility` cluster (secureboot UKI metal installer).
 # id: f5322febc5e6e2ee4225e9e0e9a508417bc3d7530775e828daa441cd6b76e3e5
-# The id must equal the installer image refs in talos/utility/patches/*.patch.yaml.
+# render-config.sh derives the installer image ref from this id + version.yaml talosVersion.
 # Ref: https://factory.talos.dev/schematics
 customization:
   systemExtensions:

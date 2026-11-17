@@ -60,7 +60,7 @@ tasks:
       vars: [cluster, node, ip]
 
   schematic:check:
-    desc: "Verify the committed factory schematics against the installer image refs in patches/ — offline ([cluster=])"
+    desc: "Verify committed schematic ids and that patches/ pin no installer image (ref is derived) — offline ([cluster=])"
     cmds:
       - "./.taskfiles/talos/check-schematic.sh {{.cluster}}"
 
