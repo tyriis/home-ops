@@ -202,7 +202,7 @@ in
         # Device path, not UUID link: a forensic script must not depend on
         # udev name case rules for the vfat serial.
         if mount /dev/nvme0n1p1 /mnt/dump-esp 2>/dev/null; then
-          journalctl -b --no-pager > /mnt/dump-esp/boot-failure-$TS.txt 2>&1 || true
+          journalctl -b --no-pager 2>&1 | head -c 5242880 > /mnt/dump-esp/boot-failure-$TS.txt 2>&1 || true
           umount /mnt/dump-esp 2>/dev/null || sync
         fi
         if [ "$LOG" != /dev/null ]; then

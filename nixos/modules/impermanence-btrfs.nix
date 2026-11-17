@@ -109,15 +109,15 @@ let
     fi
 
     # 2.5 Operator hold gate (PoC era, 2026-11-17): a flag file on
-    # FS_TREE parks the boot at initrd :2222 before anything is touched.
-    # Every blind flip last night cost a power-cycle; never again.
-    # Release from :2222 — remove the flag, then reboot (the flag is
-    # checked after recovery, so a held boot never mutated @).
+    # FS_TREE parks the boot before anything is touched. Proven escape
+    # lane (2026-11-17 12:3x): a failed wipe unit lands the boot in
+    # initrd with SSH alive on :2222 — exit 1 there was reached live.
+    # Release from :2222: remove the flag, then reboot. No FAILED
+    # marker is written — a hold is intent, not fault.
     if [ -e "$M/impermanence-hold" ]; then
       echo "impermanence-wipe: HOLD flag set — parked, initrd SSH on :2222" > /dev/kmsg 2>/dev/null || true
       umount "$M" 2>/dev/null || true
-      systemctl isolate emergency.target || true
-      exec sleep infinity
+      exit 1
     fi
 
     # 3. Kill-switch: skip the WIPE only (recovery already ran). Also bypasses
