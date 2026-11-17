@@ -186,7 +186,7 @@ in
   boot.kernelParams = [
     "systemd.journald.forward_to_console=1"
     "stage1panic"
-    "panic=20"
+    "panic=60"
     "loglevel=7"
   ];
 
