@@ -435,6 +435,23 @@ in
       '';
     };
 
+    # 26.11 socket-activates the machined/portabled/importd trio by
+    # default, and machined auto-creates its storage as btrfs SUBVOLUMES
+    # under the live @ when triggered: gen44 boot 1 grew exactly three
+    # new @ children (machines, portables, srv) two seconds after
+    # "Listening on Virtual Machine and Container Registration Service
+    # Socket", and boot 2's nested-child guard refused to wipe a tree
+    # the wipe design does not know how to reason about. The docker
+    # lane talks to none of them; a guard that trips on a unit nobody
+    # wants is a guard that will be weakened. Disabled at socket level
+    # (the trigger) and service level for symmetry.
+    systemd.services."systemd-machined".wantedBy = lib.mkForce [];
+    systemd.services."systemd-portabled".wantedBy = lib.mkForce [];
+    systemd.services."systemd-importd".wantedBy = lib.mkForce [];
+    systemd.sockets."systemd-machined".wantedBy = lib.mkForce [];
+    systemd.sockets."systemd-portabled".wantedBy = lib.mkForce [];
+    systemd.sockets."systemd-importd".wantedBy = lib.mkForce [];
+
     # Stage 2: manual re-seed. No wantedBy — an operator command only.
     systemd.services.impermanence-reseed = {
       description = "Impermanence: promote a new read-only @base from the live @ (manual)";
