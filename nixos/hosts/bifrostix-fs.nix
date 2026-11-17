@@ -187,9 +187,12 @@ in
     description = "Impermanence: persist initrd journal on emergency, then reboot";
     wantedBy = [ "emergency.target" ];
     unitConfig.DefaultDependencies = false;
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = pkgs.writeShellScript "impermanence-boot-dump" ''
+    # 2026-11-17 lesson: a raw ExecStart -> pkgs.writeShellScript does NOT
+    # land in the initrd closure — the unit fired at emergency.target and
+    # died "No such file or directory" (execve: interpreter/script absent).
+    # The `script` attribute is the 26.11 initrd-safe path: NixOS renders
+    # it and includes it, exactly like the proven impermanence-wipe unit.
+    script = ''
         TS=$(date +%Y%m%dT%H%M%S)
         mkdir -p /mnt/dump-p /mnt/dump-esp
         BUMP=""
@@ -223,11 +226,43 @@ in
           umount /mnt/dump-p 2>/dev/null || sync
         fi
         sync
-      '';
+    '';
+    serviceConfig = {
       ExecStartPost = "${pkgs.systemd}/bin/systemctl reboot --no-block";
       TimeoutStartSec = 60;
     };
   };
+
+  # Root-cause of gen27-36 (11 deaths, 1 lucky one-shot survivor),
+  # proven 2026-11-17: the fstab generator orders mounts by MOUNTPOINT
+  # prefix only — it never orders a bind after the mount that provides
+  # its SOURCE. Every content bind above has its device path under
+  # /persistent, a sibling x-initrd mount. At ~4.8s the five bind
+  # sources (plus the crutch-killed nix.mount — sixth failure on the
+  # 11:52 console) lose the coin flip, fail "Can't look up mountpoint:
+  # ENOENT", get killed by "start request repeated too quickly", and
+  # switch-root fails on the dead units. The generator cannot fix this;
+  # declare the edges it does not know about. x-initrd units carry the
+  # sysroot- prefix in the initrd (exact names console-verified), plain
+  # names in stage-2.
+  boot.initrd.systemd.units = lib.listToAttrs (map (n: {
+    name = "sysroot-${n}.mount";
+    value = {
+      unitConfig = {
+        Requires = [ "sysroot-persistent.mount" ];
+        After = [ "sysroot-persistent.mount" ];
+      };
+    };
+  }) [ "etc-ssh" "var-lib-nixos" "var-lib-systemd" "var-log-audit" "root-nixos" ]);
+  systemd.units = lib.listToAttrs (map (n: {
+    name = "${n}.mount";
+    value = {
+      unitConfig = {
+        Requires = [ "persistent.mount" ];
+        After = [ "persistent.mount" ];
+      };
+    };
+  }) [ "etc-ssh" "var-lib-nixos" "var-lib-systemd" "var-log-audit" "root-nixos" ]);
 
   # Host keys: persist the data under /persistent/etc/ssh (contents, not an
   # /etc bind) and point the option at it. Assigning hostKeys replaces the
