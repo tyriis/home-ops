@@ -1,129 +1,179 @@
 # prek migration: replace MegaLinter and pre-commit
 
 Issue: [#10151](https://github.com/tyriis/home-ops/issues/10151)
+Status: revision 3, draft. Not committed.
 
-Status: draft. Not committed. Awaiting approval.
+## Context
 
-## Intent
+- The MegaLinter job pulls a 1.41 GB Docker image on every run.
+- Measured in issue #10151: the job takes 70 to 100 seconds. About 65% of that is the pull.
+- Hosted runners cannot cache the image. The pull runs before any step.
 
-The repository runs two linting systems. MegaLinter runs in CI. pre-commit runs
-locally. They overlap, and CI spends most of its time pulling a 1.41 GB Docker
-image. One tool, prek, runs the same hooks locally and in CI. The same config
-file defines both.
+## Purpose
 
-Measured baseline: MegaLinter job takes 70 to 100 seconds. About 65% is the
-Docker pull.
+- One runner, prek, runs the lint hooks locally and in CI.
+- Local hooks and CI use the same config: `.pre-commit-config.yaml`.
+- Tool versions come from `.mise.toml` only.
+- CI no longer pulls the MegaLinter Docker image.
 
-## Goals
+## Decisions
 
-- prek runs every hook locally, in the `pre-commit` and `pre-push` stages.
-- prek runs the same hooks in CI on each pull request (`opened`, `reopened`, `synchronize`).
-- Betterleaks replaces gitleaks in the local hook set and in the nightly scan.
-- Hook coverage matches the eight MegaLinter linters: actionlint, prettier
-  (JSON and YAML), markdownlint, yamllint, editorconfig-checker, betterleaks,
-  and proselint.
-- CI warm run takes about 15 to 25 seconds.
+| Topic                | Decision                                                                                                            |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Config file          | `.pre-commit-config.yaml`. Stays YAML. Renovate reads it today.                                                     |
+| Hook language        | `system` for every hook. prek runs the command on `PATH`.                                                           |
+| Tool source          | `.mise.toml`. mise installs the tools.                                                                              |
+| Local stages         | `pre-commit` and `pre-push`.                                                                                        |
+| CI trigger           | `pull_request`: `opened`, `reopened`, `synchronize`, `ready_for_review`. Also `workflow_dispatch`. No push trigger. |
+| CI scope             | Changed files on pull requests. Full tree on `workflow_dispatch`.                                                   |
+| Secret scan, local   | Betterleaks, staged mode. Scans the staged diff only. `--all-files` does not change this.                                                                                           |
+| Secret scan, CI      | Betterleaks on the pull request commit range.                                                                       |
+| Secret scan, nightly | Betterleaks full history, SARIF. Phase 3 only.                                                                      |
+| CI output            | Log only. No inline annotations.                                                                                    |
+| Excluded             | proselint, `flux-check-hook`, self-hosted runner, custom image.                                                     |
 
-## Non-goals
+## How the tools run
 
-- No inline pull request annotations. CI output is log-only. The owner accepted
-  this trade-off.
-- No `flux-check-hook`. It is removed and will not be added again.
-- No self-hosted runner and no custom image with a pre-warmed `PREK_HOME`. These
-  are deferred. Revisit only if cold starts are a problem.
-- No change to hook behavior beyond what parity requires.
-- No edits to vendored or upstream config content.
+Local:
 
-## Constraints
+1. `prek install --hook-command 'mise exec -- prek'` writes the git shims.
+   The shim starts prek through mise, so pinned tools are on `PATH`.
+2. A commit or push runs the shim.
+3. prek runs each hook with `language: system`. The hook command finds its tool on `PATH`.
 
-- Go-based hooks must not compile from source on each cold run. A cold compile
-  takes 2 to 4 minutes. Run Go-based tools with prek's `language: mise` and
-  aqua prebuilt binaries.
-- Betterleaks latest stable release is v1.10.1 (published 2026-11-12). The
-  `main` branch is v2 development, and v2 is not yet a stable release. Pin
-  v1.10.1 for phases 1 and 2. Move to v2 later, following the v2 migration guide.
-- The repository already has a `.gitleaksignore` file. Betterleaks reads it
-  without change. Any gitleaks config file is migrated to Betterleaks
-  configuration.
-- Betterleaks ships an official pre-commit hook (`betterleaks`). The `betterleaks`
-  hook builds from source. Do not use it. Define the hook locally with
-  `language: mise` and the aqua binary, to match the Go-hook constraint.
-- Version pins follow the repository rule: tool versions live in `.mise.toml`.
-- Workflow files follow the existing hardening pattern: pinned action SHAs and
-  `harden-runner`, as in `.github/workflows/mega-linter.yaml`.
-- No workflow in this repository is a required status check today. A skipped
-  or failing lint job does not block a merge.
+Manual run: `mise install && mise exec -- prek run --all-files`.
 
-## Approaches
+Local tasks call tools through `mise exec --`. The repository tasks do not call mise
+today, so they need the shell to have mise on `PATH`. Wrapping each lint
+command removes that assumption. The task list in `.taskfiles/lint` and
+`.taskfiles/pre-commit` changes in phase 1.
 
-**A. Phased migration (chosen).** Phase 1 makes the local command work. Phase 2
-switches CI. Phase 3 adds the nightly Betterleaks scan with SARIF output. Each
-phase has its own exit check. A problem in one phase does not block the others.
+CI:
 
-**B. Big-bang switch.** Replace local tooling, CI, and nightly scan in one
-change. Rejected: harder to review, and a failure blocks every lint path at once.
+1. `jdx/mise-action` installs the tools in `.mise.toml`.
+2. `mise exec -- prek run --from-ref <base.sha> --to-ref <head.sha>` runs the hooks.
+3. A commit-range Betterleaks step scans the pull request commits.
 
-## Phase 1: local command
+### Why not `language: mise`
 
-1. Install prek with `mise` in `.mise.toml`.
-2. Convert `.pre-commit-config.yaml` to `prek.toml` with
-   `prek util yaml-to-toml`. Delete the YAML file. The conversion drops YAML
-   comments, so re-check the repo's remaining comments by hand.
-   prek does not discover `.prek.toml`. Use `prek.toml`.
-3. Replace the gitleaks hook with a local Betterleaks hook (`language: mise`).
-4. Add editorconfig-checker and proselint hooks, with `language: mise` where
-   they are Go tools.
-5. Keep the existing hook set. Keep both `pre-commit` and `pre-push` stages.
-6. Update the task entry points: `.taskfiles/pre-commit/Taskfile.yaml` and the
-   `pre-commit` calls in `.taskfiles/devenv/Taskfile.yaml`. Use prek commands in
-   place of `pre-commit` commands. Keep the task names stable where possible.
-7. Update `AGENTS.md` (line 125) and the README pre-commit references.
+prek supports `language: mise`. The hook installs the tool from its own
+`additional_dependencies` list. Tested with prek 0.5.11 on 2026-11-18: the hook
+passes with no mise on `PATH`, and it also passes under `mise exec`.
 
-Exit check: `prek run --all-files` exits 0 on the current tree. Hook output
-matches MegaLinter results on the same tree, or each difference is explained.
+It is still not the choice:
+
+- The pins live in the hook, not in `.mise.toml`. Each tool then has two pins.
+- The hook needs prek. Upstream pre-commit does not run it.
+- The `additional_dependencies` list is only in the hook config.
+  The config file format does not change this. prek reads YAML and TOML.
+  So `prek.toml` is not required for this feature.
+
+Decision: `language: system`, with pins in `.mise.toml` only.
+
+## Hook map
+
+Each remote hook becomes a local `language: system` hook. The command and
+arguments come from the upstream manifest. Tool versions move to `.mise.toml`.
+
+| Hook                              | Tool                                          | `.mise.toml` backend                             | Version   |
+| --------------------------------- | --------------------------------------------- | ------------------------------------------------ | --------- |
+| prek                              | prek                                          | `aqua:j178/prek`                                 | 0.5.11    |
+| betterleaks (replaces gitleaks)   | betterleaks                                   | `aqua:betterleaks/betterleaks`                   | 1.10.1    |
+| actionlint                        | actionlint                                    | `aqua:rhysd/actionlint`                          | 1.7.12    |
+| editorconfig-checker              | editorconfig-checker                          | `aqua:editorconfig-checker/editorconfig-checker` | 4.0.2     |
+| prettier                          | prettier                                      | `npm:prettier`                                   | 3.10.1    |
+| markdownlint                      | markdownlint                                  | `npm:markdownlint-cli`                           | 0.50.0    |
+| doctoc                            | doctoc                                        | `npm:doctoc`                                     | 2.5.0     |
+| yamllint                          | yamllint                                      | `pipx:yamllint`                                  | 1.38.0    |
+| pre-commit-hooks                  | many (see open items)                         | `pipx:pre-commit-hooks`                          | 6.0.0     |
+| texthooks                         | many (see open items)                         | `pipx:texthooks`                                 | 1.0.0     |
+| remove-crlf, remove-tabs          | Lucas-C scripts                               | to verify                                        | to verify |
+| forbid-secrets                    | sops-pre-commit script                        | to verify                                        | to verify |
+| check-useless-excludes            | prek built-in (`meta`)                        | none                                             | none      |
+| check-cnpg-barman-destinationpath | local script                                  | none                                             | none      |
+| check-docker-compose              | local script, needs docker compose and PyYAML | none                                             | none      |
+
+All backends and versions were checked with `mise ls-remote` on 2026-11-18.
+The editorconfig-checker v4.0.2 binary is `editorconfig-checker`, checked with
+`mise exec`.
+
+## Phase 1: local
+
+1. Add the tools in the hook map to `.mise.toml`.
+2. Convert each remote hook in `.pre-commit-config.yaml` to a local
+   `language: system` hook. Keep the arguments, `files`, and `exclude` values.
+3. Replace the gitleaks hook with a Betterleaks hook.
+   Set `entry: betterleaks git --pre-commit --redact --staged` and
+   `pass_filenames: false`.
+4. Add `default_install_hook_types: [pre-commit, pre-push]`.
+5. Update the task files:
+   - `.taskfiles/pre-commit/Taskfile.yaml`: `mise install` and `mise exec -- prek run --all-files`.
+   - The `init` task: `prek install --hook-command 'mise exec -- prek'`.
+   - `.taskfiles/devenv/check.yaml:25` and `.taskfiles/devenv/Taskfile.yaml:76-77`.
+6. Update references: `AGENTS.md` line 125, `README.md` (lines 16, 207, 228-229),
+   and `docs/backstage/systems/main-cluster/docs/index.md:72`.
+7. Restore the comments that the conversion drops by hand, if any remain.
+
+Exit check: run MegaLinter with `VALIDATE_ALL_CODEBASE: true` on the branch.
+Run `mise exec -- prek run --all-files` on the same commit. Every linter must match,
+or each difference must be written down with a reason.
 
 ## Phase 2: CI
 
-1. Add `.github/workflows/lint.yaml`.
-   - Trigger: `pull_request` with types `opened`, `reopened`, `synchronize`.
-     No push trigger.
-   - Run: `prek run --from-ref <base.sha> --to-ref <head.sha>`.
-   - `workflow_dispatch`: `prek run --all-files`, for manual full runs.
-2. Use `j178/prek-action` with a cached `PREK_HOME`. Pin the action to a SHA.
-3. Add `harden-runner`, matching the existing workflow pattern.
-4. Apply the `github-actions-hardening` and `github-actions-efficiency` skills
-   to the new workflow before it is merged.
-5. Delete `.github/workflows/mega-linter.yaml` and `.mega-linter.yaml`.
-6. Update the MegaLinter badge in `README.md`.
+1. Add `.github/workflows/lint.yaml`:
+   - Triggers: the four pull request types, and `workflow_dispatch`.
+   - `actions/checkout` with `fetch-depth: 0`.
+   - `jdx/mise-action` (SHA pinned) installs `.mise.toml` tools.
+   - Pull requests run `mise exec -- prek run --from-ref <base.sha> --to-ref <head.sha> --show-diff-on-failure`.
+   - `workflow_dispatch` runs `mise exec -- prek run --all-files` with `PREK_SKIP=no-commit-to-branch`.
+   - A Betterleaks step scans `<base.sha>..<head.sha>` with `--redact`.
+   - `check-docker-compose` needs PyYAML and docker compose on the runner. Verify before merge.
+   - `harden-runner` with `egress-policy: audit`. Keep audit on purpose.
+   - `concurrency` and `permissions: contents: read`.
+   - SHA-pin every action.
+2. Apply the `github-actions-hardening` and `github-actions-efficiency` skills to the file.
+3. Delete `.github/workflows/mega-linter.yaml` and `.mega-linter.yaml` before the exit check.
 
-Exit check: a test pull request runs `lint.yaml` green. A deliberate lint error
-makes it red. The MegaLinter workflow no longer runs.
+Exit check: a test pull request is green. A deliberate lint error makes it red.
+A deliberate committed token makes the Betterleaks step red. MegaLinter does not run.
 
-## Phase 3: nightly Betterleaks scan
+Rollback: one revert that restores the two MegaLinter files and removes `lint.yaml`.
 
-1. Add a scheduled workflow that runs a full-history Betterleaks git scan.
-2. Emit SARIF and upload it to GitHub code scanning.
-3. Verify the Betterleaks SARIF flag and the upload path before implementation.
-   The official GitHub Action for Betterleaks is third-party. Use the CLI
-   directly unless a reviewed action exists.
+## Phase 3: nightly
 
-Exit check: the scheduled run completes. SARIF appears in code scanning.
+1. Add a scheduled workflow with `betterleaks git . --report-format sarif --report-path <file> --redact`.
+2. Grant `security-events: write`. Upload with `github/codeql-action/upload-sarif`, SHA pinned.
+3. Allow findings without failing the job. Triage the historical findings first.
 
-## Open items for implementation
+Exit check: the scheduled run completes and SARIF appears in code scanning.
 
-- Confirm the `mise` backend provides `betterleaks`, `actionlint`, and the
-  other Go tools used by the hooks, and the exact `additional_dependencies`
-  syntax for each.
-- Confirm the proselint and editorconfig-checker hooks match MegaLinter settings
-  (`.editorconfig` and the proselint rule set).
-- Confirm the Betterleaks SARIF output flag at v1.10.1.
+## Open items
 
-## Decisions taken
+| #   | Item                                                      | Phase | Status     |
+| --- | --------------------------------------------------------- | ----- | ---------- |
+| 1   | Betterleaks commit-range flags for `git`                  | 2     | To verify  |
+| 2   | Betterleaks SARIF flags for `git` (verified for `dir`)    | 3     | To verify  |
+| 3   | Entry names for pre-commit-hooks and texthooks from pipx  | 1     | To verify  |
+| 4   | Backend for Lucas-C hooks and sops forbid-secrets         | 1     | To verify  |
+| 5   | Renovate updates new `.mise.toml` entries                 | 1     | To verify  |
+| 6   | Runner has docker compose and PyYAML for the compose hook | 2     | To verify  |
+| 7   | Hook output parity against MegaLinter                     | 1     | Exit check |
 
-- Betterleaks replaces gitleaks in local hooks and nightly scan.
-- Go-based hooks use prek's `language: mise`.
-- The config file is `prek.toml`. The dot-prefixed `.prek.toml` is not a supported name.
-- CI runs on pull request events only: `opened`, `reopened`, `synchronize`.
-- Log-only CI output.
-- No `flux-check-hook`.
-- Phase order: local, CI, nightly.
+## Secret scan scope
+
+- Staged mode scans only the staged diff. Unstaged and untracked files are not scanned.
+- `prek run --all-files` runs the staged hook. With `pass_filenames: false`, the
+  hook still reads only the index. Result: a full run does not scan the tree.
+- This is not new. The current gitleaks hook runs `gitleaks git --pre-commit --staged`.
+  Tested 2026-11-18 with a committed token: gitleaks scanned about 0 bytes and passed.
+  Betterleaks behaves the same.
+- Full-tree coverage is not in the current local setup. The MegaLinter
+  Betterleaks step may cover it in CI. Not verified.
+
+## Risks
+
+- Remote `rev` pins leave `.pre-commit-config.yaml`. Renovate then tracks the
+  `.mise.toml` pins only. Item 5 must pass.
+- The PR gate checks changed files. Full-tree checks run on `workflow_dispatch`.
+- Staged Betterleaks does not see untracked files. Phase 3 covers full history.
+- The first nightly run may show old secrets. Triage them before phase 3 closes.
