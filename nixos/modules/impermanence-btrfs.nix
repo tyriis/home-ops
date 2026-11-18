@@ -475,10 +475,6 @@ in
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
-        # The page. exit 1 is loud in the journal and a 0 in nobody's
-        # graph — a degraded wipe on an unattended PoC box must reach
-        # a human. Companion unit, transient, off the boot path.
-        OnFailure = [ "impermanence-alert.service" ];
       };
       script = ''
         FAILED=/run/impermanence/FAILED
@@ -488,6 +484,12 @@ in
         if [ -e "$FAILED" ]; then
           echo "node_impermanence_wipe_failed 1" > "$TEXT"
           echo "impermanence: wipe did not complete cleanly: $(cat "$FAILED")"
+          # Explicit trigger, not OnFailure: on 262 the OnFailure job
+          # was observed NOT queuing for a manual restart of a failed
+          # oneshot (55, 21:42:10). --no-block keeps the boot unblocked;
+          # the alert unit carries its own network-online ordering and
+          # queues until the network arrives.
+          systemctl start --no-block impermanence-alert.service || true
           exit 1
         elif [ -e "$DISABLED" ]; then
           echo "node_impermanence_wipe_failed 0" > "$TEXT"
@@ -500,11 +502,14 @@ in
       '';
     };
 
-    # Fire once per degraded boot (OnFailure re-arms naturally: each
-    # boot is a fresh PID1 state). Best-effort by construction: no
-    # WantedBy, nothing orders after it, failure just logs. Targets
-    # the utility Alertmanager — the fleet's non-cluster hosts page
-    # there (gatus precedent, same reachability from 30.x).
+    # One page per degraded boot: the guard file lives on /run, so it
+    # evaporates at reboot and the next bad boot pages again. Triggered
+    # inline by impermanence-check (see there). Best-effort by
+    # construction: no WantedBy, nothing orders after it, delivery
+    # failure just logs. Targets the utility Alertmanager — the
+    # fleet's non-cluster hosts page there (gatus precedent, proven
+    # reachable from 30.x on 2026-11-18: api/v2 POST accepted, alert
+    # listed active).
     systemd.services.impermanence-alert = {
       description = "Impermanence: page Alertmanager about the degraded wipe";
       wants = [ "network-online.target" ];
@@ -514,16 +519,22 @@ in
       };
       serviceConfig = {
         Type = "oneshot";
-        TimeoutStartSec = 30;
+        TimeoutStartSec = 60;
       };
       script = ''
+        SENT=/run/impermanence-alert.sent
+        if [ -e "$SENT" ]; then
+          echo "impermanence-alert: already paged this boot, skipping"
+          exit 0
+        fi
+        : > "$SENT"
         HOST="$(cat /proc/sys/kernel/hostname)"
         REASON="$(${pkgs.coreutils}/bin/cat /run/impermanence/FAILED 2>/dev/null || echo unknown)"
         ${pkgs.lib.getExe pkgs.jq} -n \
           --arg host "$HOST" \
           --arg reason "$REASON" \
           --arg now "$(${pkgs.coreutils}/bin/date -u +%FT%TZ)" \
-          '{labels: {alertname: "ImpermanenceWipeDegraded", host: $host, severity: "warning"}, annotations: {description: ("impermanence wipe degraded: " + $reason)}, startsAt: $now}' \
+          '[{labels: {alertname: "ImpermanenceWipeDegraded", host: $host, severity: "warning"}, annotations: {description: ("impermanence wipe degraded: " + $reason)}, startsAt: $now}]' \
           > /run/impermanence-alert.json
         ${pkgs.curl}/bin/curl -fsS --retry 3 --retry-delay 5 \
           -X POST -H "Content-Type: application/json" \
