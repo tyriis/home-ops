@@ -192,7 +192,11 @@ in
   # alive, but the initrd had no vfat module — the rescue shell could
   # not mount the ESP to fix its own bootloader entry. An initrd that
   # can reach the network but not the boot chain is half a rescue kit.
-  boot.initrd.availableKernelModules = [ "vfat" ];
+  # gen47 drill (2026-11-18 09:5x): vfat ALONE is not enough — mounting
+  # vfat needs its default codepage, and NixOS 26.11 does not pull
+  # nls_cp437/nls_ascii along with it. Every initrd ESP mount failed
+  # "FAT-fs: codepage cp437 not found" until both were declared.
+  boot.initrd.availableKernelModules = [ "vfat" "nls_cp437" "nls_ascii" ];
 
   # Boot forensics: stream the console to the jarvis box over UDP. The
   # netconsole module is loaded in stage-1 (after the initrd network is

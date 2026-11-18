@@ -223,15 +223,23 @@ let
     # Parsers in this unit are therefore restricted to bash builtins:
     # read field-slicing only (output is "ID N gen N top level N path
     # <path>" — path = field 9, furniture paths never contain spaces).
+    # gen48 boot 1 (2026-11-18 01:5x): the process-substitution form
+    # (`done < <(btrfs …)`) HUNG this unit before any output reached
+    # the journal — no :22, no :2222, capture card black. The disk was
+    # provably untouched. Fix: plain redirect from a tmpfs file —
+    # /run is tmpfs in the initrd, no filesystem games involved.
     ALLKIDS=""
     NESTED_DATA=""
+    KIDSLIST=/run/impermanence-kids.txt
+    btrfs subvolume list -o "$M/@" > "$KIDSLIST" 2>/dev/null
     while read -r _id _n1 _gen _n2 _top _lvl _par _kw p; do
       [ -n "$p" ] || continue
       ALLKIDS="$ALLKIDS $p"
       if [ -n "$(ls -A "$M/$p" 2>/dev/null)" ]; then
         NESTED_DATA="$NESTED_DATA $p"
       fi
-    done < <(btrfs subvolume list -o "$M/@" 2>/dev/null)
+    done < "$KIDSLIST"
+    rm -f "$KIDSLIST"
     if [ -n "$NESTED_DATA" ]; then
       fail_open "nested subvolume(s) WITH DATA under @ — wipe cannot proceed:$NESTED_DATA"
     fi
