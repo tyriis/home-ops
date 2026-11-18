@@ -1,13 +1,15 @@
 # prek migration: replace MegaLinter and pre-commit
 
 Issue: [#10151](https://github.com/tyriis/home-ops/issues/10151)
-Status: revision 3, draft. Not committed.
+Status: revision 6, draft. Not committed. Last commit on the PR: revision 4.
 
 ## Context
 
 - The MegaLinter job pulls a 1.41 GB Docker image on every run.
-- Measured in issue #10151: the job takes 70 to 100 seconds. About 65% of that is the pull.
-- Hosted runners cannot cache the image. The pull runs before any step.
+- The pull is the largest part of the job. Issue #10151 estimates about 65% of
+  the 70 to 100 second job time. This is an estimate, not checked against run data.
+- The current workflow does not cache the image. The pull runs before the
+  MegaLinter action starts.
 
 ## Purpose
 
@@ -18,19 +20,31 @@ Status: revision 3, draft. Not committed.
 
 ## Decisions
 
-| Topic                | Decision                                                                                                            |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| Config file          | `.pre-commit-config.yaml`. Stays YAML. Renovate reads it today.                                                     |
-| Hook language        | `system` for every hook. prek runs the command on `PATH`.                                                           |
-| Tool source          | `.mise.toml`. mise installs the tools.                                                                              |
-| Local stages         | `pre-commit` and `pre-push`.                                                                                        |
-| CI trigger           | `pull_request`: `opened`, `reopened`, `synchronize`, `ready_for_review`. Also `workflow_dispatch`. No push trigger. |
-| CI scope             | Changed files on pull requests. Full tree on `workflow_dispatch`.                                                   |
-| Secret scan, local   | Betterleaks, staged mode. Scans the staged diff only. `--all-files` does not change this.                                                                                           |
-| Secret scan, CI      | Betterleaks on the pull request commit range.                                                                       |
-| Secret scan, nightly | Betterleaks full history, SARIF. Phase 3 only.                                                                      |
-| CI output            | Log only. No inline annotations.                                                                                    |
-| Excluded             | proselint, `flux-check-hook`, self-hosted runner, custom image.                                                     |
+| Topic                | Decision                                                                                                                      |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Config file          | `.pre-commit-config.yaml`. Stays YAML. Renovate's pre-commit manager reads it today.                                          |
+| Hook language        | `system` for every hook. prek runs the command on `PATH`.                                                                     |
+| Tool source          | `.mise.toml`. mise installs the tools.                                                                                        |
+| Local stages         | `pre-commit` and `pre-push`.                                                                                                  |
+| CI trigger           | `pull_request`: `opened`, `reopened`, `synchronize`, `ready_for_review`, `edited`. Also `workflow_dispatch`. No push trigger. |
+| CI scope             | Changed files on pull requests. Full tree on `workflow_dispatch`.                                                             |
+| Secret scan, local   | Betterleaks, staged mode. Scans the staged diff only. `--all-files` does not change this.                                     |
+| Secret scan, CI      | Betterleaks on the pull request commit range. Pull requests only.                                                             |
+| Secret scan, nightly | Betterleaks full history, SARIF. Phase 3 only.                                                                                |
+| CI output            | Log only. No inline annotations.                                                                                              |
+| Excluded             | proselint, `flux-check-hook`, self-hosted runner, custom image.                                                               |
+
+Parity baseline: MegaLinter has 7 active linters in this repo. SPELL_PROSELINT is
+inactive: it needs `.proselintrc.json` or proselint/config.json, and neither exists.
+
+## Decisions needed before approval
+
+1. `check-docker-compose` in CI. Choose one:
+   - A: install docker compose and PyYAML in the job, then keep the hook.
+   - B: remove the hook from CI and keep it local.
+2. Backends for `remove-crlf`, `remove-tabs` (Lucas-C) and `forbid-secrets`
+   (sops-pre-commit, upstream `language: python`). Choose a backend, or keep
+   one `language: python` exception for each.
 
 ## How the tools run
 
@@ -51,8 +65,11 @@ command removes that assumption. The task list in `.taskfiles/lint` and
 CI:
 
 1. `jdx/mise-action` installs the tools in `.mise.toml`.
-2. `mise exec -- prek run --from-ref <base.sha> --to-ref <head.sha>` runs the hooks.
-3. A commit-range Betterleaks step scans the pull request commits.
+2. On pull requests, `mise exec -- prek run --from-ref <base.sha> --to-ref <head.sha>` runs the hooks.
+3. On pull requests, a Betterleaks step scans the commit range (see Phase 2).
+
+Fixing hooks in CI: apply fixes locally. In CI, run the same hooks as checks.
+A check fails with a diff when a fix would change files. CI never commits fixes.
 
 ### Why not `language: mise`
 
@@ -72,36 +89,58 @@ Decision: `language: system`, with pins in `.mise.toml` only.
 
 ## Hook map
 
-Each remote hook becomes a local `language: system` hook. The command and
-arguments come from the upstream manifest. Tool versions move to `.mise.toml`.
+Every hook in `.pre-commit-config.yaml` on `main` appears once below. Each remote
+hook becomes a local `language: system` hook. Tool versions move to `.mise.toml`.
 
-| Hook                              | Tool                                          | `.mise.toml` backend                             | Version   |
-| --------------------------------- | --------------------------------------------- | ------------------------------------------------ | --------- |
-| prek                              | prek                                          | `aqua:j178/prek`                                 | 0.5.11    |
-| betterleaks (replaces gitleaks)   | betterleaks                                   | `aqua:betterleaks/betterleaks`                   | 1.10.1    |
-| actionlint                        | actionlint                                    | `aqua:rhysd/actionlint`                          | 1.7.12    |
-| editorconfig-checker              | editorconfig-checker                          | `aqua:editorconfig-checker/editorconfig-checker` | 4.0.2     |
-| prettier                          | prettier                                      | `npm:prettier`                                   | 3.10.1    |
-| markdownlint                      | markdownlint                                  | `npm:markdownlint-cli`                           | 0.50.0    |
-| doctoc                            | doctoc                                        | `npm:doctoc`                                     | 2.5.0     |
-| yamllint                          | yamllint                                      | `pipx:yamllint`                                  | 1.38.0    |
-| pre-commit-hooks                  | many (see open items)                         | `pipx:pre-commit-hooks`                          | 6.0.0     |
-| texthooks                         | many (see open items)                         | `pipx:texthooks`                                 | 1.0.0     |
-| remove-crlf, remove-tabs          | Lucas-C scripts                               | to verify                                        | to verify |
-| forbid-secrets                    | sops-pre-commit script                        | to verify                                        | to verify |
-| check-useless-excludes            | prek built-in (`meta`)                        | none                                             | none      |
-| check-cnpg-barman-destinationpath | local script                                  | none                                             | none      |
-| check-docker-compose              | local script, needs docker compose and PyYAML | none                                             | none      |
+Backends and versions were checked with `mise ls-remote` on 2026-11-18.
 
-All backends and versions were checked with `mise ls-remote` on 2026-11-18.
-The editorconfig-checker v4.0.2 binary is `editorconfig-checker`, checked with
-`mise exec`.
+### Fixing hooks (rewrite files)
+
+| Hook                                                                                              | Tool             | `.mise.toml` backend    | Version |
+| ------------------------------------------------------------------------------------------------- | ---------------- | ----------------------- | ------- |
+| doctoc                                                                                            | doctoc           | `npm:doctoc`            | 2.5.0   |
+| markdownlint-fix                                                                                  | markdownlint     | `npm:markdownlint-cli`  | 0.50.0  |
+| prettier                                                                                          | prettier         | `npm:prettier`          | 3.10.1  |
+| end-of-file-fixer, trailing-whitespace, mixed-line-ending, fix-byte-order-marker                  | pre-commit-hooks | `pipx:pre-commit-hooks` | 6.0.0   |
+| remove-crlf, remove-tabs                                                                          | Lucas-C          | See Decisions needed    | 1.5.6   |
+| fix-smartquotes, fix-ligatures                                                                    | texthooks        | `pipx:texthooks`        | 1.0.0   |
+
+### Checking hooks (report only)
+
+| Hook                                                                                                                                                             | Tool                                  | `.mise.toml` backend                             | Version         |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ------------------------------------------------ | --------------- |
+| check-useless-excludes                                                                                                                                           | prek built-in (`meta`)                | none                                             | none            |
+| check-cnpg-barman-destinationpath                                                                                                                                | local script                          | none                                             | none            |
+| check-docker-compose                                                                                                                                             | local script, needs docker compose and PyYAML | none                                     | see Decisions   |
+| check-added-large-files, check-case-conflict, check-executables-have-shebangs, check-merge-conflict, check-shebang-scripts-are-executable, check-symlinks, check-vcs-permalinks, destroyed-symlinks, detect-aws-credentials, detect-private-key, no-commit-to-branch, check-json, check-toml, check-xml, check-yaml | pre-commit-hooks | `pipx:pre-commit-hooks` | 6.0.0           |
+| check-illegal-windows-names                                                                                                                                      | upstream `language: fail`, needs its own script | to define in phase 1 | none     |
+| yamllint                                                                                                                                                         | yamllint                              | `pipx:yamllint`                                  | 1.38.0          |
+| forbid-bidi-controls                                                                                                                                             | texthooks                             | `pipx:texthooks`                                 | 1.0.0           |
+| forbid-secrets                                                                                                                                                   | sops-pre-commit (upstream `language: python`) | See Decisions needed                     | v2.1.1          |
+| gitleaks (replaced by betterleaks)                                                                                                                               | betterleaks                           | `aqua:betterleaks/betterleaks`                   | 1.10.1          |
+| actionlint                                                                                                                                                       | actionlint                            | `aqua:rhysd/actionlint`                          | 1.7.12          |
+| editorconfig-checker (no hook in the config today; added for MegaLinter parity)                                                                                  | editorconfig-checker                  | `aqua:editorconfig-checker/editorconfig-checker` | 4.0.2           |
+
+Other tools:
+
+- `prek` itself: `aqua:j178/prek`, 0.5.11.
+- The editorconfig-checker v4.0.2 binary is `editorconfig-checker`, checked with `mise exec`.
+
+Rules for each mapped hook (phase 1, step 2):
+
+- Copy every manifest field that changes behavior: `types`, `types_or`, `exclude_types`, `stages`, `always_run`, `pass_filenames`, `require_serial`, and `args`.
+- For example, prettier needs `types: [text]`. `no-commit-to-branch` needs `always_run: true`.
+- Record the upstream `entry` for each hook in the change.
+
+mirrors-prettier also formats Markdown, JSON, and YAML. The local prettier hook
+must cover the same file types as the parity baseline (JSON and YAML). Markdown
+is also covered by markdownlint.
 
 ## Phase 1: local
 
 1. Add the tools in the hook map to `.mise.toml`.
 2. Convert each remote hook in `.pre-commit-config.yaml` to a local
-   `language: system` hook. Keep the arguments, `files`, and `exclude` values.
+   `language: system` hook. Apply the rules in the hook map section.
 3. Replace the gitleaks hook with a Betterleaks hook.
    Set `entry: betterleaks git --pre-commit --redact --staged` and
    `pass_filenames: false`.
@@ -112,24 +151,38 @@ The editorconfig-checker v4.0.2 binary is `editorconfig-checker`, checked with
    - `.taskfiles/devenv/check.yaml:25` and `.taskfiles/devenv/Taskfile.yaml:76-77`.
 6. Update references: `AGENTS.md` line 125, `README.md` (lines 16, 207, 228-229),
    and `docs/backstage/systems/main-cluster/docs/index.md:72`.
-7. Restore the comments that the conversion drops by hand, if any remain.
+7. `.github/labels.yaml`: rename or update the `renovate/pre-commit` label to
+   match the new Renovate manager. Lines 93-94 and 157.
+8. Confirm that Renovate updates a new `.mise.toml` pin. Do this before phase 1 closes.
 
-Exit check: run MegaLinter with `VALIDATE_ALL_CODEBASE: true` on the branch.
-Run `mise exec -- prek run --all-files` on the same commit. Every linter must match,
-or each difference must be written down with a reason.
+Exit check:
+
+- `prek validate-config .pre-commit-config.yaml` exits 0.
+- Run MegaLinter with `VALIDATE_ALL_CODEBASE: true` on the branch.
+- Run `mise exec -- prek run --all-files` on the same commit.
+- Each of the 7 active MegaLinter linters must match its prek hook. Each difference
+  must be written down with a reason.
 
 ## Phase 2: CI
 
 1. Add `.github/workflows/lint.yaml`:
-   - Triggers: the four pull request types, and `workflow_dispatch`.
+   - Triggers: the five pull request types (`opened`, `reopened`, `synchronize`,
+     `ready_for_review`, `edited`), and `workflow_dispatch`.
+   - Workflow-level `permissions: contents: read`.
+   - Workflow-level `env: PREK_SKIP: no-commit-to-branch`. The hook does not apply
+     to pull requests or to `workflow_dispatch` runs on `main`.
    - `actions/checkout` with `fetch-depth: 0`.
    - `jdx/mise-action` (SHA pinned) installs `.mise.toml` tools.
-   - Pull requests run `mise exec -- prek run --from-ref <base.sha> --to-ref <head.sha> --show-diff-on-failure`.
-   - `workflow_dispatch` runs `mise exec -- prek run --all-files` with `PREK_SKIP=no-commit-to-branch`.
-   - A Betterleaks step scans `<base.sha>..<head.sha>` with `--redact`.
-   - `check-docker-compose` needs PyYAML and docker compose on the runner. Verify before merge.
+   - On pull requests: `mise exec -- prek run --from-ref <base.sha> --to-ref <head.sha> --show-diff-on-failure`.
+   - On `workflow_dispatch`: `mise exec -- prek run --all-files --show-diff-on-failure`.
+   - On pull requests only: `betterleaks git . --log-opts="<base.sha>..<head.sha>" --redact`.
+     Tested with betterleaks 1.10.1 on a sample repository: the range finds a
+     committed token, and an empty range finds none.
+   - `workflow_dispatch` has no pull request range. It runs no separate secret scan.
+     The full-history scan is phase 3.
+   - `check-docker-compose`: apply the choice in Decisions needed.
    - `harden-runner` with `egress-policy: audit`. Keep audit on purpose.
-   - `concurrency` and `permissions: contents: read`.
+   - `concurrency` to cancel superseded runs.
    - SHA-pin every action.
 2. Apply the `github-actions-hardening` and `github-actions-efficiency` skills to the file.
 3. Delete `.github/workflows/mega-linter.yaml` and `.mega-linter.yaml` before the exit check.
@@ -141,23 +194,13 @@ Rollback: one revert that restores the two MegaLinter files and removes `lint.ya
 
 ## Phase 3: nightly
 
-1. Add a scheduled workflow with `betterleaks git . --report-format sarif --report-path <file> --redact`.
+1. Add a scheduled workflow that runs a full-history Betterleaks scan with SARIF output:
+   `betterleaks git . --report-format sarif --report-path <file> --redact`.
+   Tested flags: `--report-format` and `--report-path` exist in betterleaks 1.10.1.
 2. Grant `security-events: write`. Upload with `github/codeql-action/upload-sarif`, SHA pinned.
 3. Allow findings without failing the job. Triage the historical findings first.
 
 Exit check: the scheduled run completes and SARIF appears in code scanning.
-
-## Open items
-
-| #   | Item                                                      | Phase | Status     |
-| --- | --------------------------------------------------------- | ----- | ---------- |
-| 1   | Betterleaks commit-range flags for `git`                  | 2     | To verify  |
-| 2   | Betterleaks SARIF flags for `git` (verified for `dir`)    | 3     | To verify  |
-| 3   | Entry names for pre-commit-hooks and texthooks from pipx  | 1     | To verify  |
-| 4   | Backend for Lucas-C hooks and sops forbid-secrets         | 1     | To verify  |
-| 5   | Renovate updates new `.mise.toml` entries                 | 1     | To verify  |
-| 6   | Runner has docker compose and PyYAML for the compose hook | 2     | To verify  |
-| 7   | Hook output parity against MegaLinter                     | 1     | Exit check |
 
 ## Secret scan scope
 
@@ -167,13 +210,15 @@ Exit check: the scheduled run completes and SARIF appears in code scanning.
 - This is not new. The current gitleaks hook runs `gitleaks git --pre-commit --staged`.
   Tested 2026-11-18 with a committed token: gitleaks scanned about 0 bytes and passed.
   Betterleaks behaves the same.
-- Full-tree coverage is not in the current local setup. The MegaLinter
-  Betterleaks step may cover it in CI. Not verified.
+- Until phase 3, the repository has no full-tree secret scan in the local hooks.
+  The phase 2 commit-range step covers only pull request commits. Interim gap: a
+  secret committed to main outside a pull request is not scanned by prek.
 
 ## Risks
 
-- Remote `rev` pins leave `.pre-commit-config.yaml`. Renovate then tracks the
-  `.mise.toml` pins only. Item 5 must pass.
+- Remote `rev` pins leave `.pre-commit-config.yaml`. The Renovate pre-commit
+  manager reads only `.pre-commit-config.yaml`, so no Renovate manager tracks the
+  remote pins after the change. Phase 1, step 8 must pass before phase 1 closes.
 - The PR gate checks changed files. Full-tree checks run on `workflow_dispatch`.
 - Staged Betterleaks does not see untracked files. Phase 3 covers full history.
 - The first nightly run may show old secrets. Triage them before phase 3 closes.
