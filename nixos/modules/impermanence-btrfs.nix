@@ -214,20 +214,32 @@ let
     # An empty child is wiped WITH @ — delete refuses only because
     # it is nested, so refuse is wrong for it; a child WITH data
     # would silently lose that data, so only those fail open.
+    #
+    # gen47 CLOSED the loop by failing, gen47 boot 2 (2026-11-18
+    # 00:51): this loop first ran with real children and died
+    # "sed: command not found" — GNU sed is NOT in the initrd closure
+    # (initrdBin = btrfs-progs/coreutils/util-linux; sed is its own
+    # package). Boot 1 hid it: zero children meant zero loop bodies.
+    # Parsers in this unit are therefore restricted to bash builtins:
+    # read field-slicing only (output is "ID N gen N top level N path
+    # <path>" — path = field 9, furniture paths never contain spaces).
+    ALLKIDS=""
     NESTED_DATA=""
-    for c in $(btrfs subvolume list -o "$M/@" 2>/dev/null | sed "s|.* path ||"); do
-      if [ -n "$(ls -A "$M/$c" 2>/dev/null)" ]; then
-        NESTED_DATA="$NESTED_DATA $c"
+    while read -r _id _n1 _gen _n2 _top _lvl _par _kw p; do
+      [ -n "$p" ] || continue
+      ALLKIDS="$ALLKIDS $p"
+      if [ -n "$(ls -A "$M/$p" 2>/dev/null)" ]; then
+        NESTED_DATA="$NESTED_DATA $p"
       fi
-    done
+    done < <(btrfs subvolume list -o "$M/@" 2>/dev/null)
     if [ -n "$NESTED_DATA" ]; then
       fail_open "nested subvolume(s) WITH DATA under @ — wipe cannot proceed:$NESTED_DATA"
     fi
     # btrfs refuses to delete a parent that has ANY children, empty or
     # not — so the (proven empty) furniture must be deleted before @.
-    for c in $(btrfs subvolume list -o "$M/@" 2>/dev/null | sed "s|.* path ||"); do
-      btrfs subvolume delete "$M/$c" >/dev/null 2>&1 \
-        || fail_open "cannot delete empty nested child $c"
+    for p in $ALLKIDS; do
+      btrfs subvolume delete "$M/$p" >/dev/null 2>&1 \
+        || fail_open "cannot delete empty nested child $p"
     done
 
     # 8. Clean stale @new/@old remnants — only here, after recovery, only

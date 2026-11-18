@@ -262,9 +262,16 @@ in
           umount /mnt/dump-p 2>/dev/null || sync
         fi
         sync
+        systemctl reboot --no-block || true
     '';
+    # gen47 boot 2 (00:51) was this unit's first live fire: died
+    # 203/EXEC — the old ExecStartPost interpolated ${pkgs.systemd}
+    # (the TOPLEVEL systemd path), which is absent from the initrd
+    # closure. Same trap the comment above documents for scripts,
+    # re-found via the reboot path. PATH in unit scripts is built
+    # against the INITRD closure (it is why `btrfs` resolves here),
+    # so a bare systemctl from the script body is the correct form.
     serviceConfig = {
-      ExecStartPost = "${pkgs.systemd}/bin/systemctl reboot --no-block";
       TimeoutStartSec = 60;
     };
   };
