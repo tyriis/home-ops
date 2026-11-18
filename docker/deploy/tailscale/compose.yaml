@@ -9,8 +9,6 @@ services:
         max-size: 10m
         max-file: "3"
         labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
-    mem_limit: 256m
-    pids_limit: 128
     cap_add:
       - CHOWN
       - DAC_OVERRIDE
@@ -41,6 +39,8 @@ services:
         - status
       timeout: "5s"
     image: ghcr.io/tailscale/tailscale:v1.104.7@sha256:72c1e19e0aedca96b8533bbb0b4368564410ff20b17e53b804eb6c1f04a31be4
+    mem_limit: 256m
+    pids_limit: 128
     network_mode: host
     platform: linux/amd64
     privileged: false
@@ -49,7 +49,7 @@ services:
       - no-new-privileges=true
     stdin_open: false
     tmpfs:
-      - /var/run/tailscale:mode=0755
+      - /var/run/tailscale:mode=0755,size=64m
     tty: false
     # State volume is supplied per host by the include shim (compose include-merge
     # APPENDS lists, so a host cannot override a volume declared here — it must come

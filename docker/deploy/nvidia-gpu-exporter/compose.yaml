@@ -8,8 +8,6 @@ services:
         max-size: 10m
         max-file: "3"
         labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
-    mem_limit: 128m
-    pids_limit: 64
     # the -nvml build is cgo-linked and exits at startup unless the nvidia runtime injects libnvidia-ml.so.1
     deploy:
       resources:
@@ -21,6 +19,8 @@ services:
     environment:
       NVIDIA_DRIVER_CAPABILITIES: utility
     image: utkuozdemir/nvidia_gpu_exporter:1.19.0-nvml@sha256:f95e5097b89aaba66395c7dcbc02f51af740e25b504ccb426e533f60265a7b50
+    mem_limit: 128m
+    pids_limit: 64
     ports:
       - 127.0.0.1:9835:9835
     restart: unless-stopped

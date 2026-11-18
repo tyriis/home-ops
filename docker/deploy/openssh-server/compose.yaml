@@ -31,8 +31,6 @@ services:
         max-size: 10m
         max-file: "3"
         labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
-    mem_limit: 128m
-    pids_limit: 64
     environment:
       PUID: ${UID:-1000}
       PGID: ${GID:-1000}
@@ -42,6 +40,8 @@ services:
       PUBLIC_KEY_URL: https://tyriis.dev/keys.txt
       DOCKER_MODS: lscr.io/linuxserver/mods:openssh-server-rsync
     image: lscr.io/linuxserver/openssh-server:10.3_p1-r0-ls233@sha256:96b9a4d3b5106746d08d43a6911650d4d21f7d5c7f2ac9660e792bdb5e63157c
+    mem_limit: 128m
+    pids_limit: 64
     ports:
       - ${SSH_PORT:-2222}:2222
     restart: unless-stopped

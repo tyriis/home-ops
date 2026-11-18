@@ -28,10 +28,10 @@ services:
         max-size: 10m
         max-file: "3"
         labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
-    mem_limit: 1g
-    pids_limit: 256
     # upstream compose example ships the stale typo tag "lastet" - never use it
     image: xiahan2019/olah:0.5.4@sha256:802ec30637bc37c2766e39d66a6c57e2ba1c97eb6fc2db14c459f7b174372baf
+    mem_limit: 1g
+    pids_limit: 256
     networks:
       - apps
     ports:
@@ -49,10 +49,10 @@ services:
       # the ~/.olah dir (vestigial SQLite) has no path override and must be writable
       HOME: /data/repos
     tmpfs:
-      - /tmp:mode=1777 # ephemeral logs (olah-logs)
+      - /tmp:mode=1777,size=256m # ephemeral logs (olah-logs)
       # the image declares VOLUME /data/mirrors - shadow it with tmpfs so docker
       # never injects an anonymous root-owned volume beside the cache mount
-      - /data/mirrors:mode=1777
+      - /data/mirrors:mode=1777,size=64m
     volumes:
       # olah holds no HF token (client-token pass-through), so there is no
       # sops.env here - see docker/deploy/olah/README.md
