@@ -13,6 +13,7 @@ services:
   comfyui-nvidia:
     networks:
       - apps
+    scale: 0
     # No host ports: Traefik reaches comfyui-nvidia:8188 over the shared `apps` network
     # (https://comfyui.tyriis.dev). `!reset` drops the ports inherited from the include.
     ports: !reset []
@@ -25,6 +26,7 @@ services:
   comfyui-gallery:
     networks:
       - apps
+    scale: 0
     # No host ports: Traefik reaches comfyui-gallery:8189 over the shared `apps` network
     # (https://gallery.tyriis.dev). `!reset` drops the ports inherited from the include.
     ports: !reset []
