@@ -475,6 +475,10 @@ in
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
+        # The page. exit 1 is loud in the journal and a 0 in nobody's
+        # graph — a degraded wipe on an unattended PoC box must reach
+        # a human. Companion unit, transient, off the boot path.
+        OnFailure = [ "impermanence-alert.service" ];
       };
       script = ''
         FAILED=/run/impermanence/FAILED
@@ -493,6 +497,40 @@ in
           # boot must re-assert 0.
           echo "node_impermanence_wipe_failed 0" > "$TEXT"
         fi
+      '';
+    };
+
+    # Fire once per degraded boot (OnFailure re-arms naturally: each
+    # boot is a fresh PID1 state). Best-effort by construction: no
+    # WantedBy, nothing orders after it, failure just logs. Targets
+    # the utility Alertmanager — the fleet's non-cluster hosts page
+    # there (gatus precedent, same reachability from 30.x).
+    systemd.services.impermanence-alert = {
+      description = "Impermanence: page Alertmanager about the degraded wipe";
+      wants = [ "network-online.target" ];
+      after = [ "network-online.target" ];
+      unitConfig = {
+        StartLimitIntervalSec = 0;
+      };
+      serviceConfig = {
+        Type = "oneshot";
+        TimeoutStartSec = 30;
+      };
+      script = ''
+        HOST="$(cat /proc/sys/kernel/hostname)"
+        REASON="$(${pkgs.coreutils}/bin/cat /run/impermanence/FAILED 2>/dev/null || echo unknown)"
+        ${pkgs.lib.getExe pkgs.jq} -n \
+          --arg host "$HOST" \
+          --arg reason "$REASON" \
+          --arg now "$(${pkgs.coreutils}/bin/date -u +%FT%TZ)" \
+          '{labels: {alertname: "ImpermanenceWipeDegraded", host: $host, severity: "warning"}, annotations: {description: ("impermanence wipe degraded: " + $reason)}, startsAt: $now}' \
+          > /run/impermanence-alert.json
+        ${pkgs.curl}/bin/curl -fsS --retry 3 --retry-delay 5 \
+          -X POST -H "Content-Type: application/json" \
+          --data @/run/impermanence-alert.json \
+          "https://alertmanager.utility.techtales.io/api/v2/alerts" \
+          && echo "impermanence-alert: page delivered" \
+          || echo "impermanence-alert: page DELIVERY FAILED (see above)"
       '';
     };
 
