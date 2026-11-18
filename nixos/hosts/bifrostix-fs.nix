@@ -207,21 +207,18 @@ in
     # board whose PCH/GPIO ownership is sensitive.
     "iTCO_wdt" ];
 
-  # Boot-dog. 26.11 unified systemd-262: the initrd IS systemd, so
-  # stage-1 Manager settings live under boot.initrd.systemd.settings.
-  # RuntimeWatchdogPreSec arms the iTCO device BEFORE switch-root and is
-  # fed by stage-1 PID1; a HUNG stage-1 stops feeding and the firmware
-  # resets the box after the timeout — unattended recovery from the
-  # 48-1 class of failure. A deliberate HALT (emergency.target) is
-  # expected to keep being fed, preserving the 2222 rescue window —
-  # to be proven by the gen50 drill entry. Stage-2 takes over with
-  # RuntimeWatchdogSec: a deadlocked live system reboots, and with the
-  # self-repeating wipe the reboot is the recovery.
-  # iTCO max timeout is 60 s; stage-1 to :22 measured 60-70 s wall
-  # total, of which PID1 userspace is well under 60 — margin accepted
-  # for a PoC that prefers a false reboot to a silent hang.
-  boot.initrd.systemd.settings.Manager.RuntimeWatchdogPreSec = "60s";
-  systemd.settings.Manager.RuntimeWatchdogSec = "60s";
+  # Boot-dog: DECLARED INERT for gen52. The modules and 262 settings
+  # work — gen51 proved arm/feed/bite/handoff end to end — but the
+  # drill exposed a fatal pairing: a deliberate halt (FailureAction=
+  # halt -> emergency.target, the 2222 rescue window) with
+  # RuntimeWatchdogPreSec armed stops PID1's feeding within 60 s, the
+  # firmware resets the box, and the BNKBL357 BIOS then halts at
+  # "unsuccessful POST — press Y/N" needing a human. So: rescue-halt
+  # and armed-boot-watchdog cannot coexist on this firmware. gen52
+  # drops BOTH timeout settings (module stays — harmless, 51-1 proved
+  # it) so the drill can halt forever and the nls ESP fix can be
+  # validated at the worst moment. Re-arming the dog is a Phase-C
+  # decision: pair it with fail-fast self-retry, not halt.
 
   # Boot forensics: stream the console to the jarvis box over UDP. The
   # netconsole module is loaded in stage-1 (after the initrd network is
