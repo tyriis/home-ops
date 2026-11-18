@@ -1,6 +1,6 @@
 # bifrostix — NUC7i5 docker-lane pilot host (#11792).
 {
-  imports = [ ./hardware-bifrostix.nix ];
+  imports = [ ./hardware-bifrostix.nix ./bifrostix-fs.nix ];
 
   networking.hostName = "bifrostix";
 
