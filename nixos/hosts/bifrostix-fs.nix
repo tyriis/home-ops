@@ -188,6 +188,12 @@ in
   boot.kernelParams = [ "systemd.journald.forward_to_console=1" "loglevel=7" ];
   boot.initrd.systemd.emergencyAccess = true;
 
+  # Rescue gap proven 2026-11-18 (gen45 halt): :2222 initrd SSH was
+  # alive, but the initrd had no vfat module — the rescue shell could
+  # not mount the ESP to fix its own bootloader entry. An initrd that
+  # can reach the network but not the boot chain is half a rescue kit.
+  boot.initrd.availableKernelModules = [ "vfat" ];
+
   # Boot forensics: stream the console to the jarvis box over UDP. The
   # netconsole module is loaded in stage-1 (after the initrd network is
   # online — the same path the 2222 drill proves) and survives
