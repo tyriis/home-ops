@@ -197,6 +197,12 @@ in
   # nls_cp437/nls_ascii along with it. Every initrd ESP mount failed
   # "FAT-fs: codepage cp437 not found" until both were declared.
   boot.initrd.availableKernelModules = [ "vfat" "nls_cp437" "nls_ascii"
+    # gen53 drill: plain `mount -t vfat` from the rescue shell died with
+    # "FAT-fs: IO charset iso8859-1 not found" — the default iocharset,
+    # not the fs charset. cp437/ascii only cover -o iocharset=... .
+    # A human in a real emergency types the plain mount; ship its
+    # charset too.
+    "nls_iso8859_1"
     # iTCO hardware watchdog (NUC7i5, iTCO_wdt -> watchdog0, max 60 s).
     # Declared for the initrd so stage-1 can arm it — a hung stage-1
     # (gen48 boot 1 pattern: no 22, no 2222, capture black) previously
