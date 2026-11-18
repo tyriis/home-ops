@@ -93,16 +93,22 @@ let
     fi
     : > "$MARK/DONE"
 
-    # DRILL HOOK (gen50): a boot entry carrying impermanence.drill=1
-    # (no grep/sed in the initrd — pure bash case over cat) exits 1
-    # before any state is touched: FailureAction=halt routes to
-    # emergency + :2222. Purpose: exercise the rescue kit at a
-    # deliberate halt — nls-equipped ESP mount + bootdog feeding
-    # behaviour during emergency. The entry is inert unless picked.
+    # DRILL HOOK v2 (gen53): a boot entry carrying impermanence.drill=1
+    # pauses the boot FOREVER instead of failing it. Why: exit 1 (hook
+    # v1, gen50-52) failed the unit before networkd/sshd existed — the
+    # result was an emergency console with NO network (observed 52-2:
+    # screen on, zero ports, ping-dead), which is the opposite of a
+    # rescue window. Blocking the oneshot instead (TimeoutStartSec=0
+    # already set) holds switch-root back while every other initrd
+    # unit — networkd, sshd on :2222 — comes up normally and stays
+    # up. The box then sits: booted-never, reachable forever, no
+    # failed unit, no emergency.target, nothing that can trip the
+    # BIOS POST prompt. Drill done: `systemctl reboot` from :2222.
     case "$(cat /proc/cmdline)" in
       *impermanence.drill=1*)
-        echo "impermanence-wipe: drill halt requested (impermanence.drill=1)"
-        exit 1
+        echo "impermanence-wipe: DRILL — boot paused, rescue at :2222"
+        echo "impermanence-wipe: DRILL — boot paused, rescue at :2222" > /dev/kmsg 2>/dev/null || true
+        exec sleep infinity
         ;;
     esac
 
