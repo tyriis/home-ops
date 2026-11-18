@@ -200,10 +200,12 @@ in
     # iTCO hardware watchdog (NUC7i5, iTCO_wdt -> watchdog0, max 60 s).
     # Declared for the initrd so stage-1 can arm it — a hung stage-1
     # (gen48 boot 1 pattern: no 22, no 2222, capture black) previously
-    # needed a human at the power button. Proven present live 2026-11-18
-    # (iTCO_wdt + lpc_ich via modinfo). iTCO_vendor_support is a dead
-    # name on modern kernels — the 6.18 module-shrink step rejects it.
-    "iTCO_wdt" "lpc_ich" ];
+    # needed a human at the power button. iTCO_wdt ALONE, deliberately:
+    # 49 stage-2 loads it with no MFD helper (vendor handling merged
+    # long ago), and gen50 shipped lpc_ich alongside it and died before
+    # any port opened — the one suspect for an early stage-1 death on a
+    # board whose PCH/GPIO ownership is sensitive.
+    "iTCO_wdt" ];
 
   # Boot-dog. 26.11 unified systemd-262: the initrd IS systemd, so
   # stage-1 Manager settings live under boot.initrd.systemd.settings.
