@@ -4,15 +4,17 @@
 
 **Goal:** Configure Immich to authenticate via PocketID using native OIDC integration.
 
-**Architecture:** Two repos are involved: (1) `techtales-io/terraform-pocket-id` — define the OIDC client in Terraform-managed YAML data, which creates the client in PocketID and stores credentials in OpenBao; (2) `tyriis/home-ops` — add OIDC env vars to Immich's HelmRelease and an ExternalSecret to pull the client credentials. A manual OpenBao credential sync bridges the two.
+**Architecture:** Two repos are involved: (1) `techtales-io/terraform-pocket-id` — define the OIDC client in Terraform-managed YAML data, which creates the client in PocketID and
+stores credentials in OpenBao; (2) `tyriis/home-ops` — add OIDC env vars to Immich's HelmRelease and an ExternalSecret to pull the client credentials. A manual OpenBao credential sync
+bridges the two.
 
 **Tech Stack:** Terraform (pocketid provider), Flux/HelmRelease (bjw-s app-template), ExternalSecrets Operator, OpenBao, PocketID
 
 ---
 
-### Task 1: Create PocketID OIDC client definition
+## Task 1: Create PocketID OIDC client definition
 
-**Repo:** `techtales-io/terraform-pocket-id`  
+**Repo:** `techtales-io/terraform-pocket-id`
 **File:** Create `data/clients/immich.yaml`
 
 ```yaml
@@ -71,26 +73,26 @@ vault kv patch -mount=infra kubernetes/main/media/immich \
 
 ### Task 3: Add OIDC credential mappings to ExternalSecret
 
-**Repo:** `tyriis/home-ops`  
-**Branch:** `feature/immich-pocket-id`  
+**Repo:** `tyriis/home-ops`
+**Branch:** `feature/immich-pocket-id`
 **File:** Modify `kubernetes/main/apps/media/immich/database/external-secret.yaml`
 
 Add two lines to the `immich-env` ExternalSecret template's `data:` block:
 
 ```yaml
-        IMMICH_OAUTH_CLIENT_ID: "{{ .OAUTH_CLIENT_ID }}"
-        IMMICH_OAUTH_CLIENT_SECRET: "{{ .OAUTH_CLIENT_SECRET }}"
+IMMICH_OAUTH_CLIENT_ID: "{{ .OAUTH_CLIENT_ID }}"
+IMMICH_OAUTH_CLIENT_SECRET: "{{ .OAUTH_CLIENT_SECRET }}"
 ```
 
 The relevant section after the change:
 
 ```yaml
-      data:
-        DB_DATABASE_NAME: "{{ .DB_USERNAME }}"
-        DB_USERNAME: "{{ .DB_USERNAME }}"
-        DB_PASSWORD: "{{ .DB_PASSWORD }}"
-        IMMICH_OAUTH_CLIENT_ID: "{{ .OAUTH_CLIENT_ID }}"
-        IMMICH_OAUTH_CLIENT_SECRET: "{{ .OAUTH_CLIENT_SECRET }}"
+data:
+  DB_DATABASE_NAME: "{{ .DB_USERNAME }}"
+  DB_USERNAME: "{{ .DB_USERNAME }}"
+  DB_PASSWORD: "{{ .DB_PASSWORD }}"
+  IMMICH_OAUTH_CLIENT_ID: "{{ .OAUTH_CLIENT_ID }}"
+  IMMICH_OAUTH_CLIENT_SECRET: "{{ .OAUTH_CLIENT_SECRET }}"
 ```
 
 - [ ] **Step 1:** Edit the file to add the two new template mappings.
@@ -106,22 +108,22 @@ git commit -m "feat(immich): add oidc credential mappings to external secret #90
 
 ### Task 4: Add OIDC env vars to Immich HelmRelease
 
-**Repo:** `tyriis/home-ops`  
-**Branch:** `feature/immich-pocket-id`  
+**Repo:** `tyriis/home-ops`
+**Branch:** `feature/immich-pocket-id`
 **File:** Modify `kubernetes/main/apps/media/immich/app/helm-release.yaml`
 
 Add the following env vars to the `server` controller's `env:` block:
 
 ```yaml
-              IMMICH_OAUTH_AUTO_LAUNCH: "true"
-              IMMICH_OAUTH_AUTO_REGISTER: "true"
-              IMMICH_OAUTH_BUTTON_TEXT: "Login with Pocket ID"
-              IMMICH_OAUTH_ENABLED: "true"
-              IMMICH_OAUTH_ISSUER_URL: https://id.techtales.io/.well-known/openid-configuration
-              IMMICH_OAUTH_SCOPE: "openid email profile groups"
-              IMMICH_OAUTH_STORAGE_LABEL_CLAIM: preferred_username
-              IMMICH_OAUTH_END_SESSION_ENDPOINT: https://id.techtales.io/api/oidc/end-session
-              IMMICH_OAUTH_MOBILE_REDIRECT_URI: https://immich.techtales.io/api/oauth/mobile-redirect
+IMMICH_OAUTH_AUTO_LAUNCH: "true"
+IMMICH_OAUTH_AUTO_REGISTER: "true"
+IMMICH_OAUTH_BUTTON_TEXT: "Login with Pocket ID"
+IMMICH_OAUTH_ENABLED: "true"
+IMMICH_OAUTH_ISSUER_URL: https://id.techtales.io/.well-known/openid-configuration
+IMMICH_OAUTH_SCOPE: "openid email profile groups"
+IMMICH_OAUTH_STORAGE_LABEL_CLAIM: preferred_username
+IMMICH_OAUTH_END_SESSION_ENDPOINT: https://id.techtales.io/api/oidc/end-session
+IMMICH_OAUTH_MOBILE_REDIRECT_URI: https://immich.techtales.io/api/oauth/mobile-redirect
 ```
 
 - [ ] **Step 1:** Edit the file to add the env vars.

@@ -46,12 +46,12 @@ SearXNG instance.
 
 Findings that contradict widespread community configuration:
 
-| Community convention | Actual behaviour |
-| --- | --- |
-| Probes on `/stats` | `/stats` is an **HTML statistics page**. `/healthz` returns `text/plain` `OK` and is the correct probe endpoint. It is also explicitly exempt from the limiter. |
-| `UWSGI_WORKERS` / `UWSGI_THREADS` | **No-ops.** The image replaced uWSGI with Granian in `2025.7.4-01be261`. Server config is now `GRANIAN_*`. |
-| `capabilities.add: [CHOWN, SETGID, SETUID, DAC_OVERRIDE]` | **Legacy.** These date from the uWSGI privilege-drop era. The current entrypoint never drops privileges (Granian does not). |
-| `SEARXNG_SECRET` is mandatory | Only required when a `settings.yml` is mounted: `searx/webapp.py` exits with code 1 if `server.secret_key` is left as the literal `ultrasecretkey`. Absent the file, the entrypoint generates one with a random secret. |
+- **Probes on `/stats`** — `/stats` is an **HTML statistics page**. `/healthz` returns `text/plain` `OK` and is the correct probe endpoint. It is also explicitly exempt from the limiter.
+- **`UWSGI_WORKERS` / `UWSGI_THREADS`** — **No-ops.** The image replaced uWSGI with Granian in `2025.7.4-01be261`. Server config is now `GRANIAN_*`.
+- **`capabilities.add: [CHOWN, SETGID, SETUID, DAC_OVERRIDE]`** — **Legacy.** These date from the uWSGI privilege-drop era. The current entrypoint never drops privileges (Granian does not).
+- **`SEARXNG_SECRET` is mandatory** — Only required when a `settings.yml` is mounted: `searx/webapp.py` exits
+  with code 1 if `server.secret_key` is left as the literal `ultrasecretkey`. Absent the file, the entrypoint
+  generates one with a random secret.
 
 Additional facts relied on by this design:
 
@@ -97,25 +97,25 @@ reputation from automated abuse) does not apply, while its costs are immediate. 
 Open WebUI renamed the `RAG_WEB_SEARCH_*` family to `WEB_SEARCH_*`. In v0.11.3 the old names are
 **not read at all** — there is no backward-compatible alias.
 
-| Old (unread in v0.11.3) | Current |
-| --- | --- |
-| `ENABLE_RAG_WEB_SEARCH` | `ENABLE_WEB_SEARCH` |
-| `RAG_WEB_SEARCH_ENGINE` | `WEB_SEARCH_ENGINE` |
-| `RAG_WEB_SEARCH_RESULT_COUNT` | `WEB_SEARCH_RESULT_COUNT` |
+| Old (unread in v0.11.3)              | Current                          |
+| ------------------------------------ | -------------------------------- |
+| `ENABLE_RAG_WEB_SEARCH`              | `ENABLE_WEB_SEARCH`              |
+| `RAG_WEB_SEARCH_ENGINE`              | `WEB_SEARCH_ENGINE`              |
+| `RAG_WEB_SEARCH_RESULT_COUNT`        | `WEB_SEARCH_RESULT_COUNT`        |
 | `RAG_WEB_SEARCH_CONCURRENT_REQUESTS` | `WEB_SEARCH_CONCURRENT_REQUESTS` |
-| `RAG_WEB_SEARCH_DOMAIN_FILTER_LIST` | `WEB_SEARCH_DOMAIN_FILTER_LIST` |
+| `RAG_WEB_SEARCH_DOMAIN_FILTER_LIST`  | `WEB_SEARCH_DOMAIN_FILTER_LIST`  |
 
 `SEARXNG_QUERY_URL` kept its name but changed meaning: it must be the **bare `/search` endpoint**.
 If the legacy `<query>` placeholder is present, Open WebUI strips everything after `?`. Open WebUI
 builds and URL-encodes all query parameters itself, including `format=json`.
 
-| Behaviour | Detail |
-| --- | --- |
-| `language` | Sent from `SEARXNG_LANGUAGE` (default `all`). **Overrides `search.default_lang`.** |
-| `safesearch` | **Hard-coded to `1`** by the client; there is no environment variable. **Overrides `search.safe_search`.** |
-| Headers | Sends a fixed set: a `RAG Bot` User-Agent, `Accept: text/html`, `Accept-Encoding: gzip, deflate`, `Accept-Language: en-US,en;q=0.5`. |
-| Response schema | Reads `results[]` and maps `url`, `title`, `content`, sorted by `score`. SearXNG's JSON satisfies this. |
-| Errors | No retry or backoff; a 403/429/500 surfaces as a failed web search. |
+| Behaviour       | Detail                                                                                                                               |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `language`      | Sent from `SEARXNG_LANGUAGE` (default `all`). **Overrides `search.default_lang`.**                                                   |
+| `safesearch`    | **Hard-coded to `1`** by the client; there is no environment variable. **Overrides `search.safe_search`.**                           |
+| Headers         | Sends a fixed set: a `RAG Bot` User-Agent, `Accept: text/html`, `Accept-Encoding: gzip, deflate`, `Accept-Language: en-US,en;q=0.5`. |
+| Response schema | Reads `results[]` and maps `url`, `title`, `content`, sorted by `score`. SearXNG's JSON satisfies this.                              |
+| Errors          | No retry or backoff; a 403/429/500 surfaces as a failed web search.                                                                  |
 
 Consequence: `search.default_lang` and `search.safe_search` in `settings.yml` govern **only the
 browser UI**. For RAG, language comes from `SEARXNG_LANGUAGE` and safe search is pinned to `1`.
@@ -139,7 +139,7 @@ Verified locally with `helm show chart` and `helm template` at version `5.2.1`.
 Rendering `app-template` `5.2.1` confirms the pod labels the NetworkPolicy depends on:
 
 ```yaml
-app.kubernetes.io/name: searxng      # release name, not "app-template"
+app.kubernetes.io/name: searxng # release name, not "app-template"
 app.kubernetes.io/instance: searxng
 app.kubernetes.io/controller: searxng
 ```
@@ -150,11 +150,11 @@ app.kubernetes.io/controller: searxng
 `app.kubernetes.io/name: ${APP}-dragonfly`, e.g. `open-webui-dragonfly`. The Dragonfly operator
 labels its pods with only:
 
-| Label key | Value |
-| --- | --- |
-| `app` | `open-webui-dragonfly` (the `Dragonfly` CR name) |
-| `app.kubernetes.io/name` | `dragonfly` (constant) |
-| `app.kubernetes.io/part-of` | `dragonfly` |
+| Label key                   | Value                                            |
+| --------------------------- | ------------------------------------------------ |
+| `app`                       | `open-webui-dragonfly` (the `Dragonfly` CR name) |
+| `app.kubernetes.io/name`    | `dragonfly` (constant)                           |
+| `app.kubernetes.io/part-of` | `dragonfly`                                      |
 
 The selector therefore matches **no pods**, so both the repository's NetworkPolicy and its
 PodMonitor are inert. Live cluster inspection confirmed two policies coexist in `ai`: the operator's
@@ -170,19 +170,17 @@ This is **out of scope** for this branch and tracked separately.
 
 ## Decisions
 
-| # | Decision | Rationale | Rejected alternative |
-| --- | --- | --- | --- |
-| 1 | Internal RAG backend plus LAN-only browser UI | Matches the motivating use case; no public abuse surface | Public exposure; RAG-only with no UI |
-| 2 | Namespace `ai` | Beside its primary consumer; keeps intra-namespace traffic trivial for the default-deny rollout | New `search` namespace; `default` |
-| 3 | `app-template` `5.2.1` via per-app `OCIRepository` | Modern artifact delivery; matches podinfo precedent and the kubesearch norm | HelmRepository `bjw-s-charts` at `5.1.0`; HelmRepository at `5.2.1` |
-| 4 | `limiter: false`, no Valkey/Dragonfly | The hard-coded `API_MAX = 4`/hour breaks the RAG client; the exemption is broad; the LAN-only threat model does not warrant it | Limiter enabled with pod-CIDR `pass_ip` |
-| 5 | Secret via `ExternalSecret` from OpenBao | Matches `open-webui`; `settings.yml` stays reviewable in git and secret-free | Whole `settings.yml` as a Secret; inline `secret_key` |
-| 6 | Hostname `search.techtales.io`, `external-dns/unifi: "true"` | Follows the kubesearch `search.${DOMAIN}` convention and the repository's LAN-only DNS pattern | `searxng.techtales.io`; `s.techtales.io` |
-| 7 | English UI, `en-US`, `safe_search: 0` | Widest engine coverage; governs the browser UI only | German `de-AT`; safe search moderate |
-| 8 | Ingress-only NetworkPolicy | A search engine requires arbitrary internet egress, so an egress rule would be theatre | Full two-way default-deny; defer to the `#8068` rollout |
-| 9 | Allow `hermes-agent` on both sides, config untouched | Requested; the ingress rule alone is inert because `hermes-agent` has a default-deny egress policy | Ingress only; also switch `hermes-agent`'s search backend |
-| 10 | Wire Open WebUI with correct v0.11.3 names, `SEARXNG_LANGUAGE=en-US` | The existing commented block does not function on the pinned version | Leave commented; leave untouched |
-| 11 | Security context UID/GID `977`, no added capabilities, `/healthz` probes | Follows upstream source over community habit | Community root-plus-caps context |
+1. **Internal RAG backend plus LAN-only browser UI** — Matches the motivating use case; no public abuse surface. Rejected: Public exposure; RAG-only with no UI.
+2. **Namespace `ai`** — Beside its primary consumer; keeps intra-namespace traffic trivial for the default-deny rollout. Rejected: New `search` namespace; `default`.
+3. **`app-template` `5.2.1` via per-app `OCIRepository`** — Modern artifact delivery; matches podinfo precedent and the kubesearch norm. Rejected: HelmRepository `bjw-s-charts` at `5.1.0`; HelmRepository at `5.2.1`.
+4. **`limiter: false`, no Valkey/Dragonfly** — The hard-coded `API_MAX = 4`/hour breaks the RAG client; the exemption is broad; the LAN-only threat model does not warrant it. Rejected: Limiter enabled with pod-CIDR `pass_ip`.
+5. **Secret via `ExternalSecret` from OpenBao** — Matches `open-webui`; `settings.yml` stays reviewable in git and secret-free. Rejected: Whole `settings.yml` as a Secret; inline `secret_key`.
+6. **Hostname `search.techtales.io`, `external-dns/unifi: "true"`** — Follows the kubesearch `search.${DOMAIN}` convention and the repository's LAN-only DNS pattern. Rejected: `searxng.techtales.io`; `s.techtales.io`.
+7. **English UI, `en-US`, `safe_search: 0`** — Widest engine coverage; governs the browser UI only. Rejected: German `de-AT`; safe search moderate.
+8. **Ingress-only NetworkPolicy** — A search engine requires arbitrary internet egress, so an egress rule would be theatre. Rejected: Full two-way default-deny; defer to the `#8068` rollout.
+9. **Allow `hermes-agent` on both sides, config untouched** — Requested; the ingress rule alone is inert because `hermes-agent` has a default-deny egress policy. Rejected: Ingress only; also switch `hermes-agent`'s search backend.
+10. **Wire Open WebUI with correct v0.11.3 names, `SEARXNG_LANGUAGE=en-US`** — The existing commented block does not function on the pinned version. Rejected: Leave commented; leave untouched.
+11. **Security context UID/GID `977`, no added capabilities, `/healthz` probes** — Follows upstream source over community habit. Rejected: Community root-plus-caps context.
 
 ## Architecture
 
@@ -288,13 +286,13 @@ ghcr.io/searxng/searxng:2026.9.19-e831fc2a1@sha256:547fdc19b45510ea1c0bc65ffadab
 
 ## Risks
 
-| Risk | Impact | Mitigation |
-| --- | --- | --- |
-| Upstream engines rate-limit or block the homelab egress IP | Degraded or missing results | `use_default_settings` keeps many engines; revisit and disable problem engines if observed |
-| Single replica | Search unavailable during pod restart | Accepted; SearXNG is stateless and restarts quickly |
-| `image_proxy: true` increases pod egress | Slightly higher bandwidth | Accepted; improves privacy and avoids mixed content |
-| Favicon cache lost on restart | Cosmetic; brief cold cache | Accepted; avoids a PVC and a VolSync decision |
-| `GRANIAN_HOST` assumption | Probes could fail if binding is wrong | Explicitly pinned to `0.0.0.0` for the IPv4-only cluster |
+| Risk                                                       | Impact                                | Mitigation                                                                                 |
+| ---------------------------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Upstream engines rate-limit or block the homelab egress IP | Degraded or missing results           | `use_default_settings` keeps many engines; revisit and disable problem engines if observed |
+| Single replica                                             | Search unavailable during pod restart | Accepted; SearXNG is stateless and restarts quickly                                        |
+| `image_proxy: true` increases pod egress                   | Slightly higher bandwidth             | Accepted; improves privacy and avoids mixed content                                        |
+| Favicon cache lost on restart                              | Cosmetic; brief cold cache            | Accepted; avoids a PVC and a VolSync decision                                              |
+| `GRANIAN_HOST` assumption                                  | Probes could fail if binding is wrong | Explicitly pinned to `0.0.0.0` for the IPv4-only cluster                                   |
 
 ## Follow-ups
 

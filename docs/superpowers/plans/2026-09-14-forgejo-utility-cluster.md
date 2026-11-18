@@ -23,7 +23,7 @@ Conventions for ALL new utility files (verbatim patterns from spec §1–2): nam
 
 ---
 
-### Task 1: CNPG substrate on utility
+## Task 1: CNPG substrate on utility
 
 **Files:** create `kubernetes/utility/apps/cnpg-system/{namespace.yaml,kustomization.yaml}` and
 `cnpg-system/cnpg/` mirroring main's chain (spec §2): `flux-sync.yaml` (5 Kustomizations:
@@ -42,10 +42,10 @@ utility). Same versions as main: operator chart 0.29.0, plugin v0.15.0 (git-repo
 - [ ] Add `kubernetes/utility/apps/cnpg-system` entry to nothing — Flux scans; only namespace +
       folder required (spec §2).
 - [ ] Verify YAML parses: `find kubernetes/utility/apps/cnpg-system -name '*.yaml' -exec yq e '.'
-      {} ';'` (must print, not error).
+{} ';'` (must print, not error).
 - [ ] Commit: `git add kubernetes/utility/apps/cnpg-system && git commit -m "feat(cnpg): port cnpg substrate to utility #10489"`
 
-### Task 2: forgejo-db cluster + backups CRs
+## Task 2: forgejo-db cluster + backups CRs
 
 **Files:** create in `kubernetes/utility/apps/cnpg-system/cnpg/cluster/`:
 `cluster.yaml` — `forgejo-db`: 1 inst, 20Gi `local-nvme`, `superuserSecret: forgejo-db-superuser`,
@@ -63,7 +63,7 @@ CNPG app-secret convention).
       `kubernetes/main/apps/media/immich/database/` (smaller example), adapt names/spec §4.
 - [ ] Commit: `git commit -m "feat(cnpg): add forgejo-db cluster with barman backups #10489"`
 
-### Task 3: envoy SSH TCPRoute support
+## Task 3: envoy SSH TCPRoute support
 
 **Files:** modify `kubernetes/utility/apps/networking/envoy-gateway/config/gateway.yaml` — add
 TCP listener (name `ssh`, port 22, protocol TCP, `allowedRoutes: {namespaces: {from: All}}`).
@@ -71,7 +71,7 @@ TCP listener (name `ssh`, port 22, protocol TCP, `allowedRoutes: {namespaces: {f
 - [ ] Verify with `yq e '.spec.listeners' ...gateway.yaml` — 3 listeners.
 - [ ] Commit: `git commit -m "feat(envoy): add tcp listener for git ssh #10489"`
 
-### Task 4: forgejo-system namespace + app
+## Task 4: forgejo-system namespace + app
 
 **Files:** `kubernetes/utility/apps/forgejo-system/{namespace.yaml,kustomization.yaml}`,
 `forgejo/flux-sync.yaml` (APP=forgejo; dependsOn `cnpg-cluster`(cnpg-system),
@@ -82,17 +82,17 @@ http-route.yaml,ssh-tcp-route.yaml}`.
 - **Chart:** `oci://code.forgejo.org/forgejo-helm/forgejo` tag **17.1.6** via OCIRepository
   (joryirving pattern: `ocirepository.yaml` + chartRef) — pinned 2026-09-14. Image:
   `code.forgejo.org/forgejo/forgejo:16.0.4-rootless` (community-dominant tag).
-- **Values:** copy structure from https://raw.githubusercontent.com/bjw-s-labs/home-ops/main/k
+- **Values:** copy structure from <https://raw.githubusercontent.com/bjw-s-labs/home-ops/main/k>
   ubernetes/apps/dev/forgejo/app/helmrelease.yaml (adapt, don't adopt their infra):
   disable `postgresql-ha/postgresql/memcached/redis-cluster`; NO cache/queue/session blocks
   (joryirving pattern, spec §5); `persistence: {enabled: true, create: false, claimName:
-  forgejo-data}`; database `DB_TYPE: postgres`, `HOST: forgejo-db-rw.cnpg-system.svc.cluster.local:5432`,
+forgejo-data}`; database `DB_TYPE: postgres`, `HOST: forgejo-db-rw.cnpg-system.svc.cluster.local:5432`,
   `SSL_MODE: disable`, NAME/USER/PASSWD via `valuesFrom` targetPath → secret `forgejo-db-app`
   (keys username/password); 5-key registration lockout + mailer off + openid signin/signup off;
   `gitea.oauth[]` openidConnect PocketID (`autoDiscoverUrl: https://id.techtales.io/`,
   `existingSecret: forgejo-oidc`, scopes `openid profile email groups`, `adminGroup` TBD from
   PocketID group name — use `forgejo_admins`); bleve indexers; admin `existingSecret:
-  forgejo-admin-secret`; `service.ssh.type: ClusterIP`.
+forgejo-admin-secret`; `service.ssh.type: ClusterIP`.
 - **Routes (plain manifests, not chart route):** `http-route.yaml` HTTPRoute
   `git.utility.techtales.io` → parentRef envoy/networking sectionName https,
   annotation `external-dns/unifi: "true"`, backend forgejo http 80 (service name rendered by
@@ -105,7 +105,7 @@ http-route.yaml,ssh-tcp-route.yaml}`.
   USER etc. — implement as templated ES producing one secret `forgejo-db-values`).
 - [ ] Commit: `git commit -m "feat(forgejo): deploy forgejo on utility #10489"`
 
-### Task 5: VolSync + dump CronJob
+## Task 5: VolSync + dump CronJob
 
 **Files:** `forgejo-system/forgejo/app/`: `pvc.yaml` (VolSync bootstrap pattern verbatim from
 `kubernetes/components/volsync/pvc.yaml`, substituted inline: name `forgejo-data`, RWO, 50Gi,
@@ -127,7 +127,7 @@ configured from `forgejo-dump-s3` → `mc cp /backup/*.zip s3/forgejo-dump/`. RB
 
 - [ ] Commit: `git commit -m "feat(forgejo): add volsync and nightly dump #10489"`
 
-### Task 6: act_runner on main
+## Task 6: act_runner on main
 
 **Files:** `kubernetes/main/apps/github/forgejo-runners/{namespace.yaml,kustomization.yaml,
 act-runner/flux-sync.yaml, act-runner/app/{kustomization.yaml,helm-release.yaml,
@@ -144,7 +144,7 @@ external-secret.yaml}}` — main cluster folder per §9 wiring.
   token + labels `["forgejo:docker"]` + forge URL `https://git.utility.techtales.io`).
 - [ ] Commit: `git commit -m "feat(ci): act_runner namespace on main #10489"`
 
-### Task 7: Gatus probe
+## Task 7: Gatus probe
 
 **Files:** modify `kubernetes/main/apps/observability/gatus/app/resources/config.yaml` — static
 endpoint block mirroring the existing `flux-webhook-utility` entry (group, url
@@ -153,7 +153,7 @@ endpoint block mirroring the existing `flux-webhook-utility` entry (group, url
 
 - [ ] Commit: `git commit -m "feat(gatus): forgejo healthz probe #10489"`
 
-### Task 8: validation sweep
+## Task 8: validation sweep
 
 - [ ] `task lint:yaml` and `task lint:prettier` — fix and commit
       `style(lint): <desc> #10489` if anything was touched.
@@ -161,9 +161,10 @@ endpoint block mirroring the existing `flux-webhook-utility` entry (group, url
       `forgejo-data` used identically in pvc/RS/chart persistence.claimName; RD name == pvc
       dataSourceRef.
 
-### Task 9: manual prereqs checklist (report to human, no code)
+## Task 9: manual prereqs checklist (report to human, no code)
 
 Report these to the human at completion:
+
 1. Verify `/var/mnt/extra` = 500GB Samsung 870 on utility node.
 2. terraform-minio: restic bucket + forgejo-dump bucket + per-leg S3 users; OpenBao keys written
    (§9 of spec).

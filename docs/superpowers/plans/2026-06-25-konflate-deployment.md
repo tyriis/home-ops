@@ -16,12 +16,14 @@
 ## File Structure
 
 ### New Files
+
 - `kubernetes/main/apps/flux-system/konflate/flux-sync.yaml` — Kustomization CRD pointing at `./app/`
 - `kubernetes/main/apps/flux-system/konflate/app/kustomization.yaml` — Lists resources
 - `kubernetes/main/apps/flux-system/konflate/app/oci-repository.yaml` — OCIRepository for the Helm chart
 - `kubernetes/main/apps/flux-system/konflate/app/helm-release.yaml` — HelmRelease with konflate values
 
 ### Modified Files
+
 - `kubernetes/main/apps/flux-system/kustomization.yaml` — Add konflate/flux-sync.yaml to resources
 
 ---
@@ -29,6 +31,7 @@
 ### Task 1: Create flux-sync.yaml (Kustomization CRD)
 
 **Files:**
+
 - Create: `kubernetes/main/apps/flux-system/konflate/flux-sync.yaml`
 
 - [ ] **Step 1: Create Kustomization CRD**
@@ -61,6 +64,7 @@ spec:
 - [ ] **Step 2: Create the directory and write the file**
 
 Run:
+
 ```bash
 mkdir -p kubernetes/main/apps/flux-system/konflate/app
 ```
@@ -79,6 +83,7 @@ git commit -m "feat(konflate): add flux-sync Kustomization CRD #9364"
 ### Task 2: Create OCIRepository for the Helm chart
 
 **Files:**
+
 - Create: `kubernetes/main/apps/flux-system/konflate/app/oci-repository.yaml`
 
 - [ ] **Step 1: Create OCIRepository**
@@ -112,6 +117,7 @@ git commit -m "feat(konflate): add OCIRepository source for Helm chart #9364"
 ### Task 3: Create HelmRelease with konflate configuration
 
 **Files:**
+
 - Create: `kubernetes/main/apps/flux-system/konflate/app/helm-release.yaml`
 
 - [ ] **Step 1: Create HelmRelease**
@@ -180,6 +186,7 @@ git commit -m "feat(konflate): add HelmRelease with config values #9364"
 ### Task 4: Create app kustomization.yaml
 
 **Files:**
+
 - Create: `kubernetes/main/apps/flux-system/konflate/app/kustomization.yaml`
 
 - [ ] **Step 1: Create kustomization**
@@ -206,11 +213,13 @@ git commit -m "feat(konflate): add app kustomization listing resources #9364"
 ### Task 5: Wire konflate into flux-system kustomization
 
 **Files:**
+
 - Modify: `kubernetes/main/apps/flux-system/kustomization.yaml`
 
 - [ ] **Step 1: Add konflate to resources**
 
 Current resources:
+
 ```yaml
 resources:
   - ./namespace.yaml
@@ -219,6 +228,7 @@ resources:
 ```
 
 Add konflate:
+
 ```yaml
 resources:
   - ./namespace.yaml

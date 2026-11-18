@@ -4,7 +4,9 @@
 
 **Goal:** Deploy the Unsloth LLM fine-tuning toolkit (Studio UI + OpenAI/Anthropic API on port 8000, Jupyter on 8888) on the "red" desktop workstation via the doco-cd GitOps-for-Docker system, with SOPS-encrypted passwords.
 
-**Architecture:** A new doco-cd workload is defined per-target under `docker/red/unsloth/` (compose.yaml + sops.env + .env) following the busybox-enc pattern, with a non-deployed shared reference compose under `docker/deploy/unsloth/`. doco-cd polls the git repo every 180s, decrypts `sops.env` via its age key, and runs the compose project with NVIDIA GPU passthrough. The image is digest-pinned and Renovate-managed like ollama/comfyui.
+**Architecture:** A new doco-cd workload is defined per-target under `docker/red/unsloth/` (compose.yaml + sops.env + .env) following the busybox-enc pattern, with a non-deployed
+shared reference compose under `docker/deploy/unsloth/`. doco-cd polls the git repo every 180s, decrypts `sops.env` via its age key, and runs the compose project with NVIDIA GPU
+passthrough. The image is digest-pinned and Renovate-managed like ollama/comfyui.
 
 **Tech Stack:** Docker Compose, doco-cd, SOPS (age), NVIDIA container runtime, Renovate, pre-commit/yamllint/markdownlint.
 
@@ -25,14 +27,14 @@
 
 ## File Structure
 
-| File | Responsibility |
-|---|---|
-| `docker/deploy/unsloth/compose.yaml` | Shared reference compose (NOT deployed) — blueprint for other targets |
-| `docker/red/unsloth/compose.yaml` | Deployed target instance (symlink to shared compose, busybox-enc style) |
-| `docker/red/unsloth/sops.env` | SOPS-encrypted dotenv: JUPYTER_PASSWORD, USER_PASSWORD, UNSLOTH_STUDIO_PASSWORD |
-| `docker/red/unsloth/.env` | `TARGET=red` |
-| `docker/.doco-cd.red.yaml` | Appended workload entry for unsloth |
-| `docker/deploy/unsloth/README.md` | Workload documentation (busybox-enc README style) |
+| File                                 | Responsibility                                                                  |
+| ------------------------------------ | ------------------------------------------------------------------------------- |
+| `docker/deploy/unsloth/compose.yaml` | Shared reference compose (NOT deployed) — blueprint for other targets           |
+| `docker/red/unsloth/compose.yaml`    | Deployed target instance (symlink to shared compose, busybox-enc style)         |
+| `docker/red/unsloth/sops.env`        | SOPS-encrypted dotenv: JUPYTER_PASSWORD, USER_PASSWORD, UNSLOTH_STUDIO_PASSWORD |
+| `docker/red/unsloth/.env`            | `TARGET=red`                                                                    |
+| `docker/.doco-cd.red.yaml`           | Appended workload entry for unsloth                                             |
+| `docker/deploy/unsloth/README.md`    | Workload documentation (busybox-enc README style)                               |
 
 ### Task 1: Resolve and pin the Unsloth image tag + digest
 
@@ -41,17 +43,21 @@
 - [ ] **Step 1: Query current Docker Hub tags for unsloth/unsloth**
 
 Run:
+
 ```bash
 curl -s 'https://hub.docker.com/v2/repositories/unsloth/unsloth/tags?page_size=100&ordering=last_updated' | jq -r '.results[].name' | head -20
 ```
+
 Expected: a list of tags. The newest tag contains `-studio-` (e.g. `2026.5.9-pt2.10.0-vllm-0.16.0-cu12.8-studio-release-v0.1.43-beta-2026-MAY-31`). Pick the newest `-studio-` tag — that is the `<STUDIO_TAG>` used below.
 
 - [ ] **Step 2: Resolve the digest for that tag**
 
 Run:
+
 ```bash
 docker pull unsloth/unsloth:<STUDIO_TAG> && docker inspect --format '{{index .RepoDigests 0}}' unsloth/unsloth:<STUDIO_TAG>
 ```
+
 Expected: `<STUDIO_TAG>@sha256:<DIGEST>` (e.g. `@sha256:9f4a1f...`). Record the full `<STUDIO_TAG>@sha256:<DIGEST>` — it is used verbatim in Tasks 2 and 3.
 
 If Docker is not available on the machine, use skopeo or crane instead, e.g. `crane digest unsloth/unsloth:<STUDIO_TAG>` (returns just the sha256). Record it.
@@ -59,6 +65,7 @@ If Docker is not available on the machine, use skopeo or crane instead, e.g. `cr
 ### Task 2: Create the shared reference compose
 
 **Files:**
+
 - Create: `docker/deploy/unsloth/compose.yaml`
 
 - [ ] **Step 1: Write `docker/deploy/unsloth/compose.yaml`**
@@ -107,11 +114,13 @@ Expected: no errors (line-length is warning-level, max 120).
 ### Task 3: Create the deployed target instance
 
 **Files:**
+
 - Create: `docker/red/unsloth/compose.yaml`
 
 - [ ] **Step 1: Write `docker/red/unsloth/compose.yaml`**
 
-Create a symlink pointing at the shared reference compose: `ln -s ../../deploy/unsloth/compose.yaml docker/red/unsloth/compose.yaml` (repo convention — see `docker/red/busybox-enc/compose.yaml` which is mode 120000 symlink). doco-cd resolves the symlink and deploys the shared compose with the target's local `sops.env`/`.env`.
+Create a symlink pointing at the shared reference compose: `ln -s ../../deploy/unsloth/compose.yaml docker/red/unsloth/compose.yaml` (repo convention — see
+`docker/red/busybox-enc/compose.yaml` which is mode 120000 symlink). doco-cd resolves the symlink and deploys the shared compose with the target's local `sops.env`/`.env`.
 
 - [ ] **Step 2: Lint the file**
 
@@ -121,11 +130,13 @@ Expected: no errors.
 ### Task 4: Create the SOPS-encrypted secrets
 
 **Files:**
+
 - Create: `docker/red/unsloth/sops.env` (encrypted)
 
 - [ ] **Step 1: Generate random passwords and write a plaintext temp file**
 
 Run:
+
 ```bash
 mkdir -p docker/red/unsloth
 cat > /tmp/unsloth-sops.env <<EOF
@@ -134,14 +145,17 @@ USER_PASSWORD=$(openssl rand -base64 24)
 UNSLOTH_STUDIO_PASSWORD=$(openssl rand -base64 24)
 EOF
 ```
+
 IMPORTANT: this plaintext file must NEVER be committed. It lives in /tmp only.
 
 - [ ] **Step 2: Encrypt in place with SOPS**
 
 Run:
+
 ```bash
 mise x sops -- --encrypt --in-place --input-type dotenv --output-type dotenv /tmp/unsloth-sops.env
 ```
+
 (If `sops` is directly on PATH: `sops --encrypt --in-place --input-type dotenv --output-type dotenv /tmp/unsloth-sops.env`)
 
 Then move it into place: `mv /tmp/unsloth-sops.env docker/red/unsloth/sops.env`
@@ -160,23 +174,27 @@ Run: `git status --porcelain` and visually confirm no `/tmp` file or plaintext `
 ### Task 5: Create the .env for the target
 
 **Files:**
+
 - Create: `docker/red/unsloth/.env`
 
 - [ ] **Step 1: Write `docker/red/unsloth/.env`**
 
 Content:
-```
+
+```text
 TARGET=red
 ```
 
 ### Task 6: Wire the workload into doco-cd
 
 **Files:**
+
 - Modify: `docker/.doco-cd.red.yaml` (append)
 
 - [ ] **Step 1: Append the workload entry**
 
 Append to the end of `docker/.doco-cd.red.yaml`:
+
 ```yaml
 ---
 name: unsloth
@@ -184,6 +202,7 @@ working_dir: docker/red/unsloth
 env_files:
   - .env
 ```
+
 Do not modify existing entries.
 
 - [ ] **Step 2: Lint the file**
@@ -194,13 +213,14 @@ Expected: no errors.
 ### Task 7: Write the workload README
 
 **Files:**
+
 - Create: `docker/deploy/unsloth/README.md`
 
 - [ ] **Step 1: Write `docker/deploy/unsloth/README.md`**
 
 Content:
 
-```markdown
+````markdown
 # unsloth
 
 Unsloth — LLM fine-tuning toolkit with Unsloth Studio (web UI + OpenAI/Anthropic-compatible API) and Jupyter Lab, running on the NVIDIA GPU of the target host.
@@ -230,6 +250,7 @@ Passwords are stored in the target's SOPS-encrypted `sops.env`:
 ```bash
 sops --decrypt docker/red/unsloth/sops.env
 ```
+````
 
 ## Runtime requirement on doco-cd host
 
@@ -241,7 +262,6 @@ sops --decrypt docker/red/unsloth/sops.env
 - Image is digest-pinned and managed by Renovate.
 - RTX 2060 Super (8 GB VRAM) fits QLoRA fine-tuning up to ~8B models. See ADR 0006.
 - vLLM standby is enabled (image default): GPU memory is pre-reserved for the API even when idle.
-```
 
 - [ ] **Step 2: Lint the markdown**
 
@@ -253,9 +273,11 @@ Expected: no errors.
 - [ ] **Step 1: Lint all changed YAML**
 
 Run:
+
 ```bash
 yamllint docker/deploy/unsloth/compose.yaml docker/red/unsloth/compose.yaml docker/.doco-cd.red.yaml
 ```
+
 Expected: no errors.
 
 - [ ] **Step 2: Run repo pre-commit on changed files**
@@ -273,9 +295,11 @@ Expected: only the appended `---` + unsloth entry. Confirm `working_dir: docker/
 - [ ] **Step 1: Stage only the new files**
 
 Run:
+
 ```bash
 git add docker/deploy/unsloth/compose.yaml docker/red/unsloth/compose.yaml docker/red/unsloth/sops.env docker/red/unsloth/.env docker/.doco-cd.red.yaml docker/deploy/unsloth/README.md
 ```
+
 Do NOT stage any other files (there are unrelated envoy-pocketid changes and other untracked docs in the working tree).
 
 - [ ] **Step 2: Verify staged set**

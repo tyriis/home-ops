@@ -9,7 +9,8 @@
 
 ## Overview
 
-Add the `immich-machine-learning` container as a second controller in the existing bjw-s `app-template` HelmRelease. The server's `IMMICH_MACHINE_LEARNING_ENABLED` env var flips to `true` with an explicit URL to the ML service. ML model cache is persisted via a PVC to avoid re-downloading ~2-10GB of models on every restart.
+Add the `immich-machine-learning` container as a second controller in the existing bjw-s `app-template` HelmRelease. The server's `IMMICH_MACHINE_LEARNING_ENABLED` env var flips
+to `true` with an explicit URL to the ML service. ML model cache is persisted via a PVC to avoid re-downloading ~2-10GB of models on every restart.
 
 ---
 
@@ -19,22 +20,22 @@ Add the `immich-machine-learning` container as a second controller in the existi
 
 #### Server controller changes
 
-| Env var | Old value | New value |
-|---------|-----------|-----------|
-| `IMMICH_MACHINE_LEARNING_ENABLED` | `"false"` | `"true"` |
-| `IMMICH_MACHINE_LEARNING_URL` | *(absent)* | `http://immich-machine-learning.media.svc.cluster.local:3003` |
+| Env var                           | Old value  | New value                                                     |
+| --------------------------------- | ---------- | ------------------------------------------------------------- |
+| `IMMICH_MACHINE_LEARNING_ENABLED` | `"false"`  | `"true"`                                                      |
+| `IMMICH_MACHINE_LEARNING_URL`     | _(absent)_ | `http://immich-machine-learning.media.svc.cluster.local:3003` |
 
 #### Machine-learning controller (new)
 
-| Field | Value |
-|-------|-------|
-| Image | `ghcr.io/immich-app/immich-machine-learning` |
-| Tag | `v2.7.5` (same tag as server; Renovate pins SHA) |
-| Container port | 3003 |
-| Probes | HTTP GET `/ping` on port 3003 (liveness + readiness), startup same |
-| Env | `TRANSFORMERS_CACHE=/cache`, `HF_XET_CACHE=/cache/huggingface-xet`, `MPLCONFIGDIR=/cache/matplotlib-config` |
-| Security context | Same as server (runAsNonRoot, readOnlyRootFilesystem, drop all) |
-| Resources | Requests: 100m CPU, 512Mi memory |
+| Field            | Value                                                                                                       |
+| ---------------- | ----------------------------------------------------------------------------------------------------------- |
+| Image            | `ghcr.io/immich-app/immich-machine-learning`                                                                |
+| Tag              | `v2.7.5` (same tag as server; Renovate pins SHA)                                                            |
+| Container port   | 3003                                                                                                        |
+| Probes           | HTTP GET `/ping` on port 3003 (liveness + readiness), startup same                                          |
+| Env              | `TRANSFORMERS_CACHE=/cache`, `HF_XET_CACHE=/cache/huggingface-xet`, `MPLCONFIGDIR=/cache/matplotlib-config` |
+| Security context | Same as server (runAsNonRoot, readOnlyRootFilesystem, drop all)                                             |
+| Resources        | Requests: 100m CPU, 512Mi memory                                                                            |
 
 #### Service (new)
 
@@ -72,12 +73,12 @@ ml-cache:
 
 Same ML controller as main, with two differences:
 
-| Field | Main | Devenv |
-|-------|------|--------|
-| `storageClass` | `ceph-block` | `standard` (kind local-path) |
+| Field                         | Main                | Devenv                                                        |
+| ----------------------------- | ------------------- | ------------------------------------------------------------- |
+| `storageClass`                | `ceph-block`        | `standard` (kind local-path)                                  |
 | `IMMICH_MACHINE_LEARNING_URL` | Fully-qualified DNS | `http://immich-machine-learning.media.svc.cluster.local:3003` |
 
-### Files modified
+### Files modified (devenv)
 
 - `devenv/oci/apps/media/immich/app/helm-release.yaml`
 - `devenv/oci/apps/media/immich/app/configuration.yaml` — add `IMMICH_MACHINE_LEARNING_ENABLED=true` + `IMMICH_MACHINE_LEARNING_URL=http://immich-machine-learning.media.svc.cluster.local:3003`

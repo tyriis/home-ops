@@ -3,38 +3,43 @@
 > **Historical note (2026-09-13):** This plan is retained as a historical record. The loopback host
 > ports described below were later removed and Jupyter now routes at `jupyter.tyriis.dev`, per the
 > amended design spec (`docs/superpowers/specs/2026-09-12-red-traefik-tls-termination-design.md`).
-
+>
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Terminate TLS for red's `unsloth`, `comfyui`, `gallery`, and `ollama` services with a Traefik instance on `tyriis.dev`, without touching the working bifrost Traefik.
 
-**Architecture:** A red host shim `include`s the shared `docker/deploy/traefik/compose.yaml` and overrides only `command:` (compose replaces list fields, so bifrost's techtales domains are not inherited). Per-service red shims attach workloads to the host-local `apps` bridge network, add Traefik Docker labels, and bind their published ports to loopback. doco-cd discovers red's workloads via `docker/.doco-cd.red.yaml`.
+**Architecture:** A red host shim `include`s the shared `docker/deploy/traefik/compose.yaml` and overrides only `command:` (compose replaces list fields, so bifrost's techtales domains
+are not inherited). Per-service red shims attach workloads to the host-local `apps` bridge network, add Traefik Docker labels, and bind their published ports to loopback. doco-cd discovers
+red's workloads via `docker/.doco-cd.red.yaml`.
 
 **Tech Stack:** Docker Compose (v2/v5), Traefik v3.7.13, Cloudflare DNS-01 / Let's Encrypt, SOPS (age), doco-cd.
 
 **Reference files (read before starting):**
+
 - `docker/deploy/traefik/compose.yaml` — shared Traefik definition (do not modify).
 - `docker/bifrost/traefik/compose.yaml` + `docker/bifrost/new-api/compose.yaml` — shim/label patterns.
 - `docker/red/unsloth/compose.yaml`, `docker/red/arcane-agent/compose.yaml` — existing red shims.
 - `docs/superpowers/specs/2026-09-12-red-traefik-tls-termination-design.md` — the spec this plan implements.
 
-**Notes for the implementer:** You are authorized and expected to add/adjust comments, formatting, and lint/CI suppressions required to pass `pre-commit`, `yamllint`, and `prettier`. Do **not** modify `docker/deploy/traefik/compose.yaml`, anything under `docker/bifrost/**`, or the metrics services' networking. Do not commit real secrets. Do not commit or push unless the task says to.
+**Notes for the implementer:** You are authorized and expected to add/adjust comments, formatting, and lint/CI suppressions required to pass `pre-commit`, `yamllint`, and
+`prettier`. Do **not** modify `docker/deploy/traefik/compose.yaml`, anything under `docker/bifrost/**`, or the metrics services' networking. Do not commit real secrets. Do not commit
+or push unless the task says to.
 
 ---
 
 ## File Structure
 
-| File | Action | Responsibility |
-| --- | --- | --- |
-| `docker/red/traefik/compose.yaml` | Create | Traefik shim + red `command:` override (`tyriis.dev` wildcard) |
-| `docker/red/traefik/.env` | Create | `TARGET`, `TLS_DOMAIN`, `ACME_EMAIL` |
-| `docker/red/traefik/sops.env` | Create (SOPS) | Encrypted `CF_DNS_API_TOKEN` placeholder |
-| `docker/red/unsloth/compose.yaml` | Modify | `apps` + labels + loopback ports |
-| `docker/red/ollama/compose.yaml` | Create | `apps` + labels + loopback port |
-| `docker/red/comfyui/compose.yaml` | Create | `apps` + labels + loopback ports (both UIs) |
-| `docker/.doco-cd.red.yaml` | Modify | Add `traefik`; repoint `ollama`/`comfyui` |
-| `docker/deploy/node-exporter/compose.yaml` | Modify | smartctl-exporter image pin |
-| `docker/red/README.md` | Create | Host doc: routing, DNS, first-deploy |
+| File                                       | Action        | Responsibility                                                 |
+| ------------------------------------------ | ------------- | -------------------------------------------------------------- |
+| `docker/red/traefik/compose.yaml`          | Create        | Traefik shim + red `command:` override (`tyriis.dev` wildcard) |
+| `docker/red/traefik/.env`                  | Create        | `TARGET`, `TLS_DOMAIN`, `ACME_EMAIL`                           |
+| `docker/red/traefik/sops.env`              | Create (SOPS) | Encrypted `CF_DNS_API_TOKEN` placeholder                       |
+| `docker/red/unsloth/compose.yaml`          | Modify        | `apps` + labels + loopback ports                               |
+| `docker/red/ollama/compose.yaml`           | Create        | `apps` + labels + loopback port                                |
+| `docker/red/comfyui/compose.yaml`          | Create        | `apps` + labels + loopback ports (both UIs)                    |
+| `docker/.doco-cd.red.yaml`                 | Modify        | Add `traefik`; repoint `ollama`/`comfyui`                      |
+| `docker/deploy/node-exporter/compose.yaml` | Modify        | smartctl-exporter image pin                                    |
+| `docker/red/README.md`                     | Create        | Host doc: routing, DNS, first-deploy                           |
 
 **Shared shim boilerplate** (used verbatim in the new shim files below; adjust only the shared-compose path):
 
@@ -54,6 +59,7 @@
 ### Task 1: red Traefik instance
 
 **Files:**
+
 - Create: `docker/red/traefik/compose.yaml`
 - Create: `docker/red/traefik/.env`
 - Create: `docker/red/traefik/sops.env`
@@ -136,16 +142,19 @@ rm -f /tmp/red-traefik-sops.env
 ```bash
 grep -c 'sops_lastmodified' docker/red/traefik/sops.env
 ```
+
 Expected: `1` (and no plaintext `CF_DNS_API_TOKEN=REPLACE_ME` line).
 
 ```bash
 docker compose --env-file docker/red/traefik/.env -f docker/red/traefik/compose.yaml config | grep -E 'tyriis.dev|techtales'
 ```
+
 Expected: output contains `tyriis.dev` and `*.tyriis.dev`; contains **no** `techtales`.
 
 ```bash
 docker compose --env-file docker/red/traefik/.env -f docker/red/traefik/compose.yaml config | grep -E 'container_name|networks|80:80|443:443'
 ```
+
 Expected: `container_name: traefik`, `apps` network, host port bindings `80`/`443`.
 
 - [ ] **Step 5: Commit**
@@ -160,6 +169,7 @@ git commit -m "feat(traefik): add red tls instance for tyriis.dev"
 ### Task 2: Unsloth shim — labels, apps, loopback
 
 **Files:**
+
 - Modify: `docker/red/unsloth/compose.yaml`
 
 - [ ] **Step 1: Rewrite `docker/red/unsloth/compose.yaml`**
@@ -202,6 +212,7 @@ services:
 ```bash
 docker compose -f docker/red/unsloth/compose.yaml config | grep -E 'unsloth.tyriis.dev|127.0.0.1:8000|127.0.0.1:8888|apps'
 ```
+
 Expected: the host rule, both loopback bindings, and `apps` network all present.
 
 - [ ] **Step 3: Commit**
@@ -216,6 +227,7 @@ git commit -m "feat(unsloth): front red studio with traefik tls"
 ### Task 3: Ollama shim
 
 **Files:**
+
 - Create: `docker/red/ollama/compose.yaml`
 
 - [ ] **Step 1: Create `docker/red/ollama/compose.yaml`**
@@ -257,6 +269,7 @@ services:
 ```bash
 docker compose -f docker/red/ollama/compose.yaml config | grep -E 'ollama.tyriis.dev|127.0.0.1:11434|apps'
 ```
+
 Expected: host rule, loopback binding, `apps` network present.
 
 - [ ] **Step 3: Commit**
@@ -271,6 +284,7 @@ git commit -m "feat(ollama): front red api with traefik tls"
 ### Task 4: ComfyUI shim (both web UIs)
 
 **Files:**
+
 - Create: `docker/red/comfyui/compose.yaml`
 
 - [ ] **Step 1: Create `docker/red/comfyui/compose.yaml`**
@@ -324,11 +338,13 @@ services:
 ```bash
 docker compose -f docker/red/comfyui/compose.yaml config | grep -E 'comfyui.tyriis.dev|gallery.tyriis.dev|127.0.0.1:818[89]|apps'
 ```
+
 Expected: both host rules, both loopback bindings, `apps` network present. Also confirm `fix-permissions` is still present:
 
 ```bash
 docker compose -f docker/red/comfyui/compose.yaml config --services
 ```
+
 Expected: `comfyui-nvidia`, `comfyui-gallery`, `fix-permissions`.
 
 - [ ] **Step 3: Commit**
@@ -343,6 +359,7 @@ git commit -m "feat(comfyui): front red uis with traefik tls"
 ### Task 5: doco-cd red workload list
 
 **Files:**
+
 - Modify: `docker/.doco-cd.red.yaml`
 
 - [ ] **Step 1: Update `docker/.doco-cd.red.yaml`**
@@ -394,11 +411,13 @@ env_files:
 ```bash
 python3 -c "import yaml,sys; docs=list(yaml.safe_load_all(open('docker/.doco-cd.red.yaml'))); print([d['name'] for d in docs if d])"
 ```
+
 Expected: `['traefik', 'busybox-enc', 'ollama', 'node-exporter', 'comfyui', 'unsloth', 'arcane-agent']` (`traefik` first).
 
 ```bash
 for d in docker/red/traefik docker/red/ollama docker/red/comfyui docker/red/unsloth; do test -f "$d/compose.yaml" && echo "OK $d" || echo "MISSING $d"; done
 ```
+
 Expected: four `OK` lines.
 
 - [ ] **Step 3: Commit**
@@ -413,6 +432,7 @@ git commit -m "feat(doco-cd): route red services through traefik"
 ### Task 6: smartctl-exporter image pin
 
 **Files:**
+
 - Modify: `docker/deploy/node-exporter/compose.yaml:28`
 
 - [ ] **Step 1: Change the image**
@@ -420,7 +440,7 @@ git commit -m "feat(doco-cd): route red services through traefik"
 Replace the `image:` line of the `smartctl-exporter` service with:
 
 ```yaml
-    image: ghcr.io/prometheus-community/smartctl-exporter:master@sha256:7a0f8712313bbf38f2534d57fb256dde97c6fb3d9a16323c4f933cca8e10b49c
+image: ghcr.io/prometheus-community/smartctl-exporter:master@sha256:7a0f8712313bbf38f2534d57fb256dde97c6fb3d9a16323c4f933cca8e10b49c
 ```
 
 - [ ] **Step 2: Verify config and that no other line changed**
@@ -429,6 +449,7 @@ Replace the `image:` line of the `smartctl-exporter` service with:
 docker compose -f docker/deploy/node-exporter/compose.yaml config >/dev/null && echo OK
 git diff -- docker/deploy/node-exporter/compose.yaml
 ```
+
 Expected: `OK`, and the diff shows exactly one changed `image:` line.
 
 - [ ] **Step 3: Commit**
@@ -443,6 +464,7 @@ git commit -m "fix(node-exporter): pin smartctl exporter image"
 ### Task 7: red host README
 
 **Files:**
+
 - Create: `docker/red/README.md`
 
 - [ ] **Step 1: Create `docker/red/README.md`**
@@ -456,18 +478,18 @@ LLM/image tooling and an Arcane edge agent. GitOps via doco-cd with `TARGET=red`
 
 ## Services
 
-| Service                  | Hostname                  | Backend (container port)      | Direct host port    |
-| ------------------------ | ------------------------- | ----------------------------- | ------------------- |
-| traefik                  | —                         | —                             | `80`/`443` (LAN)    |
-| unsloth (Studio UI/API)  | `unsloth.tyriis.dev`      | `unsloth:8000`                | `127.0.0.1:8000`    |
-| unsloth Jupyter          | internal                  | `unsloth:8888`                | `127.0.0.1:8888`    |
-| comfyui                  | `comfyui.tyriis.dev`      | `comfyui-nvidia:8188`         | `127.0.0.1:8188`    |
-| comfyui-gallery          | `gallery.tyriis.dev`      | `comfyui-gallery:8189`        | `127.0.0.1:8189`    |
-| ollama                   | `ollama.tyriis.dev`       | `ollama:11434`                | `127.0.0.1:11434`   |
-| node-exporter            | not proxied               | host net `:9100`              | `:9100`             |
-| smartctl-exporter        | not proxied               | `:9633`                       | `:9633`             |
-| busybox-enc              | —                         | SOPS decrypt smoke test       | —                   |
-| arcane-agent             | —                         | outbound edge poll to bifrost | —                   |
+| Service                 | Hostname             | Backend (container port)      | Direct host port  |
+| ----------------------- | -------------------- | ----------------------------- | ----------------- |
+| traefik                 | —                    | —                             | `80`/`443` (LAN)  |
+| unsloth (Studio UI/API) | `unsloth.tyriis.dev` | `unsloth:8000`                | `127.0.0.1:8000`  |
+| unsloth Jupyter         | internal             | `unsloth:8888`                | `127.0.0.1:8888`  |
+| comfyui                 | `comfyui.tyriis.dev` | `comfyui-nvidia:8188`         | `127.0.0.1:8188`  |
+| comfyui-gallery         | `gallery.tyriis.dev` | `comfyui-gallery:8189`        | `127.0.0.1:8189`  |
+| ollama                  | `ollama.tyriis.dev`  | `ollama:11434`                | `127.0.0.1:11434` |
+| node-exporter           | not proxied          | host net `:9100`              | `:9100`           |
+| smartctl-exporter       | not proxied          | `:9633`                       | `:9633`           |
+| busybox-enc             | —                    | SOPS decrypt smoke test       | —                 |
+| arcane-agent            | —                    | outbound edge poll to bifrost | —                 |
 
 Traefik terminates TLS for the four proxied services and redirects HTTP to HTTPS. It obtains a
 single wildcard certificate (`tyriis.dev` + `*.tyriis.dev`) from Let's Encrypt via the Cloudflare
@@ -506,6 +528,7 @@ redirects to HTTPS, and the loopback ports are unreachable from another LAN host
 ```bash
 pre-commit run markdownlint-fix --files docker/red/README.md
 ```
+
 Expected: passes (or auto-fixes and re-run clean).
 
 - [ ] **Step 3: Commit**
@@ -524,6 +547,7 @@ git commit -m "docs(red): document traefik tls layout"
 ```bash
 git diff --exit-code origin/main -- docker/deploy/traefik/compose.yaml docker/bifrost/
 ```
+
 Expected: exit `0`, no output.
 
 - [ ] **Step 2: Validate every red shim**
@@ -534,6 +558,7 @@ docker compose -f docker/red/unsloth/compose.yaml config >/dev/null && \
 docker compose -f docker/red/ollama/compose.yaml config >/dev/null && \
 docker compose -f docker/red/comfyui/compose.yaml config >/dev/null && echo ALL_OK
 ```
+
 Expected: `ALL_OK`.
 
 - [ ] **Step 3: Run pre-commit on all changed files**
@@ -544,6 +569,7 @@ pre-commit run --files \
   docker/red/unsloth/compose.yaml docker/red/ollama/compose.yaml docker/red/comfyui/compose.yaml \
   docker/.doco-cd.red.yaml docker/deploy/node-exporter/compose.yaml docker/red/README.md
 ```
+
 Expected: all hooks pass (fix any auto-fixable findings and re-run).
 
 - [ ] **Step 4: Confirm no symlinks remain under `docker/red`**
@@ -551,14 +577,17 @@ Expected: all hooks pass (fix any auto-fixable findings and re-run).
 ```bash
 find docker/red -type l
 ```
+
 Expected: no output.
 
 ---
 
 ## Self-Review
 
-**Spec coverage:** D1 → Task 1; D2 → Task 1 (domains in `command:`); D3 → Tasks 2–4 (`apps` + labels); D4 → Tasks 2–4 (loopback ports); D5 → Task 6; doco-cd → Task 5; documentation → Task 7; verification → Task 8. Metrics non-goal honored (no changes to `node-exporter` networking). Manual prerequisites are in Task 7's README and the spec.
+**Spec coverage:** D1 → Task 1; D2 → Task 1 (domains in `command:`); D3 → Tasks 2–4 (`apps` + labels); D4 → Tasks 2–4 (loopback ports); D5 → Task 6; doco-cd → Task 5;
+documentation → Task 7; verification → Task 8. Metrics non-goal honored (no changes to `node-exporter` networking). Manual prerequisites are in Task 7's README and the spec.
 
 **Placeholder scan:** only the intentional `CF_DNS_API_TOKEN=REPLACE_ME` placeholder inside the SOPS-encrypted file, which the operator replaces (documented). No TBDs.
 
-**Type/name consistency:** router/service names (`unsloth`, `comfyui`, `gallery`, `ollama`) and container ports (`8000`, `8188`, `8189`, `11434`) match the spec's routing table and the shared composes' service names (`unsloth`, `ollama`, `comfyui-nvidia`, `comfyui-gallery`).
+**Type/name consistency:** router/service names (`unsloth`, `comfyui`, `gallery`, `ollama`) and container ports (`8000`, `8188`, `8189`, `11434`) match the spec's routing table
+and the shared composes' service names (`unsloth`, `ollama`, `comfyui-nvidia`, `comfyui-gallery`).
