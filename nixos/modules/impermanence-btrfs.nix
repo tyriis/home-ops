@@ -93,6 +93,19 @@ let
     fi
     : > "$MARK/DONE"
 
+    # DRILL HOOK (gen50): a boot entry carrying impermanence.drill=1
+    # (no grep/sed in the initrd — pure bash case over cat) exits 1
+    # before any state is touched: FailureAction=halt routes to
+    # emergency + :2222. Purpose: exercise the rescue kit at a
+    # deliberate halt — nls-equipped ESP mount + bootdog feeding
+    # behaviour during emergency. The entry is inert unless picked.
+    case "$(cat /proc/cmdline)" in
+      *impermanence.drill=1*)
+        echo "impermanence-wipe: drill halt requested (impermanence.drill=1)"
+        exit 1
+        ;;
+    esac
+
     # Fail-open: a viable root exists, so boot it — but say so, loudly, via a
     # FAILED marker the stage-2 checker turns into a failed unit + a metric.
     fail_open() {

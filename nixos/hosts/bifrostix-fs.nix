@@ -196,7 +196,28 @@ in
   # vfat needs its default codepage, and NixOS 26.11 does not pull
   # nls_cp437/nls_ascii along with it. Every initrd ESP mount failed
   # "FAT-fs: codepage cp437 not found" until both were declared.
-  boot.initrd.availableKernelModules = [ "vfat" "nls_cp437" "nls_ascii" ];
+  boot.initrd.availableKernelModules = [ "vfat" "nls_cp437" "nls_ascii"
+    # iTCO hardware watchdog (NUC7i5, iTCO_wdt -> watchdog0, max 60 s).
+    # Declared for the initrd so stage-1 can arm it — a hung stage-1
+    # (gen48 boot 1 pattern: no 22, no 2222, capture black) previously
+    # needed a human at the power button. Proven present live 2026-11-18.
+    "iTCO_wdt" "iTCO_vendor_support" "lpc_ich" ];
+
+  # Boot-dog. 26.11 unified systemd-262: the initrd IS systemd, so
+  # stage-1 Manager settings live under boot.initrd.systemd.settings.
+  # RuntimeWatchdogPreSec arms the iTCO device BEFORE switch-root and is
+  # fed by stage-1 PID1; a HUNG stage-1 stops feeding and the firmware
+  # resets the box after the timeout — unattended recovery from the
+  # 48-1 class of failure. A deliberate HALT (emergency.target) is
+  # expected to keep being fed, preserving the 2222 rescue window —
+  # to be proven by the gen50 drill entry. Stage-2 takes over with
+  # RuntimeWatchdogSec: a deadlocked live system reboots, and with the
+  # self-repeating wipe the reboot is the recovery.
+  # iTCO max timeout is 60 s; stage-1 to :22 measured 60-70 s wall
+  # total, of which PID1 userspace is well under 60 — margin accepted
+  # for a PoC that prefers a false reboot to a silent hang.
+  boot.initrd.systemd.settings.Manager.RuntimeWatchdogPreSec = "60s";
+  systemd.settings.Manager.RuntimeWatchdogSec = "60s";
 
   # Boot forensics: stream the console to the jarvis box over UDP. The
   # netconsole module is loaded in stage-1 (after the initrd network is
