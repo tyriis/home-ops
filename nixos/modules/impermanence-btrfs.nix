@@ -200,13 +200,35 @@ let
     # 6. Guard @base. Without a seed, a delete -> snapshot pair loses both.
     [ -d "$M/@base" ] || fail_open "no @base seed present"
 
-    # 7. Guard no nested subvolume inside @. Nested children make
-    # `subvolume delete` refuse, silently booting a stale @ forever.
-    # NB: `list <path>` without -o lists the WHOLE filesystem — only -o
-    # filters to children of the given subvolume (proven live 2026-11-17).
-    if [ -n "$(btrfs subvolume list -o "$M/@")" ]; then
-      fail_open "nested subvolume(s) under @ — wipe cannot proceed"
+    # 7. Guard nested subvolumes inside @ — data only. Nested children
+    # make `subvolume delete` refuse, silently booting a stale @
+    # forever. NB: `list <path>` without -o lists the WHOLE filesystem —
+    # only -o filters to children of the given subvolume (proven live
+    # 2026-11-17).
+    # 262-era finding (gen46 forensics 2026-11-18): systemd creates
+    # three EMPTY furniture subvolumes (/srv, /var/lib/machines,
+    # /var/lib/portables) under the mounted @ root 1.9 s into
+    # stage-2 — the 26.05 installer made the same trio at fs-tree
+    # level (subvol IDs 258-260). gen46 boot 2 had NO machined unit
+    # in its log at all, so no service disable can prevent these.
+    # An empty child is wiped WITH @ — delete refuses only because
+    # it is nested, so refuse is wrong for it; a child WITH data
+    # would silently lose that data, so only those fail open.
+    NESTED_DATA=""
+    for c in $(btrfs subvolume list -o "$M/@" 2>/dev/null | sed "s|.* path ||"); do
+      if [ -n "$(ls -A "$M/$c" 2>/dev/null)" ]; then
+        NESTED_DATA="$NESTED_DATA $c"
+      fi
+    done
+    if [ -n "$NESTED_DATA" ]; then
+      fail_open "nested subvolume(s) WITH DATA under @ — wipe cannot proceed:$NESTED_DATA"
     fi
+    # btrfs refuses to delete a parent that has ANY children, empty or
+    # not — so the (proven empty) furniture must be deleted before @.
+    for c in $(btrfs subvolume list -o "$M/@" 2>/dev/null | sed "s|.* path ||"); do
+      btrfs subvolume delete "$M/$c" >/dev/null 2>&1 \
+        || fail_open "cannot delete empty nested child $c"
+    done
 
     # 8. Clean stale @new/@old remnants — only here, after recovery, only
     # while @ exists. Cleaning before recovery deletes the recovery path.
@@ -451,6 +473,29 @@ in
     systemd.sockets."systemd-machined".wantedBy = lib.mkForce [];
     systemd.sockets."systemd-portabled".wantedBy = lib.mkForce [];
     systemd.sockets."systemd-importd".wantedBy = lib.mkForce [];
+
+    # 46's own battery (boot 1, 2026-11-18) proved the six lines above
+    # are necessary but not sufficient: the .wants symlinks are 26.11
+    # GENERATION content (Jan-1970 timestamps — they ship with the
+    # build, not stale drift), so `is-enabled` still says enabled even
+    # though the generated units have no [Install] section. Boot 2
+    # proved the mkForce does keep the services from RUNNING (zero
+    # machined log lines) — the residue is enablement only. This unit
+    # makes that residue self-healing: every activation, sever any
+    # enablement and stop anything socket-activated. Idempotent by
+    # `|| true` — absent units are the success case.
+    systemd.services."impermanence-machined-containment" = {
+      description = "Impermanence: sever machined/portabled/importd enablement";
+      wantedBy = [ "basic.target" ];
+      after = [ "basic.target" ];
+      before = [ "multi-user.target" ];
+      serviceConfig.Type = "oneshot";
+      script = ''
+        for u in systemd-machined systemd-portabled systemd-importd; do
+          systemctl disable --now "$u.socket" "$u.service" >/dev/null 2>&1 || true
+        done
+      '';
+    };
 
     # Stage 2: manual re-seed. No wantedBy — an operator command only.
     systemd.services.impermanence-reseed = {
