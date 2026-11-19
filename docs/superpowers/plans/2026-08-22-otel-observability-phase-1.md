@@ -2,9 +2,12 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Deploy the OTel Operator + Collector (DaemonSet) with bearer-token OTLP ingress for local opencode (traces/logs/metrics), and Tempo (SingleBinary, S3-backed) — alongside the existing stack, without touching Promtail or Prometheus ServiceMonitors.
+**Goal:** Deploy the OTel Operator + Collector (DaemonSet) with bearer-token OTLP ingress for local opencode (traces/logs/metrics), and Tempo (SingleBinary, S3-backed) —
+alongside the existing stack, without touching Promtail or Prometheus ServiceMonitors.
 
-**Architecture:** Two new Flux apps (`opentelemetry/` and `tempo/`) in the `observability` namespace, mirroring the existing `loki` (OCI chart + `valuesFrom` S3) and `blackbox-exporter` (HTTPRoute) patterns. Collector ingests OTLP and exports traces→Tempo, logs→Loki (`/otlp`), metrics→Prometheus (native OTLP `/api/v1/otlp`). Prometheus gets an additive `enableOTLPReceiver`, Loki gets an additive `otlp_config`.
+**Architecture:** Two new Flux apps (`opentelemetry/` and `tempo/`) in the `observability` namespace, mirroring the existing `loki` (OCI chart + `valuesFrom` S3) and
+`blackbox-exporter` (HTTPRoute) patterns. Collector ingests OTLP and exports traces→Tempo, logs→Loki (`/otlp`), metrics→Prometheus (native OTLP `/api/v1/otlp`).
+Prometheus gets an additive `enableOTLPReceiver`, Loki gets an additive `otlp_config`.
 
 **Tech Stack:** Flux CD (Kustomization/HelmRelease/OCIRepository), opentelemetry-operator, OTel Collector (contrib), Tempo (grafana helm chart), MinIO S3, OpenBao + External Secrets Operator, Envoy Gateway (HTTPRoute), Grafana operator (GrafanaDatasource).
 
@@ -26,7 +29,7 @@
 
 ## File Structure
 
-```
+```text
 kubernetes/main/apps/observability/
 ├── kustomization.yaml                         [MODIFY] add opentelemetry + tempo flux-sync refs
 ├── opentelemetry/
@@ -69,6 +72,7 @@ Outside Flux manifests; must exist before ExternalSecrets can sync.
 ## Task 1: opentelemetry-operator
 
 **Files:**
+
 - Create: `kubernetes/main/apps/observability/opentelemetry/flux-sync.yaml`
 - Create: `kubernetes/main/apps/observability/opentelemetry/operator/kustomization.yaml`
 - Create: `kubernetes/main/apps/observability/opentelemetry/operator/oci-repository.yaml`
@@ -76,6 +80,7 @@ Outside Flux manifests; must exist before ExternalSecrets can sync.
 - Modify: `kubernetes/main/apps/observability/kustomization.yaml`
 
 **Interfaces:**
+
 - Produces: Kustomization `opentelemetry-operator`, operator deployment + `opentelemetry.io/v1beta1` CRDs (consumed by Task 2's collector CR).
 
 - [ ] **Step 1: Create `opentelemetry/flux-sync.yaml`** (operator Kustomization only — collector doc added in Task 2)
@@ -175,7 +180,8 @@ spec:
           memory: 64Mi
 ```
 
-> **Note:** verify exact chart value keys via `helm show values oci://ghcr.io/open-telemetry/opentelemetry-helm-charts/opentelemetry-operator --version 0.122.0` before finalizing; `admissionWebhooks.certManager.enabled` and `manager.resources` are the expected shapes.
+> **Note:** verify exact chart value keys via `helm show values oci://ghcr.io/open-telemetry/opentelemetry-helm-charts/opentelemetry-operator --version 0.122.0` before finalizing;
+> `admissionWebhooks.certManager.enabled` and `manager.resources` are the expected shapes.
 
 - [ ] **Step 5: Register in parent kustomization** — add `- ./opentelemetry/flux-sync.yaml` between `./loki/flux-sync.yaml` and `./promtail/flux-sync.yaml`.
 
@@ -200,6 +206,7 @@ git commit -m "feat(otel): add opentelemetry operator and collector #9987"
 ## Task 2: opentelemetry-collector
 
 **Files:**
+
 - Modify: `kubernetes/main/apps/observability/opentelemetry/flux-sync.yaml` (append collector Kustomization)
 - Create: `kubernetes/main/apps/observability/opentelemetry/collector/kustomization.yaml`
 - Create: `kubernetes/main/apps/observability/opentelemetry/collector/collector.yaml`
@@ -207,7 +214,10 @@ git commit -m "feat(otel): add opentelemetry operator and collector #9987"
 - Create: `kubernetes/main/apps/observability/opentelemetry/collector/http-route.yaml`
 
 **Interfaces:**
-- Consumes: `opentelemetry-operator` (Task 1) for the CRD; `external-secrets-stores` (secops) for the bearer-token Secret; `loki-headless.observability.svc.cluster.local:3100`, `prometheus-operated.observability.svc.cluster.local:9090`, `tempo.observability.svc.cluster.local:4317` (Tempo from Task 4).
+
+- Consumes: `opentelemetry-operator` (Task 1) for the CRD; `external-secrets-stores` (secops) for the bearer-token Secret;
+  `loki-headless.observability.svc.cluster.local:3100`, `prometheus-operated.observability.svc.cluster.local:9090`,
+  `tempo.observability.svc.cluster.local:4317` (Tempo from Task 4).
 - Produces: DaemonSet `otel-collector`, Service `otel-collector-collector` (4318), Secret `otel-collector`, HTTPRoute `otel.techtales.io`.
 
 - [ ] **Step 1: Append collector Kustomization to `flux-sync.yaml`** (second `---` document)
@@ -443,6 +453,7 @@ spec:
 ## Task 4: tempo app
 
 **Files:**
+
 - Create: `kubernetes/main/apps/observability/tempo/flux-sync.yaml`
 - Create: `kubernetes/main/apps/observability/tempo/app/kustomization.yaml`
 - Create: `kubernetes/main/apps/observability/tempo/app/oci-repository.yaml`
@@ -451,6 +462,7 @@ spec:
 - Modify: `kubernetes/main/apps/observability/kustomization.yaml`
 
 **Interfaces:**
+
 - Consumes: `external-secrets-stores` (secops) for the S3 Secret; MinIO `tempo` bucket (prerequisite).
 - Produces: Tempo SingleBinary deployment, Service `tempo` (ports 4317/4318 OTLP, 3200 query), Secret `tempo-s3`.
 
@@ -619,7 +631,9 @@ spec:
       targetPath: tempo.storage.trace.s3.secret_key
 ```
 
-> **Note:** verify exact chart keys via `helm show values oci://ghcr.io/grafana-community/helm-charts/tempo --version 2.2.4`. The `tempo.storage.trace.s3.*` and `tempo.receivers.otlp.protocols.*` paths are the expected shapes; `reportingEnabled` disables telemetry. `metricsGenerator.enabled: false` keeps span-metrics deferred (Phase 2).
+> **Note:** verify exact chart keys via `helm show values oci://ghcr.io/grafana-community/helm-charts/tempo --version 2.2.4`.
+> The `tempo.storage.trace.s3.*` and `tempo.receivers.otlp.protocols.*` paths are the expected shapes; `reportingEnabled` disables telemetry.
+> `metricsGenerator.enabled: false` keeps span-metrics deferred (Phase 2).
 
 - [ ] **Step 6: Register in parent kustomization** — add `- ./tempo/flux-sync.yaml` between `./speedtest-exporter/flux-sync.yaml` and `./unpoller/flux-sync.yaml`.
 
@@ -650,19 +664,21 @@ Tempo self-monitoring uses the chart's native `serviceMonitor.enabled: true` (Ta
 ## Task 6: kube-prometheus-stack — enable native OTLP receiver
 
 **Files:**
+
 - Modify: `kubernetes/main/apps/observability/kube-prometheus-stack/app/helm-release.yaml`
 
 **Interfaces:**
+
 - Produces: Prometheus `--web.enable-otlp-receiver`, serving `/api/v1/otlp/v1/metrics` (consumed by the collector's `otlphttp/prom` exporter).
 
 - [ ] **Step 1: Add `enableOTLPReceiver: true` under `prometheusSpec:`** — insert after `enableFeatures` (currently line ~174), e.g.:
 
 ```yaml
-        prometheusSpec:
-          enableAdminAPI: true
-          enableFeatures:
-            - memory-snapshot-on-shutdown
-          enableOTLPReceiver: true
+prometheusSpec:
+  enableAdminAPI: true
+  enableFeatures:
+    - memory-snapshot-on-shutdown
+  enableOTLPReceiver: true
 ```
 
 - [ ] **Step 2: Verify**
@@ -687,26 +703,28 @@ git commit -m "feat(observability): wire otel and tempo backends #9987"
 ## Task 7: loki — additive otlp_config
 
 **Files:**
+
 - Modify: `kubernetes/main/apps/observability/loki/app/helm-release.yaml`
 
 **Interfaces:**
+
 - Produces: Loki `/otlp/v1/logs` (already enabled by default) with OTLP resource-attribute → label mapping (consumed by the collector's `otlphttp/loki` exporter).
 
 - [ ] **Step 1: Add `otlp_config` under `limits_config:`** — extend the existing `limits_config:` block (currently `retention_period: 30d` at ~line 37):
 
 ```yaml
-      limits_config:
-        retention_period: 30d
-        otlp_config:
-          resource_attributes:
-            attributes_config:
-              - action: index_label
-                attributes:
-                  - service.name
-                  - k8s.namespace.name
-                  - k8s.pod.name
-                  - k8s.container.name
-          ignore_defaults: true
+limits_config:
+  retention_period: 30d
+  otlp_config:
+    resource_attributes:
+      attributes_config:
+        - action: index_label
+          attributes:
+            - service.name
+            - k8s.namespace.name
+            - k8s.pod.name
+            - k8s.container.name
+    ignore_defaults: true
 ```
 
 - [ ] **Step 2: Verify**
@@ -726,9 +744,11 @@ Expected: Loki pods restarted; `/otlp/v1/logs` endpoint present (additive — Pr
 ## Task 8: grafana — add Tempo datasource
 
 **Files:**
+
 - Modify: `kubernetes/main/apps/observability/grafana/instance/datasource.yaml`
 
 **Interfaces:**
+
 - Consumes: `tempo` Service (Task 4) on query port 3200.
 
 - [ ] **Step 1: Append a Tempo `GrafanaDatasource` document**
@@ -777,6 +797,3 @@ Run after all tasks, per the spec's "Post-Deployment Verification":
 6. Collector self-monitoring — `otel-collector` target up in Prometheus (port 8888).
 7. Promtail still shipping logs (unchanged).
 8. All existing ServiceMonitors still functional.
-
-
-

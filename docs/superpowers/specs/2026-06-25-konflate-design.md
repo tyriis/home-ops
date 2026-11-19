@@ -24,13 +24,13 @@ Deploy [Konflate](https://github.com/home-operations/konflate) — a read-only P
 
 ### Features (First Iteration)
 
-| Feature | Setting | Notes |
-|---------|---------|-------|
-| Status checks | `true` | Post commit status on rendered PRs (needs write token) |
-| PR comments | `true` | Post/update summary comment on PRs (needs write token) |
-| MCP | `false` | Can be enabled in a future iteration |
-| ServiceMonitor | `true` | Prometheus monitoring |
-| Persistence | `false` | State lives in emptyDir; can add PVC later |
+| Feature        | Setting | Notes                                                  |
+| -------------- | ------- | ------------------------------------------------------ |
+| Status checks  | `true`  | Post commit status on rendered PRs (needs write token) |
+| PR comments    | `true`  | Post/update summary comment on PRs (needs write token) |
+| MCP            | `false` | Can be enabled in a future iteration                   |
+| ServiceMonitor | `true`  | Prometheus monitoring                                  |
+| Persistence    | `false` | State lives in emptyDir; can add PVC later             |
 
 ### Write-back
 
@@ -45,10 +45,10 @@ Write-back (status checks + PR comments) will use a GitHub App. The secrets will
 
 ### Resource Limits
 
-| Resource | Request | Limit |
-|----------|---------|-------|
-| CPU | 50m | (none explicit, burst as needed) |
-| Memory | 256Mi | 1Gi |
+| Resource | Request | Limit                            |
+| -------- | ------- | -------------------------------- |
+| CPU      | 50m     | (none explicit, burst as needed) |
+| Memory   | 256Mi   | 1Gi                              |
 
 Based on kubesearch.dev community patterns and onedr0p/home-ops reference implementation.
 
@@ -56,7 +56,7 @@ Based on kubesearch.dev community patterns and onedr0p/home-ops reference implem
 
 ### New Files
 
-```
+```text
 kubernetes/main/apps/flux-system/konflate/
 ├── flux-sync.yaml          # Kustomization CRD pointing at ./app/
 └── app/
@@ -67,13 +67,14 @@ kubernetes/main/apps/flux-system/konflate/
 
 ### Modified Files
 
-```
+```text
 kubernetes/main/apps/flux-system/kustomization.yaml  # Add konflate/flux-sync.yaml to resources
 ```
 
 ## Secrets
 
 The user will provide:
+
 - GitHub App credentials (`appClientId` + `appPrivateKey`) or a write token
 - Webhook secret
 - Push token (optional, for CI-triggered refreshes)
@@ -82,7 +83,7 @@ These will be stored in a pre-existing Secret and referenced via `secret.existin
 
 ## References
 
-- https://github.com/home-operations/konflate
-- https://github.com/onedr0p/home-ops/tree/main/kubernetes/apps/flux-system/konflate
-- https://kubesearch.dev/hr/ghcr.io-home-operations-charts-konflate
-- https://github.com/tyriis/home-ops/issues/9364
+- <https://github.com/home-operations/konflate>
+- <https://github.com/onedr0p/home-ops/tree/main/kubernetes/apps/flux-system/konflate>
+- <https://kubesearch.dev/hr/ghcr.io-home-operations-charts-konflate>
+- <https://github.com/tyriis/home-ops/issues/9364>

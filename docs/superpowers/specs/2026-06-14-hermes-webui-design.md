@@ -2,11 +2,12 @@
 
 ## Overview
 
-Add [Hermes WebUI](https://github.com/nesquena/hermes-webui) as a sidecar container to each existing hermes-agent pod, providing a web-based chat UI for each agent instance. Uses gateway-backed chat mode, connecting to the agent's API server on localhost.
+Add [Hermes WebUI](https://github.com/nesquena/hermes-webui) as a sidecar container to each existing hermes-agent pod, providing a web-based chat UI for each agent instance.
+Uses gateway-backed chat mode, connecting to the agent's API server on localhost.
 
 ## Architecture
 
-```
+```text
 ┌─────────────────────────────────────┐
 │ hermes-agent-{instance} Pod         │
 │                                     │
@@ -41,45 +42,45 @@ Add [Hermes WebUI](https://github.com/nesquena/hermes-webui) as a sidecar contai
 
 ## Instances & Hostnames
 
-| Instance | Subdomain |
-|----------|-----------|
-| tyriis | `euphoria.techtales.io` |
-| jazzlyn | `moira.techtales.io` |
-| crowlex | `titan-ai.techtales.io` |
-| techinik | `nova.techtales.io` |
+| Instance | Subdomain               |
+| -------- | ----------------------- |
+| tyriis   | `euphoria.techtales.io` |
+| jazzlyn  | `moira.techtales.io`    |
+| crowlex  | `titan-ai.techtales.io` |
+| techinik | `nova.techtales.io`     |
 
 ## Container Configuration
 
 Third container in the existing `hermes` controller, alongside `app` and `dashboard`:
 
-| Field | Value |
-|-------|-------|
-| Image | `ghcr.io/nesquena/hermes-webui:0.51.397` |
-| Command | `["python3", "/apptoo/server.py"]` |
-| Port | 8787 (TCP) |
+| Field           | Value                                                                                          |
+| --------------- | ---------------------------------------------------------------------------------------------- |
+| Image           | `ghcr.io/nesquena/hermes-webui:0.51.397`                                                       |
+| Command         | `["python3", "/apptoo/server.py"]`                                                             |
+| Port            | 8787 (TCP)                                                                                     |
 | SecurityContext | Same as existing containers: `readOnlyRootFilesystem: true`, `allowPrivilegeEscalation: false` |
 
 ### Environment
 
-| Variable | Value |
-|----------|-------|
-| `HERMES_WEBUI_HOST` | `0.0.0.0` |
-| `HERMES_WEBUI_PORT` | `8787` |
-| `HERMES_WEBUI_CHAT_BACKEND` | `gateway` |
+| Variable                        | Value                   |
+| ------------------------------- | ----------------------- |
+| `HERMES_WEBUI_HOST`             | `0.0.0.0`               |
+| `HERMES_WEBUI_PORT`             | `8787`                  |
+| `HERMES_WEBUI_CHAT_BACKEND`     | `gateway`               |
 | `HERMES_WEBUI_GATEWAY_BASE_URL` | `http://localhost:8642` |
-| `HOME` | `/opt/data` |
-| `HERMES_WEBUI_STATE_DIR` | `/opt/data/webui` |
-| `HERMES_WEBUI_PASSWORD` | From ExternalSecret |
+| `HOME`                          | `/opt/data`             |
+| `HERMES_WEBUI_STATE_DIR`        | `/opt/data/webui`       |
+| `HERMES_WEBUI_PASSWORD`         | From ExternalSecret     |
 
 ### Persistence
 
 Reuses existing pod volumes — no new volumes needed:
 
-| Volume | Mount Path | Purpose |
-|--------|------------|---------|
-| `data` (PVC) | `/opt/data` | WebUI state, sessions, passkeys |
-| `tmp` (emptyDir) | `/tmp` | Temp files |
-| `run` (emptyDir) | `/run` | Runtime files |
+| Volume           | Mount Path  | Purpose                         |
+| ---------------- | ----------- | ------------------------------- |
+| `data` (PVC)     | `/opt/data` | WebUI state, sessions, passkeys |
+| `tmp` (emptyDir) | `/tmp`      | Temp files                      |
+| `run` (emptyDir) | `/run`      | Runtime files                   |
 
 ### Probing
 
@@ -110,7 +111,7 @@ ingress:
 
 Same multi-instance pattern as the existing agent (`flux-sync.yaml` with 4 Kustomization entries, all pointing to shared `app/` directory):
 
-```
+```text
 kubernetes/main/apps/hermes-agent/hermes-webui/
 ├── flux-sync.yaml      # 4 Kustomization entries (tyriis, jazzlyn, crowlex, techinik)
 └── app/
@@ -118,7 +119,8 @@ kubernetes/main/apps/hermes-agent/hermes-webui/
     └── helm-release.yaml
 ```
 
-Or more likely, since it's a sidecar, the webui config lives directly in the existing `app/` directory as additions to `helm-release.yaml`, and the `flux-sync.yaml` is unchanged (it already deploys the app/ directory which contains all three containers).
+Or more likely, since it's a sidecar, the webui config lives directly in the existing `app/` directory as additions to `helm-release.yaml`, and the `flux-sync.yaml` is
+unchanged (it already deploys the app/ directory which contains all three containers).
 
 ## OpenBao Secret
 

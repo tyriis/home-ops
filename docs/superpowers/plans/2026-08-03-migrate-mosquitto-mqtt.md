@@ -4,7 +4,10 @@
 
 **Goal:** Migrate the standalone Mosquitto MQTT broker off the Raspberry Pi into the main Kubernetes cluster under `home-automation`, exposed on TCP 1883 via a Cilium LoadBalancer IP, with auth from OpenBao and a `ceph-block` PVC for persistence.
 
-**Architecture:** Single-instance `eclipse-mosquitto` deployed with the `bjw-s` `app-template` Helm chart (v5.0.1) in the `home-automation` namespace. A `LoadBalancer` service with the `lbipam.cilium.io/ips` annotation claims `192.168.100.201` from the Cilium `l2-pool`. `mosquitto.conf` is delivered via a ConfigMap; the `passwd` auth file is delivered via an `ExternalSecret` from OpenBao (path `infra/kubernetes/main/home-automation/mosquitto`) and mounted as a file; `mosquitto.db` persistence lives on a `ceph-block` PVC. No `volsync` backup (state is recreatable; auth is backed up via OpenBao). DNS cutover is a separate commit so the broker can be verified before `mqtt.techtales.io` is re-pointed.
+**Architecture:** Single-instance `eclipse-mosquitto` deployed with the `bjw-s` `app-template` Helm chart (v5.0.1) in the `home-automation` namespace. A `LoadBalancer` service with the `lbipam.cilium.io/ips` annotation claims
+`192.168.100.201` from the Cilium `l2-pool`. `mosquitto.conf` is delivered via a ConfigMap; the `passwd` auth file is delivered via an `ExternalSecret` from OpenBao (path `infra/kubernetes/main/home-automation/mosquitto`) and mounted as a
+file; `mosquitto.db` persistence lives on a `ceph-block` PVC. No `volsync` backup (state is recreatable; auth is backed up via OpenBao). DNS cutover is a separate commit so the broker can be verified before `mqtt.techtales.io` is
+re-pointed.
 
 **Tech Stack:** Flux CD (Kustomization, HelmRelease, ExternalSecret), bjw-s app-template Helm chart v5.0.1, eclipse-mosquitto, Cilium LoadBalancer IPAM, ceph-block PVC, OpenBao
 
@@ -17,6 +20,7 @@
 ## File Structure
 
 ### New Files
+
 - `kubernetes/main/apps/home-automation/mosquitto/flux-sync.yaml` — Flux `Kustomization` CRD pointing at `./app/` (no volsync component; `dependsOn` external-secrets-stores + rook-ceph-cluster only)
 - `kubernetes/main/apps/home-automation/mosquitto/app/kustomization.yaml` — Lists the app resources
 - `kubernetes/main/apps/home-automation/mosquitto/app/configmap.yaml` — `mosquitto.conf` ConfigMap
@@ -25,20 +29,26 @@
 - `kubernetes/main/apps/home-automation/mosquitto/app/helm-release.yaml` — `app-template` v5.0.1 HelmRelease (LoadBalancer `.201`, ConfigMap + secret + PVC mounts, security context)
 
 ### Modified Files
+
 - `kubernetes/main/apps/home-automation/kustomization.yaml` — Add `./mosquitto/flux-sync.yaml` to resources
 - `kubernetes/main/apps/networking/external-dns/unifi-records/dns-endpoint.yaml` — Re-point `mqtt.techtales.io` A record `192.168.1.180` → `192.168.100.201` (CNAMEs untouched)
 
 ### Committed (decision record)
+
 - `docs/decisions/0009-migrate-mqtt-broker-from-raspberry-pi.md` — The approved ADR (decision); already committed as docs(decision) — see commit f2b078265
 
 ---
 
 ## Notes & Assumptions
 
-- **Image tag:** `eclipse-mosquitto` `2.0.22` is pinned by tag only (no digest). Renovate manages digest pinning on subsequent runs, consistent with the rest of the estate. Update to the current 2.x tag at implementation time if Renovate reports a newer one.
-- **`passwd` mount approach:** The OpenBao secret at `infra/kubernetes/main/home-automation/mosquitto` is expected to hold a single key `MOSQUITTO_PASSWD` whose value is the full mosquitto `passwd` file content (e.g. `homeassistant:$6$...`). The `ExternalSecret` creates a Kubernetes `Secret` named `mosquitto-secret` with that key, and the Helm chart mounts it as a file at `/mosquitto/config/passwd` via `subPath: MOSQUITTO_PASSWD` (the same `type: secret` + `subPath` pattern used by `minecraft-public-velocity-proxy` `forwarding-secret` and `ring-mqtt` `credentials`). This keeps the auth file declarative, OpenBao-managed, and file-mounted without an initContainer.
+- **Image tag:** `eclipse-mosquitto` `2.0.22` is pinned by tag only (no digest). Renovate manages digest pinning on subsequent runs, consistent with the rest of the estate. Update to the current 2.x tag at implementation time if Renovate
+  reports a newer one.
+- **`passwd` mount approach:** The OpenBao secret at `infra/kubernetes/main/home-automation/mosquitto` is expected to hold a single key `MOSQUITTO_PASSWD` whose value is the full mosquitto `passwd` file content (e.g.
+  `homeassistant:$6$...`). The `ExternalSecret` creates a Kubernetes `Secret` named `mosquitto-secret` with that key, and the Helm chart mounts it as a file at `/mosquitto/config/passwd` via `subPath: MOSQUITTO_PASSWD` (the same `type:
+secret` + `subPath` pattern used by `minecraft-public-velocity-proxy` `forwarding-secret` and `ring-mqtt` `credentials`). This keeps the auth file declarative, OpenBao-managed, and file-mounted without an initContainer.
 - **Security context:** The official `eclipse-mosquitto` image runs as user `mosquitto` (UID 1883). `readOnlyRootFilesystem: true` is set; `/mosquitto/data` is the PVC and `/tmp` is an `emptyDir`, both writable.
-- **No volsync:** Per the ADR, the broker's state is recreatable and the only state that matters (auth) is backed up via OpenBao. The `flux-sync.yaml` therefore omits the `components:` volsync line and the `VOLSYNC_SUFFIX` substitute, and `dependsOn` lists only `external-secrets-stores` and `rook-ceph-cluster`.
+- **No volsync:** Per the ADR, the broker's state is recreatable and the only state that matters (auth) is backed up via OpenBao. The `flux-sync.yaml` therefore omits the `components:` volsync line and the `VOLSYNC_SUFFIX` substitute, and
+  `dependsOn` lists only `external-secrets-stores` and `rook-ceph-cluster`.
 - **Pre-stage the OpenBao secret** before merging the broker manifests (see Task 9): the `ExternalSecret` will go `SecretSyncedError` until the key exists in OpenBao at `infra/kubernetes/main/home-automation/mosquitto`.
 
 ---
@@ -46,11 +56,13 @@
 ### Task 1: Create flux-sync.yaml (Flux Kustomization CRD)
 
 **Files:**
+
 - Create: `kubernetes/main/apps/home-automation/mosquitto/flux-sync.yaml`
 
 - [ ] **Step 1: Create the directory**
 
 Run:
+
 ```bash
 mkdir -p kubernetes/main/apps/home-automation/mosquitto/app
 ```
@@ -106,6 +118,7 @@ git commit -m "feat(mosquitto): add flux-sync Kustomization #9869"
 ### Task 2: Create mosquitto.conf ConfigMap
 
 **Files:**
+
 - Create: `kubernetes/main/apps/home-automation/mosquitto/app/configmap.yaml`
 
 - [ ] **Step 1: Create the ConfigMap**
@@ -141,7 +154,9 @@ data:
     connection_messages true
 ```
 
-Note: `password_file` points at `/mosquitto/config/passwd`, which is the secret created in Task 3 and mounted in Task 5. `persistence_location` is the PVC mount path (Task 4). `allow_anonymous true` permits anonymous clients (zigbee2mqtt, govee2mqtt connect without credentials); `password_file` still authenticates the `homeassistant` user — matches the Pi's effective behavior (mosquitto 1.4.14 defaulted `allow_anonymous` to true). `autosave_interval 60` minimises retained-message loss on unclean restart.
+Note: `password_file` points at `/mosquitto/config/passwd`, which is the secret created in Task 3 and mounted in Task 5. `persistence_location` is the PVC mount path (Task 4). `allow_anonymous true` permits anonymous clients (zigbee2mqtt,
+govee2mqtt connect without credentials); `password_file` still authenticates the `homeassistant` user — matches the Pi's effective behavior (mosquitto 1.4.14 defaulted `allow_anonymous` to true). `autosave_interval 60` minimises
+retained-message loss on unclean restart.
 
 - [ ] **Step 2: Commit**
 
@@ -155,6 +170,7 @@ git commit -m "feat(mosquitto): add mosquitto.conf ConfigMap #9869"
 ### Task 3: Create ExternalSecret for the passwd file
 
 **Files:**
+
 - Create: `kubernetes/main/apps/home-automation/mosquitto/app/external-secret.yaml`
 
 - [ ] **Step 1: Create the ExternalSecret**
@@ -187,7 +203,8 @@ spec:
         key: infra/kubernetes/main/home-automation/mosquitto
 ```
 
-Note: The OpenBao secret at `infra/kubernetes/main/home-automation/mosquitto` must contain a key `MOSQUITTO_PASSWD` holding the full `passwd` file content (one or more `user:hash` lines). The resulting Kubernetes `Secret` `mosquitto-secret` is mounted as a file in Task 5 via `subPath: MOSQUITTO_PASSWD` → `/mosquitto/config/passwd`.
+Note: The OpenBao secret at `infra/kubernetes/main/home-automation/mosquitto` must contain a key `MOSQUITTO_PASSWD` holding the full `passwd` file content (one or more `user:hash` lines). The resulting Kubernetes `Secret` `mosquitto-secret`
+is mounted as a file in Task 5 via `subPath: MOSQUITTO_PASSWD` → `/mosquitto/config/passwd`.
 
 - [ ] **Step 2: Commit**
 
@@ -201,6 +218,7 @@ git commit -m "feat(mosquitto): add ExternalSecret for passwd file #9869"
 ### Task 4: Create ceph-block PVC
 
 **Files:**
+
 - Create: `kubernetes/main/apps/home-automation/mosquitto/app/pvc.yaml`
 
 - [ ] **Step 1: Create the PVC**
@@ -237,6 +255,7 @@ git commit -m "feat(mosquitto): add ceph-block PVC for data #9869"
 ### Task 5: Create the HelmRelease (app-template v5.0.1)
 
 **Files:**
+
 - Create: `kubernetes/main/apps/home-automation/mosquitto/app/helm-release.yaml`
 
 - [ ] **Step 1: Create the HelmRelease**
@@ -360,6 +379,7 @@ spec:
 ```
 
 Note:
+
 - `runAsUser: 1883` matches the `mosquitto` user in the official image. `readOnlyRootFilesystem: true` is safe because `/mosquitto/data` (PVC) and `/tmp` (emptyDir) are writable.
 - The `mqtt` service is `type: LoadBalancer` with `lbipam.cilium.io/ips: ${CILIUM_LB_IPS}` (substituted from `flux-sync.yaml` to `192.168.100.201`), mirroring the `minecraft-public-velocity-proxy` and `home-assistant` `hisense-aircon` patterns.
 - `passwd` secret mount uses the `type: secret` + `subPath` pattern from `minecraft-public-velocity-proxy` (`forwarding-secret`) and `ring-mqtt` (`credentials`).
@@ -377,6 +397,7 @@ git commit -m "feat(mosquitto): add app-template HelmRelease #9869"
 ### Task 6: Create app kustomization.yaml
 
 **Files:**
+
 - Create: `kubernetes/main/apps/home-automation/mosquitto/app/kustomization.yaml`
 
 - [ ] **Step 1: Create the kustomization**
@@ -408,11 +429,13 @@ git commit -m "feat(mosquitto): add app kustomization listing resources #9869"
 ### Task 7: Wire mosquitto into the home-automation kustomization
 
 **Files:**
+
 - Modify: `kubernetes/main/apps/home-automation/kustomization.yaml`
 
 - [ ] **Step 1: Add mosquitto to resources**
 
 Current resources:
+
 ```yaml
 resources:
   - ./namespace.yaml
@@ -428,6 +451,7 @@ resources:
 ```
 
 Add `./mosquitto/flux-sync.yaml` (place it after `locking-service` / before the commented `matter-server` line, matching the existing ordering):
+
 ```yaml
 resources:
   - ./namespace.yaml
@@ -455,6 +479,7 @@ git commit -m "feat(mosquitto): wire into home-automation kustomization #9869"
 ### Task 8: Re-point the mqtt.techtales.io A record
 
 **Files:**
+
 - Modify: `kubernetes/main/apps/networking/external-dns/unifi-records/dns-endpoint.yaml`
 
 This is a separate commit so the DNS cutover can be merged independently after the broker is verified reachable on `192.168.100.201:1883`.
@@ -464,37 +489,39 @@ This is a separate commit so the DNS cutover can be merged independently after t
 In the `mqtt-unifi` DNSEndpoint (lines ~76-98), change the `mqtt.techtales.io` A record target from `192.168.1.180` to `192.168.100.201`. Leave the `mqtt.lan` and `mqtt.home` CNAMEs untouched.
 
 Before:
+
 ```yaml
-  endpoints:
-    - dnsName: mqtt.techtales.io
-      recordType: A
-      targets:
-        - 192.168.1.180
-    - dnsName: mqtt.lan
-      recordType: CNAME
-      targets:
-        - mqtt.techtales.io
-    - dnsName: mqtt.home
-      recordType: CNAME
-      targets:
-        - mqtt.techtales.io
+endpoints:
+  - dnsName: mqtt.techtales.io
+    recordType: A
+    targets:
+      - 192.168.1.180
+  - dnsName: mqtt.lan
+    recordType: CNAME
+    targets:
+      - mqtt.techtales.io
+  - dnsName: mqtt.home
+    recordType: CNAME
+    targets:
+      - mqtt.techtales.io
 ```
 
 After:
+
 ```yaml
-  endpoints:
-    - dnsName: mqtt.techtales.io
-      recordType: A
-      targets:
-        - 192.168.100.201
-    - dnsName: mqtt.lan
-      recordType: CNAME
-      targets:
-        - mqtt.techtales.io
-    - dnsName: mqtt.home
-      recordType: CNAME
-      targets:
-        - mqtt.techtales.io
+endpoints:
+  - dnsName: mqtt.techtales.io
+    recordType: A
+    targets:
+      - 192.168.100.201
+  - dnsName: mqtt.lan
+    recordType: CNAME
+    targets:
+      - mqtt.techtales.io
+  - dnsName: mqtt.home
+    recordType: CNAME
+    targets:
+      - mqtt.techtales.io
 ```
 
 - [ ] **Step 2: Commit**
@@ -512,7 +539,8 @@ git commit -m "feat(dns): repoint mqtt A record to new broker IP #9869"
 
 - [ ] **Step 1: Pre-stage the OpenBao secret**
 
-Before Flux can reconcile the `ExternalSecret`, the key `MOSQUITTO_PASSWD` must exist in OpenBao at `infra/kubernetes/main/home-automation/mosquitto`. Generate the passwd file content on a host with the `mosquitto` client tools and store it in OpenBao:
+Before Flux can reconcile the `ExternalSecret`, the key `MOSQUITTO_PASSWD` must exist in OpenBao at `infra/kubernetes/main/home-automation/mosquitto`. Generate the passwd file content on a host with the `mosquitto` client tools and store it
+in OpenBao:
 
 ```bash
 # Generate a passwd entry for an existing or new user (run where mosquitto_passwd is available):
@@ -578,4 +606,5 @@ kubectl logs -n home-automation -l app.kubernetes.io/name=ring-mqtt --tail=50 | 
 
 - [ ] **Step 5: Observe before decommissioning the Pi**
 
-Watch for 24–48h before shutting down Mosquitto on the Raspberry Pi and removing the Pi from the estate. Rollback: revert the DNS A record to `192.168.1.180` (consumers reconnect to the Pi, which is still running until decommission) and `flux suspend kustomization mosquitto` until the issue is resolved.
+Watch for 24–48h before shutting down Mosquitto on the Raspberry Pi and removing the Pi from the estate. Rollback: revert the DNS A record to `192.168.1.180` (consumers reconnect to the Pi, which is still running until decommission) and
+`flux suspend kustomization mosquitto` until the issue is resolved.

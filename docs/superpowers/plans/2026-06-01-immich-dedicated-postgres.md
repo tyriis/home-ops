@@ -2,9 +2,12 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Replace Immich's shared CNPG cluster binding (dbman Database resource) with a dedicated CNPG Cluster using `ghcr.io/immich-app/postgres` (PG18 + VectorChord + pgvector pre-installed), fixing the `permission denied` error on `CREATE EXTENSION vector`.
+**Goal:** Replace Immich's shared CNPG cluster binding (dbman Database resource) with a dedicated CNPG Cluster using `ghcr.io/immich-app/postgres` (PG18 + VectorChord + pgvector
+pre-installed), fixing the `permission denied` error on `CREATE EXTENSION vector`.
 
-**Architecture:** A dedicated CNPG `Cluster` named `immich-db` is deployed in a new `database/` subfolder within the Immich app directory, targeting the `media` namespace. A new Flux Kustomization (`immich-database`) syncs this folder. The existing `immich` Kustomization gains a `dependsOn: immich-database` to ensure the cluster is ready before the HelmRelease starts. Immich app credentials are extended in-place (no new OpenBao paths). S3 backup credentials reuse the existing cnpg-system OpenBao path.
+**Architecture:** A dedicated CNPG `Cluster` named `immich-db` is deployed in a new `database/` subfolder within the Immich app directory, targeting the `media` namespace. A new
+Flux Kustomization (`immich-database`) syncs this folder. The existing `immich` Kustomization gains a `dependsOn: immich-database` to ensure the cluster is ready before the HelmRelease
+starts. Immich app credentials are extended in-place (no new OpenBao paths). S3 backup credentials reuse the existing cnpg-system OpenBao path.
 
 **Tech Stack:** Flux CD, CloudNativePG, barman-cloud plugin, bjw-s app-template v5, Kubernetes, YAML
 
@@ -12,24 +15,25 @@
 
 ## File Map
 
-| Action | Path |
-|--------|------|
-| Modify | `kubernetes/main/apps/media/immich/flux-sync.yaml` |
-| Create | `kubernetes/main/apps/media/immich/database/kustomization.yaml` |
-| Create | `kubernetes/main/apps/media/immich/database/cluster.yaml` |
-| Create | `kubernetes/main/apps/media/immich/database/objectstore.yaml` |
+| Action | Path                                                               |
+| ------ | ------------------------------------------------------------------ |
+| Modify | `kubernetes/main/apps/media/immich/flux-sync.yaml`                 |
+| Create | `kubernetes/main/apps/media/immich/database/kustomization.yaml`    |
+| Create | `kubernetes/main/apps/media/immich/database/cluster.yaml`          |
+| Create | `kubernetes/main/apps/media/immich/database/objectstore.yaml`      |
 | Create | `kubernetes/main/apps/media/immich/database/scheduled-backup.yaml` |
-| Create | `kubernetes/main/apps/media/immich/database/external-secret.yaml` |
-| Modify | `kubernetes/main/apps/media/immich/app/external-secret.yaml` |
-| Delete | `kubernetes/main/apps/media/immich/app/database.yaml` |
-| Modify | `kubernetes/main/apps/media/immich/app/kustomization.yaml` |
-| Modify | `kubernetes/main/apps/media/immich/app/configuration.yaml` |
+| Create | `kubernetes/main/apps/media/immich/database/external-secret.yaml`  |
+| Modify | `kubernetes/main/apps/media/immich/app/external-secret.yaml`       |
+| Delete | `kubernetes/main/apps/media/immich/app/database.yaml`              |
+| Modify | `kubernetes/main/apps/media/immich/app/kustomization.yaml`         |
+| Modify | `kubernetes/main/apps/media/immich/app/configuration.yaml`         |
 
 ---
 
 ### Task 1: Add `immich-database` Flux Kustomization and wire dependency
 
 **Files:**
+
 - Modify: `kubernetes/main/apps/media/immich/flux-sync.yaml`
 
 - [ ] **Step 1: Add the `immich-database` Kustomization and add `dependsOn` to the existing `immich` Kustomization**
@@ -97,16 +101,19 @@
   ```
 
   > **Note:** Verify the correct name and namespace for the CNPG operator Kustomization by running:
-  > ```bash
-  > kubectl get kustomization -A | grep -i cnpg
-  > ```
-  > Replace `cloudnative-pg` / `cnpg-system` in the `dependsOn` above with whatever is returned.
+
+> ```bash
+> kubectl get kustomization -A | grep -i cnpg
+> ```
+>
+> Replace `cloudnative-pg` / `cnpg-system` in the `dependsOn` above with whatever is returned.
 
 ---
 
 ### Task 2: Create the `database/` Kustomization index
 
 **Files:**
+
 - Create: `kubernetes/main/apps/media/immich/database/kustomization.yaml`
 
 - [ ] **Step 1: Create `database/kustomization.yaml`**
@@ -128,6 +135,7 @@
 ### Task 3: Create the S3 backup ExternalSecret
 
 **Files:**
+
 - Create: `kubernetes/main/apps/media/immich/database/external-secret.yaml`
 
 The S3 credentials are reused from the existing OpenBao path `infra/kubernetes/main/cnpg-system/cluster` — no new OpenBao entries needed.
@@ -167,6 +175,7 @@ The S3 credentials are reused from the existing OpenBao path `infra/kubernetes/m
 ### Task 4: Create the CNPG Cluster
 
 **Files:**
+
 - Create: `kubernetes/main/apps/media/immich/database/cluster.yaml`
 
 The `bootstrap.initdb.secret` references `immich-db-init` — CNPG reads the `username` key from that secret to set the database owner (see Task 6 where these keys are added).
@@ -209,6 +218,7 @@ The `bootstrap.initdb.secret` references `immich-db-init` — CNPG reads the `us
 ### Task 5: Create the ObjectStore and ScheduledBackup
 
 **Files:**
+
 - Create: `kubernetes/main/apps/media/immich/database/objectstore.yaml`
 - Create: `kubernetes/main/apps/media/immich/database/scheduled-backup.yaml`
 
@@ -260,6 +270,7 @@ The `bootstrap.initdb.secret` references `immich-db-init` — CNPG reads the `us
 ### Task 6: Extend `immich-db-init` ExternalSecret with CNPG-compatible keys
 
 **Files:**
+
 - Modify: `kubernetes/main/apps/media/immich/app/external-secret.yaml`
 
 CNPG's `bootstrap.initdb.secret` requires `username` and `password` keys. The `cnpg.io/reload: "true"` label tells CNPG to watch for secret rotations.
@@ -304,6 +315,7 @@ CNPG's `bootstrap.initdb.secret` requires `username` and `password` keys. The `c
 ### Task 7: Remove the dbman Database resource
 
 **Files:**
+
 - Delete: `kubernetes/main/apps/media/immich/app/database.yaml`
 - Modify: `kubernetes/main/apps/media/immich/app/kustomization.yaml`
 
@@ -333,6 +345,7 @@ CNPG's `bootstrap.initdb.secret` requires `username` and `password` keys. The `c
 ### Task 8: Update `DB_HOSTNAME` to point to the dedicated CNPG cluster
 
 **Files:**
+
 - Modify: `kubernetes/main/apps/media/immich/app/configuration.yaml`
 
 The CNPG Cluster named `immich-db` in the `media` namespace exposes a read-write service at `immich-db-rw`.

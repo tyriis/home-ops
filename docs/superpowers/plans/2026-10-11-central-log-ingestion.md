@@ -4,7 +4,10 @@
 
 **Goal:** Deploy VictoriaLogs single-node behind vmauth with per-unit bearer tokens on the utility cluster (ADR 0016 Option C, phase 1, utility-side only).
 
-**Architecture:** `victoria-logs` HelmRelease (victoria-logs-single chart) + plain `vmauth` Deployment/Service/ConfigMap in the existing `observability` namespace. HTTPRoute `logs.techtales.io` on the existing Envoy Gateway. Seven Sops secrets (6 unit write tokens + 1 Grafana read token) feed vmauth env vars, referenced via `%{ENV_VAR}` placeholders in `vmauth.yaml`. NetworkPolicy locks VL:9428 to vmauth only.
+**Architecture:** `victoria-logs` HelmRelease (victoria-logs-single chart) + plain `vmauth`
+Deployment/Service/ConfigMap in the existing `observability` namespace. HTTPRoute `logs.techtales.io` on the
+existing Envoy Gateway. Seven Sops secrets (6 unit write tokens + 1 Grafana read token) feed vmauth env vars,
+referenced via `%{ENV_VAR}` placeholders in `vmauth.yaml`. NetworkPolicy locks VL:9428 to vmauth only.
 
 **Tech Stack:** Flux (Kustomization/HelmRelease/HelmRepository), victoria-logs-single chart 0.13.10 (VL v1.53.0), vmauth v1.153.0, Sops+age (public key), Envoy Gateway, kustomize.
 
@@ -14,7 +17,9 @@
 
 - App tree: `kubernetes/utility/apps/observability/victoria-logs/` (`flux-sync.yaml` + `app/*.yaml`), registered in `kubernetes/utility/apps/observability/kustomization.yaml`.
 - Every YAML gets the repo's `# yaml-language-server: $schema=...` first-line comment (copy the schema URL style from `kubernetes/utility/apps/git-system/opengist/app/*.yaml`).
-- Secret files: 7 **separate** `Secret`s, one per unit, Sops-encrypted (`sops -e -i`), `stringData.token` key. Encrypted with the age recipient from `.sops.yaml` rule `kubernetes/utility/.*` (`age1clg0rd6ca86h3lnfnjyqsc9stgr0cnyp3l5uswtusxppjq9h2vcsaqckec`).
+- Secret files: 7 **separate** `Secret`s, one per unit, Sops-encrypted (`sops -e -i`), `stringData.token` key.
+  Encrypted with the age recipient from `.sops.yaml` rule `kubernetes/utility/.*`
+  (`age1clg0rd6ca86h3lnfnjyqsc9stgr0cnyp3l5uswtusxppjq9h2vcsaqckec`).
 - Commits: `<type>(vmlogs): <imperative ≤72 chars>`.
 - VL is NOT directly routable: no HTTPRoute for VL; only vmauth reaches VL:9428.
 - vmauth token injection via `%{VAR}` placeholders in the auth config (docs-verified) fed by `envFrom`-free individual `secretKeyRef` env entries.
@@ -23,7 +28,10 @@
 
 ## Facts this plan bakes in (verified 2026-10-11)
 
-- Rendered VL objects (chart 0.13.10, release `victoria-logs`, ns `observability`): Service **`victoria-logs-victoria-logs-single-server`** (port 9428), StatefulSet pods labeled **`app.kubernetes.io/name: victoria-logs-single`**, PVC from volumeClaimTemplate → pod name `victoria-logs-victoria-logs-single-server-0`.
+- Rendered VL objects (chart 0.13.10, release `victoria-logs`, ns `observability`): Service
+  **`victoria-logs-victoria-logs-single-server`** (port 9428), StatefulSet pods labeled
+  **`app.kubernetes.io/name: victoria-logs-single`**, PVC from volumeClaimTemplate → pod name
+  `victoria-logs-victoria-logs-single-server-0`.
 - VL single-node insert path: `POST /insert/jsonline` (tenant via headers only; `/insert/<t>/jsonline` does NOT route on single-node) → src_paths lock `/insert/.*` covers it.
 - Grafana plugin (`victoriametrics-logs-datasource` v0.32.0) calls `/select/logsql/*` → read user lock `/select/.*` + `/api/v1/.*`; vmui is at `/select/vmui/` (covered by `/select/.*`).
 - vmauth: bad/unknown token → **401**; authenticated user, no matching route → **400** (not 403); `deny_paths` (v1.152.0+) → **403**. We add a deny catch-all per user so denied paths are 403.
@@ -33,7 +41,7 @@
 
 Create under `kubernetes/utility/apps/observability/victoria-logs/`:
 
-```
+```text
 flux-sync.yaml                     # child Flux Kustomization (sops-labeled)
 app/kustomization.yaml             # lists all app resources
 app/helm-repository.yaml           # HelmRepository victoria-metrics-charts
@@ -55,13 +63,15 @@ Modify: `docs/decisions/0016-central-log-platform-victorialogs-on-utility.md` (s
 ### Task 1: App tree, Flux wiring, HelmRelease
 
 **Files:**
+
 - Create: `kubernetes/utility/apps/observability/victoria-logs/flux-sync.yaml`
 - Create: `kubernetes/utility/apps/observability/victoria-logs/app/kustomization.yaml`
 - Create: `kubernetes/utility/apps/observability/victoria-logs/app/helm-repository.yaml`
 - Create: `kubernetes/utility/apps/observability/victoria-logs/app/helm-release.yaml`
-- Modify: `kubernetes/utility/apps/observability/kustomization.yaml` (append `  - ./victoria-logs/flux-sync.yaml` to `resources:`)
+- Modify: `kubernetes/utility/apps/observability/kustomization.yaml` (append `- ./victoria-logs/flux-sync.yaml` to `resources:`)
 
 **Interfaces:**
+
 - Produces: HelmRelease `victoria-logs` → Service `victoria-logs-victoria-logs-single-server:9428`, pods labeled `app.kubernetes.io/name: victoria-logs-single` (consumed by Tasks 2/4).
 
 - [ ] **Step 1: Write `app/helm-repository.yaml`** (schema comment: `https://k8s-schemas.home-operations.com/source.toolkit.fluxcd.io/helmrepository_v1.json`)
@@ -148,13 +158,19 @@ spec:
   timeout: 5m
 ```
 
-- [ ] **Step 4: Write `app/kustomization.yaml`** listing: `./helm-repository.yaml`, `./helm-release.yaml`, `./vmauth-configmap.yaml`, `./vmauth-deployment.yaml`, `./vmauth-service.yaml`, `./network-policy.yaml`, `./http-route.yaml`, and the 7 `./secrets/*.sops.yaml` files (add the vmauth/secrets entries in later tasks — until then keep only existing files listed so kustomize never references a missing path; simplest: write kustomization LAST in task 5).
+- [ ] **Step 4: Write `app/kustomization.yaml`** listing: `./helm-repository.yaml`, `./helm-release.yaml`,
+      `./vmauth-configmap.yaml`, `./vmauth-deployment.yaml`, `./vmauth-service.yaml`, `./network-policy.yaml`,
+      `./http-route.yaml`, and the 7 `./secrets/*.sops.yaml` files (add the vmauth/secrets entries in later tasks
+      — until then keep only existing files listed so kustomize never references a missing path; simplest: write
+      kustomization LAST in task 5).
 
 - [ ] **Step 5: Register in the namespace kustomization** — append the resources line shown above.
 
 - [ ] **Step 6: Validate**
 
-Run: `kustomize build kubernetes/utility/apps/observability/victoria-logs/app` (or `flux build kustomization . --dry-run` / `kubectl kustomize`). If `kustomize` is absent, run `mise exec -- flux build kustomization victoria-logs ./kubernetes/utility/apps/observability/victoria-logs/app --dry-run`.
+Run: `kustomize build kubernetes/utility/apps/observability/victoria-logs/app` (or
+`flux build kustomization . --dry-run` / `kubectl kustomize`). If `kustomize` is absent, run
+`mise exec -- flux build kustomization victoria-logs ./kubernetes/utility/apps/observability/victoria-logs/app --dry-run`.
 Expected: builds clean, contains HelmRelease + HelmRepository.
 
 - [ ] **Step 7: Commit** — `feat(vmlogs): add VictoriaLogs single-node HelmRelease on utility`
@@ -162,9 +178,11 @@ Expected: builds clean, contains HelmRelease + HelmRepository.
 ### Task 2: vmauth (ConfigMap, Deployment, Service)
 
 **Files:**
+
 - Create: `.../app/vmauth-configmap.yaml`, `.../app/vmauth-deployment.yaml`, `.../app/vmauth-service.yaml`
 
 **Interfaces:**
+
 - Consumes: VL Service name `victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428` (Task 1); Secrets `vmauth-token-<unit>` key `token` (Task 3 — env-only references, no file dependency).
 - Produces: pods labeled `app.kubernetes.io/name: vmauth`, Service `vmauth` port 8427 (consumed by Tasks 4/5).
 
@@ -260,30 +278,45 @@ users:
 
 - [ ] **Step 2: Write `vmauth-deployment.yaml`** — Deployment `vmauth`, replicas 1:
   - container image `docker.io/victoriametrics/vmauth:v1.153.0`
-  - args exactly: `["-auth.config=/etc/vmauth/vmauth.yaml", "-httpListenAddr=:8427", "-configCheckInterval=1m"]` (`%{VAR}` placeholders in the config are substituted by vmauth from its own container env — docs-verified: "The config may contain `%{ENV_VAR}` placeholders, which are substituted by the corresponding `ENV_VAR` environment variable values")
+  - args exactly:
+    `["-auth.config=/etc/vmauth/vmauth.yaml", "-httpListenAddr=:8427", "-configCheckInterval=1m"]` (`%{VAR}`
+    placeholders in the config are substituted by vmauth from its own container env — docs-verified: "The
+    config may contain `%{ENV_VAR}` placeholders, which are substituted by the corresponding `ENV_VAR`
+    environment variable values")
   - 7 env entries, pattern:
 
 ```yaml
-    env:
-      - name: VMAUTH_TOKEN_MS01
-        valueFrom:
-          secretKeyRef:
-            name: vmauth-token-ms01
-            key: token
+env:
+  - name: VMAUTH_TOKEN_MS01
+    valueFrom:
+      secretKeyRef:
+        name: vmauth-token-ms01
+        key: token
 ```
-  (repeat for `VMAUTH_TOKEN_UTILITY`/`vmauth-token-utility`, `VMAUTH_TOKEN_NAS`/`vmauth-token-nas`, `VMAUTH_TOKEN_BIFROST`/`vmauth-token-bifrost`, `VMAUTH_TOKEN_WORKSTATION`/`vmauth-token-workstation`, `VMAUTH_TOKEN_REMOTE`/`vmauth-token-remote`, `VMAUTH_TOKEN_GRAFANA`/`vmauth-token-grafana`)
-  - volume `config`: configMap `vmauth`, mounted at `/etc/vmauth` (readOnly)
-  - `containerPort: 8427` name `http`
-  - readinessProbe+livenessProbe `httpGet: {path: /metrics, port: 8427}`
-  - resources: requests `cpu: 25m`, `memory: 64Mi`; limits `memory: 256Mi`
-  - securityContext pod-level: `runAsNonRoot: true, runAsUser: 65534, runAsGroup: 65534, fsGroup: 65534`
-  - labels on pod template: `app.kubernetes.io/name: vmauth`, `app.kubernetes.io/component: proxy`
-  - annotations: `reloader.stakater.com/auto: "true"` (repo already uses this pattern in opengist)
+
+(repeat for `VMAUTH_TOKEN_UTILITY`/`vmauth-token-utility`, `VMAUTH_TOKEN_NAS`/`vmauth-token-nas`,
+`VMAUTH_TOKEN_BIFROST`/`vmauth-token-bifrost`, `VMAUTH_TOKEN_WORKSTATION`/`vmauth-token-workstation`,
+`VMAUTH_TOKEN_REMOTE`/`vmauth-token-remote`, `VMAUTH_TOKEN_GRAFANA`/`vmauth-token-grafana`)
+
+- volume `config`: configMap `vmauth`, mounted at `/etc/vmauth` (readOnly)
+- `containerPort: 8427` name `http`
+- readinessProbe+livenessProbe `httpGet: {path: /metrics, port: 8427}`
+- resources: requests `cpu: 25m`, `memory: 64Mi`; limits `memory: 256Mi`
+- securityContext pod-level: `runAsNonRoot: true, runAsUser: 65534, runAsGroup: 65534, fsGroup: 65534`
+- labels on pod template: `app.kubernetes.io/name: vmauth`, `app.kubernetes.io/component: proxy`
+- annotations: `reloader.stakater.com/auto: "true"` (repo already uses this pattern in opengist)
 
 - [ ] **Step 3: Write `vmauth-service.yaml`** — Service `vmauth`, port 8427 name `http`, selector `app.kubernetes.io/name: vmauth`.
 
-- [ ] **Step 4: Validate** — vmauth config parses: `docker run --rm -v $PWD/kubernetes/utility/apps/observability/victoria-logs/app:/c:ro docker.io/victoriametrics/vmauth:v1.153.0 -auth.config=/c/vmauth.yaml -configCheckInterval=0 -dryRun 2>&1 || true` — vmauth has **no** `-dryRun`; instead start it with dummy env and grep for `INFO` config-loaded line:
-  `docker run --rm -e VMAUTH_TOKEN_MS01=a -e VMAUTH_TOKEN_UTILITY=b -e VMAUTH_TOKEN_NAS=c -e VMAUTH_TOKEN_BIFROST=d -e VMAUTH_TOKEN_WORKSTATION=e -e VMAUTH_TOKEN_REMOTE=f -e VMAUTH_TOKEN_GRAFANA=g -v $PWD/.../app:/c:ro docker.io/victoriametrics/vmauth:v1.153.0 -auth.config=/c/vmauth.yaml` — expect it to start listening (then Ctrl-C / use `timeout 5`).
+- [ ] **Step 4: Validate** — vmauth config parses:
+      `docker run --rm -v $PWD/kubernetes/utility/apps/observability/victoria-logs/app:/c:ro docker.io/victoriametrics/vmauth:v1.153.0 -auth.config=/c/vmauth.yaml -configCheckInterval=0 -dryRun 2>&1 || true`
+      — vmauth has **no** `-dryRun`; instead start it with dummy env and grep for `INFO` config-loaded line:
+
+  ```bash
+  docker run --rm -e VMAUTH_TOKEN_MS01=a -e VMAUTH_TOKEN_UTILITY=b -e VMAUTH_TOKEN_NAS=c -e VMAUTH_TOKEN_BIFROST=d -e VMAUTH_TOKEN_WORKSTATION=e -e VMAUTH_TOKEN_REMOTE=f -e VMAUTH_TOKEN_GRAFANA=g -v $PWD/.../app:/c:ro docker.io/victoriametrics/vmauth:v1.153.0 -auth.config=/c/vmauth.yaml
+  ```
+
+  — expect it to start listening (then Ctrl-C / use `timeout 5`).
   If docker is unavailable, skip — the smoke tests after deploy prove it.
 
 - [ ] **Step 5: Commit** — `feat(vmlogs): front VictoriaLogs with vmauth per-unit tokens`
@@ -291,6 +324,7 @@ users:
 ### Task 3: Unit tokens (7 Sops secrets)
 
 **Files:**
+
 - Create: `.../app/secrets/vmauth-token-{ms01,utility,nas,bifrost,workstation,remote,grafana}.sops.yaml`
 
 - [ ] **Step 1: Generate + write plaintext** — for each unit in the list: `openssl rand -hex 32`, write a plaintext Secret:
@@ -306,13 +340,16 @@ stringData:
 
 - [ ] **Step 2: Encrypt in place** — `sops -e -i <file>` (age public key from `.sops.yaml` rule is enough; no private key needed). Note the vmauth Deployment references key `token` — do not rename.
 
-- [ ] **Step 3: Verify** — `sops fileinfo <file>` shows the `age1clg0rd6ca86...` recipient and `encrypted_regex ^(data|stringData)$`. `grep -r 'token: ENC\[' ... | wc -l` → 7. No plaintext token anywhere: `grep -l "$(the generated hex)" -r kubernetes/` → empty.
+- [ ] **Step 3: Verify** — `sops fileinfo <file>` shows the `age1clg0rd6ca86...` recipient and
+      `encrypted_regex ^(data|stringData)$`. `grep -r 'token: ENC\[' ... | wc -l` → 7. No plaintext token
+      anywhere: `grep -l "$(the generated hex)" -r kubernetes/` → empty.
 
 - [ ] **Step 4: Commit** — `feat(vmlogs): add per-unit vmauth token secrets`
 
 ### Task 4: NetworkPolicy + HTTPRoute
 
 **Files:**
+
 - Create: `.../app/network-policy.yaml`, `.../app/http-route.yaml`
 
 - [ ] **Step 1: `network-policy.yaml`** — two policies (schema comment copied from `kubernetes/main/apps/ai/searxng/app/network-policy.yaml`):
@@ -362,7 +399,10 @@ spec:
           port: 8427
 ```
 
-- [ ] **Step 2: `http-route.yaml`** — HTTPRoute `vmauth`, metadata.annotations `external-dns/unifi: "true"`, spec copied from `kubernetes/utility/apps/git-system/opengist/app/http-route.yaml` with: hostnames `[logs.techtales.io]`, parentRefs `[{name: envoy, namespace: networking, sectionName: https}]`, rules → backendRefs `[{name: vmauth, port: 8427}]`.
+- [ ] **Step 2: `http-route.yaml`** — HTTPRoute `vmauth`, metadata.annotations `external-dns/unifi: "true"`,
+      spec copied from `kubernetes/utility/apps/git-system/opengist/app/http-route.yaml` with: hostnames
+      `[logs.techtales.io]`, parentRefs `[{name: envoy, namespace: networking, sectionName: https}]`, rules →
+      backendRefs `[{name: vmauth, port: 8427}]`.
 
 - [ ] **Step 3: Validate** — kustomize build the app dir again (now with vmauth + netpol + route).
 
@@ -371,6 +411,7 @@ spec:
 ### Task 5: README + final kustomization + lint
 
 **Files:**
+
 - Create: `.../app/README.md`
 - Modify: `.../app/kustomization.yaml` (ensure it lists exactly: helm-repository, helm-release, vmauth-configmap, vmauth-deployment, vmauth-service, network-policy, http-route, secrets/*.sops.yaml ×7)
 
@@ -416,7 +457,9 @@ curl -s -H "Authorization: Bearer $R" 'https://logs.techtales.io/select/logsql/q
 
 ## Review Focus
 
-- **Tenant/path mismatch**: single-node VL ignores `/insert/<t>/` paths — our lock is `/insert/.*` on plain paths; a shipper POSTing `/insert/0/jsonline` gets proxied but VL 404s → shipper docs must use `/insert/jsonline`. Pinned in README examples (Task 5).
+- **Tenant/path mismatch**: single-node VL ignores `/insert/<t>/` paths — our lock is `/insert/.*` on plain
+  paths; a shipper POSTing `/insert/0/jsonline` gets proxied but VL 404s → shipper docs must use
+  `/insert/jsonline`. Pinned in README examples (Task 5).
 - **400 vs 403 on denied paths**: without the per-user deny catch-all, path denial returns 400 and the verification step expecting 403 fails. Pinned by Task 2 catch-all + Task 6 check 3/4.
 - **`%{ENV}` typo** in vmauth.yaml = config-load failure at startup (Deployment never Ready, Flux `wait: true` surfaces it in CI-ish reconcile). Pinned by Task 2 Step 4 parse check.
 - **Secret key drift**: vmauth Deployment references key `token` — Task 3 Step 2 locks the key name.

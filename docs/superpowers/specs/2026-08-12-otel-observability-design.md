@@ -6,21 +6,23 @@
 
 ## Overview
 
-Deploy an OpenTelemetry-native observability foundation to the main cluster in **Phase 1**, running *alongside* the existing stack. This phase delivers the OTel Operator + Collector with bearer-token OTLP ingress for local opencode telemetry (traces, logs, and metrics), and Tempo as the tracing backend. Metrics — the primary opencode signal — flow natively via OTLP to Prometheus. Promtail stays untouched; Prometheus and Loki receive additive config (`enableOTLPReceiver` and `otlp_config` respectively).
+Deploy an OpenTelemetry-native observability foundation to the main cluster in **Phase 1**, running _alongside_ the existing stack. This phase delivers the OTel Operator + Collector with bearer-token OTLP ingress for local opencode
+telemetry (traces, logs, and metrics), and Tempo as the tracing backend. Metrics — the primary opencode signal — flow natively via OTLP to Prometheus. Promtail stays untouched; Prometheus and Loki receive additive config
+(`enableOTLPReceiver` and `otlp_config` respectively).
 
 ## Phasing
 
 This spec covers **Phase 1 only**. The full Promtail → OTel migration is intentionally deferred so the existing stack keeps working untouched.
 
-| Phase | Scope | Status |
-|-------|-------|--------|
+| Phase       | Scope                                                                                   | Status    |
+| ----------- | --------------------------------------------------------------------------------------- | --------- |
 | **Phase 1** | OTel Operator + Collector (OTLP ingress for traces/logs/metrics), Tempo, local opencode | This spec |
-| Phase 2 | filelog receiver replaces Promtail, utility-cluster collector | Future |
-| Phase 3 | Auto-instrumentation of in-cluster apps via the operator | Future |
+| Phase 2     | filelog receiver replaces Promtail, utility-cluster collector                           | Future    |
+| Phase 3     | Auto-instrumentation of in-cluster apps via the operator                                | Future    |
 
 ## Architecture
 
-```
+```text
 ┌─ local opencode ─────┐
 └──────────┬───────────┘
            │ OTLP HTTP (HTTPRoute/Envoy + bearer token)
@@ -61,16 +63,30 @@ This spec covers **Phase 1 only**. The full Promtail → OTel migration is inten
 
 ## Key Decisions
 
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| OTel management | `opentelemetry-operator` (CRD-based) | 7 kubesearch repos vs 3 for standalone; auto-instrumentation for future app migration |
-| Log collection | Promtail (unchanged) in Phase 1 | filelog receiver deferred to Phase 2; existing Promtail keeps shipping pod logs untouched |
-| Collector mode | DaemonSet (all-in-one) | Rolled out as DaemonSet from Phase 1 to avoid a mode change; `/var/log/pods` access needed in Phase 2; homelab scale sufficient |
-| Tracing backend | Tempo (SingleBinary, S3-backed) | Purpose-built for traces; Loki 3.x trace support is basic only |
-| Loki log ingestion | OTLP `/otlp/v1/logs` | External sources (opencode) send logs via OTLP; native in Loki 3.7.6; Promtail continues on legacy push API in parallel |
-| Metrics ingestion | `otlphttp` → Prometheus native OTLP receiver | Native OTLP end-to-end (no remote-write conversion); `enableOTLPReceiver: true`; single-endpoint write accepted — 3-replica scatter revisited with VictoriaMetrics migration |
-| External access | HTTPRoute via Envoy Gateway + bearer token | Matches existing observability URL pattern; token from OpenBao; single consumer (opencode) in Phase 1 |
-| Utility cluster Prometheus | Keep both during transition | OTel Collector forwards to main; existing kube-prometheus-stack stays for now |
+- **Decision:** OTel management — **Choice:** `opentelemetry-operator` (CRD-based) —
+  **Rationale:** 7 kubesearch repos vs 3 for standalone; auto-instrumentation
+  for future app migration
+- **Decision:** Log collection — **Choice:** Promtail (unchanged) in Phase 1 —
+  **Rationale:** filelog receiver deferred to Phase 2; existing Promtail keeps
+  shipping pod logs untouched
+- **Decision:** Collector mode — **Choice:** DaemonSet (all-in-one) — **Rationale:**
+  Rolled out as DaemonSet from Phase 1 to avoid a mode change; `/var/log/pods`
+  access needed in Phase 2; homelab scale sufficient
+- **Decision:** Tracing backend — **Choice:** Tempo (SingleBinary, S3-backed) —
+  **Rationale:** Purpose-built for traces; Loki 3.x trace support is basic only
+- **Decision:** Loki log ingestion — **Choice:** OTLP `/otlp/v1/logs` — **Rationale:**
+  External sources (opencode) send logs via OTLP; native in Loki 3.7.6;
+  Promtail continues on legacy push API in parallel
+- **Decision:** Metrics ingestion — **Choice:** `otlphttp` → Prometheus native OTLP
+  receiver — **Rationale:** Native OTLP end-to-end (no remote-write
+  conversion); `enableOTLPReceiver: true`; single-endpoint write accepted —
+  3-replica scatter revisited with VictoriaMetrics migration
+- **Decision:** External access — **Choice:** HTTPRoute via Envoy Gateway + bearer token —
+  **Rationale:** Matches existing observability URL pattern; token from OpenBao;
+  single consumer (opencode) in Phase 1
+- **Decision:** Utility cluster Prometheus — **Choice:** Keep both during transition —
+  **Rationale:** OTel Collector forwards to main; existing kube-prometheus-stack
+  stays for now
 
 ## Configuration
 
@@ -111,7 +127,8 @@ This spec covers **Phase 1 only**. The full Promtail → OTel migration is inten
 - **Version:** v1.24.x — pin exact `ref.tag` at implementation time (repo convention)
 - **Mode:** SingleBinary
 - **Retention:** 168h (7 days) - standard for homelab traces
-- **Storage:** S3 (same MinIO as Loki), new `tempo` bucket, scoped credentials via ExternalSecret. The `tempo` bucket + credentials must be provisioned before rollout (Terraform `terraform-minio` or manual, mirroring the existing `loki` S3 bucket)
+- **Storage:** S3 (same MinIO as Loki), new `tempo` bucket, scoped credentials via ExternalSecret. The `tempo` bucket + credentials must be provisioned before rollout (Terraform `terraform-minio` or manual, mirroring the existing `loki` S3
+  bucket)
 - **Receivers:** OTLP gRPC `0.0.0.0:4317`, HTTP `0.0.0.0:4318`
 - **MetricsGenerator:** disabled in Phase 1 — span metrics/service graphs deferred; avoids enabling the Prometheus remote-write receiver (see "What's NOT Changing")
 - **Report:** telemetry disabled (`reportingEnabled: false`)
@@ -136,18 +153,19 @@ This spec covers **Phase 1 only**. The full Promtail → OTel migration is inten
 
 ### Security
 
-| Path | Method | Implementation |
-|---|---|---|
-| External (opencode) → main cluster OTLP | HTTPRoute (TLS) + bearer token | `bearertokenauth` extension on otlp receiver; token from OpenBao via ExternalSecret |
-| Utility → main cluster (Phase 2) | mTLS | cert-manager certificates on both sides |
-| In-cluster apps → collector | Deferred (no in-cluster senders in Phase 1) | Revisited in Phase 3 with auto-instrumentation |
+| Path                                    | Method                                      | Implementation                                                                      |
+| --------------------------------------- | ------------------------------------------- | ----------------------------------------------------------------------------------- |
+| External (opencode) → main cluster OTLP | HTTPRoute (TLS) + bearer token              | `bearertokenauth` extension on otlp receiver; token from OpenBao via ExternalSecret |
+| Utility → main cluster (Phase 2)        | mTLS                                        | cert-manager certificates on both sides                                             |
+| In-cluster apps → collector             | Deferred (no in-cluster senders in Phase 1) | Revisited in Phase 3 with auto-instrumentation                                      |
 
 ## File Changes
 
 ### New Files
 
 **`opentelemetry/` (10 files):**
-```
+
+```text
 kubernetes/main/apps/observability/opentelemetry/
 ├── flux-sync.yaml           # 3 Kustomizations: operator, collector, observability
 ├── operator/
@@ -165,7 +183,8 @@ kubernetes/main/apps/observability/opentelemetry/
 ```
 
 **`tempo/` (7 files):**
-```
+
+```text
 kubernetes/main/apps/observability/tempo/
 ├── flux-sync.yaml           # 2 Kustomizations: app, observability
 ├── app/
@@ -180,12 +199,12 @@ kubernetes/main/apps/observability/tempo/
 
 ### Modified Files
 
-| File | Change |
-|---|---|
-| `kubernetes/main/apps/observability/kustomization.yaml` | Add `./opentelemetry/flux-sync.yaml` and `./tempo/flux-sync.yaml` to resources |
-| `grafana/instance/datasource.yaml` | Add Tempo `GrafanaDatasource` (type: tempo, URL: `http://tempo.observability.svc:3200`); consider `tracesToLogsV2`/`traceToMetrics` linking to existing Loki/Prometheus |
-| `loki/app/helm-release.yaml` | Add `limits_config.otlp_config` resource attribute mapping |
-| `kube-prometheus-stack/app/helm-release.yaml` | Add `prometheusSpec.enableOTLPReceiver: true` |
+| File                                                    | Change                                                                                                                                                                  |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `kubernetes/main/apps/observability/kustomization.yaml` | Add `./opentelemetry/flux-sync.yaml` and `./tempo/flux-sync.yaml` to resources                                                                                          |
+| `grafana/instance/datasource.yaml`                      | Add Tempo `GrafanaDatasource` (type: tempo, URL: `http://tempo.observability.svc:3200`); consider `tracesToLogsV2`/`traceToMetrics` linking to existing Loki/Prometheus |
+| `loki/app/helm-release.yaml`                            | Add `limits_config.otlp_config` resource attribute mapping                                                                                                              |
+| `kube-prometheus-stack/app/helm-release.yaml`           | Add `prometheusSpec.enableOTLPReceiver: true`                                                                                                                           |
 
 ### Removed
 
@@ -193,7 +212,7 @@ No files are removed in Phase 1. The Promtail directory and its parent reference
 
 ### Flux Dependency Chain
 
-```
+```text
 cert-manager
   └── opentelemetry-operator
         ├── opentelemetry-collector (also dependsOn external-secrets-stores)
@@ -212,7 +231,8 @@ kube-prometheus-stack
   └── tempo-observability (ServiceMonitor)
 ```
 
-> **Note:** `external-secrets-stores` lives in the `secops` namespace (not `observability`). `opentelemetry-observability` and `tempo-observability` both depend on `kube-prometheus-stack` for the ServiceMonitor CRD; `tempo-observability` also depends on the `tempo` app Kustomization.
+> **Note:** `external-secrets-stores` lives in the `secops` namespace (not `observability`). `opentelemetry-observability` and `tempo-observability` both depend on `kube-prometheus-stack` for the ServiceMonitor CRD; `tempo-observability`
+> also depends on the `tempo` app Kustomization.
 
 ## What's NOT Changing
 
@@ -227,7 +247,7 @@ kube-prometheus-stack
 ## Post-Deployment Verification
 
 1. OTel Collector DaemonSet pods running on all nodes
-2. External OTLP reachable at `https://otel.techtales.io` — verify with `curl -H "Authorization: Bearer <token>"` 
+2. External OTLP reachable at `https://otel.techtales.io` — verify with `curl -H "Authorization: Bearer <token>"`
 3. Tempo receiving traces — verify Tempo datasource in Grafana Explore
 4. External logs (opencode) reach Loki `/otlp/v1/logs` — verify in Grafana Explore with otlp_config labels
 5. External metrics (opencode) reach Prometheus via native OTLP — verify `service.name`-labelled series in Grafana Explore (appear intermittently across replicas due to accepted scatter; retry, not a bug)
@@ -237,11 +257,11 @@ kube-prometheus-stack
 
 ## References
 
-- https://github.com/open-telemetry/opentelemetry-operator
-- https://opentelemetry.io/docs/kubernetes/helm/operator/
-- https://github.com/grafana/tempo
-- https://grafana.com/docs/loki/latest/send-data/otel/
-- https://kubesearch.dev/hr/ghcr.io-open-telemetry-opentelemetry-helm-charts-opentelemetry-operator
-- https://github.com/tyriis/home-ops/issues/3851
-- https://github.com/tyriis/home-ops/issues/7395
-- https://github.com/tyriis/home-ops/issues/9987
+- <https://github.com/open-telemetry/opentelemetry-operator>
+- <https://opentelemetry.io/docs/kubernetes/helm/operator/>
+- <https://github.com/grafana/tempo>
+- <https://grafana.com/docs/loki/latest/send-data/otel/>
+- <https://kubesearch.dev/hr/ghcr.io-open-telemetry-opentelemetry-helm-charts-opentelemetry-operator>
+- <https://github.com/tyriis/home-ops/issues/3851>
+- <https://github.com/tyriis/home-ops/issues/7395>
+- <https://github.com/tyriis/home-ops/issues/9987>

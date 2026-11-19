@@ -22,7 +22,7 @@ so the configuration and app behaviour can be validated before touching the main
 
 ### File Structure
 
-```
+```text
 devenv/oci/apps/media/
 ├── namespace.yaml                    # media namespace (new)
 ├── kustomization.yaml                # namespace-level Kustomization (new)
@@ -60,7 +60,7 @@ Renovate will manage image tag updates once pinned.
 Plain `Secret` manifest committed to git. Acceptable because devenv uses trivial credentials
 and is a local-only kind cluster.
 
-```
+```yaml
 immich-secret:
   DB_USERNAME: immich
   DB_PASSWORD: immich
@@ -103,14 +103,14 @@ The `flux-sync.yaml` should depend on:
 
 ## Phase 2: Main Cluster
 
-### Goal
+### Goal (main cluster)
 
 Production-grade Immich deployment in `kubernetes/main/apps/media/`, following all existing
 media app conventions. No ML.
 
-### File Structure
+### File Structure (main cluster)
 
-```
+```text
 kubernetes/main/apps/media/
 ├── kustomization.yaml               # MODIFY: add immich/flux-sync.yaml
 └── immich/
@@ -124,7 +124,7 @@ kubernetes/main/apps/media/
         └── database.yaml            # dbman Database CRD → postgres17
 ```
 
-### HelmRelease — app-template controllers
+### HelmRelease — app-template controllers (main cluster)
 
 Single `server` controller. ML is explicitly disabled via env var.
 
@@ -132,7 +132,7 @@ Single `server` controller. ML is explicitly disabled via env var.
 | ---------- | ------------------------------------------- | ----------------------- |
 | `server`   | `ghcr.io/immich-app/immich-server:<latest>` | API + web UI, port 2283 |
 
-### Persistence
+### Persistence (main cluster)
 
 NFS mount from NAS:
 
@@ -184,7 +184,7 @@ Existing shared Dragonfly instance:
 
 No dedicated Dragonfly deployment needed for Immich.
 
-### Configuration (`configuration.yaml`)
+### Configuration (`configuration.yaml`, main cluster)
 
 ConfigMap `immich-config`:
 
@@ -196,7 +196,7 @@ ConfigMap `immich-config`:
 | `IMMICH_MACHINE_LEARNING_ENABLED` | `false`                                                                 |
 | `IMMICH_SERVER_URL`               | `https://immich.techtales.io`                                           |
 
-### Ingress
+### Ingress (main cluster)
 
 HTTPRoute via Envoy Gateway at `immich.techtales.io`.
 Follows the same pattern as other media apps (see `filebrowser` or `jellyfin`).

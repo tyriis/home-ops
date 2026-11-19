@@ -2,7 +2,8 @@
 
 ## Overview
 
-Move firecrawl from the shared `ai` namespace into a new dedicated `firecrawl-system` namespace, and give it its own Dragonfly cluster via the existing `components/dragonfly` component. This follows the proven pattern from `feat(dragonfly): add own cluster for locking-service` (f66893e65) and `feat(dragonfly): implement immich cluster` (293650b8e).
+Move firecrawl from the shared `ai` namespace into a new dedicated `firecrawl-system` namespace, and give it its own Dragonfly cluster via the existing `components/dragonfly`
+component. This follows the proven pattern from `feat(dragonfly): add own cluster for locking-service` (f66893e65) and `feat(dragonfly): implement immich cluster` (293650b8e).
 
 The shared `dragonfly-system` cluster stays running — other consumers (atlantis, open-webui, oauth2-proxy) continue to use it.
 
@@ -14,7 +15,7 @@ The shared `dragonfly-system` cluster stays running — other consumers (atlanti
 
 ## Target State
 
-```
+```text
 kubernetes/main/apps/
 ├── ai/                              (firecrawl entry removed)
 │   ├── kustomization.yaml           (drop: - ./firecrawl/flux-sync.yaml)
@@ -42,13 +43,13 @@ kubernetes/main/apps/
 
 Use the existing `components/dragonfly` component with default values. The component will create a `Dragonfly` CR named `firecrawl-dragonfly` in the `firecrawl-system` namespace with:
 
-| Field | Value |
-|-------|-------|
-| Name | `firecrawl-dragonfly` |
-| Image | `ghcr.io/dragonflydb/dragonfly:v1.39.0@<sha>` (inherited from component) |
-| Replicas | 2 (default) |
-| Memory limit | 512Mi |
-| Args | `--maxmemory=…`, `--proactor_threads=2`, `--cluster_mode=emulated`, `--lock_on_hashtags`, `--default_lua_flags=allow-undeclared-keys` |
+| Field        | Value                                                                                                                                 |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Name         | `firecrawl-dragonfly`                                                                                                                 |
+| Image        | `ghcr.io/dragonflydb/dragonfly:v1.39.0@<sha>` (inherited from component)                                                              |
+| Replicas     | 2 (default)                                                                                                                           |
+| Memory limit | 512Mi                                                                                                                                 |
+| Args         | `--maxmemory=…`, `--proactor_threads=2`, `--cluster_mode=emulated`, `--lock_on_hashtags`, `--default_lua_flags=allow-undeclared-keys` |
 
 Service DNS: `firecrawl-dragonfly.firecrawl-system.svc.cluster.local:6379`.
 
@@ -105,12 +106,14 @@ Notes:
 ### Redis URLs (3 controllers × 2 env vars = 6 lines)
 
 Before:
+
 ```yaml
 REDIS_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
 REDIS_RATE_LIMIT_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
 ```
 
 After:
+
 ```yaml
 REDIS_URL: redis://firecrawl-dragonfly.firecrawl-system.svc.cluster.local:6379
 REDIS_RATE_LIMIT_URL: redis://firecrawl-dragonfly.firecrawl-system.svc.cluster.local:6379
@@ -126,12 +129,14 @@ The `playwright-service` and `nuq-postgres` are part of the same `HelmRelease` a
 So `PLAYWRIGHT_MICROSERVICE_URL` and `NUQ_DATABASE_URL` in the `api` and `nuq-worker` controllers must change from `*.ai.svc.cluster.local` → `*.firecrawl-system.svc.cluster.local`:
 
 Before:
+
 ```yaml
 PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.ai.svc.cluster.local:3000/scrape #NOSONAR allow http
 NUQ_DATABASE_URL: postgresql://postgres:password@firecrawl-nuq-postgres.ai.svc.cluster.local:5432/postgres
 ```
 
 After:
+
 ```yaml
 PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.firecrawl-system.svc.cluster.local:3000/scrape #NOSONAR allow http
 NUQ_DATABASE_URL: postgresql://postgres:password@firecrawl-nuq-postgres.firecrawl-system.svc.cluster.local:5432/postgres
