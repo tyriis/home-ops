@@ -3,28 +3,33 @@
 Proven end-to-end with util02 (ZimaBlade), 2026-11-19: USB maintenance boot →
 `task talos:install` → Ready node in 82 s.
 
-## Steps
+## 1. Boot the installer
 
-1. Boot the node from the metal installer USB (schematic + version from
-   `talos/utility/schematic.yaml` / `version.yaml`). The console prints IP,
-   gateway and — crucially — the maintenance **cert fingerprint**
-   (`server certificate issued … fingerprint "<b64>"`). The fingerprint is
-   minted per boot.
-2. Render + apply from a workstation:
+Boot the node from the metal installer USB (schematic + version from
+`talos/utility/schematic.yaml` / `version.yaml`). The console prints IP,
+gateway and — crucially — the maintenance **cert fingerprint**
+(`server certificate issued … fingerprint "<b64>"`). The fingerprint is
+minted per boot.
 
-   ```sh
-   task talos:install cluster=utility node=<name> ip=<dhcp-ip> role=worker
-   ```
+## 2. Render and apply
 
-3. Watch progress from the workstation — the maintenance API answers reads
-   over the insecure transport, no talsecret or talosconfig needed:
+From a workstation (needs the sops identity):
 
-   ```sh
-   talosctl get unattendedinstallstatuses --insecure --cert-fingerprint '<fp>' --nodes <ip>
-   ```
+```sh
+task talos:install cluster=utility node=<name> ip=<dhcp-ip> role=worker
+```
 
-   Phases: `pending` → `installing` → `installed` → `waiting-for-reboot`.
-   Then `kubectl --context readonly@utility get nodes`.
+## 3. Watch progress
+
+The maintenance API answers reads over the insecure transport, no
+talsecret or talosconfig needed:
+
+```sh
+talosctl get unattendedinstallstatuses --insecure --cert-fingerprint '<fp>' --nodes <ip>
+```
+
+Phases: `pending` → `installing` → `installed` → `waiting-for-reboot`.
+Then `kubectl --context readonly@utility get nodes`.
 
 ## Pitfalls that cost hours (util02, 2026-11-19)
 
@@ -42,10 +47,11 @@ Proven end-to-end with util02 (ZimaBlade), 2026-11-19: USB maintenance boot →
   `KubeTalosAPIAccessConfig` are control-plane-only — they live in
   `common-cp.patch.yaml`, which `render-config.sh` applies only for
   `role=controlplane`. A worker render must not contain them.
-- **Console noise to ignore.** `error evaluating disk locator: no such
-attribute(s): system_disk` plus services looping `Waiting` during a
-  maintenance boot is normal pre-install state (upstream-confirmed). Trust
-  only `UnattendedInstallStatus` phases.
+- **Console noise to ignore.** The message
+  `error evaluating disk locator: no such attribute(s): system_disk` plus
+  services looping `Waiting` during a maintenance boot is normal
+  pre-install state (upstream-confirmed). Trust only
+  `UnattendedInstallStatus` phases.
 - **Installer image is derived** at render time from schematic + version — do
   not pin it in node patches.
 
