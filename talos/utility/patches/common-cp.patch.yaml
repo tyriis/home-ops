@@ -1,0 +1,53 @@
+# Control-plane-ONLY documents for the `utility` cluster.
+# Applied by render-config.sh only when role=controlplane.
+# A worker machine apply rejects these kinds outright ("etcd config is only
+# allowed on control plane machines"; KubeControllerManagerConfig /
+# KubeSchedulerConfig / KubeProxyConfig / KubeTalosAPIAccessConfig are CP-only),
+# so they must NEVER sit in common.patch.yaml. Proven by the failed util02
+# install apply on 2026-11-18.
+# Content moved verbatim from common.patch.yaml — the controlplane render must
+# stay byte-identical across that split.
+---
+version: v1alpha1
+cluster:
+  etcd:
+    extraArgs:
+      listen-metrics-urls: http://0.0.0.0:2381
+---
+apiVersion: v1alpha1
+kind: KubeControllerManagerConfig
+extraArgs:
+  bind-address: 0.0.0.0
+---
+# replaces deprecated .cluster.scheduler.*
+apiVersion: v1alpha1
+kind: KubeSchedulerConfig
+extraArgs:
+  bind-address: 0.0.0.0
+config:
+  profiles:
+    - schedulerName: default-scheduler
+      plugins:
+        score:
+          disabled:
+            - name: ImageLocality
+      pluginConfig:
+        - name: PodTopologySpread
+          args:
+            defaultingType: List
+            defaultConstraints:
+              - maxSkew: 1.0
+                topologyKey: kubernetes.io/hostname
+                whenUnsatisfiable: ScheduleAnyway
+---
+# replaces deprecated .cluster.proxy.disabled — cluster runs Cilium
+apiVersion: v1alpha1
+kind: KubeProxyConfig
+enabled: false
+---
+apiVersion: v1alpha1
+kind: KubeTalosAPIAccessConfig
+allowedRoles:
+  - os:admin
+allowedKubernetesNamespaces:
+  - system-upgrade

@@ -17,9 +17,9 @@ tasks:
       vars: [cluster]
 
   render:
-    desc: "Render machine config to stdout (cluster=, node=)"
+    desc: "Render machine config to stdout (cluster=, node=, [role=controlplane|worker])"
     cmds:
-      - "./.taskfiles/talos/render-config.sh {{.cluster}} {{.node}}"
+      - './.taskfiles/talos/render-config.sh {{.cluster}} {{.node}} {{.role | default "controlplane"}}'
     requires:
       vars: [cluster, node]
 
@@ -52,10 +52,10 @@ tasks:
       vars: [cluster, nodes]
 
   install:
-    desc: "Fresh install of a new/replaced node: render + INSECURE maintenance-mode apply (cluster=, node=, ip=)"
+    desc: "Fresh install of a new/replaced node: render + INSECURE maintenance-mode apply (cluster=, node=, ip=, [role=controlplane|worker])"
     prompt: "Install rendered config {{.cluster}}/{{.node}} onto {{.ip}} via insecure maintenance apply?"
     cmds:
-      - bash -c 'tmp="$(mktemp /dev/shm/talos-install.XXXXXX.yaml)"; trap "rm -f \"$tmp\"" EXIT; chmod 600 "$tmp"; ./.taskfiles/talos/render-config.sh {{.cluster}} {{.node}} > "$tmp" && talosctl apply-config --insecure --nodes {{.ip}} --file "$tmp"'
+      - bash -c 'tmp="$(mktemp /dev/shm/talos-install.XXXXXX.yaml)"; trap "rm -f \"$tmp\"" EXIT; chmod 600 "$tmp"; ./.taskfiles/talos/render-config.sh {{.cluster}} {{.node}} {{.role | default "controlplane"}} > "$tmp" && talosctl apply-config --insecure --nodes {{.ip}} --file "$tmp"'
     requires:
       vars: [cluster, node, ip]
 

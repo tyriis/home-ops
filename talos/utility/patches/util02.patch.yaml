@@ -1,0 +1,50 @@
+# util02 (ZimaBlade, Apollo Lake N3450, 16GB) — WORKER node.
+# Render: .taskfiles/talos/render-config.sh utility util02 worker
+# Join flow: task talos:install cluster=utility node=util02 ip=<dhcp-ip> role=worker
+#
+# Role in the cluster: stateless git host + future CNPG primary.
+# Data placement lives in the UserVolumeConfig below; the OS disk carries
+# nothing precious (worker = wipe-and-rejoin if it dies).
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: util02
+auto: "off"
+---
+# OS/EPHEMERAL target: Kingston SA400S37480G — wwID `naa.50026b7782434675`
+# (dev_path /dev/sda, LIVE-VERIFIED via `talosctl get disks` on the 2026-11-19
+# maintenance boot). HEALTHY 2026-10-28 (93% life, 3.1 TB written, zero
+# pre-fail growth); old NFS-tree contents triaged by the user 2026-11-17 and
+# deliberately retired.
+# wipe: true — fresh node, discarded data, nothing to preserve.
+# LESSON 2026-11-19: this board's ahci surfaces NO disk.serial on either SATA
+# port (both empty) — a serial selector matches nothing and the unattended
+# install then sits in 'pending' FOREVER with no error (cost 1.5h to find).
+# Pin by wwID. Also visible on this board: 31G eMMC (old ZimaOS) + the boot
+# USB — wwID pins ignore them automatically; a selector-less install would
+# have hit the eMMC first.
+# installer.image is DERIVED at render (schematic + version.yaml) — not pinned here.
+apiVersion: v1alpha1
+kind: UnattendedInstallConfig
+provisioning:
+  diskSelector:
+    match: disk.wwid == "naa.50026b7782434675"
+  wipe: true
+---
+# Data volume: Samsung 870 EVO — wwID `naa.5002538f52b2dfc4` (dev_path
+# /dev/sdb, LIVE-VERIFIED 2026-11-19; its disk.serial is empty too — see the
+# OS-disk lesson above; the …98Y sibling with the attr-252 watch stays on the NUC).
+# volumeType: disk = whole-disk xfs, no partition table.
+# Mounts at /var/mnt/data — SAME volume name planned for util01's EVO, so
+# the shared `local-ssd` StorageClass basePath exists identically on both
+# nodes and CNPG primary+replica each land on local disk.
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: data
+volumeType: disk
+provisioning:
+  diskSelector:
+    match: disk.wwid == "naa.5002538f52b2dfc4"
+# No VIP here (control-plane concept, never added to a worker patch).
+# NOTE: the KubeNodeConfig installer-url annotation inherits common's util01
+# stale pin (v1.13.6) — cosmetic metadata only; fix fleet-wide later.
