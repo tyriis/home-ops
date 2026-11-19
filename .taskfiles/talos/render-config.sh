@@ -82,9 +82,16 @@ EOF
 echo "==> derived installer.image = factory.talos.dev/metal-installer-secureboot/${SCHEMATIC_ID}:${TALOS_VERSION}" >&2
 
 # --with-secrets via process substitution: decrypted talsecret never hits disk.
+# common-cp.patch.yaml (control-plane-only docs) is applied only for CP renders —
+# a worker apply rejects those kinds. If it disappears, CP renders silently lose
+# the docs: catch it with 'task talos:dry' before any util01 apply.
 # common.patch.yaml deletes the gen-bundled encryption doc; encpatch re-adds the full
 # one LAST so it lands as a single appended document (order is semantic here; CP only).
-patches=(--config-patch "@$common" --config-patch "@$patch" --config-patch "@$instpatch")
+patches=(--config-patch "@$common")
+if [[ "$role" == controlplane && -f "$here/patches/common-cp.patch.yaml" ]]; then
+  patches+=(--config-patch "@$here/patches/common-cp.patch.yaml")
+fi
+patches+=(--config-patch "@$patch" --config-patch "@$instpatch")
 if [[ -n "$encpatch" ]]; then
   patches+=(--config-patch "@$encpatch")
 fi
