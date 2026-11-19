@@ -1,0 +1,44 @@
+# util02 (ZimaBlade, Apollo Lake N3450, 16GB) — WORKER node.
+# Render: .taskfiles/talos/render-config.sh utility util02 worker
+# Join flow: task talos:install cluster=utility node=util02 ip=<dhcp-ip> role=worker
+#
+# Role in the cluster: stateless git host + future CNPG primary.
+# Data placement lives in the UserVolumeConfig below; the OS disk carries
+# nothing precious (worker = wipe-and-rejoin if it dies).
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: util02
+auto: "off"
+---
+# OS/EPHEMERAL target: Kingston SA400S37480G `50026B7782434675` (port 2).
+# HEALTHY 2026-10-28 (93% life, 3.1 TB written, zero pre-fail growth); old
+# NFS-tree contents triaged by the user 2026-11-17 and deliberately retired.
+# wipe: true — fresh node, discarded data, nothing to preserve.
+# Pinned by SATA serial (unique + stable for this model; disk.wwid values
+# not yet recorded — verify via `talosctl get blockdevices` before install).
+# installer.image is DERIVED at render (schematic + version.yaml) — not pinned here.
+apiVersion: v1alpha1
+kind: UnattendedInstallConfig
+provisioning:
+  diskSelector:
+    match: disk.serial == "50026B7782434675"
+  wipe: true
+---
+# Data volume: Samsung 870 EVO `S6PYNL0TB36744P` (port 1) — the clean,
+# watch-free sibling (…98Y, attr-252 watch, stays on the NUC).
+# volumeType: disk = whole-disk xfs, no partition table; serial selector is
+# the stable identity the disk volumes require.
+# Mounts at /var/mnt/data — SAME volume name planned for util01's EVO, so
+# the shared `local-ssd` StorageClass basePath exists identically on both
+# nodes and CNPG primary+replica each land on local disk.
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: data
+volumeType: disk
+provisioning:
+  diskSelector:
+    match: disk.serial == "S6PYNL0TB36744P"
+# No VIP here (control-plane concept, never added to a worker patch).
+# NOTE: the KubeNodeConfig installer-url annotation inherits common's util01
+# stale pin (v1.13.6) — cosmetic metadata only; fix fleet-wide later.
