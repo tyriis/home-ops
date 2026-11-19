@@ -11,24 +11,30 @@ kind: HostnameConfig
 hostname: util02
 auto: "off"
 ---
-# OS/EPHEMERAL target: Kingston SA400S37480G `50026B7782434675` (port 2).
-# HEALTHY 2026-10-28 (93% life, 3.1 TB written, zero pre-fail growth); old
-# NFS-tree contents triaged by the user 2026-11-17 and deliberately retired.
+# OS/EPHEMERAL target: Kingston SA400S37480G — wwID `naa.50026b7782434675`
+# (dev_path /dev/sda, LIVE-VERIFIED via `talosctl get disks` on the 2026-11-19
+# maintenance boot). HEALTHY 2026-10-28 (93% life, 3.1 TB written, zero
+# pre-fail growth); old NFS-tree contents triaged by the user 2026-11-17 and
+# deliberately retired.
 # wipe: true — fresh node, discarded data, nothing to preserve.
-# Pinned by SATA serial (unique + stable for this model; disk.wwid values
-# not yet recorded — verify via `talosctl get blockdevices` before install).
+# LESSON 2026-11-19: this board's ahci surfaces NO disk.serial on either SATA
+# port (both empty) — a serial selector matches nothing and the unattended
+# install then sits in 'pending' FOREVER with no error (cost 1.5h to find).
+# Pin by wwID. Also visible on this board: 31G eMMC (old ZimaOS) + the boot
+# USB — wwID pins ignore them automatically; a selector-less install would
+# have hit the eMMC first.
 # installer.image is DERIVED at render (schematic + version.yaml) — not pinned here.
 apiVersion: v1alpha1
 kind: UnattendedInstallConfig
 provisioning:
   diskSelector:
-    match: disk.serial == "50026B7782434675"
+    match: disk.wwid == "naa.50026b7782434675"
   wipe: true
 ---
-# Data volume: Samsung 870 EVO `S6PYNL0TB36744P` (port 1) — the clean,
-# watch-free sibling (…98Y, attr-252 watch, stays on the NUC).
-# volumeType: disk = whole-disk xfs, no partition table; serial selector is
-# the stable identity the disk volumes require.
+# Data volume: Samsung 870 EVO — wwID `naa.5002538f52b2dfc4` (dev_path
+# /dev/sdb, LIVE-VERIFIED 2026-11-19; its disk.serial is empty too — see the
+# OS-disk lesson above; the …98Y sibling with the attr-252 watch stays on the NUC).
+# volumeType: disk = whole-disk xfs, no partition table.
 # Mounts at /var/mnt/data — SAME volume name planned for util01's EVO, so
 # the shared `local-ssd` StorageClass basePath exists identically on both
 # nodes and CNPG primary+replica each land on local disk.
@@ -38,7 +44,7 @@ name: data
 volumeType: disk
 provisioning:
   diskSelector:
-    match: disk.serial == "S6PYNL0TB36744P"
+    match: disk.wwid == "naa.5002538f52b2dfc4"
 # No VIP here (control-plane concept, never added to a worker patch).
 # NOTE: the KubeNodeConfig installer-url annotation inherits common's util01
 # stale pin (v1.13.6) — cosmetic metadata only; fix fleet-wide later.
