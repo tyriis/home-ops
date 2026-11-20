@@ -13,6 +13,8 @@ volumes:
 services:
   traefik:
     image: traefik:v3.7.19@sha256:a6c0194dda77bcb804824580f36fa7edc56e315b1acfe933366c8b52844a78a4
+    mem_limit: 512m
+    pids_limit: 256
     container_name: traefik
     logging:
       driver: json-file

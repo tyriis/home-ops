@@ -36,6 +36,8 @@ services:
     container_name: ${CONTAINER_NAME:-hindsight}
     # renovate: datasource=docker
     image: ghcr.io/vectorize-io/hindsight:1.2.3@sha256:601cfdd1bd3f6053864c6458ee15259f065a01a3f83090b56a8ae57db67f8f38
+    mem_limit: 6g
+    pids_limit: 512
     user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
     group_add:
       - "${GROUP_ID:-1000}"
@@ -141,9 +143,9 @@ services:
         labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
     read_only: true
     tmpfs:
-      - /tmp
+      - /tmp:size=512m
       # PG socket/run dir — see the entrypoint: the embedded cluster listens here.
-      - /var/run/postgresql
+      - /var/run/postgresql:size=64m
     cap_drop:
       - ALL
     security_opt:

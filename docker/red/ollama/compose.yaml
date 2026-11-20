@@ -46,6 +46,8 @@ services:
   # exports SOPS_ENV_FILE), never from a committed label.
   ollama-auth:
     image: caddy:2.11-alpine@sha256:003a97808e781aa9f7e75cc2f43d34d461099031faf5e20faefb9f61126836f0
+    mem_limit: 128m
+    pids_limit: 64
     cap_drop:
       - ALL
     # The official Caddy image ships /usr/bin/caddy with the file capability
@@ -70,9 +72,9 @@ services:
     security_opt:
       - no-new-privileges=true
     tmpfs:
-      - /tmp
-      - /config
-      - /data
+      - /tmp:size=64m
+      - /config:size=32m
+      - /data:size=32m
     networks:
       - apps
     volumes:
