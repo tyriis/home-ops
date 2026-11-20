@@ -34,10 +34,10 @@ machine:
         endpoints:
           - https://harbor.techtales.io/v2/proxy-ghcr.io
         overridePath: true
-cluster:
-  etcd:
-    extraArgs:
-      listen-metrics-urls: http://0.0.0.0:2381
+# NOTE: control-plane-only documents (cluster.etcd listener, controller-manager/
+# scheduler bind-addresses, kube-proxy toggle, Talos API access) live in
+# common-cp.patch.yaml — a worker apply REJECTS them ("etcd config is only
+# allowed on control plane machines"). Keep this file worker-safe.
 ---
 apiVersion: v1alpha1
 kind: SysctlConfig
@@ -107,49 +107,16 @@ apiVersion: v1alpha1
 kind: KubePrismConfig
 port: 7445
 ---
-apiVersion: v1alpha1
-kind: KubeTalosAPIAccessConfig
-allowedRoles:
-  - os:admin
-allowedKubernetesNamespaces:
-  - system-upgrade
----
 # replaces deprecated .cluster.coreDNS.disabled — presence of this doc
 # deploys CoreDNS; delete to disable (Cilium DNS + external DNS)
 apiVersion: v1alpha1
 kind: KubeCoreDNSConfig
 $patch: delete
 ---
-# replaces deprecated .cluster.proxy.disabled — cluster runs Cilium
-apiVersion: v1alpha1
-kind: KubeProxyConfig
-enabled: false
----
-apiVersion: v1alpha1
-kind: KubeControllerManagerConfig
-extraArgs:
-  bind-address: 0.0.0.0
----
-# replaces deprecated .cluster.scheduler.*
-apiVersion: v1alpha1
-kind: KubeSchedulerConfig
-extraArgs:
-  bind-address: 0.0.0.0
-config:
-  profiles:
-    - schedulerName: default-scheduler
-      plugins:
-        score:
-          disabled:
-            - name: ImageLocality
-      pluginConfig:
-        - name: PodTopologySpread
-          args:
-            defaultingType: List
-            defaultConstraints:
-              - maxSkew: 1.0
-                topologyKey: kubernetes.io/hostname
-                whenUnsatisfiable: ScheduleAnyway
+# KubeCoreDNSConfig / KubeExternalManifestConfig / KubeFlannelCNIConfig below are
+# cluster-scoped and worker-tolerated (no-ops on a worker) — they stay here.
+# KubeProxyConfig, KubeControllerManagerConfig, KubeSchedulerConfig moved to
+# common-cp.patch.yaml (control-plane-only kinds).
 ---
 # replaces deprecated .cluster.extraManifests (names stable = gen-safe)
 apiVersion: v1alpha1

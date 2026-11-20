@@ -15,17 +15,23 @@ name: ollama
 working_dir: docker/red/ollama
 env_files:
   - .env
+# Keep images cached while the stack sits at replicas: 0 (doco default prunes them).
+prune_images: false
 ---
 name: node-exporter
 working_dir: docker/red/node-exporter
 ---
 name: comfyui
 working_dir: docker/red/comfyui
+# Keep images cached while the stack sits at replicas: 0 (doco default prunes them).
+prune_images: false
 ---
 name: unsloth
 working_dir: docker/red/unsloth
 env_files:
   - .env
+# Keep images cached while the stack sits at scale: 0 (doco default prunes them).
+prune_images: false
 ---
 name: arcane-agent
 working_dir: docker/red/arcane-agent

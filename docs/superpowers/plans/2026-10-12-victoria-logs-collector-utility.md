@@ -9,17 +9,17 @@ are separate phase-2 slices (ADR 0016 lists them; each reuses this pattern with 
 
 **Decided defaults** (flip any of these before implementing):
 
-| Question | Default | Why |
-| --- | --- | --- |
-| Token storage | Read key `VMAUTH_TOKEN_UTILITY` from the existing `vmauth-tokens` Secret via `secretKeyRef` | One source of truth; the collector's pod is recreated anyway when vmauth rotates the key |
-| Own-logs loop | `collector.excludeFilter` drops the collector pod itself | DaemonSet would otherwise tail its own stdout forever |
-| Buffer | hostPath `/var/lib/vl-collector` (chart default), `maxDiskUsagePerURL: 1Gi` | Survives collector + node restarts; cap protects the SSD |
-| Talos change | **None** | hostPath allowlist doesn't exist on Talos 1.14; promtail on main already proves `/var/log` tailing works |
-| Version pin | chart `0.3.8`, vlagent `v1.53.0` | Same release train as the deployed VL v1.53.0 |
+| Question      | Default                                                                                     | Why                                                                                                      |
+| ------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Token storage | Read key `VMAUTH_TOKEN_UTILITY` from the existing `vmauth-tokens` Secret via `secretKeyRef` | One source of truth; the collector's pod is recreated anyway when vmauth rotates the key                 |
+| Own-logs loop | `collector.excludeFilter` drops the collector pod itself                                    | DaemonSet would otherwise tail its own stdout forever                                                    |
+| Buffer        | hostPath `/var/lib/vl-collector` (chart default), `maxDiskUsagePerURL: 1Gi`                 | Survives collector + node restarts; cap protects the SSD                                                 |
+| Talos change  | **None**                                                                                    | hostPath allowlist doesn't exist on Talos 1.14; promtail on main already proves `/var/log` tailing works |
+| Version pin   | chart `0.3.8`, vlagent `v1.53.0`                                                            | Same release train as the deployed VL v1.53.0                                                            |
 
 **Facts baked in (verified 2026-10-12):**
 
-- The chart deploys **vlagent** (VictoriaLogs' own Go agent — *not* fluent-bit, *not* a logproxy
+- The chart deploys **vlagent** (VictoriaLogs' own Go agent — _not_ fluent-bit, _not_ a logproxy
   fork). DaemonSet, port **9429** (metrics + ingest), SA auto-created, ClusterRole =
   `nodes, namespaces, pods` → `get,list,watch` only.
 - Collection = tail files under `/var/log/pods` (read-only hostPaths `/var/log`, `/var/lib` are
@@ -40,7 +40,7 @@ are separate phase-2 slices (ADR 0016 lists them; each reuses this pattern with 
 
 ## File structure
 
-```
+```text
 kubernetes/utility/apps/observability/victoria-logs-collector/
   flux-sync.yaml                # child Flux Kustomization (sops label — consumes a Secret)
   app/
@@ -53,7 +53,7 @@ kubernetes/utility/apps/observability/victoria-logs-collector/
 Modify:
 
 - `kubernetes/utility/apps/observability/kustomization.yaml` — add
-  `  - ./victoria-logs-collector/flux-sync.yaml` (+ `dependsOn: [victoria-auth]` lives in the flux-sync).
+  `- ./victoria-logs-collector/flux-sync.yaml` (+ `dependsOn: [victoria-auth]` lives in the flux-sync).
 - `kubernetes/utility/apps/observability/victoria-auth/app/network-policy.yaml` — second
   ingress rule for the collector (below).
 - `kubernetes/utility/apps/observability/victoria-logs/app/README.md` — "Shippers deployed"
@@ -112,10 +112,10 @@ values:
     reloader.stakater.com/auto: "true"
   podMonitor:
     enabled: true
-    vm: false   # utility runs kube-prometheus-stack, not VM-operator
+    vm: false # utility runs kube-prometheus-stack, not VM-operator
   resources:
-    requests: {cpu: 50m, memory: 64Mi}
-    limits: {memory: 256Mi}
+    requests: { cpu: 50m, memory: 64Mi }
+    limits: { memory: 256Mi }
 ```
 
 Notes for the implementer:
@@ -165,20 +165,20 @@ Two edits (one new file, one patch):
    spec:
      podSelector:
        matchLabels:
-         app.kubernetes.io/name: victoria-logs-collector   # verify rendered pod labels first
+         app.kubernetes.io/name: victoria-logs-collector # verify rendered pod labels first
      policyTypes: [Egress]
      egress:
        - to:
            - podSelector:
                matchLabels:
                  app.kubernetes.io/name: vmauth
-         ports: [{protocol: TCP, port: 8427}]
+         ports: [{ protocol: TCP, port: 8427 }]
        - to:
            - namespaceSelector:
                matchLabels:
                  kubernetes.io/metadata.name: kube-system
-         ports: [{protocol: TCP, port: 443}]   # K8s API enrichment
-       - ports: [{protocol: UDP, port: 53}, {protocol: TCP, port: 53}]   # cluster DNS
+         ports: [{ protocol: TCP, port: 443 }] # K8s API enrichment
+       - ports: [{ protocol: UDP, port: 53 }, { protocol: TCP, port: 53 }] # cluster DNS
    ```
 
    (Verify the exact pod labels from `helm template` render before writing the selector; the
@@ -191,13 +191,13 @@ Two edits (one new file, one patch):
    add a second source allowing the collector (same-namespace, specific pod label):
 
    ```yaml
-       - from:
-           - podSelector:
-               matchLabels:
-                 app.kubernetes.io/name: victoria-logs-collector
-         ports:
-           - protocol: TCP
-             port: 8427
+   - from:
+       - podSelector:
+           matchLabels:
+             app.kubernetes.io/name: victoria-logs-collector
+     ports:
+       - protocol: TCP
+         port: 8427
    ```
 
 Commit: `feat(vmlogs): allow victoria-logs-collector through vmauth network policy`
@@ -207,7 +207,7 @@ Commit: `feat(vmlogs): allow victoria-logs-collector through vmauth network poli
 - Patch `victoria-logs/app/README.md`: shipper status — utility unit covered by
   `victoria-logs-collector` (vlagent v1.53.0, disk buffer at `/var/lib/vl-collector`,
   `cluster="utility"` label); main/NAS/bifrost/workstations still pending.
-- ADR 0016 open-question 3 resolves to *victoria-logs-collector on Talos nodes* — record it
+- ADR 0016 open-question 3 resolves to _victoria-logs-collector on Talos nodes_ — record it
   in the same commit: add a note under the open questions (status flip to `accepted` stays the
   post-deploy follow-up commit as phase 1 did).
 - `task lint:yaml`, `task lint:prettier` (fix: `task lint:prettier:fix`).

@@ -1,7 +1,7 @@
 # Utility metrics ingestion into the central VictoriaMetrics store
 
 > **For agentic workers:** REQUIRED SUB-SKILL: superpowers:subagent-driven-development. Steps use checkbox (`- [ ]`) syntax.
-> Issue: https://github.com/tyriis/home-ops/issues/11383
+> Issue: <https://github.com/tyriis/home-ops/issues/11383>
 
 **Goal:** A VMAgent on the utility cluster remote-writes every utility platform/app metric to the
 central VMSingle (`cluster="utility"`), so `count by (cluster) (up)` returns both `main` and
@@ -90,18 +90,21 @@ bearerTokenSecret: {name: vmagent-remote-write, key: token}}]`,
 **Files:** `kubernetes/utility/apps/observability/victoria-metrics/app/scrapes/` (10 files, one per
 object, kustomization entry each).
 
-| File                              | Kind / name                                                  | Selector (namespace)                                                                                | Endpoint                                                                                                                                                                          |
-| --------------------------------- | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `vm-kube-apiserver.yaml`          | VMServiceScrape `kube-apiserver`                             | `component=apiserver, provider=kubernetes` (`default`)                                              | `https`, scheme https, SA ca + `serverName: kubernetes`, bearer, job `apiserver`, 2 bucket drops                                                                                  |
-| `vm-kubelet.yaml`                 | VMNodeScrape `kubelet`, `kubelet-cadvisor`, `kubelet-probes` | node label `kubernetes.io/os=linux`                                                                 | 10250 `/metrics`, `/metrics/cadvisor`, `/metrics/probes`, https, insecureSkipVerify, bearer, job `kubelet`; keep the 3 / 8 / 0 metric relabel rules from the live config verbatim |
-| `vm-kube-etcd.yaml`               | VMStaticScrape `kube-etcd`                                   | —                                                                                                   | `192.168.100.30:2381`, http, bearer                                                                                                                                               |
-| `vm-kube-scheduler.yaml`          | VMStaticScrape `kube-scheduler`                              | —                                                                                                   | `192.168.100.30:10259`, https, insecureSkipVerify, bearer                                                                                                                         |
-| `vm-kube-controller-manager.yaml` | VMStaticScrape `kube-controller-manager`                     | —                                                                                                   | `192.168.100.30:10257`, https, insecureSkipVerify, bearer                                                                                                                         |
-| `vm-coredns.yaml`                 | VMServiceScrape `coredns`                                    | `app=kube-prometheus-stack-coredns, release=kube-prometheus-stack` (`kube-system`)                  | `http-metrics`, bearer, job `coredns`                                                                                                                                             |
-| `vm-kube-state-metrics.yaml`      | VMServiceScrape `kube-state-metrics`                         | `app.kubernetes.io/name=kube-state-metrics, app.kubernetes.io/instance=kube-prometheus-stack`       | `http` + `metrics`, `honorLabels: true`, `kubernetes_node` relabel                                                                                                                |
-| `vm-node-exporter.yaml`           | VMServiceScrape `node-exporter`                              | `app.kubernetes.io/name=prometheus-node-exporter, app.kubernetes.io/instance=kube-prometheus-stack` | `http-metrics`, `kubernetes_node` relabel                                                                                                                                         |
-| `vm-alertmanager.yaml`            | VMServiceScrape `kube-prometheus-stack-alertmanager`         | `app, release=kube-prometheus-stack, self-monitor="true"`                                           | `http-web` + `reloader-web`, job forced                                                                                                                                           |
-| `vm-prometheus-operator.yaml`     | VMServiceScrape `kube-prometheus-stack-operator`             | `app, release=kube-prometheus-stack`                                                                | `https`, scheme https, insecureSkipVerify, `honorLabels: true`, job forced                                                                                                        |
+- `vm-kube-apiserver.yaml` — VMServiceScrape `kube-apiserver`; selector `component=apiserver, provider=kubernetes` (`default`); endpoint `https`, scheme https, SA ca + `serverName: kubernetes`, bearer, job `apiserver`, 2 bucket drops
+- `vm-kubelet.yaml` — VMNodeScrape `kubelet`, `kubelet-cadvisor`, `kubelet-probes`; node label
+  `kubernetes.io/os=linux`; endpoint 10250 `/metrics`, `/metrics/cadvisor`, `/metrics/probes`, https,
+  insecureSkipVerify, bearer, job `kubelet`; keep the 3 / 8 / 0 metric relabel rules from the live config
+  verbatim
+- `vm-kube-etcd.yaml` — VMStaticScrape `kube-etcd`; no selector; endpoint `192.168.100.30:2381`, http, bearer
+- `vm-kube-scheduler.yaml` — VMStaticScrape `kube-scheduler`; no selector; endpoint `192.168.100.30:10259`, https, insecureSkipVerify, bearer
+- `vm-kube-controller-manager.yaml` — VMStaticScrape `kube-controller-manager`; no selector; endpoint `192.168.100.30:10257`, https, insecureSkipVerify, bearer
+- `vm-coredns.yaml` — VMServiceScrape `coredns`; selector `app=kube-prometheus-stack-coredns, release=kube-prometheus-stack` (`kube-system`); endpoint `http-metrics`, bearer, job `coredns`
+- `vm-kube-state-metrics.yaml` — VMServiceScrape `kube-state-metrics`; selector
+  `app.kubernetes.io/name=kube-state-metrics, app.kubernetes.io/instance=kube-prometheus-stack`; endpoint
+  `http` + `metrics`, `honorLabels: true`, `kubernetes_node` relabel
+- `vm-node-exporter.yaml` — VMServiceScrape `node-exporter`; selector `app.kubernetes.io/name=prometheus-node-exporter, app.kubernetes.io/instance=kube-prometheus-stack`; endpoint `http-metrics`, `kubernetes_node` relabel
+- `vm-alertmanager.yaml` — VMServiceScrape `kube-prometheus-stack-alertmanager`; selector `app, release=kube-prometheus-stack, self-monitor="true"`; endpoint `http-web` + `reloader-web`, job forced
+- `vm-prometheus-operator.yaml` — VMServiceScrape `kube-prometheus-stack-operator`; selector `app, release=kube-prometheus-stack`; endpoint `https`, scheme https, insecureSkipVerify, `honorLabels: true`, job forced
 
 `kube-prometheus-stack-prometheus` is **not** mirrored (documented gap: vmagent does not scrape the
 Prometheus being retired).
@@ -113,35 +116,33 @@ One `vm-service-scrape.yaml` per app (or `vm-pod-scrape.yaml` for pod targets), 
 
 **Lane B** — `backup-system`, `cert-manager`, `default`, `flux-system`, `kube-tools`:
 
-| App dir                                 | Object                                | Notes                                                                                                                                                                                                                                    |
-| --------------------------------------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `backup-system/snapshot-controller/app` | VMServiceScrape `snapshot-controller` | `app.kubernetes.io/{instance,name}=snapshot-controller`, port `http`                                                                                                                                                                     |
-| `backup-system/volsync/app`             | VMServiceScrape `volsync-metrics`     | `control-plane=volsync-controller`, port `https`, scheme https, insecureSkipVerify, interval 30s                                                                                                                                         |
-| `cert-manager/cert-manager/app`         | VMServiceScrape `cert-manager`        | `matchExpressions In`: name ∈ {cainjector,cert-manager,webhook}, instance=cert-manager, component ∈ {cainjector,controller,webhook}; port `http-metrics`, timeout 30s, job from `__meta_kubernetes_service_label_app_kubernetes_io_name` |
-| `default/echo-server/app`               | VMServiceScrape `echo-server`         | instance/name/service = echo-server, port `http`                                                                                                                                                                                         |
-| `flux-system/flux-operator/app`         | VMServiceScrape `flux-operator`       | instance/name = flux-operator, port `8080`, timeout 30s                                                                                                                                                                                  |
-| `kube-tools/descheduler/app`            | VMServiceScrape `descheduler`         | instance/name = descheduler, port `http-metrics`, scheme https, insecureSkipVerify, `honorLabels: true`, job from service label `jobLabel`                                                                                               |
+- `backup-system/snapshot-controller/app` — VMServiceScrape `snapshot-controller`; `app.kubernetes.io/{instance,name}=snapshot-controller`, port `http`
+- `backup-system/volsync/app` — VMServiceScrape `volsync-metrics`; `control-plane=volsync-controller`, port `https`, scheme https, insecureSkipVerify, interval 30s
+- `cert-manager/cert-manager/app` — VMServiceScrape `cert-manager`; `matchExpressions In`: name ∈
+  {cainjector,cert-manager,webhook}, instance=cert-manager, component ∈ {cainjector,controller,webhook}; port
+  `http-metrics`, timeout 30s, job from `__meta_kubernetes_service_label_app_kubernetes_io_name`
+- `default/echo-server/app` — VMServiceScrape `echo-server`; instance/name/service = echo-server, port `http`
+- `flux-system/flux-operator/app` — VMServiceScrape `flux-operator`; instance/name = flux-operator, port `8080`, timeout 30s
+- `kube-tools/descheduler/app` — VMServiceScrape `descheduler`; instance/name = descheduler, port `http-metrics`, scheme https, insecureSkipVerify, `honorLabels: true`, job from service label `jobLabel`
 
 **Lane C** — `kube-system`, `networking`, `secops`, `system-upgrade`, `cnpg-system`, `git-system`:
 
-| App dir                                  | Object                                            | Notes                                                                                                                  |
-| ---------------------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `kube-system/cilium/app`                 | VMServiceScrape `cilium-agent`, `cilium-operator` | `name=cilium-agent` / `io.cilium/app=operator,name=cilium-operator`, port `metrics`, interval 10s, `honorLabels: true` |
-| `kube-system/metrics-server/app`         | VMServiceScrape `metrics-server`                  | instance/name = metrics-server, port `https`, scheme https, insecureSkipVerify                                         |
-| `networking/external-dns/cloudflare/app` | VMServiceScrape `external-dns-cloudflare`         | `app.kubernetes.io/name=external-dns`, `instance=external-dns-cloudflare`, port `http`                                 |
-| `networking/external-dns/unifi/app`      | VMServiceScrape `external-dns-unifi`              | same name label, `instance=external-dns-unifi`, ports `http` + `http-webhook`                                          |
-| `secops/pocket-id/app`                   | VMServiceScrape `pocket-id`                       | instance/name/service = pocket-id, port `metrics`                                                                      |
-| `system-upgrade/tuppr/app`               | VMServiceScrape `tuppr-metrics-service`           | instance/name = tuppr, port `metrics`, interval 30s                                                                    |
-| `cnpg-system/cnpg/operator`              | VMPodScrape `cnpg-operator-cloudnative-pg`        | instance=cnpg-operator, name=cloudnative-pg, port `metrics`, job `cnpg-system/cnpg-operator-cloudnative-pg`            |
-| `git-system/forgejo/database`            | VMPodScrape `forgejo-db`                          | `cnpg.io/cluster=forgejo-db`, `cnpg.io/podRole=instance`, port `metrics`, job `git-system/forgejo-db`                  |
+- `kube-system/cilium/app` — VMServiceScrape `cilium-agent`, `cilium-operator`; `name=cilium-agent` / `io.cilium/app=operator,name=cilium-operator`, port `metrics`, interval 10s, `honorLabels: true`
+- `kube-system/metrics-server/app` — VMServiceScrape `metrics-server`; instance/name = metrics-server, port `https`, scheme https, insecureSkipVerify
+- `networking/external-dns/cloudflare/app` — VMServiceScrape `external-dns-cloudflare`; `app.kubernetes.io/name=external-dns`, `instance=external-dns-cloudflare`, port `http`
+- `networking/external-dns/unifi/app` — VMServiceScrape `external-dns-unifi`; same name label, `instance=external-dns-unifi`, ports `http` + `http-webhook`
+- `secops/pocket-id/app` — VMServiceScrape `pocket-id`; instance/name/service = pocket-id, port `metrics`
+- `system-upgrade/tuppr/app` — VMServiceScrape `tuppr-metrics-service`; instance/name = tuppr, port `metrics`, interval 30s
+- `cnpg-system/cnpg/operator` — VMPodScrape `cnpg-operator-cloudnative-pg`; instance=cnpg-operator, name=cloudnative-pg, port `metrics`, job `cnpg-system/cnpg-operator-cloudnative-pg`
+- `git-system/forgejo/database` — VMPodScrape `forgejo-db`; `cnpg.io/cluster=forgejo-db`, `cnpg.io/podRole=instance`, port `metrics`, job `git-system/forgejo-db`
 
 **Lane D** — `observability`:
 
-| App dir                                     | Object                                | Notes                                                                                                                                                                                                      |
-| ------------------------------------------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `observability/smartctl-exporter/app`       | VMServiceScrape `smartctl-exporter`   | `app.kubernetes.io/name=prometheus-smartctl-exporter`, `instance=smartctl-exporter` (drop the `version`/`helm.sh/chart`/`managed-by` selectors — they churn on every chart bump), port `http`, timeout 30s |
-| `observability/vmalert/app`                 | VMServiceScrape `vmalert`             | instance/name/service = vmalert, port `app`                                                                                                                                                                |
-| `observability/victoria-logs-collector/app` | VMPodScrape `victoria-logs-collector` | instance/name = victoria-logs-collector, port `http`, job `observability/victoria-logs-collector`                                                                                                          |
+- `observability/smartctl-exporter/app` — VMServiceScrape `smartctl-exporter`;
+  `app.kubernetes.io/name=prometheus-smartctl-exporter`, `instance=smartctl-exporter` (drop the
+  `version`/`helm.sh/chart`/`managed-by` selectors — they churn on every chart bump), port `http`, timeout 30s
+- `observability/vmalert/app` — VMServiceScrape `vmalert`; instance/name/service = vmalert, port `app`
+- `observability/victoria-logs-collector/app` — VMPodScrape `victoria-logs-collector`; instance/name = victoria-logs-collector, port `http`, job `observability/victoria-logs-collector`
 
 ### Task 4: README (after Tasks 1–3)
 

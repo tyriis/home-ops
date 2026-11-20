@@ -26,7 +26,7 @@ shape.
 Two options were weighed for what replaces Lightwhale:
 
 - **Talos worker in utility.** Pros: one OS discipline for servers, patching via
-  the known Talos flow. Cons: a second *worker* into a single-control-plane
+  the known Talos flow. Cons: a second _worker_ into a single-control-plane
   cluster adds capacity but zero redundancy; every app inherits util01's failure
   domain and apply-config churn; and it forces the docker-lane apps (new-api,
   Arcane, host-level Traefik) into a k8s rewrite for no isolation gain.
@@ -99,17 +99,17 @@ declarative module as everything else.
 
 The three daemons boot from image state only. Persisted paths, and only these:
 
-| Path                          | Why                                                    |
-| ----------------------------- | ------------------------------------------------------ |
-| `/etc/ssh/`                   | host keys; `authorized_keys` from the module, not here |
-| `/etc/machine-id`             | identity stability (metrics `host=`, log `hostname=`)  |
-| Docker `data-root` mount      | images, volumes — container state                      |
-| `/etc/doco-cd/`               | the host age key — the only bootstrap secret           |
+| Path                     | Why                                                    |
+| ------------------------ | ------------------------------------------------------ |
+| `/etc/ssh/`              | host keys; `authorized_keys` from the module, not here |
+| `/etc/machine-id`        | identity stability (metrics `host=`, log `hostname=`)  |
+| Docker `data-root` mount | images, volumes — container state                      |
+| `/etc/doco-cd/`          | the host age key — the only bootstrap secret           |
 
 Boot sequence: sshd + dockerd up → one-time manual `docker compose up` of the
 doco-cd stack (same bootstrap procedure as every current docker-lane host) →
 git owns the host from then on. A wipe + reflash + these four paths returns any
-host to fleet-green; that property *is* the test.
+host to fleet-green; that property _is_ the test.
 
 ## Test pilot: the spare device
 

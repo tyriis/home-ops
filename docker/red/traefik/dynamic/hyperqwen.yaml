@@ -1,0 +1,20 @@
+---
+# Host-process route. Backend dep: hyperqwen server on red binds 172.17.0.1:18020
+# (red's docker0 host gateway, discovered via `ip addr show docker0` on red) —
+# host.docker.internal resolves to it; a 127.0.0.1 bind would be unreachable here.
+# Paths pass through unchanged: /v1/... reaches the backend as /v1/....
+# The *.tyriis.dev wildcard cert (cf resolver) covers this host.
+http:
+  routers:
+    hyperqwen:
+      rule: "Host(`hyperqwen.tyriis.dev`)"
+      entryPoints:
+        - websecure
+      service: hyperqwen
+      tls:
+        certResolver: cf
+  services:
+    hyperqwen:
+      loadBalancer:
+        servers:
+          - url: http://host.docker.internal:18020

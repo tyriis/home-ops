@@ -1,6 +1,8 @@
 # Hermes-Agent Multi-Tenant Design
 
-**Goal:** Deploy isolated, secure instances of `hermes-agent` for 4 users (tyriis, jazzlyn, crowlex, techinik) in a dedicated `hermes-agent` namespace. The deployment uses a DRY parameterized Kustomize approach with `bjw-s/app-template` and integrates automatic VolSync backups.
+**Goal:** Deploy isolated, secure instances of `hermes-agent` for 4 users (tyriis, jazzlyn, crowlex,
+techinik) in a dedicated `hermes-agent` namespace. The deployment uses a DRY parameterized Kustomize
+approach with `bjw-s/app-template` and integrates automatic VolSync backups.
 
 ## Architecture
 

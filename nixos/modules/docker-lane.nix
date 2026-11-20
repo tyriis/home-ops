@@ -34,6 +34,15 @@
   # reused, so DHCP applies in stage 1 too. Each host must declare its
   # NIC driver in boot.initrd.kernelModules — initrd networking does not
   # include it, and no driver means no listener (bifrostix: e1000e).
+  #
+  # vfat in the baseline: the escape lane is only an escape lane if it can
+  # reach the bootloader. 2026-11-17 bifrostix: recovery from initrd SSH
+  # needed the ESP to repoint loader default; mount failed — no vfat module.
+  # The NLS modules must be listed too: the kernel loads codepages
+  # on-demand at mount time (not via modules.dep), so an initrd holding
+  # only vfat.ko still refuses every ESP mount with "codepage not found".
+  # All four so a bare `mount` works with zero flags under pressure.
+  boot.initrd.kernelModules = [ "vfat" "nls_cp437" "nls_iso8859-1" "nls_utf8" ];
   boot.initrd.network = {
     enable = true;
     ssh = {

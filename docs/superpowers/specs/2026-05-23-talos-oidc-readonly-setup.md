@@ -6,7 +6,8 @@ Approved
 
 ## Goal
 
-Enable read-only `talosctl` access to the main and utility Talos Linux clusters using Pocket-ID as the OIDC identity provider. Users authenticate with their passkeys via Pocket-ID and receive short-lived Talos client certificates with the `os:reader` role.
+Enable read-only `talosctl` access to the main and utility Talos Linux clusters using Pocket-ID as the OIDC identity provider. Users authenticate with their passkeys via Pocket-ID
+and receive short-lived Talos client certificates with the `os:reader` role.
 
 ## Non-Goals
 
@@ -16,7 +17,7 @@ Enable read-only `talosctl` access to the main and utility Talos Linux clusters 
 
 ## Architecture
 
-```
+```text
 ┌─────────────────────┐     OIDC Auth     ┌──────────────────┐
 │  Developer Machine  │ ──────────────────→│  Pocket-ID       │
 │  (talosctl-oidc     │                    │  id.techtales.io │
@@ -50,7 +51,7 @@ Enable read-only `talosctl` access to the main and utility Talos Linux clusters 
 
 ### Per cluster (main + utility)
 
-```
+```text
 kubernetes/{cluster}/apps/secops/talosctl-oidc/
 ├── app/
 │   ├── kustomization.yaml

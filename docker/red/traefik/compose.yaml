@@ -7,16 +7,22 @@
 # project_directory: . is REQUIRED so relative paths inside the shared compose
 # (env_file, the /certs volume) resolve against this host directory, not the deploy dir.
 #
-# `command:` is overridden in full because compose replaces list fields from an include
-# instead of appending. This lets red serve the tyriis.dev wildcard while the shared
-# definition (image, apps network, ports, env_file, security options) stays untouched for
-# bifrost.
+# `command:` and `volumes:` are overridden in full because compose replaces list fields
+# from an include instead of appending. This lets red serve the tyriis.dev wildcard and
+# proxy host processes (dynamic/) while the shared definition (image, apps network,
+# ports, env_file, security options) stays untouched for bifrost.
+#
+# File provider + host.docker.internal follow the jarvis pattern
+# (docker/jarvis/traefik/): extra_hosts resolves host.docker.internal to the docker0
+# host gateway; host backends must bind that gateway address, not the host loopback.
 include:
   - path: ../../deploy/traefik/compose.yaml
     project_directory: .
 
 services:
   traefik:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     command:
       # Let's Encrypt registration email — REQUIRED, from docker/red/traefik/.env.
       - --certificatesresolvers.cf.acme.email=${ACME_EMAIL:?set ACME_EMAIL in the stack .env}
@@ -40,6 +46,16 @@ services:
       # Docker provider
       - --providers.docker=true
       - --providers.docker.exposedByDefault=false
+      # File provider: host (non-Docker) services, e.g. hyperqwen.tyriis.dev -> host :18020
+      - --providers.file.directory=/etc/traefik/dynamic
+      - --providers.file.watch=true
+      # Resolve non-Docker proxy targets via the host resolver; host.docker.internal then
+      # resolves from extra_hosts (host-gateway). Traefik >= v3.7 flag group.
+      - --hostresolver=true
       # Healthcheck ping, loopback only — keep in sync with the shared base command.
       - --ping=true
       - --entryPoints.traefik.address=127.0.0.1:8082
+    volumes:
+      - config:/certs
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./dynamic:/etc/traefik/dynamic:ro

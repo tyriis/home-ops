@@ -23,8 +23,7 @@ Unsloth is an open-source LLM fine-tuning toolkit (Apache 2.0 for the core
 library, AGPL-3.0 for the container and Studio UI). The official Docker image
 `unsloth/unsloth` on Docker Hub bundles:
 
-- **Unsloth Studio** — web UI and OpenAI/Anthropic-compatible API server on port
-  8000.
+- **Unsloth Studio** — web UI and OpenAI/Anthropic-compatible API server on port 8000.
 - **Jupyter Lab** — notebook environment on port 8888.
 - **SSH server** — on port 22 (not exposed in this deployment).
 
@@ -74,16 +73,16 @@ doco-cd target defined in `docker/.doco-cd.red.yaml`, currently running:
 
 ## Target Environment
 
-| Property | Value |
-|---|---|
-| Host | red (desktop workstation) |
-| IP | `192.168.1.22` |
-| GPU | NVIDIA RTX 2060 Super, 8 GB VRAM, CUDA capability 7.5 |
-| RAM | 64 GB |
-| OS | Linux (Docker host) |
-| doco-cd config | `docker/.doco-cd.red.yaml` |
-| SOPS age key | Configured in `.sops.yaml` creation rule `docker/red/.*/sops\.env$` |
-| Existing workloads | busybox-enc, ollama, node-exporter, comfyui |
+| Property           | Value                                                               |
+| ------------------ | ------------------------------------------------------------------- |
+| Host               | red (desktop workstation)                                           |
+| IP                 | `192.168.1.22`                                                      |
+| GPU                | NVIDIA RTX 2060 Super, 8 GB VRAM, CUDA capability 7.5               |
+| RAM                | 64 GB                                                               |
+| OS                 | Linux (Docker host)                                                 |
+| doco-cd config     | `docker/.doco-cd.red.yaml`                                          |
+| SOPS age key       | Configured in `.sops.yaml` creation rule `docker/red/.*/sops\.env$` |
+| Existing workloads | busybox-enc, ollama, node-exporter, comfyui                         |
 
 ## Decisions
 
@@ -322,12 +321,12 @@ style. Contents:
 The RTX 2060 Super has 8 GB VRAM. This imposes hard limits on QLoRA
 fine-tuning:
 
-| Model size | Approximate VRAM | Feasibility |
-|---|---|---|
-| 7B | ~5 GB | Comfortable |
-| 8B | ~6 GB | Comfortable |
-| 14B | ~8.5 GB | Borderline / likely OOM |
-| 70B+ | 30+ GB | Not feasible |
+| Model size | Approximate VRAM | Feasibility             |
+| ---------- | ---------------- | ----------------------- |
+| 7B         | ~5 GB            | Comfortable             |
+| 8B         | ~6 GB            | Comfortable             |
+| 14B        | ~8.5 GB          | Borderline / likely OOM |
+| 70B+       | 30+ GB           | Not feasible            |
 
 These constraints are consistent with the findings documented in
 [ADR 0006](../../decisions/0006-local-llm-agentic-coding-not-feasable-on-8gb-vram.md),

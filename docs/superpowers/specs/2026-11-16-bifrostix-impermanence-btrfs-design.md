@@ -87,7 +87,7 @@ convention.
 - NIC is `e1000e`, and it is currently **absent** from
   `hardware-bifrostix.nix` initrd modules. Initrd SSH (PR-A) requires it.
 - Old systemd-boot entries carry **no** `subvol=` option: they boot FS_TREE
-  because it is the *default* subvolume, not by explicit choice. This makes
+  because it is the _default_ subvolume, not by explicit choice. This makes
   the rollback lane destroyable by a single `set-default` — see Escape lanes.
 
 ## Design
@@ -96,17 +96,17 @@ convention.
 
 Create beside the running system (non-destructive), then flip:
 
-| Subvolume                             | Mount point             | Lifetime                                                        |
-| ------------------------------------- | ----------------------- | --------------------------------------------------------------- |
-| `@`                                   | `/`                     | deleted and re-snapshotted from `@base` every boot              |
-| `@base`                               | (not mounted)           | read-only pristine seed of `@`; re-seeded only after a proven-good boot |
-| `@persistent`                         | `/persistent`           | persistent; the only allow-list root                            |
-| `@docker`                             | `/persistent/docker`    | persistent; becomes Docker `data-root`                          |
-| `@journal`                            | `/var/log/journal`      | persistent; journald state and sealed journals (own subvolume — see Persistence) |
-| `home`                                | `/home`                 | unchanged                                                       |
-| `nix`                                 | `/nix`                  | unchanged; the store must not roll back — generations are state |
+| Subvolume                             | Mount point             | Lifetime                                                                                                            |
+| ------------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `@`                                   | `/`                     | deleted and re-snapshotted from `@base` every boot                                                                  |
+| `@base`                               | (not mounted)           | read-only pristine seed of `@`; re-seeded only after a proven-good boot                                             |
+| `@persistent`                         | `/persistent`           | persistent; the only allow-list root                                                                                |
+| `@docker`                             | `/persistent/docker`    | persistent; becomes Docker `data-root`                                                                              |
+| `@journal`                            | `/var/log/journal`      | persistent; journald state and sealed journals (own subvolume — see Persistence)                                    |
+| `home`                                | `/home`                 | unchanged                                                                                                           |
+| `nix`                                 | `/nix`                  | unchanged; the store must not roll back — generations are state                                                     |
 | `tmp`, `var/tmp`                      | (deleted)               | replaced by tmpfs via `boot.tmp.useTmpfs` + a `/var/tmp` tmpfs entry (the option covers `/tmp` only; default false) |
-| `srv`, `var/lib/{portables,machines}` | (deleted, cleanup pass) | unused                                                          |
+| `srv`, `var/lib/{portables,machines}` | (deleted, cleanup pass) | unused                                                                                                              |
 
 `/boot` (vfat, p1) is unchanged and stays writable-boot.
 
@@ -202,8 +202,7 @@ globs — the same ones the wipe itself creates:
 `fail_open` = log to console and `/dev/kmsg` with reason, write
 `/run/impermanence/FAILED` (stage-1 `/run` is the tmpfs that survives
 `switch_root`, so the marker is visible to the running system and
-erased on the next boot by construction), unmount best-effort, exit
-0. Boot proceeds on the stale `@`. The fail-open contract is
+erased on the next boot by construction), unmount best-effort, exit 0. Boot proceeds on the stale `@`. The fail-open contract is
 conditional: it applies **only when a viable `@` exists** (or was
 recovered at step 2) **and the persist sentinels passed**. With no
 root, or an empty persist surface, exit 0 would be a lie — those
@@ -276,7 +275,7 @@ its mountpoints, and `/etc/machine-id` is read by PID1 before
 `local-fs.target`, so a bind would never be the effective id anyway.
 Replacements:
 
-- Host keys: persist the *data* under `/persistent/etc/ssh` (contents
+- Host keys: persist the _data_ under `/persistent/etc/ssh` (contents
   only, not an `/etc` bind) and declare `services.openssh.hostKeys`
   with entries of shape `{ path, type }`. Assigning the option
   **replaces the default set** (`rsa`, `ed25519`,
@@ -331,6 +330,7 @@ must tolerate that; nothing on the allow-list demands more (docker data
 lives on its own subvolume, never reseeded via this path).
 
 ### Persist allow-list (everything under `/persistent`, bind-mounted unless
+
 listed as a subvolume mount)
 
 - `/persistent/etc/ssh` (contents) — host keys via
@@ -406,7 +406,7 @@ halt the boot and route to the initrd SSH — a halt with a proven
 out-of-band path beats a boot that destroys the evidence.
 
 The decision is conditional and the condition is structural, not
-aspirational: fail-open is only acceptable *because* the marker chain is
+aspirational: fail-open is only acceptable _because_ the marker chain is
 proven — the break-and-restore drill below is a migration gate, not a
 follow-up. The marker alone is not enough: it must be read by the checker,
 surfaced as a failed unit, and alerted on before Phase B closes.
@@ -450,7 +450,7 @@ and the rollback lane is gone without a sound. Therefore:
      two lines are the complete stage-1 DHCP setup. Alternative for
      a managed link:
      `boot.initrd.systemd.network.networks.<name>.networkConfig.DHCP
-     = "yes"` (string value).
+= "yes"` (string value).
    - `boot.initrd.network.ssh.enable = true` (defaults to false),
      and the port defaults to 22 — set
      `boot.initrd.network.ssh.port = 2222` explicitly.
@@ -470,8 +470,32 @@ and the rollback lane is gone without a sound. Therefore:
      key is a deliberate exception to this repo's no-plaintext-
      secrets rule: **owner acceptance is posted on #11792 before
      PR-A merges** — git history outlives any key rotation.
-   This is the out-of-band path if a boot ever fails before root mounts,
-   and Phase C (LUKS2+TPM2) inherits it as its unlock path.
+     This is the out-of-band path if a boot ever fails before root mounts,
+     and Phase C (LUKS2+TPM2) inherits it as its unlock path.
+
+   **Field notes — migration attempt 1 (2026-11-17, live fire):**
+
+   The fail-closed design held exactly as specified: a wrong sentinel path
+   (`var/lib/nixos/ids` — this pin's uid state is
+   `uid-map/gid-map/declarative-*/auto-subuid-map`, no `ids/`) halted the
+   boot at stage-1 with `@` untouched, no renames, no data loss. Two
+   lessons for every future recovery from 2222:
+
+   1. **The initrd needs the ESP's filesystem.** `mount` of the vfat ESP
+      from initrd SSH failed — no `vfat` module. Repointing the loader
+      default is the first move of any stage-1 recovery, so the baseline
+      now ships `boot.initrd.kernelModules = [ "vfat" ]` (docker-lane).
+   2. **`systemctl switch-root /sysroot` works, but do not pre-mount
+      `/sysroot/run`.** Native switch-root migrates the live `/run` and
+      `/dev` into the new root; a tmpfs sitting at the destination blocks
+      the move, and the incoming world boots with a runtime directory
+      nobody can see — no socket, no sshd, no channel. `mkdir` only.
+
+   Also: identify the new generation by the `nixos-rebuild` "Done. The new
+   configuration is …" line — never by `ls -dt /nix/store/*nixos-system*`,
+   which mixes in unrelated recently-realised store paths and once made a
+   correct config look like a missing fstab entry.
+
 2. **Old generations stay bootable as-is** — with the integrity
    invariants above. Rollback = pick an old entry; it boots the
    pre-Phase-B FS_TREE tree untouched (new subvolumes are siblings, the
@@ -497,9 +521,9 @@ and the rollback lane is gone without a sound. Therefore:
    the layout deletes anyway: `/srv`, `/var/lib/portables`,
    `/var/lib/machines`, `/var/log/journal`. Explicit, because
    `/mnt/@` sitting inside a scanned tree recurses on the second
-   run, and `-x` does *not* exclude sibling subvolumes (they share
+   run, and `-x` does _not_ exclude sibling subvolumes (they share
    the fsid). Omitting the last four would copy today's journal and
-   dead dirs *into* `@`, hide them under the new mounts, and break
+   dead dirs _into_ `@`, hide them under the new mounts, and break
    the A2 seal chain at the flip without a signal.
    Seed allow-list contents into `@persistent`, named separately:
    `/etc/ssh` host keys; `/var/lib/nixos` (uid state);
@@ -542,7 +566,7 @@ and the rollback lane is gone without a sound. Therefore:
    in the journal, and `/root/ephemeral` **survives** (proof the wipe
    correctly skipped). Then restore `@base.off` → `@base` and reboot:
    expected: marker absent, no failed units, `/root/ephemeral` **gone**
-   (the first wipe whose output was *asserted*, not merely assumed —
+   (the first wipe whose output was _asserted_, not merely assumed —
    the flip boot already wiped), allow-list paths survive, host-key
    fingerprint unchanged. This one drill is simultaneously the
    fail-open proof, the first asserted wipe proof, and the `@base`
