@@ -1,7 +1,7 @@
 # prek migration: replace MegaLinter and pre-commit
 
 Issue: [#10151](https://github.com/tyriis/home-ops/issues/10151)
-Status: revision 6, draft. Not committed. Last commit on the PR: revision 4.
+Status: revision 7, draft. Not committed. Last commit on the PR: revision 6.
 
 ## Context
 
@@ -23,8 +23,8 @@ Status: revision 6, draft. Not committed. Last commit on the PR: revision 4.
 | Topic                | Decision                                                                                                                      |
 | -------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | Config file          | `.pre-commit-config.yaml`. Stays YAML. Renovate's pre-commit manager reads it today.                                          |
-| Hook language        | `system` for every hook. prek runs the command on `PATH`.                                                                     |
-| Tool source          | `.mise.toml`. mise installs the tools.                                                                                        |
+| Hook language        | `system` for every hook except the three remote hooks in Decided exceptions.                                                  |
+| Tool source          | `.mise.toml`. mise installs the tools, except the three remote hooks.                                                         |
 | Local stages         | `pre-commit` and `pre-push`.                                                                                                  |
 | CI trigger           | `pull_request`: `opened`, `reopened`, `synchronize`, `ready_for_review`, `edited`. Also `workflow_dispatch`. No push trigger. |
 | CI scope             | Changed files on pull requests. Full tree on `workflow_dispatch`.                                                             |
@@ -37,14 +37,17 @@ Status: revision 6, draft. Not committed. Last commit on the PR: revision 4.
 Parity baseline: MegaLinter has 7 active linters in this repo. SPELL_PROSELINT is
 inactive: it needs `.proselintrc.json` or proselint/config.json, and neither exists.
 
-## Decisions needed before approval
+## Decided exceptions
 
-1. `check-docker-compose` in CI. Choose one:
-   - A: install docker compose and PyYAML in the job, then keep the hook.
-   - B: remove the hook from CI and keep it local.
-2. Backends for `remove-crlf`, `remove-tabs` (Lucas-C) and `forbid-secrets`
-   (sops-pre-commit, upstream `language: python`). Choose a backend, or keep
-   one `language: python` exception for each.
+1. `check-docker-compose` stays in CI. It runs only on pull requests that change
+   `docker/**/compose.yaml`. Phase 2 tests it on such a pull request.
+2. Three remote hooks stay remote. They have no backend in `.mise.toml`:
+   - `remove-crlf`, `remove-tabs`: Lucas-C/pre-commit-hooks v1.5.6.
+   - `forbid-secrets`: k8s-at-home/sops-pre-commit v2.1.1.
+
+   Each keeps its `repo`, `rev`, and `language: python` from upstream. prek builds
+   the hook environment. Renovate's pre-commit manager tracks the `rev`. Behavior
+   does not change. These are the only hooks outside `.mise.toml`.
 
 ## How the tools run
 
@@ -102,7 +105,7 @@ Backends and versions were checked with `mise ls-remote` on 2026-11-18.
 | markdownlint-fix                                                                                  | markdownlint     | `npm:markdownlint-cli`  | 0.50.0  |
 | prettier                                                                                          | prettier         | `npm:prettier`          | 3.10.1  |
 | end-of-file-fixer, trailing-whitespace, mixed-line-ending, fix-byte-order-marker                  | pre-commit-hooks | `pipx:pre-commit-hooks` | 6.0.0   |
-| remove-crlf, remove-tabs                                                                          | Lucas-C          | See Decisions needed    | 1.5.6   |
+| remove-crlf, remove-tabs                                                                          | Lucas-C (remote) | Remote hook, see Decided exceptions | 1.5.6 |
 | fix-smartquotes, fix-ligatures                                                                    | texthooks        | `pipx:texthooks`        | 1.0.0   |
 
 ### Checking hooks (report only)
@@ -111,12 +114,12 @@ Backends and versions were checked with `mise ls-remote` on 2026-11-18.
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ------------------------------------------------ | --------------- |
 | check-useless-excludes                                                                                                                                           | prek built-in (`meta`)                | none                                             | none            |
 | check-cnpg-barman-destinationpath                                                                                                                                | local script                          | none                                             | none            |
-| check-docker-compose                                                                                                                                             | local script, needs docker compose and PyYAML | none                                     | see Decisions   |
+| check-docker-compose                                                                                                                                             | local script, needs docker compose and PyYAML | none                                     | none            |
 | check-added-large-files, check-case-conflict, check-executables-have-shebangs, check-merge-conflict, check-shebang-scripts-are-executable, check-symlinks, check-vcs-permalinks, destroyed-symlinks, detect-aws-credentials, detect-private-key, no-commit-to-branch, check-json, check-toml, check-xml, check-yaml | pre-commit-hooks | `pipx:pre-commit-hooks` | 6.0.0           |
 | check-illegal-windows-names                                                                                                                                      | upstream `language: fail`, needs its own script | to define in phase 1 | none     |
 | yamllint                                                                                                                                                         | yamllint                              | `pipx:yamllint`                                  | 1.38.0          |
 | forbid-bidi-controls                                                                                                                                             | texthooks                             | `pipx:texthooks`                                 | 1.0.0           |
-| forbid-secrets                                                                                                                                                   | sops-pre-commit (upstream `language: python`) | See Decisions needed                     | v2.1.1          |
+| forbid-secrets                                                                                                                                                   | sops-pre-commit (remote hook)                 | Remote hook, see Decided exceptions      | v2.1.1          |
 | gitleaks (replaced by betterleaks)                                                                                                                               | betterleaks                           | `aqua:betterleaks/betterleaks`                   | 1.10.1          |
 | actionlint                                                                                                                                                       | actionlint                            | `aqua:rhysd/actionlint`                          | 1.7.12          |
 | editorconfig-checker (no hook in the config today; added for MegaLinter parity)                                                                                  | editorconfig-checker                  | `aqua:editorconfig-checker/editorconfig-checker` | 4.0.2           |
@@ -180,14 +183,15 @@ Exit check:
      committed token, and an empty range finds none.
    - `workflow_dispatch` has no pull request range. It runs no separate secret scan.
      The full-history scan is phase 3.
-   - `check-docker-compose`: apply the choice in Decisions needed.
+   - `check-docker-compose` runs as a normal hook. It stays in CI.
    - `harden-runner` with `egress-policy: audit`. Keep audit on purpose.
    - `concurrency` to cancel superseded runs.
    - SHA-pin every action.
 2. Apply the `github-actions-hardening` and `github-actions-efficiency` skills to the file.
 3. Delete `.github/workflows/mega-linter.yaml` and `.mega-linter.yaml` before the exit check.
 
-Exit check: a test pull request is green. A deliberate lint error makes it red.
+Exit check: a test pull request is green. A test pull request that changes a
+`docker/**/compose.yaml` file runs `check-docker-compose`. A deliberate lint error makes it red.
 A deliberate committed token makes the Betterleaks step red. MegaLinter does not run.
 
 Rollback: one revert that restores the two MegaLinter files and removes `lint.yaml`.
