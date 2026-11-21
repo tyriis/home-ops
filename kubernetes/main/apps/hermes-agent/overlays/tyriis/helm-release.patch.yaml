@@ -1,0 +1,133 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ${APP}
+spec:
+  # https://bjw-s-labs.github.io/helm-charts/docs/app-template/
+  #
+  # Adds the `hermes serve` backend container to the TYRIIS agent only.
+  # Everything else in the shared base app/ stays untouched, so the other
+  # three agents keep rendering the unmodified base.
+  #
+  # The merge only ever ADDS map keys. app-template encodes container
+  # configuration as maps (containers.<name>, service.<id>.ports.<name>,
+  # route.<name>, persistence.<name>.advancedMounts.<controller>.<container>),
+  # and kustomize strategic-merge replaces lists wholesale, so no list that
+  # already exists in the base is touched here.
+  values:
+    controllers:
+      hermes:
+        containers:
+          serve:
+            # The image entrypoint (s6-overlay) is replaced by a direct
+            # `hermes` invocation, exactly like the `app` container, so the
+            # process is PID 1 without an init. HOME is therefore set
+            # explicitly - the image wrapper that exports it is bypassed.
+            command: ["hermes"]
+            args:
+              ["serve", "--host", "0.0.0.0", "--port", "9119", "--skip-build"]
+            # Same image as the `app` container (anchored as &image in the
+            # base). The digest is repeated here because a YAML anchor cannot
+            # cross file boundaries; Renovate updates both occurrences.
+            image:
+              repository: docker.io/nousresearch/hermes-agent
+              tag: v0.22.4@sha256:7a69201726bc64db2072a1371557137c23312d29705cda2b8ea2a0214a50a4cf
+            ports:
+              - name: serve
+                containerPort: 9119
+                protocol: TCP
+            env:
+              HOME: /opt/data
+              HERMES_HOME: /opt/data
+              HERMES_WRITE_SAFE_ROOT: /opt/data
+              # No runtime tool installs: the root filesystem is read-only and
+              # the venv is baked into the image. Mirrors the `app` container.
+              HERMES_DISABLE_LAZY_INSTALLS: "true"
+              # The OIDC redirect URI is built from this value. Without it
+              # Hermes falls back to reconstructing it from the request
+              # headers, which behind Envoy yields http:// instead of https://
+              # and a redirect URI that Pocket-ID rejects.
+              HERMES_DASHBOARD_PUBLIC_URL: "https://euphoria-backend.techtales.io"
+            envFrom:
+              - secretRef:
+                  name: ${APP}-serve-secret
+            # Mirrors the `webui` container: unprivileged uid/gid 10000,
+            # read-only root filesystem, all capabilities dropped.
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              runAsUser: 10000
+              runAsGroup: 10000
+              capabilities:
+                drop:
+                  - ALL
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 512Mi
+            # TCP only: the port is the readiness signal.
+            probes:
+              liveness: &serveProbes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 9119
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness: *serveProbes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 9119
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  failureThreshold: 60
+    service:
+      app:
+        ports:
+          serve:
+            port: 9119
+    route:
+      serve:
+        annotations:
+          external-dns/unifi: "true"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Hermes Serve Backend
+          gethomepage.dev/group: Agents
+          gethomepage.dev/icon: sh-hermes-agent-light
+          gethomepage.dev/name: ${AGENT_NAME} serve backend
+        hostnames:
+          - "euphoria-backend.techtales.io"
+        parentRefs:
+          - name: envoy
+            namespace: networking
+            sectionName: https
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /
+            backendRefs:
+              - identifier: app
+                port: 9119
+    persistence:
+      data:
+        advancedMounts:
+          hermes:
+            serve:
+              - path: /opt/data
+      tmp:
+        advancedMounts:
+          hermes:
+            serve:
+              - path: /tmp
