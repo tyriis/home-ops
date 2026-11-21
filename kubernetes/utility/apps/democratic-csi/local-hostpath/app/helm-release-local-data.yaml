@@ -41,9 +41,15 @@ spec:
         # UserVolumeConfig `data` exists (talos/utility/patches/util02.patch.yaml;
         # today util02 alone). Widen ONLY when a node gains that volume — util01's
         # EVO volume is a separate change.
+        # NOTE: the key is the DRIVER topology key (NodeGetInfo accessible_topology
+        # reports org.democratic-csi.topology/node, see NODE_TOPOLOGY_KEY_NAME in
+        # src/driver/controller-local-hostpath). The standard kubernetes.io/hostname
+        # here is NOT equivalent — external-provisioner validates against the
+        # driver-reported map and rejects mismatches (2026-11-21 cutover:
+        # "selected node topology ... is not in allowed topologies").
         allowedTopologies:
           - matchLabelExpressions:
-              - key: kubernetes.io/hostname
+              - key: org.democratic-csi.topology/node
                 values:
                   - util02
 
