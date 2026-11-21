@@ -91,6 +91,14 @@ spec:
             path: /var/mnt/data
             type: DirectoryOrCreate
 
+      # Talos root FS is read-only: kubelet cannot lazily create the hostPath
+      # on nodes without the `data` UserVolumeConfig — the pod sticks in
+      # ContainerCreating (mkdir ...: read-only file system, seen on util01
+      # at the 2026-11-21 rollout). Pin the DS to nodes that HAVE the volume;
+      # widen ONLY together with the StorageClass allowedTopologies above.
+      nodeSelector:
+        kubernetes.io/hostname: util02
+
     driver:
       config:
         driver: local-hostpath
