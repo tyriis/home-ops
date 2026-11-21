@@ -1,0 +1,17 @@
+---
+site_name: utility-cluster
+site_description: utility Kubernetes cluster on 2 Talos nodes (util01 NUC + util02 ZimaBlade)
+
+nav:
+  - Overview: index.md
+  - New Node Install: install.md
+
+theme:
+  name: material
+  features:
+    - navigation.expand
+    - navigation.indexes
+
+plugins:
+  - techdocs-core
+  - search
