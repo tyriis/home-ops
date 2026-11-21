@@ -24,23 +24,23 @@ tasks:
       vars: [cluster, node]
 
   diff:
-    desc: "Doc-level diff live vs rendered — offline-capable patch review (cluster=, node=, ip=)"
+    desc: "Doc-level diff live vs rendered — offline-capable patch review (cluster=, node=, ip=, [role=controlplane|worker])"
     cmds:
-      - "./.taskfiles/talos/apply-config.sh {{.cluster}} {{.node}} {{.ip}} --diff-only"
+      - './.taskfiles/talos/apply-config.sh {{.cluster}} {{.node}} {{.ip}} {{.role | default "controlplane"}} --diff-only'
     requires:
       vars: [cluster, node, ip]
 
   dry:
-    desc: "STANDARD PRE-APPLY GATE — node's own reboot plan + redacted diff; nothing applied (cluster=, node=, ip=)"
+    desc: "STANDARD PRE-APPLY GATE — node's own reboot plan + redacted diff; nothing applied (cluster=, node=, ip=, [role=controlplane|worker])"
     cmds:
-      - "./.taskfiles/talos/dry-run-config.sh {{.cluster}} {{.node}} {{.ip}}"
+      - './.taskfiles/talos/dry-run-config.sh {{.cluster}} {{.node}} {{.ip}} {{.role | default "controlplane"}}'
     requires:
       vars: [cluster, node, ip]
 
   apply:
-    desc: "Diff, confirm, apply — nothing ever written to disk (cluster=, node=, ip=)"
+    desc: "Diff, confirm, apply — nothing ever written to disk (cluster=, node=, ip=, [role=controlplane|worker])"
     cmds:
-      - "./.taskfiles/talos/apply-config.sh {{.cluster}} {{.node}} {{.ip}}"
+      - './.taskfiles/talos/apply-config.sh {{.cluster}} {{.node}} {{.ip}} {{.role | default "controlplane"}}'
     requires:
       vars: [cluster, node, ip]
 
