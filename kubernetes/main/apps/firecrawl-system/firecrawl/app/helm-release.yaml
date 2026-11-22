@@ -43,6 +43,7 @@ spec:
               USE_DB_AUTHENTICATION: "false"
               ENV: production
               LOGGING_LEVEL: INFO
+              NUM_WORKERS_PER_QUEUE: "2"
               IS_KUBERNETES: "true"
               HOST: 0.0.0.0
               SEARXNG_ENDPOINT: http://searxng.ai.svc.cluster.local:8080 #NOSONAR allow http
@@ -112,6 +113,7 @@ spec:
               USE_DB_AUTHENTICATION: "false"
               ENV: production
               LOGGING_LEVEL: INFO
+              NUM_WORKERS_PER_QUEUE: "2"
               IS_KUBERNETES: "true"
               HOST: 0.0.0.0
             envFrom:
@@ -169,6 +171,7 @@ spec:
               USE_DB_AUTHENTICATION: "false"
               ENV: production
               LOGGING_LEVEL: INFO
+              NUM_WORKERS_PER_QUEUE: "2"
               IS_KUBERNETES: "true"
               HOST: 0.0.0.0
             envFrom:
@@ -214,7 +217,7 @@ spec:
             env:
               PORT: "3000"
               BLOCK_MEDIA: "true"
-              MAX_CONCURRENT_PAGES: "10"
+              MAX_CONCURRENT_PAGES: "4"
               COREPACK_HOME: /tmp/corepack
             ports:
               - name: http
