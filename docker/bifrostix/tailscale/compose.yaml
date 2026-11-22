@@ -6,6 +6,10 @@ include:
 
 services:
   tailscale:
+    environment:
+      # NixOS 6.18 kernel ships no ip_tables module; the image's iptables is
+      # legacy, so tailscaled must use nftables or its ts-input chain never loads.
+      TS_DEBUG_FIREWALL_MODE: nftables
     volumes:
       - type: volume
         source: data
