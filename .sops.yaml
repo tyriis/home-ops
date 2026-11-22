@@ -28,3 +28,6 @@ creation_rules:
   - path_regex: 'docker/truenas/.*/sops\.env$'
     age: >-
       age1gd4f4gu474snw3ay8njtvga56uuf4sxwzvuhk5c9h3adlfmx3yps08fhyh
+  - path_regex: 'docker/bifrostix/.*/sops\.env$'
+    age: >-
+      age1lraz77az5n7ylp2xjydyfxvextzu2wej5t97tqk6gegw9uxmtghq0vjtrz

@@ -14,6 +14,7 @@ Thumbs.db
 *.env
 !docker/deploy/**/red.env
 !docker/deploy/**/jarvis.env
+!docker/deploy/**/bifrostix.env
 !docker/jarvis/**/.env
 !docker/jarvis/**/sops.env
 !docker/agentix/**/.env
@@ -28,6 +29,8 @@ Thumbs.db
 !docker/synology/**/sops.env
 !docker/truenas/**/.env
 !docker/truenas/**/sops.env
+!docker/bifrostix/**/.env
+!docker/bifrostix/**/sops.env
 
 # Crash log files
 crash.log
