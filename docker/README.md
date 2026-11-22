@@ -7,16 +7,17 @@ This file documents what is true for every host in this directory. Host-specific
 Backstage as a **System** per host (`bifrost`, `nas`, `synology-nas`), with the services running on it as
 **Components** of that system.
 
-| Host       | Role                                      | Deploy config            |
-| ---------- | ----------------------------------------- | ------------------------ |
-| `agentix`  | agent host (hindsight, arcane edge agent) | `.doco-cd.agentix.yaml`  |
-| `bifrost`  | LLM gateway (`new-api`), sparkDash        | `.doco-cd.bifrost.yaml`  |
-| `coal`     | laptop, rarely online                     | `.doco-cd.coal.yaml`     |
-| `jarvis`   | LAN-only host (OpenChamber, Hermes)       | `.doco-cd.jarvis.yaml`   |
-| `purple`   | GPU workstation                           | `.doco-cd.purple.yaml`   |
-| `red`      | GPU workstation                           | `.doco-cd.red.yaml`      |
-| `synology` | DSM NAS                                   | `.doco-cd.synology.yaml` |
-| `truenas`  | NAS, backup target                        | `.doco-cd.truenas.yaml`  |
+| Host        | Role                                      | Deploy config             |
+| ----------- | ----------------------------------------- | ------------------------- |
+| `agentix`   | agent host (hindsight, arcane edge agent) | `.doco-cd.agentix.yaml`   |
+| `bifrost`   | LLM gateway (`new-api`), sparkDash        | `.doco-cd.bifrost.yaml`   |
+| `bifrostix` | NixOS docker-lane pilot, impermanence     | `.doco-cd.bifrostix.yaml` |
+| `coal`      | laptop, rarely online                     | `.doco-cd.coal.yaml`      |
+| `jarvis`    | LAN-only host (OpenChamber, Hermes)       | `.doco-cd.jarvis.yaml`    |
+| `purple`    | GPU workstation                           | `.doco-cd.purple.yaml`    |
+| `red`       | GPU workstation                           | `.doco-cd.red.yaml`       |
+| `synology`  | DSM NAS                                   | `.doco-cd.synology.yaml`  |
+| `truenas`   | NAS, backup target                        | `.doco-cd.truenas.yaml`   |
 
 ## Delivery
 
