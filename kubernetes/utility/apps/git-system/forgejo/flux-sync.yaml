@@ -65,5 +65,5 @@ spec:
       VOLSYNC_STORAGECLASS: local-ssd
       VOLSYNC_SNAPSHOTCLASS: local-ssd
       VOLSYNC_CACHE_SNAPSHOTCLASS: local-ssd
-      VOLSYNC_PUID: "1001"
-      VOLSYNC_PGID: "1001"
+      VOLSYNC_PUID: "1000"
+      VOLSYNC_PGID: "1000"
