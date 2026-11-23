@@ -116,7 +116,7 @@ Backends and versions were checked with `mise ls-remote` on 2026-11-18.
 | check-cnpg-barman-destinationpath                                                                                                                                | local script                          | none                                             | none            |
 | check-docker-compose                                                                                                                                             | local script, needs docker compose and PyYAML | none                                     | none            |
 | check-added-large-files, check-case-conflict, check-executables-have-shebangs, check-merge-conflict, check-shebang-scripts-are-executable, check-symlinks, check-vcs-permalinks, destroyed-symlinks, detect-aws-credentials, detect-private-key, no-commit-to-branch, check-json, check-toml, check-xml, check-yaml | pre-commit-hooks | `pipx:pre-commit-hooks` | 6.0.0           |
-| check-illegal-windows-names                                                                                                                                      | upstream `language: fail`, needs its own script | to define in phase 1 | none     |
+| check-illegal-windows-names                                                                                                                                      | pre-commit-hooks, local `language: fail` copy | none (no binary needed) | none     |
 | yamllint                                                                                                                                                         | yamllint                              | `pipx:yamllint`                                  | 1.38.0          |
 | forbid-bidi-controls                                                                                                                                             | texthooks                             | `pipx:texthooks`                                 | 1.0.0           |
 | forbid-secrets                                                                                                                                                   | sops-pre-commit (remote hook)                 | Remote hook, see Decided exceptions      | v2.1.1          |
@@ -165,6 +165,22 @@ Exit check:
 - Run `mise exec -- prek run --all-files` on the same commit.
 - Each of the 7 active MegaLinter linters must match its prek hook. Each difference
   must be written down with a reason.
+
+Exit check results (MegaLinter 10.2.0, flavor terraform, run 2026-11-23):
+
+| Linter               | MegaLinter tool version | prek pin | Result                                                                                 |
+| -------------------- | ----------------------- | -------- | -------------------------------------------------------------------------------------- |
+| actionlint           | 1.7.12                  | 1.7.12   | Match. 0 errors.                                                                       |
+| editorconfig-checker | 4.0.2                   | 4.0.2    | Match. 0 errors after the ComfyUI README list indent fix.                              |
+| prettier (JSON)      | 3.9.10                  | 3.10.1   | Match. 0 errors.                                                                       |
+| markdownlint         | 0.49.1                  | 0.50.0   | Match. 0 errors. Version differs; MegaLinter bundles 0.49.1.                           |
+| betterleaks          | 1.7.3                   | 1.10.1   | Match. 0 findings. Version differs; MegaLinter bundles 1.7.3.                          |
+| prettier (YAML)      | 3.9.10                  | 3.10.1   | Difference. MegaLinter reports 1 error on `kubernetes/main/apps/gaming/minecraft-java/flux-sync.yaml`: prettier 3.9.10 wants one extra trailing blank line. Prettier 3.10.1 passes the file. The file is not changed in phase 1. |
+| yamllint             | 1.38.0                  | 1.38.0   | Match. 0 errors.                                                                       |
+
+`prek run --all-files` passes every hook on the same tree. `check-illegal-windows-names`
+and `check-xml` have no files to check. The `betterleaks` hook (staged) reports no
+findings. A full-tree secret scan is not part of phase 1 (see Secret scan scope).
 
 ## Phase 2: CI
 

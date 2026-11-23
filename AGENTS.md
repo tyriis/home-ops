@@ -122,7 +122,7 @@ This includes `kustomization.yaml`, `namespace.yaml`, and the release manifest (
 ### QUALITY_VERIFICATION
 
 - Tooling versions are strictly managed using `mise` (`.mise.toml`).
-- This repository uses `pre-commit` and MegaLinter. Ensure changes are properly formatted and pass linting before committing.
+- Use `prek` to run the lint hooks in `.pre-commit-config.yaml`. Make sure the hooks pass before you commit.
 
 ### REGRESSION INVESTIGATION
 

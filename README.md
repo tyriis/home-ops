@@ -13,7 +13,7 @@
 <div align="center">
 
 <!-- [![taskfile][taskfile-shield]][taskfile-url]
-[![pre-commit][pre-commit-shield]][pre-commit-url] -->
+[![prek][prek-shield]][prek-url] -->
 
 [![talos][talos-shield]][talos-url]
 [![kubernetes][kubernetes-shield]][kubernetes-url]
@@ -204,7 +204,7 @@ example:
 
 ## Quality
 
-[![megalinter][megalinter-badge]][megalinter-url]
+[![prek][prek-shield]][prek-url]
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -225,8 +225,6 @@ example:
 [k8s-at-home-url]: https://k8s-at-home.com/
 [letsencrypt-url]: https://letsencrypt.org/
 [renovate-dashboard-url]: https://app.renovatebot.com/dashboard#github/tyriis/home-ops
-[megalinter-badge]: https://github.com/tyriis/home-ops/workflows/MegaLinter/badge.svg?branch=main
-[megalinter-url]: https://github.com/tyriis/home-ops/actions/workflows/mega-linter.yaml?query=branch%3Amain
 [gatus-url]: https://status.techtales.io
 
 <!-- Badges -->
@@ -235,6 +233,8 @@ example:
 [renovate-url]: https://www.whitesourcesoftware.com/free-developer-tools/renovate/
 [commits-shield]: https://img.shields.io/github/last-commit/tyriis/home-ops?style=for-the-badge&logo=github
 [commits-url]: https://github.com/tyriis/home-ops/commits/main
+[prek-shield]: https://img.shields.io/badge/prek-enabled-brightgreen?style=for-the-badge
+[prek-url]: https://github.com/j178/prek
 [talos-shield]: https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fkromgo.techtales.io%2Fquery%3Fformat%3Dendpoint%26metric%3Dtalos_version&query=%24.message&style=for-the-badge&logo=talos&label=talos&color=%23ff7300&cacheSeconds=600
 [talos-url]: https://www.talos.dev/
 [kubernetes-shield]: https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fkromgo.techtales.io%2Fquery%3Fformat%3Dendpoint%26metric%3Dkubernetes_version&query=%24.message&style=for-the-badge&logo=kubernetes&label=kubernetes&color=%23326CE5&cacheSeconds=600

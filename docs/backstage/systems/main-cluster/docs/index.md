@@ -65,17 +65,17 @@ The `main-cluster` cluster rely on a few cloud services
 
 The following dependencies need to be installed on the system for the inital setup and maintenance
 
-| Tool                                                        | Role                                                                     |
-| ----------------------------------------------------------- | ------------------------------------------------------------------------ |
-| [kubectl](https://kubernetes.io/docs/tasks/tools/)          | The kubernetes cli                                                       |
-| [go-task](https://taskfile.dev/)                            | Task runner to execute Taskfile commands                                 |
-| [pre-commit](https://pre-commit.com/)                       | A framework for managing and maintaining multi-language pre-commit hooks |
-| [sops](https://github.com/mozilla/sops)                     | SOPS: Secrets OPerationS                                                 |
-| [age](https://github.com/FiloSottile/age)                   | Simple, modern and secure file encryption tool                           |
-| [flux](https://fluxcd.io/flux/get-started/)                 | Continuous and progressive delivery solutions for Kubernetes             |
-| [talosctl](https://www.talos.dev/v1.4/learn-more/talosctl/) | The Talos cli                                                            |
-| [talhelper](https://github.com/budimanjojo/talhelper)       | Creating Talos cluster in GitOps way                                     |
-| [git](https://git-scm.com/)                                 | Yeah this is just git, I am sure it is already installed :)              |
+| Tool                                                        | Role                                                                            |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| [kubectl](https://kubernetes.io/docs/tasks/tools/)          | The kubernetes cli                                                              |
+| [go-task](https://taskfile.dev/)                            | Task runner to execute Taskfile commands                                        |
+| [prek](https://github.com/j178/prek)                        | A pre-commit hook runner in Rust that runs the hooks in .pre-commit-config.yaml |
+| [sops](https://github.com/mozilla/sops)                     | SOPS: Secrets OPerationS                                                        |
+| [age](https://github.com/FiloSottile/age)                   | Simple, modern and secure file encryption tool                                  |
+| [flux](https://fluxcd.io/flux/get-started/)                 | Continuous and progressive delivery solutions for Kubernetes                    |
+| [talosctl](https://www.talos.dev/v1.4/learn-more/talosctl/) | The Talos cli                                                                   |
+| [talhelper](https://github.com/budimanjojo/talhelper)       | Creating Talos cluster in GitOps way                                            |
+| [git](https://git-scm.com/)                                 | Yeah this is just git, I am sure it is already installed :)                     |
 
 ### Network
 
