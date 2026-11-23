@@ -56,29 +56,28 @@ routes:
 ---
 apiVersion: v1alpha1
 kind: DHCPv4Config
-name: enp89s0
-
----
-apiVersion: v1alpha1
-kind: DHCPv4Config
-name: enp87s0
+name: bond1
 
 ---
 apiVersion: v1alpha1
 kind: Layer2VIPConfig
 name: 192.168.100.100
-link: enp89s0
+link: bond1
 
 ---
+# bond MAC is inherited from the first link (enp89s0); DHCP reservation 192.168.100.103 and the VIP both key off 58:47:ca:76:7f:76
 apiVersion: v1alpha1
-kind: LinkConfig
-name: enp89s0
-mtu: 1500
-
----
-apiVersion: v1alpha1
-kind: LinkConfig
-name: enp87s0
+kind: BondConfig
+name: bond1
+links:
+  - enp89s0
+  - enp87s0
+bondMode: 802.3ad
+miimon: 100
+updelay: 200
+downdelay: 200
+xmitHashPolicy: layer3+4
+lacpRate: fast
 mtu: 1500
 
 ---
