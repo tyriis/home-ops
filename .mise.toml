@@ -41,21 +41,13 @@
 "aqua:openbao/openbao/bao" = "2.7.2"
 # https://mise-versions.jdx.dev/tools/litestream
 "aqua:benbjohnson/litestream" = "0.5.18"
-# https://mise-versions.jdx.dev/tools/actionlint
-"aqua:rhysd/actionlint" = "1.7.12"
-# https://mise-versions.jdx.dev/tools/editorconfig-checker
-"aqua:editorconfig-checker/editorconfig-checker" = "4.0.2"
 # https://mise-versions.jdx.dev/tools/prek
 "aqua:j178/prek" = "0.5.11"
-# https://mise-versions.jdx.dev/tools/doctoc
-"npm:doctoc" = "2.5.0"
+# https://mise-versions.jdx.dev/tools/editorconfig-checker
+"aqua:editorconfig-checker/editorconfig-checker" = "4.0.2"
 # https://mise-versions.jdx.dev/tools/markdownlint-cli
 "npm:markdownlint-cli" = "0.50.0"
 # https://mise-versions.jdx.dev/tools/prettier
 "npm:prettier" = "3.10.1"
-# https://mise-versions.jdx.dev/tools/pre-commit-hooks
-"pipx:pre-commit-hooks" = "6.0.0"
-# https://mise-versions.jdx.dev/tools/texthooks
-"pipx:texthooks" = "1.0.0"
 # https://mise-versions.jdx.dev/tools/yamllint
 "pipx:yamllint" = "1.38.0"
