@@ -90,6 +90,9 @@ labels:
   - name: renovate/kustomize
     description: ""
     color: ededed
+  - name: renovate/mise
+    description: renovate mise manager
+    color: ededed
   - name: renovate/pre-commit
     description: renovate pre-commit manager
     color: f8b424
@@ -154,6 +157,7 @@ repos:
       - renovate/image
       - renovate/kubernetes
       - renovate/kustomize
+      - renovate/mise
       - renovate/pre-commit
       - renovate/terraform
       - setup
