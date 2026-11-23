@@ -27,12 +27,19 @@ echo "==> rendering $cluster/$node" >&2
 "$root/.taskfiles/talos/render-config.sh" "$cluster" "$node" "$role" > "$tmp/render.yaml"
 
 echo "==> fetching live config from $ip" >&2
+# active (running) config = MachineConfigs.config.talos.dev ID "v1alpha1"
+# (config.ActiveID); a list never returns the "persistent" resource.
 talosctl --context "$cluster" --nodes "$ip" get machineconfig -o json \
-  | yq -p json -r 'select(.metadata.id == "persistent") | .spec' \
+  | yq -p json -r 'select(.metadata.id == "v1alpha1") | .spec' \
   | yq -p yaml -o yaml '.' > "$tmp/live.yaml"
 
 yq ea -o json -I=0 '.' "$tmp/render.yaml" > "$tmp/render.jsonl"
 yq ea -o json -I=0 '.' "$tmp/live.yaml"    > "$tmp/live.jsonl"
+
+if ! grep -q -v '^null$' "$tmp/live.jsonl" "$tmp/render.jsonl"; then
+  echo "ERROR: neither live nor rendered config produced any documents — aborting" >&2
+  exit 1
+fi
 
 echo "==> validating rendered config" >&2
 talosctl validate -m metal -c "$tmp/render.yaml"

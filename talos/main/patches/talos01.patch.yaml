@@ -57,28 +57,30 @@ routes:
   - destination: 192.168.101.0/24
     gateway: 192.168.101.1
 ---
+# bond MAC is inherited from the first link (enp89s0); DHCP reservation 192.168.100.101 and the VIP both key off 58:47:ca:77:29:25
+# switch side: USW Pro HD 24 PoE, LACP group on ports 15+16, VLAN 100 (SERVERS)
 apiVersion: v1alpha1
-kind: LinkConfig
-name: enp89s0
-mtu: 1500
----
-apiVersion: v1alpha1
-kind: LinkConfig
-name: enp87s0
+kind: BondConfig
+name: bond1
+links:
+  - enp89s0
+  - enp87s0
+bondMode: 802.3ad
+miimon: 100
+updelay: 200
+downdelay: 200
+xmitHashPolicy: layer3+4
+lacpRate: fast
 mtu: 1500
 ---
 apiVersion: v1alpha1
 kind: DHCPv4Config
-name: enp89s0
----
-apiVersion: v1alpha1
-kind: DHCPv4Config
-name: enp87s0
+name: bond1
 ---
 apiVersion: v1alpha1
 kind: Layer2VIPConfig
 name: 192.168.100.100
-link: enp89s0
+link: bond1
 ---
 apiVersion: v1alpha1
 kind: LinkConfig
