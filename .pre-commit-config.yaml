@@ -132,22 +132,17 @@ repos:
             kubernetes/utility/apps/secops/rbac.yaml
           )$()
 
-  - repo: local
+  - repo: https://github.com/betterleaks/betterleaks
+    rev: v2.0.0-rc.10
     hooks:
       - id: betterleaks
-        name: betterleaks
-        language: system
-        entry: betterleaks git --pre-commit --redact --staged
-        pass_filenames: false
 
   - repo: https://github.com/rhysd/actionlint
     rev: v1.7.12
     hooks:
       - id: actionlint
 
-  - repo: local
+  - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
+    rev: 3.11.1
     hooks:
       - id: editorconfig-checker
-        name: editorconfig-checker
-        language: system
-        entry: editorconfig-checker
