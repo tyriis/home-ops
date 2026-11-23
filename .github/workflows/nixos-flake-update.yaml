@@ -43,7 +43,7 @@ jobs:
 
       # https://github.com/marketplace/actions/install-nix
       - name: Install Nix
-        uses: cachix/install-nix-action@bb0495a1086c46893eee56f32fd192dfe4a15bb9 # v32.0.0
+        uses: cachix/install-nix-action@382a9ed9481c7c1f94f68b72ef105b3417c73877 # v32.1.0
         with:
           # Flake input fetches are GitHub API calls. Without a token,
           # anonymous rate limits fail the run intermittently. Bot App
