@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: ghcr.io/firecrawl/firecrawl
-              tag: 2.11.753@sha256:7c4e8cee48200465e42f5147c761f585b572f46d02d354f3719256e0dcdc2061
+              tag: 2.11.824@sha256:d61bf0a7efbb926ebdabdea6ddf501e48fdc8b089a106cdd91b1fd5a9dc099a4
             command: ["node", "--max-old-space-size=6144", "dist/src/index.js"]
             env:
               FLY_PROCESS_GROUP: app
@@ -43,6 +43,7 @@ spec:
               USE_DB_AUTHENTICATION: "false"
               ENV: production
               LOGGING_LEVEL: INFO
+              NUM_WORKERS_PER_QUEUE: "2"
               IS_KUBERNETES: "true"
               HOST: 0.0.0.0
               SEARXNG_ENDPOINT: http://searxng.ai.svc.cluster.local:8080 #NOSONAR allow http
@@ -96,7 +97,7 @@ spec:
           app:
             image:
               repository: ghcr.io/firecrawl/firecrawl
-              tag: 2.11.753@sha256:7c4e8cee48200465e42f5147c761f585b572f46d02d354f3719256e0dcdc2061
+              tag: 2.11.824@sha256:d61bf0a7efbb926ebdabdea6ddf501e48fdc8b089a106cdd91b1fd5a9dc099a4
             command:
               [
                 "node",
@@ -112,6 +113,7 @@ spec:
               USE_DB_AUTHENTICATION: "false"
               ENV: production
               LOGGING_LEVEL: INFO
+              NUM_WORKERS_PER_QUEUE: "2"
               IS_KUBERNETES: "true"
               HOST: 0.0.0.0
             envFrom:
@@ -153,7 +155,7 @@ spec:
           app:
             image:
               repository: ghcr.io/firecrawl/firecrawl
-              tag: 2.11.753@sha256:7c4e8cee48200465e42f5147c761f585b572f46d02d354f3719256e0dcdc2061
+              tag: 2.11.824@sha256:d61bf0a7efbb926ebdabdea6ddf501e48fdc8b089a106cdd91b1fd5a9dc099a4
             command:
               [
                 "node",
@@ -169,6 +171,7 @@ spec:
               USE_DB_AUTHENTICATION: "false"
               ENV: production
               LOGGING_LEVEL: INFO
+              NUM_WORKERS_PER_QUEUE: "2"
               IS_KUBERNETES: "true"
               HOST: 0.0.0.0
             envFrom:
@@ -214,7 +217,7 @@ spec:
             env:
               PORT: "3000"
               BLOCK_MEDIA: "true"
-              MAX_CONCURRENT_PAGES: "10"
+              MAX_CONCURRENT_PAGES: "4"
               COREPACK_HOME: /tmp/corepack
             ports:
               - name: http

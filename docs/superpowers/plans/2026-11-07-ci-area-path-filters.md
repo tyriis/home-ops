@@ -4,7 +4,8 @@
 
 **Goal:** Make each CI gate start only when the files it validates change, so unrelated PRs stop burning runner minutes.
 
-**Architecture:** Six edits to trigger blocks in `.github/workflows/*.yaml`. No new workflows, actions, or shared filters. Each gate keeps its current validation scope; only its `on:` block changes, plus a `concurrency` block on two workflows that lack one.
+**Architecture:** Six edits to trigger blocks in `.github/workflows/*.yaml`. No new workflows, actions, or shared filters. Each gate keeps its current validation scope; only
+its `on:` block changes, plus a `concurrency` block on two workflows that lack one.
 
 **Tech Stack:** GitHub Actions workflow YAML, Task (`task lint:*`), pre-commit (actionlint, yamllint, prettier).
 
@@ -32,19 +33,23 @@
 ### Task 1: Scope the kubernetes gates
 
 **Files:**
+
 - Modify: `.github/workflows/deadvalues.yaml:12-16`
 - Modify: `.github/workflows/flate.yaml:4-9`
 
 **Interfaces:**
+
 - Consumes: nothing.
 - Produces: the `kubernetes/**` glob both later verification steps assert against.
 
 - [ ] **Step 1: Write the failing check**
 
 Run:
+
 ```bash
 git ls-files 'kubernetes/**' | wc -l; git ls-files 'kubernetes/**.yaml' | wc -l
 ```
+
 Expected: the second number is smaller than the first (the old glob misses `.yml` and non-YAML assets). Record both.
 
 - [ ] **Step 2: Replace `deadvalues.yaml`'s trigger block**
@@ -66,9 +71,9 @@ on:
 - [ ] **Step 3: Replace `flate.yaml`'s `paths`**
 
 ```yaml
-    paths:
-      - kubernetes/**
-      - .github/workflows/flate.yaml
+paths:
+  - kubernetes/**
+  - .github/workflows/flate.yaml
 ```
 
 Leave `branches: [main]` as is.
@@ -76,11 +81,13 @@ Leave `branches: [main]` as is.
 - [ ] **Step 4: Verify the globs match what they should**
 
 Run:
+
 ```bash
 git ls-files 'kubernetes/**' | wc -l
 git ls-files 'kubernetes/**' | grep -vc '^kubernetes/'
 git ls-files 'kubernetes/**/*.yml' | wc -l
 ```
+
 Expected: first count equals the first count from Step 1; the `grep -vc` prints `0`; the `.yml` count prints `4`.
 
 - [ ] **Step 5: Confirm manual dispatch still works**
@@ -99,24 +106,27 @@ Expected: both pass, no reformatting of the edited blocks.
 git add .github/workflows/deadvalues.yaml .github/workflows/flate.yaml
 git commit -m "ci: scope kubernetes gates to kubernetes changes"
 ```
+
 ---
 
 ### Task 2: Make the docker gate start on its own changes
 
 **Files:**
+
 - Modify: `.github/workflows/docker.yaml:8-10`
 
 **Interfaces:**
+
 - Consumes: nothing.
 - Produces: nothing other tasks rely on.
 
 - [ ] **Step 1: Add the workflow file to `paths`**
 
 ```yaml
-    paths:
-      - docker/**
-      - scripts/hooks/check-docker-compose.sh
-      - .github/workflows/docker.yaml
+paths:
+  - docker/**
+  - scripts/hooks/check-docker-compose.sh
+  - .github/workflows/docker.yaml
 ```
 
 - [ ] **Step 2: Verify the gate still matches every compose file**
@@ -137,9 +147,11 @@ git commit -m "ci(docker): trigger on changes to the workflow itself"
 ### Task 3: Add concurrency to MegaLinter
 
 **Files:**
+
 - Modify: `.github/workflows/mega-linter.yaml:10-12`
 
 **Interfaces:**
+
 - Consumes: nothing.
 - Produces: nothing other tasks rely on.
 
@@ -166,20 +178,23 @@ git commit -m "ci(mega-linter): cancel superseded runs"
 ### Task 4: Stop the runs that cannot produce a new result
 
 **Files:**
+
 - Modify: `.github/workflows/scorecards.yaml:17-19`
 - Modify: `.github/workflows/schedule-renovate.yaml:18-25`
 
 **Interfaces:**
+
 - Consumes: nothing.
 - Produces: nothing other tasks rely on.
 
 - [ ] **Step 1: Remove Scorecard's `push` trigger**
 
 Delete the block:
+
 ```yaml
-  push:
-    branches:
-      - main
+push:
+  branches:
+    - main
 ```
 
 Keep `branch_protection_rule` and the weekly `schedule`. The supply-chain report then refreshes weekly and on branch-protection changes instead of on every merge.
@@ -187,14 +202,16 @@ Keep `branch_protection_rule` and the weekly `schedule`. The supply-chain report
 - [ ] **Step 2: Fix Renovate's push filter and add serial concurrency**
 
 Remove the dead entry `.github/renovate/**.json5` (the directory does not exist). The `push.paths` list becomes:
+
 ```yaml
-    paths:
-      - .github/renovate.json5
-      - .github/renovate-bot.json5
-      - .github/workflows/schedule-renovate.yaml
+paths:
+  - .github/renovate.json5
+  - .github/renovate-bot.json5
+  - .github/workflows/schedule-renovate.yaml
 ```
 
 Then add, above `env:`:
+
 ```yaml
 concurrency:
   group: ${{ github.workflow }}
@@ -206,18 +223,22 @@ concurrency:
 - [ ] **Step 3: Verify no dead paths remain in any push filter**
 
 Run:
+
 ```bash
 grep -rn "renovate/\*\*" .github/workflows/ || echo "no dead renovate path"
 for p in $(grep -A4 'paths:' .github/workflows/schedule-renovate.yaml | grep '^\s*-' | sed 's/^ *- //'); do test -e "$p" || echo "MISSING: $p"; done
 ```
+
 Expected: `no dead renovate path`, then no `MISSING:` lines.
 
 - [ ] **Step 4: Confirm the concurrency blocks are in place**
 
 Run:
+
 ```bash
 grep -A2 '^concurrency:' .github/workflows/schedule-renovate.yaml .github/workflows/mega-linter.yaml
 ```
+
 Expected: two blocks; Renovate shows `cancel-in-progress: false`, MegaLinter `true`.
 
 - [ ] **Step 5: Lint and commit**
@@ -237,11 +258,13 @@ git commit -m "ci: stop scorecard and renovate runs that add nothing"
 - [ ] **Step 1: Confirm every gate that has a `paths` filter lists itself**
 
 Run:
+
 ```bash
 for f in .github/workflows/*.yaml; do
   grep -q '^    paths:' "$f" && { grep -q "$(basename "$f")" "$f" && echo "ok   $f" || echo "SELF-MISSING $f"; }
 done
 ```
+
 Expected: `ok` for `deadvalues.yaml`, `docker.yaml`, `flate.yaml`, `schedule-renovate.yaml`, and no `SELF-MISSING`.
 
 - [ ] **Step 1b: Confirm the gates stay independent**
@@ -264,6 +287,8 @@ Expected: 6 workflow files plus the spec, and every hunk inside an `on:`, `paths
 ```bash
 git push -u origin feature/ci-area-path-filters
 ```
+
 Then present the commits and ask whether to open a PR. Do not open one unasked.
 
-Post-merge empirical check (owner, not implementer): a docs-only PR starts only MegaLinter, Dependency Review and the labeler; a `kubernetes/` PR starts `flate` and `deadvalues`; a `docker/` PR starts `docker` among the area gates — MegaLinter, Dependency Review and the labeler always run too.
+Post-merge empirical check (owner, not implementer): a docs-only PR starts only MegaLinter, Dependency Review and the labeler; a `kubernetes/` PR starts `flate` and
+`deadvalues`; a `docker/` PR starts `docker` among the area gates — MegaLinter, Dependency Review and the labeler always run too.

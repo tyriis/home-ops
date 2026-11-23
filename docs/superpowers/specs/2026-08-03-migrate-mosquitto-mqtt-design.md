@@ -1,5 +1,6 @@
-# Migrate Mosquitto MQTT Broker from Raspberry Pi to the Main Kubernetes Cluster — Design Doc
+# Migrate Mosquitto MQTT Broker from Raspberry Pi to the Main Kubernetes Cluster
 
+**Design Doc**
 **Date:** 2026-08-03
 **Status:** Proposed
 **Decision:** [ADR-0009](../../decisions/0009-migrate-mqtt-broker-from-raspberry-pi.md) (accepted)
@@ -20,21 +21,58 @@ started. An implementation plan will be written from this spec afterwards.
 
 ## Current State
 
-| Component | File / Location | Key facts |
-|---|---|---|
-| Raspberry Pi broker | `mqtt.techtales.io` → `192.168.1.180` | Single-instance Mosquitto 1.4.14 on bare metal, plain MQTT 1883. `allow_anonymous` was unset (mosquitto 1.4.14 defaults to `true`), so anonymous clients (zigbee2mqtt, govee2mqtt) connected without credentials and the `passwd` file only authenticated the `homeassistant` user. Last home-automation-critical service outside the GitOps estate. |
-| Consumer: zigbee2mqtt | `kubernetes/main/apps/home-automation/zigbee2mqtt/` | Connects to `mqtt.techtales.io:1883`. Main cluster, `home-automation` ns. |
-| Consumer: govee2mqtt | `kubernetes/main/apps/home-automation/govee2mqtt/` | Connects to `mqtt.techtales.io:1883`. Main cluster, `home-automation` ns. |
-| Consumer: ring-mqtt | `kubernetes/main/apps/home-automation/ring-mqtt/` | Connects to `mqtt.techtales.io:1883`. Main cluster, `home-automation` ns. |
-| Consumer: Home Assistant | `kubernetes/main/apps/home-automation/home-assistant/` | Broker config in `tyriis/homeassistant-config` repo; connects via `mqtt.techtales.io:1883`. Main cluster, `home-automation` ns. |
-| DNS endpoint | `kubernetes/main/apps/networking/external-dns/unifi-records/dns-endpoint.yaml` | `mqtt.techtales.io` A record (`~192.168.1.180`, lines ~76–98) to be re-pointed to `192.168.100.201`. `mqtt.lan` / `mqtt.home` CNAMEs untouched. |
-| Cilium LB IPAM pool | `kubernetes/main/apps/kube-system/cilium/config/cilium-load-balancer-ip-pool.yaml` | `l2-pool`, `192.168.100.200–250`. Allocated: `.200` (envoy), `.202`/`.212` (minecraft), `.204` (syncthing), `.214` (hisense-aircon), `.215` (plex). `.201` is free → chosen for the broker. |
-| House app pattern | `bjw-s/app-template` v5.0.1 (`bjw-s-charts` HelmRepository) | Used by `home-assistant`, `minecraft-java`, `syncthing`, `plex`. `flux-sync.yaml` with `postBuild.substitute` (`APP`/`NAMESPACE`/`CILIUM_LB_IPS`), `ExternalSecret` from OpenBao, `ceph-block` PVC. |
-| Storage class | `ceph-block` (rook-ceph) | House standard for stateful workloads. Already running; not introduced for this workload. |
-| Secret store | OpenBao `ClusterSecretStore` (`openbao-backend`) | Path convention `infra/kubernetes/main/home-automation/<app>`. Broker auth already lives here. |
-| volsync component | `kubernetes/components/volsync/` | Restic + MinIO, default 2h schedule, OpenBao-stored creds. **NOT used** for this workload — broker state is recreatable, auth is backed up via OpenBao. |
-| NAS-hosted MinIO | `docker/deploy/minio/` (doco-cd) | `minio.techtales.io` (TrueNAS), `minio.synlogy.techtales.io` (Synology). The only MinIO in the estate; relevant to the litestream analysis (reintroduces NAS dependency). |
-| Backstage catalog | `.backstage/systems/mqtt.home/catalog-info.yaml` | "raspberry pi mosquitto mqtt broker" — to be updated post-migration. |
+- **Component:** Raspberry Pi broker — **File / Location:** `mqtt.techtales.io` →
+  `192.168.1.180` — **Key facts:** Single-instance Mosquitto 1.4.14 on bare
+  metal, plain MQTT 1883. `allow_anonymous` was unset (mosquitto 1.4.14
+  defaults to `true`), so anonymous clients (zigbee2mqtt, govee2mqtt) connected
+  without credentials and the `passwd` file only authenticated the
+  `homeassistant` user. Last home-automation-critical service outside the
+  GitOps estate.
+- **Component:** Consumer: zigbee2mqtt — **File / Location:**
+  `kubernetes/main/apps/home-automation/zigbee2mqtt/` — **Key facts:** Connects
+  to `mqtt.techtales.io:1883`. Main cluster, `home-automation` ns.
+- **Component:** Consumer: govee2mqtt — **File / Location:**
+  `kubernetes/main/apps/home-automation/govee2mqtt/` — **Key facts:** Connects
+  to `mqtt.techtales.io:1883`. Main cluster, `home-automation` ns.
+- **Component:** Consumer: ring-mqtt — **File / Location:**
+  `kubernetes/main/apps/home-automation/ring-mqtt/` — **Key facts:** Connects to
+  `mqtt.techtales.io:1883`. Main cluster, `home-automation` ns.
+- **Component:** Consumer: Home Assistant — **File / Location:**
+  `kubernetes/main/apps/home-automation/home-assistant/` — **Key facts:** Broker
+  config in `tyriis/homeassistant-config` repo; connects via
+  `mqtt.techtales.io:1883`. Main cluster, `home-automation` ns.
+- **Component:** DNS endpoint — **File / Location:**
+  `kubernetes/main/apps/networking/external-dns/unifi-records/dns-endpoint.yaml`
+  — **Key facts:** `mqtt.techtales.io` A record (~192.168.1.180, lines ~76–98)
+  to be re-pointed to `192.168.100.201`. `mqtt.lan` / `mqtt.home` CNAMEs
+  untouched.
+- **Component:** Cilium LB IPAM pool — **File / Location:**
+  `kubernetes/main/apps/kube-system/cilium/config/cilium-load-balancer-ip-pool.yaml`
+  — **Key facts:** `l2-pool`, `192.168.100.200–250`. Allocated: `.200` (envoy),
+  `.202`/`.212` (minecraft), `.204` (syncthing), `.214` (hisense-aircon), `.215`
+  (plex). `.201` is free → chosen for the broker.
+- **Component:** House app pattern — **File / Location:** `bjw-s/app-template` v5.0.1
+  (`bjw-s-charts` HelmRepository) — **Key facts:** Used by `home-assistant`,
+  `minecraft-java`, `syncthing`, `plex`. `flux-sync.yaml` with
+  `postBuild.substitute` (`APP`/`NAMESPACE`/`CILIUM_LB_IPS`), `ExternalSecret`
+  from OpenBao, `ceph-block` PVC.
+- **Component:** Storage class — **File / Location:** `ceph-block` (rook-ceph) — **Key facts:**
+  House standard for stateful workloads. Already running; not introduced for
+  this workload.
+- **Component:** Secret store — **File / Location:** OpenBao `ClusterSecretStore`
+  (`openbao-backend`) — **Key facts:** Path convention
+  `infra/kubernetes/main/home-automation/<app>`. Broker auth already lives here.
+- **Component:** volsync component — **File / Location:** `kubernetes/components/volsync/`
+  — **Key facts:** Restic + MinIO, default 2h schedule, OpenBao-stored creds.
+  **NOT used** for this workload — broker state is recreatable, auth is backed
+  up via OpenBao.
+- **Component:** NAS-hosted MinIO — **File / Location:** `docker/deploy/minio/` (doco-cd) —
+  **Key facts:** `minio.techtales.io` (TrueNAS), `minio.synlogy.techtales.io`
+  (Synology). The only MinIO in the estate; relevant to the litestream analysis
+  (reintroduces NAS dependency).
+- **Component:** Backstage catalog — **File / Location:**
+  `.backstage/systems/mqtt.home/catalog-info.yaml` — **Key facts:** "raspberry
+  pi mosquitto mqtt broker" — to be updated post-migration.
 
 No Mosquitto/MQTT deployment exists anywhere in this repo (clusters or
 `docker/`) — this is a greenfield migration.
@@ -181,20 +219,20 @@ coupling the migration removes.
 
 ## Comparison
 
-| Dimension | A: Main k8s cluster | B: Utility k8s cluster | C: NAS via doco-cd |
-|---|---|---|---|
-| Same estate as consumers | yes | no (cross-cluster) | no (outside Flux estate) |
-| House pattern (`app-template` + ESO + ceph) | yes | yes | no (doco-cd + SOPS) |
-| Secret store | OpenBao `ExternalSecret` | OpenBao `ExternalSecret` | SOPS `.sops.env` |
-| Observability stack | same as consumers | separate from consumers | separate from consumers |
-| Availability vs Pi | better (multi-node reschedule) | worse (single-node `util01`) | same (NAS host uptime) |
-| NAS-uptime dependency on critical path | none | none | yes (deciding drawback) |
-| New tooling / Renovate deps | none (image only) | none (image only) | none (image only) |
-| DNS continuity (re-point A record only) | yes | yes | yes |
-| TCP 1883 exposure | Cilium LB IPAM `.201` | Cilium LB IPAM (util pool) | NAS host port |
-| Backup story | OpenBao (auth); no volsync (state recreatable) | OpenBao (auth); no volsync | SOPS + ZFS snapshots (second mechanism) |
-| Complexity | Low | Medium | Medium |
-| Risk to existing setup | low | low | low |
+| Dimension                                   | A: Main k8s cluster                            | B: Utility k8s cluster       | C: NAS via doco-cd                      |
+| ------------------------------------------- | ---------------------------------------------- | ---------------------------- | --------------------------------------- |
+| Same estate as consumers                    | yes                                            | no (cross-cluster)           | no (outside Flux estate)                |
+| House pattern (`app-template` + ESO + ceph) | yes                                            | yes                          | no (doco-cd + SOPS)                     |
+| Secret store                                | OpenBao `ExternalSecret`                       | OpenBao `ExternalSecret`     | SOPS `.sops.env`                        |
+| Observability stack                         | same as consumers                              | separate from consumers      | separate from consumers                 |
+| Availability vs Pi                          | better (multi-node reschedule)                 | worse (single-node `util01`) | same (NAS host uptime)                  |
+| NAS-uptime dependency on critical path      | none                                           | none                         | yes (deciding drawback)                 |
+| New tooling / Renovate deps                 | none (image only)                              | none (image only)            | none (image only)                       |
+| DNS continuity (re-point A record only)     | yes                                            | yes                          | yes                                     |
+| TCP 1883 exposure                           | Cilium LB IPAM `.201`                          | Cilium LB IPAM (util pool)   | NAS host port                           |
+| Backup story                                | OpenBao (auth); no volsync (state recreatable) | OpenBao (auth); no volsync   | SOPS + ZFS snapshots (second mechanism) |
+| Complexity                                  | Low                                            | Medium                       | Medium                                  |
+| Risk to existing setup                      | low                                            | low                          | low                                     |
 
 ## Recommendation
 
@@ -372,7 +410,7 @@ sessions re-establish.
 
 ## Target State
 
-```
+```text
 kubernetes/main/apps/home-automation/mosquitto/
 ├── flux-sync.yaml          # Kustomization CRD, postBuild.substitute {APP, CILIUM_LB_IPS}
 └── app/
@@ -406,8 +444,8 @@ Plus a `ConfigMap` for `mosquitto.conf` (`listener 1883`, `persistence true`,
 1. **Pre-stage secret**: store the Mosquitto `passwd` file contents in OpenBao
    at `infra/kubernetes/main/home-automation/mosquitto` (key `MOSQUITTO_PASSWD`).
 2. **Deploy broker**: add `kubernetes/main/apps/home-automation/mosquitto/`
-   (`flux-sync.yaml` + `app/{kustomization.yaml, helm-release.yaml,
-   external-secret.yaml, pvc.yaml}`), `CILIUM_LB_IPS: 192.168.100.201`,
+   (`flux-sync.yaml` + `app/{kustomization.yaml, helm-release.yaml, external-secret.yaml, pvc.yaml}`),
+   `CILIUM_LB_IPS: 192.168.100.201`,
    listener `1883`, `allow_anonymous true`, `password_file` from the
    `ExternalSecret`, `ceph-block` PVC for `mosquitto.db` (no `volsync`).
    `dependsOn`: `external-secrets-stores`, `rook-ceph-cluster`.

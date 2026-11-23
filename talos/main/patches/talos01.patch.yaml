@@ -8,8 +8,7 @@ auto: "off"
 # replaces deprecated machine.install (v1alpha1)
 apiVersion: v1alpha1
 kind: UnattendedInstallConfig
-installer:
-  image: factory.talos.dev/metal-installer-secureboot/8d69cb80518ea3baf4659d9946488a3bbe9f454df5707e5ee355b82917f495fe:v1.14.5
+# installer.image is derived at render time (schematic id + version.yaml)
 provisioning:
   diskSelector:
     match: disk.serial == "S6Z1NU0XC22535P" # middle slot disk

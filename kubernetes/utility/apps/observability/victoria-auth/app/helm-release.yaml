@@ -243,7 +243,7 @@ spec:
           app:
             image:
               repository: docker.io/victoriametrics/vmauth
-              tag: v1.156.0@sha256:e4b739ed468de88906550911c03fee2b0da89785679343a006639b8f471df051
+              tag: v1.157.0@sha256:f2691155bd12c39153ec26439e5d1b145f3bedc326d6b4c72965b06220f1c092
             args:
               - -auth.config=/etc/vmauth/vmauth.yaml
               - -httpListenAddr=:8427

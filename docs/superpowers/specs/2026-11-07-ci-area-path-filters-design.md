@@ -15,7 +15,7 @@ blocks.
 - Stop the heavy `kubernetes` gates from running on PRs that touch no
   Kubernetes manifest.
 - Stop starting workflows on events where they cannot produce a useful result.
-- Close the existing holes where a real change does *not* start its gate.
+- Close the existing holes where a real change does _not_ start its gate.
 - Keep every gate's validation scope exactly as it is today.
 
 ## Non-goals
@@ -54,7 +54,7 @@ repeated where two workflows cover one area (`kubernetes/**` appears in
 
 **B. One gate workflow with a `changes` job.** A single workflow, a
 `tj-actions/changed-files` job with one key per area, and `if:` on each real
-job. One source of truth, and unaffected jobs show as *skipped* rather than
+job. One source of truth, and unaffected jobs show as _skipped_ rather than
 vanishing. Rejected: rewrites eight files into one, loses per-workflow
 concurrency groups, and buys nothing at this size — the same globs live in one
 place either way.
@@ -66,16 +66,16 @@ rarely.
 
 ## Design
 
-| Workflow | Today | After |
-| --- | --- | --- |
-| `deadvalues` | PR on **any** branch, `paths: **/*.yaml` | `branches: [main]`; `paths: kubernetes/**, .deadvalues.yaml, .github/workflows/deadvalues.yaml` |
-| `flate` | `paths: kubernetes/**.yaml` | `paths: kubernetes/**, .github/workflows/flate.yaml` |
-| `docker` | `paths: docker/**, scripts/hooks/check-docker-compose.sh` | add `.github/workflows/docker.yaml` |
-| `MegaLinter` | every PR + every push to `main`, no concurrency | add the standard concurrency block; triggers unchanged |
-| `Scorecard` | push to `main` + weekly + `branch_protection_rule` | drop the `push` trigger |
-| `Schedule - Renovate` | hourly + push filter that names a non-existent directory | drop `.github/renovate/**.json5`; add a non-cancelling concurrency group so hourly runs queue instead of overlap |
-| `Dependency Review` | every PR | unchanged |
-| `Pull Request Labeler` | every PR | unchanged |
+| Workflow               | Today                                                     | After                                                                                                            |
+| ---------------------- | --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `deadvalues`           | PR on **any** branch, `paths: **/*.yaml`                  | `branches: [main]`; `paths: kubernetes/**, .deadvalues.yaml, .github/workflows/deadvalues.yaml`                  |
+| `flate`                | `paths: kubernetes/**.yaml`                               | `paths: kubernetes/**, .github/workflows/flate.yaml`                                                             |
+| `docker`               | `paths: docker/**, scripts/hooks/check-docker-compose.sh` | add `.github/workflows/docker.yaml`                                                                              |
+| `MegaLinter`           | every PR + every push to `main`, no concurrency           | add the standard concurrency block; triggers unchanged                                                           |
+| `Scorecard`            | push to `main` + weekly + `branch_protection_rule`        | drop the `push` trigger                                                                                          |
+| `Schedule - Renovate`  | hourly + push filter that names a non-existent directory  | drop `.github/renovate/**.json5`; add a non-cancelling concurrency group so hourly runs queue instead of overlap |
+| `Dependency Review`    | every PR                                                  | unchanged                                                                                                        |
+| `Pull Request Labeler` | every PR                                                  | unchanged                                                                                                        |
 
 Rationale for the two glob choices:
 

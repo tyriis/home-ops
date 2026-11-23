@@ -23,13 +23,13 @@ jobs:
     steps:
       # https://github.com/marketplace/actions/harden-runner
       - name: Harden Runner
-        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
+        uses: step-security/harden-runner@aebdcf6156ab6691adf63218240e476564a1ed4c # v2.23.0
         with:
           egress-policy: audit
 
       # https://github.com/marketplace/actions/create-github-app-token
       - name: Generate Token
-        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
         id: app-token
         with:
           client-id: "${{ secrets.BOT_APP_ID }}"
@@ -43,7 +43,7 @@ jobs:
 
       # https://github.com/marketplace/actions/install-nix
       - name: Install Nix
-        uses: cachix/install-nix-action@3dc140bfc76c49fbd4dd958429132e3746bcb086 # v31.11.5
+        uses: cachix/install-nix-action@382a9ed9481c7c1f94f68b72ef105b3417c73877 # v32.1.0
         with:
           # Flake input fetches are GitHub API calls. Without a token,
           # anonymous rate limits fail the run intermittently. Bot App
@@ -140,7 +140,7 @@ jobs:
         # is signed by GitHub and lands Verified. A local `git commit`
         # by a bot has no signing identity and would break the
         # protected-branch signed-commits rule.
-        uses: tyriis/multi-file-commit@2d6dcce35c5e8a7c2f945fb98544cfe9d6c81cc7 # v1.1.0
+        uses: tyriis/multi-file-commit@7bf613b8f7c63daf815d5e4d9eb68b8dead5e6a3 # v1.2.0
         with:
           token: ${{ steps.app-token.outputs.token }}
           ref: ${{ steps.commit.outputs.branch }}

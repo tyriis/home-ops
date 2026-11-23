@@ -75,7 +75,7 @@ spec:
           init-agent-src:
             image:
               repository: docker.io/nousresearch/hermes-agent
-              tag: v0.23.1@sha256:276d44685c65c0cb2a25f190b63c65c8906f9dc76486fb1c05ae71b5826bda08
+              tag: v0.23.3@sha256:3e9fe4c6ef36490f43aa0d0d80f9df64e9c92a576eee3042f1a97c8813c05355
             command:
               - sh
               - -c
@@ -98,7 +98,7 @@ spec:
             args: ["gateway", "run", "--no-supervise"]
             image: &image
               repository: docker.io/nousresearch/hermes-agent
-              tag: v0.23.1@sha256:276d44685c65c0cb2a25f190b63c65c8906f9dc76486fb1c05ae71b5826bda08
+              tag: v0.23.3@sha256:3e9fe4c6ef36490f43aa0d0d80f9df64e9c92a576eee3042f1a97c8813c05355
             ports:
               - name: api
                 containerPort: 8642
@@ -139,7 +139,7 @@ spec:
           webui:
             image:
               repository: ghcr.io/nesquena/hermes-webui
-              tag: 0.52.697@sha256:c7ee1be4bc1e73219f9bffb39572387ddf4eee101f0100d01d07ded6bd455484
+              tag: 0.52.743@sha256:5b0181fd791a815d83ad52aee771d3f9eb6bfe040ead21bf708ccd86016084a1
             command: ["/bin/sh", "-c"]
             args:
               - |-

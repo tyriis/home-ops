@@ -1,7 +1,7 @@
 # prek migration: replace MegaLinter and pre-commit
 
 Issue: [#10151](https://github.com/tyriis/home-ops/issues/10151)
-Status: revision 9, draft. Revision 9 uses the upstream betterleaks and editorconfig-checker hook repos.
+Status: revision 10, draft. Revision 10 pins stable releases only and comments out the editorconfig-checker hook.
 
 ## Context
 
@@ -45,10 +45,13 @@ inactive: it needs `.proselintrc.json` or proselint/config.json, and neither exi
 2. Upstream hook repos stay remote. Each keeps its `repo`, `rev`, and fields from
    `main`. prek runs them as pre-commit does. Renovate's pre-commit manager tracks
    their `rev`. Hooks with no upstream repo are local hooks, as listed below:
-   - `betterleaks`: upstream betterleaks repo at `v2.0.0-rc.10`, hook `betterleaks`
+   - `betterleaks`: upstream betterleaks repo at stable `v1.10.1`, hook `betterleaks`
      (`language: golang`). Replaces gitleaks.
-   - `editorconfig-checker`: upstream editorconfig-checker.python repo at `3.11.1`,
-     hook `editorconfig-checker`. Added for MegaLinter parity.
+   - `editorconfig-checker`: upstream editorconfig-checker repo at stable `v4.0.2`,
+     hook `editorconfig-checker` (`language: golang`). Added for MegaLinter parity.
+     Commented out in `.pre-commit-config.yaml` until the `docs/superpowers/` lint
+     decision is made. The hook is not dropped.
+     Only stable releases are used. Prerelease tags are not pinned.
    - `check-cnpg-barman-destinationpath`, `check-docker-compose`: local scripts, unchanged.
    - `check-illegal-windows-names`: upstream pre-commit-hooks, unchanged.
 
@@ -100,7 +103,8 @@ Upstream repos are not converted. The `rev` of each remote hook stays as on `mai
 Remote hooks keep their `repo`, `rev`, `hooks`, and `args`.
 
 Hooks that have no upstream repo are local. Currently: the two local scripts only.
-The betterleaks and editorconfig-checker hooks are remote.
+The betterleaks and editorconfig-checker hooks are remote. The editorconfig-checker
+hook is commented out for now.
 
 Lint task tools (not hooks, used by `.taskfiles/lint`):
 
@@ -123,7 +127,7 @@ Other tools:
 2. Keep every upstream hook repo in `.pre-commit-config.yaml` at its `rev`. Add a
    local hook only for tools with no upstream repo.
 3. Replace the gitleaks hook with the upstream betterleaks repo at
-   `v2.0.0-rc.10`, hook `betterleaks`. The upstream hook builds its own binary.
+   `v1.10.1`, hook `betterleaks`. The upstream hook builds its own binary.
    Remove the betterleaks pin from `.mise.toml`.
 4. Add `default_install_hook_types: [pre-commit, pre-push]`.
 5. Update the task files:
@@ -146,15 +150,21 @@ Exit check:
 
 Exit check results (MegaLinter 10.2.0, flavor terraform, run 2026-11-23):
 
-| Linter               | MegaLinter tool version | prek pin                     | Result                                                                                                                                                                                                                           |
-| -------------------- | ----------------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| actionlint           | 1.7.12                  | 1.7.12                       | Match. 0 errors.                                                                                                                                                                                                                 |
-| editorconfig-checker | 4.0.2                   | 3.11.1 (python repo)         | Match in result. 0 errors after the ComfyUI README list indent fix. The hook now runs the 3.x Python tool, not 4.0.2. Re-check at phase 1 close.                                                                                 |
-| prettier (JSON)      | 3.9.10                  | 3.10.1                       | Match. 0 errors.                                                                                                                                                                                                                 |
-| markdownlint         | 0.49.1                  | 0.50.0                       | Match. 0 errors. Version differs; MegaLinter bundles 0.49.1.                                                                                                                                                                     |
-| betterleaks          | 1.7.3                   | v2.0.0-rc.10 (upstream repo) | Match. 0 findings. Upstream hook builds the rc tag; MegaLinter bundles 1.7.3.                                                                                                                                                    |
-| prettier (YAML)      | 3.9.10                  | 3.10.1                       | Difference. MegaLinter reports 1 error on `kubernetes/main/apps/gaming/minecraft-java/flux-sync.yaml`: prettier 3.9.10 wants one extra trailing blank line. Prettier 3.10.1 passes the file. The file is not changed in phase 1. |
-| yamllint             | 1.38.0                  | 1.38.0                       | Match. 0 errors.                                                                                                                                                                                                                 |
+| Linter               | MegaLinter tool version | prek pin                  | Result                                                       |
+| -------------------- | ----------------------- | ------------------------- | ------------------------------------------------------------ |
+| actionlint           | 1.7.12                  | 1.7.12                    | Match. 0 errors.                                             |
+| editorconfig-checker | 4.0.2                   | 4.0.2 (Go, upstream repo) | Pending. Hook commented out. See note 1.                     |
+| prettier (JSON)      | 3.9.10                  | 3.10.1                    | Match. 0 errors.                                             |
+| markdownlint         | 0.49.1                  | 0.50.0                    | Match. 0 errors. Version differs; MegaLinter bundles 0.49.1. |
+| betterleaks          | 1.7.3                   | v1.10.1                   | Match. 0 findings. See note 2.                               |
+| prettier (YAML)      | 3.9.10                  | 3.10.1                    | Difference. See note 3.                                      |
+| yamllint             | 1.38.0                  | 1.38.0                    | Match. 0 errors.                                             |
+
+Notes:
+
+1. editorconfig-checker: the Go hook at v4.0.2 reports findings only under `docs/superpowers/`. The hook is commented out until the docs lint decision is made. Re-check parity before phase 1 closes.
+2. betterleaks: the upstream hook builds stable v1.10.1. MegaLinter bundles 1.7.3.
+3. prettier (YAML): MegaLinter reports 1 error on `kubernetes/main/apps/gaming/minecraft-java/flux-sync.yaml`. Prettier 3.9.10 wants one extra trailing blank line. Prettier 3.10.1 passes the file. The file is not changed in phase 1.
 
 `prek run --all-files` passes every hook on the same tree. `check-illegal-windows-names`
 and `check-xml` have no files to check. The `betterleaks` hook (staged) reports no
@@ -173,8 +183,8 @@ findings. A full-tree secret scan is not part of phase 1 (see Secret scan scope)
    - On pull requests: `mise exec -- prek run --from-ref <base.sha> --to-ref <head.sha> --show-diff-on-failure`.
    - On `workflow_dispatch`: `mise exec -- prek run --all-files --show-diff-on-failure`.
    - On pull requests only: `betterleaks git . --log-opts="<base.sha>..<head.sha>" --redact`.
-     Tested with betterleaks 1.10.1 on a sample repository. Re-test with the v2 CLI
-     before phase 2 closes, because the pin is removed: the range finds a
+     CI needs a betterleaks binary. Pin it in `.mise.toml` at the same stable version (1.10.1) in phase 2.
+     Tested with betterleaks 1.10.1 on a sample repository: the range finds a
      committed token, and an empty range finds none.
    - `workflow_dispatch` has no pull request range. It runs no separate secret scan.
      The full-history scan is phase 3.
@@ -195,7 +205,7 @@ Rollback: one revert that restores the two MegaLinter files and removes `lint.ya
 
 1. Add a scheduled workflow that runs a full-history Betterleaks scan with SARIF output:
    `betterleaks git . --report-format sarif --report-path <file> --redact`.
-   Flags tested on 1.10.1. Re-test on the v2 CLI before phase 3 closes.
+   Flags tested on 1.10.1, the stable release used by the hook.
 2. Grant `security-events: write`. Upload with `github/codeql-action/upload-sarif`, SHA pinned.
 3. Allow findings without failing the job. Triage the historical findings first.
 

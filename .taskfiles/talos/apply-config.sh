@@ -1,13 +1,19 @@
 #!/usr/bin/env bash
 # Diff a rendered machine config against the live one, show it, ask, then
 # apply — all from memory (tmpfs only). Generalizes apply-main-config.sh.
-# usage: apply-config.sh <cluster> <node> <ip> [--diff-only]
+# usage: apply-config.sh <cluster> <node> <ip> [role] [--diff-only]
+#        role: controlplane (default) | worker
 set -euo pipefail
 
-cluster="${1:?usage: apply-config.sh <cluster> <node> <ip> [--diff-only]}"
-node="${2:?usage: apply-config.sh <cluster> <node> <ip> [--diff-only]}"
-ip="${3:?usage: apply-config.sh <cluster> <node> <ip> [--diff-only]}"
-diff_only="${4:-}"
+cluster="${1:?usage: apply-config.sh <cluster> <node> <ip> [role] [--diff-only]}"
+node="${2:?usage: apply-config.sh <cluster> <node> <ip> [role] [--diff-only]}"
+ip="${3:?usage: apply-config.sh <cluster> <node> <ip> [role] [--diff-only]}"
+role="${4:-controlplane}"
+case "$role" in
+  controlplane | worker) ;;
+  *) echo "unknown role: $role (known: controlplane, worker)" >&2; exit 1 ;;
+esac
+diff_only="${5:-}"
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 
 # Every write op must be explicit about context + node — never default context.
@@ -18,7 +24,7 @@ trap 'rm -rf "$tmp"' EXIT
 chmod 700 "$tmp"
 
 echo "==> rendering $cluster/$node" >&2
-"$root/.taskfiles/talos/render-config.sh" "$cluster" "$node" > "$tmp/render.yaml"
+"$root/.taskfiles/talos/render-config.sh" "$cluster" "$node" "$role" > "$tmp/render.yaml"
 
 echo "==> fetching live config from $ip" >&2
 talosctl --context "$cluster" --nodes "$ip" get machineconfig -o json \

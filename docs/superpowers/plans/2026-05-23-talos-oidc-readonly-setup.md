@@ -4,7 +4,8 @@
 
 **Goal:** Deploy `talosctl-oidc` server in each Talos cluster so users can authenticate via Pocket-ID and get short-lived `os:reader` Talos client certificates.
 
-**Architecture:** One bjw-s app-template HelmRelease per cluster (main + utility), each holding its own Talos API CA. ExternalSecret pulls CA from OpenBao. Service type LoadBalancer with Cilium L2. Users point `talosctl-oidc login` at the appropriate server.
+**Architecture:** One bjw-s app-template HelmRelease per cluster (main + utility), each holding its own Talos API CA. ExternalSecret pulls CA from OpenBao. Service type
+LoadBalancer with Cilium L2. Users point `talosctl-oidc login` at the appropriate server.
 
 **Tech Stack:** talosctl-oidc-server, bjw-s app-template, Flux, External Secrets / OpenBao, Pocket-ID (existing), Cilium LoadBalancer
 
@@ -88,7 +89,7 @@ echo "<base64-key>" | base64 -d > util-ca.key
 
 Write the CA PEM contents to OpenBao under the following paths:
 
-```
+```bash
 vault kv put infra/kubernetes/main/secops/talosctl-oidc \
   ca_crt="$(cat main-ca.crt)" \
   ca_key="$(cat main-ca.key)"
@@ -523,7 +524,7 @@ kubectl get svc -n secops -l app.kubernetes.io/name=talosctl-oidc
 
 Expected output (for utility cluster — main will have a different IP):
 
-```
+```text
 NAME             TYPE           CLUSTER-IP     EXTERNAL-IP       PORT(S)          AGE
 talosctl-oidc    LoadBalancer   10.43.x.x      192.168.100.x     8443:3xxxx/TCP   1m
 ```

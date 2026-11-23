@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# Check each committed factory.talos.dev schematic against the installer image refs
-# that patches/ actually installs.
+# Verify the committed factory.talos.dev schematic ids (header format, optional
+# factory re-derivation) and assert patches/ carry NO pinned installer image refs —
+# render-config.sh derives the ref from the schematic id + version.yaml.
 # Usage: check-schematic.sh [--online] [cluster ...]   (default: every talos/*/schematic.yaml)
 # --online re-derives each id from factory.talos.dev — needs network.
 set -euo pipefail
@@ -53,20 +54,12 @@ for cluster in "${clusters[@]}"; do
   fi
 
   before="$status"
-  found=0
   for patch in "$root/talos/$cluster"/patches/*.patch.yaml; do
     while IFS= read -r image; do
-      found=$((found + 1))
-      case "$image" in
-        *"/metal-installer-secureboot/$id:"*) ;;
-        *) fail "talos/$cluster/patches: installer image '$image' does not carry schematic id $id" ;;
-      esac
+      fail "talos/$cluster/patches: installer image '$image' pinned — the ref is derived at render time from the schematic id + version.yaml"
     done < <(yq ea -r 'select(.kind == "UnattendedInstallConfig") | .installer.image // ""' "$patch" |
       sed '/^---$/d; /^$/d')
   done
-  if [[ $found -eq 0 ]]; then
-    fail "talos/$cluster/patches: no UnattendedInstallConfig installer image refs found"
-  fi
 
   if [[ $online -eq 1 && $status -eq $before ]]; then
     if remote="$(curl -fsS -X POST --data-binary "@$schematic" https://factory.talos.dev/schematics |

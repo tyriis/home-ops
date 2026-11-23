@@ -15,7 +15,9 @@ services:
         max-size: 10m
         max-file: "3"
         labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
-    image: quay.io/prometheus/node-exporter:v1.12.1@sha256:1b4e4438faca4dd7e001dd445d161a4a2091b0fededa84093b3a8dfeae1f1be0
+    image: quay.io/prometheus/node-exporter:v1.13.1@sha256:011e2d12c5bff759b90804bda642664775d7b4b127bf5148539bb82d3f590bb7
+    mem_limit: 128m
+    pids_limit: 128
     network_mode: host
     restart: unless-stopped
     volumes:
@@ -41,6 +43,8 @@ services:
         max-file: "3"
         labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
     image: ghcr.io/prometheus-community/smartctl-exporter:v0.15.0@sha256:a76e08dbf5db4781fefd1ed81c65ad46ae8d2849dae6b6d3acebcde2fc4e59d6
+    mem_limit: 128m
+    pids_limit: 128
     # host net + loopback bind replaces the published-port pattern: a per-host
     # ports override against an include merges instead of replacing (9633 double-bind).
     # Listeners match the host vmagent scrape targets (always 127.0.0.1).

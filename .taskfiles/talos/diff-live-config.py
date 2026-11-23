@@ -56,7 +56,22 @@ EXPECTED_DOC_PREFIXES = (
     "KubeExternalManifestConfig/", "KernelModuleConfig/",
 )
 
-SECRET = re.compile(r"(^|\.)(crt|key|keys|secret|token|passphrase|contents?|ca|id)(\.|$)")
+# Paths whose value must never print. Deliberately NARROW: only fields that
+# structurally carry secret material. Public refs (urls, factory image refs,
+# serials, uids) print — clipped if long, never hidden.
+SECRET_PATHS = re.compile(r"(^|\.)(secret|token|key|keys|privateKey|presharedKey|passphrase)(\.|$)")
+# PEM blocks re-encode on every render (gen output escaping) — never diff them.
+PEM = re.compile(r"-----BEGIN [^-]+-----[\s\S]*?(?:-----END [^-]+-----|$)")
+# secret-bearing members inside json-dumped list values (e.g. the whole
+# KubeEtcdEncryptionConfig resources array is ONE flattened string)
+SECRET_IN_JSON = re.compile(r'("(?:secret|token|privateKey|presharedKey|passphrase)":\s*")[^"]*(")')
+
+
+def scrub(val):
+    s = val if isinstance(val, str) else json.dumps(val)
+    s = SECRET_IN_JSON.sub(r"\1<redacted>\2", s)
+    s = PEM.sub("<PEM>", s)
+    return s
 
 # fields structurally dropped by the new doc types (implicit or gone)
 DROP_KEYS = {"machine.files": frozenset({"op", "path", "permissions"})}
@@ -110,10 +125,14 @@ def flat(d, p=""):
 def fmt(path, val):
     if val is None:
         return "<absent>"
-    s = val if isinstance(val, str) else json.dumps(val)
-    if SECRET.search(path) or len(s) > 50:
+    s = scrub(val)
+    if SECRET_PATHS.search(path):
         return "<redacted>"
-    return s[:80]
+    if "<PEM>" in s:
+        return "<PEM>"
+    if len(s) > 400:
+        return s[:400] + f" …(+{len(s) - 400} more)"
+    return s
 
 
 def collect_all_scalars(d, out):
@@ -186,9 +205,9 @@ def main():
                 notes.append((path, note))
             elif path in fa and path not in fb and prefix:
                 # soundness net: every live scalar must still exist somewhere in
-                # render (exact or embedded, e.g. inside a CEL expr). SECRET-ish
-                # values are skipped: gen re-encodes PEM and they come verbatim
-                # from the same talsecret — verified by token/key counts instead.
+                # render (exact or embedded, e.g. inside a CEL expr). SECRET_PATHS
+                # and PEM-ish values are skipped: gen re-encodes PEM and tokens
+                # come verbatim from the same talsecret — verified by counts.
                 raw = dig(live[k], path)
                 skip = next((s for pfx, s in DROP_KEYS.items() if path.startswith(pfx)), frozenset())
                 vals = set()
@@ -199,14 +218,15 @@ def main():
                     # exact match, or (long values only) embedded inside a render
                     # scalar — e.g. disk serial inside a CEL expression
                     return (
-                        SECRET.search(path)
+                        SECRET_PATHS.search(path)
+                        or "-----BEGIN" in v
                         or v in render_scalars
                         or (len(v) >= 12 and any(v in r for r in rs))
                     )
 
                 missing = [v for v in sorted(vals) if not present(v)]
                 if missing:
-                    unexpected_paths.append((k, path, fmt(path, raw)[:80], "VALUE LOST IN MIGRATION"))
+                    unexpected_paths.append((k, path, fmt(path, raw), "VALUE LOST IN MIGRATION"))
                 else:
                     collapsed.setdefault((prefix, MIGRATIONS[prefix]), []).append(path)
             else:

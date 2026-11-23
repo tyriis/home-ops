@@ -27,6 +27,8 @@ services:
         max-file: "3"
         labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
     image: victoriametrics/vlagent:v1.54.0@sha256:fcfb8ce38b503c691fa8e794ba1812fda82e363207235afbd7ceeb95eb18def0
+    mem_limit: 256m
+    pids_limit: 128
     # Bridge network: the collector only needs outbound HTTPS to logs.techtales.io.
     # Metrics/health port is published on localhost only, so it is not exposed on the LAN.
     ports:
@@ -34,7 +36,7 @@ services:
     read_only: true
     restart: unless-stopped
     tmpfs:
-      - /tmp
+      - /tmp:size=64m
     user: "0:0"
     volumes:
       - data:/var/lib/vlagent

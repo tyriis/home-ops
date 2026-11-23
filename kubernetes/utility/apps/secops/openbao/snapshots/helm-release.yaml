@@ -45,7 +45,7 @@ spec:
           snapshot:
             image:
               repository: quay.io/openbao/openbao
-              tag: 2.7.2@sha256:5046911075e137e154ce49ab051502f4ec7cf367d484ae4a4dce665d9b90561f
+              tag: 2.7.3@sha256:ba4b133eb9586630024e71a617e66f37f29cc3534cdd46a6233e098ceded8dc9
             command:
               - /bin/sh
               - -ec
@@ -70,7 +70,7 @@ spec:
           upload:
             image:
               repository: google/cloud-sdk
-              tag: 593.0.0-alpine@sha256:6a44d67ac4bf78a27a72166cec3aac6678b7601fddb74bf7d56f294de8fe0f4e
+              tag: 594.0.1-alpine@sha256:62e74007a84bf22253593a256e250068a078defd9a5c0366302183e64c3e22f4
             command:
               - /bin/sh
               - -ec

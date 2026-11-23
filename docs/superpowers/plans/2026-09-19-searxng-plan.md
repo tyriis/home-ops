@@ -4,7 +4,11 @@
 
 **Goal:** Deploy a LAN-only SearXNG instance in the `ai` namespace as the Open WebUI RAG search backend and a browser search UI at `https://search.techtales.io`.
 
-**Architecture:** A new Flux Kustomization path `kubernetes/main/apps/ai/searxng/` holding an OCIRepository for `app-template` 5.2.1, a ConfigMap carrying `settings.yml`, an ExternalSecret sourcing `SEARXNG_SECRET` from OpenBao, an ingress-only NetworkPolicy, and the HelmRelease. Three existing files are touched: the `ai` namespace Kustomization registration, `hermes-agent`'s egress allow-list, and `open-webui`'s RAG environment variables.
+**Architecture:** A new Flux Kustomization path `kubernetes/main/apps/ai/searxng/` holding an
+OCIRepository for `app-template` 5.2.1, a ConfigMap carrying `settings.yml`, an ExternalSecret
+sourcing `SEARXNG_SECRET` from OpenBao, an ingress-only NetworkPolicy, and the HelmRelease. Three
+existing files are touched: the `ai` namespace Kustomization registration, `hermes-agent`'s egress
+allow-list, and `open-webui`'s RAG environment variables.
 
 **Tech Stack:** Flux CD, bjw-s `app-template` 5.2.1 (OCI), External Secrets Operator with the `openbao-backend` ClusterSecretStore, Gateway API via Envoy Gateway, Cilium NetworkPolicy, Talos/Kubernetes.
 
@@ -51,18 +55,18 @@ signing key for session/preference cookies.
 
 ## File Structure
 
-| File | Responsibility |
-| --- | --- |
-| `kubernetes/main/apps/ai/searxng/flux-sync.yaml` | Flux Kustomization; entry point registering the app |
-| `kubernetes/main/apps/ai/searxng/app/kustomization.yaml` | Lists the resources below |
-| `kubernetes/main/apps/ai/searxng/app/oci-repository.yaml` | `app-template` 5.2.1 OCI source |
-| `kubernetes/main/apps/ai/searxng/app/helm-release.yaml` | The HelmRelease and all values |
-| `kubernetes/main/apps/ai/searxng/app/configmap.yaml` | `settings.yml` |
-| `kubernetes/main/apps/ai/searxng/app/external-secret.yaml` | `SEARXNG_SECRET` from OpenBao |
-| `kubernetes/main/apps/ai/searxng/app/network-policy.yaml` | Ingress-only policy |
-| `kubernetes/main/apps/ai/kustomization.yaml` | **Modify** — register the app |
-| `kubernetes/main/apps/hermes-agent/app/network-policy.yaml` | **Modify** — egress allow to SearXNG |
-| `kubernetes/main/apps/ai/open-webui/app/helm-release.yaml` | **Modify** — RAG wiring |
+| File                                                        | Responsibility                                      |
+| ----------------------------------------------------------- | --------------------------------------------------- |
+| `kubernetes/main/apps/ai/searxng/flux-sync.yaml`            | Flux Kustomization; entry point registering the app |
+| `kubernetes/main/apps/ai/searxng/app/kustomization.yaml`    | Lists the resources below                           |
+| `kubernetes/main/apps/ai/searxng/app/oci-repository.yaml`   | `app-template` 5.2.1 OCI source                     |
+| `kubernetes/main/apps/ai/searxng/app/helm-release.yaml`     | The HelmRelease and all values                      |
+| `kubernetes/main/apps/ai/searxng/app/configmap.yaml`        | `settings.yml`                                      |
+| `kubernetes/main/apps/ai/searxng/app/external-secret.yaml`  | `SEARXNG_SECRET` from OpenBao                       |
+| `kubernetes/main/apps/ai/searxng/app/network-policy.yaml`   | Ingress-only policy                                 |
+| `kubernetes/main/apps/ai/kustomization.yaml`                | **Modify** — register the app                       |
+| `kubernetes/main/apps/hermes-agent/app/network-policy.yaml` | **Modify** — egress allow to SearXNG                |
+| `kubernetes/main/apps/ai/open-webui/app/helm-release.yaml`  | **Modify** — RAG wiring                             |
 
 ---
 
@@ -560,17 +564,17 @@ a matching rule here. Append to the `egress` list in
 `olla` rule and before the `192.168.100.10/32` rule:
 
 ```yaml
-    # Allow egress to searxng in the ai namespace
-    - to:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: ai
-          podSelector:
-            matchLabels:
-              app.kubernetes.io/name: searxng
-      ports:
-        - protocol: TCP
-          port: 8080
+# Allow egress to searxng in the ai namespace
+- to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: ai
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: searxng
+  ports:
+    - protocol: TCP
+      port: 8080
 ```
 
 Do **not** modify `hermes-agent`'s ConfigMap. Its `web.search_backend` stays on `firecrawl`; only
@@ -606,20 +610,20 @@ git commit -m "feat(hermes-agent): allow egress to searxng"
 The existing block uses variable names Open WebUI v0.11.3 does not read:
 
 ```yaml
-              # ENABLE_RAG_WEB_SEARCH: true
-              # ENABLE_SEARCH_QUERY: true
-              # RAG_WEB_SEARCH_ENGINE: searxng
-              # SEARXNG_QUERY_URL: http://searxng:8080/search?q=<query>
+# ENABLE_RAG_WEB_SEARCH: true
+# ENABLE_SEARCH_QUERY: true
+# RAG_WEB_SEARCH_ENGINE: searxng
+# SEARXNG_QUERY_URL: http://searxng:8080/search?q=<query>
 ```
 
 Replace it with:
 
 ```yaml
-              ENABLE_WEB_SEARCH: "true"
-              WEB_SEARCH_ENGINE: searxng
-              SEARXNG_QUERY_URL: http://searxng.ai.svc.cluster.local:8080/search
-              SEARXNG_LANGUAGE: en-US
-              WEB_SEARCH_RESULT_COUNT: "5"
+ENABLE_WEB_SEARCH: "true"
+WEB_SEARCH_ENGINE: searxng
+SEARXNG_QUERY_URL: http://searxng.ai.svc.cluster.local:8080/search
+SEARXNG_LANGUAGE: en-US
+WEB_SEARCH_RESULT_COUNT: "5"
 ```
 
 Implementer notes:

@@ -31,8 +31,8 @@ restrict access to the existing Pocket ID **`users`** group.
 
 Access control is enforced by Pocket ID's per-client **Allowed User Groups**
 feature. Homepage applies no authorization of its own — it admits any identity
-the OIDC client authorizes (documented behaviour: *"Homepage does not apply
-additional claim-based authorization"*).
+the OIDC client authorizes (documented behaviour: _"Homepage does not apply
+additional claim-based authorization"_).
 
 ### Why native OIDC rather than the `envoy-pocketid` gateway component
 
@@ -46,7 +46,7 @@ additional claim-based authorization"*).
 
 ## Architecture & data flow
 
-```
+```text
 Browser
   └─ https://home.techtales.io  → Envoy Gateway (no gateway auth)
        └─ homepage pod :3000 (native auth enabled)
@@ -66,28 +66,28 @@ Homepage is a single global gate: authenticated → full dashboard.
 
 ### 1. Pocket ID OIDC client (external, manual)
 
-| Setting         | Value                                                        |
-| --------------- | ------------------------------------------------------------ |
-| Name            | `Homepage`                                                   |
-| Public Client   | **off** (confidential → client secret)                       |
-| Callback URL    | `https://home.techtales.io/api/auth/callback/homepage-oidc`  |
-| Allowed groups  | `users`                                                      |
+| Setting        | Value                                                       |
+| -------------- | ----------------------------------------------------------- |
+| Name           | `Homepage`                                                  |
+| Public Client  | **off** (confidential → client secret)                      |
+| Callback URL   | `https://home.techtales.io/api/auth/callback/homepage-oidc` |
+| Allowed groups | `users`                                                     |
 
 > Pocket ID ≥ v2.0.0 creates clients **restricted with zero groups**; the `users`
-> group must be explicitly selected or logins fail with *"You are not allowed to
-> access this service."* Pocket ID v2.14.0 is installed, which includes the
+> group must be explicitly selected or logins fail with _"You are not allowed to
+> access this service."_ Pocket ID v2.14.0 is installed, which includes the
 > refresh-token group-enforcement fix (≥ v2.6.0).
 
 ### 2. OpenBao secret (external, manual)
 
 Path `infra/kubernetes/main/default/homepage`, keys consumed by the ExternalSecret:
 
-| Key                         | Value / note                                         |
-| --------------------------- | ---------------------------------------------------- |
-| `HOMEPAGE_AUTH_SECRET`      | `openssl rand -base64 32`, ≥ 32 chars                |
-| `HOMEPAGE_OIDC_ISSUER`      | `https://id.techtales.io`                            |
-| `HOMEPAGE_OIDC_CLIENT_ID`   | from Pocket ID client                                |
-| `HOMEPAGE_OIDC_CLIENT_SECRET` | from Pocket ID client                              |
+| Key                           | Value / note                          |
+| ----------------------------- | ------------------------------------- |
+| `HOMEPAGE_AUTH_SECRET`        | `openssl rand -base64 32`, ≥ 32 chars |
+| `HOMEPAGE_OIDC_ISSUER`        | `https://id.techtales.io`             |
+| `HOMEPAGE_OIDC_CLIENT_ID`     | from Pocket ID client                 |
+| `HOMEPAGE_OIDC_CLIENT_SECRET` | from Pocket ID client                 |
 
 ### 3. Kubernetes ExternalSecret
 
@@ -101,10 +101,10 @@ keys above. Reused as-is.
 
 ```yaml
 env:
-  HOMEPAGE_ALLOWED_HOSTS: home.techtales.io   # existing
-  LOG_TARGETS: stdout                          # existing
-  HOMEPAGE_AUTH_ENABLED: "true"                # new
-  HOMEPAGE_EXTERNAL_URL: https://home.techtales.io  # new
+  HOMEPAGE_ALLOWED_HOSTS: home.techtales.io # existing
+  LOG_TARGETS: stdout # existing
+  HOMEPAGE_AUTH_ENABLED: "true" # new
+  HOMEPAGE_EXTERNAL_URL: https://home.techtales.io # new
 envFrom:
   - secretRef:
       name: homepage-env
@@ -115,11 +115,11 @@ mode). `HOMEPAGE_OIDC_SCOPE` is left at its default (`openid email profile`).
 
 ## Repository changes
 
-| File                        | Change                                                            |
-| --------------------------- | ----------------------------------------------------------------- |
-| `app/external-secret.yaml`  | track existing file (already present, untracked)                  |
-| `app/kustomization.yaml`    | add `./external-secret.yaml` to `resources`                       |
-| `app/helm-release.yaml`     | add `envFrom` + `HOMEPAGE_AUTH_ENABLED` + `HOMEPAGE_EXTERNAL_URL` |
+| File                       | Change                                                            |
+| -------------------------- | ----------------------------------------------------------------- |
+| `app/external-secret.yaml` | track existing file (already present, untracked)                  |
+| `app/kustomization.yaml`   | add `./external-secret.yaml` to `resources`                       |
+| `app/helm-release.yaml`    | add `envFrom` + `HOMEPAGE_AUTH_ENABLED` + `HOMEPAGE_EXTERNAL_URL` |
 
 ## Verification
 
@@ -130,7 +130,7 @@ mode). `HOMEPAGE_OIDC_SCOPE` is left at its default (`openid email profile`).
 3. Incognito → `https://home.techtales.io` → redirected to Pocket ID → sign in as
    a `users`-group member → dashboard renders and widget tiles load.
 4. Negative: an identity **not** in `users` → Pocket ID shows
-   *"You are not allowed to access this service."*
+   _"You are not allowed to access this service."_
 5. Sign-out button returns to the sign-in page and the session is cleared.
 
 ## Risks & rollback

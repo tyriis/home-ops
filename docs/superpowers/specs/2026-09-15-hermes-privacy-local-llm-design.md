@@ -101,12 +101,12 @@ edits.
   picker shows only the `techtales` model list.
 - On the bifrost/new-api gateway: the chat request appears in gateway
   logs for `qwen3.8-flash-next`.
-- Privacy evidence: no outbound *connections* to `opencode.ai` — check the
+- Privacy evidence: no outbound _connections_ to `opencode.ai` — check the
   gateway/new-api logs plus an egress observation for the pod. DNS is not a
   valid signal: the NetworkPolicy allows `0.0.0.0/0` and kube-dns, so
   `opencode.ai` still resolves normally.
 - Secret check: `kubectl -n hermes-agent get secret <app>-secret -o
-  jsonpath='{.data}'` lists no `OPENCODE_*` keys. This holds because ESO
+jsonpath='{.data}'` lists no `OPENCODE_*` keys. This holds because ESO
   `target.template.mergePolicy` defaults to `Replace` — the template's key
   set is the Secret's key set, so unlisted `dataFrom.extract` keys are
   dropped.

@@ -17,30 +17,30 @@ tasks:
       vars: [cluster]
 
   render:
-    desc: "Render machine config to stdout (cluster=, node=)"
+    desc: "Render machine config to stdout (cluster=, node=, [role=controlplane|worker])"
     cmds:
-      - "./.taskfiles/talos/render-config.sh {{.cluster}} {{.node}}"
+      - './.taskfiles/talos/render-config.sh {{.cluster}} {{.node}} {{.role | default "controlplane"}}'
     requires:
       vars: [cluster, node]
 
   diff:
-    desc: "Doc-level diff live vs rendered — offline-capable patch review (cluster=, node=, ip=)"
+    desc: "Doc-level diff live vs rendered — offline-capable patch review (cluster=, node=, ip=, [role=controlplane|worker])"
     cmds:
-      - "./.taskfiles/talos/apply-config.sh {{.cluster}} {{.node}} {{.ip}} --diff-only"
+      - './.taskfiles/talos/apply-config.sh {{.cluster}} {{.node}} {{.ip}} {{.role | default "controlplane"}} --diff-only'
     requires:
       vars: [cluster, node, ip]
 
   dry:
-    desc: "STANDARD PRE-APPLY GATE — node's own reboot plan + redacted diff; nothing applied (cluster=, node=, ip=)"
+    desc: "STANDARD PRE-APPLY GATE — node's own reboot plan + redacted diff; nothing applied (cluster=, node=, ip=, [role=controlplane|worker])"
     cmds:
-      - "./.taskfiles/talos/dry-run-config.sh {{.cluster}} {{.node}} {{.ip}}"
+      - './.taskfiles/talos/dry-run-config.sh {{.cluster}} {{.node}} {{.ip}} {{.role | default "controlplane"}}'
     requires:
       vars: [cluster, node, ip]
 
   apply:
-    desc: "Diff, confirm, apply — nothing ever written to disk (cluster=, node=, ip=)"
+    desc: "Diff, confirm, apply — nothing ever written to disk (cluster=, node=, ip=, [role=controlplane|worker])"
     cmds:
-      - "./.taskfiles/talos/apply-config.sh {{.cluster}} {{.node}} {{.ip}}"
+      - './.taskfiles/talos/apply-config.sh {{.cluster}} {{.node}} {{.ip}} {{.role | default "controlplane"}}'
     requires:
       vars: [cluster, node, ip]
 
@@ -52,15 +52,15 @@ tasks:
       vars: [cluster, nodes]
 
   install:
-    desc: "Fresh install of a new/replaced node: render + INSECURE maintenance-mode apply (cluster=, node=, ip=)"
+    desc: "Fresh install of a new/replaced node: render + INSECURE maintenance-mode apply (cluster=, node=, ip=, [role=controlplane|worker])"
     prompt: "Install rendered config {{.cluster}}/{{.node}} onto {{.ip}} via insecure maintenance apply?"
     cmds:
-      - bash -c 'tmp="$(mktemp /dev/shm/talos-install.XXXXXX.yaml)"; trap "rm -f \"$tmp\"" EXIT; chmod 600 "$tmp"; ./.taskfiles/talos/render-config.sh {{.cluster}} {{.node}} > "$tmp" && talosctl apply-config --insecure --nodes {{.ip}} --file "$tmp"'
+      - bash -c 'tmp="$(mktemp /dev/shm/talos-install.XXXXXX.yaml)"; trap "rm -f \"$tmp\"" EXIT; chmod 600 "$tmp"; ./.taskfiles/talos/render-config.sh {{.cluster}} {{.node}} {{.role | default "controlplane"}} > "$tmp" && talosctl apply-config --insecure --nodes {{.ip}} --file "$tmp"'
     requires:
       vars: [cluster, node, ip]
 
   schematic:check:
-    desc: "Verify the committed factory schematics against the installer image refs in patches/ — offline ([cluster=])"
+    desc: "Verify committed schematic ids and that patches/ pin no installer image (ref is derived) — offline ([cluster=])"
     cmds:
       - "./.taskfiles/talos/check-schematic.sh {{.cluster}}"
 

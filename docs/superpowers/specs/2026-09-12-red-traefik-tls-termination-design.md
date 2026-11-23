@@ -15,16 +15,16 @@
 `red` is a LAN-only Docker host (workstation, `192.168.1.22`, NVIDIA RTX 2060 Super 8 GB) deployed
 via `doco-cd` with `TARGET=red`. Today its workloads are plaintext on the LAN:
 
-| Workload | Direct port | Source |
-| --- | --- | --- |
-| `unsloth` (Studio UI/API) | `8000` all interfaces | `docker/deploy/unsloth/compose.yaml` (shim `docker/red/unsloth/`) |
-| `unsloth` Jupyter | `127.0.0.1:8888` | same |
-| `comfyui-nvidia` | `8188` all interfaces | `docker/deploy/comfyui/compose.yaml` |
-| `comfyui-gallery` | `8189` all interfaces | same |
-| `ollama` | `11434` all interfaces | `docker/deploy/ollama/compose.yaml` |
-| `node-exporter` | host net `9100` (shared with purple/bifrost) | `docker/deploy/node-exporter/compose.yaml` |
-| `smartctl-exporter` | `9633` | same |
-| `arcane-agent` | outbound only (edge poll to bifrost Manager) | `docker/red/arcane-agent/` |
+| Workload                  | Direct port                                  | Source                                                            |
+| ------------------------- | -------------------------------------------- | ----------------------------------------------------------------- |
+| `unsloth` (Studio UI/API) | `8000` all interfaces                        | `docker/deploy/unsloth/compose.yaml` (shim `docker/red/unsloth/`) |
+| `unsloth` Jupyter         | `127.0.0.1:8888`                             | same                                                              |
+| `comfyui-nvidia`          | `8188` all interfaces                        | `docker/deploy/comfyui/compose.yaml`                              |
+| `comfyui-gallery`         | `8189` all interfaces                        | same                                                              |
+| `ollama`                  | `11434` all interfaces                       | `docker/deploy/ollama/compose.yaml`                               |
+| `node-exporter`           | host net `9100` (shared with purple/bifrost) | `docker/deploy/node-exporter/compose.yaml`                        |
+| `smartctl-exporter`       | `9633`                                       | same                                                              |
+| `arcane-agent`            | outbound only (edge poll to bifrost Manager) | `docker/red/arcane-agent/`                                        |
 
 `bifrost` already runs Traefik with Cloudflare DNS-01 Let's Encrypt certificates for
 `*.techtales.ai` (see `docker/deploy/traefik/compose.yaml`, `docker/bifrost/README.md`). `red`
@@ -41,7 +41,7 @@ should get the same treatment for the domain `tyriis.dev`.
 
 ## Non-goals
 
-- **Metrics are out of scope.** `node-exporter` and `smartctl-exporter` are *not* routed through
+- **Metrics are out of scope.** `node-exporter` and `smartctl-exporter` are _not_ routed through
   Traefik and keep their current networking/binding. `network_mode: host` on `node-exporter` is
   load-bearing: `/proc/net` resolves against the reader's netns, so moving it to a bridge silently
   breaks `netdev`/`netstat`/`sockstat`/`arp`/`conntrack` (see `prometheus/node_exporter` #2007,
@@ -62,7 +62,7 @@ for `tyriis.dev`). Verified with `docker compose config`: a list field set in th
 replaces the included list wholesale. `image`, volumes, `apps` network, ports, `env_file`, and
 security options are inherited.
 
-Rationale: red needs a *different* domain set (not a superset), so replacement is exactly right;
+Rationale: red needs a _different_ domain set (not a superset), so replacement is exactly right;
 the shared file and the live bifrost instance remain untouched. A red-only copy of the whole
 compose (rejected) would duplicate ~58 lines and drift. A `${TLS_DOMAIN}` variable in the shared
 file (rejected) would touch bifrost.
@@ -98,7 +98,7 @@ Shared across hosts; behaviour unchanged apart from the image.
 
 ## Architecture
 
-```
+```text
 LAN client ──TLS──> red:443 (Traefik, `apps`)
                       │  Host(...) rules via Docker labels
                       ├── unsloth.tyriis.dev   → unsloth:8000        (apps)
@@ -112,13 +112,13 @@ node-exporter (host net 9100) / smartctl-exporter (9633)  ← unchanged, not pro
 
 ### Routing table
 
-| Hostname | Backend (apps) | Container port | Router | Service |
-| --- | --- | --- | --- | --- |
-| `unsloth.tyriis.dev` | `unsloth` | `8000` | `unsloth` | `unsloth` |
-| `jupyter.tyriis.dev` | `unsloth` | `8888` | `jupyter` | `jupyter` |
-| `comfyui.tyriis.dev` | `comfyui-nvidia` | `8188` | `comfyui` | `comfyui` |
-| `gallery.tyriis.dev` | `comfyui-gallery` | `8189` | `gallery` | `gallery` |
-| `ollama.tyriis.dev` | `ollama` | `11434` | `ollama` | `ollama` |
+| Hostname             | Backend (apps)    | Container port | Router    | Service   |
+| -------------------- | ----------------- | -------------- | --------- | --------- |
+| `unsloth.tyriis.dev` | `unsloth`         | `8000`         | `unsloth` | `unsloth` |
+| `jupyter.tyriis.dev` | `unsloth`         | `8888`         | `jupyter` | `jupyter` |
+| `comfyui.tyriis.dev` | `comfyui-nvidia`  | `8188`         | `comfyui` | `comfyui` |
+| `gallery.tyriis.dev` | `comfyui-gallery` | `8189`         | `gallery` | `gallery` |
+| `ollama.tyriis.dev`  | `ollama`          | `11434`        | `ollama`  | `ollama`  |
 
 Entrypoints: `web` (:80) redirects to `websecure` (:443, TLS default resolver `cf`).
 
@@ -131,7 +131,7 @@ the SOPS-encrypted `docker/red/traefik/sops.env`, decrypted by doco-cd at deploy
 
 ## Files
 
-**New**
+### New
 
 - `docker/red/traefik/compose.yaml` — include shim + `command:` override (wildcard `tyriis.dev`).
 - `docker/red/traefik/.env` — `TARGET=red`, `TLS_DOMAIN=tyriis.dev`, `ACME_EMAIL=…`.
@@ -140,7 +140,7 @@ the SOPS-encrypted `docker/red/traefik/sops.env`, decrypted by doco-cd at deploy
 - `docker/red/comfyui/compose.yaml` — shim: `apps` + labels + no host ports.
 - `docker/red/README.md` — host documentation, routing table, DNS runbook, first-deploy notes.
 
-**Modified**
+### Modified
 
 - `docker/red/unsloth/compose.yaml` — add `apps`, labels, the `jupyter` router; reset `ports` to
   none.
@@ -148,7 +148,7 @@ the SOPS-encrypted `docker/red/traefik/sops.env`, decrypted by doco-cd at deploy
   `docker/red/*`; `node-exporter` stays at `docker/deploy/node-exporter`.
 - `docker/deploy/node-exporter/compose.yaml` — smartctl-exporter image (D5).
 
-**Unchanged**
+### Unchanged
 
 - `docker/deploy/traefik/compose.yaml` and everything under `docker/bifrost/**`.
 

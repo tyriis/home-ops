@@ -4,7 +4,11 @@
 
 **Goal:** Move firecrawl from the shared `ai` namespace into a new dedicated `firecrawl-system` namespace with its own Dragonfly cluster, driven by the existing `components/dragonfly` component.
 
-**Architecture:** Create `kubernetes/main/apps/firecrawl-system/` (mirroring the `anubis-system` layout). Git-move `ai/firecrawl/` to `firecrawl-system/firecrawl/`. Update the `Kustomization` to target `firecrawl-system`, include the dragonfly component, and depend on `dragonfly-crds` (the operator CRD, not the shared cluster). Repoint `REDIS_URL`, `PLAYWRIGHT_MICROSERVICE_URL`, and `NUQ_DATABASE_URL` to the new namespace. Move the `ExternalSecret` to a new OpenBao path.
+**Architecture:** Create `kubernetes/main/apps/firecrawl-system/` (mirroring the `anubis-system`
+layout). Git-move `ai/firecrawl/` to `firecrawl-system/firecrawl/`. Update the `Kustomization` to
+target `firecrawl-system`, include the dragonfly component, and depend on `dragonfly-crds` (the
+operator CRD, not the shared cluster). Repoint `REDIS_URL`, `PLAYWRIGHT_MICROSERVICE_URL`, and
+`NUQ_DATABASE_URL` to the new namespace. Move the `ExternalSecret` to a new OpenBao path.
 
 **Tech Stack:** Flux CD, kustomize components, Dragonfly Operator, bjw-s app-template v5.0.1, External Secrets Operator.
 
@@ -16,24 +20,24 @@
 
 ### New files
 
-| File | Purpose |
-|------|---------|
-| `kubernetes/main/apps/firecrawl-system/namespace.yaml` | `Namespace` resource for `firecrawl-system` |
+| File                                                       | Purpose                                                      |
+| ---------------------------------------------------------- | ------------------------------------------------------------ |
+| `kubernetes/main/apps/firecrawl-system/namespace.yaml`     | `Namespace` resource for `firecrawl-system`                  |
 | `kubernetes/main/apps/firecrawl-system/kustomization.yaml` | Parent kustomization: namespace, flux alerts component, refs |
 
 ### Moved files (via `git mv`)
 
-| From | To |
-|------|-----|
-| `kubernetes/main/apps/ai/firecrawl/flux-sync.yaml` | `kubernetes/main/apps/firecrawl-system/firecrawl/flux-sync.yaml` |
-| `kubernetes/main/apps/ai/firecrawl/app/helm-release.yaml` | `kubernetes/main/apps/firecrawl-system/firecrawl/app/helm-release.yaml` |
+| From                                                         | To                                                                         |
+| ------------------------------------------------------------ | -------------------------------------------------------------------------- |
+| `kubernetes/main/apps/ai/firecrawl/flux-sync.yaml`           | `kubernetes/main/apps/firecrawl-system/firecrawl/flux-sync.yaml`           |
+| `kubernetes/main/apps/ai/firecrawl/app/helm-release.yaml`    | `kubernetes/main/apps/firecrawl-system/firecrawl/app/helm-release.yaml`    |
 | `kubernetes/main/apps/ai/firecrawl/app/external-secret.yaml` | `kubernetes/main/apps/firecrawl-system/firecrawl/app/external-secret.yaml` |
-| `kubernetes/main/apps/ai/firecrawl/app/kustomization.yaml` | `kubernetes/main/apps/firecrawl-system/firecrawl/app/kustomization.yaml` |
+| `kubernetes/main/apps/ai/firecrawl/app/kustomization.yaml`   | `kubernetes/main/apps/firecrawl-system/firecrawl/app/kustomization.yaml`   |
 
 ### Modified files
 
-| File | Change |
-|------|--------|
+| File                                         | Change                                |
+| -------------------------------------------- | ------------------------------------- |
 | `kubernetes/main/apps/ai/kustomization.yaml` | Remove `- ./firecrawl/flux-sync.yaml` |
 
 ---
@@ -41,6 +45,7 @@
 ## Task 1: Create the `firecrawl-system` namespace and parent kustomization
 
 **Files:**
+
 - Create: `kubernetes/main/apps/firecrawl-system/namespace.yaml`
 - Create: `kubernetes/main/apps/firecrawl-system/kustomization.yaml`
 
@@ -89,6 +94,7 @@ git commit -S -m "feat(firecrawl-system): scaffold namespace and parent kustomiz
 ## Task 2: Move `firecrawl` from `ai/` to `firecrawl-system/`
 
 **Files:**
+
 - Move: `kubernetes/main/apps/ai/firecrawl/` → `kubernetes/main/apps/firecrawl-system/firecrawl/`
 
 - [ ] **Step 1: Git-move the directory**
@@ -188,15 +194,15 @@ git commit -S -m "feat(firecrawl): add own dragonfly via component, target firec
 In each of the `api`, `worker`, and `nuq-worker` controller blocks, change:
 
 ```yaml
-              REDIS_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
-              REDIS_RATE_LIMIT_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
+REDIS_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
+REDIS_RATE_LIMIT_URL: redis://dragonfly.dragonfly-system.svc.cluster.local:6379
 ```
 
 to:
 
 ```yaml
-              REDIS_URL: redis://firecrawl-dragonfly.firecrawl-system.svc.cluster.local:6379
-              REDIS_RATE_LIMIT_URL: redis://firecrawl-dragonfly.firecrawl-system.svc.cluster.local:6379
+REDIS_URL: redis://firecrawl-dragonfly.firecrawl-system.svc.cluster.local:6379
+REDIS_RATE_LIMIT_URL: redis://firecrawl-dragonfly.firecrawl-system.svc.cluster.local:6379
 ```
 
 This affects 3 controllers × 2 lines = 6 lines total.
@@ -206,13 +212,13 @@ This affects 3 controllers × 2 lines = 6 lines total.
 In each of the `api`, `worker`, and `nuq-worker` controller blocks, change:
 
 ```yaml
-              PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.ai.svc.cluster.local:3000/scrape #NOSONAR allow http
+PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.ai.svc.cluster.local:3000/scrape #NOSONAR allow http
 ```
 
 to:
 
 ```yaml
-              PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.firecrawl-system.svc.cluster.local:3000/scrape #NOSONAR allow http
+PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright.firecrawl-system.svc.cluster.local:3000/scrape #NOSONAR allow http
 ```
 
 This affects 3 controllers × 1 line = 3 lines total.
@@ -222,13 +228,13 @@ This affects 3 controllers × 1 line = 3 lines total.
 In the `api` and `nuq-worker` controller blocks, change:
 
 ```yaml
-              NUQ_DATABASE_URL: postgresql://postgres:password@firecrawl-nuq-postgres.ai.svc.cluster.local:5432/postgres
+NUQ_DATABASE_URL: postgresql://postgres:password@firecrawl-nuq-postgres.ai.svc.cluster.local:5432/postgres # betterleaks:allow
 ```
 
 to:
 
 ```yaml
-              NUQ_DATABASE_URL: postgresql://postgres:password@firecrawl-nuq-postgres.firecrawl-system.svc.cluster.local:5432/postgres
+NUQ_DATABASE_URL: postgresql://postgres:password@firecrawl-nuq-postgres.firecrawl-system.svc.cluster.local:5432/postgres # betterleaks:allow
 ```
 
 This affects 2 controllers × 1 line = 2 lines total.
@@ -259,17 +265,17 @@ git commit -S -m "feat(firecrawl): repoint redis, playwright, nuq URLs to firecr
 Change:
 
 ```yaml
-  dataFrom:
-    - extract:
-        key: infra/kubernetes/main/ai/firecrawl #gitleaks:allow
+dataFrom:
+  - extract:
+      key: infra/kubernetes/main/ai/firecrawl #gitleaks:allow
 ```
 
 to:
 
 ```yaml
-  dataFrom:
-    - extract:
-        key: infra/kubernetes/main/firecrawl-system/firecrawl #gitleaks:allow
+dataFrom:
+  - extract:
+      key: infra/kubernetes/main/firecrawl-system/firecrawl #gitleaks:allow
 ```
 
 - [ ] **Step 2: Commit**
@@ -290,7 +296,7 @@ git commit -S -m "feat(firecrawl): move external secret path to firecrawl-system
 Edit `kubernetes/main/apps/ai/kustomization.yaml` and delete the line:
 
 ```yaml
-  - ./firecrawl/flux-sync.yaml
+- ./firecrawl/flux-sync.yaml
 ```
 
 The full file should become:
@@ -331,6 +337,7 @@ kustomize build kubernetes/main/apps/firecrawl-system/
 ```
 
 Expected: Output contains
+
 - `Namespace/firecrawl-system`
 - `Kustomization/firecrawl-system/firecrawl` (with `components: [../../../../../components/dragonfly]`, `dependsOn` referencing `dragonfly-crds`)
 - `Dragonfly/firecrawl-system/firecrawl-dragonfly`

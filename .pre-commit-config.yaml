@@ -1,7 +1,6 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/pre-commit-config.json
 fail_fast: false
-exclude: "^(docs/superpowers/.*|\\.agents/.*)$"
 default_language_version:
   node: system
 default_stages:
@@ -37,6 +36,16 @@ repos:
         language: script
         entry: scripts/hooks/check-docker-compose.sh
         files: ^docker/.*compose\.yaml$
+
+  # nixos/ impermanence hosts rely on FS_TREE staying the default
+  # subvolume — changing it silently voids every old-generation rollback.
+  - repo: local
+    hooks:
+      - id: check-nixos-no-set-default
+        name: nixos tree never changes the btrfs default subvolume
+        language: script
+        entry: scripts/hooks/check-nixos-default-subvol.sh
+        files: ^nixos/.*\.(nix|sh)$
 
   - repo: https://github.com/thlorenz/doctoc
     rev: v2.5.0
@@ -101,7 +110,7 @@ repos:
       - id: forbid-bidi-controls
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.50.0
+    rev: v0.50.1
     hooks:
       - id: markdownlint-fix
         args:
@@ -133,7 +142,7 @@ repos:
           )$()
 
   - repo: https://github.com/betterleaks/betterleaks
-    rev: v2.0.0-rc.10
+    rev: v1.10.1
     hooks:
       - id: betterleaks
 
@@ -142,7 +151,8 @@ repos:
     hooks:
       - id: actionlint
 
-  - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
-    rev: 3.11.1
-    hooks:
-      - id: editorconfig-checker
+  # TODO: re-enable after the docs/superpowers lint decision
+  # - repo: https://github.com/editorconfig-checker/editorconfig-checker
+  #   rev: v4.0.2
+  #   hooks:
+  #     - id: editorconfig-checker

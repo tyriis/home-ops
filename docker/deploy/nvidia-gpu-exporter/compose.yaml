@@ -19,6 +19,8 @@ services:
     environment:
       NVIDIA_DRIVER_CAPABILITIES: utility
     image: utkuozdemir/nvidia_gpu_exporter:1.19.0-nvml@sha256:f95e5097b89aaba66395c7dcbc02f51af740e25b504ccb426e533f60265a7b50
+    mem_limit: 128m
+    pids_limit: 64
     ports:
       - 127.0.0.1:9835:9835
     restart: unless-stopped

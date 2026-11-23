@@ -1,0 +1,20 @@
+---
+# project_directory: . keeps relative paths in the shared compose resolving against this host dir — see docker/README.md
+include:
+  - path: ../../deploy/tailscale/compose.yaml
+    project_directory: .
+
+services:
+  tailscale:
+    environment:
+      # NixOS 6.18 kernel ships no ip_tables module; the image's iptables is
+      # legacy, so tailscaled must use nftables or its ts-input chain never loads.
+      TS_DEBUG_FIREWALL_MODE: nftables
+    volumes:
+      - type: volume
+        source: data
+        target: /var/lib/tailscale
+        read_only: false
+
+volumes:
+  data: {}

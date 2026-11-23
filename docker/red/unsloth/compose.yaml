@@ -13,6 +13,7 @@ services:
   unsloth:
     networks:
       - apps
+    scale: 0
     # No host ports: Traefik reaches Studio (:8000) and Jupyter (:8888) over the
     # shared `apps` network. `!reset` drops the ports inherited from the include.
     ports: !reset []

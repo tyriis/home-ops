@@ -122,6 +122,7 @@ Here is the list of tools and technologies I am using in this project.
 | Minisforum MS-01      | i9-13900H  | Talos      | 1 TB NVMe     | 1 TB NVMe (rook-ceph) | 96 GB  | Kubernetes |
 | Minisforum MS-01      | i9-13900H  | Talos      | 1 TB NVMe     | 1 TB NVMe (rook-ceph) | 96 GB  | Kubernetes |
 | Intel NUC7i7DNHE      | i7-8650U   | Talos      | 500 GB SSD    | -                     | 32 GB  | Utility    |
+| IceWhale ZimaBlade    | N3450      | Talos      | 480 GB SSD    | 500 GB SSD            | 16 GB  | Utility    |
 | AOOSTAR WTR Pro       | N100       | TrueNAS    | 250 GB NVMe   | 4× 8 TB HDD           | 32 GB  | NAS        |
 | ASUS NUC14MNK         | N250       | Lightwhale | 32 GB SD card | 1 TB NVMe             | 16 GB  | AI-Edge    |
 | ASUS Ascent GX10      | GB10       | DGX OS     | 1 TB NVMe     | -                     | 128 GB | Inference  |

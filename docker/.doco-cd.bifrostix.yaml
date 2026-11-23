@@ -1,0 +1,5 @@
+---
+name: tailscale
+working_dir: docker/bifrostix/tailscale
+env_files:
+  - .env

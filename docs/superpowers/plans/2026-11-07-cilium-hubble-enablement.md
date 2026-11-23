@@ -1,7 +1,7 @@
 # Cilium Hubble Enablement (main) Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or
-superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Turn Hubble on for the main cluster — relay plus flow metrics scraped by both the Prometheus and
 VictoriaMetrics paths, with the four chart-shipped dashboards imported into Grafana — so network-policy work has
@@ -21,7 +21,7 @@ paste: `/tmp/opencode/issue-10183.md`.
 
 ## Design summary
 
-**Approaches considered**
+### Approaches considered
 
 - **A — relay only.** `hubble.enabled` + `relay.enabled`. Smallest change; flow visibility only
   through `hubble observe` over a port-forward, no history, nothing in Grafana.
@@ -32,7 +32,7 @@ paste: `/tmp/opencode/issue-10183.md`.
   authentication of its own, so it is only acceptable behind SSO, and it is the one part that may not earn its keep.
   Deferred.
 
-**Decisions taken**
+### Decisions taken
 
 - **Main only.** Utility keeps its `hubble.enabled: false` and its own FIXME; that is a separate change
   (`kubernetes/utility/apps/kube-system/cilium/`).
@@ -54,25 +54,25 @@ paste: `/tmp/opencode/issue-10183.md`.
   at `hubble-peer.kube-lab.…` — relay↔agent mTLS fails on every fresh bootstrap. The ServiceMonitor must stay out of
   bootstrap too: the `monitoring.coreos.com` CRDs do not exist at that point.
 
-**Facts the plan depends on (verified against chart 1.20.4)**
+### Facts the plan depends on (verified against chart 1.20.4)
 
-| Fact | Value |
-| --- | --- |
-| `hubble.enabled` chart default | `true` — the repo's `false` is a deliberate override |
-| `hubble.relay.enabled` chart default | `false` |
-| `hubble.metrics.enabled` chart default | `~` (metrics off) |
-| `hubble.metrics.port` | `9965` |
-| Metrics Service | `hubble-metrics`, headless, selector `k8s-app: cilium`, port name `hubble-metrics` |
-| Peer Service | `hubble-peer`, port `443` (TLS on) → `targetPort 4244` |
-| `hubble.metrics.serviceMonitor.enabled` alone | renders nothing — needs a non-empty `hubble.metrics.enabled` |
-| Dashboard ConfigMaps (basename → data key) | `hubble-dashboard`, `hubble-dns-namespace`, `hubble-l7-http-metrics-by-workload`, `hubble-network-overview-namespace`; key `<name>.json` |
-| Dashboard datasource input | `DS_PROMETHEUS` in all four |
-| Prometheus job for the new target | `hubble-metrics` — the ServiceMonitor sets no `jobLabel`, so the operator relabels `job` from the Service name |
-| VictoriaMetrics job for the new target | `hubble-metrics` (also the selected Service's name, per `kubernetes/main/apps/observability/victoria-metrics/README.md:292`) |
-| Existing dashboard ConfigMaps | all four already exist in `kube-system` |
-| `hubble.tls.auto.method: certmanager` | renders `Certificate`s only, no CA; the issuer it is given must be CA-backed |
-| Agent `hubble-tls` volume | `optional: true` — missing certificates never block an agent pod |
-| Relay `tls` volume | not optional — missing certificates leave the relay `Pending` |
+| Fact                                          | Value                                                                                                                                    |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `hubble.enabled` chart default                | `true` — the repo's `false` is a deliberate override                                                                                     |
+| `hubble.relay.enabled` chart default          | `false`                                                                                                                                  |
+| `hubble.metrics.enabled` chart default        | `~` (metrics off)                                                                                                                        |
+| `hubble.metrics.port`                         | `9965`                                                                                                                                   |
+| Metrics Service                               | `hubble-metrics`, headless, selector `k8s-app: cilium`, port name `hubble-metrics`                                                       |
+| Peer Service                                  | `hubble-peer`, port `443` (TLS on) → `targetPort 4244`                                                                                   |
+| `hubble.metrics.serviceMonitor.enabled` alone | renders nothing — needs a non-empty `hubble.metrics.enabled`                                                                             |
+| Dashboard ConfigMaps (basename → data key)    | `hubble-dashboard`, `hubble-dns-namespace`, `hubble-l7-http-metrics-by-workload`, `hubble-network-overview-namespace`; key `<name>.json` |
+| Dashboard datasource input                    | `DS_PROMETHEUS` in all four                                                                                                              |
+| Prometheus job for the new target             | `hubble-metrics` — the ServiceMonitor sets no `jobLabel`, so the operator relabels `job` from the Service name                           |
+| VictoriaMetrics job for the new target        | `hubble-metrics` (also the selected Service's name, per `kubernetes/main/apps/observability/victoria-metrics/README.md:292`)             |
+| Existing dashboard ConfigMaps                 | all four already exist in `kube-system`                                                                                                  |
+| `hubble.tls.auto.method: certmanager`         | renders `Certificate`s only, no CA; the issuer it is given must be CA-backed                                                             |
+| Agent `hubble-tls` volume                     | `optional: true` — missing certificates never block an agent pod                                                                         |
+| Relay `tls` volume                            | not optional — missing certificates leave the relay `Pending`                                                                            |
 
 ## Global Constraints
 
@@ -104,7 +104,7 @@ paste: `/tmp/opencode/issue-10183.md`.
 - **Agent rollout timing.** `enable-hubble` is a `cilium-config` key read at agent start; the repo's
   `rollOutCiliumPods: true` covers it. If it were false, `hubble-peer` would have no backend and relay would log
   `connect: connection refused`.
-- **Selector confusion.** `k8s-app: hubble` labels the *metrics Service*, not the agent pods (which carry
+- **Selector confusion.** `k8s-app: hubble` labels the _metrics Service_, not the agent pods (which carry
   `k8s-app: cilium`). A `VMServiceScrape` selecting `k8s-app: palindrome`-style typos, or copying the agent scraper's
   `app.kubernetes.io/name: cilium-agent` selector, silently yields an empty job.
 - **`cluster="main"` works in the central store only.** Prometheus `externalLabels` are applied on the remote-write
@@ -126,7 +126,7 @@ paste: `/tmp/opencode/issue-10183.md`.
    (this change adds one) and the relay cannot start while cert-manager is unhealthy — the relay's TLS volume is not
    optional, so it stays `Pending` instead of coming up without certs — and because Flux Helm runs with `--wait`,
    an unissued certificate can instead fail the whole release after the timeout (`cleanupOnFail` then rolls back).
-   Either way the blast radius is Hubble, never the CNI: the agent's volume *is* optional, so a cert-manager outage
+   Either way the blast radius is Hubble, never the CNI: the agent's volume _is_ optional, so a cert-manager outage
    cannot block a rollout or cluster networking. Verify cert-manager and `certificate/hubble-ca` are healthy before
    reconciling the HelmRelease.
 2. **Relay authentication — decided: mTLS.** `hubble.relay.tls.server.enabled: true` with `mtls: true`. The relay
@@ -140,11 +140,13 @@ paste: `/tmp/opencode/issue-10183.md`.
 ### Task 1: Enable Hubble, its private CA and the relay on main
 
 **Files:**
+
 - Modify: `kubernetes/main/apps/kube-system/cilium/app/helm-release.yaml:51-95` (the `hubble:` block)
 - Create: `kubernetes/main/apps/kube-system/cilium/app/hubble-pki.yaml`
 - Modify: `kubernetes/main/apps/kube-system/cilium/app/kustomization.yaml`
 
 **Interfaces:**
+
 - Consumes: cert-manager (`cert-manager.io/v1` CRDs) on main.
 - Produces: `hubble.enabled: true`, `hubble.relay.enabled: true`, `hubble.relay.rollOutPods: true`,
   `hubble.tls.auto.method: certmanager` pointing at the `hubble-ca` Issuer; the `hubble-peer` Service, the
@@ -156,41 +158,41 @@ paste: `/tmp/opencode/issue-10183.md`.
 Replace lines 51–95 of `kubernetes/main/apps/kube-system/cilium/app/helm-release.yaml` so the block reads exactly:
 
 ```yaml
-    hubble:
-      enabled: true
-      tls:
-        auto:
-          method: certmanager
-          certManagerIssuerRef:
-            group: cert-manager.io
-            kind: Issuer
-            name: hubble-ca
-      relay:
+hubble:
+  enabled: true
+  tls:
+    auto:
+      method: certmanager
+      certManagerIssuerRef:
+        group: cert-manager.io
+        kind: Issuer
+        name: hubble-ca
+  relay:
+    enabled: true
+    rollOutPods: true
+    tls:
+      server:
         enabled: true
-        rollOutPods: true
-        tls:
-          server:
-            enabled: true
-            mtls: true
-        resources:
-          requests:
-            cpu: 25m
-            memory: 128Mi
-          limits:
-            memory: 512Mi
-      metrics:
-        enabled:
-          - dns:query;ignoreAAAA
-          - drop
-          - tcp
-          - flow
-          - port-distribution
-          - icmp
-          - http
-        dashboards:
-          enabled: true
-          annotations:
-            grafana_folder: Cilium
+        mtls: true
+    resources:
+      requests:
+        cpu: 25m
+        memory: 128Mi
+      limits:
+        memory: 512Mi
+  metrics:
+    enabled:
+      - dns:query;ignoreAAAA
+      - drop
+      - tcp
+      - flow
+      - port-distribution
+      - icmp
+      - http
+    dashboards:
+      enabled: true
+      annotations:
+        grafana_folder: Cilium
 ```
 
 This deletes the `# FIXME`, the `# Read only when hubble.enabled is true` comment pair, the commented
@@ -349,11 +351,13 @@ run without `--tls-server-name` — is refused by design.
 ### Task 2: Scrape Hubble metrics on both paths
 
 **Files:**
+
 - Modify: `kubernetes/main/apps/kube-system/cilium/app/helm-release.yaml` (inside the `hubble.metrics` block from
   Task 1)
 - Modify: `kubernetes/main/apps/kube-system/cilium/app/vm-service-scrape.yaml` (append one object)
 
 **Interfaces:**
+
 - Consumes: `hubble.metrics.enabled` (non-empty) and the `hubble-metrics` Service from Task 1.
 - Produces: Prometheus target job `hubble-metrics` and VictoriaMetrics job `hubble-metrics` (both take the selected
   Service's name);
@@ -365,8 +369,8 @@ run without `--tls-server-name` — is refused by design.
 Insert under `hubble.metrics` in the HelmRelease, immediately after the `enabled:` metric list and before `dashboards:`:
 
 ```yaml
-        serviceMonitor:
-          enabled: true
+serviceMonitor:
+  enabled: true
 ```
 
 - [ ] **Step 2: Add the VictoriaMetrics scrape**
@@ -424,32 +428,39 @@ Run: `kubectl -n kube-system get vmservicescrape hubble`
 Expected: present, no error.
 
 Prometheus (run 1's source of truth), via port-forward to `svc/prometheus-operated -n observability`:
-```
+
+```promql
 count(up{job="hubble-metrics"} == 1)
 ```
+
 Expected: `3` — one per cilium agent, matching the node count.
 
-```
+```promql
 count(hubble_flows_processed_total) > 0
 ```
+
 Expected: `1` (the series exist). Then, after generating traffic (browse a couple of internal UIs, or curl any
 Service from a pod):
 
-```
+```promql
 sum(rate(hubble_flows_processed_total[5m])) > 0
 ```
+
 Expected: a non-zero rate. Series that exist but never move mean the agent's flow buffer is not being fed — check
 the relay pod is still `1/1` and its logs show no `connection refused`.
 
 Central store, via `https://metrics.techtales.io` with the read token:
-```
+
+```promql
 count(up{cluster="main", job="hubble-metrics"} == 1)
 ```
+
 Expected: `3`. Zero means the selector or port name is wrong (see Review Focus).
 
-```
+```promql
 count(hubble_drop_total{cluster="main"}) > 0
 ```
+
 Expected: a non-zero count.
 
 ---
@@ -457,9 +468,11 @@ Expected: a non-zero count.
 ### Task 3: Import the four Hubble dashboards
 
 **Files:**
+
 - Modify: `kubernetes/main/apps/kube-system/cilium/app/grafana-dashboard.yaml` (append four objects)
 
 **Interfaces:**
+
 - Consumes: the ConfigMaps `hubble-dashboard`, `hubble-dns-namespace`, `hubble-l7-http-metrics-by-workload`,
   `hubble-network-overview-namespace` in `kube-system` (already rendered today by
   `hubble.metrics.dashboards.enabled: true`).
@@ -493,11 +506,11 @@ spec:
 
 Repeat with `metadata.name` / `configMapRef.name` / `configMapRef.key` set to, in turn:
 
-| `metadata.name` | `configMapRef.name` | `configMapRef.key` |
-| --- | --- | --- |
-| `hubble-dns-namespace` | `hubble-dns-namespace` | `hubble-dns-namespace.json` |
+| `metadata.name`                      | `configMapRef.name`                  | `configMapRef.key`                        |
+| ------------------------------------ | ------------------------------------ | ----------------------------------------- |
+| `hubble-dns-namespace`               | `hubble-dns-namespace`               | `hubble-dns-namespace.json`               |
 | `hubble-l7-http-metrics-by-workload` | `hubble-l7-http-metrics-by-workload` | `hubble-l7-http-metrics-by-workload.json` |
-| `hubble-network-overview-namespace` | `hubble-network-overview-namespace` | `hubble-network-overview-namespace.json` |
+| `hubble-network-overview-namespace`  | `hubble-network-overview-namespace`  | `hubble-network-overview-namespace.json`  |
 
 Every one of the four chart dashboards declares `DS_PROMETHEUS` as its only input, which is why the datasource
 mapping is identical to the existing `cilium` resource.
@@ -532,6 +545,7 @@ emits `hubble_http_*` when L7 flow parsing is active. Check the DNS, TCP, drop a
 **Files:** none — verification only.
 
 **Interfaces:**
+
 - Consumes: Tasks 1–3 merged and reconciled.
 - Produces: the evidence quoted in the pull request.
 
@@ -544,6 +558,7 @@ task lint:yaml
 task lint:prettier
 task deadvalues:check-values-changed
 ```
+
 Expected: all exit 0. Paste the `flate diff` summary into the PR: it is the review's only view of what actually
 changes on the cluster.
 
@@ -555,6 +570,7 @@ kubectl -n kube-system get ds cilium -o jsonpath='{.status.numberReady}/{.status
 kubectl -n kube-system get pods | grep -E 'hubble'
 kubectl -n kube-system get svc hubble-peer hubble-metrics
 ```
+
 Expected: four `Certificate`s `Ready` (`hubble-ca` valid 5y, the three leaves 365d), agents all ready,
 `hubble-relay-*` running, `hubble-peer` on 443→4244, `hubble-metrics` headless on 9965. Record the leaf `notAfter`
 dates in the PR — cert-manager renews them at two thirds, and the dates are what shows renewal still works.
@@ -565,6 +581,7 @@ dates in the PR — cert-manager renews them at two thirds, and the dates are wh
 kubectl -n kube-system get pods -l k8s-app=hubble-relay
 kubectl -n kube-system logs deploy/hubble-relay --tail=30
 ```
+
 Then the two counts from Task 2 Step 5 against Prometheus and against the central store, one
 `rate(hubble_flows_processed_total[5m])` sample, and one dashboard screenshot.
 

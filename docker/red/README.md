@@ -6,26 +6,35 @@ LLM/image tooling and an Arcane edge agent. GitOps via doco-cd with `TARGET=red`
 
 ## Services
 
-| Service                 | Hostname             | Backend (container port)            | Direct host port |
-| ----------------------- | -------------------- | ----------------------------------- | ---------------- |
-| traefik                 | —                    | —                                   | `80`/`443` (LAN) |
-| unsloth (Studio UI/API) | `unsloth.tyriis.dev` | `unsloth:8000`                      | —                |
-| unsloth Jupyter         | `jupyter.tyriis.dev` | `unsloth:8888`                      | —                |
-| comfyui                 | `comfyui.tyriis.dev` | `comfyui-nvidia:8188`               | —                |
-| comfyui-gallery         | `gallery.tyriis.dev` | `comfyui-gallery:8189`              | —                |
-| ollama (gated)          | `ollama.tyriis.dev`  | `ollama-auth:8080` → `ollama:11434` | —                |
-| node-exporter           | not proxied          | host net `:9100`                    | `127.0.0.1:9100` |
-| smartctl-exporter       | not proxied          | `:9633`                             | `127.0.0.1:9633` |
-| nvidia-gpu-exporter     | not proxied          | `:9835`                             | `127.0.0.1:9835` |
-| busybox-enc             | —                    | SOPS decrypt smoke test             | —                |
-| arcane-agent            | —                    | outbound edge poll to bifrost       | —                |
+| Service                 | Hostname               | Backend (container port)            | Direct host port |
+| ----------------------- | ---------------------- | ----------------------------------- | ---------------- |
+| hyperqwen               | `hyperqwen.tyriis.dev` | host process `172.17.0.1:18020`     | —                |
+| unsloth (Studio UI/API) | `unsloth.tyriis.dev`   | `unsloth:8000`                      | —                |
+| unsloth Jupyter         | `jupyter.tyriis.dev`   | `unsloth:8888`                      | —                |
+| comfyui                 | `comfyui.tyriis.dev`   | `comfyui-nvidia:8188`               | —                |
+| comfyui-gallery         | `gallery.tyriis.dev`   | `comfyui-gallery:8189`              | —                |
+| ollama (gated)          | `ollama.tyriis.dev`    | `ollama-auth:8080` → `ollama:11434` | —                |
+| node-exporter           | not proxied            | host net `:9100`                    | `127.0.0.1:9100` |
+| smartctl-exporter       | not proxied            | `:9633`                             | `127.0.0.1:9633` |
+| nvidia-gpu-exporter     | not proxied            | `:9835`                             | `127.0.0.1:9835` |
+| busybox-enc             | —                      | SOPS decrypt smoke test             | —                |
+| arcane-agent            | —                      | outbound edge poll to bifrost       | —                |
 
-Traefik terminates TLS for the five proxied services (Studio, Jupyter, `comfyui`, `gallery`,
-`ollama`) and redirects HTTP to HTTPS. It obtains a
+Traefik terminates TLS for the proxied services (Studio, Jupyter, `comfyui`, `gallery`,
+`ollama`, `hyperqwen`) and redirects HTTP to HTTPS. It obtains a
 single wildcard certificate (`tyriis.dev` + `*.tyriis.dev`) from Let's Encrypt via the Cloudflare
 DNS-01 challenge. The shared Traefik definition lives in `docker/deploy/traefik/compose.yaml`; the
-red instance is an include shim that overrides only the static `command:` (see
+red instance is an include shim that overrides the static `command:` and `volumes:` (see
 `docker/red/traefik/compose.yaml`).
+
+`hyperqwen.tyriis.dev` is a file-provider route (`docker/red/traefik/dynamic/hyperqwen.yaml`) to a
+host process on port `18020`, not a container: the backend must bind red's docker0 gateway
+(`172.17.0.1:18020`), never `127.0.0.1` — a container cannot reach the host loopback. Paths pass
+through unchanged, so an OpenAI client points at `https://hyperqwen.tyriis.dev/v1`.
+
+`unsloth` (Studio + Jupyter), `ollama` and `comfyui` stacks are disabled via `scale: 0` —
+containers are absent, named volumes and images are kept (`prune_images: false` on the three
+`.doco-cd.red.yaml` entries). Raise to `scale: 1` per service to re-enable.
 
 `ollama.tyriis.dev` is additionally gated by `ollama-auth` — a digest-pinned `caddy:2` container
 that requires an OpenAI-style `Authorization: Bearer <key>` header before proxying to
@@ -41,7 +50,7 @@ accept inbound scrape traffic. `node-exporter` needs `network_mode: host` for co
 
 ## First deploy
 
-1. Create UniFi (UDM SE) local DNS A records → `192.168.30.20` for `unsloth`, `jupyter`, `comfyui`, `gallery`, `ollama` `.tyriis.dev`.
+1. Create UniFi (UDM SE) local DNS A records → `192.168.30.20` for `unsloth`, `jupyter`, `comfyui`, `gallery`, `ollama`, `hyperqwen` `.tyriis.dev`.
 2. Put the real Cloudflare token (Zone:DNS:Edit on the `tyriis.dev` zone) into the encrypted file: `sops docker/red/traefik/sops.env`, replace `CF_DNS_API_TOKEN=REPLACE_ME`.
 3. Confirm `ACME_EMAIL` in `docker/red/traefik/.env`.
 4. Ensure red's doco-cd has the red age key (`SOPS_AGE_KEY_FILE`) so `sops.env` decrypts.

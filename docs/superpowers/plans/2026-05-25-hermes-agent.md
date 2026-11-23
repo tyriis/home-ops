@@ -10,7 +10,7 @@
 
 ---
 
-### Task 1: Create Namespace and Base Kustomization
+## Task 1: Create Namespace and Base Kustomization
 
 **Files:**
 
@@ -53,7 +53,7 @@ git add kubernetes/main/apps/hermes-agent/namespace.yaml kubernetes/main/apps/he
 git commit -m "feat: add hermes-agent namespace and base kustomization"
 ```
 
-### Task 2: Create Parameterized App Configuration
+## Task 2: Create Parameterized App Configuration
 
 **Files:**
 
@@ -223,7 +223,7 @@ git add kubernetes/main/apps/hermes-agent/app/kustomization.yaml kubernetes/main
 git commit -m "feat: add parameterized hermes-agent app and strict network policy"
 ```
 
-### Task 3: Create Flux Sync Definitions for 4 Users
+## Task 3: Create Flux Sync Definitions for 4 Users
 
 **Files:**
 
