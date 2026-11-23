@@ -1,7 +1,7 @@
 # prek migration: replace MegaLinter and pre-commit
 
 Issue: [#10151](https://github.com/tyriis/home-ops/issues/10151)
-Status: revision 7, draft. Not committed. Last commit on the PR: revision 6.
+Status: revision 8, draft. Revision 8 keeps upstream hook repos and converts only the hooks that have no upstream repo.
 
 ## Context
 
@@ -15,7 +15,8 @@ Status: revision 7, draft. Not committed. Last commit on the PR: revision 6.
 
 - One runner, prek, runs the lint hooks locally and in CI.
 - Local hooks and CI use the same config: `.pre-commit-config.yaml`.
-- Tool versions come from `.mise.toml` only.
+- Upstream hook repos stay remote and keep their `rev`, as on `main`.
+- Tool versions for local hooks and lint tasks come from `.mise.toml` only.
 - CI no longer pulls the MegaLinter Docker image.
 
 ## Decisions
@@ -23,8 +24,8 @@ Status: revision 7, draft. Not committed. Last commit on the PR: revision 6.
 | Topic                | Decision                                                                                                                      |
 | -------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | Config file          | `.pre-commit-config.yaml`. Stays YAML. Renovate's pre-commit manager reads it today.                                          |
-| Hook language        | `system` for every hook except the three remote hooks in Decided exceptions.                                                  |
-| Tool source          | `.mise.toml`. mise installs the tools, except the three remote hooks.                                                         |
+| Hook language        | Upstream hook repos stay remote with their `rev`. Only hooks with no upstream repo use `language: system`.                    |
+| Tool source          | `.mise.toml` pins the tools that local hooks and lint tasks call. Remote hooks install their own environment.                 |
 | Local stages         | `pre-commit` and `pre-push`.                                                                                                  |
 | CI trigger           | `pull_request`: `opened`, `reopened`, `synchronize`, `ready_for_review`, `edited`. Also `workflow_dispatch`. No push trigger. |
 | CI scope             | Changed files on pull requests. Full tree on `workflow_dispatch`.                                                             |
@@ -41,13 +42,13 @@ inactive: it needs `.proselintrc.json` or proselint/config.json, and neither exi
 
 1. `check-docker-compose` stays in CI. It runs only on pull requests that change
    `docker/**/compose.yaml`. Phase 2 tests it on such a pull request.
-2. Three remote hooks stay remote. They have no backend in `.mise.toml`:
-   - `remove-crlf`, `remove-tabs`: Lucas-C/pre-commit-hooks v1.5.6.
-   - `forbid-secrets`: k8s-at-home/sops-pre-commit v2.1.1.
-
-   Each keeps its `repo`, `rev`, and `language: python` from upstream. prek builds
-   the hook environment. Renovate's pre-commit manager tracks the `rev`. Behavior
-   does not change. These are the only hooks outside `.mise.toml`.
+2. Upstream hook repos stay remote. Each keeps its `repo`, `rev`, and fields from
+   `main`. prek runs them as pre-commit does. Renovate's pre-commit manager tracks
+   their `rev`. Hooks with no upstream repo are local hooks, as listed below:
+   - `betterleaks`: local `language: system`, replaces gitleaks.
+   - `editorconfig-checker`: local `language: system`, added for MegaLinter parity.
+   - `check-cnpg-barman-destinationpath`, `check-docker-compose`: local scripts, unchanged.
+   - `check-illegal-windows-names`: upstream pre-commit-hooks, unchanged.
 
 ## How the tools run
 
@@ -56,7 +57,8 @@ Local:
 1. `prek install --hook-command 'mise exec -- prek'` writes the git shims.
    The shim starts prek through mise, so pinned tools are on `PATH`.
 2. A commit or push runs the shim.
-3. prek runs each hook with `language: system`. The hook command finds its tool on `PATH`.
+3. prek runs each remote hook in its own environment. Each local `language: system`
+   hook finds its tool on `PATH`.
 
 Manual run: `mise install && mise exec -- prek run --all-files`.
 
@@ -92,58 +94,37 @@ Decision: `language: system`, with pins in `.mise.toml` only.
 
 ## Hook map
 
-Every hook in `.pre-commit-config.yaml` on `main` appears once below. Each remote
-hook becomes a local `language: system` hook. Tool versions move to `.mise.toml`.
+Upstream repos are not converted. The `rev` of each remote hook stays as on `main`.
+Remote hooks keep their `repo`, `rev`, `hooks`, and `args`.
 
-Backends and versions were checked with `mise ls-remote` on 2026-11-18.
+Local hooks and their tools:
 
-### Fixing hooks (rewrite files)
+| Hook                                                    | Tool                 | `.mise.toml` backend                             | Version |
+| ------------------------------------------------------- | -------------------- | ------------------------------------------------ | ------- |
+| betterleaks                                             | betterleaks          | `aqua:betterleaks/betterleaks`                   | 1.10.1  |
+| editorconfig-checker                                    | editorconfig-checker | `aqua:editorconfig-checker/editorconfig-checker` | 4.0.2   |
+| check-cnpg-barman-destinationpath, check-docker-compose | local scripts        | none                                             | none    |
 
-| Hook                                                                                              | Tool             | `.mise.toml` backend    | Version |
-| ------------------------------------------------------------------------------------------------- | ---------------- | ----------------------- | ------- |
-| doctoc                                                                                            | doctoc           | `npm:doctoc`            | 2.5.0   |
-| markdownlint-fix                                                                                  | markdownlint     | `npm:markdownlint-cli`  | 0.50.0  |
-| prettier                                                                                          | prettier         | `npm:prettier`          | 3.10.1  |
-| end-of-file-fixer, trailing-whitespace, mixed-line-ending, fix-byte-order-marker                  | pre-commit-hooks | `pipx:pre-commit-hooks` | 6.0.0   |
-| remove-crlf, remove-tabs                                                                          | Lucas-C (remote) | Remote hook, see Decided exceptions | 1.5.6 |
-| fix-smartquotes, fix-ligatures                                                                    | texthooks        | `pipx:texthooks`        | 1.0.0   |
+Lint task tools (not hooks, used by `.taskfiles/lint`):
 
-### Checking hooks (report only)
-
-| Hook                                                                                                                                                             | Tool                                  | `.mise.toml` backend                             | Version         |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ------------------------------------------------ | --------------- |
-| check-useless-excludes                                                                                                                                           | prek built-in (`meta`)                | none                                             | none            |
-| check-cnpg-barman-destinationpath                                                                                                                                | local script                          | none                                             | none            |
-| check-docker-compose                                                                                                                                             | local script, needs docker compose and PyYAML | none                                     | none            |
-| check-added-large-files, check-case-conflict, check-executables-have-shebangs, check-merge-conflict, check-shebang-scripts-are-executable, check-symlinks, check-vcs-permalinks, destroyed-symlinks, detect-aws-credentials, detect-private-key, no-commit-to-branch, check-json, check-toml, check-xml, check-yaml | pre-commit-hooks | `pipx:pre-commit-hooks` | 6.0.0           |
-| check-illegal-windows-names                                                                                                                                      | pre-commit-hooks, local `language: fail` copy | none (no binary needed) | none     |
-| yamllint                                                                                                                                                         | yamllint                              | `pipx:yamllint`                                  | 1.38.0          |
-| forbid-bidi-controls                                                                                                                                             | texthooks                             | `pipx:texthooks`                                 | 1.0.0           |
-| forbid-secrets                                                                                                                                                   | sops-pre-commit (remote hook)                 | Remote hook, see Decided exceptions      | v2.1.1          |
-| gitleaks (replaced by betterleaks)                                                                                                                               | betterleaks                           | `aqua:betterleaks/betterleaks`                   | 1.10.1          |
-| actionlint                                                                                                                                                       | actionlint                            | `aqua:rhysd/actionlint`                          | 1.7.12          |
-| editorconfig-checker (no hook in the config today; added for MegaLinter parity)                                                                                  | editorconfig-checker                  | `aqua:editorconfig-checker/editorconfig-checker` | 4.0.2           |
+| Tool         | `.mise.toml` backend   | Version |
+| ------------ | ---------------------- | ------- |
+| markdownlint | `npm:markdownlint-cli` | 0.50.0  |
+| prettier     | `npm:prettier`         | 3.10.1  |
+| yamllint     | `pipx:yamllint`        | 1.38.0  |
 
 Other tools:
 
 - `prek` itself: `aqua:j178/prek`, 0.5.11.
-- The editorconfig-checker v4.0.2 binary is `editorconfig-checker`, checked with `mise exec`.
-
-Rules for each mapped hook (phase 1, step 2):
-
-- Copy every manifest field that changes behavior: `types`, `types_or`, `exclude_types`, `stages`, `always_run`, `pass_filenames`, `require_serial`, and `args`.
-- For example, prettier needs `types: [text]`. `no-commit-to-branch` needs `always_run: true`.
-- Record the upstream `entry` for each hook in the change.
-
-mirrors-prettier also formats Markdown, JSON, and YAML. The local prettier hook
-must cover the same file types as the parity baseline (JSON and YAML). Markdown
-is also covered by markdownlint.
+- `pre-commit` (`aqua:pre-commit/pre-commit`, 4.7.0) stays pinned for transition, see
+  Phase 1 step 1.
 
 ## Phase 1: local
 
-1. Add the tools in the hook map to `.mise.toml`.
-2. Convert each remote hook in `.pre-commit-config.yaml` to a local
-   `language: system` hook. Apply the rules in the hook map section.
+1. Pin the tools in the hook map and lint task list in `.mise.toml`. Remove the
+   gitleaks pin.
+2. Keep every upstream hook repo in `.pre-commit-config.yaml` at its `rev`. Add a
+   local `language: system` hook only for tools listed as local in the hook map.
 3. Replace the gitleaks hook with a Betterleaks hook.
    Set `entry: betterleaks git --pre-commit --redact --staged` and
    `pass_filenames: false`.
@@ -168,15 +149,15 @@ Exit check:
 
 Exit check results (MegaLinter 10.2.0, flavor terraform, run 2026-11-23):
 
-| Linter               | MegaLinter tool version | prek pin | Result                                                                                 |
-| -------------------- | ----------------------- | -------- | -------------------------------------------------------------------------------------- |
-| actionlint           | 1.7.12                  | 1.7.12   | Match. 0 errors.                                                                       |
-| editorconfig-checker | 4.0.2                   | 4.0.2    | Match. 0 errors after the ComfyUI README list indent fix.                              |
-| prettier (JSON)      | 3.9.10                  | 3.10.1   | Match. 0 errors.                                                                       |
-| markdownlint         | 0.49.1                  | 0.50.0   | Match. 0 errors. Version differs; MegaLinter bundles 0.49.1.                           |
-| betterleaks          | 1.7.3                   | 1.10.1   | Match. 0 findings. Version differs; MegaLinter bundles 1.7.3.                          |
+| Linter               | MegaLinter tool version | prek pin | Result                                                                                                                                                                                                                           |
+| -------------------- | ----------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| actionlint           | 1.7.12                  | 1.7.12   | Match. 0 errors.                                                                                                                                                                                                                 |
+| editorconfig-checker | 4.0.2                   | 4.0.2    | Match. 0 errors after the ComfyUI README list indent fix.                                                                                                                                                                        |
+| prettier (JSON)      | 3.9.10                  | 3.10.1   | Match. 0 errors.                                                                                                                                                                                                                 |
+| markdownlint         | 0.49.1                  | 0.50.0   | Match. 0 errors. Version differs; MegaLinter bundles 0.49.1.                                                                                                                                                                     |
+| betterleaks          | 1.7.3                   | 1.10.1   | Match. 0 findings. Version differs; MegaLinter bundles 1.7.3.                                                                                                                                                                    |
 | prettier (YAML)      | 3.9.10                  | 3.10.1   | Difference. MegaLinter reports 1 error on `kubernetes/main/apps/gaming/minecraft-java/flux-sync.yaml`: prettier 3.9.10 wants one extra trailing blank line. Prettier 3.10.1 passes the file. The file is not changed in phase 1. |
-| yamllint             | 1.38.0                  | 1.38.0   | Match. 0 errors.                                                                       |
+| yamllint             | 1.38.0                  | 1.38.0   | Match. 0 errors.                                                                                                                                                                                                                 |
 
 `prek run --all-files` passes every hook on the same tree. `check-illegal-windows-names`
 and `check-xml` have no files to check. The `betterleaks` hook (staged) reports no
@@ -236,9 +217,6 @@ Exit check: the scheduled run completes and SARIF appears in code scanning.
 
 ## Risks
 
-- Remote `rev` pins leave `.pre-commit-config.yaml`. The Renovate pre-commit
-  manager reads only `.pre-commit-config.yaml`, so no Renovate manager tracks the
-  remote pins after the change. Phase 1, step 8 must pass before phase 1 closes.
 - The PR gate checks changed files. Full-tree checks run on `workflow_dispatch`.
 - Staged Betterleaks does not see untracked files. Phase 3 covers full history.
 - The first nightly run may show old secrets. Triage them before phase 3 closes.
