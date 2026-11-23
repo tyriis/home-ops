@@ -34,6 +34,11 @@ talosctl --context "$cluster" --nodes "$ip" get machineconfig -o json \
 yq ea -o json -I=0 '.' "$tmp/render.yaml" > "$tmp/render.jsonl"
 yq ea -o json -I=0 '.' "$tmp/live.yaml"    > "$tmp/live.jsonl"
 
+if ! grep -q -v '^null$' "$tmp/live.jsonl" "$tmp/render.jsonl"; then
+  echo "ERROR: neither live nor rendered config produced any documents — aborting" >&2
+  exit 1
+fi
+
 echo "==> validating rendered config" >&2
 talosctl validate -m metal -c "$tmp/render.yaml"
 

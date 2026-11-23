@@ -93,12 +93,22 @@ def collect_scalars(d, out, skip=frozenset()):
 def load(fn):
     d = {}
     with open(fn) as f:
-        for line in f:
+        for lineno, line in enumerate(f, 1):
             line = line.strip()
             if not line:
                 continue
             o = json.loads(line)
+            if o is None:
+                continue  # empty YAML document artifact from yq
+            if not isinstance(o, dict):
+                raise SystemExit(f"{fn}: line {lineno}: expected a mapping, got {type(o).__name__}")
             d[doc_key(o)] = o
+    if not d:
+        msg = f"{fn}: no documents parsed — refusing to diff against nothing"
+        print(msg, file=sys.stderr)
+        e = SystemExit(msg)
+        e.code = 2
+        raise e
     return d
 
 
