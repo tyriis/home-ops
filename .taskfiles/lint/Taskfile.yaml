@@ -11,19 +11,19 @@ tasks:
   markdown:
     desc: Lint Markdown
     cmds:
-      - "markdownlint -c .markdownlint.yaml *.md **/*.md"
+      - "mise exec -- markdownlint -c .markdownlint.yaml *.md **/*.md"
 
   yaml:
     desc: Lint YAML
     cmds:
-      - "yamllint -c .yamllint.yaml ."
+      - "mise exec -- yamllint -c .yamllint.yaml ."
 
   prettier:
     desc: Lint with prettier
     cmds:
-      - "prettier --ignore-path .prettierignore --config .prettierrc.yaml --check ."
+      - "mise exec -- prettier --ignore-path .prettierignore --config .prettierrc.yaml --check ."
 
   prettier:fix:
     desc: Lint with prettier autofix
     cmds:
-      - "prettier --ignore-path .prettierignore --config .prettierrc.yaml --write ."
+      - "mise exec -- prettier --ignore-path .prettierignore --config .prettierrc.yaml --write ."
