@@ -19,4 +19,4 @@ spec:
   dataFrom:
     # Recording-rule results are written; the vmalert datasource token is read-only.
     - extract:
-        key: infra/kubernetes/main/observability/victoria-metrics #gitleaks:allow
+        key: infra/kubernetes/main/observability/victoria-metrics #betterleaks:allow

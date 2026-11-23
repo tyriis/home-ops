@@ -23,7 +23,7 @@ Prometheus gets an additive `enableOTLPReceiver`, Loki gets an additive `otlp_co
 - Pin exact `ref.tag` on OCIRepository (no `x` wildcards). Versions below are concrete; Renovate bumps them.
 - `postBuild.substitute` is NOT used on the collector/tempo Kustomizations (no `FLUX_CLUSTER_NAME`) — so `${env:...}` in the collector CR stays literal.
 - Commit messages follow conventional-commits (`feat(<scope>): ...`). Only commit on the feature branch; never `main`.
-- Implementer is authorized/expected to adjust YAML formatting, add `#NOSONAR`/`#gitleaks:allow` comments, and fix schema/lint issues required to pass pre-commit/MegaLinter/kubeconform.
+- Implementer is authorized/expected to adjust YAML formatting, add `#NOSONAR`/`#betterleaks:allow` comments, and fix schema/lint issues required to pass pre-commit/MegaLinter/kubeconform.
 
 ---
 
@@ -554,7 +554,7 @@ spec:
         S3_SECRET_KEY: "{{ .S3_SECRET_KEY }}"
   dataFrom:
     - extract:
-        key: infra/kubernetes/main/observability/tempo #gitleaks:allow
+        key: infra/kubernetes/main/observability/tempo #betterleaks:allow
 ```
 
 - [ ] **Step 5: Create `app/helm-release.yaml`**
@@ -619,7 +619,7 @@ spec:
       targetPath: tempo.storage.trace.s3.endpoint
     - kind: Secret
       name: tempo-s3
-      valuesKey: S3_BUCKET_REGION #gitleaks:allow
+      valuesKey: S3_BUCKET_REGION #betterleaks:allow
       targetPath: tempo.storage.trace.s3.region
     - kind: Secret
       name: tempo-s3

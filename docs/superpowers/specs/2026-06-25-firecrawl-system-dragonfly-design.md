@@ -149,7 +149,7 @@ NUQ_DATABASE_URL: postgresql://postgres:password@firecrawl-nuq-postgres.firecraw
 ```yaml
 dataFrom:
   - extract:
-      key: infra/kubernetes/main/firecrawl-system/firecrawl #gitleaks:allow
+      key: infra/kubernetes/main/firecrawl-system/firecrawl #betterleaks:allow
 ```
 
 The OpenBao path must be created manually as part of the rollout (out of band for this repo change).

@@ -267,7 +267,7 @@ Change:
 ```yaml
 dataFrom:
   - extract:
-      key: infra/kubernetes/main/ai/firecrawl #gitleaks:allow
+      key: infra/kubernetes/main/ai/firecrawl #betterleaks:allow
 ```
 
 to:
@@ -275,7 +275,7 @@ to:
 ```yaml
 dataFrom:
   - extract:
-      key: infra/kubernetes/main/firecrawl-system/firecrawl #gitleaks:allow
+      key: infra/kubernetes/main/firecrawl-system/firecrawl #betterleaks:allow
 ```
 
 - [ ] **Step 2: Commit**
