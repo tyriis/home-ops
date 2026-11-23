@@ -4,21 +4,23 @@ version: "3"
 
 tasks:
   default:
-    desc: run pre-commit
+    desc: run the prek hooks
     cmds:
       - task: run
 
   init:
-    desc: initialize pre-commit hooks
+    desc: install the prek git hooks
     internal: true
     status:
       - test -f .git/hooks/pre-commit
+      - grep -q prek .git/hooks/pre-commit
     cmds:
-      - pre-commit install --install-hooks
+      - mise exec -- prek install --hook-command 'mise exec -- prek'
 
   run:
-    desc: run pre-commit
+    desc: run the prek hooks
     deps: [init]
     internal: true
     cmds:
-      - pre-commit run --all-files
+      - mise install
+      - mise exec -- prek run --all-files

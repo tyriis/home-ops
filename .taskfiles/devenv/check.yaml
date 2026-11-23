@@ -22,7 +22,7 @@ tasks:
       - task: dependency
         vars: { DEPENDENCY: kustomize }
       - task: dependency
-        vars: { DEPENDENCY: pre-commit }
+        vars: { DEPENDENCY: prek }
       - task: dependency
         vars: { DEPENDENCY: task }
       - task: dependency
