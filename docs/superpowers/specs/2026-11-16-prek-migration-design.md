@@ -1,7 +1,7 @@
 # prek migration: replace MegaLinter and pre-commit
 
 Issue: [#10151](https://github.com/tyriis/home-ops/issues/10151)
-Status: revision 10, draft. Revision 10 pins stable releases only and comments out the editorconfig-checker hook.
+Status: revision 11, draft. Revision 11 removes the lint-task tool pins. The lint tasks run the hooks.
 
 ## Context
 
@@ -106,13 +106,9 @@ Hooks that have no upstream repo are local. Currently: the two local scripts onl
 The betterleaks and editorconfig-checker hooks are remote. The editorconfig-checker
 hook is commented out for now.
 
-Lint task tools (not hooks, used by `.taskfiles/lint`):
-
-| Tool         | `.mise.toml` backend   | Version |
-| ------------ | ---------------------- | ------- |
-| markdownlint | `npm:markdownlint-cli` | 0.50.0  |
-| prettier     | `npm:prettier`         | 3.10.1  |
-| yamllint     | `pipx:yamllint`        | 1.38.0  |
+The lint tasks (`.taskfiles/lint`) run their checks through prek hooks
+(`markdownlint-fix`, `yamllint`, `prettier`). The hooks install their own tools, so
+`.mise.toml` has no pins for them.
 
 Other tools:
 
@@ -122,8 +118,8 @@ Other tools:
 
 ## Phase 1: local
 
-1. Pin the tools in the hook map and lint task list in `.mise.toml`. Remove the
-   gitleaks pin.
+1. Pin the local tools in `.mise.toml`. Remove the gitleaks pin. The lint tasks need
+   no pins, because they run the hooks.
 2. Keep every upstream hook repo in `.pre-commit-config.yaml` at its `rev`. Add a
    local hook only for tools with no upstream repo.
 3. Replace the gitleaks hook with the upstream betterleaks repo at
