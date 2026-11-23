@@ -255,8 +255,6 @@ and why. It does not replace the sections above.
   editorconfig-checker or pre-commit. Reason: the hooks install their own tools. The
   lint tasks call the hooks, so no tool needs a repo pin.
 - The `prek` pin (`aqua:j178/prek` 0.5.11) stays. It runs the hooks.
-- The global user config `~/.config/mise/config.toml` still pins `pre-commit`. The
-  repo does not use it. Outside the repo, the owner removes it.
 
 ### Lint tasks
 
