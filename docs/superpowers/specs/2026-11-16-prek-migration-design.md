@@ -223,3 +223,77 @@ Exit check: the scheduled run completes and SARIF appears in code scanning.
 - The PR gate checks changed files. Full-tree checks run on `workflow_dispatch`.
 - Staged Betterleaks does not see untracked files. Phase 3 covers full history.
 - The first nightly run may show old secrets. Triage them before phase 3 closes.
+
+## Addendum: changes after revision 11
+
+This addendum records what changed in the implementation after the spec was written,
+and why. It does not replace the sections above.
+
+### Hook sources
+
+- Upstream hook repos stay remote. The first implementation converted them to
+  `language: system`. That conversion was reverted. Reason: upstream repos already
+  pin each tool with a `rev`. Renovate tracks those revs. A local copy duplicates each
+  pin and needs mise on `PATH`.
+- betterleaks: the upstream repo `betterleaks/betterleaks` at stable `v1.10.1`, hook
+  `betterleaks` (`language: golang`). Reason: the prerelease `v2.0.0-rc.10` was
+  rejected, because only stable releases are pinned. Stable `v1.10.1` is the release
+  the earlier tests used. The hook builds its own binary, so `.mise.toml` has no
+  betterleaks pin.
+- editorconfig-checker: the upstream repo `editorconfig-checker/editorconfig-checker`
+  at stable `v4.0.2`, hook `editorconfig-checker` (`language: golang`). It is
+  commented out in `.pre-commit-config.yaml` with a `TODO` anchor. Reason: on the merged
+  tree it reports findings only under `docs/superpowers/`. Main removed the exclude for
+  those docs in `62c257d1c`. The hook is not dropped. It returns when the owner
+  decides how to handle those docs.
+- editorconfig-checker python repo (3.11.1): rejected. It is a different tool from the
+  Go binary that the MegaLinter comparison used.
+
+### Tool pins
+
+- `.mise.toml` no longer pins markdownlint-cli, prettier, yamllint, betterleaks,
+  editorconfig-checker or pre-commit. Reason: the hooks install their own tools. The
+  lint tasks call the hooks, so no tool needs a repo pin.
+- The `prek` pin (`aqua:j178/prek` 0.5.11) stays. It runs the hooks.
+- The global user config `~/.config/mise/config.toml` still pins `pre-commit`. The
+  repo does not use it. Outside the repo, the owner removes it.
+
+### Lint tasks
+
+- `.taskfiles/lint/Taskfile.yaml` runs `prek run <hook> --all-files` for
+  `markdownlint-fix`, `yamllint` and `prettier`. Reason: no tool needs `mise exec`
+  or a pin. Two effects follow. The prettier hook writes files, so the prettier check
+  also rewrites files. The markdownlint hook fixes what it finds.
+
+### Annotations
+
+- `gitleaks:allow` is renamed to `betterleaks:allow` in 17 files. Reason: gitleaks is
+  no longer in the hook set. betterleaks 1.10.1 accepts both forms. A test showed that
+  each form suppresses a finding on a staged file.
+- Two findings in `docs/superpowers/plans/2026-06-25-firecrawl-system-dragonfly.md` are
+  placeholders (`postgres:password`). They carry `# betterleaks:allow`. Reason: the
+  hook scans staged content, and the placeholder is not a secret.
+
+### Merge with main
+
+- `main` was merged into the branch in `6b4eaad5c`. Pin conflicts in `.mise.toml`
+  resolved to main's newer versions for vcluster, flux2, flux-operator-mcp and openbao.
+  The gitleaks pin stayed removed.
+- Main added the `docs/superpowers/` linting policy in `62c257d1c`. The editorconfig
+  hook conflicts with that policy. Open decision: exclude those docs from this hook,
+  fix the docs, or drop the hook.
+
+### Measurements
+
+- On this repository, both tools ran the same 33 hooks and passed.
+  `prek run --all-files` took 11.2 s and 11.8 s. `pre-commit run --all-files` took
+  15.5 s and 15.7 s. The runs were on one machine. Reason: the migration goal includes
+  faster local and CI runs.
+
+### Open items
+
+- The editorconfig-checker hook stays commented out until the `docs/superpowers/`
+  decision is made.
+- Phase 2 must pin betterleaks 1.10.1 in `.mise.toml`, because the CI step calls the
+  CLI directly.
+- Phase 3 must re-test the betterleaks commands on the same stable release.
