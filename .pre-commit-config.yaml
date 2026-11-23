@@ -7,6 +7,9 @@ default_language_version:
 default_stages:
   - pre-commit
   - pre-push
+default_install_hook_types:
+  - pre-commit
+  - pre-push
 
 repos:
   # checks pre-commit config for errors
@@ -35,10 +38,13 @@ repos:
         entry: scripts/hooks/check-docker-compose.sh
         files: ^docker/.*compose\.yaml$
 
-  - repo: https://github.com/thlorenz/doctoc
-    rev: v2.5.0
+  - repo: local
     hooks:
       - id: doctoc
+        name: doctoc
+        language: system
+        entry: doctoc
+        types: [markdown]
         args:
           - --update-only
           - --maxlevel
@@ -46,74 +52,187 @@ repos:
           - --github
           - --notitle
 
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0
-    hooks:
       - id: check-added-large-files
+        name: check for added large files
+        language: system
+        entry: check-added-large-files
+        stages: [pre-commit, pre-push, manual]
       - id: check-case-conflict
+        name: check for case conflicts
+        language: system
+        entry: check-case-conflict
       - id: check-executables-have-shebangs
+        name: check that executables have shebangs
+        language: system
+        entry: check-executables-have-shebangs
+        types: [text, executable]
+        stages: [pre-commit, pre-push, manual]
       - id: check-illegal-windows-names
+        name: check illegal windows names
+        language: fail
+        entry: Illegal Windows filenames detected
+        files: '(?i)((^|/)(CON|PRN|AUX|NUL|COM[\d¹²³]|LPT[\d¹²³])(\.|/|$)|[<>:\"\\|?*\x00-\x1F]|/[^/]*[\.\s]/|[^/]*[\.\s]$)'
       - id: check-merge-conflict
+        name: check for merge conflicts
+        language: system
+        entry: check-merge-conflict
+        types: [text]
       - id: check-shebang-scripts-are-executable
+        name: check that scripts with shebangs are executable
+        language: system
+        entry: check-shebang-scripts-are-executable
+        types: [text]
+        stages: [pre-commit, pre-push, manual]
       - id: check-symlinks
+        name: check for broken symlinks
+        language: system
+        entry: check-symlinks
+        types: [symlink]
       - id: check-vcs-permalinks
+        name: check vcs permalinks
+        language: system
+        entry: check-vcs-permalinks
+        types: [text]
       - id: destroyed-symlinks
+        name: detect destroyed symlinks
+        language: system
+        entry: destroyed-symlinks
+        types: [file]
+        stages: [pre-commit, pre-push, manual]
       - id: detect-aws-credentials
+        name: detect aws credentials
+        language: system
+        entry: detect-aws-credentials
+        types: [text]
         args:
           - --allow-missing-credentials
       - id: detect-private-key
+        name: detect private key
+        language: system
+        entry: detect-private-key
+        types: [text]
       - id: end-of-file-fixer
+        name: fix end of files
+        language: system
+        entry: end-of-file-fixer
+        types: [text]
+        stages: [pre-commit, pre-push, manual]
       - id: fix-byte-order-marker
+        name: fix utf-8 byte order marker
+        language: system
+        entry: fix-byte-order-marker
+        types: [text]
       - id: mixed-line-ending
+        name: mixed line ending
+        language: system
+        entry: mixed-line-ending
+        types: [text]
       - id: no-commit-to-branch
+        name: don't commit to branch
+        language: system
+        entry: no-commit-to-branch
+        pass_filenames: false
+        always_run: true
       - id: trailing-whitespace
+        name: trim trailing whitespace
+        language: system
+        entry: trailing-whitespace-fixer
+        types: [text]
+        stages: [pre-commit, pre-push, manual]
       # format-specific
       - id: check-json
+        name: check json
+        language: system
+        entry: check-json
+        types: [json]
       - id: check-toml
+        name: check toml
+        language: system
+        entry: check-toml
+        types: [toml]
       - id: check-xml
+        name: check xml
+        language: system
+        entry: check-xml
+        types: [xml]
       - id: check-yaml
+        name: check yaml
+        language: system
+        entry: check-yaml
+        types: [yaml]
         args:
           - --allow-multiple-documents
           - --unsafe
 
-  - repo: https://github.com/adrienverge/yamllint
-    rev: v1.38.0
-    hooks:
       - id: yamllint
+        name: yamllint
+        language: system
+        entry: yamllint
+        types: [file, yaml]
         args:
           - --config-file
           - .yamllint.yaml
+
+      - id: fix-smartquotes
+        name: Fix smartquote characters
+        language: system
+        entry: fix-smartquotes
+        types: [text]
+      - id: fix-ligatures
+        name: Fix ligature characters with NFKD normalization
+        language: system
+        entry: fix-ligatures
+        types: [text]
+      - id: forbid-bidi-controls
+        name: Forbid the use of unicode BiDi control characters
+        language: system
+        entry: forbid-bidi-controls
+        types: [text]
+
+      - id: markdownlint-fix
+        name: markdownlint-fix
+        language: system
+        entry: markdownlint --fix
+        types: [markdown]
+        args:
+          - --config
+          - .markdownlint.yaml
+
+      - id: prettier
+        name: prettier
+        language: system
+        entry: prettier --write --ignore-unknown
+        types: [text]
+        require_serial: false
+        args:
+          - --ignore-path
+          - .prettierignore
+          - --config
+          - .prettierrc.yaml
+
+      - id: betterleaks
+        name: Detect hardcoded secrets
+        language: system
+        entry: betterleaks git --pre-commit --redact --staged
+        pass_filenames: false
+
+      - id: actionlint
+        name: Lint GitHub Actions workflow files
+        language: system
+        entry: actionlint
+        types: [yaml]
+        files: ^\.github/workflows/
+
+      - id: editorconfig-checker
+        name: run editorconfig-checker
+        language: system
+        entry: editorconfig-checker
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
     rev: v1.5.6
     hooks:
       - id: remove-crlf
       - id: remove-tabs
-
-  - repo: https://github.com/sirosen/texthooks
-    rev: 1.0.0
-    hooks:
-      - id: fix-smartquotes
-      - id: fix-ligatures
-      - id: forbid-bidi-controls
-
-  - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.50.0
-    hooks:
-      - id: markdownlint-fix
-        args:
-          - --config
-          - .markdownlint.yaml
-
-  - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.10.1
-    hooks:
-      - id: prettier
-        args:
-          - --ignore-path
-          - .prettierignore
-          - --config
-          - .prettierrc.yaml
 
   - repo: https://github.com/k8s-at-home/sops-pre-commit
     rev: v2.1.1
@@ -128,13 +247,3 @@ repos:
             kubernetes/utility/apps/kube-tools/rbac.yaml|
             kubernetes/utility/apps/secops/rbac.yaml
           )$()
-
-  - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.30.1
-    hooks:
-      - id: gitleaks
-
-  - repo: https://github.com/rhysd/actionlint
-    rev: v1.7.12
-    hooks:
-      - id: actionlint
