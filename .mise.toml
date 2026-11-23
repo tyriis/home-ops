@@ -23,8 +23,6 @@
 "aqua:kubernetes-sigs/kustomize" = "5.8.1"
 # https://mise-versions.jdx.dev/tools/node
 # node = "24.14.0"
-# https://mise-versions.jdx.dev/tools/pre-commit
-"aqua:pre-commit/pre-commit" = "4.7.0"
 # https://mise-versions.jdx.dev/tools/sops
 "aqua:getsops/sops" = "3.13.3"
 # https://mise-versions.jdx.dev/tools/talosctl

@@ -1,7 +1,7 @@
 # prek migration: replace MegaLinter and pre-commit
 
 Issue: [#10151](https://github.com/tyriis/home-ops/issues/10151)
-Status: revision 11, draft. Revision 11 removes the lint-task tool pins. The lint tasks run the hooks.
+Status: revision 12, draft. Revision 12 removes the lint-task tool pins and the pre-commit pin.
 
 ## Context
 
@@ -113,8 +113,7 @@ The lint tasks (`.taskfiles/lint`) run their checks through prek hooks
 Other tools:
 
 - `prek` itself: `aqua:j178/prek`, 0.5.11.
-- `pre-commit` (`aqua:pre-commit/pre-commit`, 4.7.0) stays pinned for transition, see
-  Phase 1 step 1.
+- `pre-commit` is not pinned. No repo file calls it. The Taskfile and the git shims use prek.
 
 ## Phase 1: local
 
