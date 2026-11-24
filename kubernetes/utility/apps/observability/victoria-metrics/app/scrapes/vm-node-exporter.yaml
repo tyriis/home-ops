@@ -24,3 +24,13 @@ spec:
           regex: (.*)
           replacement: $1
           targetLabel: kubernetes_node
+      # Absolute-zero sentinels (-273.2, 0 K misreads) on util01's thermal-zone
+      # passthrough chip, pinned by node+chip+sensor: relabeling cannot match
+      # sample values, and util02 exposes the same chip name healthy.
+      metricRelabelConfigs:
+        - action: drop
+          sourceLabels:
+            - kubernetes_node
+            - chip
+            - sensor
+          regex: "util01;thermal_thermal_zone1;(temp0|temp1)"
