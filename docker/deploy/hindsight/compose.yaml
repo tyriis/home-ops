@@ -35,7 +35,7 @@ services:
   hindsight:
     container_name: ${CONTAINER_NAME:-hindsight}
     # renovate: datasource=docker
-    image: ghcr.io/vectorize-io/hindsight:1.2.3@sha256:601cfdd1bd3f6053864c6458ee15259f065a01a3f83090b56a8ae57db67f8f38
+    image: ghcr.io/vectorize-io/hindsight:1.3.0@sha256:469ca4b49bf3863ec383cc0c509483bb58180def7c6ae0e6a592dc27369c9ff5
     mem_limit: 6g
     pids_limit: 512
     user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
