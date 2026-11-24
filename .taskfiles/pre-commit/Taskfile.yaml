@@ -15,12 +15,11 @@ tasks:
       - test -f .git/hooks/pre-commit
       - grep -q prek .git/hooks/pre-commit
     cmds:
-      - mise exec -- prek install --hook-command 'mise exec -- prek'
+      - prek install
 
   run:
     desc: run the prek hooks
     deps: [init]
     internal: true
     cmds:
-      - mise install
-      - mise exec -- prek run --all-files
+      - prek run --all-files

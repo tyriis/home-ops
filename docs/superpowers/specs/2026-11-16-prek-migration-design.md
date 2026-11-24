@@ -263,6 +263,11 @@ and why. It does not replace the sections above.
   or a pin. Two effects follow. The prettier hook writes files, so the prettier check
   also rewrites files. The markdownlint hook fixes what it finds.
 
+- Repo tasks do not call `mise exec --` and do not run `mise install`. Reason: the
+  task files should call the tool directly. `.taskfiles/pre-commit` runs `prek install`
+  and `prek run --all-files`. The `mise install` step and the `mise exec` wrapper in
+  phase 1 step 5 are superseded.
+
 ### Annotations
 
 - `gitleaks:allow` is renamed to `betterleaks:allow` in 17 files. Reason: gitleaks is
