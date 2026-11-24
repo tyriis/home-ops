@@ -9,6 +9,10 @@ volumes:
     external: ${VOLUME_EXTERNAL:-false}
     name: ${VOLUME_NAME:-new-api_data}
     driver: ${VOLUME_DRIVER:-local}
+  litestream-state:
+    external: ${LITESTREAM_STATE_EXTERNAL:-false}
+    name: ${LITESTREAM_STATE_VOLUME:-new-api_litestream-state}
+    driver: local
 
 services:
   # https://github.com/QuantumNous/new-api (OpenAI-compatible API gateway, Go + SQLite)
@@ -61,5 +65,43 @@ services:
     user: ${USER_ID:-1000}:${GROUP_ID:-1000}
     volumes:
       - data:/data
+    networks:
+      - apps
+
+  # litestream — continuous WAL replication of /data/one-api.db to MinIO
+  # (bucket litestream, prefix new-api/). The replica state DB lives on a
+  # dedicated volume under XDG_DATA_HOME; without persistence every restart
+  # re-snapshots the whole DB. Source is mounted read-only: replication never
+  # writes to the live database.
+  # First deploy: the state volume is created root-owned — chown it to the
+  # service UID once, exactly like the data volume above.
+  litestream:
+    image: litestream/litestream:0.5.18@sha256:0512488c5fbcd5a86cc65d367542b7eb869f2fc2699c67e11f4fcec7e899e830
+    container_name: ${LITESTREAM_CONTAINER_NAME:-new-api-litestream}
+    command: ["replicate", "-config", "/etc/litestream.yml"]
+    env_file:
+      - ${LITESTREAM_SOPS_ENV_FILE:-litestream.sops.env}
+    environment:
+      TZ: Europe/Vienna
+      XDG_DATA_HOME: /var/lib/litestream
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+        labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
+    mem_limit: 64m
+    pids_limit: 64
+    read_only: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges=true
+    tmpfs:
+      - /tmp:size=64m
+    user: ${USER_ID:-1000}:${GROUP_ID:-1000}
+    volumes:
+      - data:/data:ro
+      - ../../deploy/new-api/litestream.yml:/etc/litestream.yml:ro
+      - litestream-state:/var/lib/litestream
     networks:
       - apps

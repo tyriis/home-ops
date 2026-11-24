@@ -6,6 +6,7 @@ set -euo pipefail
 # indirection at /dev/null satisfies it with no secret while compose still stats
 # every env_file target, so a typo'd path fails. The stubs cover ${VAR:?} guards.
 export SOPS_ENV_FILE="/dev/null"
+export LITESTREAM_SOPS_ENV_FILE="/dev/null"
 export ACME_EMAIL="ci@example.invalid"
 export TLS_DOMAIN="example.com"
 export MANAGER_API_URL="http://stub.invalid"

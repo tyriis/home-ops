@@ -161,6 +161,47 @@ Notes:
   per-unit SSH-port field.
 - sparkDash connects as the unit's `ssh.user` (`sparkdash` in `config/sparks.json`).
 
+## litestream backups
+
+`new-api` is the only stateful service on this host besides arcane and traefik. Its
+SQLite store (`/data/one-api.db`, WAL mode — verified live 2026-11-25) is replicated
+continuously to MinIO by the `litestream` sidecar added to the shared
+`docker/deploy/new-api/compose.yaml`. Tenant identity is the app, not the host:
+bucket `litestream`, prefix `new-api/`, MinIO user `litestream-new-api`
+(readonly sibling `litestream-new-api-ro` for restores). Terraform source:
+techtales-io/terraform-minio PR #517.
+
+- Credentials: `bao kv get infra/minio/iam/nas.techtales.io/litestream-new-api`,
+  then `sops docker/bifrost/new-api/litestream.sops.env` to fill the placeholder.
+- First deploy, once, before `up`:
+
+  ```bash
+  docker volume create new-api_litestream-state
+  docker run --rm -v new-api_litestream-state:/var/lib/litestream alpine chown 1001:1001 /var/lib/litestream
+  ```
+
+- Watchtower/doco-cd note: the sidecar is one extra container per `new-api`
+  deployment; `docker compose up -d` in the host dir converges both services.
+
+### Restore drill and cutover restore
+
+Restore with the READ-ONLY user (`litestream-new-api-ro`), never the replicating
+credential — the rw key is the delete-my-backups key and stays on the host.
+
+```bash
+# on a clean machine, from the ro credentials in OpenBao:
+litestream restore -o /tmp/restore-check.db \
+  s3://litestream/new-api/one-api.db
+sqlite3 /tmp/restore-check.db 'PRAGMA integrity_check;'
+sqlite3 /tmp/restore-check.db "SELECT count(*) FROM users;"   # compare against live
+```
+
+Do this once per quarter, and ALWAYS before a new-api first boot on a fresh
+host: restore to the data volume as `/data/one-api.db` BEFORE letting the
+stack start, so the gateway never boots an empty database that the sidecar
+would then replicate over the replica. Pause doco-cd for this stack during
+that window.
+
 ## LAN exposure / LLM binding
 
 The sparkDash API is **unauthenticated by design**; the new-api gateway is not — it has an admin web
