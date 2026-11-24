@@ -11,6 +11,13 @@ scrape_configs:
     relabel_configs:
       - target_label: instance
         replacement: "agentix:9100"
+    # Absolute-zero sentinels (-263.2, 0 K misreads) from the thermal-zone
+    # passthrough chip, pinned by chip+sensor: relabeling cannot match sample
+    # values, so the drop is expressed as this label identity only.
+    metric_relabel_configs:
+      - source_labels: [chip, sensor]
+        regex: "thermal_thermal_zone0;(temp0|temp1)"
+        action: drop
 
   - job_name: smartctl-exporter
     scrape_interval: 2m
