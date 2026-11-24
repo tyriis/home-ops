@@ -47,6 +47,11 @@ kubernetes/**/bootstrap/**/charts
 # External agent skills (managed via skills-lock.json, install with: npx skills install)
 # To track a self-maintained skill, add: !.agents/skills/<skill-name>
 .agents/skills/
+# Agent mirror links materialize into the repo root as symlinks into the
+# gitignored .agents tree — dangling in every fresh clone, they break
+# doco-cd's go-git clone. Never track them.
+.hermes/
+.openhands/
 
 # BEGIN oh-my-opencode-slim worktrees
 .slim/worktrees/
