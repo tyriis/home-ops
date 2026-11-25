@@ -82,6 +82,7 @@ In the host column, `template` means the host sets no value. `per host` means ea
 | `HINDSIGHT_API_CONSOLIDATION_LLM_MAX_CONCURRENT`    | unset: no extra cap       | 4                        | template                | Effective cap is min(this, `HINDSIGHT_API_LLM_MAX_CONCURRENT`). Global 1 means one call.  |
 | `HINDSIGHT_API_ENABLE_AUTO_CONSOLIDATION`           | true                      | true                     | `false` / `false`       | `false` queues work as `pending_consolidation`. Needs a nightly drain job.                |
 | `HINDSIGHT_API_LLM_SEND_BANK_AS_USER`               | false                     | false                    | `true` / `true`         | Sends the bank id to the gateway and to the upstream provider.                            |
+| `HINDSIGHT_API_RERANKER_PROVIDER`                   | `local`                   | not passed through       | none                    | Add an `environment:` line to change it. `rrf` skips the model call.                      |
 
 ## symptoms and what to adapt
 
