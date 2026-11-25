@@ -5,4 +5,4 @@
 # renovate: depName=siderolabs/talos datasource=github-tags
 talosVersion: v1.14.6
 # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
-kubernetesVersion: v1.37.2
+kubernetesVersion: v1.37.3
