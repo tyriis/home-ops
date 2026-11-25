@@ -21,7 +21,7 @@ services:
     pids_limit: 512
     user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
     restart: unless-stopped
-    # above the 60 s stop wait in start-all.sh; a kill leaves tasks stuck in processing
+    # must exceed the 60 s shutdown wait in the image entrypoint /app/start-all.sh; a SIGKILL leaves tasks in processing
     stop_grace_period: 75s
     # embedded PostgreSQL requires shm_size >= 1g
     shm_size: "1g"
