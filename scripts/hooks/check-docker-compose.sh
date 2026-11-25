@@ -13,6 +13,7 @@ export HINDSIGHT_API_LLM_PROVIDER="stub"
 export HINDSIGHT_API_LLM_MODEL="stub"
 export HINDSIGHT_API_LLM_BASE_URL="http://stub.invalid"
 export HINDSIGHT_API_TENANT_EXTENSION="stub"
+export HINDSIGHT_API_WORKER_ID="stub"
 
 if ! docker compose version >/dev/null 2>&1; then
   echo "docker compose not found" >&2
