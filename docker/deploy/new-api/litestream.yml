@@ -1,0 +1,19 @@
+---
+# Litestream replication for the new-api gateway store.
+# Source is WAL-mode SQLite (verified live 2026-11-25: one-api.db-wal/-shm present
+# next to a fresh-mtime one-api.db). Litestream refuses non-WAL sources.
+# Tenant prefix is named after the app, not the host — the identity survives host
+# migrations (MinIO user litestream-new-api, terraform-minio PR #517).
+# Credentials: AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY from the container env
+# (sops-encrypted, decrypted by doco-cd at deploy time).
+# Restore runbook: docker/bifrost/README.md#litestream-backups
+dbs:
+  - path: /data/one-api.db
+    replica:
+      type: s3
+      endpoint: https://s3.techtales.io
+      force-path-style: true
+      bucket: litestream
+      path: new-api/one-api.db
+validation:
+  interval: 1h
