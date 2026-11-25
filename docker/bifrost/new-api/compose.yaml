@@ -15,3 +15,10 @@ services:
     dns:
       - 192.168.100.1
       - 1.1.1.2
+
+  litestream:
+    # same host resolver order: s3.techtales.io only exists in the
+    # internal split-DNS zone, the daemon default (1.1.1.2) cannot see it
+    dns:
+      - 192.168.100.1
+      - 1.1.1.2

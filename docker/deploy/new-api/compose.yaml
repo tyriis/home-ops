@@ -100,7 +100,9 @@ services:
       - /tmp:size=64m
     user: ${USER_ID:-1000}:${GROUP_ID:-1000}
     volumes:
-      - data:/data:ro
+      # rw on purpose: litestream 0.5 writes coordination tables (_litestream_seq,
+      # _litestream_status) into the source database; a :ro mount fails at startup.
+      - data:/data
       - ../../deploy/new-api/litestream.yml:/etc/litestream.yml:ro
       - litestream-state:/var/lib/litestream
     networks:

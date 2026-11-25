@@ -182,6 +182,33 @@ techtales-io/terraform-minio PR #517.
 
 - Watchtower/doco-cd note: the sidecar is one extra container per `new-api`
   deployment; `docker compose up -d` in the host dir converges both services.
+- The sidecar mounts the source volume READ-WRITE on purpose: litestream 0.5
+  creates coordination tables (`_litestream_seq`, `_litestream_status`) inside
+  the source database at startup. A `:ro` source mount fails immediately
+  (seed-run proof 2026-11-25). Expect those two extra tables in
+  `one-api.db` after the first deploy.
+- Split-DNS note: the sidecar service needs the host `dns:` override
+  (`192.168.100.1` first) — the daemon default resolver cannot see
+  `s3.techtales.io`.
+
+### Seed test on a copy (proven 2026-11-25)
+
+Test replication WITHOUT touching the live database: copy the three SQLite
+files to a throwaway volume and point a one-shot `ltseed` container at it.
+
+```bash
+docker volume create ltseed-copy
+docker run --rm -v new-api_data:/src:ro -v ltseed-copy:/dst \
+  alpine sh -c 'cp -a /src/one-api.db /src/one-api.db-wal /src/one-api.db-shm \
+  /dst/ && chown 1001:1001 /dst /dst/one-api.db*'
+```
+
+The source stack keeps running, so the copy is a hot, non-atomic snapshot:
+it can lag a WAL flush and restore to a marginally stale or — rarely, if the
+copy straddled a checkpoint — invalid database. Judge a failed
+`integrity_check` on the restored copy as a copy artifact, not a pipeline
+fault. The live original is never opened for writing by the test; only the
+copy volume gets the rw mount and the coordination tables.
 
 ### Restore drill and cutover restore
 
