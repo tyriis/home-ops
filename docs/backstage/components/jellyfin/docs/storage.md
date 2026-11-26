@@ -20,4 +20,4 @@ The NAS share `nas.techtales.io:/mnt/tank/media` is mounted read-only at `/media
 | ------------- | --------- | ---------------------------------------- |
 | `/config/log` | 32Mi      | App logs. Lost with the pod              |
 | `/tmp`        | 16Mi      | Temp files. Mounted by the chart default |
-| `/cache`      | 2500Mi    | Transcode cache. 2GiB free required.     |
+| `/cache`      | 10Gi      | Transcode cache. 2GiB free required.     |

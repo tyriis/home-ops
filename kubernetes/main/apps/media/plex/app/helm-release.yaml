@@ -58,7 +58,7 @@ spec:
               requests:
                 gpu.intel.com/i915: 1
                 cpu: 10m
-                memory: 100Mi
+                memory: 1Gi
               limits:
                 gpu.intel.com/i915: 1
         pod:
@@ -118,4 +118,4 @@ spec:
       transcode:
         type: emptyDir
         medium: Memory
-        sizeLimit: 2500Mi
+        sizeLimit: 10Gi

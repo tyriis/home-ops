@@ -56,7 +56,7 @@ spec:
               requests:
                 gpu.intel.com/i915: 1
                 cpu: 10m
-                memory: 100Mi
+                memory: 2Gi
               limits:
                 gpu.intel.com/i915: 1
         pod:
@@ -113,7 +113,7 @@ spec:
       transcode:
         type: emptyDir
         medium: Memory
-        sizeLimit: 2500Mi
+        sizeLimit: 10Gi
         advancedMounts:
           jellyfin:
             app:
