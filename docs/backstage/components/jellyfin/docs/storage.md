@@ -1,6 +1,6 @@
 # Storage
 
-No app data writes to node disk. Data lives on the Ceph config PVC, the NAS, or in RAM.
+App data lives on the Ceph config PVC, the NAS, or RAM. Transcode cache is the one node-disk consumer.
 
 ## Config PVC (Ceph, persistent)
 
@@ -14,10 +14,15 @@ VolSync replicates the PVC to MinIO (`backup-system`).
 
 The NAS share `nas.techtales.io:/mnt/tank/media` is mounted read-only at `/media`.
 
+## Node disk (ephemeral, volatile)
+
+| Path     | sizeLimit | Content         |
+| -------- | --------- | --------------- |
+| `/cache` | 100Gi     | Transcode cache |
+
 ## RAM (tmpfs, volatile)
 
 | Path          | sizeLimit | Content                                  |
 | ------------- | --------- | ---------------------------------------- |
 | `/config/log` | 32Mi      | App logs. Lost with the pod              |
 | `/tmp`        | 16Mi      | Temp files. Mounted by the chart default |
-| `/cache`      | 10Gi      | Transcode cache. 2GiB free required.     |
