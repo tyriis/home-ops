@@ -88,7 +88,7 @@ services:
       fix-permissions:
         condition: service_completed_successfully
   comfyui-gallery:
-    image: mmartial/smart-comfyui-gallery:2.24@sha256:041897c24f347dab0ee7f1ed90626f91fd8c9d743f6b366522c59650d946b6a5
+    image: mmartial/smart-comfyui-gallery:2.25@sha256:4ca2845b88e3acdfe2c4b46e73d2c05a8eebe59c843fb8319cd216fc3a7a08be
     container_name: comfyui-gallery
     logging:
       driver: json-file
