@@ -139,7 +139,7 @@ spec:
           webui:
             image:
               repository: ghcr.io/nesquena/hermes-webui
-              tag: 0.52.752@sha256:a3fd55f924c5fb10f17f2dfe1bd40469c7a3d163b8f2798997e695ff68102202
+              tag: 0.52.754@sha256:0a3d4d4068fc23cd9d13576f2e057c5d3fc37275975c7cd08b396ed71cc715e9
             command: ["/bin/sh", "-c"]
             args:
               - |-
