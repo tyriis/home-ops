@@ -59,7 +59,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /v0/health/liveness
+                    path: /health/liveness
                     port: 3002
                   initialDelaySeconds: 30
                   periodSeconds: 30
@@ -70,7 +70,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /v0/health/readiness
+                    path: /health/readiness
                     port: 3002
                   initialDelaySeconds: 30
                   periodSeconds: 30
