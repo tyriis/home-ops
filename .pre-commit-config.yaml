@@ -6,6 +6,9 @@ default_language_version:
 default_stages:
   - pre-commit
   - pre-push
+default_install_hook_types:
+  - pre-commit
+  - pre-push
 
 repos:
   # checks pre-commit config for errors
@@ -138,12 +141,18 @@ repos:
             kubernetes/utility/apps/secops/rbac.yaml
           )$()
 
-  - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.30.1
+  - repo: https://github.com/betterleaks/betterleaks
+    rev: v1.10.1
     hooks:
-      - id: gitleaks
+      - id: betterleaks
 
   - repo: https://github.com/rhysd/actionlint
     rev: v1.7.12
     hooks:
       - id: actionlint
+
+  # TODO: re-enable after the docs/superpowers lint decision
+  # - repo: https://github.com/editorconfig-checker/editorconfig-checker
+  #   rev: v4.0.2
+  #   hooks:
+  #     - id: editorconfig-checker

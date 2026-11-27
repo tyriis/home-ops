@@ -228,13 +228,13 @@ This affects 3 controllers × 1 line = 3 lines total.
 In the `api` and `nuq-worker` controller blocks, change:
 
 ```yaml
-NUQ_DATABASE_URL: postgresql://postgres:password@firecrawl-nuq-postgres.ai.svc.cluster.local:5432/postgres
+NUQ_DATABASE_URL: postgresql://postgres:password@firecrawl-nuq-postgres.ai.svc.cluster.local:5432/postgres # betterleaks:allow
 ```
 
 to:
 
 ```yaml
-NUQ_DATABASE_URL: postgresql://postgres:password@firecrawl-nuq-postgres.firecrawl-system.svc.cluster.local:5432/postgres
+NUQ_DATABASE_URL: postgresql://postgres:password@firecrawl-nuq-postgres.firecrawl-system.svc.cluster.local:5432/postgres # betterleaks:allow
 ```
 
 This affects 2 controllers × 1 line = 2 lines total.
@@ -267,7 +267,7 @@ Change:
 ```yaml
 dataFrom:
   - extract:
-      key: infra/kubernetes/main/ai/firecrawl #gitleaks:allow
+      key: infra/kubernetes/main/ai/firecrawl #betterleaks:allow
 ```
 
 to:
@@ -275,7 +275,7 @@ to:
 ```yaml
 dataFrom:
   - extract:
-      key: infra/kubernetes/main/firecrawl-system/firecrawl #gitleaks:allow
+      key: infra/kubernetes/main/firecrawl-system/firecrawl #betterleaks:allow
 ```
 
 - [ ] **Step 2: Commit**

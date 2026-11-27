@@ -4,32 +4,32 @@ ComfyUI is a powerful and modular Stable Diffusion WebUI with support for FLUX, 
 
 ## Quick Start
 
-1. **Update UID/GID**: Edit `compose.yaml` and set `WANTED_UID` and `WANTED_GID` to your user's values:
+- **Update UID/GID**: Edit `compose.yaml` and set `WANTED_UID` and `WANTED_GID` to your user's values:
 
-   ```bash
-   id -u  # Get your UID
-   id -g  # Get your GID
-   ```
+  ```bash
+  id -u  # Get your UID
+  id -g  # Get your GID
+  ```
 
-2. **Start the container**:
+- **Start the container**:
 
-   ```bash
-   docker compose up -d
-   ```
+  ```bash
+  docker compose up -d
+  ```
 
-3. **Access the WebUI**: Open [http://localhost:8188](http://localhost:8188) in your browser
+- **Access the WebUI**: Open [http://localhost:8188](http://localhost:8188) in your browser
 
-4. **First run**: The first time you start the container, it will:
-   - Download ComfyUI from GitHub
-   - Create a Python virtual environment
-   - Install all required packages (~5GB)
-   - Install ComfyUI Manager
+- **First run**: The first time you start the container, it will:
+  - Download ComfyUI from GitHub
+  - Create a Python virtual environment
+  - Install all required packages (~5GB)
+  - Install ComfyUI Manager
 
-   This process can take 10-20 minutes depending on your internet connection. Monitor progress with:
+  This process can take 10-20 minutes depending on your internet connection. Monitor progress with:
 
-   ```bash
-   docker compose logs -f
-   ```
+  ```bash
+  docker compose logs -f
+  ```
 
 ## Directory Structure
 

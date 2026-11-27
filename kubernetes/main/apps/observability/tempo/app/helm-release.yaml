@@ -50,7 +50,7 @@ spec:
     - kind: Secret
       name: tempo-s3
       optional: true
-      valuesKey: S3_BUCKET_REGION #gitleaks:allow
+      valuesKey: S3_BUCKET_REGION #betterleaks:allow
       targetPath: tempo.storage.trace.s3.region
     - kind: Secret
       name: tempo-s3

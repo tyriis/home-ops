@@ -11,19 +11,19 @@ tasks:
   markdown:
     desc: Lint Markdown
     cmds:
-      - "markdownlint -c .markdownlint.yaml *.md **/*.md"
+      - "prek run markdownlint-fix --all-files"
 
   yaml:
     desc: Lint YAML
     cmds:
-      - "yamllint -c .yamllint.yaml ."
+      - "prek run yamllint --all-files"
 
   prettier:
     desc: Lint with prettier
     cmds:
-      - "prettier --ignore-path .prettierignore --config .prettierrc.yaml --check ."
+      - "prek run prettier --all-files"
 
   prettier:fix:
     desc: Lint with prettier autofix
     cmds:
-      - "prettier --ignore-path .prettierignore --config .prettierrc.yaml --write ."
+      - "prek run prettier --all-files"
