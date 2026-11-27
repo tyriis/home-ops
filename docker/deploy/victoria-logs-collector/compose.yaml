@@ -26,7 +26,7 @@ services:
         max-size: 10m
         max-file: "3"
         labels: "com.docker.compose.service,com.docker.compose.image,cd.doco.deployment.config.target,org.opencontainers.image.title,org.opencontainers.image.version"
-    image: victoriametrics/vlagent:v1.54.0@sha256:fcfb8ce38b503c691fa8e794ba1812fda82e363207235afbd7ceeb95eb18def0
+    image: victoriametrics/vlagent:v1.55.0@sha256:8a021af6e46f9fda22d3c7b7152617ef4c55cccd34c855735697083cd9d52e5d
     mem_limit: 256m
     pids_limit: 128
     # Bridge network: the collector only needs outbound HTTPS to logs.techtales.io.
