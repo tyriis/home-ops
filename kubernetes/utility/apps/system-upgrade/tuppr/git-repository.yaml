@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/source.toolkit.fluxcd.io/gitrepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: tuppr-crds
+spec:
+  interval: 12h
+  url: https://github.com/home-operations/tuppr.git
+  ref:
+    tag: 0.5.14
+  ignore: |
+    # exclude all
+    /*
+    # include tuppr CRDs only
+    !/config/crd/bases/tuppr.home-operations.com_talosupgrades.yaml
+    !/config/crd/bases/tuppr.home-operations.com_kubernetesupgrades.yaml
