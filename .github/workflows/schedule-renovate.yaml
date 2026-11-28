@@ -80,4 +80,11 @@ jobs:
                 username: "${{ secrets.DOCKER_IO_USER }}",
                 password: "${{ secrets.DOCKER_IO_TOKEN }}",
               },
+              {
+                // self-hosted registry resolves to a private address;
+                // permits the lookup and silences the internalHostAccess warning
+                matchHost: "harbor.techtales.io",
+                hostType: "docker",
+                allowInternal: true,
+              },
             ]
